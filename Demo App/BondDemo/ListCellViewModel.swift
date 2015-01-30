@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Bond
 
 class ListCellViewModel {
   let name: Dynamic<String>

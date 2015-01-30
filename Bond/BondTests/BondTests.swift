@@ -41,4 +41,24 @@ class BondTests: XCTestCase {
         // assert: it should change again
         XCTAssertEqual(newValue, 1)
     }
+    
+    func testBindWithOperator() {
+        let dynamicInt = Dynamic<Int>(0)
+        var newValue = NSNotFound
+        let intBond = Bond<Int>({ value in
+            newValue = value
+        })
+        
+        // act
+        dynamicInt ~> intBond
+        
+        // assert: it should change the value to 0
+        XCTAssertEqual(newValue, 0)
+        
+        // act: change the value to 1
+        dynamicInt.value = 1
+        
+        // assert: it should change again
+        XCTAssertEqual(newValue, 1)
+    }
 }
