@@ -98,7 +98,7 @@ extension UISlider: Dynamical, Bondable {
   }
   
   public var designatedBond: Bond<Float> {
-    return self.designatedBond
+    return self.valueBond
   }
 }
 
