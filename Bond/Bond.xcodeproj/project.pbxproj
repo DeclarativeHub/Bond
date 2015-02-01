@@ -174,6 +174,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = Bond;
 				TargetAttributes = {
 					69491BAD1A7C217100A13B6B = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -414,6 +415,7 @@
 				69491BC61A7C217100A13B6B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		69491BC71A7C217100A13B6B /* Build configuration list for PBXNativeTarget "BondTests" */ = {
 			isa = XCConfigurationList;
@@ -422,6 +424,7 @@
 				69491BC91A7C217100A13B6B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
