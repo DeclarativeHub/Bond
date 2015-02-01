@@ -13,7 +13,7 @@ Bond was created with two goals in mind: simple to use and simple to understand.
 Say you'd like a label to reflect the state of a text field. Instead of going through all that 'action-target' pain, with Bond you'll do it like this:
 
 ```swift
-	textField ~> label
+	textField ->> label
 ```
 
 That one line establishes a _bond_ between text field's text property and label's text property. In effect, whenever users makes a change to the text field, that change will be automatically propagated to the label.
@@ -21,7 +21,7 @@ That one line establishes a _bond_ between text field's text property and label'
 More often than not, direct binding is not enough. Usually you need to transform input is some way, like prepending a greeting to a name. Of course, Bond has full confidence in functional paradigm. 
 
 ```swift
-	textField.map { "Hi " + $0 } ~> label
+	textField.map { "Hi " + $0 } ->> label
 ```
 
 Whenever a change occurs in the text field, new value will be transformed by the closure and propagated to the label.
@@ -29,19 +29,19 @@ Whenever a change occurs in the text field, new value will be transformed by the
 In addition to `map`, another important functional construct is  `filter`. It's useful when we are interested only in some values of a domain. For example, when observing events of a button, we might be interested only in `TouchUpInside` event so we can perform certain action when user taps the button: 
 
 ```swift
-	button.filter { $0 == UIControlEvents.TouchUpInside } ~> { event in
+	button.filter { $0 == UIControlEvents.TouchUpInside } ->> { event in
       login()
     }
 ```
 
-As you see, our binding target doesn't have to be an UI component, rather it can be an arbitrary action wrapped in a closure. We call that closure a `Listener` as it listens for changes of an object or a property that it's bonded to by `~>` operator.
+As you see, our binding target doesn't have to be an UI component, rather it can be an arbitrary action wrapped in a closure. We call that closure a `Listener` as it listens for changes of an object or a property that it's bonded to by `->>` operator.
 
 Bond can also `reduce` multiple inputs into a single output. Following snippet depicts how values of two text fields can be reduced to a boolean value and applied to button's `disabled` property.
 
 ```swift
 	reduce(emailField, passField, false) { email, pass  in
       return countElements(email) > 0 && countElements(pass) > 0
-    } ~> loginButton
+    } ->> loginButton
 ```
 
 Whenever user types something into any of the text fields, expression will be evaluated and button stated updated.
@@ -49,7 +49,7 @@ Whenever user types something into any of the text fields, expression will be ev
 Bond's power is not, however, in coupling various UI components, but in a bonding of Model (or ViewModel) to View and vice-versa. It's great for MVVM paradigm. Here is how one could bond user's number of followers property of a model to a label. 
 
 ```swift
-	numberOfFollowers.map { "\($0)" } ~> label
+	numberOfFollowers.map { "\($0)" } ->> label
 ```
 
 Point here is not in the simplicity of value assignment to text property of a label, but in the creation of a bond which automatically updates label text property whenever number of followers change.
@@ -61,10 +61,10 @@ So how do you proceed? Well, instead of implementing a data source object, obser
 ```swift
     repositories.map { [unowned self] (repository: Repository) -> RepositoryTableViewCell in
       let cell = self.tableView.dequeueReusableCellWithIdentifier("cell") as RepositoryTableViewCell
-      repository.name ~> cell.nameLabel
-      repository.photo ~> cell.avatarImageView
+      repository.name ->> cell.nameLabel
+      repository.photo ->> cell.avatarImageView
       return cell
-    } ~> self.tableView
+    } ->> self.tableView
 ```
 
 Yes, that's right!
@@ -112,10 +112,10 @@ We've already seen how to propagate change of value, but let's define it formall
 
 Those few lines will establish a bond between the `numberOfFollowers` and the closure that prints each change. Bond lives as long as it is retained by someone else. Usually you'll create bonds as properties in you classes. `Bond` object retains bonded `Dynamic` object(s)!
 
-Calling `bind` method is old-fashioned so it can be simplified by an already mentioned `~>` operator. Previous line can be rewritten like:
+Calling `bind` method is old-fashioned so it can be simplified by an already mentioned `->>` operator. Previous line can be rewritten like:
 
 ```swift
-	numberOfFollowers ~> myBond
+	numberOfFollowers ->> myBond
 ```
 
 Very simple indeed. Dynamic on the left side, Bond on the right side.
@@ -202,7 +202,7 @@ Reduce is a simple function that takes two or more Dynamics and returns a new Dy
 As each of these functions return another Dynamic, it is possible to compose (chain) more than one of them in order to get desired behaviour. For example, if we need to bind an Int property to a label (which provides a Bond of String type), but only if number is greater than 10, we could do it like this.
 
 ```swift
-	number.filter { $0 > 10 }.map { "\($0)" } ~> label
+	number.filter { $0 > 10 }.map { "\($0)" } ->> label
 ```
 
 ### Arrays are special (and great)
@@ -266,7 +266,7 @@ Let's go through one example. We'll create a new bond to our `repositories` arra
 		println("Updated objects at indices \(indices)")
 	}
 	
-	repositories ~> myBond
+	repositories ->> myBond
 	
 	repositories.insert(Repository(...), atIndex: 0)
 	// prints: Inserted objects at indices [0]
@@ -290,14 +290,14 @@ Because of its nature, filter function that operates on DynamicArray has O(n) co
 There is one more neat thing about Bond. You can create a Dynamic that observers value chnages of some KVO-observable property. For example, you can bond a property of your existing Objective-C model object to a label with this simple one-liner:
 
 ```swift
-	Dynamic.asObservableFor(self.user, keyPath: "numberOfFollowers") ~> label
+	Dynamic.asObservableFor(self.user, keyPath: "numberOfFollowers") ->> label
 ```
 
 ## Installation
 
 Just download necessary files and add them to your project. You'll probably want all of them.
 
-* **Bond.swift** - Core components (Bond, Dynamic, ~>, functions)
+* **Bond.swift** - Core components (Bond, Dynamic, ->>, functions)
 * **Bond+Arrays.swift** - ArrayBond and DynamicArray
 * **Bond+Foundation.swift** - KVO - Dynamic.asObservableFor() function
 * **Bond+UIKit.swift** - Extension of UIKit with Dynamical and Bondable protocols
