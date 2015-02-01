@@ -29,7 +29,7 @@
 
 public class BondBox<T> {
   weak var bond: Bond<T>?
-  init(_ b: Bond<T>) { bond = b }
+  public init(_ b: Bond<T>) { bond = b }
 }
 
 // MARK: - Scalar Dynamic

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		69491BD51A7C357400A13B6B /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69491BD41A7C357400A13B6B /* Bond.framework */; };
 		EC07068A1A76C9EA000A2908 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0706891A76C9EA000A2908 /* AppDelegate.swift */; };
 		EC07068C1A76C9EA000A2908 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC07068B1A76C9EA000A2908 /* ListViewController.swift */; };
 		EC07068F1A76C9EA000A2908 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC07068D1A76C9EA000A2908 /* Main.storyboard */; };
@@ -14,14 +15,11 @@
 		EC0706941A76C9EA000A2908 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = EC0706921A76C9EA000A2908 /* LaunchScreen.xib */; };
 		EC0706AA1A76CB33000A2908 /* ListCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0706A91A76CB33000A2908 /* ListCellViewModel.swift */; };
 		EC0706B11A76CE01000A2908 /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0706B01A76CE01000A2908 /* ListViewModel.swift */; };
-		EC36EC071A7ACB3100BC2802 /* Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC36EC031A7ACB3100BC2802 /* Bond.swift */; };
-		EC36EC081A7ACB3100BC2802 /* Bond+Arrays.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC36EC041A7ACB3100BC2802 /* Bond+Arrays.swift */; };
-		EC36EC091A7ACB3100BC2802 /* Bond+Foundation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC36EC051A7ACB3100BC2802 /* Bond+Foundation.swift */; };
-		EC36EC0A1A7ACB3100BC2802 /* Bond+UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC36EC061A7ACB3100BC2802 /* Bond+UIKit.swift */; };
 		EC58F1931A76E0980008C586 /* ListCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC58F1921A76E0980008C586 /* ListCellView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		69491BD41A7C357400A13B6B /* Bond.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC0706841A76C9E9000A2908 /* BondDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BondDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC0706881A76C9EA000A2908 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EC0706891A76C9EA000A2908 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -31,10 +29,6 @@
 		EC0706931A76C9EA000A2908 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		EC0706A91A76CB33000A2908 /* ListCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListCellViewModel.swift; sourceTree = "<group>"; };
 		EC0706B01A76CE01000A2908 /* ListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewModel.swift; sourceTree = "<group>"; };
-		EC36EC031A7ACB3100BC2802 /* Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Bond.swift; path = ../../Bond.swift; sourceTree = "<group>"; };
-		EC36EC041A7ACB3100BC2802 /* Bond+Arrays.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Bond+Arrays.swift"; path = "../../Bond+Arrays.swift"; sourceTree = "<group>"; };
-		EC36EC051A7ACB3100BC2802 /* Bond+Foundation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Bond+Foundation.swift"; path = "../../Bond+Foundation.swift"; sourceTree = "<group>"; };
-		EC36EC061A7ACB3100BC2802 /* Bond+UIKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Bond+UIKit.swift"; path = "../../Bond+UIKit.swift"; sourceTree = "<group>"; };
 		EC58F1921A76E0980008C586 /* ListCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListCellView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -43,6 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				69491BD51A7C357400A13B6B /* Bond.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,6 +47,7 @@
 		EC07067B1A76C9E9000A2908 = {
 			isa = PBXGroup;
 			children = (
+				69491BD41A7C357400A13B6B /* Bond.framework */,
 				EC0706861A76C9E9000A2908 /* BondDemo */,
 				EC0706851A76C9E9000A2908 /* Products */,
 			);
@@ -68,7 +64,6 @@
 		EC0706861A76C9E9000A2908 /* BondDemo */ = {
 			isa = PBXGroup;
 			children = (
-				EC0706AB1A76CB6E000A2908 /* Bond */,
 				EC0706891A76C9EA000A2908 /* AppDelegate.swift */,
 				EC07068B1A76C9EA000A2908 /* ListViewController.swift */,
 				EC0706B01A76CE01000A2908 /* ListViewModel.swift */,
@@ -88,17 +83,6 @@
 				EC0706881A76C9EA000A2908 /* Info.plist */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		EC0706AB1A76CB6E000A2908 /* Bond */ = {
-			isa = PBXGroup;
-			children = (
-				EC36EC031A7ACB3100BC2802 /* Bond.swift */,
-				EC36EC041A7ACB3100BC2802 /* Bond+Arrays.swift */,
-				EC36EC051A7ACB3100BC2802 /* Bond+Foundation.swift */,
-				EC36EC061A7ACB3100BC2802 /* Bond+UIKit.swift */,
-			);
-			name = Bond;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -173,12 +157,8 @@
 			files = (
 				EC58F1931A76E0980008C586 /* ListCellView.swift in Sources */,
 				EC07068C1A76C9EA000A2908 /* ListViewController.swift in Sources */,
-				EC36EC071A7ACB3100BC2802 /* Bond.swift in Sources */,
 				EC0706B11A76CE01000A2908 /* ListViewModel.swift in Sources */,
-				EC36EC081A7ACB3100BC2802 /* Bond+Arrays.swift in Sources */,
-				EC36EC091A7ACB3100BC2802 /* Bond+Foundation.swift in Sources */,
 				EC0706AA1A76CB33000A2908 /* ListCellViewModel.swift in Sources */,
-				EC36EC0A1A7ACB3100BC2802 /* Bond+UIKit.swift in Sources */,
 				EC07068A1A76C9EA000A2908 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
