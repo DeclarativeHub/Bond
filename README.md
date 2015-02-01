@@ -298,8 +298,8 @@ There is one more neat thing about Bond. You can create a Dynamic that observers
 ### Using Git Submodules
 
 1. Clone Bond as a submodule into the directory of your choice
-	a. `git submodule add git@github.com:SwiftBond/Bond.git`
-	b. `git submodule update --init`
+  1. `git submodule add git@github.com:SwiftBond/Bond.git`
+  2. `git submodule update --init`
 2. Drag Bond.xcodeproj into your project tree as a subproject
 3. Under your project's Build Phases, expand Target Dependencies
 4. Click the + and add Bond
