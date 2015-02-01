@@ -229,7 +229,7 @@ public func _reduce<A, B, C, T>(dA: Dynamic<A>, dB: Dynamic<B>, dC: Dynamic<C>, 
 
 // Bind and fire
 
-infix operator ->> { associativity left precedence 80 }
+infix operator ->> { associativity left precedence 105 }
 
 public func ->> <T>(left: Dynamic<T>, right: Bond<T>) {
   right.bind(left)
@@ -255,7 +255,7 @@ public func ->> <T, U: Bondable where U.BondType == T>(left: Dynamic<T>, right: 
 
 // Bind only
 
-infix operator ->| { associativity left precedence 80 }
+infix operator ->| { associativity left precedence 105 }
 
 public func ->| <T>(left: Dynamic<T>, right: Bond<T>) {
   right.bind(left, fire: false)
