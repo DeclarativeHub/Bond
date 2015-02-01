@@ -71,6 +71,8 @@ Yes, that's right!
 
 (As always, when working with closures by extremely careful not to cause retain cycles! Note how we used `unowned self` in above example. If you are not familiar with concept of retain cycles, check out this: [Resolving Strong Reference Cycles for Closures](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/AutomaticReferenceCounting.html#//apple_ref/doc/uid/TP40014097-CH20-ID57))
 
+(You can find demo app with additional examples [here](https://github.com/SwiftBond/Bond-Demo-App).)
+
 ## How does it work?
 
 ### Dynamic
