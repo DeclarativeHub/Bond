@@ -27,11 +27,11 @@ class ListViewController: UITableViewController {
     // establish a bond between view model and table view
     listViewModel.repositoryCellViewModels.map { [unowned self] (viewModel: ListCellViewModel) -> ListCellView in
       let cell = self.tableView.dequeueReusableCellWithIdentifier("cell") as ListCellView
-      viewModel.name ~> cell.nameLabel
-      viewModel.username ~> cell.ownerLabel
-      viewModel.photo ~> cell.avatarImageView
+      viewModel.name ->> cell.nameLabel
+      viewModel.username ->> cell.ownerLabel
+      viewModel.photo ->> cell.avatarImageView
       return cell
-    } ~> self.tableView    
+    } ->> self.tableView
   }
   
   override func viewWillAppear(animated: Bool) {
