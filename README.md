@@ -295,17 +295,44 @@ There is one more neat thing about Bond. You can create a Dynamic that observers
 
 ## Installation
 
-Just download necessary files and add them to your project. You'll probably want all of them.
+### Using CocoaPods
 
-* **Bond.swift** - Core components (Bond, Dynamic, ->>, functions)
-* **Bond+Arrays.swift** - ArrayBond and DynamicArray
-* **Bond+Foundation.swift** - KVO - Dynamic.asObservableFor() function
-* **Bond+UIKit.swift** - Extension of UIKit with Dynamical and Bondable protocols
+1. Add Bond dependency to your [Podfile](http://guides.cocoapods.org/using/using-cocoapods.html)
+	a. `pod 'Bond', '~> 2.0.0'`
+2. Run `pod install` in your project directory.
+
+### Using Git Submodules
+
+1. Clone Bond as a submodule into the directory of your choice
+	a. `git submodule add git@github.com:SwiftBond/Bond.git`
+	b. `git submodule update --init`
+2. Drag Bond.xcodeproj into your project tree as a subproject
+3. Under your project's Build Phases, expand Target Dependencies
+4. Click the + and add Bond
+5. Expand the Link Binary With Libraries phase
+6. Click the + and add Bond
+7. Click the + at the top left corner to add a Copy Files build phase
+8. Set the directory to Frameworks
+9. Click the + and add Bond
 
 
 ## Roadmap
 
 Bond has yet to be shipped in an app. It was tested with many examples, but if there is a bug, please don't yell. Open an Issue, fix it yourself and make a pull request or contact me on Twitter (@srdanrasic) or by email (srdan.rasic@gmail.com). Should you have any suggestion or a critique, do the same.
+
+
+## Release Notes
+
+### v2.0.0
+
+* Changed bonding operator to `->>` due to conflicts with reserved operator `~>`
+* Introduced operator `->|` that performs bonding without initial firing  
+* Wrapped Bond in a framework and added CocoaPods support
+
+### v1.0.0
+
+* Initial Release
+
 
 
 ## License
