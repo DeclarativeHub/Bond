@@ -295,12 +295,6 @@ There is one more neat thing about Bond. You can create a Dynamic that observers
 
 ## Installation
 
-### Using CocoaPods
-
-1. Add Bond dependency to your [Podfile](http://guides.cocoapods.org/using/using-cocoapods.html)
-	a. `pod 'Bond', '~> 2.0.0'`
-2. Run `pod install` in your project directory.
-
 ### Using Git Submodules
 
 1. Clone Bond as a submodule into the directory of your choice
@@ -315,6 +309,10 @@ There is one more neat thing about Bond. You can create a Dynamic that observers
 8. Set the directory to Frameworks
 9. Click the + and add Bond
 
+### Standalone
+
+Just get .swift files from Bond/ Directory and add them to your project.
+
 
 ## Roadmap
 
@@ -327,7 +325,7 @@ Bond has yet to be shipped in an app. It was tested with many examples, but if t
 
 * Changed bonding operator to `->>` due to conflicts with reserved operator `~>`
 * Introduced operator `->|` that performs bonding without initial firing  
-* Wrapped Bond in a framework and added CocoaPods support
+* Wrapped Bond in a framework
 
 ### v1.0.0
 
