@@ -323,6 +323,10 @@ Bond has yet to be shipped in an app. It was tested with many examples, but if t
 
 ## Release Notes
 
+### v2.0.1
+
+* Fixes operator precedence
+
 ### v2.0.0
 
 * Changed bonding operator to `->>` due to conflicts with reserved operator `~>`
