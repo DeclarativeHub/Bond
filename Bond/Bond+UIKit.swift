@@ -416,3 +416,28 @@ extension UITableView: Bondable {
 }
 
 
+// MARK: UIRefreshControl
+
+private var designatedBondHandleUIRefreshControl: UInt8 = 0;
+
+extension UIRefreshControl: Bondable {
+  
+  public var designatedBond: Bond<Bool> {
+    if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUIRefreshControl) {
+      return b as Bond<Bool>
+    } else {
+      let b = Bond<Bool>() { [unowned self] v in
+        if (v) {
+          self.beginRefreshing()
+        } else {
+          self.endRefreshing()
+        }
+      }
+      objc_setAssociatedObject(self, &designatedBondHandleUIRefreshControl, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return b
+    }
+  }
+  
+}
+
+
