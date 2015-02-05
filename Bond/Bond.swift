@@ -81,6 +81,13 @@ public class Dynamic<T> {
   
   public var value: T {
     didSet {
+      
+      // clear weak bonds
+      bonds = bonds.filter {
+        bondBox in bondBox.bond != nil
+      }
+      
+      // notify
       for bondBox in bonds {
         bondBox.bond?.listener?(value)
       }
