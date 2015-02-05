@@ -25,7 +25,7 @@
 //  THE SOFTWARE.
 //
 
-#import <UIKit/UIKit.h>
+@import Foundation;
 
 //! Project version number for Bond.
 FOUNDATION_EXPORT double BondVersionNumber;
