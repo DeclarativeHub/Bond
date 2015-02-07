@@ -164,7 +164,7 @@ public func filter<T>(dynamic: Dynamic<T>, f: T -> Bool) -> Dynamic<T> {
   return _filter(dynamic, f)
 }
 
-public func map<S: Dynamical, T where S.DynamicType == T>(dynamical: S, f: T -> Bool) -> Dynamic<T> {
+public func filter<S: Dynamical, T where S.DynamicType == T>(dynamical: S, f: T -> Bool) -> Dynamic<T> {
   return _filter(dynamical.designatedDynamic(), f)
 }
 
@@ -178,6 +178,14 @@ private func _filter<T>(dynamic: Dynamic<T>, f: T -> Bool) -> Dynamic<T> {
 
 // MARK: Reduce
 
+public func reduce<A: Dynamical, B: Dynamical, T>(a: A, b: B, v0: T, f: (A.DynamicType, B.DynamicType) -> T) -> Dynamic<T> {
+  return _reduce(a.designatedDynamic(), b.designatedDynamic(), v0, f)
+}
+
+public func reduce<A: Dynamical, B: Dynamical, C: Dynamical, T>(a: A, b: B, c: C, v0: T, f: (A.DynamicType, B.DynamicType, C.DynamicType) -> T) -> Dynamic<T> {
+  return _reduce(a.designatedDynamic(), b.designatedDynamic(), c.designatedDynamic(), v0, f)
+}
+
 public func reduce<A, B, T>(dA: Dynamic<A>, dB: Dynamic<B>, v0: T, f: (A, B) -> T) -> Dynamic<T> {
   return _reduce(dA, dB, v0, f)
 }
@@ -186,7 +194,7 @@ public func reduce<A, B, C, T>(dA: Dynamic<A>, dB: Dynamic<B>, dC: Dynamic<C>, v
   return _reduce(dA, dB, dC, v0, f)
 }
 
-public func _reduce<A, B, T>(dA: Dynamic<A>, dB: Dynamic<B>, v0: T, f: (A, B) -> T) -> Dynamic<T> {
+private func _reduce<A, B, T>(dA: Dynamic<A>, dB: Dynamic<B>, v0: T, f: (A, B) -> T) -> Dynamic<T> {
   let dyn = DynamicExtended<T>(v0)
   
   let bA = Bond<A> { [unowned dyn, weak dB] in
@@ -206,7 +214,7 @@ public func _reduce<A, B, T>(dA: Dynamic<A>, dB: Dynamic<B>, v0: T, f: (A, B) ->
   return dyn
 }
 
-public func _reduce<A, B, C, T>(dA: Dynamic<A>, dB: Dynamic<B>, dC: Dynamic<C>, v0: T, f: (A, B, C) -> T) -> Dynamic<T> {
+private func _reduce<A, B, C, T>(dA: Dynamic<A>, dB: Dynamic<B>, dC: Dynamic<C>, v0: T, f: (A, B, C) -> T) -> Dynamic<T> {
   let dyn = DynamicExtended<T>(v0)
   
   let bA = Bond<A> { [unowned dyn, weak dB, weak dC] in

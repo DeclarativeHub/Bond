@@ -67,7 +67,9 @@
 				69491BBD1A7C217100A13B6B /* BondTests */,
 				69491BAF1A7C217100A13B6B /* Products */,
 			);
+			indentWidth = 2;
 			sourceTree = "<group>";
+			tabWidth = 2;
 		};
 		69491BAF1A7C217100A13B6B /* Products */ = {
 			isa = PBXGroup;
