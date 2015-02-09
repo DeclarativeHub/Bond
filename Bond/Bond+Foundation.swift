@@ -59,11 +59,11 @@ private var XXContext = 0
 public extension Dynamic {
   
   public class func asObservableFor(object: NSObject, keyPath: String) -> Dynamic<T> {
-    let dynamic = DynamicExtended(object.valueForKeyPath(keyPath) as T)
+    let dynamic = DynamicExtended((object.valueForKeyPath(keyPath) as? T)!)
     
     let helper = DynamicKVOHelper(keyPath: keyPath, object: object as NSObject) {
       [unowned dynamic] (v: AnyObject) -> Void in
-      dynamic.value = v as T
+      dynamic.value = (v as? T)!
     }
     
     dynamic.retain(helper)

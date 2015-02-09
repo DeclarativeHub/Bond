@@ -85,7 +85,7 @@ extension UISlider: Dynamical, Bondable {
   
   public var valueBond: Bond<Float> {
     if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUISlider) {
-      return b as Bond<Float>
+      return (b as? Bond<Float>)!
     } else {
       let b = Bond() { v in self.value = v }
       objc_setAssociatedObject(self, &designatedBondHandleUISlider, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
@@ -110,7 +110,7 @@ private var designatedBondHandleUILabel: UInt8 = 0;
 extension UILabel: Bondable {
   public var designatedBond: Bond<String> {
     if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUILabel) {
-      return b as Bond<String>
+      return (b as? Bond<String>)!
     } else {
       let b = Bond<String>() { [unowned self] v in self.text = v }
       objc_setAssociatedObject(self, &designatedBondHandleUILabel, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
@@ -126,7 +126,7 @@ private var designatedBondHandleUIProgressView: UInt8 = 0;
 extension UIProgressView: Bondable {
   public var designatedBond: Bond<Float> {
     if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUIProgressView) {
-      return b as Bond<Float>
+      return (b as? Bond<Float>)!
     } else {
       let b = Bond<Float>() { [unowned self] v in self.progress = v }
       objc_setAssociatedObject(self, &designatedBondHandleUIProgressView, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
@@ -141,7 +141,7 @@ var associatedObjectHandleUIImageView: UInt8 = 0;
 extension UIImageView: Bondable {
   public var designatedBond: Bond<UIImage?> {
     if let b: AnyObject = objc_getAssociatedObject(self, &associatedObjectHandleUIImageView) {
-      return b as Bond<UIImage?>
+      return (b as? Bond<UIImage?>)!
     } else {
       let b = Bond<UIImage?>() { [unowned self] v in self.image = v }
       objc_setAssociatedObject(self, &associatedObjectHandleUIImageView, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
@@ -201,7 +201,7 @@ extension UIButton: Dynamical, Bondable {
   
   public var designatedBond: Bond<Bool> {
     if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUIButton) {
-      return b as Bond<Bool>
+      return (b as? Bond<Bool>)!
     } else {
       let b = Bond<Bool>() { [unowned self] v in self.enabled = v }
       objc_setAssociatedObject(self, &designatedBondHandleUIButton, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
@@ -245,7 +245,7 @@ extension UISwitch: Dynamical, Bondable {
   
   public var designatedBond: Bond<Bool> {
     if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUISwitch) {
-      return b as Bond<Bool>
+      return (b as? Bond<Bool>)!
     } else {
       let b = Bond<Bool>() { [unowned self] v in self.on = v }
       objc_setAssociatedObject(self, &designatedBondHandleUISwitch, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
@@ -289,7 +289,7 @@ extension UITextField: Dynamical, Bondable {
   
   public var designatedBond: Bond<String> {
     if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUITextField) {
-      return b as Bond<String>
+      return (b as? Bond<String>)!
     } else {
       let b = Bond<String>() { [unowned self] v in self.text = v }
       objc_setAssociatedObject(self, &designatedBondHandleUITextField, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
@@ -333,7 +333,7 @@ extension UIDatePicker: Dynamical, Bondable {
   
   public var designatedBond: Bond<NSDate> {
     if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUIDatePicker) {
-      return b as Bond<NSDate>
+      return (b as? Bond<NSDate>)!
     } else {
       let b = Bond<NSDate>() { [unowned self] v in self.date = v }
       objc_setAssociatedObject(self, &designatedBondHandleUIDatePicker, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
@@ -406,7 +406,7 @@ private var designatedBondHandleUITableView: UInt8 = 0;
 extension UITableView: Bondable {
   public var designatedBond: Bond<Array<UITableViewCell>> {
     if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUITableView) {
-      return b as TableViewBond<UITableViewCell>
+      return (b as? TableViewBond<UITableViewCell>)!
     } else {
       let b = TableViewBond<UITableViewCell>(tableView: self)
       objc_setAssociatedObject(self, &designatedBondHandleUITableView, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
@@ -424,7 +424,7 @@ extension UIRefreshControl: Bondable {
   
   public var designatedBond: Bond<Bool> {
     if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUIRefreshControl) {
-      return b as Bond<Bool>
+      return (b as? Bond<Bool>)!
     } else {
       let b = Bond<Bool>() { [unowned self] v in
         if (v) {
