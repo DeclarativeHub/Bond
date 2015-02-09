@@ -323,6 +323,10 @@ Bond has yet to be shipped in an app. It was tested with many examples, but if t
 
 ## Release Notes
 
+### v2.1.0
+
+* Add OS X framework and tests
+
 ### v2.0.2
 
 * Clear dead (weak) Bonds from the Dynamic
