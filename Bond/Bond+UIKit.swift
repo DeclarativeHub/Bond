@@ -283,6 +283,15 @@ extension UISwitch: Dynamical, Bondable {
 private var designatedBondHandleUITextField: UInt8 = 0;
 
 extension UITextField: Dynamical, Bondable {
+  
+  public func map<U>(f: String -> U) -> Dynamic<U> {
+    return self.designatedDynamic().map(f)
+  }
+  
+  public func filter(f: String -> Bool) -> Dynamic<String> {
+    return self.designatedDynamic().filter(f)
+  }
+  
   public func designatedDynamic() -> Dynamic<String> {
     return ControlDynamic<String, TextFieldDynamicHelper>(helper: TextFieldDynamicHelper(control: self))
   }
