@@ -108,7 +108,7 @@ extension UISlider: Dynamical, Bondable {
 private var designatedBondHandleUILabel: UInt8 = 0;
 
 extension UILabel: Bondable {
-  public var designatedBond: Bond<String> {
+  public var textBond: Bond<String> {
     if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUILabel) {
       return (b as? Bond<String>)!
     } else {
@@ -117,6 +117,10 @@ extension UILabel: Bondable {
       return b
     }
   }
+  
+  public var designatedBond: Bond<String> {
+    return self.textBond
+  }
 }
 
 // MARK: UIProgressView
@@ -124,7 +128,7 @@ extension UILabel: Bondable {
 private var designatedBondHandleUIProgressView: UInt8 = 0;
 
 extension UIProgressView: Bondable {
-  public var designatedBond: Bond<Float> {
+  public var progressBond: Bond<Float> {
     if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUIProgressView) {
       return (b as? Bond<Float>)!
     } else {
@@ -133,13 +137,17 @@ extension UIProgressView: Bondable {
       return b
     }
   }
+
+  public var designatedBond: Bond<Float> {
+    return self.progressBond
+  }
 }
 
 // MARK: UIImageView
 var associatedObjectHandleUIImageView: UInt8 = 0;
 
 extension UIImageView: Bondable {
-  public var designatedBond: Bond<UIImage?> {
+  public var imageBond: Bond<UIImage?> {
     if let b: AnyObject = objc_getAssociatedObject(self, &associatedObjectHandleUIImageView) {
       return (b as? Bond<UIImage?>)!
     } else {
@@ -147,6 +155,10 @@ extension UIImageView: Bondable {
       objc_setAssociatedObject(self, &associatedObjectHandleUIImageView, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
       return b
     }
+  }
+  
+  public var designatedBond: Bond<UIImage?> {
+    return self.imageBond
   }
 }
 
@@ -195,11 +207,11 @@ extension UIImageView: Bondable {
 private var designatedBondHandleUIButton: UInt8 = 0;
 
 extension UIButton: Dynamical, Bondable {
-  public func designatedDynamic() -> Dynamic<UIControlEvents> {
+  public func eventDynamic() -> Dynamic<UIControlEvents> {
     return ControlDynamic<UIControlEvents, ButtonDynamicHelper>(helper: ButtonDynamicHelper(control: self))
   }
   
-  public var designatedBond: Bond<Bool> {
+  public var enabledBond: Bond<Bool> {
     if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUIButton) {
       return (b as? Bond<Bool>)!
     } else {
@@ -207,6 +219,14 @@ extension UIButton: Dynamical, Bondable {
       objc_setAssociatedObject(self, &designatedBondHandleUIButton, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
       return b
     }
+  }
+  
+  public func designatedDynamic() -> Dynamic<UIControlEvents> {
+    return self.eventDynamic()
+  }
+  
+  public var designatedBond: Bond<Bool> {
+    return self.enabledBond
   }
 }
 
@@ -239,11 +259,11 @@ extension UIButton: Dynamical, Bondable {
 private var designatedBondHandleUISwitch: UInt8 = 0;
 
 extension UISwitch: Dynamical, Bondable {
-  public func designatedDynamic() -> Dynamic<Bool> {
+  public func onDynamic() -> Dynamic<Bool> {
     return ControlDynamic<Bool, SwitchDynamicHelper>(helper: SwitchDynamicHelper(control: self))
   }
   
-  public var designatedBond: Bond<Bool> {
+  public var onBond: Bond<Bool> {
     if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUISwitch) {
       return (b as? Bond<Bool>)!
     } else {
@@ -251,6 +271,14 @@ extension UISwitch: Dynamical, Bondable {
       objc_setAssociatedObject(self, &designatedBondHandleUISwitch, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
       return b
     }
+  }
+  
+  public func designatedDynamic() -> Dynamic<Bool> {
+    return self.onDynamic()
+  }
+  
+  public var designatedBond: Bond<Bool> {
+    return self.onBond
   }
 }
 
@@ -283,11 +311,11 @@ extension UISwitch: Dynamical, Bondable {
 private var designatedBondHandleUITextField: UInt8 = 0;
 
 extension UITextField: Dynamical, Bondable {
-  public func designatedDynamic() -> Dynamic<String> {
+  public func textDynamic() -> Dynamic<String> {
     return ControlDynamic<String, TextFieldDynamicHelper>(helper: TextFieldDynamicHelper(control: self))
   }
   
-  public var designatedBond: Bond<String> {
+  public var textBond: Bond<String> {
     if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUITextField) {
       return (b as? Bond<String>)!
     } else {
@@ -295,6 +323,14 @@ extension UITextField: Dynamical, Bondable {
       objc_setAssociatedObject(self, &designatedBondHandleUITextField, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
       return b
     }
+  }
+  
+  public func designatedDynamic() -> Dynamic<String> {
+    return self.textDynamic()
+  }
+  
+  public var designatedBond: Bond<String> {
+    return self.textBond
   }
 }
 
@@ -327,11 +363,11 @@ extension UITextField: Dynamical, Bondable {
 private var designatedBondHandleUIDatePicker: UInt8 = 0;
 
 extension UIDatePicker: Dynamical, Bondable {
-  public func designatedDynamic() -> Dynamic<NSDate> {
+  public func dateDynamic() -> Dynamic<NSDate> {
     return ControlDynamic<NSDate, DatePickerDynamicHelper>(helper: DatePickerDynamicHelper(control: self))
   }
   
-  public var designatedBond: Bond<NSDate> {
+  public var dateBond: Bond<NSDate> {
     if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUIDatePicker) {
       return (b as? Bond<NSDate>)!
     } else {
@@ -339,6 +375,14 @@ extension UIDatePicker: Dynamical, Bondable {
       objc_setAssociatedObject(self, &designatedBondHandleUIDatePicker, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
       return b
     }
+  }
+  
+  public func designatedDynamic() -> Dynamic<NSDate> {
+    return self.dateDynamic()
+  }
+  
+  public var designatedBond: Bond<NSDate> {
+    return self.dateBond
   }
 }
 
@@ -404,7 +448,7 @@ public class TableViewBond<T>: ArrayBond<UITableViewCell> {
 private var designatedBondHandleUITableView: UInt8 = 0;
 
 extension UITableView: Bondable {
-  public var designatedBond: Bond<Array<UITableViewCell>> {
+  public var dataSourceBond: Bond<Array<UITableViewCell>> {
     if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUITableView) {
       return (b as? TableViewBond<UITableViewCell>)!
     } else {
@@ -412,6 +456,10 @@ extension UITableView: Bondable {
       objc_setAssociatedObject(self, &designatedBondHandleUITableView, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
       return b
     }
+  }
+  
+  public var designatedBond: Bond<Array<UITableViewCell>> {
+    return self.dataSourceBond
   }
 }
 
@@ -421,8 +469,7 @@ extension UITableView: Bondable {
 private var designatedBondHandleUIRefreshControl: UInt8 = 0;
 
 extension UIRefreshControl: Bondable {
-  
-  public var designatedBond: Bond<Bool> {
+  public var refreshingBond: Bond<Bool> {
     if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUIRefreshControl) {
       return (b as? Bond<Bool>)!
     } else {
@@ -438,6 +485,9 @@ extension UIRefreshControl: Bondable {
     }
   }
   
+  public var designatedBond: Bond<Bool> {
+    return self.refreshingBond
+  }
 }
 
 
