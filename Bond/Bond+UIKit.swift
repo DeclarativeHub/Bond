@@ -51,6 +51,42 @@ class ControlDynamic<T, U: ControlDynamicHelper where U.T == T>: Dynamic<T>
   }
 }
 
+private var backgroundColorBondHandleUIView: UInt8 = 0;
+private var alphaBondHandleUIView: UInt8 = 0;
+private var hiddenBondHandleUIView: UInt8 = 0;
+
+extension UIView {
+  public var backgroundColorBond: Bond<UIColor> {
+    if let b: AnyObject = objc_getAssociatedObject(self, &backgroundColorBondHandleUIView) {
+      return (b as? Bond<UIColor>)!
+    } else {
+      let b = Bond<UIColor>() { [unowned self] v in self.backgroundColor = v }
+      objc_setAssociatedObject(self, &backgroundColorBondHandleUIView, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return b
+    }
+  }
+  
+  public var alphaBond: Bond<CGFloat> {
+    if let b: AnyObject = objc_getAssociatedObject(self, &alphaBondHandleUIView) {
+      return (b as? Bond<CGFloat>)!
+    } else {
+      let b = Bond<CGFloat>() { [unowned self] v in self.alpha = v }
+      objc_setAssociatedObject(self, &alphaBondHandleUIView, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return b
+    }
+  }
+  
+  public var hiddenBond: Bond<Bool> {
+    if let b: AnyObject = objc_getAssociatedObject(self, &hiddenBondHandleUIView) {
+      return (b as? Bond<Bool>)!
+    } else {
+      let b = Bond<Bool>() { [unowned self] v in self.hidden = v }
+      objc_setAssociatedObject(self, &hiddenBondHandleUIView, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return b
+    }
+  }
+}
+
 // MARK: UISlider
 
 @objc class SliderDynamicHelper: NSObject, ControlDynamicHelper {
@@ -204,7 +240,9 @@ extension UIImageView: Bondable {
   }
 }
 
-private var designatedBondHandleUIButton: UInt8 = 0;
+private var enabledBondHandleUIButton: UInt8 = 0;
+private var titleBondHandleUIButton: UInt8 = 0;
+private var imageForNormalStateBondHandleUIButton: UInt8 = 0;
 
 extension UIButton: Dynamical, Bondable {
   public func eventDynamic() -> Dynamic<UIControlEvents> {
@@ -212,11 +250,35 @@ extension UIButton: Dynamical, Bondable {
   }
   
   public var enabledBond: Bond<Bool> {
-    if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUIButton) {
+    if let b: AnyObject = objc_getAssociatedObject(self, &enabledBondHandleUIButton) {
       return (b as? Bond<Bool>)!
     } else {
       let b = Bond<Bool>() { [unowned self] v in self.enabled = v }
-      objc_setAssociatedObject(self, &designatedBondHandleUIButton, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      objc_setAssociatedObject(self, &enabledBondHandleUIButton, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return b
+    }
+  }
+  
+  public var titleBond: Bond<String> {
+    if let b: AnyObject = objc_getAssociatedObject(self, &titleBondHandleUIButton) {
+      return (b as? Bond<String>)!
+    } else {
+      let b = Bond<String>() { [unowned self] v in
+        if let label = self.titleLabel {
+          label.text = v
+        }
+      }
+      objc_setAssociatedObject(self, &titleBondHandleUIButton, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return b
+    }
+  }
+  
+  public var imageForNormalStateBond: Bond<UIImage?> {
+    if let b: AnyObject = objc_getAssociatedObject(self, &imageForNormalStateBondHandleUIButton) {
+      return (b as? Bond<UIImage?>)!
+    } else {
+      let b = Bond<UIImage?>() { [unowned self] img in self.setImage(img, forState: .Normal) }
+      objc_setAssociatedObject(self, &imageForNormalStateBondHandleUIButton, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
       return b
     }
   }

@@ -21,7 +21,7 @@ That one line establishes a _bond_ between text field's text property and label'
 More often than not, direct binding is not enough. Usually you need to transform input is some way, like prepending a greeting to a name. Of course, Bond has full confidence in functional paradigm. 
 
 ```swift
-	textField.map { "Hi " + $0 } ->> label
+	textField.textDynamic().map { "Hi " + $0 } ->> label
 ```
 
 Whenever a change occurs in the text field, new value will be transformed by the closure and propagated to the label.
@@ -29,7 +29,7 @@ Whenever a change occurs in the text field, new value will be transformed by the
 In addition to `map`, another important functional construct is  `filter`. It's useful when we are interested only in some values of a domain. For example, when observing events of a button, we might be interested only in `TouchUpInside` event so we can perform certain action when user taps the button: 
 
 ```swift
-	button.filter { $0 == UIControlEvents.TouchUpInside } ->> { event in
+	button.eventDynamic().filter { $0 == UIControlEvents.TouchUpInside } ->> { event in
       login()
     }
 ```
@@ -44,7 +44,7 @@ Bond can also `reduce` multiple inputs into a single output. Following snippet d
     } ->> loginButton
 ```
 
-Whenever user types something into any of the text fields, expression will be evaluated and button stated updated.
+Whenever user types something into any of the text fields, expression will be evaluated and button state updated.
     
 Bond's power is not, however, in coupling various UI components, but in a bonding of Model (or ViewModel) to View and vice-versa. It's great for MVVM paradigm. Here is how one could bond user's number of followers property of a model to a label. 
 
@@ -141,29 +141,99 @@ The parameter `fire` in `bind` method indicated whether listener should be calle
 
 ### What about UIKit
 
-UIKit views and controls are not, of course, Dynamics and Bonds, so how can they act as agents in Bond word? Controls and views for which it makes sense to are extended with Swift extensions to adhere to one or both of these protocols:
+UIKit views and controls are not, of course, Dynamics and Bonds, so how can they act as agents in Bond word?
+
+#### Dynamics
+
+Controls and views for which it makes sense to are extended to provide Dynamics for commonly used properties, like UITextField's `text` property, UISlider's `value` property or UISwitch's `on` property.
+
+To get a Dynamic representation of a property of UIKit object, call a method ending in `dynamic()`. For example, to get dynamic representation of UITextField's `text` property, call its `textDynamic()` method. Calling that method creates a Dynamic object that is coupled to the control or the view whose value it observes through mechanism like _action-target_ for controls or delegation for table views.
+
+Each call to `*Dynamic()` method creates a new Dynamic object. **Returned object is not retained by the caller nor does it retains the caller.** In order to keep it alive, you have to either retain it or bind it to some Bond object (as mentioned previously - Bond retains bonded Dynamic).
+
+Following table lists all available Dynamics of UIKit objects:
+
+| Class        | Dynamic(s)     | Designated Dynamic |
+|--------------|----------------|--------------------|
+| UISlider     | valueDynamic() | valueDynamic()     |
+| UIButton     | eventDynamic() | eventDynamic()     |
+| UISwitch     | onDynamic()    | onDynamic()        |
+| UITextField  | textDynamic()  | textDynamic()      |
+| UIDatePicker | dateDynamic()  | dateDynamic()      |
+
+
+You might be wondering what _Designated Dynamic_ is. It's way to access most commonly used Dynamic through method `designatedDynamic()`. Currently all UIKit objects have only one Dynamic property that is also a designed one. Having common name enables us to define protocol like 
 
 ```swift
 	public protocol Dynamical {
 	  typealias DynamicType
 	  func designatedDynamic() -> Dynamic<DynamicType>
 	}
-	
+```
+
+and use that protocol to make binding easier. Instead of doing binding like
+
+```swift
+	titleTextField.textDynamic() ->> titleLabel
+```
+
+it allows us to do just
+
+```swift
+	titleTextField ->> titleLabel
+```
+
+because operator `->>` is overloaded to work with `Dynamicals`.
+
+#### Bonds
+
+Controls or views that present some data or have user-visible state, like UITextField's `text` property, UILabel's `text` property, UIImageView's `image` property or UIButton's `disabled` state property allow us to bind a Dynamic to them by providing a Bond object.
+
+Provided Bond object is saved in `*Bond` property. Property holds a Bond that has a `Listener` implemented in a way that whenever a change is observed in any of bonded Dynamics, it updates control's or view's  property that it represents.
+
+For example, UITextField provides `textBond` property that is coupled with its `text` property in a way that whenever a change is observed in any of bonded Dynamics, `text` is updated.
+
+**Unlike Dynamics created from UIKit object, Bonds are retained by their view or control through Objective-C's associated objects mechanism.** Of course, Bond does not retain its parent.
+
+Following table lists all available Bonds of UIKit objects:
+
+| Class          | Bonds                                                   | Designated Bond |
+|----------------|---------------------------------------------------------|-----------------|
+| UIView         | alphaBond <br> hiddenBond <br> backgroundColorBond      | --              |
+| UISlider       | valueBond                                               | valueBond       |
+| UILabel        | textBond                                                | textBond        |
+| UIProgressView | progressBond                                            | progressBond    |
+| UIImageView    | imageBond                                               | imageBond       |
+| UIButton       | enabledBond <br> titleBond <br> imageForNormalStateBond | enabledBond     |
+| UISwitch       | onBond                                                  | onBond          |
+| UITextField    | textBond                                                | textBond        |
+| UIDatePicker   | dateBond                                                | dateBond        |
+| UITableView    | dataSourceBond                                          | dataSourceBond  |
+
+
+Like as for Dynamics, we can define protocol `Bondable`
+
+```swift
 	public protocol Bondable {
 	  typealias BondType
 	  var designatedBond: Bond<BondType> { get }
 	} 
 ```
 
-Controls or views whose value can be set by the user, like UITextField's `text` property, UISlider's `value` property or UISwitch's `on` property, implement protocol `Dynamical`. Protocol defines one required method - `designatedDynamic()`. Calling that method creates a 'designated' Dynamic object that is coupled to the control or the view whose value it observes through mechanism like _action-target_ for controls or delegation for table views.
+and use it to make binding easier. Instead of doing binding like
 
-Each call to `designatedDynamic()` creates a new Dynamic object. Returned object is not retained by the caller nor does it retains the caller. In order to keep it alive, you have to either retain it or bind it to some Bond object (as mentioned previously - Bond retains bonded Dynamic).
+```swift
+	titleTextField ->> titleLabel.textBond
+```
 
-Controls or views that present some data or have user-visible state, like UITextField's `text` property, UILabel's `text` property, UIImageView's `image` property or UIButton's `disabled` state property, implement protocol `Bondable`. Protocol defines one property - `designatedBond`. Property holds a Bond that has implemented a `Listener` in a way that whenever a change is observed in any of bonded Dynamics, it updates control's or view's 'designated' property.
+it allows us to do just
 
-Unlike designated Dynamic, Bond is retained by it's view or control through Objective-C's associated objects mechanism. Of course, Bond does not retain its parent.
+```swift
+	titleTextField ->> titleLabel
+```
 
-The attribute designated is chosen because some control or views might have additional Dynamic or Bond properties. For example, UIButton might provide bond both for its `disabled` property and its `title` property. At the moment, only former is implemented as its designated bond.
+because operator `->>` is overloaded to work with `Bondables`.
+
 
 ### Functional concepts explained
 
@@ -322,6 +392,11 @@ Bond has yet to be shipped in an app. It was tested with many examples, but if t
 
 
 ## Release Notes
+
+### v2.2.0
+
+* More specific UIKit Bonds and Dynamics
+* Added unit tests for UIKit Bonds
 
 ### v2.1.1
 

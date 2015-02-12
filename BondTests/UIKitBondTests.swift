@@ -12,6 +12,48 @@ import Bond
 
 class UIKitTests: XCTestCase {
   
+  func testUIViewHiddenBond() {
+    var dynamicDriver = Dynamic<Bool>(false)
+    let view = UIView()
+    
+    view.hidden = true
+    XCTAssert(view.hidden == true, "Initial value")
+    
+    dynamicDriver ->> view.hiddenBond
+    XCTAssert(view.hidden == false, "Value after binding")
+    
+    dynamicDriver.value = true
+    XCTAssert(view.hidden == true, "Value after dynamic change")
+  }
+  
+  func testUIViewAlphaBond() {
+    var dynamicDriver = Dynamic<CGFloat>(0.1)
+    let view = UIView()
+    
+    view.alpha = 0.0
+    XCTAssert(abs(view.alpha - 0.0) < 0.0001, "Initial value")
+    
+    dynamicDriver ->> view.alphaBond
+    XCTAssert(abs(view.alpha - 0.1) < 0.0001, "Value after binding")
+    
+    dynamicDriver.value = 0.5
+    XCTAssert(abs(view.alpha - 0.5) < 0.0001, "Value after dynamic change")
+  }
+  
+  func testUIViewBackgroundColorBond() {
+    var dynamicDriver = Dynamic<UIColor>(UIColor.blackColor())
+    let view = UIView()
+    
+    view.backgroundColor = UIColor.redColor()
+    XCTAssert(view.backgroundColor == UIColor.redColor(), "Initial value")
+    
+    dynamicDriver ->> view.backgroundColorBond
+    XCTAssert(view.backgroundColor == UIColor.blackColor(), "Value after binding")
+    
+    dynamicDriver.value = UIColor.blueColor()
+    XCTAssert(view.backgroundColor == UIColor.blueColor(), "Value after dynamic change")
+  }
+  
   func testUISliderBond() {
     var dynamicDriver = Dynamic<Float>(0)
     let slider = UISlider()
@@ -69,7 +111,7 @@ class UIKitTests: XCTestCase {
     XCTAssert(imageView.image == image, "Value after dynamic change")
   }
   
-  func testUIButtonBond() {
+  func testUIButtonEnabledBond() {
     var dynamicDriver = Dynamic<Bool>(false)
     let button = UIButton()
     
@@ -81,6 +123,36 @@ class UIKitTests: XCTestCase {
     
     dynamicDriver.value = true
     XCTAssert(button.enabled == true, "Value after dynamic change")
+  }
+  
+  func testUIButtonTitleBond() {
+    var dynamicDriver = Dynamic<String>("b")
+    let button = UIButton()
+    
+    button.titleLabel?.text = "a"
+    XCTAssert(button.titleLabel?.text == "a", "Initial value")
+    
+    dynamicDriver ->> button.titleBond
+    XCTAssert(button.titleLabel?.text == "b", "Value after binding")
+    
+    dynamicDriver.value = "c"
+    XCTAssert(button.titleLabel?.text == "c", "Value after dynamic change")
+  }
+  
+  func testUIButtonImageBond() {
+    let image1 = UIImage()
+    let image2 = UIImage()
+    var dynamicDriver = Dynamic<UIImage?>(nil)
+    let button = UIButton()
+    
+    button.setImage(image1, forState: .Normal)
+    XCTAssert(button.imageForState(.Normal) == image1, "Initial value")
+    
+    dynamicDriver ->> button.imageForNormalStateBond
+    XCTAssert(button.imageForState(.Normal) == nil, "Value after binding")
+    
+    dynamicDriver.value = image2
+    XCTAssert(button.imageForState(.Normal) == image2, "Value after dynamic change")
   }
   
   func testUISwitchBond() {
