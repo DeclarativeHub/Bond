@@ -43,27 +43,7 @@ import UIKit
 import ObjectiveC
 
 
-// MARK: Common
-
-protocol ControlDynamicHelper
-{
-  typealias T
-  var value: T { get }
-  var listener: (T -> Void)? { get set }
-}
-
-class ControlDynamic<T, U: ControlDynamicHelper where U.T == T>: Dynamic<T>
-{
-  var helper: U
-  
-  init(helper: U) {
-    self.helper = helper
-    super.init(helper.value)
-    self.helper.listener =  { [unowned self] in
-      self.value = $0
-    }
-  }
-}
+// MARK: UIView
 
 private var backgroundColorBondHandleUIView: UInt8 = 0;
 private var alphaBondHandleUIView: UInt8 = 0;
@@ -103,18 +83,14 @@ extension UIView {
 
 // MARK: UISlider
 
-@objc class SliderDynamicHelper: NSObject, ControlDynamicHelper {
-  weak var sliderControl: UISlider?
-  var value: Float {
-    return sliderControl?.value ?? 0
-  }
-  
+@objc class SliderDynamicHelper
+{
+  weak var control: UISlider?
   var listener: (Float -> Void)?
   
-  init(sliderControl: UISlider) {
-    self.sliderControl = sliderControl
-    super.init()
-    sliderControl.addTarget(self, action: Selector("valueChanged:"), forControlEvents: .ValueChanged)
+  init(control: UISlider) {
+    self.control = control
+    control.addTarget(self, action: Selector("valueChanged:"), forControlEvents: .ValueChanged)
   }
   
   func valueChanged(slider: UISlider) {
@@ -122,7 +98,18 @@ extension UIView {
   }
   
   deinit {
-    sliderControl?.removeTarget(self, action: nil, forControlEvents: .ValueChanged)
+    control?.removeTarget(self, action: nil, forControlEvents: .ValueChanged)
+  }
+}
+
+class SliderDynamic<T>: Dynamic<Float>
+{
+  let helper: SliderDynamicHelper
+  
+  init(control: UISlider) {
+    self.helper = SliderDynamicHelper(control: control)
+    super.init(control.value)
+    self.helper.listener =  { [unowned self] in self.value = $0 }
   }
 }
 
@@ -130,7 +117,7 @@ private var designatedBondHandleUISlider: UInt8 = 0;
 
 extension UISlider /*: Dynamical, Bondable */ {
   public func valueDynamic() -> Dynamic<Float> {
-    return ControlDynamic<Float, SliderDynamicHelper>(helper: SliderDynamicHelper(sliderControl: self))
+    return SliderDynamic<Float>(control: self)
   }
   
   public var valueBond: Bond<Float> {
@@ -229,43 +216,48 @@ extension UIImageView: Bondable {
 
 // MARK: UIButton
 
-@objc class ButtonDynamicHelper: NSObject, ControlDynamicHelper {
+@objc class ButtonDynamicHelper
+{
   weak var control: UIButton?
-  var value: UIControlEvents = UIControlEvents.allZeros
-  
   var listener: (UIControlEvents -> Void)?
   
   init(control: UIButton) {
     self.control = control
-    super.init()
     control.addTarget(self, action: Selector("touchDown:"), forControlEvents: .TouchDown)
     control.addTarget(self, action: Selector("touchUpInside:"), forControlEvents: .TouchUpInside)
     control.addTarget(self, action: Selector("touchUpOutside:"), forControlEvents: .TouchUpOutside)
     control.addTarget(self, action: Selector("touchCancel:"), forControlEvents: .TouchCancel)
   }
-  
+
   func touchDown(control: UIButton) {
-    self.value = .TouchDown
-    self.listener?(self.value)
+    self.listener?(.TouchDown)
   }
   
   func touchUpInside(control: UIButton) {
-    self.value = .TouchUpInside
-    self.listener?(self.value)
+    self.listener?(.TouchUpInside)
   }
   
   func touchUpOutside(control: UIButton) {
-    self.value = .TouchUpOutside
-    self.listener?(self.value)
+    self.listener?(.TouchUpOutside)
   }
   
   func touchCancel(control: UIButton) {
-    self.value = .TouchCancel
-    self.listener?(self.value)
+    self.listener?(.TouchCancel)
   }
   
   deinit {
     control?.removeTarget(self, action: nil, forControlEvents: .AllEvents)
+  }
+}
+
+class ButtonDynamic<T>: Dynamic<UIControlEvents>
+{
+  let helper: ButtonDynamicHelper
+  
+  init(control: UIButton) {
+    self.helper = ButtonDynamicHelper(control: control)
+    super.init(UIControlEvents.allZeros)
+    self.helper.listener =  { [unowned self] in self.value = $0 }
   }
 }
 
@@ -275,7 +267,7 @@ private var imageForNormalStateBondHandleUIButton: UInt8 = 0;
 
 extension UIButton /*: Dynamical, Bondable */ {
   public func eventDynamic() -> Dynamic<UIControlEvents> {
-    return ControlDynamic<UIControlEvents, ButtonDynamicHelper>(helper: ButtonDynamicHelper(control: self))
+    return ButtonDynamic<UIControlEvents>(control: self)
   }
   
   public var enabledBond: Bond<Bool> {
@@ -339,18 +331,13 @@ public func ->> (left: Dynamic<Bool>, right: UIButton) {
 
 // MARK: UISwitch
 
-@objc class SwitchDynamicHelper: NSObject, ControlDynamicHelper {
+@objc class SwitchDynamicHelper
+{
   weak var control: UISwitch?
-  
-  var value: Bool {
-    return control?.on ?? false
-  }
-  
   var listener: (Bool -> Void)?
   
   init(control: UISwitch) {
     self.control = control
-    super.init()
     control.addTarget(self, action: Selector("valueChanged:"), forControlEvents: .ValueChanged)
   }
   
@@ -363,11 +350,22 @@ public func ->> (left: Dynamic<Bool>, right: UIButton) {
   }
 }
 
+class SwitchDynamic<T>: Dynamic<Bool>
+{
+  let helper: SwitchDynamicHelper
+  
+  init(control: UISwitch) {
+    self.helper = SwitchDynamicHelper(control: control)
+    super.init(control.on)
+    self.helper.listener =  { [unowned self] in self.value = $0 }
+  }
+}
+
 private var designatedBondHandleUISwitch: UInt8 = 0;
 
 extension UISwitch /*: Dynamical, Bondable */ {
   public func onDynamic() -> Dynamic<Bool> {
-    return ControlDynamic<Bool, SwitchDynamicHelper>(helper: SwitchDynamicHelper(control: self))
+    return SwitchDynamic<Bool>(control: self)
   }
   
   public var onBond: Bond<Bool> {
@@ -415,18 +413,13 @@ public func ->> (left: Dynamic<Bool>, right: UISwitch) {
 
 // MARK: UITextField
 
-@objc class TextFieldDynamicHelper: NSObject, ControlDynamicHelper {
+@objc class TextFieldDynamicHelper
+{
   weak var control: UITextField?
-  
-  var value: String {
-    return control?.text ?? ""
-  }
-  
   var listener: (String -> Void)?
   
   init(control: UITextField) {
     self.control = control
-    super.init()
     control.addTarget(self, action: Selector("editingChanged:"), forControlEvents: .EditingChanged)
   }
   
@@ -439,11 +432,22 @@ public func ->> (left: Dynamic<Bool>, right: UISwitch) {
   }
 }
 
+class TextFieldDynamic<T>: Dynamic<String>
+{
+  let helper: TextFieldDynamicHelper
+  
+  init(control: UITextField) {
+    self.helper = TextFieldDynamicHelper(control: control)
+    super.init(control.text)
+    self.helper.listener =  { [unowned self] in self.value = $0 }
+  }
+}
+
 private var designatedBondHandleUITextField: UInt8 = 0;
 
 extension UITextField /*: Dynamical, Bondable */ {
   public func textDynamic() -> Dynamic<String> {
-    return ControlDynamic<String, TextFieldDynamicHelper>(helper: TextFieldDynamicHelper(control: self))
+    return TextFieldDynamic<String>(control: self)
   }
   
   public var textBond: Bond<String> {
@@ -491,18 +495,13 @@ public func ->> (left: Dynamic<String>, right: UITextField) {
 
 // MARK: UIDatePicker
 
-@objc class DatePickerDynamicHelper: NSObject, ControlDynamicHelper {
+@objc class DatePickerDynamicHelper
+{
   weak var control: UIDatePicker?
-  
-  var value: NSDate {
-    return control?.date ?? NSDate()
-  }
-  
   var listener: (NSDate -> Void)?
   
   init(control: UIDatePicker) {
     self.control = control
-    super.init()
     control.addTarget(self, action: Selector("valueChanged:"), forControlEvents: .ValueChanged)
   }
   
@@ -515,11 +514,22 @@ public func ->> (left: Dynamic<String>, right: UITextField) {
   }
 }
 
+class DatePickerDynamic<T>: Dynamic<NSDate>
+{
+  let helper: DatePickerDynamicHelper
+  
+  init(control: UIDatePicker) {
+    self.helper = DatePickerDynamicHelper(control: control)
+    super.init(control.date)
+    self.helper.listener =  { [unowned self] in self.value = $0 }
+  }
+}
+
 private var designatedBondHandleUIDatePicker: UInt8 = 0;
 
 extension UIDatePicker /*: Dynamical, Bondable */ {
   public func dateDynamic() -> Dynamic<NSDate> {
-    return ControlDynamic<NSDate, DatePickerDynamicHelper>(helper: DatePickerDynamicHelper(control: self))
+    return DatePickerDynamic<NSDate>(control: self)
   }
   
   public var dateBond: Bond<NSDate> {
