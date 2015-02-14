@@ -25,6 +25,20 @@
 //  THE SOFTWARE.
 //
 
+// NOTE!
+//
+// Due to unfortunate bug in Xcode, UIKit objects that can send events, like 
+// UIButton (can send Tuuch Up Inside event) or UISlider (can send Value Changed
+// event), must not have extensions that implement protocols, otherwise Interface
+// Builder breaks and does not allow to connect actions to code.
+//
+// Bond uses protocols in order to have only one overload of ->> operator for all
+// UIKit classes. Solution is to drop protocols and overload operator for each
+// UIKit class that can 'Send events'.
+//
+// Hopefuly Apple will fix the bug soon.
+//
+
 import UIKit
 import ObjectiveC
 
@@ -114,7 +128,7 @@ extension UIView {
 
 private var designatedBondHandleUISlider: UInt8 = 0;
 
-extension UISlider: Dynamical, Bondable {
+extension UISlider /*: Dynamical, Bondable */ {
   public func valueDynamic() -> Dynamic<Float> {
     return ControlDynamic<Float, SliderDynamicHelper>(helper: SliderDynamicHelper(sliderControl: self))
   }
@@ -138,6 +152,21 @@ extension UISlider: Dynamical, Bondable {
   }
 }
 
+public func ->> (left: UISlider, right: Bond<Float>) {
+  left.designatedDynamic() ->> right
+}
+
+public func ->> <U: Bondable where U.BondType == Float>(left: UISlider, right: U) {
+  left.designatedDynamic() ->> right.designatedBond
+}
+
+public func ->> (left: UISlider, right: UISlider) {
+  left.designatedDynamic() ->> right.designatedBond
+}
+
+public func ->> (left: Dynamic<Float>, right: UISlider) {
+  left ->> right.designatedBond
+}
 
 // MARK: UILabel
 
@@ -244,7 +273,7 @@ private var enabledBondHandleUIButton: UInt8 = 0;
 private var titleBondHandleUIButton: UInt8 = 0;
 private var imageForNormalStateBondHandleUIButton: UInt8 = 0;
 
-extension UIButton: Dynamical, Bondable {
+extension UIButton /*: Dynamical, Bondable */ {
   public func eventDynamic() -> Dynamic<UIControlEvents> {
     return ControlDynamic<UIControlEvents, ButtonDynamicHelper>(helper: ButtonDynamicHelper(control: self))
   }
@@ -292,6 +321,22 @@ extension UIButton: Dynamical, Bondable {
   }
 }
 
+public func ->> (left: UIButton, right: Bond<UIControlEvents>) {
+  left.designatedDynamic() ->> right
+}
+
+public func ->> <U: Bondable where U.BondType == UIControlEvents>(left: UIButton, right: U) {
+  left.designatedDynamic() ->> right.designatedBond
+}
+
+public func ->> <T: Dynamical where T.DynamicType == Bool>(left: T, right: UIButton) {
+  left.designatedDynamic() ->> right.designatedBond
+}
+
+public func ->> (left: Dynamic<Bool>, right: UIButton) {
+  left ->> right.designatedBond
+}
+
 // MARK: UISwitch
 
 @objc class SwitchDynamicHelper: NSObject, ControlDynamicHelper {
@@ -320,7 +365,7 @@ extension UIButton: Dynamical, Bondable {
 
 private var designatedBondHandleUISwitch: UInt8 = 0;
 
-extension UISwitch: Dynamical, Bondable {
+extension UISwitch /*: Dynamical, Bondable */ {
   public func onDynamic() -> Dynamic<Bool> {
     return ControlDynamic<Bool, SwitchDynamicHelper>(helper: SwitchDynamicHelper(control: self))
   }
@@ -342,6 +387,30 @@ extension UISwitch: Dynamical, Bondable {
   public var designatedBond: Bond<Bool> {
     return self.onBond
   }
+}
+
+public func ->> (left: UISwitch, right: Bond<Bool>) {
+  left.designatedDynamic() ->> right
+}
+
+public func ->> <U: Bondable where U.BondType == Bool>(left: UISwitch, right: U) {
+  left.designatedDynamic() ->> right.designatedBond
+}
+
+public func ->> (left: UISwitch, right: UIButton) {
+  left.designatedDynamic() ->> right.designatedBond
+}
+
+public func ->> (left: UISwitch, right: UISwitch) {
+  left.designatedDynamic() ->> right.designatedBond
+}
+
+public func ->> <T: Dynamical where T.DynamicType == Bool>(left: T, right: UISwitch) {
+  left.designatedDynamic() ->> right.designatedBond
+}
+
+public func ->> (left: Dynamic<Bool>, right: UISwitch) {
+  left ->> right.designatedBond
 }
 
 // MARK: UITextField
@@ -372,7 +441,7 @@ extension UISwitch: Dynamical, Bondable {
 
 private var designatedBondHandleUITextField: UInt8 = 0;
 
-extension UITextField: Dynamical, Bondable {
+extension UITextField /*: Dynamical, Bondable */ {
   public func textDynamic() -> Dynamic<String> {
     return ControlDynamic<String, TextFieldDynamicHelper>(helper: TextFieldDynamicHelper(control: self))
   }
@@ -394,6 +463,30 @@ extension UITextField: Dynamical, Bondable {
   public var designatedBond: Bond<String> {
     return self.textBond
   }
+}
+
+public func ->> (left: UITextField, right: Bond<String>) {
+  left.designatedDynamic() ->> right
+}
+
+public func ->> <U: Bondable where U.BondType == String>(left: UITextField, right: U) {
+  left.designatedDynamic() ->> right.designatedBond
+}
+
+public func ->> (left: UITextField, right: UITextField) {
+  left.designatedDynamic() ->> right.designatedBond
+}
+
+public func ->> (left: UITextField, right: UILabel) {
+  left.designatedDynamic() ->> right.designatedBond
+}
+
+public func ->> <T: Dynamical where T.DynamicType == String>(left: T, right: UITextField) {
+  left.designatedDynamic() ->> right.designatedBond
+}
+
+public func ->> (left: Dynamic<String>, right: UITextField) {
+  left ->> right.designatedBond
 }
 
 // MARK: UIDatePicker
@@ -424,7 +517,7 @@ extension UITextField: Dynamical, Bondable {
 
 private var designatedBondHandleUIDatePicker: UInt8 = 0;
 
-extension UIDatePicker: Dynamical, Bondable {
+extension UIDatePicker /*: Dynamical, Bondable */ {
   public func dateDynamic() -> Dynamic<NSDate> {
     return ControlDynamic<NSDate, DatePickerDynamicHelper>(helper: DatePickerDynamicHelper(control: self))
   }
@@ -446,6 +539,22 @@ extension UIDatePicker: Dynamical, Bondable {
   public var designatedBond: Bond<NSDate> {
     return self.dateBond
   }
+}
+
+public func ->> (left: UIDatePicker, right: Bond<NSDate>) {
+  left.designatedDynamic() ->> right
+}
+
+public func ->> <U: Bondable where U.BondType == NSDate>(left: UIDatePicker, right: U) {
+  left.designatedDynamic() ->> right.designatedBond
+}
+
+public func ->> (left: UIDatePicker, right: UIDatePicker) {
+  left.designatedDynamic() ->> right.designatedBond
+}
+
+public func ->> (left: Dynamic<NSDate>, right: UIDatePicker) {
+  left ->> right.designatedBond
 }
 
 // MARK: UITableView
@@ -509,7 +618,7 @@ public class TableViewBond<T>: ArrayBond<UITableViewCell> {
 
 private var designatedBondHandleUITableView: UInt8 = 0;
 
-extension UITableView: Bondable {
+extension UITableView /*: Bondable */ {
   public var dataSourceBond: Bond<Array<UITableViewCell>> {
     if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUITableView) {
       return (b as? TableViewBond<UITableViewCell>)!
@@ -525,12 +634,15 @@ extension UITableView: Bondable {
   }
 }
 
+public func ->> (left: Dynamic<Array<UITableViewCell>>, right: UITableView) {
+  left ->> right.designatedBond
+}
 
 // MARK: UIRefreshControl
 
 private var designatedBondHandleUIRefreshControl: UInt8 = 0;
 
-extension UIRefreshControl: Bondable {
+extension UIRefreshControl {
   public var refreshingBond: Bond<Bool> {
     if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUIRefreshControl) {
       return (b as? Bond<Bool>)!
@@ -552,4 +664,6 @@ extension UIRefreshControl: Bondable {
   }
 }
 
-
+public func ->> (left: Dynamic<Bool>, right: UIRefreshControl) {
+  left ->> right.designatedBond
+}

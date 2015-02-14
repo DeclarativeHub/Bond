@@ -393,6 +393,10 @@ Bond has yet to be shipped in an app. It was tested with many examples, but if t
 
 ## Release Notes
 
+### v2.2.1
+
+* Handles bug in Interface Builder that breaks actions and events connections
+
 ### v2.2.0
 
 * More specific UIKit Bonds and Dynamics
