@@ -7,11 +7,9 @@ Pod::Spec.new do |s|
   s.description  = <<-DESC
                    Bond is a Swift binding framework that takes binding concept to a whole new level - boils it down to just one operator. It's simple, powerful, type-safe and multi-paradigm - just like Swift.
 
-                    Bond was created with two goals in mind: simple to use and simple to understand.
-                    One might argue whether the former implies the latter,
-                    but Bond will save you some thinking because both are true in this case.
-                      Its foundation are two simple classes - everything else are extensions
-                      and syntactic sugars.
+                   Bond was created with two goals in mind: simple to use and simple to understand.
+                   One might argue whether the former implies the latter, but Bond will save you some thinking because both are true in this case.
+                   Its foundation are two simple classes - everything else are extensions and syntactic sugars.
                    DESC
 
   s.homepage     = "https://github.com/SwiftBond/Bond"
@@ -25,5 +23,6 @@ Pod::Spec.new do |s|
   s.osx.exclude_files = "Bond/*UIKit*"
   s.framework     = 'SystemConfiguration'
   s.exclude_files = "Classes/Exclude"
+  s.requires_arc = true
 
 end
