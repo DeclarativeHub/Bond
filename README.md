@@ -393,6 +393,10 @@ Bond has yet to be shipped in an app. It was tested with many examples, but if t
 
 ## Release Notes
 
+### v2.2.2
+
+* Carthage support
+
 ### v2.2.1
 
 * Handles bug in Interface Builder that breaks actions and events connections
