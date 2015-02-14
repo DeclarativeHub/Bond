@@ -367,11 +367,25 @@ There is one more neat thing about Bond. You can create a Dynamic that observers
 
 ## Installation
 
-### Using Git Submodules
+### Carthage
+
+1. Add the following to your *Cartfile*:
+  <br> `github "SwiftBond/Bond" ~> 2.0`
+2. Run `carthage update`
+3. Add the framework as described in [Carthage Readme](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application)
+
+
+### CocoaPods
+
+1. Add the following to your *Podfile*:
+  <br> `pod 'Bond', '~> 2.0'`
+2. Run `pod install` with CocoaPods 0.36 or newer.
+
+### Git Submodules
 
 1. Clone Bond as a submodule into the directory of your choice
-  1. `git submodule add git@github.com:SwiftBond/Bond.git`
-  2. `git submodule update --init`
+  <br> `git submodule add git@github.com:SwiftBond/Bond.git`
+  <br> `git submodule update --init`
 2. Drag Bond.xcodeproj into your project tree as a subproject
 3. Under your project's Build Phases, expand Target Dependencies
 4. Click the + and add Bond
@@ -383,7 +397,7 @@ There is one more neat thing about Bond. You can create a Dynamic that observers
 
 ### Standalone
 
-Just get .swift files from Bond/ Directory and add them to your project.
+Just get *.swift* files from Bond/ Directory and add them to your project.
 
 
 ## Roadmap
@@ -392,6 +406,10 @@ Bond has yet to be shipped in an app. It was tested with many examples, but if t
 
 
 ## Release Notes
+
+### v2.2.3
+
+* CocoaPods support
 
 ### v2.2.2
 
