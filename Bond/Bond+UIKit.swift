@@ -677,3 +677,72 @@ extension UIRefreshControl {
 public func ->> (left: Dynamic<Bool>, right: UIRefreshControl) {
   left ->> right.designatedBond
 }
+
+// MARK: UIBarItem
+
+private var enabledBondHandleUIBarItem: UInt8 = 0;
+private var titleBondHandleUIBarItem: UInt8 = 0;
+private var imageBondHandleUIBarItem: UInt8 = 0;
+
+extension UIBarItem: Bondable {
+    
+    public var enabledBond: Bond<Bool> {
+        if let b: AnyObject = objc_getAssociatedObject(self, &enabledBondHandleUIBarItem) {
+            return (b as? Bond<Bool>)!
+        } else {
+            let b = Bond<Bool>() { [unowned self] v in self.enabled = v }
+            objc_setAssociatedObject(self, &enabledBondHandleUIBarItem, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+            return b
+        }
+    }
+    
+    public var titleBond: Bond<String> {
+        if let b: AnyObject = objc_getAssociatedObject(self, &titleBondHandleUIBarItem) {
+            return (b as? Bond<String>)!
+        } else {
+            let b = Bond<String>() { [unowned self] v in
+                self.title = v
+            }
+            objc_setAssociatedObject(self, &titleBondHandleUIBarItem, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+            return b
+        }
+    }
+    
+    public var imageBond: Bond<UIImage?> {
+        if let b: AnyObject = objc_getAssociatedObject(self, &imageBondHandleUIBarItem) {
+            return (b as? Bond<UIImage?>)!
+        } else {
+            let b = Bond<UIImage?>() { [unowned self] img in self.image = img }
+            objc_setAssociatedObject(self, &imageBondHandleUIBarItem, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+            return b
+        }
+    }
+    
+    public var designatedBond: Bond<Bool> {
+        return self.enabledBond
+    }
+}
+
+// MARK: UITextView
+
+private var textBondHandleUITextView: UInt8 = 0;
+
+extension UITextView: Bondable {
+    
+    public var textBond: Bond<String> {
+        if let b: AnyObject = objc_getAssociatedObject(self, &textBondHandleUITextView) {
+            return (b as? Bond<String>)!
+        } else {
+            let b = Bond<String>() { [unowned self] v in
+                self.text = v
+            }
+            objc_setAssociatedObject(self, &textBondHandleUITextView, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+            return b
+        }
+    }
+
+    public var designatedBond: Bond<String> {
+        return self.textBond
+    }
+}
+
