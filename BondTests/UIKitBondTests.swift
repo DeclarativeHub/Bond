@@ -245,4 +245,17 @@ class UIKitTests: XCTestCase {
     XCTAssert(barItem.image == image2, "Value after dynamic change")
   }
 
+  func testUITextViewTextBond() {
+    var dynamicDriver = Dynamic<String>("b")
+    let textView = UITextView()
+    
+    textView.text = "a"
+    XCTAssert(textView.text == "a", "Initial value")
+    
+    dynamicDriver ->> textView.textBond
+    XCTAssert(textView.text == "b", "Value after binding")
+    
+    dynamicDriver.value = "c"
+    XCTAssert(textView.text == "c", "Value after dynamic change")
+  }
 }
