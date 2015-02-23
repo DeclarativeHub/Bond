@@ -178,12 +178,20 @@ private func _filter<T>(dynamic: Dynamic<T>, f: T -> Bool) -> Dynamic<T> {
 
 // MARK: Reduce
 
+public func reduce<A, B, T>(dA: Dynamic<A>, dB: Dynamic<B>, f: (A, B) -> T) -> Dynamic<T> {
+  return _reduce(dA, dB, f(dA.value, dB.value), f)
+}
+
 public func reduce<A, B, T>(dA: Dynamic<A>, dB: Dynamic<B>, v0: T, f: (A, B) -> T) -> Dynamic<T> {
   return _reduce(dA, dB, v0, f)
 }
 
 public func reduce<A, B, C, T>(dA: Dynamic<A>, dB: Dynamic<B>, dC: Dynamic<C>, v0: T, f: (A, B, C) -> T) -> Dynamic<T> {
   return _reduce(dA, dB, dC, v0, f)
+}
+
+public func reduce<A, B, C, T>(dA: Dynamic<A>, dB: Dynamic<B>, dC: Dynamic<C>, f: (A, B, C) -> T) -> Dynamic<T> {
+  return _reduce(dA, dB, dC, f(dA.value, dB.value, dC.value), f)
 }
 
 public func _reduce<A, B, T>(dA: Dynamic<A>, dB: Dynamic<B>, v0: T, f: (A, B) -> T) -> Dynamic<T> {

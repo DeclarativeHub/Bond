@@ -39,7 +39,7 @@ As you see, our binding target doesn't have to be an UI component, rather it can
 Bond can also `reduce` multiple inputs into a single output. Following snippet depicts how values of two text fields can be reduced to a boolean value and applied to button's `disabled` property.
 
 ```swift
-	reduce(emailField, passField, false) { email, pass  in
+	reduce(emailField, passField) { email, pass  in
       return countElements(email) > 0 && countElements(pass) > 0
     } ->> loginButton
 ```
@@ -262,9 +262,9 @@ Filter is also available as a method of Dynamic class with first parameter omitt
 #### Reduce
 
 ```swift
-	reduce<A, B, T>(dA: Dynamic<A>, dB: Dynamic<B>, v0: T, f: (A, B) -> T) -> Dynamic<T>  
+	reduce<A, B, T>(dA: Dynamic<A>, dB: Dynamic<B>, f: (A, B) -> T) -> Dynamic<T>  
 	
-	reduce<A, B, C, T>(dA: Dynamic<A>, dB: Dynamic<B>, dC: Dynamic<C>, v0: T, f: (A, B, C) -> T) -> Dynamic<T>
+	reduce<A, B, C, T>(dA: Dynamic<A>, dB: Dynamic<B>, dC: Dynamic<C>, f: (A, B, C) -> T) -> Dynamic<T>
 ```
 
 Reduce is a simple function that takes two or more Dynamics and returns a new Dynamic of arbitrary type. New Dynamic holds a Bond to each of source Dynamics and updates its value whenever any of source Dynamics change. It updates its value by applying a given closure to values of source Dynamics.
@@ -407,49 +407,7 @@ Bond has yet to be shipped in an app. It was tested with many examples, but if t
 
 ## Release Notes
 
-### v2.2.3
-
-* CocoaPods support
-
-### v2.2.2
-
-* Carthage support
-
-### v2.2.1
-
-* Handles bug in Interface Builder that breaks actions and events connections
-
-### v2.2.0
-
-* More specific UIKit Bonds and Dynamics
-* Added unit tests for UIKit Bonds
-
-### v2.1.1
-
-* Support for Swift 1.2
-
-### v2.1.0
-
-* Add OS X framework and tests
-
-### v2.0.2
-
-* Clear dead (weak) Bonds from the Dynamic
-
-### v2.0.1
-
-* Fixes operator precedence
-
-### v2.0.0
-
-* Changed bonding operator to `->>` due to conflicts with reserved operator `~>`
-* Introduced operator `->|` that performs bonding without initial firing  
-* Wrapped Bond in a framework
-
-### v1.0.0
-
-* Initial Release
-
+https://github.com/SwiftBond/Bond/releases
 
 
 ## License

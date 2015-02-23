@@ -22,6 +22,7 @@
 		DCA979851A83C52D00DD4A30 /* Bond+Arrays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BCB1A7C21B600A13B6B /* Bond+Arrays.swift */; };
 		DCA979861A83C52D00DD4A30 /* Bond+Foundation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BCC1A7C21B600A13B6B /* Bond+Foundation.swift */; };
 		EC74CFD21A8BF1A300ED4026 /* UIKitBondTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC74CFD11A8BF1A300ED4026 /* UIKitBondTests.swift */; };
+		ECD653A61A9B6BF30038A9AC /* ReduceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD653A51A9B6BF30038A9AC /* ReduceTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,9 @@
 		DCA979691A83C3A100DD4A30 /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCA979731A83C3A200DD4A30 /* BondOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BondOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC74CFD11A8BF1A300ED4026 /* UIKitBondTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIKitBondTests.swift; sourceTree = "<group>"; };
+		ECD653A21A9B6B6B0038A9AC /* Bond.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Bond.podspec; sourceTree = "<group>"; };
+		ECD653A41A9B6B770038A9AC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		ECD653A51A9B6BF30038A9AC /* ReduceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReduceTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +99,8 @@
 		69491BA41A7C217100A13B6B = {
 			isa = PBXGroup;
 			children = (
+				ECD653A21A9B6B6B0038A9AC /* Bond.podspec */,
+				ECD653A41A9B6B770038A9AC /* README.md */,
 				69491BB01A7C217100A13B6B /* Bond */,
 				69491BBD1A7C217100A13B6B /* BondTests */,
 				69491BAF1A7C217100A13B6B /* Products */,
@@ -139,6 +145,7 @@
 				69491BC01A7C217100A13B6B /* BondTests.swift */,
 				69491BD21A7C242900A13B6B /* DynamicTests.swift */,
 				EC74CFD11A8BF1A300ED4026 /* UIKitBondTests.swift */,
+				ECD653A51A9B6BF30038A9AC /* ReduceTests.swift */,
 				69491BBE1A7C217100A13B6B /* Supporting Files */,
 			);
 			path = BondTests;
@@ -338,6 +345,7 @@
 				69491BC11A7C217100A13B6B /* BondTests.swift in Sources */,
 				69491BD31A7C242900A13B6B /* DynamicTests.swift in Sources */,
 				EC74CFD21A8BF1A300ED4026 /* UIKitBondTests.swift in Sources */,
+				ECD653A61A9B6BF30038A9AC /* ReduceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
