@@ -27,9 +27,16 @@
 
 // MARK: Helpers
 
+import Foundation
+
 public class BondBox<T> {
   weak var bond: Bond<T>?
   public init(_ b: Bond<T>) { bond = b }
+}
+
+public class DynamicBox<T> {
+  weak var dynamic: Dynamic<T>?
+  public init(_ d: Dynamic<T>) { dynamic = d }
 }
 
 // MARK: - Scalar Dynamic
@@ -38,8 +45,10 @@ public class BondBox<T> {
 
 public class Bond<T> {
   public typealias Listener = T -> Void
+  
   public var listener: Listener?
   public var bondedDynamics: [Dynamic<T>] = []
+  public var bondedWeakDynamics: [DynamicBox<T>] = []
   
   public init() {
   }
@@ -48,23 +57,35 @@ public class Bond<T> {
     self.listener = listener
   }
   
-  public func bind(dynamic: Dynamic<T>, fire: Bool = true) {
+  public func bind(dynamic: Dynamic<T>, fire: Bool = true, strongly: Bool = true) {
     dynamic.bonds.append(BondBox(self))
-    self.bondedDynamics.append(dynamic)
+    
+    if strongly {
+      self.bondedDynamics.append(dynamic)
+    } else {
+      self.bondedWeakDynamics.append(DynamicBox(dynamic))
+    }
+    
     if fire {
       self.listener?(dynamic.value)
     }
   }
   
   public func unbindAll() {
-    for dynamic in bondedDynamics {
+    let dynamics = bondedDynamics + bondedWeakDynamics.reduce([Dynamic<T>]()) { memo, value in
+      if let dynamic = value.dynamic {
+        return memo + [dynamic]
+      } else {
+        return memo
+      }
+    }
+    
+    for dynamic in dynamics {
       var bondsToKeep: [BondBox<T>] = []
       for bondBox in dynamic.bonds {
         if let bond = bondBox.bond {
           if bond !== self {
             bondsToKeep.append(bondBox)
-          } else {
-            
           }
         }
       }
@@ -72,6 +93,7 @@ public class Bond<T> {
     }
     
     self.bondedDynamics.removeAll(keepCapacity: true)
+    self.bondedWeakDynamics.removeAll(keepCapacity: true)
   }
 }
 
@@ -79,25 +101,46 @@ public class Bond<T> {
 
 public class Dynamic<T> {
   
+  private var dispatchInProgress: Bool
+  
   public var value: T {
     didSet {
+      objc_sync_enter(self)
+      
+      // must not dispatch if already dispatching in order to prevent
+      // inifinite circular loops in case of two way bindings
+      if self.dispatchInProgress {
+        return
+      }
       
       // clear weak bonds
-      bonds = bonds.filter {
+      self.bonds = self.bonds.filter {
         bondBox in bondBox.bond != nil
       }
       
-      // notify
-      for bondBox in bonds {
-        bondBox.bond?.listener?(value)
+      // lock
+      self.dispatchInProgress = true
+      
+      // dispatch change notifications
+      for bondBox in self.bonds {
+        bondBox.bond?.listener?(self.value)
       }
+      
+      // unlock
+      self.dispatchInProgress = false
+      
+      objc_sync_exit(self)
     }
   }
   
+  public var valueBond: Bond<T>
   public var bonds: [BondBox<T>] = []
 
   public init(_ v: T) {
     value = v
+    dispatchInProgress = false
+    valueBond = Bond<T>()
+    valueBond.listener = { [unowned self] v in self.value = v }
   }
 }
 
@@ -250,6 +293,10 @@ public func ->> <T>(left: Dynamic<T>, right: Bond<T>) {
   right.bind(left)
 }
 
+public func ->> <T>(left: Dynamic<T>, right: Dynamic<T>) {
+  left ->> right.valueBond
+}
+
 public func ->> <T>(left: Dynamic<T>, right: T -> Void) -> Bond<T> {
   let bond = Bond<T>(right)
   bond.bind(left)
@@ -294,4 +341,11 @@ public func ->| <T, U: Bondable where U.BondType == T>(left: Dynamic<T>, right: 
   left ->| right.designatedBond
 }
 
+// Two way bind
 
+infix operator <-> { associativity left precedence 100 }
+
+public func <-> <T>(left: Dynamic<T>, right: Dynamic<T>) {
+  left.valueBond.bind(right, fire: true, strongly: true)
+  right.valueBond.bind(left, fire: false, strongly: false)
+}

@@ -47,8 +47,8 @@ public class ArrayBond<T>: Bond<Array<T>> {
     super.init()
   }
   
-  override public func bind(dynamic: Dynamic<Array<T>>, fire: Bool = false) {
-    super.bind(dynamic, fire: fire)
+  override public func bind(dynamic: Dynamic<Array<T>>, fire: Bool = false, strongly: Bool = true) {
+    super.bind(dynamic, fire: fire, strongly: strongly)
   }
 }
 

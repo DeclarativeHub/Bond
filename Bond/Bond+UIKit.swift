@@ -616,8 +616,8 @@ public class TableViewBond<T>: ArrayBond<UITableViewCell> {
     }
   }
   
-  public override func bind(dynamic: Dynamic<Array<UITableViewCell>>, fire: Bool) {
-    super.bind(dynamic, fire: false)
+  public override func bind(dynamic: Dynamic<Array<UITableViewCell>>, fire: Bool, strongly: Bool) {
+    super.bind(dynamic, fire: false, strongly: strongly)
     if let dynamic = dynamic as? DynamicArray {
       dataSource = TableViewDynamicArrayDataSource(dynamic: dynamic)
       tableView?.dataSource = dataSource
