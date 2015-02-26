@@ -102,7 +102,7 @@ extension UIView {
   }
 }
 
-class SliderDynamic<T>: Dynamic<Float>
+class SliderDynamic<T>: DynamicExtended<Float>
 {
   let helper: SliderDynamicHelper
   
@@ -114,41 +114,40 @@ class SliderDynamic<T>: Dynamic<Float>
 }
 
 private var designatedBondHandleUISlider: UInt8 = 0;
+private var valueDynamicHandleUISlider: UInt8 = 0;
 
 extension UISlider /*: Dynamical, Bondable */ {
-  public func valueDynamic() -> Dynamic<Float> {
-    return SliderDynamic<Float>(control: self)
-  }
-  
-  public var valueBond: Bond<Float> {
-    if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUISlider) {
-      return (b as? Bond<Float>)!
-    } else {
-      let b = Bond() { v in self.value = v }
-      objc_setAssociatedObject(self, &designatedBondHandleUISlider, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
-      return b
-    }
-  }
-  
-  public func designatedDynamic() -> Dynamic<Float> {
-    return self.valueDynamic()
+  public var designatedDynamic: Dynamic<Float> {
+    return self.valueDynamic
   }
   
   public var designatedBond: Bond<Float> {
-    return self.valueBond
+    return self.valueDynamic.valueBond
+  }
+  
+  public var valueDynamic: Dynamic<Float> {
+    if let d: AnyObject = objc_getAssociatedObject(self, &valueDynamicHandleUISlider) {
+      return (d as? Dynamic<Float>)!
+    } else {
+      let d = SliderDynamic<Float>(control: self)
+      let bond = d ->> { [weak self] v in if let s = self { s.value = v } }
+      d.retain(bond)
+      objc_setAssociatedObject(self, &valueDynamicHandleUISlider, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return d
+    }
   }
 }
 
 public func ->> (left: UISlider, right: Bond<Float>) {
-  left.designatedDynamic() ->> right
+  left.designatedDynamic ->> right
 }
 
 public func ->> <U: Bondable where U.BondType == Float>(left: UISlider, right: U) {
-  left.designatedDynamic() ->> right.designatedBond
+  left.designatedDynamic ->> right.designatedBond
 }
 
 public func ->> (left: UISlider, right: UISlider) {
-  left.designatedDynamic() ->> right.designatedBond
+  left.designatedDynamic ->> right.designatedBond
 }
 
 public func ->> (left: Dynamic<Float>, right: UISlider) {
