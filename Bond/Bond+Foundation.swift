@@ -56,6 +56,24 @@ private var XXContext = 0
   }
 }
 
+@objc private class DynamicNotificationCenterHelper: NSObject {
+  let listener: NSNotification -> Void
+  
+  init(notificationName: String, object: AnyObject?, listener: NSNotification -> Void) {
+    self.listener = listener
+    super.init()
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "didReceiveNotification:", name: notificationName, object: object)
+  }
+  
+  deinit {
+    NSNotificationCenter.defaultCenter().removeObserver(self)
+  }
+  
+  dynamic func didReceiveNotification(notification: NSNotification) {
+    listener(notification)
+  }
+}
+
 public extension Dynamic {
   
   public class func asObservableFor(object: NSObject, keyPath: String) -> Dynamic<T> {
@@ -64,6 +82,18 @@ public extension Dynamic {
     let helper = DynamicKVOHelper(keyPath: keyPath, object: object as NSObject) {
       [unowned dynamic] (v: AnyObject) -> Void in
       dynamic.value = (v as? T)!
+    }
+    
+    dynamic.retain(helper)
+    return dynamic
+  }
+  
+  public class func asObservableFor(notificationName: String, object: AnyObject?, parser: NSNotification -> T) -> DynamicExtended<T> {
+    let dynamic: DynamicExtended<T> = DynamicExtended(parser(NSNotification(name: notificationName, object: nil)))
+    
+    let helper = DynamicNotificationCenterHelper(notificationName: notificationName, object: object) {
+      [unowned dynamic] notification in
+      dynamic.value = parser(notification)
     }
     
     dynamic.retain(helper)

@@ -79,7 +79,7 @@ class DynamicTests: XCTestCase {
     var d1bond: Bond<Int>! = d1 ->> { d1ObservedValue = $0 }
     var d2bond: Bond<Int>! = d2 ->> { d2ObservedValue = $0 }
     
-    d1 <-> d2
+    d2 <->> d1
     
     XCTAssert(d1.value == d2.value, "Initial values")
     XCTAssert(d1ObservedValue == d2ObservedValue, "Initial observed values")

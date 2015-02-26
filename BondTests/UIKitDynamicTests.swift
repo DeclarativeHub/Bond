@@ -18,7 +18,7 @@ class UIKitDynamicTests: XCTestCase {
     slider.value = 0.1
     XCTAssert(slider.value == 0.1, "Initial value")
     
-    slider.valueDynamic <-> dynamicDriver
+    dynamicDriver <->> slider.valueDynamic
     XCTAssert(slider.value == 0.0, "Slider value after binding")
     
     dynamicDriver.value = 0.5
@@ -26,5 +26,24 @@ class UIKitDynamicTests: XCTestCase {
     
     slider.valueDynamic.value = 0.8
     XCTAssert(dynamicDriver.value == 0.8, "Dynamic value reflects slider value change")
+  }
+  
+  func testUITextViewDynamic() {
+    var dynamicDriver = Dynamic<String>("b")
+    let textView = UITextView()
+    
+    textView.text = "a"
+    XCTAssert(textView.text == "a", "Initial value")
+    
+    dynamicDriver <->> textView.textDynamic
+    XCTAssert(textView.text == "b", "Slider value after binding")
+    
+    dynamicDriver.value = "c"
+    XCTAssert(textView.text == "c", "Slider value reflects dynamic value change")
+    
+    textView.text = "d"
+    NSNotificationCenter.defaultCenter().postNotificationName(UITextViewTextDidChangeNotification, object: textView)
+    XCTAssert(textView.textDynamic.value == "d", "Dynamic value reflects slider value change")
+    XCTAssert(dynamicDriver.value == "d", "Dynamic value reflects slider value change")
   }
 }

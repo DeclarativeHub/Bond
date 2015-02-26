@@ -343,9 +343,9 @@ public func ->| <T, U: Bondable where U.BondType == T>(left: Dynamic<T>, right: 
 
 // Two way bind
 
-infix operator <-> { associativity left precedence 100 }
+infix operator <->> { associativity left precedence 100 }
 
-public func <-> <T>(left: Dynamic<T>, right: Dynamic<T>) {
-  left.valueBond.bind(right, fire: true, strongly: true)
-  right.valueBond.bind(left, fire: false, strongly: false)
+public func <->> <T>(left: Dynamic<T>, right: Dynamic<T>) {
+  right.valueBond.bind(left, fire: true, strongly: true)
+  left.valueBond.bind(right, fire: false, strongly: false)
 }

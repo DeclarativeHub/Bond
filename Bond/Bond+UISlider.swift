@@ -42,14 +42,6 @@ private var designatedBondHandleUISlider: UInt8 = 0;
 private var valueDynamicHandleUISlider: UInt8 = 0;
 
 extension UISlider /*: Dynamical, Bondable */ {
-  public var designatedDynamic: Dynamic<Float> {
-    return self.valueDynamic
-  }
-  
-  public var designatedBond: Bond<Float> {
-    return self.valueDynamic.valueBond
-  }
-  
   public var valueDynamic: Dynamic<Float> {
     if let d: AnyObject = objc_getAssociatedObject(self, &valueDynamicHandleUISlider) {
       return (d as? Dynamic<Float>)!
@@ -60,6 +52,14 @@ extension UISlider /*: Dynamical, Bondable */ {
       objc_setAssociatedObject(self, &valueDynamicHandleUISlider, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
       return d
     }
+  }
+  
+  public var designatedDynamic: Dynamic<Float> {
+    return self.valueDynamic
+  }
+  
+  public var designatedBond: Bond<Float> {
+    return self.valueDynamic.valueBond
   }
 }
 

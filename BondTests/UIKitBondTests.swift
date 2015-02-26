@@ -252,7 +252,7 @@ class UIKitTests: XCTestCase {
     textView.text = "a"
     XCTAssert(textView.text == "a", "Initial value")
     
-    dynamicDriver ->> textView.textBond
+    dynamicDriver ->> textView.textDynamic.valueBond
     XCTAssert(textView.text == "b", "Value after binding")
     
     dynamicDriver.value = "c"

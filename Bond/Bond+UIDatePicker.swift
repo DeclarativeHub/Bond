@@ -27,7 +27,7 @@ import UIKit
   }
 }
 
-class DatePickerDynamic<T>: Dynamic<NSDate>
+class DatePickerDynamic<T>: DynamicExtended<NSDate>
 {
   let helper: DatePickerDynamicHelper
   
@@ -38,42 +38,40 @@ class DatePickerDynamic<T>: Dynamic<NSDate>
   }
 }
 
-private var designatedBondHandleUIDatePicker: UInt8 = 0;
+private var dateDynamicHandleUIDatePicker: UInt8 = 0;
 
 extension UIDatePicker /*: Dynamical, Bondable */ {
-  public func dateDynamic() -> Dynamic<NSDate> {
-    return DatePickerDynamic<NSDate>(control: self)
-  }
-  
-  public var dateBond: Bond<NSDate> {
-    if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUIDatePicker) {
-      return (b as? Bond<NSDate>)!
+  public var dateDynamic: Dynamic<NSDate> {
+    if let d: AnyObject = objc_getAssociatedObject(self, &dateDynamicHandleUIDatePicker) {
+      return (d as? Dynamic<NSDate>)!
     } else {
-      let b = Bond<NSDate>() { [unowned self] v in self.date = v }
-      objc_setAssociatedObject(self, &designatedBondHandleUIDatePicker, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
-      return b
+      let d = DatePickerDynamic<NSDate>(control: self)
+      let bond = d ->> { [weak self] v in if let s = self { s.date = v } }
+      d.retain(bond)
+      objc_setAssociatedObject(self, &dateDynamicHandleUIDatePicker, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return d
     }
   }
   
-  public func designatedDynamic() -> Dynamic<NSDate> {
-    return self.dateDynamic()
+  public var designatedDynamic: Dynamic<NSDate> {
+    return self.dateDynamic
   }
   
   public var designatedBond: Bond<NSDate> {
-    return self.dateBond
+    return self.dateDynamic.valueBond
   }
 }
 
 public func ->> (left: UIDatePicker, right: Bond<NSDate>) {
-  left.designatedDynamic() ->> right
+  left.designatedDynamic ->> right
 }
 
 public func ->> <U: Bondable where U.BondType == NSDate>(left: UIDatePicker, right: U) {
-  left.designatedDynamic() ->> right.designatedBond
+  left.designatedDynamic ->> right.designatedBond
 }
 
 public func ->> (left: UIDatePicker, right: UIDatePicker) {
-  left.designatedDynamic() ->> right.designatedBond
+  left.designatedDynamic ->> right.designatedBond
 }
 
 public func ->> (left: Dynamic<NSDate>, right: UIDatePicker) {

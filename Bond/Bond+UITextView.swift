@@ -8,23 +8,35 @@
 
 import UIKit
 
-private var textBondHandleUITextView: UInt8 = 0;
+private var textDynamicHandleUITextView: UInt8 = 0;
 
 extension UITextView: Bondable {
   
-  public var textBond: Bond<String> {
-    if let b: AnyObject = objc_getAssociatedObject(self, &textBondHandleUITextView) {
-      return (b as? Bond<String>)!
+  public var textDynamic: Dynamic<String> {
+    if let d: AnyObject = objc_getAssociatedObject(self, &textDynamicHandleUITextView) {
+      return (d as? Dynamic<String>)!
     } else {
-      let b = Bond<String>() { [unowned self] v in
-        self.text = v
+      let d = Dynamic.asObservableFor(UITextViewTextDidChangeNotification, object: self) {
+        notification -> String in
+        if let textView = notification.object as? UITextView  {
+          return textView.text ?? ""
+        } else {
+          return ""
+        }
       }
-      objc_setAssociatedObject(self, &textBondHandleUITextView, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
-      return b
+      
+      let bond = d ->> { [weak self] v in if let s = self { s.text = v } }
+      d.retain(bond)
+      objc_setAssociatedObject(self, &textDynamicHandleUITextView, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return d
     }
   }
   
+  public var designatedDynamic: Dynamic<String> {
+    return self.textDynamic
+  }
+  
   public var designatedBond: Bond<String> {
-    return self.textBond
+    return self.textDynamic.valueBond
   }
 }

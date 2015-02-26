@@ -53,13 +53,21 @@ class ButtonDynamic<T>: Dynamic<UIControlEvents>
   }
 }
 
+private var eventDynamicHandleUIButton: UInt8 = 0;
 private var enabledBondHandleUIButton: UInt8 = 0;
 private var titleBondHandleUIButton: UInt8 = 0;
 private var imageForNormalStateBondHandleUIButton: UInt8 = 0;
 
 extension UIButton /*: Dynamical, Bondable */ {
-  public func eventDynamic() -> Dynamic<UIControlEvents> {
-    return ButtonDynamic<UIControlEvents>(control: self)
+
+  public var eventDynamic: Dynamic<UIControlEvents> {
+    if let d: AnyObject = objc_getAssociatedObject(self, &eventDynamicHandleUIButton) {
+      return (d as? Dynamic<UIControlEvents>)!
+    } else {
+      let d = ButtonDynamic<UIControlEvents>(control: self)
+      objc_setAssociatedObject(self, &eventDynamicHandleUIButton, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return d
+    }
   }
   
   public var enabledBond: Bond<Bool> {
@@ -96,8 +104,8 @@ extension UIButton /*: Dynamical, Bondable */ {
     }
   }
   
-  public func designatedDynamic() -> Dynamic<UIControlEvents> {
-    return self.eventDynamic()
+  public var designatedDynamic: Dynamic<UIControlEvents> {
+    return self.eventDynamic
   }
   
   public var designatedBond: Bond<Bool> {
@@ -106,11 +114,11 @@ extension UIButton /*: Dynamical, Bondable */ {
 }
 
 public func ->> (left: UIButton, right: Bond<UIControlEvents>) {
-  left.designatedDynamic() ->> right
+  left.designatedDynamic ->> right
 }
 
 public func ->> <U: Bondable where U.BondType == UIControlEvents>(left: UIButton, right: U) {
-  left.designatedDynamic() ->> right.designatedBond
+  left.designatedDynamic ->> right.designatedBond
 }
 
 public func ->> <T: Dynamical where T.DynamicType == Bool>(left: T, right: UIButton) {

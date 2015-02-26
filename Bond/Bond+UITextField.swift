@@ -27,7 +27,7 @@ import UIKit
   }
 }
 
-class TextFieldDynamic<T>: Dynamic<String>
+class TextFieldDynamic<T>: DynamicExtended<String>
 {
   let helper: TextFieldDynamicHelper
   
@@ -38,46 +38,45 @@ class TextFieldDynamic<T>: Dynamic<String>
   }
 }
 
-private var designatedBondHandleUITextField: UInt8 = 0;
+private var textDynamicHandleUITextField: UInt8 = 0;
 
 extension UITextField /*: Dynamical, Bondable */ {
-  public func textDynamic() -> Dynamic<String> {
-    return TextFieldDynamic<String>(control: self)
-  }
   
-  public var textBond: Bond<String> {
-    if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUITextField) {
-      return (b as? Bond<String>)!
+  public var textDynamic: Dynamic<String> {
+    if let d: AnyObject = objc_getAssociatedObject(self, &textDynamicHandleUITextField) {
+      return (d as? Dynamic<String>)!
     } else {
-      let b = Bond<String>() { [unowned self] v in self.text = v }
-      objc_setAssociatedObject(self, &designatedBondHandleUITextField, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
-      return b
+      let d = TextFieldDynamic<String>(control: self)
+      let bond = d ->> { [weak self] v in if let s = self { s.text = v } }
+      d.retain(bond)
+      objc_setAssociatedObject(self, &textDynamicHandleUITextField, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return d
     }
   }
   
-  public func designatedDynamic() -> Dynamic<String> {
-    return self.textDynamic()
+  public var designatedDynamic: Dynamic<String> {
+    return self.textDynamic
   }
   
   public var designatedBond: Bond<String> {
-    return self.textBond
+    return self.textDynamic.valueBond
   }
 }
 
 public func ->> (left: UITextField, right: Bond<String>) {
-  left.designatedDynamic() ->> right
+  left.designatedDynamic ->> right
 }
 
 public func ->> <U: Bondable where U.BondType == String>(left: UITextField, right: U) {
-  left.designatedDynamic() ->> right.designatedBond
+  left.designatedDynamic ->> right.designatedBond
 }
 
 public func ->> (left: UITextField, right: UITextField) {
-  left.designatedDynamic() ->> right.designatedBond
+  left.designatedDynamic ->> right.designatedBond
 }
 
 public func ->> (left: UITextField, right: UILabel) {
-  left.designatedDynamic() ->> right.designatedBond
+  left.designatedDynamic ->> right.designatedBond
 }
 
 public func ->> <T: Dynamical where T.DynamicType == String>(left: T, right: UITextField) {
@@ -86,5 +85,9 @@ public func ->> <T: Dynamical where T.DynamicType == String>(left: T, right: UIT
 
 public func ->> (left: Dynamic<String>, right: UITextField) {
   left ->> right.designatedBond
+}
+
+public func <->> (left: Dynamic<String>, right: UITextField) {
+  left <->> right.textDynamic
 }
 

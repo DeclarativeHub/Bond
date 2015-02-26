@@ -27,7 +27,7 @@ import UIKit
   }
 }
 
-class SwitchDynamic<T>: Dynamic<Bool>
+class SwitchDynamic<T>: DynamicExtended<Bool>
 {
   let helper: SwitchDynamicHelper
   
@@ -38,46 +38,44 @@ class SwitchDynamic<T>: Dynamic<Bool>
   }
 }
 
-private var designatedBondHandleUISwitch: UInt8 = 0;
+private var onDynamicHandleUISwitch: UInt8 = 0;
 
 extension UISwitch /*: Dynamical, Bondable */ {
-  public func onDynamic() -> Dynamic<Bool> {
-    return SwitchDynamic<Bool>(control: self)
-  }
-  
-  public var onBond: Bond<Bool> {
-    if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUISwitch) {
-      return (b as? Bond<Bool>)!
+  public var onDynamic: Dynamic<Bool> {
+    if let d: AnyObject = objc_getAssociatedObject(self, &onDynamicHandleUISwitch) {
+      return (d as? Dynamic<Bool>)!
     } else {
-      let b = Bond<Bool>() { [unowned self] v in self.on = v }
-      objc_setAssociatedObject(self, &designatedBondHandleUISwitch, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
-      return b
+      let d = SwitchDynamic<Bool>(control: self)
+      let bond = d ->> { [weak self] v in if let s = self { s.on = v } }
+      d.retain(bond)
+      objc_setAssociatedObject(self, &onDynamicHandleUISwitch, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return d
     }
   }
   
-  public func designatedDynamic() -> Dynamic<Bool> {
-    return self.onDynamic()
+  public var designatedDynamic: Dynamic<Bool> {
+    return self.onDynamic
   }
   
   public var designatedBond: Bond<Bool> {
-    return self.onBond
+    return self.onDynamic.valueBond
   }
 }
 
 public func ->> (left: UISwitch, right: Bond<Bool>) {
-  left.designatedDynamic() ->> right
+  left.designatedDynamic ->> right
 }
 
 public func ->> <U: Bondable where U.BondType == Bool>(left: UISwitch, right: U) {
-  left.designatedDynamic() ->> right.designatedBond
+  left.designatedDynamic ->> right.designatedBond
 }
 
 public func ->> (left: UISwitch, right: UIButton) {
-  left.designatedDynamic() ->> right.designatedBond
+  left.designatedDynamic ->> right.designatedBond
 }
 
 public func ->> (left: UISwitch, right: UISwitch) {
-  left.designatedDynamic() ->> right.designatedBond
+  left.designatedDynamic ->> right.designatedBond
 }
 
 public func ->> <T: Dynamical where T.DynamicType == Bool>(left: T, right: UISwitch) {
