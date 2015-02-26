@@ -25,7 +25,7 @@
 		ECD653A61A9B6BF30038A9AC /* ReduceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD653A51A9B6BF30038A9AC /* ReduceTests.swift */; };
 		ECD9CC541A9FA36200484323 /* Bond+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9CC531A9FA36200484323 /* Bond+UIView.swift */; };
 		ECD9CC561A9FA38C00484323 /* Bond+UISlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9CC551A9FA38C00484323 /* Bond+UISlider.swift */; };
-		ECD9CC581A9FA3AD00484323 /* Bond+UILaber.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9CC571A9FA3AD00484323 /* Bond+UILaber.swift */; };
+		ECD9CC581A9FA3AD00484323 /* Bond+UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9CC571A9FA3AD00484323 /* Bond+UILabel.swift */; };
 		ECD9CC5A1A9FA3C300484323 /* Bond+UIProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9CC591A9FA3C300484323 /* Bond+UIProgressView.swift */; };
 		ECD9CC5C1A9FA3E200484323 /* Bond+UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9CC5B1A9FA3E200484323 /* Bond+UIImageView.swift */; };
 		ECD9CC5E1A9FA3FA00484323 /* Bond+UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9CC5D1A9FA3FA00484323 /* Bond+UIButton.swift */; };
@@ -74,7 +74,7 @@
 		ECD653A51A9B6BF30038A9AC /* ReduceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReduceTests.swift; sourceTree = "<group>"; };
 		ECD9CC531A9FA36200484323 /* Bond+UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UIView.swift"; sourceTree = "<group>"; };
 		ECD9CC551A9FA38C00484323 /* Bond+UISlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UISlider.swift"; sourceTree = "<group>"; };
-		ECD9CC571A9FA3AD00484323 /* Bond+UILaber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UILaber.swift"; sourceTree = "<group>"; };
+		ECD9CC571A9FA3AD00484323 /* Bond+UILabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UILabel.swift"; sourceTree = "<group>"; };
 		ECD9CC591A9FA3C300484323 /* Bond+UIProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UIProgressView.swift"; sourceTree = "<group>"; };
 		ECD9CC5B1A9FA3E200484323 /* Bond+UIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UIImageView.swift"; sourceTree = "<group>"; };
 		ECD9CC5D1A9FA3FA00484323 /* Bond+UIButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UIButton.swift"; sourceTree = "<group>"; };
@@ -188,17 +188,17 @@
 			isa = PBXGroup;
 			children = (
 				ECD9CC531A9FA36200484323 /* Bond+UIView.swift */,
-				ECD9CC551A9FA38C00484323 /* Bond+UISlider.swift */,
-				ECD9CC571A9FA3AD00484323 /* Bond+UILaber.swift */,
-				ECD9CC591A9FA3C300484323 /* Bond+UIProgressView.swift */,
 				ECD9CC5B1A9FA3E200484323 /* Bond+UIImageView.swift */,
+				ECD9CC591A9FA3C300484323 /* Bond+UIProgressView.swift */,
+				ECD9CC651A9FA47A00484323 /* Bond+UITableView.swift */,
+				ECD9CC671A9FA49800484323 /* Bond+UIBarItem.swift */,
+				ECD9CC571A9FA3AD00484323 /* Bond+UILabel.swift */,
+				ECD9CC551A9FA38C00484323 /* Bond+UISlider.swift */,
 				ECD9CC5D1A9FA3FA00484323 /* Bond+UIButton.swift */,
 				ECD9CC5F1A9FA41200484323 /* Bond+UISwitch.swift */,
 				ECD9CC611A9FA42A00484323 /* Bond+UITextField.swift */,
-				ECD9CC631A9FA44C00484323 /* Bond+UIDatePicker.swift */,
-				ECD9CC651A9FA47A00484323 /* Bond+UITableView.swift */,
-				ECD9CC671A9FA49800484323 /* Bond+UIBarItem.swift */,
 				ECD9CC691A9FA4AE00484323 /* Bond+UITextView.swift */,
+				ECD9CC631A9FA44C00484323 /* Bond+UIDatePicker.swift */,
 			);
 			name = UIKit;
 			sourceTree = "<group>";
@@ -377,7 +377,7 @@
 			files = (
 				ECD9CC681A9FA49800484323 /* Bond+UIBarItem.swift in Sources */,
 				ECD9CC5A1A9FA3C300484323 /* Bond+UIProgressView.swift in Sources */,
-				ECD9CC581A9FA3AD00484323 /* Bond+UILaber.swift in Sources */,
+				ECD9CC581A9FA3AD00484323 /* Bond+UILabel.swift in Sources */,
 				69491BCF1A7C21B600A13B6B /* Bond+Arrays.swift in Sources */,
 				ECD9CC601A9FA41200484323 /* Bond+UISwitch.swift in Sources */,
 				ECD9CC561A9FA38C00484323 /* Bond+UISlider.swift in Sources */,
