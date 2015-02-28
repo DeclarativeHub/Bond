@@ -29,12 +29,12 @@ Whenever a change occurs in the text field, new value will be transformed by the
 In addition to `map`, another important functional construct is  `filter`. It's useful when we are interested only in some values of a domain. For example, when observing events of a button, we might be interested only in `TouchUpInside` event so we can perform certain action when user taps the button: 
 
 ```swift
-	button.eventDynamic().filter { $0 == UIControlEvents.TouchUpInside } ->> { event in
+	buttonEvent = button.eventDynamic().filter { $0 == UIControlEvents.TouchUpInside } ->| { event in
       login()
     }
 ```
 
-As you see, our binding target doesn't have to be an UI component, rather it can be an arbitrary action wrapped in a closure. We call that closure a `Listener` as it listens for changes of an object or a property that it's bonded to by `->>` operator.
+As you see, our binding target doesn't have to be an UI component, rather it can be an arbitrary action wrapped in a closure. We call that closure a `Listener` as it listens for changes of an object or a property that it's bonded to. Note `->|` operator in this case. It differs from `->>` operator in a way that it does not call closure at binding time.
 
 Bond can also `reduce` multiple inputs into a single output. Following snippet depicts how values of two text fields can be reduced to a boolean value and applied to button's `disabled` property.
 
