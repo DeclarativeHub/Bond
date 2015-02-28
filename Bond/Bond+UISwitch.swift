@@ -33,7 +33,7 @@ class SwitchDynamic<T>: DynamicExtended<Bool>
   
   init(control: UISwitch) {
     self.helper = SwitchDynamicHelper(control: control)
-    super.init(control.on)
+    super.init(control.on, faulty: false)
     self.helper.listener =  { [unowned self] in self.value = $0 }
   }
 }
@@ -46,7 +46,8 @@ extension UISwitch /*: Dynamical, Bondable */ {
       return (d as? Dynamic<Bool>)!
     } else {
       let d = SwitchDynamic<Bool>(control: self)
-      let bond = d ->> { [weak self] v in if let s = self { s.on = v } }
+      let bond = Bond<Bool>() { [weak self] v in if let s = self { s.on = v } }
+      d.bindTo(bond)
       d.retain(bond)
       objc_setAssociatedObject(self, &onDynamicHandleUISwitch, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
       return d

@@ -76,8 +76,8 @@ class DynamicTests: XCTestCase {
     var d1ObservedValue: Int = d1.value
     var d2ObservedValue: Int = d2.value
     
-    var d1bond: Bond<Int>! = d1 ->> { d1ObservedValue = $0 }
-    var d2bond: Bond<Int>! = d2 ->> { d2ObservedValue = $0 }
+    var d1bond: Bond<Int>! = Bond<Int>() { d1ObservedValue = $0 }; d1 ->> d1bond
+    var d2bond: Bond<Int>! = Bond<Int>() { d2ObservedValue = $0 }; d2 ->> d2bond
     
     d2 <->> d1
     

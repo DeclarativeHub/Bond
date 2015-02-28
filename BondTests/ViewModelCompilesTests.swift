@@ -10,6 +10,12 @@ import UIKit
 import XCTest
 import Bond
 
+enum LoginEvent {
+  case LoggedIn(String)
+  case Error(NSError)
+  case None
+}
+
 class ViewModel {
   let username = Dynamic<String>("")
   let password = Dynamic<String>("")
@@ -20,11 +26,11 @@ class ViewModel {
     return reduce(usernameValid, passwordValid) { $0 && $1 }
   }
   
-  let loginSignal = Dynamic<String?>(nil)
+  let loginEventDynamic = Dynamic<LoginEvent>(.None)
   
   func login() {
-    println("Logging in")
-    loginSignal.value = "Mike"
+    println("Logging in as \(username.value)")
+    loginEventDynamic.value = .LoggedIn("Mike")
   }
 }
 
@@ -38,9 +44,16 @@ class ViewController: UIViewController {
     vc.viewModel.login()
   }
   
-  let didLoginEventListener = Bond<(String?, ViewController)> { user, vc in
-    println("Logged in as \(user)")
-    vc.dismissViewControllerAnimated(false, completion: nil)
+  let didLoginEventListener = Bond<(LoginEvent, ViewController)> { event, vc in
+    switch event {
+    case .LoggedIn(let username):
+      println(username)
+      vc.dismissViewControllerAnimated(false, completion: nil)
+    case .Error(let error):
+      print(error)
+    default:
+      break
+    }
   }
 
   override func viewDidLoad() {
@@ -48,33 +61,8 @@ class ViewController: UIViewController {
     viewModel.password <->> passwordTextField.textDynamic
     
     viewModel.loginButtonEnabled ->> loginButton.enabledBond
-    viewModel.loginSignal.rewrite(self) ->> didLoginEventListener
+    viewModel.loginEventDynamic.zip(self) ->| didLoginEventListener
     
     loginButton.eventDynamic.filter(==, .TouchUpInside).rewrite(self) ->> loginTapEventListener
   }
-}
-
-class ViewModelTests: XCTestCase {
-  
-  override func setUp() {
-    super.setUp()
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-  }
-  
-  override func tearDown() {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    super.tearDown()
-  }
-  
-  func testExample() {
-    let button = UIButton()
-    
-    let bond = button.eventDynamic.filter { $0 == UIControlEvents.TouchUpInside } ->| { evnt in
-      XCTFail("Should not be called")
-    }
-    
-    
-    XCTAssert(true, "Pass")
-  }
-  
 }

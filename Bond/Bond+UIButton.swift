@@ -49,7 +49,10 @@ class ButtonDynamic<T>: Dynamic<UIControlEvents>
   init(control: UIButton) {
     self.helper = ButtonDynamicHelper(control: control)
     super.init(UIControlEvents.allZeros)
-    self.helper.listener =  { [unowned self] in self.value = $0 }
+    self.helper.listener =  { [unowned self] in
+      self.value = $0
+    }
+    self.faulty = true
   }
 }
 

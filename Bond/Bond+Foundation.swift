@@ -77,7 +77,7 @@ private var XXContext = 0
 public extension Dynamic {
   
   public class func asObservableFor(object: NSObject, keyPath: String) -> Dynamic<T> {
-    let dynamic = DynamicExtended((object.valueForKeyPath(keyPath) as? T)!)
+    let dynamic = DynamicExtended((object.valueForKeyPath(keyPath) as? T)!, faulty: false)
     
     let helper = DynamicKVOHelper(keyPath: keyPath, object: object as NSObject) {
       [unowned dynamic] (v: AnyObject) -> Void in
@@ -89,7 +89,7 @@ public extension Dynamic {
   }
   
   public class func asObservableFor(notificationName: String, object: AnyObject?, parser: NSNotification -> T) -> DynamicExtended<T> {
-    let dynamic: DynamicExtended<T> = DynamicExtended(parser(NSNotification(name: notificationName, object: nil)))
+    let dynamic: DynamicExtended<T> = DynamicExtended(parser(NSNotification(name: notificationName, object: nil)), faulty: true)
     
     let helper = DynamicNotificationCenterHelper(notificationName: notificationName, object: object) {
       [unowned dynamic] notification in

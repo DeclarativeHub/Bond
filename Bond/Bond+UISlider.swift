@@ -33,7 +33,7 @@ class SliderDynamic<T>: DynamicExtended<Float>
   
   init(control: UISlider) {
     self.helper = SliderDynamicHelper(control: control)
-    super.init(control.value)
+    super.init(control.value, faulty: false)
     self.helper.listener =  { [unowned self] in self.value = $0 }
   }
 }
@@ -47,7 +47,8 @@ extension UISlider /*: Dynamical, Bondable */ {
       return (d as? Dynamic<Float>)!
     } else {
       let d = SliderDynamic<Float>(control: self)
-      let bond = d ->> { [weak self] v in if let s = self { s.value = v } }
+      let bond = Bond<Float>() { [weak self] v in if let s = self { s.value = v } }
+      d.bindTo(bond)
       d.retain(bond)
       objc_setAssociatedObject(self, &valueDynamicHandleUISlider, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
       return d
