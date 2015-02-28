@@ -54,20 +54,6 @@ class UIKitTests: XCTestCase {
     XCTAssert(view.backgroundColor == UIColor.blueColor(), "Value after dynamic change")
   }
   
-  func testUISliderBond() {
-    var dynamicDriver = Dynamic<Float>(0)
-    let slider = UISlider()
-    
-    slider.value = 0.1
-    XCTAssert(slider.value == 0.1, "Initial value")
-    
-    dynamicDriver ->> slider.designatedBond
-    XCTAssert(slider.value == 0.0, "Value after binding")
-    
-    dynamicDriver.value = 0.5
-    XCTAssert(slider.value == 0.5, "Value after dynamic change")
-  }
-  
   func testUILabelBond() {
     var dynamicDriver = Dynamic<String>("b")
     let label = UILabel()
@@ -155,52 +141,6 @@ class UIKitTests: XCTestCase {
     XCTAssert(button.imageForState(.Normal) == image2, "Value after dynamic change")
   }
   
-  func testUISwitchBond() {
-    var dynamicDriver = Dynamic<Bool>(false)
-    let switchControl = UISwitch()
-    
-    switchControl.on = true
-    XCTAssert(switchControl.on == true, "Initial value")
-    
-    dynamicDriver ->> switchControl.designatedBond
-    XCTAssert(switchControl.on == false, "Value after binding")
-    
-    dynamicDriver.value = true
-    XCTAssert(switchControl.on == true, "Value after dynamic change")
-  }
-  
-  func testUITextFieldBond() {
-    var dynamicDriver = Dynamic<String>("b")
-    let textField = UITextField()
-    
-    textField.text = "a"
-    XCTAssert(textField.text == "a", "Initial value")
-    
-    dynamicDriver ->> textField.designatedBond
-    XCTAssert(textField.text == "b", "Value after binding")
-    
-    dynamicDriver.value = "c"
-    XCTAssert(textField.text == "c", "Value after dynamic change")
-  }
-  
-  func testUIDatePickerBond() {
-    let date1 = NSDate(timeIntervalSince1970: 10)
-    let date2 = NSDate(timeIntervalSince1970: 10000)
-    let date3 = NSDate(timeIntervalSince1970: 20000)
-    
-    var dynamicDriver = Dynamic<NSDate>(date1)
-    let datePicker = UIDatePicker()
-    
-    datePicker.date = date2
-    XCTAssert(datePicker.date == date2, "Initial value")
-    
-    dynamicDriver ->> datePicker.designatedBond
-    XCTAssert(datePicker.date == date1, "Value after binding")
-    
-    dynamicDriver.value = date3
-    XCTAssert(datePicker.date == date3, "Value after dynamic change")
-  }
-    
   func testUIBarItemEnabledBond() {
     var dynamicDriver = Dynamic<Bool>(false)
     let barItem = UIBarButtonItem()
@@ -243,19 +183,5 @@ class UIKitTests: XCTestCase {
     
     dynamicDriver.value = image2
     XCTAssert(barItem.image == image2, "Value after dynamic change")
-  }
-
-  func testUITextViewTextBond() {
-    var dynamicDriver = Dynamic<String>("b")
-    let textView = UITextView()
-    
-    textView.text = "a"
-    XCTAssert(textView.text == "a", "Initial value")
-    
-    dynamicDriver ->> textView.textDynamic.valueBond
-    XCTAssert(textView.text == "b", "Value after binding")
-    
-    dynamicDriver.value = "c"
-    XCTAssert(textView.text == "c", "Value after dynamic change")
   }
 }

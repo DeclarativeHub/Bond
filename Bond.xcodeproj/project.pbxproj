@@ -26,7 +26,7 @@
 		EC7137E21AA239FC00CFC854 /* Bond+Functional.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC048D141AA2386A00E9794C /* Bond+Functional.swift */; };
 		EC7137E31AA239FD00CFC854 /* Bond+Functional.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC048D141AA2386A00E9794C /* Bond+Functional.swift */; };
 		EC7137E41AA25E9300CFC854 /* FunctionalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD653A51A9B6BF30038A9AC /* FunctionalTests.swift */; };
-		EC71C0AC1A9F839A009FEA4B /* UIKitDynamicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC71C0AB1A9F839A009FEA4B /* UIKitDynamicTests.swift */; };
+		EC7137E51AA26F0800CFC854 /* UIKitDynamicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC71C0AB1A9F839A009FEA4B /* UIKitDynamicTests.swift */; };
 		EC74CFD21A8BF1A300ED4026 /* UIKitBondTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC74CFD11A8BF1A300ED4026 /* UIKitBondTests.swift */; };
 		ECD9CC541A9FA36200484323 /* Bond+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9CC531A9FA36200484323 /* Bond+UIView.swift */; };
 		ECD9CC561A9FA38C00484323 /* Bond+UISlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9CC551A9FA38C00484323 /* Bond+UISlider.swift */; };
@@ -414,8 +414,8 @@
 				69491BD31A7C242900A13B6B /* DynamicTests.swift in Sources */,
 				EC41D6731A9FB934004DB6A4 /* ViewModelCompilesTests.swift in Sources */,
 				EC74CFD21A8BF1A300ED4026 /* UIKitBondTests.swift in Sources */,
+				EC7137E51AA26F0800CFC854 /* UIKitDynamicTests.swift in Sources */,
 				EC7137E41AA25E9300CFC854 /* FunctionalTests.swift in Sources */,
-				EC71C0AC1A9F839A009FEA4B /* UIKitDynamicTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
