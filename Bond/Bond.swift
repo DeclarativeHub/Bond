@@ -155,6 +155,18 @@ public extension Dynamic
   public func filter(f: T -> Bool) -> Dynamic<T> {
     return _filter(self, f)
   }
+  
+  public func filter(f: (T, T) -> Bool, _ v: T) -> Dynamic<T> {
+    return _filter(self) { f($0, v) }
+  }
+  
+  public func rewrite<U>(v:  U) -> Dynamic<U> {
+    return _map(self) { _ in return v}
+  }
+  
+  public func rewrite<U>(v: U) -> Dynamic<(T, U)> {
+    return _map(self) { ($0, v) }
+  }
 }
 
 // MARK: Protocols
@@ -201,13 +213,27 @@ private func _map<T, U>(dynamic: Dynamic<T>, f: T -> U) -> Dynamic<U> {
   return dyn
 }
 
+// MARK: Rewrite
+
+public func rewrite<T, U>(dynamic: Dynamic<T>, v: U) -> Dynamic<U> {
+  return _map(dynamic) { _ in v}
+}
+
+public func rewrite<T, U>(dynamic: Dynamic<T>, v: U) -> Dynamic<(T, U)> {
+  return _map(dynamic) { ($0, v) }
+}
+
 // MARK: Filter
 
 public func filter<T>(dynamic: Dynamic<T>, f: T -> Bool) -> Dynamic<T> {
   return _filter(dynamic, f)
 }
 
-public func map<S: Dynamical, T where S.DynamicType == T>(dynamical: S, f: T -> Bool) -> Dynamic<T> {
+public func filter<T>(dynamic: Dynamic<T>, f: (T, T) -> Bool, v: T) -> Dynamic<T> {
+  return _filter(dynamic) { f($0, v) }
+}
+
+public func filter<S: Dynamical, T where S.DynamicType == T>(dynamical: S, f: T -> Bool) -> Dynamic<T> {
   return _filter(dynamical.designatedDynamic(), f)
 }
 

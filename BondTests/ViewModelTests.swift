@@ -28,32 +28,29 @@ class ViewModel {
   }
 }
 
-class ViewController {
+class ViewController: UIViewController {
   let usernameTextField = UITextField()
   let passwordTextField = UITextField()
   let loginButton = UIButton()
-  let viewModel: ViewModel
+  let viewModel: ViewModel!
   
-  var onLoginListener: Bond<UIControlEvents>?
-  
-  let didLoginEventListener = Bond<String?> {
-    println("Logged in as \($0)")
+  let loginTapEventListener = Bond<ViewController> { vc in
+    vc.viewModel.login()
   }
   
-  init(viewModel: ViewModel) {
-    self.viewModel = viewModel
+  let didLoginEventListener = Bond<(String?, ViewController)> { user, vc in
+    println("Logged in as \(user)")
+    vc.dismissViewControllerAnimated(false, completion: nil)
   }
 
-  func viewDidLoad() {
+  override func viewDidLoad() {
     viewModel.username <->> usernameTextField.textDynamic
     viewModel.password <->> passwordTextField.textDynamic
-    viewModel.loginButtonEnabled ->> loginButton.enabledBond
-    viewModel.loginSignal ->> didLoginEventListener
     
-    onLoginListener = loginButton.eventDynamic.filter{ $0 == .TouchUpInside } ->> {
-      [unowned self] event in
-      self.viewModel.login()
-    }
+    viewModel.loginButtonEnabled ->> loginButton.enabledBond
+    viewModel.loginSignal.rewrite(self) ->> didLoginEventListener
+    
+    loginButton.eventDynamic.filter(==, .TouchUpInside).rewrite(self) ->> loginTapEventListener
   }
 }
 
@@ -70,7 +67,13 @@ class ViewModelTests: XCTestCase {
   }
   
   func testExample() {
-    // This is an example of a functional test case.
+    let button = UIButton()
+    
+    let bond = button.eventDynamic.filter { $0 == UIControlEvents.TouchUpInside } ->| { evnt in
+      XCTFail("Should not be called")
+    }
+    
+    
     XCTAssert(true, "Pass")
   }
   
