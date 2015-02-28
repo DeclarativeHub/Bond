@@ -1,6 +1,6 @@
 //
 //  Bond+Foundation.swift
-//  BondDemo
+//  Bond
 //
 //  The MIT License (MIT)
 //
