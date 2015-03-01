@@ -36,7 +36,7 @@ extension UILabel: Bondable {
     } else {
       let d = InternalDynamic<String>(self.text ?? "", faulty: false)
       let bond = Bond<String>() { [weak self] v in if let s = self { s.text = v } }
-      d.bindTo(bond)
+      d.bindTo(bond, fire: false, strongly: false)
       d.retain(bond)
       objc_setAssociatedObject(self, &textDynamicHandleUILabel, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
       return d

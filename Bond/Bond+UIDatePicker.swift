@@ -66,7 +66,7 @@ extension UIDatePicker /*: Dynamical, Bondable */ {
     } else {
       let d = DatePickerDynamic<NSDate>(control: self)
       let bond = Bond<NSDate>() { [weak self] v in if let s = self { s.date = v } }
-      d.bindTo(bond)
+      d.bindTo(bond, fire: false, strongly: false)
       d.retain(bond)
       objc_setAssociatedObject(self, &dateDynamicHandleUIDatePicker, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
       return d

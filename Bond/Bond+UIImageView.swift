@@ -36,7 +36,7 @@ extension UIImageView: Bondable {
     } else {
       let d = InternalDynamic<UIImage?>(self.image, faulty: false)
       let bond = Bond<UIImage?>() { [weak self] v in if let s = self { s.image = v } }
-      d.bindTo(bond)
+      d.bindTo(bond, fire: false, strongly: false)
       d.retain(bond)
       objc_setAssociatedObject(self, &imageDynamicHandleUIImageView, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
       return d

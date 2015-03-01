@@ -67,7 +67,7 @@ extension UISlider /*: Dynamical, Bondable */ {
     } else {
       let d = SliderDynamic<Float>(control: self)
       let bond = Bond<Float>() { [weak self] v in if let s = self { s.value = v } }
-      d.bindTo(bond)
+      d.bindTo(bond, fire: false, strongly: false)
       d.retain(bond)
       objc_setAssociatedObject(self, &valueDynamicHandleUISlider, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
       return d

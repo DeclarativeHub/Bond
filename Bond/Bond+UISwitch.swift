@@ -66,7 +66,7 @@ extension UISwitch /*: Dynamical, Bondable */ {
     } else {
       let d = SwitchDynamic<Bool>(control: self)
       let bond = Bond<Bool>() { [weak self] v in if let s = self { s.on = v } }
-      d.bindTo(bond)
+      d.bindTo(bond, fire: false, strongly: false)
       d.retain(bond)
       objc_setAssociatedObject(self, &onDynamicHandleUISwitch, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
       return d
