@@ -28,7 +28,7 @@
 import UIKit
 
 @objc class TableViewDynamicArrayDataSource: NSObject, UITableViewDataSource {
-  var dynamic: DynamicArray<UITableViewCell>
+  unowned var dynamic: DynamicArray<UITableViewCell>
   
   init(dynamic: DynamicArray<UITableViewCell>) {
     self.dynamic = dynamic
@@ -52,21 +52,21 @@ public class TableViewBond<T>: ArrayBond<UITableViewCell> {
     self.tableView = tableView
     super.init()
     
-    self.insertListener = { i in
+    self.insertListener = { [unowned self] i in
       self.tableView?.beginUpdates()
       self.tableView?.insertRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: 0) },
         withRowAnimation: UITableViewRowAnimation.Automatic)
       self.tableView?.endUpdates()
     }
     
-    self.removeListener = { i, o in
+    self.removeListener = { [unowned self] i, o in
       self.tableView?.beginUpdates()
       self.tableView?.deleteRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: 0) },
         withRowAnimation: UITableViewRowAnimation.Automatic)
       self.tableView?.endUpdates()
     }
     
-    self.updateListener = { i in
+    self.updateListener = { [unowned self] i in
       self.tableView?.beginUpdates()
       self.tableView?.reloadRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: 0) },
         withRowAnimation: UITableViewRowAnimation.Automatic)
@@ -81,6 +81,10 @@ public class TableViewBond<T>: ArrayBond<UITableViewCell> {
       tableView?.dataSource = dataSource
       tableView?.reloadData()
     }
+  }
+  
+  deinit {
+    tableView?.dataSource = nil
   }
 }
 
