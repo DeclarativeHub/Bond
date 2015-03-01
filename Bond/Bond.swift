@@ -189,6 +189,12 @@ public protocol Bondable {
   var designatedBond: Bond<BondType> { get }
 }
 
+extension Dynamic: Bondable {
+  public var designatedBond: Bond<T> {
+    return self.valueBond
+  }
+}
+
 // MARK: Functional additions
 
 public extension Dynamic
