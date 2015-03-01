@@ -27,20 +27,23 @@
 
 import UIKit
 
-private var designatedBondHandleUIProgressView: UInt8 = 0;
+private var progressDynamicHandleUIProgressView: UInt8 = 0;
 
 extension UIProgressView: Bondable {
-  public var progressBond: Bond<Float> {
-    if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUIProgressView) {
-      return (b as? Bond<Float>)!
+  public var dynProgress: Dynamic<Float> {
+    if let d: AnyObject = objc_getAssociatedObject(self, &progressDynamicHandleUIProgressView) {
+      return (d as? Dynamic<Float>)!
     } else {
-      let b = Bond<Float>() { [unowned self] v in self.progress = v }
-      objc_setAssociatedObject(self, &designatedBondHandleUIProgressView, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
-      return b
+      let d = InternalDynamic<Float>(self.progress, faulty: false)
+      let bond = Bond<Float>() { [weak self] v in if let s = self { s.progress = v } }
+      d.bindTo(bond)
+      d.retain(bond)
+      objc_setAssociatedObject(self, &progressDynamicHandleUIProgressView, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return d
     }
   }
   
   public var designatedBond: Bond<Float> {
-    return self.progressBond
+    return self.dynProgress.valueBond
   }
 }

@@ -19,7 +19,7 @@ class UIKitTests: XCTestCase {
     view.hidden = true
     XCTAssert(view.hidden == true, "Initial value")
     
-    dynamicDriver ->> view.hiddenBond
+    dynamicDriver ->> view.dynHidden
     XCTAssert(view.hidden == false, "Value after binding")
     
     dynamicDriver.value = true
@@ -33,7 +33,7 @@ class UIKitTests: XCTestCase {
     view.alpha = 0.0
     XCTAssert(abs(view.alpha - 0.0) < 0.0001, "Initial value")
     
-    dynamicDriver ->> view.alphaBond
+    dynamicDriver ->> view.dynAlpha
     XCTAssert(abs(view.alpha - 0.1) < 0.0001, "Value after binding")
     
     dynamicDriver.value = 0.5
@@ -47,7 +47,7 @@ class UIKitTests: XCTestCase {
     view.backgroundColor = UIColor.redColor()
     XCTAssert(view.backgroundColor == UIColor.redColor(), "Initial value")
     
-    dynamicDriver ->> view.backgroundColorBond
+    dynamicDriver ->> view.dynBackgroundColor
     XCTAssert(view.backgroundColor == UIColor.blackColor(), "Value after binding")
     
     dynamicDriver.value = UIColor.blueColor()
@@ -118,7 +118,7 @@ class UIKitTests: XCTestCase {
     button.titleLabel?.text = "a"
     XCTAssert(button.titleLabel?.text == "a", "Initial value")
     
-    dynamicDriver ->> button.titleBond
+    dynamicDriver ->> button.dynTitle
     XCTAssert(button.titleLabel?.text == "b", "Value after binding")
     
     dynamicDriver.value = "c"
@@ -134,7 +134,7 @@ class UIKitTests: XCTestCase {
     button.setImage(image1, forState: .Normal)
     XCTAssert(button.imageForState(.Normal) == image1, "Initial value")
     
-    dynamicDriver ->> button.imageForNormalStateBond
+    dynamicDriver ->> button.dynImageForNormalState
     XCTAssert(button.imageForState(.Normal) == nil, "Value after binding")
     
     dynamicDriver.value = image2
@@ -162,7 +162,7 @@ class UIKitTests: XCTestCase {
     barItem.title = "a"
     XCTAssert(barItem.title == "a", "Initial value")
     
-    dynamicDriver ->> barItem.titleBond
+    dynamicDriver ->> barItem.dynTitle
     XCTAssert(barItem.title == "b", "Value after binding")
     
     dynamicDriver.value = "c"
@@ -178,7 +178,7 @@ class UIKitTests: XCTestCase {
     barItem.image = image1
     XCTAssert(barItem.image == image1, "Initial value")
     
-    dynamicDriver ->> barItem.imageBond
+    dynamicDriver ->> barItem.dynImage
     XCTAssert(barItem.image == nil, "Value after binding")
     
     dynamicDriver.value = image2
@@ -192,7 +192,7 @@ class UIKitTests: XCTestCase {
     view.startAnimating()
     XCTAssert(view.isAnimating() == true, "Initial value")
     
-    dynamicDriver ->> view.animatingBond
+    dynamicDriver ->> view.dynIsAnimating
     XCTAssert(view.isAnimating() == false, "Value after binding")
     
     dynamicDriver.value = true

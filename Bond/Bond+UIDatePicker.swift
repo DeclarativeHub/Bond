@@ -60,7 +60,7 @@ class DatePickerDynamic<T>: InternalDynamic<NSDate>
 private var dateDynamicHandleUIDatePicker: UInt8 = 0;
 
 extension UIDatePicker /*: Dynamical, Bondable */ {
-  public var dateDynamic: Dynamic<NSDate> {
+  public var dynDate: Dynamic<NSDate> {
     if let d: AnyObject = objc_getAssociatedObject(self, &dateDynamicHandleUIDatePicker) {
       return (d as? Dynamic<NSDate>)!
     } else {
@@ -74,11 +74,11 @@ extension UIDatePicker /*: Dynamical, Bondable */ {
   }
   
   public var designatedDynamic: Dynamic<NSDate> {
-    return self.dateDynamic
+    return self.dynDate
   }
   
   public var designatedBond: Bond<NSDate> {
-    return self.dateDynamic.valueBond
+    return self.dynDate.valueBond
   }
 }
 

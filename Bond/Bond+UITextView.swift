@@ -31,7 +31,7 @@ private var textDynamicHandleUITextView: UInt8 = 0;
 
 extension UITextView: Bondable {
   
-  public var textDynamic: Dynamic<String> {
+  public var dynText: Dynamic<String> {
     if let d: AnyObject = objc_getAssociatedObject(self, &textDynamicHandleUITextView) {
       return (d as? Dynamic<String>)!
     } else {
@@ -53,11 +53,11 @@ extension UITextView: Bondable {
   }
   
   public var designatedDynamic: Dynamic<String> {
-    return self.textDynamic
+    return self.dynText
   }
   
   public var designatedBond: Bond<String> {
-    return self.textDynamic.valueBond
+    return self.dynText.valueBond
   }
 }
 

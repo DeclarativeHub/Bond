@@ -19,13 +19,13 @@ class UIKitDynamicTests: XCTestCase {
     slider.value = 0.1
     XCTAssert(slider.value == 0.1, "Initial value")
     
-    dynamicDriver <->> slider.valueDynamic
+    dynamicDriver <->> slider.dynValue
     XCTAssert(slider.value == 0.0, "Slider value after binding")
     
     dynamicDriver.value = 0.5
     XCTAssert(slider.value == 0.5, "Slider value reflects dynamic value change")
     
-    slider.valueDynamic.value = 0.8 // ideally we should simulate user input
+    slider.dynValue.value = 0.8 // ideally we should simulate user input
     XCTAssert(dynamicDriver.value == 0.8, "Dynamic value reflects slider value change")
   }
   
@@ -36,13 +36,13 @@ class UIKitDynamicTests: XCTestCase {
     uiSwitch.on = true
     XCTAssert(uiSwitch.on == true, "Initial value")
     
-    dynamicDriver <->> uiSwitch.onDynamic
+    dynamicDriver <->> uiSwitch.dynOn
     XCTAssert(uiSwitch.on == false, "Switch value after binding")
     
     dynamicDriver.value = true
     XCTAssert(uiSwitch.on == true, "Switch value reflects dynamic value change")
     
-    uiSwitch.onDynamic.value = false // ideally we should simulate user input
+    uiSwitch.dynOn.value = false // ideally we should simulate user input
     XCTAssert(dynamicDriver.value == false, "Dynamic value reflects switch value change")
   }
   
@@ -52,15 +52,15 @@ class UIKitDynamicTests: XCTestCase {
     var observedValue = UIControlEvents.AllEvents
     let bond = Bond<UIControlEvents>() { v in observedValue = v }
     
-    XCTAssert(button.eventDynamic.faulty == true, "Should be faulty initially")
+    XCTAssert(button.dynEvent.faulty == true, "Should be faulty initially")
     
-    button.eventDynamic.filter(==, .TouchUpInside) ->> bond
+    button.dynEvent.filter(==, .TouchUpInside) ->> bond
     XCTAssert(observedValue == UIControlEvents.AllEvents, "Value after binding should not be changed")
     
-    button.eventDynamic.value = UIControlEvents.TouchDragInside
+    button.dynEvent.value = UIControlEvents.TouchDragInside
     XCTAssert(observedValue == UIControlEvents.AllEvents, "Dynamic change does not pass test - should not update observedValue")
     
-    button.eventDynamic.value = UIControlEvents.TouchUpInside
+    button.dynEvent.value = UIControlEvents.TouchUpInside
     XCTAssert(observedValue == UIControlEvents.TouchUpInside, "Dynamic change passes test - should update observedValue")
   }
   
@@ -71,14 +71,14 @@ class UIKitDynamicTests: XCTestCase {
     textField.text = "a"
     XCTAssert(textField.text == "a", "Initial value")
     
-    dynamicDriver <->> textField.textDynamic
+    dynamicDriver <->> textField.dynText
     XCTAssert(textField.text == "b", "Text field value after binding")
     
     dynamicDriver.value = "c"
     XCTAssert(textField.text == "c", "Text field value reflects dynamic value change")
     
-    textField.textDynamic.value = "d" // ideally we should simulate user input
-    XCTAssert(textField.textDynamic.value == "d", "Dynamic value reflects text field value change")
+    textField.dynText.value = "d" // ideally we should simulate user input
+    XCTAssert(textField.dynText.value == "d", "Dynamic value reflects text field value change")
     XCTAssert(dynamicDriver.value == "d", "Dynamic value reflects text view field change")
   }
   
@@ -89,7 +89,7 @@ class UIKitDynamicTests: XCTestCase {
     textView.text = "a"
     XCTAssert(textView.text == "a", "Initial value")
     
-    dynamicDriver <->> textView.textDynamic
+    dynamicDriver <->> textView.dynText
     XCTAssert(textView.text == "b", "Text view value after binding")
     
     dynamicDriver.value = "c"
@@ -97,7 +97,7 @@ class UIKitDynamicTests: XCTestCase {
     
     textView.text = "d"
     NSNotificationCenter.defaultCenter().postNotificationName(UITextViewTextDidChangeNotification, object: textView)
-    XCTAssert(textView.textDynamic.value == "d", "Dynamic value reflects text view value change")
+    XCTAssert(textView.dynText.value == "d", "Dynamic value reflects text view value change")
     XCTAssert(dynamicDriver.value == "d", "Dynamic value reflects text view value change")
   }
   
@@ -112,13 +112,13 @@ class UIKitDynamicTests: XCTestCase {
     datePicker.date = date2
     XCTAssert(datePicker.date == date2, "Initial value")
     
-    dynamicDriver <->> datePicker.dateDynamic
+    dynamicDriver <->> datePicker.dynDate
     XCTAssert(datePicker.date == date1, "DatePicker value after binding")
     
     dynamicDriver.value = date3
     XCTAssert(datePicker.date == date3, "DatePicker value reflects dynamic value change")
     
-    datePicker.dateDynamic.value = date2 // ideally we should simulate user input
+    datePicker.dynDate.value = date2 // ideally we should simulate user input
     XCTAssert(dynamicDriver.value == date2, "Dynamic value reflects DatePicker value change")
   }
 }

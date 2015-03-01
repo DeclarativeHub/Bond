@@ -61,7 +61,7 @@ private var designatedBondHandleUISlider: UInt8 = 0;
 private var valueDynamicHandleUISlider: UInt8 = 0;
 
 extension UISlider /*: Dynamical, Bondable */ {
-  public var valueDynamic: Dynamic<Float> {
+  public var dynValue: Dynamic<Float> {
     if let d: AnyObject = objc_getAssociatedObject(self, &valueDynamicHandleUISlider) {
       return (d as? Dynamic<Float>)!
     } else {
@@ -75,11 +75,11 @@ extension UISlider /*: Dynamical, Bondable */ {
   }
   
   public var designatedDynamic: Dynamic<Float> {
-    return self.valueDynamic
+    return self.dynValue
   }
   
   public var designatedBond: Bond<Float> {
-    return self.valueDynamic.valueBond
+    return self.dynValue.valueBond
   }
 }
 

@@ -61,7 +61,7 @@ private var textDynamicHandleUITextField: UInt8 = 0;
 
 extension UITextField /*: Dynamical, Bondable */ {
   
-  public var textDynamic: Dynamic<String> {
+  public var dynText: Dynamic<String> {
     if let d: AnyObject = objc_getAssociatedObject(self, &textDynamicHandleUITextField) {
       return (d as? Dynamic<String>)!
     } else {
@@ -75,11 +75,11 @@ extension UITextField /*: Dynamical, Bondable */ {
   }
   
   public var designatedDynamic: Dynamic<String> {
-    return self.textDynamic
+    return self.dynText
   }
   
   public var designatedBond: Bond<String> {
-    return self.textDynamic.valueBond
+    return self.dynText.valueBond
   }
 }
 

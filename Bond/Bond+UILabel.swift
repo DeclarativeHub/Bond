@@ -27,20 +27,23 @@
 
 import UIKit
 
-private var designatedBondHandleUILabel: UInt8 = 0;
+private var textDynamicHandleUILabel: UInt8 = 0;
 
 extension UILabel: Bondable {
-  public var textBond: Bond<String> {
-    if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUILabel) {
-      return (b as? Bond<String>)!
+  public var dynText: Dynamic<String> {
+    if let d: AnyObject = objc_getAssociatedObject(self, &textDynamicHandleUILabel) {
+      return (d as? Dynamic<String>)!
     } else {
-      let b = Bond<String>() { [unowned self] v in self.text = v }
-      objc_setAssociatedObject(self, &designatedBondHandleUILabel, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
-      return b
+      let d = InternalDynamic<String>(self.text ?? "", faulty: false)
+      let bond = Bond<String>() { [weak self] v in if let s = self { s.text = v } }
+      d.bindTo(bond)
+      d.retain(bond)
+      objc_setAssociatedObject(self, &textDynamicHandleUILabel, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return d
     }
   }
   
   public var designatedBond: Bond<String> {
-    return self.textBond
+    return self.dynText.valueBond
   }
 }

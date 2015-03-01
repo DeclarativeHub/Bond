@@ -76,13 +76,13 @@ class ButtonDynamic<T>: Dynamic<UIControlEvents>
 }
 
 private var eventDynamicHandleUIButton: UInt8 = 0;
-private var enabledBondHandleUIButton: UInt8 = 0;
-private var titleBondHandleUIButton: UInt8 = 0;
-private var imageForNormalStateBondHandleUIButton: UInt8 = 0;
+private var enabledDynamicHandleUIButton: UInt8 = 0;
+private var titleDynamicHandleUIButton: UInt8 = 0;
+private var imageForNormalStateDynamicHandleUIButton: UInt8 = 0;
 
 extension UIButton /*: Dynamical, Bondable */ {
 
-  public var eventDynamic: Dynamic<UIControlEvents> {
+  public var dynEvent: Dynamic<UIControlEvents> {
     if let d: AnyObject = objc_getAssociatedObject(self, &eventDynamicHandleUIButton) {
       return (d as? Dynamic<UIControlEvents>)!
     } else {
@@ -92,46 +92,51 @@ extension UIButton /*: Dynamical, Bondable */ {
     }
   }
   
-  public var enabledBond: Bond<Bool> {
-    if let b: AnyObject = objc_getAssociatedObject(self, &enabledBondHandleUIButton) {
-      return (b as? Bond<Bool>)!
+  public var dynEnabled: Dynamic<Bool> {
+    if let d: AnyObject = objc_getAssociatedObject(self, &enabledDynamicHandleUIButton) {
+      return (d as? Dynamic<Bool>)!
     } else {
-      let b = Bond<Bool>() { [unowned self] v in self.enabled = v }
-      objc_setAssociatedObject(self, &enabledBondHandleUIButton, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
-      return b
+      let d = InternalDynamic<Bool>(self.enabled, faulty: false)
+      let bond = Bond<Bool>() { [weak self] v in if let s = self { s.enabled = v } }
+      d.bindTo(bond)
+      d.retain(bond)
+      objc_setAssociatedObject(self, &enabledDynamicHandleUIButton, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return d
     }
   }
   
-  public var titleBond: Bond<String> {
-    if let b: AnyObject = objc_getAssociatedObject(self, &titleBondHandleUIButton) {
-      return (b as? Bond<String>)!
+  public var dynTitle: Dynamic<String> {
+    if let d: AnyObject = objc_getAssociatedObject(self, &titleDynamicHandleUIButton) {
+      return (d as? Dynamic<String>)!
     } else {
-      let b = Bond<String>() { [unowned self] v in
-        if let label = self.titleLabel {
-          label.text = v
-        }
-      }
-      objc_setAssociatedObject(self, &titleBondHandleUIButton, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
-      return b
+      let d = InternalDynamic<String>(self.titleLabel?.text ?? "", faulty: false)
+      let bond = Bond<String>() { [weak self] v in if let s = self { s.titleLabel?.text = v } }
+      d.bindTo(bond)
+      d.retain(bond)
+      objc_setAssociatedObject(self, &titleDynamicHandleUIButton, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return d
     }
   }
   
-  public var imageForNormalStateBond: Bond<UIImage?> {
-    if let b: AnyObject = objc_getAssociatedObject(self, &imageForNormalStateBondHandleUIButton) {
-      return (b as? Bond<UIImage?>)!
+  public var dynImageForNormalState: Dynamic<UIImage?> {
+    if let d: AnyObject = objc_getAssociatedObject(self, &imageForNormalStateDynamicHandleUIButton) {
+      return (d as? Dynamic<UIImage?>)!
     } else {
-      let b = Bond<UIImage?>() { [unowned self] img in self.setImage(img, forState: .Normal) }
-      objc_setAssociatedObject(self, &imageForNormalStateBondHandleUIButton, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
-      return b
+      let d = InternalDynamic<UIImage?>(self.imageForState(.Normal), faulty: false)
+      let bond = Bond<UIImage?>() { [weak self] img in if let s = self { s.setImage(img, forState: .Normal) } }
+      d.bindTo(bond)
+      d.retain(bond)
+      objc_setAssociatedObject(self, &imageForNormalStateDynamicHandleUIButton, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return d
     }
   }
   
   public var designatedDynamic: Dynamic<UIControlEvents> {
-    return self.eventDynamic
+    return self.dynEvent
   }
   
   public var designatedBond: Bond<Bool> {
-    return self.enabledBond
+    return self.dynEnabled.valueBond
   }
 }
 

@@ -57,12 +57,12 @@ class ViewController: UIViewController {
   }
 
   override func viewDidLoad() {
-    viewModel.username <->> usernameTextField.textDynamic
-    viewModel.password <->> passwordTextField.textDynamic
+    viewModel.username <->> usernameTextField.dynText
+    viewModel.password <->> passwordTextField.dynText
     
-    viewModel.loginButtonEnabled ->> loginButton.enabledBond
+    viewModel.loginButtonEnabled ->> loginButton.dynEnabled
     viewModel.loginEventDynamic.zip(self) ->| didLoginEventListener
     
-    loginButton.eventDynamic.filter(==, .TouchUpInside).rewrite(self) ->> loginTapEventListener
+    loginButton.dynEvent.filter(==, .TouchUpInside).rewrite(self) ->> loginTapEventListener
   }
 }

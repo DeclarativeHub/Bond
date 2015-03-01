@@ -27,38 +27,48 @@
 
 import UIKit
 
-private var backgroundColorBondHandleUIView: UInt8 = 0;
-private var alphaBondHandleUIView: UInt8 = 0;
-private var hiddenBondHandleUIView: UInt8 = 0;
+private var backgroundColorDynamicHandleUIView: UInt8 = 0;
+private var alphaDynamicHandleUIView: UInt8 = 0;
+private var hiddenDynamicHandleUIView: UInt8 = 0;
 
 extension UIView {
-  public var backgroundColorBond: Bond<UIColor> {
-    if let b: AnyObject = objc_getAssociatedObject(self, &backgroundColorBondHandleUIView) {
-      return (b as? Bond<UIColor>)!
+  
+  public var dynBackgroundColor: Dynamic<UIColor> {
+    if let d: AnyObject = objc_getAssociatedObject(self, &backgroundColorDynamicHandleUIView) {
+      return (d as? Dynamic<UIColor>)!
     } else {
-      let b = Bond<UIColor>() { [unowned self] v in self.backgroundColor = v }
-      objc_setAssociatedObject(self, &backgroundColorBondHandleUIView, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
-      return b
+      let d = InternalDynamic<UIColor>(self.backgroundColor ?? UIColor.clearColor(), faulty: self.backgroundColor == nil)
+      let bond = Bond<UIColor>() { [weak self] v in if let s = self { s.backgroundColor = v } }
+      d.bindTo(bond)
+      d.retain(bond)
+      objc_setAssociatedObject(self, &backgroundColorDynamicHandleUIView, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return d
     }
   }
   
-  public var alphaBond: Bond<CGFloat> {
-    if let b: AnyObject = objc_getAssociatedObject(self, &alphaBondHandleUIView) {
-      return (b as? Bond<CGFloat>)!
+  public var dynAlpha: Dynamic<CGFloat> {
+    if let d: AnyObject = objc_getAssociatedObject(self, &alphaDynamicHandleUIView) {
+      return (d as? Dynamic<CGFloat>)!
     } else {
-      let b = Bond<CGFloat>() { [unowned self] v in self.alpha = v }
-      objc_setAssociatedObject(self, &alphaBondHandleUIView, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
-      return b
+      let d = InternalDynamic<CGFloat>(self.alpha, faulty: false)
+      let bond = Bond<CGFloat>() { [weak self] v in if let s = self { s.alpha = v } }
+      d.bindTo(bond)
+      d.retain(bond)
+      objc_setAssociatedObject(self, &alphaDynamicHandleUIView, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return d
     }
   }
   
-  public var hiddenBond: Bond<Bool> {
-    if let b: AnyObject = objc_getAssociatedObject(self, &hiddenBondHandleUIView) {
-      return (b as? Bond<Bool>)!
+  public var dynHidden: Dynamic<Bool> {
+    if let d: AnyObject = objc_getAssociatedObject(self, &hiddenDynamicHandleUIView) {
+      return (d as? Dynamic<Bool>)!
     } else {
-      let b = Bond<Bool>() { [unowned self] v in self.hidden = v }
-      objc_setAssociatedObject(self, &hiddenBondHandleUIView, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
-      return b
+      let d = InternalDynamic<Bool>(self.hidden, faulty: false)
+      let bond = Bond<Bool>() { [weak self] v in if let s = self { s.hidden = v } }
+      d.bindTo(bond)
+      d.retain(bond)
+      objc_setAssociatedObject(self, &hiddenDynamicHandleUIView, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return d
     }
   }
 }

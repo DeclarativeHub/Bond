@@ -60,7 +60,7 @@ class SwitchDynamic<T>: InternalDynamic<Bool>
 private var onDynamicHandleUISwitch: UInt8 = 0;
 
 extension UISwitch /*: Dynamical, Bondable */ {
-  public var onDynamic: Dynamic<Bool> {
+  public var dynOn: Dynamic<Bool> {
     if let d: AnyObject = objc_getAssociatedObject(self, &onDynamicHandleUISwitch) {
       return (d as? Dynamic<Bool>)!
     } else {
@@ -74,11 +74,11 @@ extension UISwitch /*: Dynamical, Bondable */ {
   }
   
   public var designatedDynamic: Dynamic<Bool> {
-    return self.onDynamic
+    return self.dynOn
   }
   
   public var designatedBond: Bond<Bool> {
-    return self.onDynamic.valueBond
+    return self.dynOn.valueBond
   }
 }
 

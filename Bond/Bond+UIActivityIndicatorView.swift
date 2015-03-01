@@ -27,26 +27,32 @@
 
 import UIKit
 
-private var designatedBondHandleUIActivityIndicatorView: UInt8 = 0;
+private var animatingDynamicHandleUIActivityIndicatorView: UInt8 = 0;
 
 extension UIActivityIndicatorView: Bondable {
-  public var animatingBond: Bond<Bool> {
-    if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUIActivityIndicatorView) {
-      return (b as? Bond<Bool>)!
+  
+  public var dynIsAnimating: Dynamic<Bool> {
+    if let d: AnyObject = objc_getAssociatedObject(self, &animatingDynamicHandleUIActivityIndicatorView) {
+      return (d as? Dynamic<Bool>)!
     } else {
-      let b = Bond<Bool>() { [unowned self] v in
-        if v {
-          self.startAnimating()
-        } else {
-          self.stopAnimating()
+      let d = InternalDynamic<Bool>(self.isAnimating(), faulty: false)
+      let bond = Bond<Bool>() { [weak self] v in
+        if let s = self {
+          if v {
+            s.startAnimating()
+          } else {
+            s.stopAnimating()
+          }
         }
       }
-      objc_setAssociatedObject(self, &designatedBondHandleUIActivityIndicatorView, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
-      return b
+      d.bindTo(bond)
+      d.retain(bond)
+      objc_setAssociatedObject(self, &animatingDynamicHandleUIActivityIndicatorView, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return d
     }
   }
   
   public var designatedBond: Bond<Bool> {
-    return self.animatingBond
+    return self.dynIsAnimating.designatedBond
   }
 }

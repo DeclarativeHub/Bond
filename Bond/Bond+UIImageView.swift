@@ -27,20 +27,23 @@
 
 import UIKit
 
-var associatedObjectHandleUIImageView: UInt8 = 0;
+var imageDynamicHandleUIImageView: UInt8 = 0;
 
 extension UIImageView: Bondable {
-  public var imageBond: Bond<UIImage?> {
-    if let b: AnyObject = objc_getAssociatedObject(self, &associatedObjectHandleUIImageView) {
-      return (b as? Bond<UIImage?>)!
+  public var dynImage: Dynamic<UIImage?> {
+    if let d: AnyObject = objc_getAssociatedObject(self, &imageDynamicHandleUIImageView) {
+      return (d as? Dynamic<UIImage?>)!
     } else {
-      let b = Bond<UIImage?>() { [unowned self] v in self.image = v }
-      objc_setAssociatedObject(self, &associatedObjectHandleUIImageView, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
-      return b
+      let d = InternalDynamic<UIImage?>(self.image, faulty: false)
+      let bond = Bond<UIImage?>() { [weak self] v in if let s = self { s.image = v } }
+      d.bindTo(bond)
+      d.retain(bond)
+      objc_setAssociatedObject(self, &imageDynamicHandleUIImageView, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return d
     }
   }
   
   public var designatedBond: Bond<UIImage?> {
-    return self.imageBond
+    return self.dynImage.valueBond
   }
 }
