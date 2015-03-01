@@ -181,7 +181,7 @@ public class InternalDynamic<T>: Dynamic<T> {
 
 public protocol Dynamical {
   typealias DynamicType
-  func designatedDynamic() -> Dynamic<DynamicType>
+  var designatedDynamic: Dynamic<DynamicType> { get }
 }
 
 public protocol Bondable {

@@ -60,3 +60,47 @@ extension UITextView: Bondable {
     return self.textDynamic.valueBond
   }
 }
+
+public func ->> (left: UITextView, right: Bond<String>) {
+  left.designatedDynamic ->> right
+}
+
+public func ->> <U: Bondable where U.BondType == String>(left: UITextView, right: U) {
+  left.designatedDynamic ->> right.designatedBond
+}
+
+public func ->> (left: UITextView, right: UITextView) {
+  left.designatedDynamic ->> right.designatedBond
+}
+
+public func ->> (left: UITextView, right: UILabel) {
+  left.designatedDynamic ->> right.designatedBond
+}
+
+public func ->> (left: UITextView, right: UITextField) {
+  left.designatedDynamic ->> right.designatedBond
+}
+
+public func ->> <T: Dynamical where T.DynamicType == String>(left: T, right: UITextView) {
+  left.designatedDynamic ->> right.designatedBond
+}
+
+public func ->> (left: Dynamic<String>, right: UITextView) {
+  left ->> right.designatedBond
+}
+
+public func <->> (left: UITextView, right: UITextView) {
+  left.designatedDynamic <->> right.designatedDynamic
+}
+
+public func <->> (left: Dynamic<String>, right: UITextView) {
+  left <->> right.designatedDynamic
+}
+
+public func <->> (left: UITextView, right: Dynamic<String>) {
+  left.designatedDynamic <->> right
+}
+
+public func <->> (left: UITextView, right: UITextField) {
+  left.designatedDynamic <->> right.designatedDynamic
+}

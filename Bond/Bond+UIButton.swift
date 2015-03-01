@@ -144,7 +144,7 @@ public func ->> <U: Bondable where U.BondType == UIControlEvents>(left: UIButton
 }
 
 public func ->> <T: Dynamical where T.DynamicType == Bool>(left: T, right: UIButton) {
-  left.designatedDynamic() ->> right.designatedBond
+  left.designatedDynamic ->> right.designatedBond
 }
 
 public func ->> (left: Dynamic<Bool>, right: UIButton) {

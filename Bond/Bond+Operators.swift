@@ -43,11 +43,11 @@ public func ->> <T>(left: Dynamic<T>, right: Dynamic<T>) {
 }
 
 public func ->> <T: Dynamical, U where T.DynamicType == U>(left: T, right: Bond<U>) {
-  left.designatedDynamic() ->> right
+  left.designatedDynamic ->> right
 }
 
 public func ->> <T: Dynamical, U: Bondable where T.DynamicType == U.BondType>(left: T, right: U) {
-  left.designatedDynamic() ->> right.designatedBond
+  left.designatedDynamic ->> right.designatedBond
 }
 
 public func ->> <T, U: Bondable where U.BondType == T>(left: Dynamic<T>, right: U) {
@@ -68,11 +68,11 @@ public func ->| <T>(left: Dynamic<T>, right: T -> Void) -> Bond<T> {
 }
 
 public func ->| <T: Dynamical, U where T.DynamicType == U>(left: T, right: Bond<U>) {
-  left.designatedDynamic() ->| right
+  left.designatedDynamic ->| right
 }
 
 public func ->| <T: Dynamical, U: Bondable where T.DynamicType == U.BondType>(left: T, right: U) {
-  left.designatedDynamic() ->| right.designatedBond
+  left.designatedDynamic ->| right.designatedBond
 }
 
 public func ->| <T, U: Bondable where U.BondType == T>(left: Dynamic<T>, right: U) {

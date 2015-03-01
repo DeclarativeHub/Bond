@@ -99,9 +99,22 @@ public func ->> (left: UISwitch, right: UISwitch) {
 }
 
 public func ->> <T: Dynamical where T.DynamicType == Bool>(left: T, right: UISwitch) {
-  left.designatedDynamic() ->> right.designatedBond
+  left.designatedDynamic ->> right.designatedBond
 }
 
 public func ->> (left: Dynamic<Bool>, right: UISwitch) {
   left ->> right.designatedBond
 }
+
+public func <->> (left: UISwitch, right: UISwitch) {
+  left.designatedDynamic <->> right.designatedDynamic
+}
+
+public func <->> (left: Dynamic<Bool>, right: UISwitch) {
+  left <->> right.designatedDynamic
+}
+
+public func <->> (left: UISwitch, right: Dynamic<Bool>) {
+  left.designatedDynamic <->> right
+}
+

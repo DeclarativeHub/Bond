@@ -99,3 +99,14 @@ public func ->> (left: Dynamic<Float>, right: UISlider) {
   left ->> right.designatedBond
 }
 
+public func <->> (left: UISlider, right: UISlider) {
+  left.designatedDynamic <->> right.designatedDynamic
+}
+
+public func <->> (left: Dynamic<Float>, right: UISlider) {
+  left <->> right.designatedDynamic
+}
+
+public func <->> (left: UISlider, right: Dynamic<Float>) {
+  left.designatedDynamic <->> right
+}

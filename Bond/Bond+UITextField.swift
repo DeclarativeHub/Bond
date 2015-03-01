@@ -99,15 +99,30 @@ public func ->> (left: UITextField, right: UILabel) {
   left.designatedDynamic ->> right.designatedBond
 }
 
+public func ->> (left: UITextField, right: UITextView) {
+  left.designatedDynamic ->> right.designatedBond
+}
+
 public func ->> <T: Dynamical where T.DynamicType == String>(left: T, right: UITextField) {
-  left.designatedDynamic() ->> right.designatedBond
+  left.designatedDynamic ->> right.designatedBond
 }
 
 public func ->> (left: Dynamic<String>, right: UITextField) {
   left ->> right.designatedBond
 }
 
-public func <->> (left: Dynamic<String>, right: UITextField) {
-  left <->> right.textDynamic
+public func <->> (left: UITextField, right: UITextField) {
+  left.designatedDynamic <->> right.designatedDynamic
 }
 
+public func <->> (left: Dynamic<String>, right: UITextField) {
+  left <->> right.designatedDynamic
+}
+
+public func <->> (left: UITextField, right: Dynamic<String>) {
+  left.designatedDynamic <->> right
+}
+
+public func <->> (left: UITextField, right: UITextView) {
+  left.designatedDynamic <->> right.designatedDynamic
+}

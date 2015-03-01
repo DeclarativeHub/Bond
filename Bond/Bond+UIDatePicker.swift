@@ -97,3 +97,15 @@ public func ->> (left: UIDatePicker, right: UIDatePicker) {
 public func ->> (left: Dynamic<NSDate>, right: UIDatePicker) {
   left ->> right.designatedBond
 }
+
+public func <->> (left: UIDatePicker, right: UIDatePicker) {
+  left.designatedDynamic <->> right.designatedDynamic
+}
+
+public func <->> (left: Dynamic<NSDate>, right: UIDatePicker) {
+  left <->> right.designatedDynamic
+}
+
+public func <->> (left: UIDatePicker, right: Dynamic<NSDate>) {
+  left.designatedDynamic <->> right
+}

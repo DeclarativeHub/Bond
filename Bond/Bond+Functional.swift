@@ -32,7 +32,7 @@ public func map<T, U>(dynamic: Dynamic<T>, f: T -> U) -> Dynamic<U> {
 }
 
 public func map<S: Dynamical, T, U where S.DynamicType == T>(dynamical: S, f: T -> U) -> Dynamic<U> {
-  return _map(dynamical.designatedDynamic(), f)
+  return _map(dynamical.designatedDynamic, f)
 }
 
 internal func _map<T, U>(dynamic: Dynamic<T>, f: T -> U) -> Dynamic<U> {
@@ -59,7 +59,7 @@ public func filter<T>(dynamic: Dynamic<T>, f: (T, T) -> Bool, v: T) -> Dynamic<T
 }
 
 public func filter<S: Dynamical, T where S.DynamicType == T>(dynamical: S, f: T -> Bool) -> Dynamic<T> {
-  return _filter(dynamical.designatedDynamic(), f)
+  return _filter(dynamical.designatedDynamic, f)
 }
 
 internal func _filter<T>(dynamic: Dynamic<T>, f: T -> Bool) -> Dynamic<T> {
