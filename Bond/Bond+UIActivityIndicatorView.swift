@@ -1,5 +1,5 @@
 //
-//  Bond+UILabel.swift
+//  Bond+UIActivityIndicatorView.swift
 //  Bond
 //
 //  The MIT License (MIT)
@@ -27,20 +27,26 @@
 
 import UIKit
 
-private var designatedBondHandleUILabel: UInt8 = 0;
+private var designatedBondHandleUIActivityIndicatorView: UInt8 = 0;
 
-extension UILabel: Bondable {
-  public var textBond: Bond<String> {
-    if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUILabel) {
-      return (b as? Bond<String>)!
+extension UIActivityIndicatorView: Bondable {
+  public var animatingBond: Bond<Bool> {
+    if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUIActivityIndicatorView) {
+      return (b as? Bond<Bool>)!
     } else {
-      let b = Bond<String>() { [unowned self] v in self.text = v }
-      objc_setAssociatedObject(self, &designatedBondHandleUILabel, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      let b = Bond<Bool>() { [unowned self] v in
+        if v {
+          self.startAnimating()
+        } else {
+          self.stopAnimating()
+        }
+      }
+      objc_setAssociatedObject(self, &designatedBondHandleUIActivityIndicatorView, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
       return b
     }
   }
   
-  public var designatedBond: Bond<String> {
-    return self.textBond
+  public var designatedBond: Bond<Bool> {
+    return self.animatingBond
   }
 }

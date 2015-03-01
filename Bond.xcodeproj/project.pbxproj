@@ -22,6 +22,7 @@
 		DCA979861A83C52D00DD4A30 /* Bond+Foundation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BCC1A7C21B600A13B6B /* Bond+Foundation.swift */; };
 		EC048D181AA238AF00E9794C /* Bond+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC048D171AA238AF00E9794C /* Bond+Operators.swift */; };
 		EC048D191AA238AF00E9794C /* Bond+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC048D171AA238AF00E9794C /* Bond+Operators.swift */; };
+		EC0F22F61AA353100051723D /* Bond+UIActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0F22F51AA353100051723D /* Bond+UIActivityIndicatorView.swift */; };
 		EC41D6731A9FB934004DB6A4 /* ViewModelCompilesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC41D6721A9FB934004DB6A4 /* ViewModelCompilesTests.swift */; };
 		EC7137E21AA239FC00CFC854 /* Bond+Functional.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC048D141AA2386A00E9794C /* Bond+Functional.swift */; };
 		EC7137E31AA239FD00CFC854 /* Bond+Functional.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC048D141AA2386A00E9794C /* Bond+Functional.swift */; };
@@ -74,6 +75,7 @@
 		DCA979731A83C3A200DD4A30 /* BondOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BondOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC048D141AA2386A00E9794C /* Bond+Functional.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+Functional.swift"; sourceTree = "<group>"; };
 		EC048D171AA238AF00E9794C /* Bond+Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+Operators.swift"; sourceTree = "<group>"; };
+		EC0F22F51AA353100051723D /* Bond+UIActivityIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UIActivityIndicatorView.swift"; sourceTree = "<group>"; };
 		EC41D6721A9FB934004DB6A4 /* ViewModelCompilesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelCompilesTests.swift; sourceTree = "<group>"; };
 		EC71C0AB1A9F839A009FEA4B /* UIKitDynamicTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIKitDynamicTests.swift; sourceTree = "<group>"; };
 		EC74CFD11A8BF1A300ED4026 /* UIKitBondTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIKitBondTests.swift; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 				ECD9CC611A9FA42A00484323 /* Bond+UITextField.swift */,
 				ECD9CC691A9FA4AE00484323 /* Bond+UITextView.swift */,
 				ECD9CC631A9FA44C00484323 /* Bond+UIDatePicker.swift */,
+				EC0F22F51AA353100051723D /* Bond+UIActivityIndicatorView.swift */,
 			);
 			name = UIKit;
 			sourceTree = "<group>";
@@ -398,6 +401,7 @@
 				69491BCE1A7C21B600A13B6B /* Bond.swift in Sources */,
 				69491BD01A7C21B600A13B6B /* Bond+Foundation.swift in Sources */,
 				ECD9CC6A1A9FA4AE00484323 /* Bond+UITextView.swift in Sources */,
+				EC0F22F61AA353100051723D /* Bond+UIActivityIndicatorView.swift in Sources */,
 				ECD9CC5C1A9FA3E200484323 /* Bond+UIImageView.swift in Sources */,
 				ECD9CC661A9FA47A00484323 /* Bond+UITableView.swift in Sources */,
 				EC048D181AA238AF00E9794C /* Bond+Operators.swift in Sources */,

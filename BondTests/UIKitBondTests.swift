@@ -184,4 +184,18 @@ class UIKitTests: XCTestCase {
     dynamicDriver.value = image2
     XCTAssert(barItem.image == image2, "Value after dynamic change")
   }
+  
+  func testUIActivityIndicatorViewHiddenBond() {
+    var dynamicDriver = Dynamic<Bool>(false)
+    let view = UIActivityIndicatorView()
+    
+    view.startAnimating()
+    XCTAssert(view.isAnimating() == true, "Initial value")
+    
+    dynamicDriver ->> view.animatingBond
+    XCTAssert(view.isAnimating() == false, "Value after binding")
+    
+    dynamicDriver.value = true
+    XCTAssert(view.isAnimating() == true, "Value after dynamic change")
+  }
 }
