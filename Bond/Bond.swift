@@ -215,16 +215,8 @@ public extension Dynamic
     return _map(self) { _ in return v}
   }
   
-  public func rewrite<U: AnyObject>(o:  U) -> Dynamic<U> {
-    return _map(self) { [unowned o] _ in return o}
-  }
-  
   public func zip<U>(v: U) -> Dynamic<(T, U)> {
     return _map(self) { ($0, v) }
-  }
-  
-  public func zip<U: AnyObject>(o: U) -> Dynamic<(T, U)> {
-    return _map(self) { [unowned o] v in (v, o) }
   }
   
   public func zip<U>(d: Dynamic<U>) -> Dynamic<(T, U)> {

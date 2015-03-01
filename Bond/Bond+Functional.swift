@@ -148,18 +148,10 @@ public func rewrite<T, U>(dynamic: Dynamic<T>, value: U) -> Dynamic<U> {
   return _map(dynamic) { _ in value }
 }
 
-public func rewrite<T, U: AnyObject>(dynamic: Dynamic<T>, object:  U) -> Dynamic<U> {
-  return _map(dynamic) { [unowned object] _ in return object }
-}
-
 // MARK: Zip
 
 public func zip<T, U>(dynamic: Dynamic<T>, value: U) -> Dynamic<(T, U)> {
   return _map(dynamic) { ($0, value) }
-}
-
-public func zip<T, U: AnyObject>(dynamic: Dynamic<T>, object: U) -> Dynamic<(T, U)> {
-  return _map(dynamic) { [unowned object] v in (v, object) }
 }
 
 public func zip<T, U>(d1: Dynamic<T>, d2: Dynamic<U>) -> Dynamic<(T, U)> {
