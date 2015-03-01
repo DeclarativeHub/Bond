@@ -52,7 +52,7 @@ class TextFieldDynamic<T>: InternalDynamic<String>
   
   init(control: UITextField) {
     self.helper = TextFieldDynamicHelper(control: control)
-    super.init(control.text, faulty: false)
+    super.init(control.text ?? "", faulty: false)
     self.helper.listener =  { [unowned self] in self.value = $0 }
   }
 }
