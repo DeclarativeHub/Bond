@@ -28,7 +28,7 @@
 import UIKit
 
 @objc class TableViewDynamicArrayDataSource: NSObject, UITableViewDataSource {
-  unowned var dynamic: DynamicArray<UITableViewCell>
+  weak var dynamic: DynamicArray<UITableViewCell>?
   
   init(dynamic: DynamicArray<UITableViewCell>) {
     self.dynamic = dynamic
@@ -36,11 +36,11 @@ import UIKit
   }
   
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.dynamic.count
+    return self.dynamic?.count ?? 0
   }
   
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    return self.dynamic[indexPath.item]
+    return self.dynamic?[indexPath.item] ?? UITableViewCell()
   }
 }
 
