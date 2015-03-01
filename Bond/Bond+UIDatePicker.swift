@@ -46,7 +46,7 @@ import UIKit
   }
 }
 
-class DatePickerDynamic<T>: DynamicExtended<NSDate>
+class DatePickerDynamic<T>: InternalDynamic<NSDate>
 {
   let helper: DatePickerDynamicHelper
   

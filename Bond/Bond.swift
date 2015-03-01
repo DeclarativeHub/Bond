@@ -57,7 +57,15 @@ public class Bond<T> {
     self.listener = listener
   }
   
-  public func bind(dynamic: Dynamic<T>, fire: Bool = true, strongly: Bool = true) {
+  public func bind(dynamic: Dynamic<T>) {
+    bind(dynamic, fire: true, strongly: true)
+  }
+  
+  public func bind(dynamic: Dynamic<T>, fire: Bool) {
+    bind(dynamic, fire: fire, strongly: true)
+  }
+  
+  public func bind(dynamic: Dynamic<T>, fire: Bool, strongly: Bool) {
     dynamic.bonds.append(BondBox(self))
     
     if strongly {
@@ -143,12 +151,20 @@ public class Dynamic<T> {
     valueBond.listener = { [unowned self] v in self.value = v }
   }
   
-  public func bindTo(bond: Bond<T>, fire: Bool = true, strongly: Bool = true) {
+  public func bindTo(bond: Bond<T>) {
+    bond.bind(self, fire: true, strongly: true)
+  }
+  
+  public func bindTo(bond: Bond<T>, fire: Bool) {
+    bond.bind(self, fire: fire, strongly: true)
+  }
+  
+  public func bindTo(bond: Bond<T>, fire: Bool, strongly: Bool) {
     bond.bind(self, fire: fire, strongly: strongly)
   }
 }
 
-public class DynamicExtended<T>: Dynamic<T> {
+public class InternalDynamic<T>: Dynamic<T> {
   
   public init(_ v: T, faulty: Bool) {
     super.init(v)

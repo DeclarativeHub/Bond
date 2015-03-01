@@ -47,7 +47,15 @@ public class ArrayBond<T>: Bond<Array<T>> {
     super.init()
   }
   
-  override public func bind(dynamic: Dynamic<Array<T>>, fire: Bool = false, strongly: Bool = true) {
+  override public func bind(dynamic: Dynamic<Array<T>>) {
+    super.bind(dynamic, fire: true, strongly: true)
+  }
+  
+  override public func bind(dynamic: Dynamic<Array<T>>, fire: Bool) {
+    super.bind(dynamic, fire: fire, strongly: true)
+  }
+  
+  override public func bind(dynamic: Dynamic<Array<T>>, fire: Bool, strongly: Bool) {
     super.bind(dynamic, fire: fire, strongly: strongly)
   }
 }
@@ -61,6 +69,18 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
   
   public override init(_ v: Array<T>) {
     super.init(v)
+  }
+  
+  public override func bindTo(bond: Bond<Array<T>>) {
+    bond.bind(self, fire: true, strongly: true)
+  }
+  
+  public override func bindTo(bond: Bond<Array<T>>, fire: Bool) {
+    bond.bind(self, fire: fire, strongly: true)
+  }
+  
+  public override func bindTo(bond: Bond<Array<T>>, fire: Bool, strongly: Bool) {
+    bond.bind(self, fire: fire, strongly: strongly)
   }
   
   public var count: Int {

@@ -46,7 +46,7 @@ import UIKit
   }
 }
 
-class SliderDynamic<T>: DynamicExtended<Float>
+class SliderDynamic<T>: InternalDynamic<Float>
 {
   let helper: SliderDynamicHelper
   

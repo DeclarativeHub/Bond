@@ -36,7 +36,7 @@ public func map<S: Dynamical, T, U where S.DynamicType == T>(dynamical: S, f: T 
 }
 
 internal func _map<T, U>(dynamic: Dynamic<T>, f: T -> U) -> Dynamic<U> {
-  let dyn = DynamicExtended<U>(f(dynamic.value), faulty: dynamic.faulty)
+  let dyn = InternalDynamic<U>(f(dynamic.value), faulty: dynamic.faulty)
   
   let bond = Bond<T> { [unowned dyn] t in
     dyn.value = f(t)
@@ -64,7 +64,7 @@ public func filter<S: Dynamical, T where S.DynamicType == T>(dynamical: S, f: T 
 
 internal func _filter<T>(dynamic: Dynamic<T>, f: T -> Bool) -> Dynamic<T> {
   let value = dynamic.value
-  let dyn = DynamicExtended<T>(value, faulty: dynamic.faulty || !f(value))
+  let dyn = InternalDynamic<T>(value, faulty: dynamic.faulty || !f(value))
   
   let bond = Bond<T> { [unowned dyn] t in
     if f(t) {
@@ -97,7 +97,7 @@ public func reduce<A, B, C, T>(dA: Dynamic<A>, dB: Dynamic<B>, dC: Dynamic<C>, f
 }
 
 public func _reduce<A, B, T>(dA: Dynamic<A>, dB: Dynamic<B>, v0: T, f: (A, B) -> T) -> Dynamic<T> {
-  let dyn = DynamicExtended<T>(v0, faulty: dA.faulty || dB.faulty)
+  let dyn = InternalDynamic<T>(v0, faulty: dA.faulty || dB.faulty)
   
   let bA = Bond<A> { [unowned dyn, weak dB] in
     if let dB = dB { dyn.value = f($0, dB.value) }
@@ -117,7 +117,7 @@ public func _reduce<A, B, T>(dA: Dynamic<A>, dB: Dynamic<B>, v0: T, f: (A, B) ->
 }
 
 internal func _reduce<A, B, C, T>(dA: Dynamic<A>, dB: Dynamic<B>, dC: Dynamic<C>, v0: T, f: (A, B, C) -> T) -> Dynamic<T> {
-  let dyn = DynamicExtended<T>(v0, faulty: dA.faulty || dB.faulty || dC.faulty)
+  let dyn = InternalDynamic<T>(v0, faulty: dA.faulty || dB.faulty || dC.faulty)
   
   let bA = Bond<A> { [unowned dyn, weak dB, weak dC] in
     if let dB = dB { if let dC = dC { dyn.value = f($0, dB.value, dC.value) } }
@@ -168,7 +168,7 @@ public func zip<T, U>(d1: Dynamic<T>, d2: Dynamic<U>) -> Dynamic<(T, U)> {
 
 // MARK: Skip
 
-class SkipDynamic<T>: DynamicExtended<T> {
+class SkipDynamic<T>: InternalDynamic<T> {
   var count: Int
   
   init(_ v: T, count: Int) {
@@ -205,7 +205,7 @@ public func any<T>(dynamics: [Dynamic<T>]) -> Dynamic<T> {
     fatalError("Must provide at least one Dynamic!")
   }
   
-  let dyn = DynamicExtended<T>(dynamics.first!.value, faulty: true)
+  let dyn = InternalDynamic<T>(dynamics.first!.value, faulty: true)
   
   for dynamic in dynamics {
     let bond = Bond<T> { [unowned dynamic] in

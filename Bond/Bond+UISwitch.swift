@@ -46,7 +46,7 @@ import UIKit
   }
 }
 
-class SwitchDynamic<T>: DynamicExtended<Bool>
+class SwitchDynamic<T>: InternalDynamic<Bool>
 {
   let helper: SwitchDynamicHelper
   

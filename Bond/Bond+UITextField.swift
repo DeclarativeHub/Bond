@@ -46,7 +46,7 @@ import UIKit
   }
 }
 
-class TextFieldDynamic<T>: DynamicExtended<String>
+class TextFieldDynamic<T>: InternalDynamic<String>
 {
   let helper: TextFieldDynamicHelper
   
