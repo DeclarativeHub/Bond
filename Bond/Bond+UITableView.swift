@@ -44,33 +44,39 @@ import UIKit
   }
 }
 
-public class TableViewBond<T>: ArrayBond<UITableViewCell> {
+public class UITableViewDataSourceBond<T>: ArrayBond<UITableViewCell> {
   weak var tableView: UITableView?
   var dataSource: TableViewDynamicArrayDataSource?
   
-  init(tableView: UITableView) {
+  public init(tableView: UITableView) {
     self.tableView = tableView
     super.init()
     
-    self.insertListener = { [unowned self] i in
-      self.tableView?.beginUpdates()
-      self.tableView?.insertRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: 0) },
-        withRowAnimation: UITableViewRowAnimation.Automatic)
-      self.tableView?.endUpdates()
+    self.insertListener = { [weak self] i in
+      if let tableView = self?.tableView {
+        tableView.beginUpdates()
+        tableView.insertRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: 0) },
+          withRowAnimation: UITableViewRowAnimation.Automatic)
+        tableView.endUpdates()
+      }
     }
     
-    self.removeListener = { [unowned self] i, o in
-      self.tableView?.beginUpdates()
-      self.tableView?.deleteRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: 0) },
-        withRowAnimation: UITableViewRowAnimation.Automatic)
-      self.tableView?.endUpdates()
+    self.removeListener = { [weak self] i, o in
+      if let tableView = self?.tableView {
+        tableView.beginUpdates()
+        tableView.deleteRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: 0) },
+          withRowAnimation: UITableViewRowAnimation.Automatic)
+        tableView.endUpdates()
+      }
     }
     
-    self.updateListener = { [unowned self] i in
-      self.tableView?.beginUpdates()
-      self.tableView?.reloadRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: 0) },
-        withRowAnimation: UITableViewRowAnimation.Automatic)
-      self.tableView?.endUpdates()
+    self.updateListener = { [weak self] i in
+      if let tableView = self?.tableView {
+        tableView.beginUpdates()
+        tableView.reloadRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: 0) },
+          withRowAnimation: UITableViewRowAnimation.Automatic)
+        tableView.endUpdates()
+      }
     }
   }
   
@@ -84,28 +90,8 @@ public class TableViewBond<T>: ArrayBond<UITableViewCell> {
   }
   
   deinit {
+    self.unbindAll()
     tableView?.dataSource = nil
+    self.dataSource = nil
   }
-}
-
-private var designatedBondHandleUITableView: UInt8 = 0;
-
-extension UITableView /*: Bondable */ {
-  public var dataSourceBond: Bond<Array<UITableViewCell>> {
-    if let b: AnyObject = objc_getAssociatedObject(self, &designatedBondHandleUITableView) {
-      return (b as? TableViewBond<UITableViewCell>)!
-    } else {
-      let b = TableViewBond<UITableViewCell>(tableView: self)
-      objc_setAssociatedObject(self, &designatedBondHandleUITableView, b, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
-      return b
-    }
-  }
-  
-  public var designatedBond: Bond<Array<UITableViewCell>> {
-    return self.dataSourceBond
-  }
-}
-
-public func ->> (left: Dynamic<Array<UITableViewCell>>, right: UITableView) {
-  left ->> right.designatedBond
 }
