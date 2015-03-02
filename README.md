@@ -313,7 +313,7 @@ Second variant of zip takes two Dynamics and produces new Dynamic with those two
 rewrite<T, U>(dynamic: Dynamic<T>, value: U) -> Dynamic<U>
 ```
 
-When you don't care about the value of a Dynamic but are still interested in change events, you can create a Dynamic that rewrites value of source Dynamic with some constant. _Note that if you pass an object as a value, it'll be retained by the produced Dynamic!_
+When you don't care about a value of a Dynamic but are still interested in change events, you can create a Dynamic that rewrites value of source Dynamic with some constant. _Note that if you pass an object as a value, it'll be retained by the produced Dynamic!_
 
 #### Skip
 
@@ -321,7 +321,7 @@ When you don't care about the value of a Dynamic but are still interested in cha
 skip<T>(dynamic: Dynamic<T>, count: Int) -> Dynamic<T>
 ```
 
-You can use skip to create a Dynamic that'll not dispatch change events for some arbitrary number `count`. 
+You can use skip to create a Dynamic that'll not dispatch change events for `count` times. 
 
 #### Any
 
@@ -329,7 +329,7 @@ You can use skip to create a Dynamic that'll not dispatch change events for some
 any<T>(dynamics: [Dynamic<T>]) -> Dynamic<T>
 ```
 
-Any accepts an array of one or more Dynamics of same type and produces a Dynamic that'll fire whenever any of source Dynamics fire.
+Any expects an array of one or more Dynamics of same type and produces a Dynamic that'll fire whenever any of source Dynamics fire.
 
 #### Composition
 
@@ -469,7 +469,67 @@ DynamicArray supports per-element map and filter function. It does not support o
 
 Map function that operates on DynamicArray differs from map function that operates on basic Dynamic in a way that it evaluates values lazily. It means that at the moment of mapping, no element from source array is transformed to destination array. Elements are transformed on an as-needed basis. Thus the map function has O(1) complexity and no unnecessary table view cell will ever get created. (Beware that accessing `value` property of mapped DynamicArray returns whole array so it has to transform each element. Avoid accessing it.)
 
-Because of its nature, filter function that operates on DynamicArray has O(n) complexity and you should be careful when using it. 
+Because of its nature, filter function that operates on DynamicArray has O(n) complexity and you should be careful when using it.
+
+#### UITableView
+
+You can use dynamic array to feed a UITableView. To do this, first create a bond of type `UITableViewDataSourceBond`. You'll need to pass a table view during initialization.
+
+```swift
+var tableViewDataSourceBond: UITableViewDataSourceBond<UITableViewCell>!
+
+override func viewDidLoad() {
+  super.viewDidLoad()
+
+  // create a data source bond for table view
+  tableViewDataSourceBond = UITableViewDataSourceBond(tableView: self.tableView)
+  
+  ...
+}
+```
+
+`UITableViewDataSourceBond` will register itself as a `dataSource` for table view so you should not change table view's data source or it'll break binding! Next, you need to bind an array of type DynamicArray<UITableViewCell> to that bond. You can do that by doing map on your data source array, like this:
+
+```swift
+  // map repositories to cells and bind
+  repositories.map { [unowned self] (repository: Repository) -> RepositoryTableViewCell in
+    let cell = self.tableView.dequeueReusableCellWithIdentifier("cell") as RepositoryTableViewCell
+    repository.name ->> cell.nameLabel
+    repository.photo ->> cell.avatarImageView
+    return cell
+  } ->> tableViewDataSourceBond
+```
+
+`UITableViewDataSourceBond` implements following methods of `UITableViewDataSource` protocol:
+
+```swift
+numberOfSectionsInTableView:
+tableView:numberOfRowsInSection:
+tableView:cellForRowAtIndexPath:
+```
+
+If you need to provide other information to the table view, you can have your class adhere to protocol `UITableViewDataSource` and implement methods you need. After that, set `nextDataSource` property of UITableViewDataSourceBond to your object.
+
+#### Multiple sections
+
+If your table view needs to display more than one section, you can feed it with a DynamicArray of DynamicArrays of UITableViewCells. Don't run away, it's actually as simple as:
+
+
+```swift
+  let sectionOfApples = apples.map { [unowned self] (apple: Apple) -> UITableViewCell in
+    let cell = self.tableView.dequeueReusableCellWithIdentifier("cell") as AppleTableViewCell
+    apple.name ->> cell.nameLabel
+    return cell
+  }
+  
+  let sectionOfPears = pears.map { [unowned self] (pear: Pear) -> UITableViewCell in
+    let cell = self.tableView.dequeueReusableCellWithIdentifier("cell") as PearTableViewCell
+    pear.name ->> cell.nameLabel
+    return cell
+  }
+  
+  DynamicArray([sectionOfApples, sectionOfPears]) ->> tableViewDataSourceBond
+```
 
 ### Key-Value-Observing
 
@@ -481,7 +541,7 @@ Dynamic.asObservableFor(self.user, keyPath: "numberOfFollowers") ->> label
 
 ### NSNotificationCenter
 
-You can create a Dynamic that observers notifications posted by NSNotificationCenter. You need to provide notification name and a closure that'll parse notification into Dynamic's type. If you are interested only in notifications from specific object, pass that object too. 
+You can create a Dynamic that observers notifications posted by NSNotificationCenter. During initialization you need to provide notification name and a closure that'll parse notification into Dynamic's type. If you are interested only in notifications from specific object, pass that object too. 
 
 ```swift
 let orientation: Dynamic<UIDeviceOrientation> = Dynamic.asObservableFor(UIDeviceOrientationDidChangeNotification, object: nil) {
