@@ -182,7 +182,7 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
           tableView.insertSections(NSIndexSet(array: i), withRowAnimation: UITableViewRowAnimation.Automatic)
           
           for section in sorted(i, <) {
-            let sectionBond = UITableViewDataSourceSectionBond<Void>(tableView: self?.tableView, section: section)
+            let sectionBond = UITableViewDataSourceSectionBond<Void>(tableView: tableView, section: section)
             let sectionDynamic = array[section]
             sectionDynamic.bindTo(sectionBond)
             s.sectionBonds.insert(sectionBond, atIndex: section)
@@ -223,7 +223,7 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
         tableView.reloadSections(NSIndexSet(array: i), withRowAnimation: UITableViewRowAnimation.Automatic)
 
         for section in i {
-          let sectionBond = UITableViewDataSourceSectionBond<Void>(tableView: self?.tableView, section: section)
+          let sectionBond = UITableViewDataSourceSectionBond<Void>(tableView: tableView, section: section)
           let sectionDynamic = array[section]
           sectionDynamic.bindTo(sectionBond)
           
