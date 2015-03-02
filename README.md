@@ -1,4 +1,4 @@
-_Notice: Bond v3 is out. Please read this document again._
+_Notice: Bond v3 is out. Please read this document again if you're using older varsion._
 
 # Bond, Swift Bond
 
