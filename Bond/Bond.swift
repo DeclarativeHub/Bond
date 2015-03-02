@@ -141,7 +141,7 @@ public class Dynamic<T> {
     self.dispatchInProgress = false
   }
   
-  public var valueBond = Bond<T>()
+  public let valueBond = Bond<T>()
   public var bonds: [BondBox<T>] = []
 
   public init(_ v: T) {
