@@ -109,7 +109,7 @@ public class Bond<T> {
 
 public class Dynamic<T> {
   
-  private var dispatchInProgress: Bool
+  private var dispatchInProgress: Bool = false
   public var faulty: Bool = false
   
   public var value: T {
@@ -141,13 +141,11 @@ public class Dynamic<T> {
     self.dispatchInProgress = false
   }
   
-  public var valueBond: Bond<T>
+  public var valueBond = Bond<T>()
   public var bonds: [BondBox<T>] = []
 
   public init(_ v: T) {
     value = v
-    dispatchInProgress = false
-    valueBond = Bond<T>()
     valueBond.listener = { [unowned self] v in self.value = v }
   }
   
