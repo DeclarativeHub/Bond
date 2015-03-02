@@ -233,6 +233,7 @@ Following table lists all available Dynamics of UIKit objects:
 | UIProgressView | dynProgress                                             | dynProgress     |
 | UIImageView    | dynImage                                                | dynImage        |
 | UIButton       | dynEnabled <br> dynTitle <br> dynImageForNormalState    | dynEnabled      |
+| UIBarItem      | dynEnabled <br> dynTitle <br> dynImage                  | dynEnabled      |
 | UISwitch       | dynOn                                                   | dynOn           |
 | UITextField    | dynText                                                 | dynText         |
 | UITextView     | dynText                                                 | dynText         |
