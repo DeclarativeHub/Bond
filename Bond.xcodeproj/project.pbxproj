@@ -13,7 +13,6 @@
 		69491BCE1A7C21B600A13B6B /* Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BCA1A7C21B600A13B6B /* Bond.swift */; };
 		69491BCF1A7C21B600A13B6B /* Bond+Arrays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BCB1A7C21B600A13B6B /* Bond+Arrays.swift */; };
 		69491BD01A7C21B600A13B6B /* Bond+Foundation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BCC1A7C21B600A13B6B /* Bond+Foundation.swift */; };
-		69491BD11A7C21B600A13B6B /* Bond+UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BCD1A7C21B600A13B6B /* Bond+UIKit.swift */; };
 		69491BD31A7C242900A13B6B /* DynamicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BD21A7C242900A13B6B /* DynamicTests.swift */; };
 		DCA979741A83C3A200DD4A30 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCA979691A83C3A100DD4A30 /* Bond.framework */; };
 		DCA979821A83C4F500DD4A30 /* DynamicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BD21A7C242900A13B6B /* DynamicTests.swift */; };
@@ -21,8 +20,26 @@
 		DCA979841A83C52D00DD4A30 /* Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BCA1A7C21B600A13B6B /* Bond.swift */; };
 		DCA979851A83C52D00DD4A30 /* Bond+Arrays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BCB1A7C21B600A13B6B /* Bond+Arrays.swift */; };
 		DCA979861A83C52D00DD4A30 /* Bond+Foundation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BCC1A7C21B600A13B6B /* Bond+Foundation.swift */; };
+		EC048D181AA238AF00E9794C /* Bond+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC048D171AA238AF00E9794C /* Bond+Operators.swift */; };
+		EC048D191AA238AF00E9794C /* Bond+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC048D171AA238AF00E9794C /* Bond+Operators.swift */; };
+		EC0F22F61AA353100051723D /* Bond+UIActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0F22F51AA353100051723D /* Bond+UIActivityIndicatorView.swift */; };
+		EC7137E21AA239FC00CFC854 /* Bond+Functional.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC048D141AA2386A00E9794C /* Bond+Functional.swift */; };
+		EC7137E31AA239FD00CFC854 /* Bond+Functional.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC048D141AA2386A00E9794C /* Bond+Functional.swift */; };
+		EC7137E41AA25E9300CFC854 /* FunctionalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD653A51A9B6BF30038A9AC /* FunctionalTests.swift */; };
+		EC7137E51AA26F0800CFC854 /* UIKitDynamicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC71C0AB1A9F839A009FEA4B /* UIKitDynamicTests.swift */; };
 		EC74CFD21A8BF1A300ED4026 /* UIKitBondTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC74CFD11A8BF1A300ED4026 /* UIKitBondTests.swift */; };
-		ECD653A61A9B6BF30038A9AC /* ReduceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD653A51A9B6BF30038A9AC /* ReduceTests.swift */; };
+		ECD9CC541A9FA36200484323 /* Bond+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9CC531A9FA36200484323 /* Bond+UIView.swift */; };
+		ECD9CC561A9FA38C00484323 /* Bond+UISlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9CC551A9FA38C00484323 /* Bond+UISlider.swift */; };
+		ECD9CC581A9FA3AD00484323 /* Bond+UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9CC571A9FA3AD00484323 /* Bond+UILabel.swift */; };
+		ECD9CC5A1A9FA3C300484323 /* Bond+UIProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9CC591A9FA3C300484323 /* Bond+UIProgressView.swift */; };
+		ECD9CC5C1A9FA3E200484323 /* Bond+UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9CC5B1A9FA3E200484323 /* Bond+UIImageView.swift */; };
+		ECD9CC5E1A9FA3FA00484323 /* Bond+UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9CC5D1A9FA3FA00484323 /* Bond+UIButton.swift */; };
+		ECD9CC601A9FA41200484323 /* Bond+UISwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9CC5F1A9FA41200484323 /* Bond+UISwitch.swift */; };
+		ECD9CC621A9FA42A00484323 /* Bond+UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9CC611A9FA42A00484323 /* Bond+UITextField.swift */; };
+		ECD9CC641A9FA44C00484323 /* Bond+UIDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9CC631A9FA44C00484323 /* Bond+UIDatePicker.swift */; };
+		ECD9CC661A9FA47A00484323 /* Bond+UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9CC651A9FA47A00484323 /* Bond+UITableView.swift */; };
+		ECD9CC681A9FA49800484323 /* Bond+UIBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9CC671A9FA49800484323 /* Bond+UIBarItem.swift */; };
+		ECD9CC6A1A9FA4AE00484323 /* Bond+UITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9CC691A9FA4AE00484323 /* Bond+UITextView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,14 +69,29 @@
 		69491BCA1A7C21B600A13B6B /* Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bond.swift; sourceTree = "<group>"; };
 		69491BCB1A7C21B600A13B6B /* Bond+Arrays.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+Arrays.swift"; sourceTree = "<group>"; };
 		69491BCC1A7C21B600A13B6B /* Bond+Foundation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+Foundation.swift"; sourceTree = "<group>"; };
-		69491BCD1A7C21B600A13B6B /* Bond+UIKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UIKit.swift"; sourceTree = "<group>"; };
 		69491BD21A7C242900A13B6B /* DynamicTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicTests.swift; sourceTree = "<group>"; };
 		DCA979691A83C3A100DD4A30 /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCA979731A83C3A200DD4A30 /* BondOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BondOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC048D141AA2386A00E9794C /* Bond+Functional.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+Functional.swift"; sourceTree = "<group>"; };
+		EC048D171AA238AF00E9794C /* Bond+Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+Operators.swift"; sourceTree = "<group>"; };
+		EC0F22F51AA353100051723D /* Bond+UIActivityIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UIActivityIndicatorView.swift"; sourceTree = "<group>"; };
+		EC71C0AB1A9F839A009FEA4B /* UIKitDynamicTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIKitDynamicTests.swift; sourceTree = "<group>"; };
 		EC74CFD11A8BF1A300ED4026 /* UIKitBondTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIKitBondTests.swift; sourceTree = "<group>"; };
 		ECD653A21A9B6B6B0038A9AC /* Bond.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Bond.podspec; sourceTree = "<group>"; };
 		ECD653A41A9B6B770038A9AC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		ECD653A51A9B6BF30038A9AC /* ReduceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReduceTests.swift; sourceTree = "<group>"; };
+		ECD653A51A9B6BF30038A9AC /* FunctionalTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunctionalTests.swift; sourceTree = "<group>"; };
+		ECD9CC531A9FA36200484323 /* Bond+UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UIView.swift"; sourceTree = "<group>"; };
+		ECD9CC551A9FA38C00484323 /* Bond+UISlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UISlider.swift"; sourceTree = "<group>"; };
+		ECD9CC571A9FA3AD00484323 /* Bond+UILabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UILabel.swift"; sourceTree = "<group>"; };
+		ECD9CC591A9FA3C300484323 /* Bond+UIProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UIProgressView.swift"; sourceTree = "<group>"; };
+		ECD9CC5B1A9FA3E200484323 /* Bond+UIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UIImageView.swift"; sourceTree = "<group>"; };
+		ECD9CC5D1A9FA3FA00484323 /* Bond+UIButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UIButton.swift"; sourceTree = "<group>"; };
+		ECD9CC5F1A9FA41200484323 /* Bond+UISwitch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UISwitch.swift"; sourceTree = "<group>"; };
+		ECD9CC611A9FA42A00484323 /* Bond+UITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UITextField.swift"; sourceTree = "<group>"; };
+		ECD9CC631A9FA44C00484323 /* Bond+UIDatePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UIDatePicker.swift"; sourceTree = "<group>"; };
+		ECD9CC651A9FA47A00484323 /* Bond+UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UITableView.swift"; sourceTree = "<group>"; };
+		ECD9CC671A9FA49800484323 /* Bond+UIBarItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UIBarItem.swift"; sourceTree = "<group>"; };
+		ECD9CC691A9FA4AE00484323 /* Bond+UITextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UITextView.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,7 +156,9 @@
 				69491BCA1A7C21B600A13B6B /* Bond.swift */,
 				69491BCB1A7C21B600A13B6B /* Bond+Arrays.swift */,
 				69491BCC1A7C21B600A13B6B /* Bond+Foundation.swift */,
-				69491BCD1A7C21B600A13B6B /* Bond+UIKit.swift */,
+				EC048D141AA2386A00E9794C /* Bond+Functional.swift */,
+				EC048D171AA238AF00E9794C /* Bond+Operators.swift */,
+				ECD9CC521A9FA34700484323 /* UIKit */,
 				69491BB31A7C217100A13B6B /* Bond.h */,
 				69491BB11A7C217100A13B6B /* Supporting Files */,
 			);
@@ -145,7 +179,8 @@
 				69491BC01A7C217100A13B6B /* BondTests.swift */,
 				69491BD21A7C242900A13B6B /* DynamicTests.swift */,
 				EC74CFD11A8BF1A300ED4026 /* UIKitBondTests.swift */,
-				ECD653A51A9B6BF30038A9AC /* ReduceTests.swift */,
+				EC71C0AB1A9F839A009FEA4B /* UIKitDynamicTests.swift */,
+				ECD653A51A9B6BF30038A9AC /* FunctionalTests.swift */,
 				69491BBE1A7C217100A13B6B /* Supporting Files */,
 			);
 			path = BondTests;
@@ -157,6 +192,26 @@
 				69491BBF1A7C217100A13B6B /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		ECD9CC521A9FA34700484323 /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				ECD9CC531A9FA36200484323 /* Bond+UIView.swift */,
+				ECD9CC5B1A9FA3E200484323 /* Bond+UIImageView.swift */,
+				ECD9CC591A9FA3C300484323 /* Bond+UIProgressView.swift */,
+				ECD9CC651A9FA47A00484323 /* Bond+UITableView.swift */,
+				ECD9CC671A9FA49800484323 /* Bond+UIBarItem.swift */,
+				ECD9CC571A9FA3AD00484323 /* Bond+UILabel.swift */,
+				ECD9CC551A9FA38C00484323 /* Bond+UISlider.swift */,
+				ECD9CC5D1A9FA3FA00484323 /* Bond+UIButton.swift */,
+				ECD9CC5F1A9FA41200484323 /* Bond+UISwitch.swift */,
+				ECD9CC611A9FA42A00484323 /* Bond+UITextField.swift */,
+				ECD9CC691A9FA4AE00484323 /* Bond+UITextView.swift */,
+				ECD9CC631A9FA44C00484323 /* Bond+UIDatePicker.swift */,
+				EC0F22F51AA353100051723D /* Bond+UIActivityIndicatorView.swift */,
+			);
+			name = UIKit;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -331,10 +386,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECD9CC681A9FA49800484323 /* Bond+UIBarItem.swift in Sources */,
+				ECD9CC5A1A9FA3C300484323 /* Bond+UIProgressView.swift in Sources */,
+				ECD9CC581A9FA3AD00484323 /* Bond+UILabel.swift in Sources */,
 				69491BCF1A7C21B600A13B6B /* Bond+Arrays.swift in Sources */,
+				ECD9CC601A9FA41200484323 /* Bond+UISwitch.swift in Sources */,
+				ECD9CC561A9FA38C00484323 /* Bond+UISlider.swift in Sources */,
+				ECD9CC5E1A9FA3FA00484323 /* Bond+UIButton.swift in Sources */,
+				ECD9CC641A9FA44C00484323 /* Bond+UIDatePicker.swift in Sources */,
+				ECD9CC621A9FA42A00484323 /* Bond+UITextField.swift in Sources */,
 				69491BCE1A7C21B600A13B6B /* Bond.swift in Sources */,
 				69491BD01A7C21B600A13B6B /* Bond+Foundation.swift in Sources */,
-				69491BD11A7C21B600A13B6B /* Bond+UIKit.swift in Sources */,
+				ECD9CC6A1A9FA4AE00484323 /* Bond+UITextView.swift in Sources */,
+				EC0F22F61AA353100051723D /* Bond+UIActivityIndicatorView.swift in Sources */,
+				ECD9CC5C1A9FA3E200484323 /* Bond+UIImageView.swift in Sources */,
+				ECD9CC661A9FA47A00484323 /* Bond+UITableView.swift in Sources */,
+				EC048D181AA238AF00E9794C /* Bond+Operators.swift in Sources */,
+				EC7137E31AA239FD00CFC854 /* Bond+Functional.swift in Sources */,
+				ECD9CC541A9FA36200484323 /* Bond+UIView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,7 +414,8 @@
 				69491BC11A7C217100A13B6B /* BondTests.swift in Sources */,
 				69491BD31A7C242900A13B6B /* DynamicTests.swift in Sources */,
 				EC74CFD21A8BF1A300ED4026 /* UIKitBondTests.swift in Sources */,
-				ECD653A61A9B6BF30038A9AC /* ReduceTests.swift in Sources */,
+				EC7137E51AA26F0800CFC854 /* UIKitDynamicTests.swift in Sources */,
+				EC7137E41AA25E9300CFC854 /* FunctionalTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -354,7 +424,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				DCA979851A83C52D00DD4A30 /* Bond+Arrays.swift in Sources */,
+				EC7137E21AA239FC00CFC854 /* Bond+Functional.swift in Sources */,
 				DCA979841A83C52D00DD4A30 /* Bond.swift in Sources */,
+				EC048D191AA238AF00E9794C /* Bond+Operators.swift in Sources */,
 				DCA979861A83C52D00DD4A30 /* Bond+Foundation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -12,16 +12,6 @@ import Bond
 
 class DynamicTests: XCTestCase {
   
-  override func setUp() {
-    super.setUp()
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-  }
-  
-  override func tearDown() {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    super.tearDown()
-  }
-  
   func testValueChangeWithOneListener() {
     let dynamicInt = Dynamic<Int>(0)
     var newValue = NSNotFound
@@ -77,5 +67,42 @@ class DynamicTests: XCTestCase {
     dynamic.value = 1
     
     XCTAssert(dynamic.bonds.count == 1, "Clearing unsuccessful")
+  }
+  
+  func testBiDirectionalBinding() {
+    var d1: Dynamic<Int>! = Dynamic(1)
+    var d2: Dynamic<Int>! = Dynamic(2)
+    
+    var d1ObservedValue: Int = d1.value
+    var d2ObservedValue: Int = d2.value
+    
+    var d1bond: Bond<Int>! = Bond<Int>() { d1ObservedValue = $0 }; d1 ->> d1bond
+    var d2bond: Bond<Int>! = Bond<Int>() { d2ObservedValue = $0 }; d2 ->> d2bond
+    
+    d2 <->> d1
+    
+    XCTAssert(d1.value == d2.value, "Initial values")
+    XCTAssert(d1ObservedValue == d2ObservedValue, "Initial observed values")
+    
+    d1.value = 3
+    XCTAssert(d1.value == d2.value, "Values after changing first dynamic")
+    XCTAssert(d1ObservedValue == d2ObservedValue, "Observed values after changing first dynamic")
+    
+    d2.value = 4
+    XCTAssert(d1.value == d2.value, "Values after changing second dynamic")
+    XCTAssert(d1ObservedValue == d2ObservedValue, "Observed values after changing second dynamic")
+    
+    d1bond = nil
+    d2bond = nil
+    
+    weak var d1w = d1
+    weak var d2w = d2
+    
+    d2 = nil
+    XCTAssert(d2w != nil, "Second should remain retained by first")
+    
+    d1 = nil
+    XCTAssert(d2w == nil, "Nilling first should delete second")
+    XCTAssert(d1w == nil, "Nilling first should delete first, too")
   }
 }

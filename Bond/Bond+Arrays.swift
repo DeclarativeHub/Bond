@@ -32,23 +32,35 @@ import Foundation
 // MARK: Array Bond
 
 public class ArrayBond<T>: Bond<Array<T>> {
-  public var insertListener: (([Int]) -> Void)?
-  public var removeListener: (([Int], [T]) -> Void)?
-  public var updateListener: (([Int]) -> Void)?
+  public var insertListener: ((DynamicArray<T>, [Int]) -> Void)?
+  public var removeListener: ((DynamicArray<T>, [Int], [T]) -> Void)?
+  public var updateListener: ((DynamicArray<T>, [Int]) -> Void)?
   
   override public init() {
     super.init()
   }
   
-  public init(insertListener: (([Int]) -> Void)?, removeListener: (([Int], [T]) -> Void)?, updateListener: (([Int]) -> Void)?) {
+  public init(
+    insertListener: ((DynamicArray<T>, [Int]) -> Void)?,
+    removeListener: ((DynamicArray<T>, [Int], [T]) -> Void)?,
+    updateListener: ((DynamicArray<T>, [Int]) -> Void)?) {
+      
     self.insertListener = insertListener
     self.removeListener = removeListener
     self.updateListener = updateListener
     super.init()
   }
   
-  override public func bind(dynamic: Dynamic<Array<T>>, fire: Bool = false) {
-    super.bind(dynamic, fire: fire)
+  override public func bind(dynamic: Dynamic<Array<T>>) {
+    bind(dynamic, fire: true, strongly: true)
+  }
+  
+  override public func bind(dynamic: Dynamic<Array<T>>, fire: Bool) {
+    bind(dynamic, fire: fire, strongly: true)
+  }
+  
+  override public func bind(dynamic: Dynamic<Array<T>>, fire: Bool, strongly: Bool) {
+    super.bind(dynamic, fire: fire, strongly: strongly)
   }
 }
 
@@ -61,6 +73,18 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
   
   public override init(_ v: Array<T>) {
     super.init(v)
+  }
+  
+  public override func bindTo(bond: Bond<Array<T>>) {
+    bond.bind(self, fire: true, strongly: true)
+  }
+  
+  public override func bindTo(bond: Bond<Array<T>>, fire: Bool) {
+    bond.bind(self, fire: fire, strongly: true)
+  }
+  
+  public override func bindTo(bond: Bond<Array<T>>, fire: Bool, strongly: Bool) {
+    bond.bind(self, fire: fire, strongly: strongly)
   }
   
   public var count: Int {
@@ -147,7 +171,7 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
   private func dispatchInsertion(indices: [Int]) {
     for bondBox in bonds {
       if let arrayBond = bondBox.bond as? ArrayBond {
-        arrayBond.insertListener?(indices)
+        arrayBond.insertListener?(self, indices)
       }
     }
   }
@@ -155,7 +179,7 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
   private func dispatchRemoval(indices: [Int], objects: [T]) {
     for bondBox in bonds {
       if let arrayBond = bondBox.bond as? ArrayBond {
-        arrayBond.removeListener?(indices, objects)
+        arrayBond.removeListener?(self, indices, objects)
       }
     }
   }
@@ -163,7 +187,7 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
   private func dispatchUpdate(indices: [Int]) {
     for bondBox in bonds {
       if let arrayBond = bondBox.bond as? ArrayBond {
-        arrayBond.updateListener?(indices)
+        arrayBond.updateListener?(self, indices)
       }
     }
   }
@@ -199,13 +223,13 @@ public class DynamicArrayMapProxy<T, U>: DynamicArray<U> {
     self.bond.bind(sourceArray, fire: false)
     super.init([])
     
-    bond.insertListener = { [unowned self] i in
+    bond.insertListener = { [unowned self] array, i in
       self.dispatchInsertion(i)
     }
-    bond.removeListener = { [unowned self] i, o in
+    bond.removeListener = { [unowned self] array, i, o in
       self.dispatchRemoval(i, objects: o.map(mapf))
     }
-    bond.updateListener = { [unowned self] i in
+    bond.updateListener = { [unowned self] array, i in
       self.dispatchUpdate(i)
     }
   }
@@ -315,7 +339,7 @@ public class DynamicArrayFilterProxy<T>: DynamicArray<T> {
     
     value = newValue
     
-    bond.insertListener = { [unowned self] indices in
+    bond.insertListener = { [unowned self] array, indices in
       var mappedIndices: [Int] = []
       
       for idx in indices {
@@ -355,7 +379,7 @@ public class DynamicArrayFilterProxy<T>: DynamicArray<T> {
       }
     }
     
-    bond.removeListener = { [unowned self] indices, objects in
+    bond.removeListener = { [unowned self] array, indices, objects in
       var mappedIndices: [Int] = []
       var mappedObjects: [T] = []
       
@@ -380,7 +404,7 @@ public class DynamicArrayFilterProxy<T>: DynamicArray<T> {
       }
     }
     
-    bond.updateListener = { [unowned self] indices in
+    bond.updateListener = { [unowned self] array, indices in
       
       var mappedIndices: [Int] = []
       var mappedInsertionIndices: [Int] = []
@@ -480,7 +504,7 @@ public class DynamicArrayFilterProxy<T>: DynamicArray<T> {
   private override func dispatchInsertion(indices: [Int]) {
     for bondBox in bonds {
       if let arrayBond = bondBox.bond as? ArrayBond {
-        arrayBond.insertListener?(indices)
+        arrayBond.insertListener?(self, indices)
       }
     }
   }
@@ -488,7 +512,7 @@ public class DynamicArrayFilterProxy<T>: DynamicArray<T> {
   private override func dispatchRemoval(indices: [Int], objects: [T]) {
     for bondBox in bonds {
       if let arrayBond = bondBox.bond as? ArrayBond {
-        arrayBond.removeListener?(indices, objects)
+        arrayBond.removeListener?(self, indices, objects)
       }
     }
   }
@@ -496,7 +520,7 @@ public class DynamicArrayFilterProxy<T>: DynamicArray<T> {
   override private func dispatchUpdate(indices: [Int]) {
     for bondBox in bonds {
       if let arrayBond = bondBox.bond as? ArrayBond {
-        arrayBond.updateListener?(indices)
+        arrayBond.updateListener?(self, indices)
       }
     }
   }
