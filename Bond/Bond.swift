@@ -116,7 +116,7 @@ public class Dynamic<T> {
     didSet {
       faulty = false
       objc_sync_enter(self)
-      if !self.dispatchInProgress && !self.faulty {
+      if !self.dispatchInProgress {
         dispatch(value)
       }
       objc_sync_exit(self)
