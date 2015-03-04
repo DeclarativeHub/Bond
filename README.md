@@ -536,18 +536,51 @@ If your table view needs to display more than one section, you can feed it with 
 
 ### Key-Value-Observing
 
-You can create a Dynamic that observers value chnages of some KVO-observable property. For example, you can bond a property of your existing Objective-C model object to a label with this simple one-liner:
+You can create a Dynamic that observers value changes of some KVO-observable property. For example, you can bind a property of your existing Objective-C model object to a label with this simple one-liner:
 
 ```swift
-Dynamic.asObservableFor(self.user, keyPath: "numberOfFollowers") ->> label
+dynamicObservableFor(self.user, keyPath: "name", defaultValue: "") ->> nameLabel
 ```
+
+Default value is used when observed property is set to `nil`. Dynamic returned by this method will only observe changes the property. Setting its `value` will have no effect on bound property. If you need two way binding, keep reading.
+
+#### Two way Key-Value-Observing
+
+To create bi-directional Dynamic representation a KVO property, use the following variant of the method:
+
+```swift
+dynamicObservableFor<T>(object: NSObject, #keyPath: String, #from: AnyObject? -> T, #to: T -> AnyObject?) -> Dynamic<T> 
+```
+
+Difference is that instead of the default value you need to provide transformations *from* and *to* observed type. KVO is not type-safe so you can't see actually type, rather you see `AnyObject?`. 
+
+For example, if KVO property is of NSString type and you want its `Dynamic<String>` representation, you can do following:
+
+```swift
+let name: Dynamic<String> = dynamicObservableFor(self.user, keyPath: "name", from: { ($0 as? String) ?? "" }, to: { $0 })
+```
+
+`from` closure optionally downcasts passed value to String. That will succeed if passed value is of NSString type. It will fail if it is of some other type or if it is `nil`. `to` closure converts value to NSString. Swift can do that implicitly, so you can just pass the object.
+
+After you get a Dynamic, you can easily bind it to, for example, UITextField.
+
+```swift
+name <->> nameTextField
+```
+
+For some other types, you might need to do something like this:
+
+```swift
+let height: Dynamic<Float> = dynamicObservableFor(self.user, keyPath: "height", from: { ($0 as NSNumber).floatValue }, to: { NSNumber(float: $0) })
+```
+
 
 ### NSNotificationCenter
 
 You can create a Dynamic that observers notifications posted by NSNotificationCenter. During initialization you need to provide notification name and a closure that'll parse notification into Dynamic's type. If you are interested only in notifications from specific object, pass that object too. 
 
 ```swift
-let orientation: Dynamic<UIDeviceOrientation> = Dynamic.asObservableFor(UIDeviceOrientationDidChangeNotification, object: nil) {
+let orientation: Dynamic<UIDeviceOrientation> = dynamicObservableFor(UIDeviceOrientationDidChangeNotification, object: nil) {
   notification -> UIDeviceOrientation in
   return UIDevice.currentDevice().orientation
 }

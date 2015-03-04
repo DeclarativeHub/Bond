@@ -19,7 +19,6 @@
 		DCA979831A83C4F800DD4A30 /* BondTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BC01A7C217100A13B6B /* BondTests.swift */; };
 		DCA979841A83C52D00DD4A30 /* Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BCA1A7C21B600A13B6B /* Bond.swift */; };
 		DCA979851A83C52D00DD4A30 /* Bond+Arrays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BCB1A7C21B600A13B6B /* Bond+Arrays.swift */; };
-		DCA979861A83C52D00DD4A30 /* Bond+Foundation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BCC1A7C21B600A13B6B /* Bond+Foundation.swift */; };
 		EC048D181AA238AF00E9794C /* Bond+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC048D171AA238AF00E9794C /* Bond+Operators.swift */; };
 		EC048D191AA238AF00E9794C /* Bond+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC048D171AA238AF00E9794C /* Bond+Operators.swift */; };
 		EC0F22F61AA353100051723D /* Bond+UIActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0F22F51AA353100051723D /* Bond+UIActivityIndicatorView.swift */; };
@@ -28,6 +27,9 @@
 		EC7137E41AA25E9300CFC854 /* FunctionalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD653A51A9B6BF30038A9AC /* FunctionalTests.swift */; };
 		EC7137E51AA26F0800CFC854 /* UIKitDynamicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC71C0AB1A9F839A009FEA4B /* UIKitDynamicTests.swift */; };
 		EC74CFD21A8BF1A300ED4026 /* UIKitBondTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC74CFD11A8BF1A300ED4026 /* UIKitBondTests.swift */; };
+		EC847EB01AA7963F002971B8 /* Bond+Foundation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BCC1A7C21B600A13B6B /* Bond+Foundation.swift */; };
+		EC847EB11AA796F5002971B8 /* FoundationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC867F891AA73AD5007B4BC4 /* FoundationTests.swift */; };
+		EC847EB21AA796F8002971B8 /* FoundationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC867F891AA73AD5007B4BC4 /* FoundationTests.swift */; };
 		ECD9CC541A9FA36200484323 /* Bond+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9CC531A9FA36200484323 /* Bond+UIView.swift */; };
 		ECD9CC561A9FA38C00484323 /* Bond+UISlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9CC551A9FA38C00484323 /* Bond+UISlider.swift */; };
 		ECD9CC581A9FA3AD00484323 /* Bond+UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD9CC571A9FA3AD00484323 /* Bond+UILabel.swift */; };
@@ -77,6 +79,7 @@
 		EC0F22F51AA353100051723D /* Bond+UIActivityIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UIActivityIndicatorView.swift"; sourceTree = "<group>"; };
 		EC71C0AB1A9F839A009FEA4B /* UIKitDynamicTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIKitDynamicTests.swift; sourceTree = "<group>"; };
 		EC74CFD11A8BF1A300ED4026 /* UIKitBondTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIKitBondTests.swift; sourceTree = "<group>"; };
+		EC867F891AA73AD5007B4BC4 /* FoundationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoundationTests.swift; sourceTree = "<group>"; };
 		ECD653A21A9B6B6B0038A9AC /* Bond.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Bond.podspec; sourceTree = "<group>"; };
 		ECD653A41A9B6B770038A9AC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		ECD653A51A9B6BF30038A9AC /* FunctionalTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunctionalTests.swift; sourceTree = "<group>"; };
@@ -181,6 +184,7 @@
 				EC74CFD11A8BF1A300ED4026 /* UIKitBondTests.swift */,
 				EC71C0AB1A9F839A009FEA4B /* UIKitDynamicTests.swift */,
 				ECD653A51A9B6BF30038A9AC /* FunctionalTests.swift */,
+				EC867F891AA73AD5007B4BC4 /* FoundationTests.swift */,
 				69491BBE1A7C217100A13B6B /* Supporting Files */,
 			);
 			path = BondTests;
@@ -413,6 +417,7 @@
 			files = (
 				69491BC11A7C217100A13B6B /* BondTests.swift in Sources */,
 				69491BD31A7C242900A13B6B /* DynamicTests.swift in Sources */,
+				EC847EB11AA796F5002971B8 /* FoundationTests.swift in Sources */,
 				EC74CFD21A8BF1A300ED4026 /* UIKitBondTests.swift in Sources */,
 				EC7137E51AA26F0800CFC854 /* UIKitDynamicTests.swift in Sources */,
 				EC7137E41AA25E9300CFC854 /* FunctionalTests.swift in Sources */,
@@ -424,10 +429,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				DCA979851A83C52D00DD4A30 /* Bond+Arrays.swift in Sources */,
+				EC847EB01AA7963F002971B8 /* Bond+Foundation.swift in Sources */,
 				EC7137E21AA239FC00CFC854 /* Bond+Functional.swift in Sources */,
 				DCA979841A83C52D00DD4A30 /* Bond.swift in Sources */,
 				EC048D191AA238AF00E9794C /* Bond+Operators.swift in Sources */,
-				DCA979861A83C52D00DD4A30 /* Bond+Foundation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -437,6 +442,7 @@
 			files = (
 				DCA979821A83C4F500DD4A30 /* DynamicTests.swift in Sources */,
 				DCA979831A83C4F800DD4A30 /* BondTests.swift in Sources */,
+				EC847EB21AA796F8002971B8 /* FoundationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

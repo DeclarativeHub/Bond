@@ -74,29 +74,68 @@ private var XXContext = 0
   }
 }
 
-public extension Dynamic {
+public func dynamicObservableFor<T>(object: NSObject, #keyPath: String, #defaultValue: T) -> Dynamic<T> {
+  let keyPathValue: AnyObject? = object.valueForKeyPath(keyPath)
+  let value: T = (keyPathValue != nil) ? (keyPathValue as? T)! : defaultValue
+  let dynamic = InternalDynamic(value, faulty: false)
   
-  public class func asObservableFor(object: NSObject, keyPath: String) -> Dynamic<T> {
-    let dynamic = InternalDynamic((object.valueForKeyPath(keyPath) as? T)!, faulty: false)
+  let helper = DynamicKVOHelper(keyPath: keyPath, object: object as NSObject) {
+    [unowned dynamic] (v: AnyObject) -> Void in
     
-    let helper = DynamicKVOHelper(keyPath: keyPath, object: object as NSObject) {
-      [unowned dynamic] (v: AnyObject) -> Void in
+    if v is NSNull {
+      dynamic.value = defaultValue
+    } else {
       dynamic.value = (v as? T)!
     }
-    
-    dynamic.retain(helper)
+  }
+  
+  dynamic.retain(helper)
+  return dynamic
+}
+
+public func dynamicObservableFor<T>(object: NSObject, #keyPath: String, #from: AnyObject? -> T, #to: T -> AnyObject?) -> Dynamic<T> {
+  let keyPathValue: AnyObject? = object.valueForKeyPath(keyPath)
+  let dynamic = InternalDynamic(from(keyPathValue), faulty: false)
+  
+  let helper = DynamicKVOHelper(keyPath: keyPath, object: object as NSObject) {
+    [unowned dynamic] (v: AnyObject?) -> Void in
+    dynamic.value = from(v)
+  }
+  
+  let feedbackBond = Bond<T>() { [weak object] value in
+    if let object = object {
+      object.setValue(to(value) ?? NSNull(), forKey: keyPath)
+    }
+  }
+  
+  dynamic.bindTo(feedbackBond, fire: false, strongly: false)
+  dynamic.retain(feedbackBond)
+  
+  dynamic.retain(helper)
+  return dynamic
+}
+
+public func dynamicObservableFor<T>(notificationName: String, #object: AnyObject?, #parser: NSNotification -> T) -> InternalDynamic<T> {
+  let dynamic: InternalDynamic<T> = InternalDynamic(parser(NSNotification(name: notificationName, object: nil)), faulty: true)
+  
+  let helper = DynamicNotificationCenterHelper(notificationName: notificationName, object: object) {
+    [unowned dynamic] notification in
+    dynamic.value = parser(notification)
+  }
+  
+  dynamic.retain(helper)
+  return dynamic
+}
+
+
+public extension Dynamic {
+  public class func asObservableFor(object: NSObject, keyPath: String, defaultValue: T) -> Dynamic<T> {
+    let dynamic: Dynamic<T> = dynamicObservableFor(object, keyPath: keyPath, defaultValue: defaultValue)
     return dynamic
   }
   
-  public class func asObservableFor(notificationName: String, object: AnyObject?, parser: NSNotification -> T) -> InternalDynamic<T> {
-    let dynamic: InternalDynamic<T> = InternalDynamic(parser(NSNotification(name: notificationName, object: nil)), faulty: true)
-    
-    let helper = DynamicNotificationCenterHelper(notificationName: notificationName, object: object) {
-      [unowned dynamic] notification in
-      dynamic.value = parser(notification)
-    }
-    
-    dynamic.retain(helper)
+  public class func asObservableFor(notificationName: String, object: AnyObject?, parser: NSNotification -> T) -> Dynamic<T> {
+    let dynamic: InternalDynamic<T> = dynamicObservableFor(notificationName, object: object, parser: parser)
     return dynamic
   }
 }

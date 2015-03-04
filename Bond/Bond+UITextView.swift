@@ -35,7 +35,7 @@ extension UITextView: Bondable {
     if let d: AnyObject = objc_getAssociatedObject(self, &textDynamicHandleUITextView) {
       return (d as? Dynamic<String>)!
     } else {
-      let d = Dynamic.asObservableFor(UITextViewTextDidChangeNotification, object: self) {
+      let d: InternalDynamic<String> = dynamicObservableFor(UITextViewTextDidChangeNotification, object: self) {
         notification -> String in
         if let textView = notification.object as? UITextView  {
           return textView.text ?? ""
