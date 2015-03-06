@@ -19,6 +19,7 @@
 		DCA979831A83C4F800DD4A30 /* BondTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BC01A7C217100A13B6B /* BondTests.swift */; };
 		DCA979841A83C52D00DD4A30 /* Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BCA1A7C21B600A13B6B /* Bond.swift */; };
 		DCA979851A83C52D00DD4A30 /* Bond+Arrays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BCB1A7C21B600A13B6B /* Bond+Arrays.swift */; };
+		EC0301751AAA23C9004B3071 /* Bond+UICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0301741AAA23C9004B3071 /* Bond+UICollectionView.swift */; };
 		EC048D181AA238AF00E9794C /* Bond+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC048D171AA238AF00E9794C /* Bond+Operators.swift */; };
 		EC048D191AA238AF00E9794C /* Bond+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC048D171AA238AF00E9794C /* Bond+Operators.swift */; };
 		EC0F22F61AA353100051723D /* Bond+UIActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0F22F51AA353100051723D /* Bond+UIActivityIndicatorView.swift */; };
@@ -74,6 +75,7 @@
 		69491BD21A7C242900A13B6B /* DynamicTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicTests.swift; sourceTree = "<group>"; };
 		DCA979691A83C3A100DD4A30 /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCA979731A83C3A200DD4A30 /* BondOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BondOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC0301741AAA23C9004B3071 /* Bond+UICollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UICollectionView.swift"; sourceTree = "<group>"; };
 		EC048D141AA2386A00E9794C /* Bond+Functional.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+Functional.swift"; sourceTree = "<group>"; };
 		EC048D171AA238AF00E9794C /* Bond+Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+Operators.swift"; sourceTree = "<group>"; };
 		EC0F22F51AA353100051723D /* Bond+UIActivityIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UIActivityIndicatorView.swift"; sourceTree = "<group>"; };
@@ -205,6 +207,7 @@
 				ECD9CC5B1A9FA3E200484323 /* Bond+UIImageView.swift */,
 				ECD9CC591A9FA3C300484323 /* Bond+UIProgressView.swift */,
 				ECD9CC651A9FA47A00484323 /* Bond+UITableView.swift */,
+				EC0301741AAA23C9004B3071 /* Bond+UICollectionView.swift */,
 				ECD9CC671A9FA49800484323 /* Bond+UIBarItem.swift */,
 				ECD9CC571A9FA3AD00484323 /* Bond+UILabel.swift */,
 				ECD9CC551A9FA38C00484323 /* Bond+UISlider.swift */,
@@ -399,6 +402,7 @@
 				ECD9CC5E1A9FA3FA00484323 /* Bond+UIButton.swift in Sources */,
 				ECD9CC641A9FA44C00484323 /* Bond+UIDatePicker.swift in Sources */,
 				ECD9CC621A9FA42A00484323 /* Bond+UITextField.swift in Sources */,
+				EC0301751AAA23C9004B3071 /* Bond+UICollectionView.swift in Sources */,
 				69491BCE1A7C21B600A13B6B /* Bond.swift in Sources */,
 				69491BD01A7C21B600A13B6B /* Bond+Foundation.swift in Sources */,
 				ECD9CC6A1A9FA4AE00484323 /* Bond+UITextView.swift in Sources */,

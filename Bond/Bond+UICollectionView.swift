@@ -1,0 +1,186 @@
+//
+//  Bond+UICollectionView.swift
+//  Bond
+//
+//  Created by Srđan Rašić on 06/03/15.
+//  Copyright (c) 2015 Bond. All rights reserved.
+//
+
+import UIKit
+
+@objc class CollectionViewDynamicArrayDataSource: NSObject, UICollectionViewDataSource {
+  weak var dynamic: DynamicArray<DynamicArray<UICollectionViewCell>>?
+  @objc weak var nextDataSource: UICollectionViewDataSource?
+  
+  init(dynamic: DynamicArray<DynamicArray<UICollectionViewCell>>) {
+    self.dynamic = dynamic
+    super.init()
+  }
+  
+  func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    return self.dynamic?.count ?? 0
+  }
+  
+  func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return self.dynamic?[section].count ?? 0
+  }
+  
+  func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    return self.dynamic?[indexPath.section][indexPath.item] ?? UICollectionViewCell()
+  }
+  
+  // Forwards
+  
+  func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+    if let ds = self.nextDataSource {
+      return ds.collectionView?(collectionView, viewForSupplementaryElementOfKind: kind, atIndexPath: indexPath) ?? UICollectionReusableView()
+    } else {
+      return UICollectionReusableView()
+    }
+  }
+}
+
+private class UICollectionViewDataSourceSectionBond<T>: ArrayBond<UICollectionViewCell> {
+  weak var collectionView: UICollectionView?
+  var section: Int
+  
+  init(collectionView: UICollectionView?, section: Int) {
+    self.collectionView = collectionView
+    self.section = section
+    super.init()
+    
+    self.insertListener = { [unowned self] a, i in
+      if let collectionView: UICollectionView = self.collectionView {
+        collectionView.performBatchUpdates({
+          collectionView.insertItemsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) })
+          }, nil)
+      }
+    }
+    
+    self.removeListener = { [unowned self] a, i, o in
+      if let collectionView = self.collectionView {
+        collectionView.performBatchUpdates({
+          collectionView.deleteItemsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) })
+          }, nil)
+      }
+    }
+    
+    self.updateListener = { [unowned self] a, i in
+      if let collectionView = self.collectionView {
+        collectionView.performBatchUpdates({
+          collectionView.reloadItemsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) })
+          }, nil)
+      }
+    }
+  }
+  
+  deinit {
+    self.unbindAll()
+  }
+}
+
+public class UICollectionViewDataSourceBond<T>: ArrayBond<DynamicArray<UICollectionViewCell>> {
+  weak var collectionView: UICollectionView?
+  private var dataSource: CollectionViewDynamicArrayDataSource?
+  private var sectionBonds: [UICollectionViewDataSourceSectionBond<Void>] = []
+  
+  public weak var nextDataSource: UICollectionViewDataSource? {
+    didSet(newValue) {
+      dataSource?.nextDataSource = newValue
+    }
+  }
+  
+  public init(collectionView: UICollectionView) {
+    self.collectionView = collectionView
+    super.init()
+    
+    self.insertListener = { [weak self] array, i in
+      if let s = self {
+        if let collectionView: UICollectionView = self?.collectionView {
+          collectionView.performBatchUpdates({
+            collectionView.insertSections(NSIndexSet(array: i))
+            }, nil)
+          
+          for section in sorted(i, <) {
+            let sectionBond = UICollectionViewDataSourceSectionBond<Void>(collectionView: collectionView, section: section)
+            let sectionDynamic = array[section]
+            sectionDynamic.bindTo(sectionBond)
+            s.sectionBonds.insert(sectionBond, atIndex: section)
+            
+            for var idx = section + 1; idx < s.sectionBonds.count; idx++ {
+              s.sectionBonds[idx].section += 1
+            }
+          }
+        }
+      }
+    }
+    
+    self.removeListener = { [weak self] array, i, o in
+      if let s = self {
+        if let collectionView = s.collectionView {
+          collectionView.performBatchUpdates({
+            collectionView.deleteSections(NSIndexSet(array: i))
+            }, nil)
+          
+          for section in sorted(i, >) {
+            s.sectionBonds[section].unbindAll()
+            s.sectionBonds.removeAtIndex(section)
+            
+            for var idx = section; idx < s.sectionBonds.count; idx++ {
+              s.sectionBonds[idx].section -= 1
+            }
+          }
+        }
+      }
+    }
+    
+    self.updateListener = { [weak self] array, i in
+      if let collectionView = self?.collectionView {
+        collectionView.performBatchUpdates({
+          collectionView.reloadSections(NSIndexSet(array: i))
+          }, nil)
+        
+        for section in i {
+          let sectionBond = UICollectionViewDataSourceSectionBond<Void>(collectionView: collectionView, section: section)
+          let sectionDynamic = array[section]
+          sectionDynamic.bindTo(sectionBond)
+          
+          self?.sectionBonds[section].unbindAll()
+          self?.sectionBonds[section] = sectionBond
+        }
+      }
+    }
+  }
+  
+  public func bind(dynamic: DynamicArray<UICollectionViewCell>) {
+    bind(DynamicArray([dynamic]))
+  }
+  
+  public override func bind(dynamic: Dynamic<Array<DynamicArray<UICollectionViewCell>>>, fire: Bool, strongly: Bool) {
+    super.bind(dynamic, fire: false, strongly: strongly)
+    if let dynamic = dynamic as? DynamicArray<DynamicArray<UICollectionViewCell>> {
+      
+      for section in 0..<dynamic.count {
+        let sectionBond = UICollectionViewDataSourceSectionBond<Void>(collectionView: self.collectionView, section: section)
+        let sectionDynamic = dynamic[section]
+        sectionDynamic.bindTo(sectionBond)
+        sectionBonds.append(sectionBond)
+      }
+      
+      dataSource = CollectionViewDynamicArrayDataSource(dynamic: dynamic)
+      dataSource?.nextDataSource = self.nextDataSource
+      collectionView?.dataSource = dataSource
+      collectionView?.reloadData()
+    }
+  }
+  
+  deinit {
+    self.unbindAll()
+    collectionView?.dataSource = nil
+    self.dataSource = nil
+  }
+}
+
+public func ->> <T>(left: DynamicArray<UICollectionViewCell>, right: UICollectionViewDataSourceBond<T>) {
+  right.bind(left)
+}
