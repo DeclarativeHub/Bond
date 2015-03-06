@@ -53,7 +53,7 @@ private class UICollectionViewDataSourceSectionBond<T>: ArrayBond<UICollectionVi
       if let collectionView: UICollectionView = self.collectionView {
         collectionView.performBatchUpdates({
           collectionView.insertItemsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) })
-          }, nil)
+          }, completion: nil)
       }
     }
     
@@ -61,7 +61,7 @@ private class UICollectionViewDataSourceSectionBond<T>: ArrayBond<UICollectionVi
       if let collectionView = self.collectionView {
         collectionView.performBatchUpdates({
           collectionView.deleteItemsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) })
-          }, nil)
+          }, completion: nil)
       }
     }
     
@@ -69,7 +69,7 @@ private class UICollectionViewDataSourceSectionBond<T>: ArrayBond<UICollectionVi
       if let collectionView = self.collectionView {
         collectionView.performBatchUpdates({
           collectionView.reloadItemsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) })
-          }, nil)
+          }, completion: nil)
       }
     }
   }
@@ -99,7 +99,7 @@ public class UICollectionViewDataSourceBond<T>: ArrayBond<DynamicArray<UICollect
         if let collectionView: UICollectionView = self?.collectionView {
           collectionView.performBatchUpdates({
             collectionView.insertSections(NSIndexSet(array: i))
-            }, nil)
+            }, completion: nil)
           
           for section in sorted(i, <) {
             let sectionBond = UICollectionViewDataSourceSectionBond<Void>(collectionView: collectionView, section: section)
@@ -120,7 +120,7 @@ public class UICollectionViewDataSourceBond<T>: ArrayBond<DynamicArray<UICollect
         if let collectionView = s.collectionView {
           collectionView.performBatchUpdates({
             collectionView.deleteSections(NSIndexSet(array: i))
-            }, nil)
+            }, completion: nil)
           
           for section in sorted(i, >) {
             s.sectionBonds[section].unbindAll()
@@ -138,7 +138,7 @@ public class UICollectionViewDataSourceBond<T>: ArrayBond<DynamicArray<UICollect
       if let collectionView = self?.collectionView {
         collectionView.performBatchUpdates({
           collectionView.reloadSections(NSIndexSet(array: i))
-          }, nil)
+          }, completion: nil)
         
         for section in i {
           let sectionBond = UICollectionViewDataSourceSectionBond<Void>(collectionView: collectionView, section: section)
