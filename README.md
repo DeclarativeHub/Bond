@@ -495,7 +495,7 @@ override func viewDidLoad() {
 
 ```swift
   // map repositories to cells and bind
-  repositories.map { [unowned self] (repository: Repository) -> RepositoryTableViewCell in
+  repositories.map { [unowned self] (repository: Repository) -> UITableViewCell in
     let cell = self.tableView.dequeueReusableCellWithIdentifier("cell") as RepositoryTableViewCell
     repository.name ->> cell.nameLabel
     repository.photo ->> cell.avatarImageView
@@ -521,17 +521,49 @@ If your table view needs to display more than one section, you can feed it with 
 ```swift
   let sectionOfApples = apples.map { [unowned self] (apple: Apple) -> UITableViewCell in
     let cell = self.tableView.dequeueReusableCellWithIdentifier("cell") as AppleTableViewCell
-    apple.name ->> cell.nameLabel
+    cell.nameLabel = apple.name
     return cell
   }
   
   let sectionOfPears = pears.map { [unowned self] (pear: Pear) -> UITableViewCell in
     let cell = self.tableView.dequeueReusableCellWithIdentifier("cell") as PearTableViewCell
-    pear.name ->> cell.nameLabel
+    cell.nameLabel = pear.name
     return cell
   }
   
   DynamicArray([sectionOfApples, sectionOfPears]) ->> tableViewDataSourceBond
+```
+
+#### UICollectionView
+
+Just as you can bind dynamic arrays to table views, you can bind them to collection views. Steps are same identical, just with different types: map your dynamic array to a dynamic array of `UICollectionViewCell` objects and bind it to a bond of type `UICollectionViewDataSourceBond`. Here is an example:
+
+```swift
+var collectionViewDataSourceBond: UICollectionViewDataSourceBond<UICollectionViewCell>!
+
+override func viewDidLoad() {
+  super.viewDidLoad()
+
+  // create a data source bond for collection view
+  collectionViewDataSourceBond = UICollectionViewDataSourceBond(collectionView: self.collectionView)
+  
+    // map repositories to cells and bind
+  repositories.map { [unowned self] (repository: Repository, index: Int) -> UICollectionViewCell in
+    let indexPath = NSIndexPath(forItem: index, inSection: 0)
+    let cell = self.collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as RepositoryCollectionViewCell
+    repository.name ->> cell.nameLabel
+    repository.photo ->> cell.avatarImageView
+    return cell
+  } ->> collectionViewDataSourceBond
+}
+```
+
+Notice how we've used variant of `map` that provides both an object to map and its index in the array. We need that index in order to build index path. Collection view differs from table view in that the index path is required when dequeueing cell. 
+
+It's also possible to bind multiple sections by placing individual section dynamic arrays into another dynamic array, just like it's done for table views.
+
+```swift
+  DynamicArray([sectionOfApples, sectionOfPears]) ->> collectionViewDataSourceBond
 ```
 
 ### Key-Value-Observing
