@@ -110,7 +110,7 @@ extension UIButton /*: Dynamical, Bondable */ {
       return (d as? Dynamic<String>)!
     } else {
       let d = InternalDynamic<String>(self.titleLabel?.text ?? "", faulty: false)
-      let bond = Bond<String>() { [weak self] v in if let s = self { s.titleLabel?.text = v } }
+      let bond = Bond<String>() { [weak self] v in if let s = self { s.setTitle(v, forState: .Normal) } }
       d.bindTo(bond, fire: false, strongly: false)
       d.retain(bond)
       objc_setAssociatedObject(self, &titleDynamicHandleUIButton, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
