@@ -101,6 +101,25 @@ class UIKitDynamicTests: XCTestCase {
     XCTAssert(dynamicDriver.value == "d", "Dynamic value reflects text view value change")
   }
   
+  func testUITextViewAttributedDynamic() {
+    var dynamicDriver = Dynamic<NSAttributedString>(NSAttributedString(string: "b"))
+    let textView = UITextView()
+    
+    textView.attributedText = NSAttributedString(string: "a")
+    XCTAssert(textView.attributedText.string == "a", "Initial value")
+    
+    dynamicDriver <->> textView.dynAttributedText
+    XCTAssert(textView.attributedText.string == "b", "Text view value after binding")
+    
+    dynamicDriver.value = NSAttributedString(string: "c")
+    XCTAssert(textView.attributedText.string == "c", "Text view value reflects dynamic value change")
+    
+    textView.attributedText = NSAttributedString(string: "d")
+    NSNotificationCenter.defaultCenter().postNotificationName(UITextViewTextDidChangeNotification, object: textView)
+    XCTAssert(textView.dynAttributedText.value.string == "d", "Dynamic value reflects text view value change")
+    XCTAssert(dynamicDriver.value.string == "d", "Dynamic value reflects text view value change")
+  }
+  
   func testUIDatePickerDynamic() {
     let date1 = NSDate(timeIntervalSince1970: 10)
     let date2 = NSDate(timeIntervalSince1970: 10000)

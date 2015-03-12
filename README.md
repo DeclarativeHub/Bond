@@ -231,14 +231,14 @@ Following table lists all available Dynamics of UIKit objects:
 |----------------|---------------------------------------------------------|-----------------|
 | UIView         | dynAlpha <br> dynHidden <br> dynBackgroundColor         | --              |
 | UISlider       | dynValue                                                | dynValue        |
-| UILabel        | dynText                                                 | dynText         |
+| UILabel        | dynText <br> dynAttributedText                          | dynText         |
 | UIProgressView | dynProgress                                             | dynProgress     |
 | UIImageView    | dynImage                                                | dynImage        |
 | UIButton       | dynEnabled <br> dynTitle <br> dynImageForNormalState    | dynEnabled      |
 | UIBarItem      | dynEnabled <br> dynTitle <br> dynImage                  | dynEnabled      |
 | UISwitch       | dynOn                                                   | dynOn           |
 | UITextField    | dynText                                                 | dynText         |
-| UITextView     | dynText                                                 | dynText         |
+| UITextView     | dynText <br> dynAttributedText                          | dynText         |
 | UIDatePicker   | dynDate                                                 | dynDate         |
 | UIActivityIndicatorView | dynIsAnimating                                 | dynIsAnimating  |
 

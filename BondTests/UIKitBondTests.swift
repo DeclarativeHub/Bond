@@ -67,6 +67,20 @@ class UIKitTests: XCTestCase {
     dynamicDriver.value = "c"
     XCTAssert(label.text == "c", "Value after dynamic change")
   }
+  
+  func testUILabelAttributedTextBond() {
+    var dynamicDriver = Dynamic<NSAttributedString>(NSAttributedString(string: "b"))
+    let label = UILabel()
+    
+    label.text = "a"
+    XCTAssert(label.text == "a", "Initial value")
+    
+    dynamicDriver ->> label.dynAttributedText
+    XCTAssert(label.attributedText.string == "b", "Value after binding")
+    
+    dynamicDriver.value = NSAttributedString(string: "c")
+    XCTAssert(label.attributedText.string == "c", "Value after dynamic change")
+  }
 
   func testUIProgressViewBond() {
     var dynamicDriver = Dynamic<Float>(0)

@@ -28,6 +28,7 @@
 import UIKit
 
 private var textDynamicHandleUITextView: UInt8 = 0;
+private var attributedTextDynamicHandleUITextView: UInt8 = 0;
 
 extension UITextView: Bondable {
   
@@ -48,6 +49,27 @@ extension UITextView: Bondable {
       d.bindTo(bond, fire: false, strongly: false)
       d.retain(bond)
       objc_setAssociatedObject(self, &textDynamicHandleUITextView, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return d
+    }
+  }
+  
+  public var dynAttributedText: Dynamic<NSAttributedString> {
+    if let d: AnyObject = objc_getAssociatedObject(self, &attributedTextDynamicHandleUITextView) {
+      return (d as? Dynamic<NSAttributedString>)!
+    } else {
+      let d: InternalDynamic<NSAttributedString> = dynamicObservableFor(UITextViewTextDidChangeNotification, object: self) {
+        notification -> NSAttributedString in
+        if let textView = notification.object as? UITextView  {
+          return textView.attributedText ?? NSAttributedString(string: "")
+        } else {
+          return NSAttributedString(string: "")
+        }
+      }
+      
+      let bond = Bond<NSAttributedString>() { [weak self] v in if let s = self { s.attributedText = v } }
+      d.bindTo(bond, fire: false, strongly: false)
+      d.retain(bond)
+      objc_setAssociatedObject(self, &attributedTextDynamicHandleUITextView, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
       return d
     }
   }
