@@ -65,7 +65,7 @@ private class UICollectionViewDataSourceSectionBond<T>: ArrayBond<UICollectionVi
       }
     }
     
-    self.updateListener = { [unowned self] a, i in
+    self.updateListener = { [unowned self] a, i, o in
       if let collectionView = self.collectionView {
         collectionView.performBatchUpdates({
           collectionView.reloadItemsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) })
@@ -134,7 +134,7 @@ public class UICollectionViewDataSourceBond<T>: ArrayBond<DynamicArray<UICollect
       }
     }
     
-    self.updateListener = { [weak self] array, i in
+    self.updateListener = { [weak self] array, i, o in
       if let collectionView = self?.collectionView {
         collectionView.performBatchUpdates({
           collectionView.reloadSections(NSIndexSet(array: i))

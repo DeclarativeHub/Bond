@@ -146,7 +146,7 @@ private class UITableViewDataSourceSectionBond<T>: ArrayBond<UITableViewCell> {
       }
     }
     
-    self.updateListener = { [unowned self] a, i in
+    self.updateListener = { [unowned self] a, i, o in
       if let tableView = self.tableView {
         tableView.beginUpdates()
         tableView.reloadRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) }, withRowAnimation: UITableViewRowAnimation.Automatic)
@@ -217,7 +217,7 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
       }
     }
     
-    self.updateListener = { [weak self] array, i in
+    self.updateListener = { [weak self] array, i, o in
       if let tableView = self?.tableView {
         tableView.beginUpdates()
         tableView.reloadSections(NSIndexSet(array: i), withRowAnimation: UITableViewRowAnimation.Automatic)
