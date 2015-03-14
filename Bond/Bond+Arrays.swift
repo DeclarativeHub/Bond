@@ -684,8 +684,18 @@ public extension DynamicArray
     return _map(self, f, DynamicArrayMapCacheValue(count: self.count, repeatedValue: nil))
   }
   
+  public func map<U>(f: T -> U) -> DynamicArray<U> {
+    let mapf = { (o: T, i: Int) -> U in f(o) }
+    return _map(self, mapf, DynamicArrayMapCacheValue(count: self.count, repeatedValue: nil))
+  }
+  
   public func map<U: AnyObject>(f: (T, Int) -> U) -> DynamicArray<U> {
     return _map(self, f, DynamicArrayMapCacheObject(count: self.count, repeatedValue: nil))
+  }
+  
+  public func map<U: AnyObject>(f: T -> U) -> DynamicArray<U> {
+    let mapf = { (o: T, i: Int) -> U in f(o) }
+    return _map(self, mapf, DynamicArrayMapCacheObject(count: self.count, repeatedValue: nil))
   }
   
   public func filter(f: T -> Bool) -> DynamicArray<T> {

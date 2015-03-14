@@ -86,7 +86,7 @@ override func viewDidLoad() {
   tableViewDataSourceBond = UITableViewDataSourceBond(tableView: self.tableView)
 
   // map repositories to cells and bind
-  repositories.map { [unowned self] (repository: Repository, index: Int) -> RepositoryTableViewCell in
+  repositories.map { [unowned self] (repository: Repository) -> RepositoryTableViewCell in
     let cell = self.tableView.dequeueReusableCellWithIdentifier("cell") as RepositoryTableViewCell
     repository.name ->> cell.nameLabel
     repository.photo ->> cell.avatarImageView
@@ -495,7 +495,7 @@ override func viewDidLoad() {
 
 ```swift
   // map repositories to cells and bind
-  repositories.map { [unowned self] (repository: Repository, index: Int) -> UITableViewCell in
+  repositories.map { [unowned self] (repository: Repository) -> UITableViewCell in
     let cell = self.tableView.dequeueReusableCellWithIdentifier("cell") as RepositoryTableViewCell
     repository.name ->> cell.nameLabel
     repository.photo ->> cell.avatarImageView
@@ -519,13 +519,13 @@ If your table view needs to display more than one section, you can feed it with 
 
 
 ```swift
-  let sectionOfApples = apples.map { [unowned self] (apple: Apple, index: Int) -> UITableViewCell in
+  let sectionOfApples = apples.map { [unowned self] (apple: Apple) -> UITableViewCell in
     let cell = self.tableView.dequeueReusableCellWithIdentifier("cell") as AppleTableViewCell
     cell.nameLabel = apple.name
     return cell
   }
   
-  let sectionOfPears = pears.map { [unowned self] (pear: Pear, index: Int) -> UITableViewCell in
+  let sectionOfPears = pears.map { [unowned self] (pear: Pear) -> UITableViewCell in
     let cell = self.tableView.dequeueReusableCellWithIdentifier("cell") as PearTableViewCell
     cell.nameLabel = pear.name
     return cell
