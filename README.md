@@ -86,7 +86,7 @@ override func viewDidLoad() {
   tableViewDataSourceBond = UITableViewDataSourceBond(tableView: self.tableView)
 
   // map repositories to cells and bind
-  repositories.map { [unowned self] (repository: Repository) -> RepositoryTableViewCell in
+  repositories.map { [unowned self] (repository: Repository, index: Int) -> RepositoryTableViewCell in
     let cell = self.tableView.dequeueReusableCellWithIdentifier("cell") as RepositoryTableViewCell
     repository.name ->> cell.nameLabel
     repository.photo ->> cell.avatarImageView
@@ -431,9 +431,9 @@ As the DynamicArray is the subclass of the Dynamic, it can be bonded with any Bo
 
 ```swift
 public class ArrayBond<T>: Bond<Array<T>> {
-  public var insertListener: (([Int]) -> Void)?
-  public var removeListener: (([Int], [T]) -> Void)?
-  public var updateListener: (([Int]) -> Void)?
+  public var insertListener: ((DynamicArray<T>, [Int]) -> Void)?
+  public var removeListener: ((DynamicArray<T>, [Int], [T]) -> Void)?
+  public var updateListener: ((DynamicArray<T>, [Int], [T]) -> Void)?
   
   override public init()
   override public func bind(dynamic: Dynamic<Array<T>>)
@@ -447,11 +447,11 @@ Let's go through one example. We'll create a new bond to our `repositories` arra
 ```swift
 let myBond = ArrayBond<Repository>()
 	
-myBond.insertListener = { indices in
+myBond.insertListener = { array, indices in
 	println("Inserted objects at indices \(indices)")
 }
 	
-myBond.updateListener = { indices in
+myBond.updateListener = { array, indices, oldElements in
 	println("Updated objects at indices \(indices)")
 }
 	
@@ -495,7 +495,7 @@ override func viewDidLoad() {
 
 ```swift
   // map repositories to cells and bind
-  repositories.map { [unowned self] (repository: Repository) -> UITableViewCell in
+  repositories.map { [unowned self] (repository: Repository, index: Int) -> UITableViewCell in
     let cell = self.tableView.dequeueReusableCellWithIdentifier("cell") as RepositoryTableViewCell
     repository.name ->> cell.nameLabel
     repository.photo ->> cell.avatarImageView
@@ -519,13 +519,13 @@ If your table view needs to display more than one section, you can feed it with 
 
 
 ```swift
-  let sectionOfApples = apples.map { [unowned self] (apple: Apple) -> UITableViewCell in
+  let sectionOfApples = apples.map { [unowned self] (apple: Apple, index: Int) -> UITableViewCell in
     let cell = self.tableView.dequeueReusableCellWithIdentifier("cell") as AppleTableViewCell
     cell.nameLabel = apple.name
     return cell
   }
   
-  let sectionOfPears = pears.map { [unowned self] (pear: Pear) -> UITableViewCell in
+  let sectionOfPears = pears.map { [unowned self] (pear: Pear, index: Int) -> UITableViewCell in
     let cell = self.tableView.dequeueReusableCellWithIdentifier("cell") as PearTableViewCell
     cell.nameLabel = pear.name
     return cell
