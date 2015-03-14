@@ -225,4 +225,225 @@ class ArrayTests: XCTestCase {
     XCTAssert(indices == [0, 1, 2])
     XCTAssert(removedObjects == [8, 9, 6])
   }
+  
+  func testArrayMap() {
+    let array = DynamicArray<Int>([])
+    let mapped = array.map { e, i in e * 2 }
+    
+    XCTAssert(array.count == 0)
+    XCTAssert(mapped.count == 0)
+    
+    array.append(1)
+    XCTAssert(mapped.count == 1)
+    XCTAssert(mapped[0] == 2)
+    
+    array.insert(2, atIndex: 0)
+    XCTAssert(mapped.count == 2)
+    XCTAssert(mapped[0] == 4)
+    XCTAssert(mapped[1] == 2)
+    
+    array.splice([3, 4], atIndex: 1)
+    XCTAssert(mapped.count == 4)
+    XCTAssert(mapped[0] == 4)
+    XCTAssert(mapped[1] == 6)
+    XCTAssert(mapped[2] == 8)
+    XCTAssert(mapped[3] == 2)
+    
+    array.removeLast()
+    XCTAssert(mapped.count == 3)
+    XCTAssert(mapped[0] == 4)
+    XCTAssert(mapped[1] == 6)
+    XCTAssert(mapped[2] == 8)
+    
+    array.removeAtIndex(1)
+    XCTAssert(mapped.count == 2)
+    XCTAssert(mapped[0] == 4)
+    XCTAssert(mapped[1] == 8)
+    
+    array.removeAll(true)
+    XCTAssert(mapped.count == 0)
+  }
+  
+  func testArrayMapToValueCache() {
+    var callCount: Int = 0
+    let array = DynamicArray<Int>([])
+    let mapped = array.map { e, i -> Int in
+      callCount++
+      return e * 2
+    }
+    
+    XCTAssert(mapped.count == 0)
+    XCTAssert(callCount == 0)
+    
+    array.append(1)
+    XCTAssert(callCount == 0)
+    
+    XCTAssert(mapped[0] == 2)
+    XCTAssert(callCount == 1, "Should cache value")
+    
+    XCTAssert(mapped[0] == 2)
+    XCTAssert(callCount == 1, "Shoud use cached value")
+    
+    array.insert(2, atIndex: 0)
+    XCTAssert(callCount == 1)
+    
+    XCTAssert(mapped[1] == 2)
+    XCTAssert(callCount == 1, "Shoud use cached value")
+    
+    XCTAssert(mapped[0] == 4)
+    XCTAssert(callCount == 2, "Should cache value")
+    
+    XCTAssert(mapped[0] == 4)
+    XCTAssert(callCount == 2, "Shoud use cached value")
+    
+    array.removeAtIndex(0)
+    XCTAssert(callCount == 2)
+    
+    XCTAssert(mapped[0] == 2)
+    XCTAssert(callCount == 2, "Shoud use cached value")
+    
+    array.removeLast()
+    XCTAssert(callCount == 2)
+    
+    array.splice([1, 2, 3, 4], atIndex: 0)
+    XCTAssert(callCount == 2)
+    
+    XCTAssert(mapped[1] == 4)
+    XCTAssert(callCount == 3, "Should cache value")
+    
+    array.removeAtIndex(1)
+    XCTAssert(callCount == 3)
+    
+    XCTAssert(mapped[1] == 6)
+    XCTAssert(callCount == 4, "Should cache value")
+    
+    array.insert(2, atIndex: 1)
+    XCTAssert(callCount == 4)
+    
+    XCTAssert(mapped[2] == 6)
+    XCTAssert(callCount == 4, "Shoud use cached value")
+    
+    XCTAssert(mapped[1] == 4)
+    XCTAssert(callCount == 5, "Should cache value")
+    
+    XCTAssert(mapped.last == 8)
+    XCTAssert(callCount == 6, "Should cache value")
+    
+    XCTAssert(mapped.last == 8)
+    XCTAssert(callCount == 6, "Shoud use cached value")
+    
+    XCTAssert(mapped.first == 2)
+    XCTAssert(callCount == 7, "Should cache value")
+    
+    XCTAssert(mapped.first == 2)
+    XCTAssert(callCount == 7, "Shoud use cached value")
+    
+    array.removeAll(true)
+    XCTAssert(callCount == 7)
+  }
+  
+  func testArrayMapToObjectCache() {
+    class Test {
+      var value: Int
+      init(_ value: Int) { self.value = value }
+    }
+    
+    var callCount: Int = 0
+    let array = DynamicArray<Int>([])
+    let mapped = array.map { e, i -> Test in
+      callCount++
+      return Test(e)
+    }
+    
+    XCTAssert(mapped.count == 0)
+    XCTAssert(callCount == 0)
+    
+    array.append(1)
+    XCTAssert(callCount == 0)
+    
+    XCTAssert(mapped[0].value == 1)
+    XCTAssert(callCount == 1, "Should cache value")
+    
+    XCTAssert(mapped[0].value == 1)
+    XCTAssert(callCount == 2, "Shoud cache value")
+    
+    array.insert(2, atIndex: 0)
+    XCTAssert(callCount == 2)
+    
+    XCTAssert(mapped[1].value == 1)
+    XCTAssert(callCount == 3, "Shoud cache value")
+    
+    XCTAssert(mapped[0].value == 2)
+    XCTAssert(callCount == 4, "Should cache value")
+    
+    XCTAssert(mapped[0].value == 2)
+    XCTAssert(callCount == 5, "Shoud cache value")
+    
+    array.removeAtIndex(0)
+    XCTAssert(callCount == 5)
+    
+    XCTAssert(mapped[0].value == 1)
+    XCTAssert(callCount == 6, "Shoud cache value")
+    
+    array.removeLast()
+    XCTAssert(callCount == 6)
+    
+    array.splice([1, 2, 3, 4], atIndex: 0)
+    XCTAssert(callCount == 6)
+    
+    XCTAssert(mapped[1].value == 2)
+    XCTAssert(callCount == 7, "Should cache value")
+    
+    array.removeAtIndex(1)
+    XCTAssert(callCount == 7)
+    
+    XCTAssert(mapped[1].value == 3)
+    XCTAssert(callCount == 8, "Should cache value")
+    
+    array.insert(2, atIndex: 1)
+    XCTAssert(callCount == 8)
+    
+    XCTAssert(mapped[2].value == 3)
+    XCTAssert(callCount == 9, "Shoud cache value")
+    
+    XCTAssert(mapped[1].value == 2)
+    XCTAssert(callCount == 10, "Should cache value")
+    
+    XCTAssert(mapped.last!.value == 4)
+    XCTAssert(callCount == 11, "Should cache value")
+    
+    XCTAssert(mapped.last!.value == 4)
+    XCTAssert(callCount == 12, "Shoud cache value")
+    
+    XCTAssert(mapped.first!.value == 1)
+    XCTAssert(callCount == 13, "Should cache value")
+    
+    XCTAssert(mapped.first!.value == 1)
+    XCTAssert(callCount == 14, "Shoud cache value")
+    
+    array.removeAll(true)
+    XCTAssert(callCount == 14)
+  }
+  
+  func testArrayMapToObjectCacheRetaining() {
+    class Test {
+      var value: Int
+      init(_ value: Int) { self.value = value }
+    }
+    
+    let array = DynamicArray<Int>([])
+    let mapped = array.map { e, i -> Test in
+      return Test(e)
+    }
+    
+    array.append(1)
+    var element: Test? = mapped[0]
+    XCTAssert(element != nil && element!.value == 1)
+    
+    weak var elementWeak: Test? = mapped[0]
+    XCTAssertNotNil(elementWeak)
+    
+    element = nil
+    XCTAssertNil(elementWeak, "Should not be retained by the array")
+  }
 }
