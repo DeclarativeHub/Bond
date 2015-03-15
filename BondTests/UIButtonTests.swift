@@ -67,10 +67,10 @@ class UIButtonTests: XCTestCase {
     button.dynEvent.filter(==, .TouchUpInside) ->> bond
     XCTAssert(observedValue == UIControlEvents.AllEvents, "Value after binding should not be changed")
     
-    button.dynEvent.value = UIControlEvents.TouchDragInside
+    button.sendActionsForControlEvents(.TouchDragInside)
     XCTAssert(observedValue == UIControlEvents.AllEvents, "Dynamic change does not pass test - should not update observedValue")
     
-    button.dynEvent.value = UIControlEvents.TouchUpInside
+    button.sendActionsForControlEvents(.TouchUpInside)
     XCTAssert(observedValue == UIControlEvents.TouchUpInside, "Dynamic change passes test - should update observedValue")
   }
 }
