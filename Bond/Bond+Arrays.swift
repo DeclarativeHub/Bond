@@ -32,22 +32,17 @@ import Foundation
 // MARK: Array Bond
 
 public class ArrayBond<T>: Bond<Array<T>> {
-  public var insertListener: ((DynamicArray<T>, [Int]) -> Void)?
-  public var removeListener: ((DynamicArray<T>, [Int], [T]) -> Void)?
-  public var updateListener: ((DynamicArray<T>, [Int], [T]) -> Void)?
+  public var willInsertListener: ((DynamicArray<T>, [Int]) -> Void)?
+  public var didInsertListener: ((DynamicArray<T>, [Int]) -> Void)?
+  
+  public var willRemoveListener: ((DynamicArray<T>, [Int]) -> Void)?
+  public var didRemoveListener: ((DynamicArray<T>, [Int]) -> Void)?
+  
+  public var willUpdateListener: ((DynamicArray<T>, [Int]) -> Void)?
+  public var didUpdateListener: ((DynamicArray<T>, [Int]) -> Void)?
+
   
   override public init() {
-    super.init()
-  }
-  
-  public init(
-    insertListener: ((DynamicArray<T>, [Int]) -> Void)?,
-    removeListener: ((DynamicArray<T>, [Int], [T]) -> Void)?,
-    updateListener: ((DynamicArray<T>, [Int], [T]) -> Void)?) {
-    
-    self.insertListener = insertListener
-    self.removeListener = removeListener
-    self.updateListener = updateListener
     super.init()
   }
   
@@ -108,46 +103,57 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
   }
   
   public func append(newElement: T) {
+    dispatchWillInsert([value.count])
     value.append(newElement)
-    dispatchInsertion([value.count-1])
+    dispatchDidInsert([value.count-1])
   }
   
   public func append(array: Array<T>) {
     if array.count > 0 {
       let count = value.count
+      dispatchWillInsert(Array(count..<value.count))
       value += array
-      dispatchInsertion(Array(count..<value.count))
+      dispatchDidInsert(Array(count..<value.count))
     }
   }
   
   public func removeLast() -> T {
-    let last = value.removeLast()
-    dispatchRemoval([value.count], objects: [last])
-    return last
+    if self.count > 0 {
+      dispatchWillRemove([value.count-1])
+      let last = value.removeLast()
+      dispatchDidRemove([value.count])
+      return last
+    }
+    
+    fatalError("Cannot remveLast() as there are no elements in the array!")
   }
   
   public func insert(newElement: T, atIndex i: Int) {
+    dispatchWillInsert([i])
     value.insert(newElement, atIndex: i)
-    dispatchInsertion([i])
+    dispatchDidInsert([i])
   }
   
   public func splice(array: Array<T>, atIndex i: Int) {
     if array.count > 0 {
+      dispatchWillInsert(Array(i..<i+array.count))
       value.splice(array, atIndex: i)
-      dispatchInsertion(Array(i..<i+array.count))
+      dispatchDidInsert(Array(i..<i+array.count))
     }
   }
   
   public func removeAtIndex(index: Int) -> T {
+    dispatchWillRemove([index])
     let object = value.removeAtIndex(index)
-    dispatchRemoval([index], objects: [object])
+    dispatchDidRemove([index])
     return object
   }
   
   public func removeAll(keepCapacity: Bool) {
-    let copy = value
+    let count = value.count
+    dispatchWillRemove(Array<Int>(0..<count))
     value.removeAll(keepCapacity: keepCapacity)
-    dispatchRemoval(Array<Int>(0..<copy.count), objects: copy)
+    dispatchDidRemove(Array<Int>(0..<count))
   }
   
   public subscript(index: Int) -> T {
@@ -156,12 +162,13 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
     }
     set(newObject) {
       if index == value.count {
+        dispatchWillInsert([index])
         value[index] = newObject
-        dispatchInsertion([index])
+        dispatchDidInsert([index])
       } else {
-        let old = value[index]
+        dispatchWillUpdate([index])
         value[index] = newObject
-        dispatchUpdate([index], objects: [old])
+        dispatchDidUpdate([index])
       }
     }
   }
@@ -170,26 +177,50 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
     return DynamicArrayGenerator<T>(array: self)
   }
   
-  private func dispatchInsertion(indices: [Int]) {
+  private func dispatchWillInsert(indices: [Int]) {
     for bondBox in bonds {
       if let arrayBond = bondBox.bond as? ArrayBond {
-        arrayBond.insertListener?(self, indices)
+        arrayBond.willInsertListener?(self, indices)
       }
     }
   }
   
-  private func dispatchRemoval(indices: [Int], objects: [T]) {
+  private func dispatchDidInsert(indices: [Int]) {
     for bondBox in bonds {
       if let arrayBond = bondBox.bond as? ArrayBond {
-        arrayBond.removeListener?(self, indices, objects)
+        arrayBond.didInsertListener?(self, indices)
       }
     }
   }
   
-  private func dispatchUpdate(indices: [Int], objects: [T]) {
+  private func dispatchWillRemove(indices: [Int]) {
     for bondBox in bonds {
       if let arrayBond = bondBox.bond as? ArrayBond {
-        arrayBond.updateListener?(self, indices, objects)
+        arrayBond.willRemoveListener?(self, indices)
+      }
+    }
+  }
+
+  private func dispatchDidRemove(indices: [Int]) {
+    for bondBox in bonds {
+      if let arrayBond = bondBox.bond as? ArrayBond {
+        arrayBond.didRemoveListener?(self, indices)
+      }
+    }
+  }
+  
+  private func dispatchWillUpdate(indices: [Int]) {
+    for bondBox in bonds {
+      if let arrayBond = bondBox.bond as? ArrayBond {
+        arrayBond.willUpdateListener?(self, indices)
+      }
+    }
+  }
+  
+  private func dispatchDidUpdate(indices: [Int]) {
+    for bondBox in bonds {
+      if let arrayBond = bondBox.bond as? ArrayBond {
+        arrayBond.didUpdateListener?(self, indices)
       }
     }
   }
@@ -302,44 +333,40 @@ private class DynamicArrayMapProxy<T, U, C: DynamicArrayMapCache where C.T == U>
     self.cache = cache
     super.init([])
     
-    bond.insertListener = { [unowned self] array, i in
+    bond.willInsertListener = { [unowned self] array, i in
+      self.dispatchWillInsert(i)
+    }
+    
+    bond.didInsertListener = { [unowned self] array, i in
       for idx in i {
         self.cache.insert(nil, atIndex: idx)
       }
       
-      self.dispatchInsertion(i)
+      self.dispatchDidInsert(i)
     }
     
-    bond.removeListener = { [unowned self] array, i, o in
-      var elements: [U] = []
-      
-      for idx in i {
-        if let e = self.cache[idx] {
-          elements.append(e)
-        }
-      }
-      
+    bond.willRemoveListener = { [unowned self] array, i in
+      self.dispatchWillRemove(i)
+    }
+    
+    bond.didRemoveListener = { [unowned self] array, i in
       for idx in reverse(i) {
         self.cache.removeAtIndex(idx)
       }
       
-      self.dispatchRemoval(i, objects: elements)
+      self.dispatchDidRemove(i)
     }
     
-    bond.updateListener = { [unowned self] array, i, o in
-      var elements: [U] = []
-      
-      for idx in i {
-        if let e = self.cache[idx] {
-          elements.append(e)
-        }
-      }
-      
+    bond.willUpdateListener = { [unowned self] array, i in
+      self.dispatchWillUpdate(i)
+    }
+    
+    bond.didUpdateListener = { [unowned self] array, i in
       for idx in reverse(i) {
         self.cache[idx] = nil
       }
       
-      self.dispatchUpdate(i, objects: elements)
+      self.dispatchDidUpdate(i)
     }
   }
   
@@ -482,8 +509,10 @@ public class DynamicArrayFilterProxy<T>: DynamicArray<T> {
     
     value = newValue
     
-    bond.insertListener = { [unowned self] array, indices in
+    bond.didInsertListener = { [unowned self] array, indices in
+      var sourceIndices: [Int] = []
       var mappedIndices: [Int] = []
+      var elementsToInsert: [T] = []
       
       for idx in indices {
         self.positions.insert(-1, atIndex: idx)
@@ -502,9 +531,23 @@ public class DynamicArrayFilterProxy<T>: DynamicArray<T> {
         
           pos += 1
           
-          // insert element
-          self.value.insert(element, atIndex: pos)
+          // generate to-insert info
+          sourceIndices.append(idx)
           mappedIndices.append(pos)
+          elementsToInsert.append(element)
+        }
+      }
+      
+      if mappedIndices.count > 0 {
+        
+        self.dispatchWillInsert(mappedIndices)
+        
+        for var i = 0; i < sourceIndices.count; i++ {
+          let idx = sourceIndices[i]
+          let pos = mappedIndices[i]
+          let elm = elementsToInsert[i]
+          
+          self.value.insert(elm, atIndex: pos)
           
           // update positions
           self.positions[idx] = pos
@@ -515,26 +558,24 @@ public class DynamicArrayFilterProxy<T>: DynamicArray<T> {
             }
           }
         }
-      }
-      
-      if mappedIndices.count > 0 {
-        self.dispatchInsertion(mappedIndices)
+        
+        self.dispatchDidInsert(mappedIndices)
       }
     }
     
-    bond.removeListener = { [unowned self] array, indices, objects in
+    bond.didRemoveListener = { [unowned self] array, indices in
       var mappedIndices: [Int] = []
-      var mappedObjects: [T] = []
+      var positionsToRemove: [Int] = []
       
       for idx in reverse(indices) {
         var pos = self.positions[idx]
         
         if pos >= 0 {
-          mappedObjects.append(self.value[pos])
           self.value.removeAtIndex(pos)
           mappedIndices.append(pos)
         }
 
+        positionsToRemove.append(idx)
         self.positions.removeAtIndex(idx)
         
         if pos >= 0 {
@@ -547,11 +588,11 @@ public class DynamicArrayFilterProxy<T>: DynamicArray<T> {
       }
       
       if mappedIndices.count > 0 {
-        self.dispatchRemoval(reverse(mappedIndices), objects: reverse(mappedObjects))
+        self.dispatchDidRemove(reverse(mappedIndices))
       }
     }
     
-    bond.updateListener = { [unowned self] array, indices, objects in
+    bond.didUpdateListener = { [unowned self] array, indices in
       
       var mappedIndices: [Int] = []
       var mappedInsertionIndices: [Int] = []
@@ -608,9 +649,9 @@ public class DynamicArrayFilterProxy<T>: DynamicArray<T> {
         }
       }
       
-      if mappedIndices.count > 0 { self.dispatchUpdate(mappedIndices, objects: mappedUpdatedObjects) }
-      if mappedInsertionIndices.count > 0 { self.dispatchInsertion(mappedInsertionIndices) }
-      if mappedRemovalIndices.count > 0 { self.dispatchRemoval(mappedRemovalIndices, objects: mappedRemovalObjects) }
+      if mappedIndices.count > 0 { self.dispatchDidUpdate(mappedIndices) }
+      if mappedInsertionIndices.count > 0 { self.dispatchDidInsert(mappedInsertionIndices) }
+      if mappedRemovalIndices.count > 0 { self.dispatchDidRemove(mappedRemovalIndices) }
     }
   }
   
@@ -648,30 +689,6 @@ public class DynamicArrayFilterProxy<T>: DynamicArray<T> {
     }
     set {
       fatalError("Modifying proxy array is not supported!")
-    }
-  }
-  
-  private override func dispatchInsertion(indices: [Int]) {
-    for bondBox in bonds {
-      if let arrayBond = bondBox.bond as? ArrayBond {
-        arrayBond.insertListener?(self, indices)
-      }
-    }
-  }
-  
-  private override func dispatchRemoval(indices: [Int], objects: [T]) {
-    for bondBox in bonds {
-      if let arrayBond = bondBox.bond as? ArrayBond {
-        arrayBond.removeListener?(self, indices, objects)
-      }
-    }
-  }
-  
-  override private func dispatchUpdate(indices: [Int], objects: [T]) {
-    for bondBox in bonds {
-      if let arrayBond = bondBox.bond as? ArrayBond {
-        arrayBond.updateListener?(self, indices, objects)
-      }
     }
   }
 }

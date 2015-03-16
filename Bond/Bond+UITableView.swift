@@ -130,7 +130,7 @@ private class UITableViewDataSourceSectionBond<T>: ArrayBond<UITableViewCell> {
     self.section = section
     super.init()
     
-    self.insertListener = { [unowned self] a, i in
+    self.didInsertListener = { [unowned self] a, i in
       if let tableView: UITableView = self.tableView {
         tableView.beginUpdates()
         tableView.insertRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) }, withRowAnimation: UITableViewRowAnimation.Automatic)
@@ -138,7 +138,7 @@ private class UITableViewDataSourceSectionBond<T>: ArrayBond<UITableViewCell> {
       }
     }
     
-    self.removeListener = { [unowned self] a, i, o in
+    self.didRemoveListener = { [unowned self] a, i in
       if let tableView = self.tableView {
         tableView.beginUpdates()
         tableView.deleteRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) }, withRowAnimation: UITableViewRowAnimation.Automatic)
@@ -146,7 +146,7 @@ private class UITableViewDataSourceSectionBond<T>: ArrayBond<UITableViewCell> {
       }
     }
     
-    self.updateListener = { [unowned self] a, i, o in
+    self.didUpdateListener = { [unowned self] a, i in
       if let tableView = self.tableView {
         tableView.beginUpdates()
         tableView.reloadRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) }, withRowAnimation: UITableViewRowAnimation.Automatic)
@@ -175,7 +175,7 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
     self.tableView = tableView
     super.init()
     
-    self.insertListener = { [weak self] array, i in
+    self.didInsertListener = { [weak self] array, i in
       if let s = self {
         if let tableView: UITableView = self?.tableView {
           tableView.beginUpdates()
@@ -197,7 +197,7 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
       }
     }
     
-    self.removeListener = { [weak self] array, i, o in
+    self.didRemoveListener = { [weak self] array, i in
       if let s = self {
         if let tableView = s.tableView {
           tableView.beginUpdates()
@@ -217,7 +217,7 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
       }
     }
     
-    self.updateListener = { [weak self] array, i, o in
+    self.didUpdateListener = { [weak self] array, i in
       if let tableView = self?.tableView {
         tableView.beginUpdates()
         tableView.reloadSections(NSIndexSet(array: i), withRowAnimation: UITableViewRowAnimation.Automatic)

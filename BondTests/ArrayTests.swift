@@ -70,18 +70,18 @@ class ArrayTests: XCTestCase {
     var indices: [Int] = []
     var objects: [Int] = []
     
-    bond.insertListener = { a, i in
+    bond.didInsertListener = { a, i in
       indices = i
     }
     
-    bond.removeListener = { a, i, o in
+    bond.willRemoveListener = { a, i in
       indices = i
-      objects = o
+      objects = []; for idx in i { objects.append(a[idx]) }
     }
     
-    bond.updateListener = { a, i, o in
+    bond.willUpdateListener = { a, i in
       indices = i
-      objects = o
+      objects = []; for idx in i { objects.append(a[idx]) }
     }
     
     array.bindTo(bond)
@@ -134,18 +134,18 @@ class ArrayTests: XCTestCase {
       updatedObjects = []
     }
     
-    bond.insertListener = { a, i in
+    bond.didInsertListener = { a, i in
       indices = i
     }
     
-    bond.removeListener = { a, i, o in
+    bond.willRemoveListener = { a, i in
       indices = i
-      removedObjects = o
+      removedObjects = []; for idx in i { removedObjects.append(a[idx]) }
     }
     
-    bond.updateListener = { a, i, o in
+    bond.willUpdateListener = { a, i in
       indices = i
-      updatedObjects = o
+      updatedObjects = []; for idx in i { updatedObjects.append(a[idx]) }
     }
     
     filtered.bindTo(bond)
