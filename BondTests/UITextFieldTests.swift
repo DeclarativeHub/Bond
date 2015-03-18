@@ -25,8 +25,9 @@ class UITextFieldTests: XCTestCase {
     dynamicDriver.value = "c"
     XCTAssert(textField.text == "c", "Text field value reflects dynamic value change")
     
-    textField.dynText.value = "d" // ideally we should simulate user input
-    XCTAssert(textField.dynText.value == "d", "Dynamic value reflects text field value change")
-    XCTAssert(dynamicDriver.value == "d", "Dynamic value reflects text view field change")
+    textField.text = "d"
+    textField.sendActionsForControlEvents(.EditingChanged) //simulate user input
+    XCTAssertEqual(textField.dynText.value, "d", "Dynamic value reflects text field value change")
+    XCTAssertEqual(dynamicDriver.value, "d", "Dynamic value reflects text view field change")
   }
 }

@@ -25,7 +25,8 @@ class UISliderTests: XCTestCase {
     dynamicDriver.value = 0.5
     XCTAssert(slider.value == 0.5, "Slider value reflects dynamic value change")
     
-    slider.dynValue.value = 0.8 // ideally we should simulate user input
+    slider.value = 0.8
+    slider.sendActionsForControlEvents(.ValueChanged) // simulate user input
     XCTAssert(dynamicDriver.value == 0.8, "Dynamic value reflects slider value change")
   }
 }

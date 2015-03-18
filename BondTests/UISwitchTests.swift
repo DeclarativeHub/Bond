@@ -25,7 +25,8 @@ class UISwitchTests: XCTestCase {
     dynamicDriver.value = true
     XCTAssert(uiSwitch.on == true, "Switch value reflects dynamic value change")
     
-    uiSwitch.dynOn.value = false // ideally we should simulate user input
+    uiSwitch.on = false
+    uiSwitch.sendActionsForControlEvents(.ValueChanged) //simulate user input
     XCTAssert(dynamicDriver.value == false, "Dynamic value reflects switch value change")
   }
 }
