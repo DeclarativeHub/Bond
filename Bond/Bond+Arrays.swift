@@ -479,213 +479,212 @@ private class DynamicArrayMapProxy<T, U, C: DynamicArrayMapCache where C.T == U>
   }
 }
 
+func indexOfFirstEqualOrLargerThan(x: Int, array: [Int]) -> Int {
+  var idx: Int = -1
+  for (index, element) in enumerate(array) {
+    if element < x {
+      idx = index
+    } else {
+      break
+    }
+  }
+  return idx + 1
+}
+
 // MARK: Dynamic Array Filter Proxy
 
-public class DynamicArrayFilterProxy<T>: DynamicArray<T> {
+private class DynamicArrayFilterProxy<T>: DynamicArray<T> {
   private unowned var sourceArray: DynamicArray<T>
-  private var positions: [Int]
+  private var pointers: [Int] = []
   private var filterf: T -> Bool
   private let bond: ArrayBond<T>
   
-  public init(sourceArray: DynamicArray<T>, filterf: T -> Bool) {
+  private init(sourceArray: DynamicArray<T>, filterf: T -> Bool) {
     self.sourceArray = sourceArray
     self.filterf = filterf
     self.bond = ArrayBond<T>()
     self.bond.bind(sourceArray, fire: false)
-    self.positions = Array<Int>(count: sourceArray.count, repeatedValue: -1)
     
     super.init([])
     
-    var newValue = Array<T>()
-    
-    for idx in 0..<sourceArray.count {
-      let element = sourceArray[idx]
-      
-      if filterf(element) {
-        positions[idx] = newValue.count
-        newValue.append(element)
-      }
-    }
-    
-    value = newValue
-    
     bond.didInsertListener = { [unowned self] array, indices in
-      var sourceIndices: [Int] = []
-      var mappedIndices: [Int] = []
-      var elementsToInsert: [T] = []
+      var insertedIndices: [Int] = []
+      var pointers = self.pointers
       
       for idx in indices {
-        self.positions.insert(-1, atIndex: idx)
-      }
-      
-      for idx in indices {
-        let element = self.sourceArray[idx]
+
+        for (index, element) in enumerate(pointers) {
+          if element >= idx {
+            pointers[index] = element + 1
+          }
+        }
+        
+        let element = array[idx]
         if filterf(element) {
-          
-          // find position where to insert element to
-          var pos = -1
-          
-          for var i = idx; i >= 0 && pos < 0; i-- {
-            pos = self.positions[i]
-          }
-        
-          pos += 1
-          
-          // generate to-insert info
-          sourceIndices.append(idx)
-          mappedIndices.append(pos)
-          elementsToInsert.append(element)
+          let position = indexOfFirstEqualOrLargerThan(idx, pointers)
+          pointers.insert(idx, atIndex: position)
+          insertedIndices.append(position)
         }
       }
       
-      if mappedIndices.count > 0 {
-        
-        self.dispatchWillInsert(mappedIndices)
-        
-        for var i = 0; i < sourceIndices.count; i++ {
-          let idx = sourceIndices[i]
-          let pos = mappedIndices[i]
-          let elm = elementsToInsert[i]
-          
-          self.value.insert(elm, atIndex: pos)
-          
-          // update positions
-          self.positions[idx] = pos
-          
-          for var i = idx + 1; i < self.positions.count; i++ {
-            if self.positions[i] >= 0 {
-              self.positions[i] += 1
-            }
-          }
-        }
-        
-        self.dispatchDidInsert(mappedIndices)
+      if insertedIndices.count > 0 {
+       self.dispatchWillInsert(insertedIndices)
+      }
+      
+      self.pointers = pointers
+      
+      if insertedIndices.count > 0 {
+        self.dispatchDidInsert(insertedIndices)
       }
     }
     
-    bond.didRemoveListener = { [unowned self] array, indices in
-      var mappedIndices: [Int] = []
-      var positionsToRemove: [Int] = []
+    bond.willRemoveListener = { [unowned self] array, indices in
+      var removedIndices: [Int] = []
+      var pointers = self.pointers
       
       for idx in reverse(indices) {
-        var pos = self.positions[idx]
         
-        if pos >= 0 {
-          self.value.removeAtIndex(pos)
-          mappedIndices.append(pos)
+        if let idx = find(pointers, idx) {
+          pointers.removeAtIndex(idx)
+          removedIndices.append(idx)
         }
-
-        positionsToRemove.append(idx)
-        self.positions.removeAtIndex(idx)
         
-        if pos >= 0 {
-          for var i = idx; i < self.positions.count; i++ {
-            if self.positions[i] >= 0 {
-              self.positions[i]--
-            }
+        for (index, element) in enumerate(pointers) {
+          if element >= idx {
+            pointers[index] = element - 1
           }
         }
       }
       
-      if mappedIndices.count > 0 {
-        self.dispatchDidRemove(reverse(mappedIndices))
+      if removedIndices.count > 0 {
+        self.dispatchWillRemove(reverse(removedIndices))
+      }
+      
+      self.pointers = pointers
+      
+      if removedIndices.count > 0 {
+        self.dispatchDidRemove(reverse(removedIndices))
       }
     }
     
     bond.didUpdateListener = { [unowned self] array, indices in
       
-      var mappedIndices: [Int] = []
-      var mappedInsertionIndices: [Int] = []
-      var mappedRemovalIndices: [Int] = []
-      var mappedRemovalObjects: [T] = []
-      var mappedUpdatedObjects: [T] = []
+      let idx = indices[0]
+      let element = array[idx]
+
+      var insertedIndices: [Int] = []
+      var removedIndices: [Int] = []
+      var updatedIndices: [Int] = []
+      var pointers = self.pointers
       
-      for idx in indices {
-        let element = self.sourceArray[idx]
-        var pos = self.positions[idx]
-        
+      
+      if let idx = find(pointers, idx) {
         if filterf(element) {
-          if pos >= 0 {
-            let old = self.value[pos]
-            mappedUpdatedObjects.append(old)
-            self.value[pos] = element
-            mappedIndices.append(pos)
-          } else {
-            
-            for var i = idx; i >= 0 && pos < 0; i-- {
-              pos = self.positions[i]
-            }
-            
-            pos += 1
-            
-            // insert element
-            self.value.insert(element, atIndex: pos)
-            mappedInsertionIndices.append(pos)
-            
-            // update positions
-            self.positions[idx] = pos
-            
-            for var i = idx + 1; i < self.positions.count; i++ {
-              if self.positions[i] >= 0 {
-                self.positions[i]++
-              }
-            }
-          }
+          // update
+          updatedIndices.append(idx)
         } else {
-          if pos >= 0 {
-            mappedRemovalIndices.append(pos)
-            mappedRemovalObjects.append(self.value[pos])
-            self.value.removeAtIndex(pos)
-            
-            // update positions
-            self.positions[idx] = -1
-            
-            for var i = idx + 1; i < self.positions.count; i++ {
-              if self.positions[i] >= 0 {
-                self.positions[i]--
-              }
-            }
-          }
+          // remove
+          pointers.removeAtIndex(idx)
+          removedIndices.append(idx)
+        }
+      } else {
+        if filterf(element) {
+          let position = indexOfFirstEqualOrLargerThan(idx, pointers)
+          pointers.insert(idx, atIndex: position)
+          insertedIndices.append(position)
+        } else {
+          // nothing
         }
       }
+
+      if insertedIndices.count > 0 {
+        self.dispatchWillInsert(insertedIndices)
+      }
       
-      if mappedIndices.count > 0 { self.dispatchDidUpdate(mappedIndices) }
-      if mappedInsertionIndices.count > 0 { self.dispatchDidInsert(mappedInsertionIndices) }
-      if mappedRemovalIndices.count > 0 { self.dispatchDidRemove(mappedRemovalIndices) }
+      if removedIndices.count > 0 {
+        self.dispatchWillRemove(removedIndices)
+      }
+      
+      if updatedIndices.count > 0 {
+        self.dispatchWillUpdate(updatedIndices)
+      }
+      
+      self.pointers = pointers
+      
+      if updatedIndices.count > 0 {
+        self.dispatchDidUpdate(updatedIndices)
+      }
+      
+      if removedIndices.count > 0 {
+        self.dispatchDidRemove(removedIndices)
+      }
+      
+      if insertedIndices.count > 0 {
+        self.dispatchDidInsert(insertedIndices)
+      }
     }
   }
   
-  override public func append(newElement: T) {
+  
+  private override var count: Int {
+    return pointers.count
+  }
+  
+  private override var capacity: Int {
+    return pointers.capacity
+  }
+  
+  private override var isEmpty: Bool {
+    return pointers.isEmpty
+  }
+  
+  private override var first: T? {
+    if let first = pointers.first {
+      return sourceArray[first]
+    } else {
+      return nil
+    }
+  }
+  
+  private override var last: T? {
+    if let last = pointers.last {
+      return sourceArray[last]
+    } else {
+      return nil
+    }
+  }
+  
+  override private func append(newElement: T) {
     fatalError("Modifying proxy array is not supported!")
   }
   
-  public override func append(array: Array<T>) {
+  private override func append(array: Array<T>) {
     fatalError("Modifying proxy array is not supported!")
   }
   
-  override public func removeLast() -> T {
+  override private func removeLast() -> T {
     fatalError("Modifying proxy array is not supported!")
   }
   
-  override public func insert(newElement: T, atIndex i: Int) {
+  override private func insert(newElement: T, atIndex i: Int) {
     fatalError("Modifying proxy array is not supported!")
   }
   
-  public override func splice(array: Array<T>, atIndex i: Int) {
+  private override func splice(array: Array<T>, atIndex i: Int) {
     fatalError("Modifying proxy array is not supported!")
   }
   
-  override public func removeAtIndex(index: Int) -> T {
+  override private func removeAtIndex(index: Int) -> T {
     fatalError("Modifying proxy array is not supported!")
   }
   
-  override public func removeAll(keepCapacity: Bool) {
+  override private func removeAll(keepCapacity: Bool) {
     fatalError("Modifying proxy array is not supported!")
   }
   
-  override public subscript(index: Int) -> T {
+  override private subscript(index: Int) -> T {
     get {
-      return super[index]
+      return sourceArray[pointers[index]]
     }
     set {
       fatalError("Modifying proxy array is not supported!")

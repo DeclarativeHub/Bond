@@ -9,6 +9,20 @@
 import Bond
 import XCTest
 
+func ==<T: Equatable>(dynamicArray: DynamicArray<T>, array: [T]) -> Bool {
+  if dynamicArray.count == array.count {
+    for i in 0..<array.count {
+      if dynamicArray[i] != array[i] {
+        return false
+      }
+    }
+    
+    return true
+  } else {
+    return false
+  }
+}
+
 class ArrayTests: XCTestCase {
   
   override func setUp() {
@@ -151,74 +165,74 @@ class ArrayTests: XCTestCase {
     filtered.bindTo(bond)
     
     XCTAssert(array.count == 0)
-    XCTAssert(filtered.value == [])
+    XCTAssert(filtered == [])
     resetState()
     
     array.append(1)   // [1]
     XCTAssert(indices == [])
-    XCTAssert(filtered.value == [])
+    XCTAssert(filtered == [])
     resetState()
     
     array.append(6)   // [1, 6]
     XCTAssert(indices == [0])
-    XCTAssert(filtered.value == [6])
+    XCTAssert(filtered == [6])
     resetState()
     
     array.insert(3, atIndex: 0)   // [3, 1, 6]
     XCTAssert(indices == [])
-    XCTAssert(filtered.value == [6])
+    XCTAssert(filtered == [6])
     resetState()
     
     array.insert(8, atIndex: 1)   // [3, 8, 1, 6]
     XCTAssert(indices == [0])
-    XCTAssert(filtered.value == [8, 6])
+    XCTAssert(filtered == [8, 6])
     resetState()
 
     array.append([4, 7])  // [3, 8, 1, 6, 4, 7]
     XCTAssert(indices == [2])
-    XCTAssert(filtered.value == [8, 6, 7])
+    XCTAssert(filtered == [8, 6, 7])
     resetState()
 
     let last = array.removeLast()  // [3, 8, 1, 6, 4]
     XCTAssert(indices == [2])
     XCTAssert(removedObjects == [last])
     XCTAssert(removedObjects == [7])
-    XCTAssert(filtered.value == [8, 6])
+    XCTAssert(filtered == [8, 6])
     resetState()
 
     let element = array.removeAtIndex(1)   // [3, 1, 6, 4]
+    XCTAssert(array.value == [3, 1, 6, 4])
     XCTAssert(indices == [0])
     XCTAssert(removedObjects == [element])
     XCTAssert(removedObjects == [8])
-    XCTAssert(filtered.value == [6])
+    XCTAssert(filtered == [6])
     resetState()
     
     array.splice([8, 9, 3], atIndex: 1)   // [3, 8, 9, 3, 1, 6, 4]
+    XCTAssert(array.value == [3, 8, 9, 3, 1, 6, 4])
     XCTAssert(indices == [0, 1])
-    XCTAssert(filtered.value == [8, 9, 6])
+    XCTAssert(filtered == [8, 9, 6])
     resetState()
 
     array[0] = 0     // [0, 8, 9, 3, 1, 6, 4]
     XCTAssert(indices == [])
     XCTAssert(removedObjects == [])
-    XCTAssert(filtered.value == [8, 9, 6])
+    XCTAssert(filtered == [8, 9, 6])
     resetState()
     
     array[0] = 10     // [10, 8, 9, 3, 1, 6, 4]
     XCTAssert(indices == [0])
-    XCTAssert(filtered.value == [10, 8, 9, 6])
+    XCTAssert(filtered == [10, 8, 9, 6])
     resetState()
     
     array[0] = 9     // [9, 8, 9, 3, 1, 6, 4]
     XCTAssert(indices == [0])
-    XCTAssert(updatedObjects == [10])
-    XCTAssert(filtered.value == [9, 8, 9, 6])
+    XCTAssert(filtered == [9, 8, 9, 6])
     resetState()
     
     array[0] = 3     // [3, 8, 9, 3, 1, 6, 4]
     XCTAssert(indices == [0])
-    XCTAssert(removedObjects == [9])
-    XCTAssert(filtered.value == [8, 9, 6])
+    XCTAssert(filtered == [8, 9, 6])
     resetState()
     
     array.removeAll(true)
@@ -445,5 +459,32 @@ class ArrayTests: XCTestCase {
     
     element = nil
     XCTAssertNil(elementWeak, "Should not be retained by the array")
+  }
+  
+  func testFilterMapChain() {
+    let array = DynamicArray<Int>([])
+    let filtered = array.filter { e in e > 2 }
+    let mapped = filtered.map { e, i in e * 2 }
+    
+    XCTAssert(array.count == 0)
+    XCTAssert(mapped.count == 0)
+    
+    array.append(1)
+    XCTAssert(mapped == [])
+    
+    array.insert(3, atIndex: 0)
+    XCTAssert(mapped == [6])
+    
+    array.splice([1, 4], atIndex: 1)
+    XCTAssert(mapped == [6, 8])
+    
+    array.removeLast()
+    XCTAssert(mapped == [6, 8])
+    
+    array.removeAtIndex(2)
+    XCTAssert(mapped == [6])
+    
+    array.removeAll(true)
+    XCTAssert(mapped.count == 0)
   }
 }
