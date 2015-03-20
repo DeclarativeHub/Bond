@@ -362,32 +362,11 @@ private class DynamicArrayMapProxy<T, U, C: DynamicArrayMapCache where C.T == U>
     }
     
     bond.didUpdateListener = { [unowned self] array, i in
-      for idx in reverse(i) {
+      for idx in i {
         self.cache[idx] = nil
       }
       
       self.dispatchDidUpdate(i)
-    }
-  }
-  
-  override var value: Array<U> {
-    get {
-      var objects: [U] = []
-      
-      for var idx = 0; idx < sourceArray.count; idx++ {
-        if let element = self.cache[idx] {
-          objects.append(element)
-        } else {
-          let element = self.mapf(sourceArray[idx], idx)
-          objects.append(element)
-          self.cache[idx] = element
-        }
-      }
-      
-      return objects
-    }
-    set {
-      // not supported
     }
   }
   
@@ -576,7 +555,6 @@ private class DynamicArrayFilterProxy<T>: DynamicArray<T> {
       var removedIndices: [Int] = []
       var updatedIndices: [Int] = []
       var pointers = self.pointers
-      
       
       if let idx = find(pointers, idx) {
         if filterf(element) {
