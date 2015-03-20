@@ -456,7 +456,7 @@ myBond.didInsertListener = { array, indices in
 	println("Inserted objects at indices \(indices)")
 }
 	
-myBond.didUpdateListener = { array, indices, oldElements in
+myBond.didUpdateListener = { array, indices in
 	println("Updated objects at indices \(indices)")
 }
 	
