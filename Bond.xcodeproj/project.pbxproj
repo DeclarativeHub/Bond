@@ -917,6 +917,7 @@
 				03ACB51B1AB555D6001B3E64 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		69491BA81A7C217100A13B6B /* Build configuration list for PBXProject "Bond" */ = {
 			isa = XCConfigurationList;

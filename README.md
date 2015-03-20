@@ -431,27 +431,32 @@ As the DynamicArray is the subclass of the Dynamic, it can be bonded with any Bo
 
 ```swift
 public class ArrayBond<T>: Bond<Array<T>> {
-  public var insertListener: ((DynamicArray<T>, [Int]) -> Void)?
-  public var removeListener: ((DynamicArray<T>, [Int], [T]) -> Void)?
-  public var updateListener: ((DynamicArray<T>, [Int], [T]) -> Void)?
+  public var willInsertListener: ((DynamicArray<T>, [Int]) -> Void)?
+  public var didInsertListener: ((DynamicArray<T>, [Int]) -> Void)?
+
+  public var willRemoveListener: ((DynamicArray<T>, [Int]) -> Void)?
+  public var didRemoveListener: ((DynamicArray<T>, [Int]) -> Void)?
+
+  public var willUpdateListener: ((DynamicArray<T>, [Int]) -> Void)?
+  public var didUpdateListener: ((DynamicArray<T>, [Int]) -> Void)?
   
   override public init()
   override public func bind(dynamic: Dynamic<Array<T>>)
 }
 ```
 
-Yeah, it's straightforward - it allows us to register different listeners for different events. Each listener is a closure that accepts an array of indices of objects that have been changed in bonded DynamicArray. Removal listener also receives objects that are removed. Listeners are always called after change has taken place.
+Yeah, it's straightforward - it allows us to register different listeners for different events. Each listener is a closure that accepts DynamicArray itself and an array of indices of objects that will be or have been changed.
 
 Let's go through one example. We'll create a new bond to our `repositories` array, this time of ArrayBond type.
 
 ```swift
 let myBond = ArrayBond<Repository>()
 	
-myBond.insertListener = { array, indices in
+myBond.didInsertListener = { array, indices in
 	println("Inserted objects at indices \(indices)")
 }
 	
-myBond.updateListener = { array, indices, oldElements in
+myBond.didUpdateListener = { array, indices, oldElements in
 	println("Updated objects at indices \(indices)")
 }
 	
@@ -470,9 +475,8 @@ Nice!
 
 DynamicArray supports per-element map and filter function. It does not support other functions at the moment.
 
-Map function that operates on DynamicArray differs from map function that operates on basic Dynamic in a way that it evaluates values lazily. It means that at the moment of mapping, no element from source array is transformed to destination array. Elements are transformed on an as-needed basis. Thus the map function has O(1) complexity and no unnecessary table view cell will ever get created. (Beware that accessing `value` property of mapped DynamicArray returns whole array so it has to transform each element. Avoid accessing it.)
+Map and filter functions that operate on DynamicArray differ from functions that operate on basic Dynamic in a way that they evaluate values lazily. It means that at the moment of mapping or filtering, no element from source array is transformed to destination array. Elements are transformed on an as-needed basis. Thus the map function has O(1) complexity and no unnecessary table view cell will ever get created. Filter function has O(n) complexity. (Beware that accessing `value` property of mapped or filtered DynamicArray returns empty array.)
 
-Because of its nature, filter function that operates on DynamicArray has O(n) complexity and you should be careful when using it.
 
 #### UITableView
 
