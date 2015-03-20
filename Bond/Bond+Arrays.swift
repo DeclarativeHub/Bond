@@ -242,95 +242,18 @@ public struct DynamicArrayGenerator<T>: GeneratorType {
   }
 }
 
-// MARK: Dynamic Array Map Cache
-
-protocol DynamicArrayMapCache {
-  typealias T
-  init(count: Int, repeatedValue: T?)
-  mutating func append(element: T?)
-  mutating func insert(element: T?, atIndex: Int)
-  mutating func removeAtIndex(index: Int)
-  subscript(index: Int) -> T? { get set }
-}
-
-struct DynamicArrayMapCacheValue<T>: DynamicArrayMapCache {
-  var array: [T?]
-  
-  init(count: Int, repeatedValue: T?) {
-    array = Array(count: count, repeatedValue: repeatedValue)
-  }
-  
-  mutating func append(element: T?) {
-    array.append(element)
-  }
-  
-  mutating func insert(element: T?, atIndex: Int) {
-    array.insert(element, atIndex: atIndex)
-  }
-  
-  mutating func removeAtIndex(index: Int) {
-    array.removeAtIndex(index)
-  }
-  
-  subscript(index: Int) -> T? {
-    get {
-      return array[index]
-    }
-    set {
-      array[index] = newValue
-    }
-  }
-}
-
-struct WeakBox<T: AnyObject> {
-  weak var unbox: T?
-  init(_ object: T?) { unbox = object }
-}
-
-struct DynamicArrayMapCacheObject<T: AnyObject>: DynamicArrayMapCache {
-  var array: [WeakBox<T>]
-  
-  init(count: Int, repeatedValue: T?) {
-    array = Array(count: count, repeatedValue: WeakBox(repeatedValue))
-  }
-  
-  mutating func append(element: T?) {
-    array.append(WeakBox(element))
-  }
-  
-  mutating func insert(element: T?, atIndex: Int) {
-    array.insert(WeakBox(element), atIndex: atIndex)
-  }
-  
-  mutating func removeAtIndex(index: Int) {
-    array.removeAtIndex(index)
-  }
-  
-  subscript(index: Int) -> T? {
-    get {
-      return array[index].unbox
-    }
-    set {
-      array[index].unbox = newValue
-    }
-  }
-}
-
-
 // MARK: Dynamic Array Map Proxy
 
-private class DynamicArrayMapProxy<T, U, C: DynamicArrayMapCache where C.T == U>: DynamicArray<U> {
+private class DynamicArrayMapProxy<T, U>: DynamicArray<U> {
   private unowned var sourceArray: DynamicArray<T>
   private var mapf: (T, Int) -> U
   private let bond: ArrayBond<T>
-  private var cache: C
   
-  private init(sourceArray: DynamicArray<T>, mapf: (T, Int) -> U, cache: C) {
+  private init(sourceArray: DynamicArray<T>, mapf: (T, Int) -> U) {
     self.sourceArray = sourceArray
     self.mapf = mapf
     self.bond = ArrayBond<T>()
     self.bond.bind(sourceArray, fire: false)
-    self.cache = cache
     super.init([])
     
     bond.willInsertListener = { [unowned self] array, i in
@@ -338,10 +261,6 @@ private class DynamicArrayMapProxy<T, U, C: DynamicArrayMapCache where C.T == U>
     }
     
     bond.didInsertListener = { [unowned self] array, i in
-      for idx in i {
-        self.cache.insert(nil, atIndex: idx)
-      }
-      
       self.dispatchDidInsert(i)
     }
     
@@ -350,10 +269,6 @@ private class DynamicArrayMapProxy<T, U, C: DynamicArrayMapCache where C.T == U>
     }
     
     bond.didRemoveListener = { [unowned self] array, i in
-      for idx in reverse(i) {
-        self.cache.removeAtIndex(idx)
-      }
-      
       self.dispatchDidRemove(i)
     }
     
@@ -362,10 +277,6 @@ private class DynamicArrayMapProxy<T, U, C: DynamicArrayMapCache where C.T == U>
     }
     
     bond.didUpdateListener = { [unowned self] array, i in
-      for idx in i {
-        self.cache[idx] = nil
-      }
-      
       self.dispatchDidUpdate(i)
     }
   }
@@ -383,32 +294,16 @@ private class DynamicArrayMapProxy<T, U, C: DynamicArrayMapCache where C.T == U>
   }
   
   override var first: U? {
-    if self.count == 0  {
-      return nil
-    }
-    
-    if let first = self.cache[0] {
-      return first
-    } else if let first = sourceArray.first {
-      let e = mapf(first, 0)
-      self.cache[0] = e
-      return e
+    if let first = sourceArray.first {
+      return mapf(first, 0)
     } else {
       return nil
     }
   }
   
   override var last: U? {
-    if self.count == 0  {
-      return nil
-    }
-    
-    if let last = self.cache[sourceArray.count - 1] {
-      return last
-    } else if let last = sourceArray.last {
-      let e = mapf(last, sourceArray.count - 1)
-      self.cache[sourceArray.count - 1] = e
-      return e
+    if let last = sourceArray.last {
+      return mapf(last, sourceArray.count - 1)
     } else {
       return nil
     }
@@ -444,13 +339,7 @@ private class DynamicArrayMapProxy<T, U, C: DynamicArrayMapCache where C.T == U>
   
   override subscript(index: Int) -> U {
     get {
-      if let e = self.cache[index] {
-        return e
-      } else {
-        let e = mapf(sourceArray[index], index)
-        self.cache[index] = e
-        return e
-      }
+        return mapf(sourceArray[index], index)
     }
     set(newObject) {
       fatalError("Modifying proxy array is not supported!")
@@ -675,21 +564,12 @@ private class DynamicArrayFilterProxy<T>: DynamicArray<T> {
 public extension DynamicArray
 {
   public func map<U>(f: (T, Int) -> U) -> DynamicArray<U> {
-    return _map(self, f, DynamicArrayMapCacheValue(count: self.count, repeatedValue: nil))
+    return _map(self, f)
   }
   
   public func map<U>(f: T -> U) -> DynamicArray<U> {
     let mapf = { (o: T, i: Int) -> U in f(o) }
-    return _map(self, mapf, DynamicArrayMapCacheValue(count: self.count, repeatedValue: nil))
-  }
-  
-  public func map<U: AnyObject>(f: (T, Int) -> U) -> DynamicArray<U> {
-    return _map(self, f, DynamicArrayMapCacheObject(count: self.count, repeatedValue: nil))
-  }
-  
-  public func map<U: AnyObject>(f: T -> U) -> DynamicArray<U> {
-    let mapf = { (o: T, i: Int) -> U in f(o) }
-    return _map(self, mapf, DynamicArrayMapCacheObject(count: self.count, repeatedValue: nil))
+    return _map(self, mapf)
   }
   
   public func filter(f: T -> Bool) -> DynamicArray<T> {
@@ -699,8 +579,8 @@ public extension DynamicArray
 
 // MARK: Map
 
-private func _map<T, U, C: DynamicArrayMapCache where C.T == U>(dynamicArray: DynamicArray<T>, f: (T, Int) -> U, cache: C) -> DynamicArrayMapProxy<T, U, C> {
-  return DynamicArrayMapProxy(sourceArray: dynamicArray, mapf: f, cache: cache)
+private func _map<T, U>(dynamicArray: DynamicArray<T>, f: (T, Int) -> U) -> DynamicArrayMapProxy<T, U> {
+  return DynamicArrayMapProxy(sourceArray: dynamicArray, mapf: f)
 }
 
 // MARK: Filter
