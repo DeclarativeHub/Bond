@@ -375,6 +375,12 @@ private class DynamicArrayFilterProxy<T>: DynamicArray<T> {
     
     super.init([])
     
+    for (index, element) in enumerate(sourceArray) {
+      if filterf(element) {
+        pointers.append(index)
+      }
+    }
+    
     bond.didInsertListener = { [unowned self] array, indices in
       var insertedIndices: [Int] = []
       var pointers = self.pointers
