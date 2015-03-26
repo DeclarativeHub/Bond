@@ -68,7 +68,7 @@ class FoundationTests: XCTestCase {
   
   func testKVO4() {
     let user = User(name: nil)
-    let height: Dynamic<Float> = dynamicObservableFor(user, keyPath: "height", from: { ($0 as NSNumber).floatValue }, to: { NSNumber(float: $0) })
+    let height: Dynamic<Float> = dynamicObservableFor(user, keyPath: "height", from: { ($0 as! NSNumber).floatValue }, to: { NSNumber(float: $0) })
     
     XCTAssert(abs(height.value - 0) < 0.0001, "Value after initialization.")
     
