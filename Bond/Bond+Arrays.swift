@@ -41,6 +41,8 @@ public class ArrayBond<T>: Bond<Array<T>> {
   public var willUpdateListener: ((DynamicArray<T>, [Int]) -> Void)?
   public var didUpdateListener: ((DynamicArray<T>, [Int]) -> Void)?
 
+  public var willMoveListener: ((DynamicArray<T>, [Int]) -> Void)?
+  public var didMoveListener: ((DynamicArray<T>, [Int]) -> Void)?
   
   override public init() {
     super.init()
@@ -155,6 +157,13 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
     value.removeAll(keepCapacity: keepCapacity)
     dispatchDidRemove(Array<Int>(0..<count))
   }
+    
+  public func move(from: Int, to:Int) {
+    dispatchWillMove([from, to])
+    let elem = value.removeAtIndex(from)
+    value.insert(elem, atIndex: to)
+    dispatchDidMove([from, to])
+  }
   
   public subscript(index: Int) -> T {
     get {
@@ -224,6 +233,22 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
       }
     }
   }
+    
+    private func dispatchWillMove(indices: [Int]) {
+        for bondBox in bonds {
+            if let arrayBond = bondBox.bond as? ArrayBond {
+                arrayBond.willMoveListener?(self, indices)
+            }
+        }
+    }
+    
+    private func dispatchDidMove(indices: [Int]) {
+        for bondBox in bonds {
+            if let arrayBond = bondBox.bond as? ArrayBond {
+                arrayBond.didMoveListener?(self, indices)
+            }
+        }
+    }
 }
 
 public struct DynamicArrayGenerator<T>: GeneratorType {
