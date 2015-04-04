@@ -124,33 +124,38 @@ extension NSIndexSet {
 private class UITableViewDataSourceSectionBond<T>: ArrayBond<UITableViewCell> {
   weak var tableView: UITableView?
   var section: Int
-  var disableAnimation = false
-  init(tableView: UITableView?, section: Int) {
+  init(tableView: UITableView?, section: Int, disableAnimation: Bool = false) {
     self.tableView = tableView
     self.section = section
     super.init()
     
     self.didInsertListener = { [unowned self] a, i in
       if let tableView: UITableView = self.tableView {
-        tableView.beginUpdates()
-        tableView.insertRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) }, withRowAnimation: UITableViewRowAnimation.Automatic)
-        tableView.endUpdates()
+        perform(animated: !disableAnimation) {
+          tableView.beginUpdates()
+          tableView.insertRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) }, withRowAnimation: UITableViewRowAnimation.Automatic)
+          tableView.endUpdates()
+        }
       }
     }
     
     self.didRemoveListener = { [unowned self] a, i in
       if let tableView = self.tableView {
-        tableView.beginUpdates()
-        tableView.deleteRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) }, withRowAnimation: UITableViewRowAnimation.Automatic)
-        tableView.endUpdates()
+        perform(animated: !disableAnimation) {
+          tableView.beginUpdates()
+          tableView.deleteRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) }, withRowAnimation: UITableViewRowAnimation.Automatic)
+          tableView.endUpdates()
+        }
       }
     }
     
     self.didUpdateListener = { [unowned self] a, i in
       if let tableView = self.tableView {
-        tableView.beginUpdates()
-        tableView.reloadRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) }, withRowAnimation: UITableViewRowAnimation.Automatic)
-        tableView.endUpdates()
+        perform(animated: !disableAnimation) {
+          tableView.beginUpdates()
+          tableView.reloadRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) }, withRowAnimation: UITableViewRowAnimation.Automatic)
+          tableView.endUpdates()
+        }
       }
     }
   }
@@ -164,26 +169,25 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
   weak var tableView: UITableView?
   private var dataSource: TableViewDynamicArrayDataSource?
   private var sectionBonds: [UITableViewDataSourceSectionBond<Void>] = []
-  var disableAnimation = false
   public weak var nextDataSource: UITableViewDataSource? {
     didSet(newValue) {
       dataSource?.nextDataSource = newValue
     }
   }
   
-  public init(tableView: UITableView) {
+  public init(tableView: UITableView, disableAnimation: Bool = false) {
     self.tableView = tableView
     super.init()
     
     self.didInsertListener = { [weak self] array, i in
       if let s = self {
         if let tableView: UITableView = self?.tableView {
-          perform(animated: !s.disableAnimation) {
+          perform(animated: !disableAnimation) {
             tableView.beginUpdates()
             tableView.insertSections(NSIndexSet(array: i), withRowAnimation: UITableViewRowAnimation.Automatic)
             
             for section in sorted(i, <) {
-              let sectionBond = UITableViewDataSourceSectionBond<Void>(tableView: tableView, section: section)
+              let sectionBond = UITableViewDataSourceSectionBond<Void>(tableView: tableView, section: section, disableAnimation: disableAnimation)
               let sectionDynamic = array[section]
               sectionDynamic.bindTo(sectionBond)
               s.sectionBonds.insert(sectionBond, atIndex: section)
@@ -202,7 +206,7 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
     self.didRemoveListener = { [weak self] array, i in
       if let s = self {
         if let tableView = s.tableView {
-          perform(animated: !s.disableAnimation) {
+          perform(animated: !disableAnimation) {
             tableView.beginUpdates()
             tableView.deleteSections(NSIndexSet(array: i), withRowAnimation: UITableViewRowAnimation.Automatic)
             for section in sorted(i, >) {
@@ -223,12 +227,12 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
     self.didUpdateListener = { [weak self] array, i in
       if let s = self {
         if let tableView = s.tableView {
-          perform(animated: !s.disableAnimation) {
+          perform(animated: !disableAnimation) {
             tableView.beginUpdates()
             tableView.reloadSections(NSIndexSet(array: i), withRowAnimation: UITableViewRowAnimation.Automatic)
 
             for section in i {
-              let sectionBond = UITableViewDataSourceSectionBond<Void>(tableView: tableView, section: section)
+              let sectionBond = UITableViewDataSourceSectionBond<Void>(tableView: tableView, section: section, disableAnimation: disableAnimation)
               let sectionDynamic = array[section]
               sectionDynamic.bindTo(sectionBond)
               
