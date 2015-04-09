@@ -153,6 +153,13 @@ private class UITableViewDataSourceSectionBond<T>: ArrayBond<UITableViewCell> {
         tableView.endUpdates()
       }
     }
+    self.didMoveListener = { [unowned self] a, i in
+      if let tableView = self.tableView {
+        tableView.beginUpdates()
+        tableView.moveRowAtIndexPath(NSIndexPath(forRow: i[0], inSection: self.section), toIndexPath: NSIndexPath(forRow: i[1], inSection: self.section))
+        tableView.endUpdates()
+      }
+    }
   }
   
   deinit {
