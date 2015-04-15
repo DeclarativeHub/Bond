@@ -105,4 +105,44 @@ class DynamicTests: XCTestCase {
     XCTAssert(d2w == nil, "Nilling first should delete second")
     XCTAssert(d1w == nil, "Nilling first should delete first, too")
   }
+  
+  func testOptionals() {
+    let dynamic = Dynamic<Int?>(nil)
+    var observedValue: Int? = 999
+    let bond = Bond<Int?>() { observedValue = $0 }
+    
+    XCTAssert(observedValue == 999)
+    dynamic.bindTo(bond)
+    XCTAssert(observedValue == nil)
+
+    XCTAssert(dynamic.valid == true, "Should be valid")
+    XCTAssert(dynamic.value == nil, "Should not crash")
+    
+    dynamic.value = 5
+    XCTAssert(observedValue == 5)
+    XCTAssert(dynamic.valid == true, "Should be valid")
+    
+    dynamic.value = nil
+    XCTAssert(observedValue == nil)
+    XCTAssert(dynamic.valid == true, "Should be valid")
+    
+    dynamic.value = 2
+    XCTAssert(observedValue == 2)
+    XCTAssert(dynamic.valid == true, "Should be valid")
+    
+    let filtered = dynamic.filter { $0 == nil || $0! < 1 }
+    XCTAssert(filtered.valid == false, "Should not be valid")
+    
+    dynamic.value = nil
+    XCTAssert(filtered.valid == true, "Should be valid")
+    XCTAssert(filtered.value == nil)
+    
+    dynamic.value = 5
+    XCTAssert(filtered.valid == true, "Should be valid")
+    XCTAssert(filtered.value == nil)
+    
+    dynamic.value = -4
+    XCTAssert(filtered.valid == true, "Should be valid")
+    XCTAssert(filtered.value == -4)
+  }
 }
