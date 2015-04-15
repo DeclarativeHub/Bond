@@ -297,6 +297,7 @@
 				EC048D171AA238AF00E9794C /* Bond+Operators.swift */,
 				907391AF1ADF2C7C008CE36A /* AppKit */,
 				ECD9CC521A9FA34700484323 /* UIKit */,
+				907391C31ADF3087008CE36A /* Shared */,
 				69491BB31A7C217100A13B6B /* Bond.h */,
 				69491BB11A7C217100A13B6B /* Supporting Files */,
 			);
@@ -337,7 +338,6 @@
 		907391AF1ADF2C7C008CE36A /* AppKit */ = {
 			isa = PBXGroup;
 			children = (
-				907391B01ADF2C8D008CE36A /* Bond+CALayer.swift */,
 				907391B31ADF2C99008CE36A /* Bond+NSButton.swift */,
 				907391B41ADF2C99008CE36A /* Bond+NSColorWell.swift */,
 				907391B51ADF2C99008CE36A /* Bond+NSControl.swift */,
@@ -348,6 +348,14 @@
 				907391BA1ADF2C99008CE36A /* Bond+NSTextView.swift */,
 			);
 			name = AppKit;
+			sourceTree = "<group>";
+		};
+		907391C31ADF3087008CE36A /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				907391B01ADF2C8D008CE36A /* Bond+CALayer.swift */,
+			);
+			name = Shared;
 			sourceTree = "<group>";
 		};
 		ECD9CC521A9FA34700484323 /* UIKit */ = {

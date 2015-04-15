@@ -22,7 +22,7 @@
 //  THE SOFTWARE.
 //
 
-import Cocoa
+import QuartzCore
 
 var dynamicHandleCALayer_backgroundColor: UInt8 = 0;
 var dynamicHandleCALayer_contents: UInt8 = 0;
