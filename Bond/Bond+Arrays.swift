@@ -66,8 +66,12 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
   public typealias Element = T
   public typealias Generator = DynamicArrayGenerator<T>
   
+  public let dynCount: Dynamic<Int>
+  
   public override init(_ v: Array<T>) {
+    dynCount = Dynamic(0)
     super.init(v)
+    dynCount.value = self.count
   }
   
   public override func bindTo(bond: Bond<Array<T>>) {
@@ -80,6 +84,12 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
   
   public override func bindTo(bond: Bond<Array<T>>, fire: Bool, strongly: Bool) {
     bond.bind(self, fire: fire, strongly: strongly)
+  }
+  
+  public override var value: Array<T> {
+    didSet {
+      dynCount.value = count
+    }
   }
   
   public var count: Int {
@@ -125,7 +135,7 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
       return last
     }
     
-    fatalError("Cannot remveLast() as there are no elements in the array!")
+    fatalError("Cannot removeLast() as there are no elements in the array!")
   }
   
   public func insert(newElement: T, atIndex i: Int) {
@@ -186,6 +196,9 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
   }
   
   private func dispatchDidInsert(indices: [Int]) {
+    if !indices.isEmpty {
+      dynCount.value = count
+    }
     for bondBox in bonds {
       if let arrayBond = bondBox.bond as? ArrayBond {
         arrayBond.didInsertListener?(self, indices)
@@ -202,6 +215,9 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
   }
 
   private func dispatchDidRemove(indices: [Int]) {
+    if !indices.isEmpty {
+      dynCount.value = count
+    }
     for bondBox in bonds {
       if let arrayBond = bondBox.bond as? ArrayBond {
         arrayBond.didRemoveListener?(self, indices)
@@ -372,15 +388,15 @@ private class DynamicArrayFilterProxy<T>: DynamicArray<T> {
     self.filterf = filterf
     self.bond = ArrayBond<T>()
     self.bond.bind(sourceArray, fire: false)
-    
-    super.init([])
-    
+
     for (index, element) in enumerate(sourceArray) {
       if filterf(element) {
         pointers.append(index)
       }
     }
     
+    super.init([])
+
     bond.didInsertListener = { [unowned self] array, indices in
       var insertedIndices: [Int] = []
       var pointers = self.pointers
