@@ -35,7 +35,7 @@ extension UILabel: Bondable {
     if let d: AnyObject = objc_getAssociatedObject(self, &textDynamicHandleUILabel) {
       return (d as? Dynamic<String>)!
     } else {
-      let d = InternalDynamic<String>(self.text ?? "", faulty: false)
+      let d = InternalDynamic<String>(self.text ?? "")
       let bond = Bond<String>() { [weak self] v in if let s = self { s.text = v } }
       d.bindTo(bond, fire: false, strongly: false)
       d.retain(bond)
@@ -48,7 +48,7 @@ extension UILabel: Bondable {
     if let d: AnyObject = objc_getAssociatedObject(self, &attributedTextDynamicHandleUILabel) {
       return (d as? Dynamic<NSAttributedString>)!
     } else {
-      let d = InternalDynamic<NSAttributedString>(self.attributedText ?? NSAttributedString(string: ""), faulty: false)
+      let d = InternalDynamic<NSAttributedString>(self.attributedText ?? NSAttributedString(string: ""))
       let bond = Bond<NSAttributedString>() { [weak self] v in if let s = self { s.attributedText = v } }
       d.bindTo(bond, fire: false, strongly: false)
       d.retain(bond)

@@ -52,7 +52,7 @@ class SwitchDynamic<T>: InternalDynamic<Bool>
   
   init(control: UISwitch) {
     self.helper = SwitchDynamicHelper(control: control)
-    super.init(control.on, faulty: false)
+    super.init(control.on)
     self.helper.listener =  { [unowned self] in self.value = $0 }
   }
 }

@@ -52,7 +52,7 @@ class DatePickerDynamic<T>: InternalDynamic<NSDate>
   
   init(control: UIDatePicker) {
     self.helper = DatePickerDynamicHelper(control: control)
-    super.init(control.date, faulty: false)
+    super.init(control.date)
     self.helper.listener =  { [unowned self] in self.value = $0 }
   }
 }

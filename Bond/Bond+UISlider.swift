@@ -52,7 +52,7 @@ class SliderDynamic<T>: InternalDynamic<Float>
   
   init(control: UISlider) {
     self.helper = SliderDynamicHelper(control: control)
-    super.init(control.value, faulty: false)
+    super.init(control.value)
     self.helper.listener =  { [unowned self] in self.value = $0 }
   }
 }

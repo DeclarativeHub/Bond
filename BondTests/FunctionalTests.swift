@@ -17,7 +17,7 @@ class ReduceTests: XCTestCase {
     let m = d1.map { "\($0)" }
     
     XCTAssert(m.value == "0", "Initial value")
-    XCTAssert(m.faulty == false, "Should not be faulty")
+    XCTAssert(m.valid == true, "Should not be faulty")
     
     d1.value = 2
     XCTAssert(m.value == "2", "Value after dynamic change")
@@ -31,17 +31,17 @@ class ReduceTests: XCTestCase {
     let bond = Bond<Int>() { v in observedValue = v }
     f ->> bond
     
-    XCTAssert(f.faulty == true, "Should be faulty")
+    XCTAssert(f.valid == false, "Should be faulty")
     XCTAssert(observedValue == -1, "Should not update observed value")
     
     d1.value = 10
     XCTAssert(f.value == 10, "Value after dynamic change")
-    XCTAssert(f.faulty == false, "Should not be faulty")
+    XCTAssert(f.valid == true, "Should not be faulty")
     XCTAssert(observedValue == 10, "Should update observed value")
     
     d1.value = 2
     XCTAssert(f.value == 10, "Value after dynamic change")
-    XCTAssert(f.faulty == false, "Should not be faulty")
+    XCTAssert(f.valid == true, "Should not be faulty")
     XCTAssert(observedValue == 10, "Should update observed value")
   }
   
@@ -52,7 +52,7 @@ class ReduceTests: XCTestCase {
     let r = reduce(d1, d2, *)
     
     XCTAssert(r.value == 2, "Initial value")
-    XCTAssert(r.faulty == false, "Should not be faulty")
+    XCTAssert(r.valid == true, "Should not be faulty")
     
     d1.value = 2
     XCTAssert(r.value == 4, "Value after first dynamic chnage")
@@ -69,7 +69,7 @@ class ReduceTests: XCTestCase {
     let r = reduce(d1, d2, d3) { $0 * $1 * $2 }
     
     XCTAssert(r.value == 6, "Initial value")
-    XCTAssert(r.faulty == false, "Should not be faulty")
+    XCTAssert(r.valid == true, "Should not be faulty")
     
     d1.value = 2
     XCTAssert(r.value == 12, "Value after first dynamic chnage")
@@ -86,7 +86,7 @@ class ReduceTests: XCTestCase {
     let r = d1.rewrite("foo")
     
     XCTAssert(r.value == "foo", "Initial value")
-    XCTAssert(r.faulty == false, "Should not be faulty")
+    XCTAssert(r.valid == true, "Should not be faulty")
     
     d1.value = 2
     XCTAssert(r.value == "foo", "Value after dynamic change")
@@ -97,7 +97,7 @@ class ReduceTests: XCTestCase {
     let z = d1.zip("foo")
     
     XCTAssert(z.value.0 == 0 && z.value.1 == "foo", "Initial value")
-    XCTAssert(z.faulty == false, "Should not be faulty")
+    XCTAssert(z.valid == true, "Should not be faulty")
     
     d1.value = 2
     XCTAssert(z.value.0 == 2 && z.value.1 == "foo", "Value after dynamic change")
@@ -110,7 +110,7 @@ class ReduceTests: XCTestCase {
     let z = d1.zip(d2)
     
     XCTAssert(z.value.0 == 1 && z.value.1 == 2, "Initial value")
-    XCTAssert(z.faulty == false, "Should not be faulty")
+    XCTAssert(z.valid == true, "Should not be faulty")
     
     d1.value = 2
     XCTAssert(z.value.0 == 2 && z.value.1 == 2, "Value after first dynamic chnage")
@@ -127,15 +127,15 @@ class ReduceTests: XCTestCase {
     let bond = Bond<Int>() { v in observedValue = v }
     s ->> bond
     
-    XCTAssert(s.faulty == true, "Should be faulty")
+    XCTAssert(s.valid == false, "Should be faulty")
     XCTAssert(observedValue == -1, "Should not update observed value")
     
     d1.value = 1
-    XCTAssert(s.faulty == true, "Should still be faulty")
+    XCTAssert(s.valid == false, "Should still be faulty")
     XCTAssert(observedValue == -1, "Should not update observed value")
     
     d1.value = 2
-    XCTAssert(s.faulty == false, "Should not be faulty")
+    XCTAssert(s.valid == true, "Should not be faulty")
     XCTAssert(s.value == 2, "Value after dynamic change")
   }
   
@@ -145,40 +145,52 @@ class ReduceTests: XCTestCase {
     
     let a = any([d1, d2])
     
-    XCTAssert(a.faulty == true, "Should be faulty")
+    XCTAssert(a.valid == false, "Should be faulty")
     
     d1.value = 2
     XCTAssert(a.value == 2, "Value after first dynamic chnage")
-    XCTAssert(a.faulty == false, "Should not be faulty")
+    XCTAssert(a.valid == true, "Should not be faulty")
     
     d2.value = 3
     XCTAssert(a.value == 3, "Value after second dynamic chnage")
-    XCTAssert(a.faulty == false, "Should not be faulty")
+    XCTAssert(a.valid == true, "Should not be faulty")
   }
   
   func testFilterMapChain() {
+    var callCount = 0
     let d1 = Dynamic<Int>(0)
+    
     let f = d1.filter { $0 > 5 }
-    let m = f.map { "\($0)" }
+    
+    let m = f.map { (v: Int) -> String in
+      callCount++
+      return "\(v)"
+    }
+    
+    XCTAssert(callCount == 0, "Count should be 0 instead of \(callCount)")
     
     var observedValue = ""
     let bond = Bond<String>() { v in observedValue = v }
     m ->> bond
     
-    XCTAssert(f.faulty == true, "Should be faulty")
-    XCTAssert(m.faulty == true, "Should be faulty")
+    XCTAssert(callCount == 0, "Count should be 0 instead of \(callCount)")
+    
+    XCTAssert(f.valid == false, "Should be faulty")
+    XCTAssert(m.valid == false, "Should be faulty")
     XCTAssert(observedValue == "", "Should not update observed value")
     
     d1.value = 2
-    XCTAssert(f.faulty == true, "Should still be faulty")
-    XCTAssert(m.faulty == true, "Should still be faulty")
+    XCTAssert(f.valid == false, "Should still be faulty")
+    XCTAssert(m.valid == false, "Should still be faulty")
     XCTAssert(observedValue == "", "Should not update observed value")
+    XCTAssert(callCount == 0, "Count should still be 0 instead of \(callCount)")
     
     d1.value = 10
     XCTAssert(f.value == 10, "Value after dynamic change")
     XCTAssert(m.value == "10", "Value after dynamic change")
-    XCTAssert(f.faulty == false, "Should not be faulty")
-    XCTAssert(m.faulty == false, "Should not be faulty")
+    XCTAssert(f.valid == true, "Should not be faulty")
+    XCTAssert(m.valid == true, "Should not be faulty")
     XCTAssert(observedValue == "10", "Should update observed value")
+    XCTAssert(callCount == 1, "Count should be 1 instead of \(callCount)")
   }
 }

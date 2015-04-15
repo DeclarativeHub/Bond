@@ -62,7 +62,7 @@ class UIButtonTests: XCTestCase {
     var observedValue = UIControlEvents.AllEvents
     let bond = Bond<UIControlEvents>() { v in observedValue = v }
     
-    XCTAssert(button.dynEvent.faulty == true, "Should be faulty initially")
+    XCTAssert(button.dynEvent.valid == false, "Should be faulty initially")
     
     button.dynEvent.filter(==, .TouchUpInside) ->> bond
     XCTAssert(observedValue == UIControlEvents.AllEvents, "Value after binding should not be changed")

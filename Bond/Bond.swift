@@ -74,7 +74,7 @@ public class Bond<T> {
       self.bondedWeakDynamics.append(DynamicBox(dynamic))
     }
     
-    if fire && !dynamic.faulty {
+    if fire && dynamic.valid {
       self.listener?(dynamic.value)
     }
   }
@@ -110,16 +110,35 @@ public class Bond<T> {
 public class Dynamic<T> {
   
   private var dispatchInProgress: Bool = false
-  public var faulty: Bool = false
   
-  public var value: T {
+  internal var _value: T? {
     didSet {
-      faulty = false
       objc_sync_enter(self)
-      if !self.dispatchInProgress {
-        dispatch(value)
+      if let value = _value {
+        if !self.dispatchInProgress {
+          dispatch(value)
+        }
       }
       objc_sync_exit(self)
+    }
+  }
+  
+  public var value: T {
+    set {
+      _value = newValue
+    }
+    get {
+      if _value == nil {
+        fatalError("Dynamic has no value defined at the moment!")
+      } else {
+        return _value!
+      }
+    }
+  }
+  
+  public var valid: Bool {
+    get {
+      return _value != nil
     }
   }
   
@@ -134,7 +153,7 @@ public class Dynamic<T> {
     
     // dispatch change notifications
     for bondBox in self.bonds {
-      bondBox.bond?.listener?(self.value)
+      bondBox.bond?.listener?(value)
     }
     
     // unlock
@@ -143,6 +162,11 @@ public class Dynamic<T> {
   
   public let valueBond = Bond<T>()
   public var bonds: [BondBox<T>] = []
+  
+  private init() {
+    _value = nil
+    valueBond.listener = { [unowned self] v in self.value = v }
+  }
 
   public init(_ v: T) {
     value = v
@@ -164,9 +188,12 @@ public class Dynamic<T> {
 
 public class InternalDynamic<T>: Dynamic<T> {
   
-  public init(_ v: T, faulty: Bool) {
-    super.init(v)
-    self.faulty = faulty
+  public override init() {
+    super.init()
+  }
+  
+  public override init(_ value: T) {
+    super.init(value)
   }
   
   internal var retainedObjects: [AnyObject] = []

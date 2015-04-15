@@ -36,7 +36,12 @@ public func map<S: Dynamical, T, U where S.DynamicType == T>(dynamical: S, f: T 
 }
 
 internal func _map<T, U>(dynamic: Dynamic<T>, f: T -> U) -> Dynamic<U> {
-  let dyn = InternalDynamic<U>(f(dynamic.value), faulty: dynamic.faulty)
+  
+  let dyn = InternalDynamic<U>()
+  
+  if let value = dynamic._value {
+    dyn.value = f(value)
+  }
   
   let bond = Bond<T> { [unowned dyn] t in
     dyn.value = f(t)
@@ -63,8 +68,14 @@ public func filter<S: Dynamical, T where S.DynamicType == T>(dynamical: S, f: T 
 }
 
 internal func _filter<T>(dynamic: Dynamic<T>, f: T -> Bool) -> Dynamic<T> {
-  let value = dynamic.value
-  let dyn = InternalDynamic<T>(value, faulty: dynamic.faulty || !f(value))
+  
+  let dyn = InternalDynamic<T>()
+  
+  if let value = dynamic._value {
+    if f(value) {
+      dyn.value = value
+    }
+  }
   
   let bond = Bond<T> { [unowned dyn] t in
     if f(t) {
@@ -81,30 +92,30 @@ internal func _filter<T>(dynamic: Dynamic<T>, f: T -> Bool) -> Dynamic<T> {
 // MARK: Reduce
 
 public func reduce<A, B, T>(dA: Dynamic<A>, dB: Dynamic<B>, f: (A, B) -> T) -> Dynamic<T> {
-  return _reduce(dA, dB, f(dA.value, dB.value), f)
-}
-
-public func reduce<A, B, T>(dA: Dynamic<A>, dB: Dynamic<B>, v0: T, f: (A, B) -> T) -> Dynamic<T> {
-  return _reduce(dA, dB, v0, f)
-}
-
-public func reduce<A, B, C, T>(dA: Dynamic<A>, dB: Dynamic<B>, dC: Dynamic<C>, v0: T, f: (A, B, C) -> T) -> Dynamic<T> {
-  return _reduce(dA, dB, dC, v0, f)
+  return _reduce(dA, dB, f)
 }
 
 public func reduce<A, B, C, T>(dA: Dynamic<A>, dB: Dynamic<B>, dC: Dynamic<C>, f: (A, B, C) -> T) -> Dynamic<T> {
-  return _reduce(dA, dB, dC, f(dA.value, dB.value, dC.value), f)
+  return _reduce(dA, dB, dC, f)
 }
 
-public func _reduce<A, B, T>(dA: Dynamic<A>, dB: Dynamic<B>, v0: T, f: (A, B) -> T) -> Dynamic<T> {
-  let dyn = InternalDynamic<T>(v0, faulty: dA.faulty || dB.faulty)
+public func _reduce<A, B, T>(dA: Dynamic<A>, dB: Dynamic<B>, f: (A, B) -> T) -> Dynamic<T> {
+  let dyn = InternalDynamic<T>()
+  
+  if let vA = dA._value, let vB = dB._value {
+    dyn.value = f(vA, vB)
+  }
   
   let bA = Bond<A> { [unowned dyn, weak dB] in
-    if let dB = dB { dyn.value = f($0, dB.value) }
+    if let vB = dB?._value {
+      dyn.value = f($0, vB)
+    }
   }
   
   let bB = Bond<B> { [unowned dyn, weak dA] in
-    if let dA = dA { dyn.value = f(dA.value, $0) }
+    if let vA = dA?._value {
+      dyn.value = f(vA, $0)
+    }
   }
   
   dA.bindTo(bA, fire: false)
@@ -116,19 +127,23 @@ public func _reduce<A, B, T>(dA: Dynamic<A>, dB: Dynamic<B>, v0: T, f: (A, B) ->
   return dyn
 }
 
-internal func _reduce<A, B, C, T>(dA: Dynamic<A>, dB: Dynamic<B>, dC: Dynamic<C>, v0: T, f: (A, B, C) -> T) -> Dynamic<T> {
-  let dyn = InternalDynamic<T>(v0, faulty: dA.faulty || dB.faulty || dC.faulty)
+internal func _reduce<A, B, C, T>(dA: Dynamic<A>, dB: Dynamic<B>, dC: Dynamic<C>, f: (A, B, C) -> T) -> Dynamic<T> {
+  let dyn = InternalDynamic<T>()
+  
+  if let vA = dA._value, let vB = dB._value, let vC = dC._value {
+    dyn.value = f(vA, vB, vC)
+  }
   
   let bA = Bond<A> { [unowned dyn, weak dB, weak dC] in
-    if let dB = dB { if let dC = dC { dyn.value = f($0, dB.value, dC.value) } }
+    if let vB = dB?._value, let vC = dC?._value { dyn.value = f($0, vB, vC) }
   }
   
   let bB = Bond<B> { [unowned dyn, weak dA, weak dC] in
-    if let dA = dA { if let dC = dC { dyn.value = f(dA.value, $0, dC.value) } }
+    if let vA = dA?._value, let vC = dC?._value { dyn.value = f(vA, $0, vC) }
   }
   
   let bC = Bond<C> { [unowned dyn, weak dA, weak dB] in
-    if let dA = dA { if let dB = dB { dyn.value = f(dA.value, dB.value, $0) } }
+    if let vA = dA?._value, let vB = dB?._value { dyn.value = f(vA, vB, $0) }
   }
   
   dA.bindTo(bA, fire: false)
@@ -160,23 +175,18 @@ public func zip<T, U>(d1: Dynamic<T>, d2: Dynamic<U>) -> Dynamic<(T, U)> {
 
 // MARK: Skip
 
-class SkipDynamic<T>: InternalDynamic<T> {
-  var count: Int
+public func _skip<T>(dynamic: Dynamic<T>, var count: Int) -> Dynamic<T> {
+  let dyn = InternalDynamic<T>()
   
-  init(_ v: T, count: Int) {
-    self.count = count
-    super.init(v, faulty: count > 0)
+  if count <= 0 {
+    dyn.value = dynamic.value
   }
-}
-
-public func _skip<T>(dynamic: Dynamic<T>, count: Int) -> Dynamic<T> {
-  let dyn = SkipDynamic<T>(dynamic.value, count: count)
   
   let bond = Bond<T> { [unowned dyn] t in
-    if dyn.count <= 0 {
+    if count <= 0 {
       dyn.value = t
     } else {
-      dyn.count--
+      count--
     }
   }
   
@@ -192,12 +202,8 @@ public func skip<T>(dynamic: Dynamic<T>, count: Int) -> Dynamic<T> {
 
 // MARK: Any
 
-public func any<T>(dynamics: [Dynamic<T>]) -> Dynamic<T> {
-  if dynamics.count < 1 {
-    fatalError("Must provide at least one Dynamic!")
-  }
-  
-  let dyn = InternalDynamic<T>(dynamics.first!.value, faulty: true)
+public func any<T>(dynamics: [Dynamic<T>]) -> Dynamic<T> {  
+  let dyn = InternalDynamic<T>()
   
   for dynamic in dynamics {
     let bond = Bond<T> { [unowned dynamic] in

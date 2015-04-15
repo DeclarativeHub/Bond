@@ -61,17 +61,16 @@ import UIKit
   }
 }
 
-class ButtonDynamic<T>: Dynamic<UIControlEvents>
+class ButtonDynamic<T>: InternalDynamic<UIControlEvents>
 {
   let helper: ButtonDynamicHelper
   
   init(control: UIButton) {
     self.helper = ButtonDynamicHelper(control: control)
-    super.init(UIControlEvents.allZeros)
+    super.init()
     self.helper.listener =  { [unowned self] in
       self.value = $0
     }
-    self.faulty = true
   }
 }
 
@@ -96,7 +95,7 @@ extension UIButton /*: Dynamical, Bondable */ {
     if let d: AnyObject = objc_getAssociatedObject(self, &enabledDynamicHandleUIButton) {
       return (d as? Dynamic<Bool>)!
     } else {
-      let d = InternalDynamic<Bool>(self.enabled, faulty: false)
+      let d = InternalDynamic<Bool>(self.enabled)
       let bond = Bond<Bool>() { [weak self] v in if let s = self { s.enabled = v } }
       d.bindTo(bond, fire: false, strongly: false)
       d.retain(bond)
@@ -109,7 +108,7 @@ extension UIButton /*: Dynamical, Bondable */ {
     if let d: AnyObject = objc_getAssociatedObject(self, &titleDynamicHandleUIButton) {
       return (d as? Dynamic<String>)!
     } else {
-      let d = InternalDynamic<String>(self.titleLabel?.text ?? "", faulty: false)
+      let d = InternalDynamic<String>(self.titleLabel?.text ?? "")
       let bond = Bond<String>() { [weak self] v in if let s = self { s.setTitle(v, forState: .Normal) } }
       d.bindTo(bond, fire: false, strongly: false)
       d.retain(bond)
@@ -122,7 +121,7 @@ extension UIButton /*: Dynamical, Bondable */ {
     if let d: AnyObject = objc_getAssociatedObject(self, &imageForNormalStateDynamicHandleUIButton) {
       return (d as? Dynamic<UIImage?>)!
     } else {
-      let d = InternalDynamic<UIImage?>(self.imageForState(.Normal), faulty: false)
+      let d = InternalDynamic<UIImage?>(self.imageForState(.Normal))
       let bond = Bond<UIImage?>() { [weak self] img in if let s = self { s.setImage(img, forState: .Normal) } }
       d.bindTo(bond, fire: false, strongly: false)
       d.retain(bond)
