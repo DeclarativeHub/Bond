@@ -196,8 +196,8 @@ public class InternalDynamic<T>: Dynamic<T> {
     super.init(value)
   }
   
-  internal var retainedObjects: [AnyObject] = []
-  internal func retain(object: AnyObject) {
+  public var retainedObjects: [AnyObject] = []
+  public func retain(object: AnyObject) {
     retainedObjects.append(object)
   }
 }
