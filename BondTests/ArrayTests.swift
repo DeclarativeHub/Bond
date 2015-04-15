@@ -387,4 +387,40 @@ class ArrayTests: XCTestCase {
     array.removeAll(true)
     XCTAssert(mapped.count == 0)
   }
+  
+  func testBasicDynCount() {
+    let array = DynamicArray<Int>([])
+    let updatedCount = Dynamic(0)
+    array.dynCount ->| updatedCount
+    
+    XCTAssert(array.count == 0)
+    
+    array.append(1)
+    XCTAssert(updatedCount.value == 1)
+    XCTAssert(array.count == 1)
+    
+    array.value = [1, 2, 3, 4, 5]
+    XCTAssert(updatedCount.value == 5)
+    XCTAssert(array.count == 5)
+    
+    array.removeAtIndex(2)
+    XCTAssert(updatedCount.value == 4)
+    XCTAssert(array.count == 4)
+  }
+  
+  func testFilterDynCount() {
+    let array = DynamicArray<Int>([1, 2, 3, 4, 5])
+    let filtered = array.filter { e in e > 2 }
+    
+    let updatedCount = Dynamic(0)
+    filtered.dynCount ->> updatedCount
+    
+    XCTAssert(updatedCount.value == 3)
+    
+    array.append([6, 1])
+    XCTAssert(updatedCount.value == 4)
+    
+    array.removeAll(false)
+    XCTAssert(updatedCount.value == 0)
+  }
 }
