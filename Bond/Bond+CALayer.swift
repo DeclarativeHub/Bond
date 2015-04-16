@@ -24,26 +24,26 @@
 
 import QuartzCore
 
-var dynamicHandleCALayer_backgroundColor: UInt8 = 0;
-var dynamicHandleCALayer_contents: UInt8 = 0;
-var dynamicHandleCALayer_opacity: UInt8 = 0;
+var backgroundColorDynamicHandleCALayer: UInt8 = 0;
+var contentsDynamicHandleCALayer: UInt8 = 0;
+var opacityDynamicHandleCALayer: UInt8 = 0;
 
 extension CALayer: Bondable, Dynamical {
 
     public var designatedDynamic: Dynamic<AnyObject!> {
-        return self.bindableContents
+        return self.dynContents
     }
 
     public var designatedBond: Bond<AnyObject!> {
         return self.designatedDynamic.valueBond
     }
 
-    public var bindableBackgroundColor: Dynamic<CGColor?> {
-        if let d: AnyObject = objc_getAssociatedObject(self, &dynamicHandleCALayer_backgroundColor) {
-            return (d as? Dynamic<CGColor?>)!
+    public var dynBackgroundColor: Dynamic<CGColor!> {
+        if let d: AnyObject = objc_getAssociatedObject(self, &backgroundColorDynamicHandleCALayer) {
+            return (d as? Dynamic<CGColor!>)!
         } else {
-            let d = InternalDynamic<CGColor?>(self.backgroundColor)
-            let bond = Bond<CGColor?>() { [weak self] v in
+            let d = InternalDynamic<CGColor!>(self.backgroundColor)
+            let bond = Bond<CGColor!>() { [weak self] v in
                 if let s = self {
                     s.backgroundColor = v
                 }
@@ -51,13 +51,13 @@ extension CALayer: Bondable, Dynamical {
 
             d.bindTo(bond, fire: false, strongly: false)
             d.retain(bond)
-            objc_setAssociatedObject(self, &dynamicHandleCALayer_backgroundColor, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+            objc_setAssociatedObject(self, &backgroundColorDynamicHandleCALayer, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
             return d
         }
     }
 
-    public var bindableContents: Dynamic<AnyObject!> {
-        if let d: AnyObject = objc_getAssociatedObject(self, &dynamicHandleCALayer_contents) {
+    public var dynContents: Dynamic<AnyObject!> {
+        if let d: AnyObject = objc_getAssociatedObject(self, &contentsDynamicHandleCALayer) {
             return (d as? Dynamic<AnyObject!>)!
         } else {
             let d = InternalDynamic<AnyObject!>(self.contents)
@@ -69,13 +69,13 @@ extension CALayer: Bondable, Dynamical {
 
             d.bindTo(bond, fire: false, strongly: false)
             d.retain(bond)
-            objc_setAssociatedObject(self, &dynamicHandleCALayer_contents, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+            objc_setAssociatedObject(self, &contentsDynamicHandleCALayer, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
             return d
         }
     }
 
-    public var bindableOpacity: Dynamic<Float> {
-        if let d: AnyObject = objc_getAssociatedObject(self, &dynamicHandleCALayer_opacity) {
+    public var dynOpacity: Dynamic<Float> {
+        if let d: AnyObject = objc_getAssociatedObject(self, &opacityDynamicHandleCALayer) {
             return (d as? Dynamic<Float>)!
         } else {
             let d = InternalDynamic<Float>(self.opacity)
@@ -87,7 +87,7 @@ extension CALayer: Bondable, Dynamical {
 
             d.bindTo(bond, fire: false, strongly: false)
             d.retain(bond)
-            objc_setAssociatedObject(self, &dynamicHandleCALayer_opacity, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+            objc_setAssociatedObject(self, &opacityDynamicHandleCALayer, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
             return d
         }
     }

@@ -32,6 +32,16 @@
 		69491BCF1A7C21B600A13B6B /* Bond+Arrays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BCB1A7C21B600A13B6B /* Bond+Arrays.swift */; };
 		69491BD01A7C21B600A13B6B /* Bond+Foundation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BCC1A7C21B600A13B6B /* Bond+Foundation.swift */; };
 		69491BD31A7C242900A13B6B /* DynamicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BD21A7C242900A13B6B /* DynamicTests.swift */; };
+		900BFC071ADFC5D5002B4B6E /* CALayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC061ADFC5D5002B4B6E /* CALayerTests.swift */; };
+		900BFC081ADFC5DC002B4B6E /* CALayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC061ADFC5D5002B4B6E /* CALayerTests.swift */; };
+		900BFC0B1ADFC863002B4B6E /* NSButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC091ADFC860002B4B6E /* NSButtonTests.swift */; };
+		900BFC0E1ADFC9E9002B4B6E /* NSColorWellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC0C1ADFC9A5002B4B6E /* NSColorWellTests.swift */; };
+		900BFC101ADFCA46002B4B6E /* NSControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC0F1ADFCA46002B4B6E /* NSControlTests.swift */; };
+		900BFC121ADFCAC6002B4B6E /* NSImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC111ADFCAC6002B4B6E /* NSImageViewTests.swift */; };
+		900BFC141ADFCBA8002B4B6E /* NSMenuItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC131ADFCBA8002B4B6E /* NSMenuItemTests.swift */; };
+		900BFC161ADFCC00002B4B6E /* NSStatusBarButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC151ADFCC00002B4B6E /* NSStatusBarButtonTests.swift */; };
+		900BFC181ADFCCEE002B4B6E /* NSTextFieldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC171ADFCCEE002B4B6E /* NSTextFieldTests.swift */; };
+		900BFC1A1ADFCD63002B4B6E /* NSTextViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC191ADFCD63002B4B6E /* NSTextViewTests.swift */; };
 		907391B11ADF2C8D008CE36A /* Bond+CALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907391B01ADF2C8D008CE36A /* Bond+CALayer.swift */; };
 		907391B21ADF2C8D008CE36A /* Bond+CALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907391B01ADF2C8D008CE36A /* Bond+CALayer.swift */; };
 		907391BB1ADF2C99008CE36A /* Bond+NSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907391B31ADF2C99008CE36A /* Bond+NSButton.swift */; };
@@ -130,6 +140,15 @@
 		69491BCB1A7C21B600A13B6B /* Bond+Arrays.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+Arrays.swift"; sourceTree = "<group>"; };
 		69491BCC1A7C21B600A13B6B /* Bond+Foundation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+Foundation.swift"; sourceTree = "<group>"; };
 		69491BD21A7C242900A13B6B /* DynamicTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicTests.swift; sourceTree = "<group>"; };
+		900BFC061ADFC5D5002B4B6E /* CALayerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CALayerTests.swift; sourceTree = "<group>"; };
+		900BFC091ADFC860002B4B6E /* NSButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSButtonTests.swift; sourceTree = "<group>"; };
+		900BFC0C1ADFC9A5002B4B6E /* NSColorWellTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSColorWellTests.swift; sourceTree = "<group>"; };
+		900BFC0F1ADFCA46002B4B6E /* NSControlTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSControlTests.swift; sourceTree = "<group>"; };
+		900BFC111ADFCAC6002B4B6E /* NSImageViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSImageViewTests.swift; sourceTree = "<group>"; };
+		900BFC131ADFCBA8002B4B6E /* NSMenuItemTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSMenuItemTests.swift; sourceTree = "<group>"; };
+		900BFC151ADFCC00002B4B6E /* NSStatusBarButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSStatusBarButtonTests.swift; sourceTree = "<group>"; };
+		900BFC171ADFCCEE002B4B6E /* NSTextFieldTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTextFieldTests.swift; sourceTree = "<group>"; };
+		900BFC191ADFCD63002B4B6E /* NSTextViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTextViewTests.swift; sourceTree = "<group>"; };
 		907391B01ADF2C8D008CE36A /* Bond+CALayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+CALayer.swift"; sourceTree = "<group>"; };
 		907391B31ADF2C99008CE36A /* Bond+NSButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+NSButton.swift"; sourceTree = "<group>"; };
 		907391B41ADF2C99008CE36A /* Bond+NSColorWell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+NSColorWell.swift"; sourceTree = "<group>"; };
@@ -320,7 +339,9 @@
 				ECD653A51A9B6BF30038A9AC /* FunctionalTests.swift */,
 				EC867F891AA73AD5007B4BC4 /* FoundationTests.swift */,
 				EC6A5A841AB31954006071B6 /* ArrayTests.swift */,
+				900BFC041ADFC5AF002B4B6E /* AppKit */,
 				03A5DC961AAF9612007616B4 /* UIKit */,
+				900BFC051ADFC5B5002B4B6E /* Shared */,
 				69491BBE1A7C217100A13B6B /* Supporting Files */,
 				03ACB5221AB6C840001B3E64 /* AssertEqualForOptionals.swift */,
 			);
@@ -333,6 +354,29 @@
 				69491BBF1A7C217100A13B6B /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		900BFC041ADFC5AF002B4B6E /* AppKit */ = {
+			isa = PBXGroup;
+			children = (
+				900BFC091ADFC860002B4B6E /* NSButtonTests.swift */,
+				900BFC0C1ADFC9A5002B4B6E /* NSColorWellTests.swift */,
+				900BFC0F1ADFCA46002B4B6E /* NSControlTests.swift */,
+				900BFC111ADFCAC6002B4B6E /* NSImageViewTests.swift */,
+				900BFC131ADFCBA8002B4B6E /* NSMenuItemTests.swift */,
+				900BFC151ADFCC00002B4B6E /* NSStatusBarButtonTests.swift */,
+				900BFC171ADFCCEE002B4B6E /* NSTextFieldTests.swift */,
+				900BFC191ADFCD63002B4B6E /* NSTextViewTests.swift */,
+			);
+			name = AppKit;
+			sourceTree = "<group>";
+		};
+		900BFC051ADFC5B5002B4B6E /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				900BFC061ADFC5D5002B4B6E /* CALayerTests.swift */,
+			);
+			name = Shared;
 			sourceTree = "<group>";
 		};
 		907391AF1ADF2C7C008CE36A /* AppKit */ = {
@@ -632,6 +676,7 @@
 				03A5DCA41AAF98DA007616B4 /* UIActivityIndicatorTests.swift in Sources */,
 				03A5DC951AAF95EB007616B4 /* UIButtonTests.swift in Sources */,
 				EC847EB11AA796F5002971B8 /* FoundationTests.swift in Sources */,
+				900BFC071ADFC5D5002B4B6E /* CALayerTests.swift in Sources */,
 				03A5DCAE1AAF9C3F007616B4 /* UIDatePickerTests.swift in Sources */,
 				03A5DC9C1AAF977F007616B4 /* UILabelTests.swift in Sources */,
 				03A5DCAA1AAF99C2007616B4 /* UITextViewTests.swift in Sources */,
@@ -669,8 +714,17 @@
 			files = (
 				DCA979821A83C4F500DD4A30 /* DynamicTests.swift in Sources */,
 				EC6A5A861AB31954006071B6 /* ArrayTests.swift in Sources */,
+				900BFC0B1ADFC863002B4B6E /* NSButtonTests.swift in Sources */,
+				900BFC0E1ADFC9E9002B4B6E /* NSColorWellTests.swift in Sources */,
+				900BFC141ADFCBA8002B4B6E /* NSMenuItemTests.swift in Sources */,
+				900BFC1A1ADFCD63002B4B6E /* NSTextViewTests.swift in Sources */,
+				900BFC101ADFCA46002B4B6E /* NSControlTests.swift in Sources */,
+				900BFC181ADFCCEE002B4B6E /* NSTextFieldTests.swift in Sources */,
+				900BFC161ADFCC00002B4B6E /* NSStatusBarButtonTests.swift in Sources */,
 				DCA979831A83C4F800DD4A30 /* BondTests.swift in Sources */,
+				900BFC121ADFCAC6002B4B6E /* NSImageViewTests.swift in Sources */,
 				EC847EB21AA796F8002971B8 /* FoundationTests.swift in Sources */,
+				900BFC081ADFC5DC002B4B6E /* CALayerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -931,6 +985,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
@@ -949,6 +1004,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",

@@ -28,7 +28,7 @@ var appearsDisabledDynamicHandleNSStatusBarButton: UInt8 = 0;
 
 extension NSStatusBarButton {
 
-    public var bindableAppearsDisabled: Dynamic<Bool> {
+    public var dynAppearsDisabled: Dynamic<Bool> {
         if let d: AnyObject = objc_getAssociatedObject(self, &appearsDisabledDynamicHandleNSStatusBarButton) {
             return (d as? Dynamic<Bool>)!
         } else {
