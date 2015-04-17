@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.license      = { :type => "MIT", :file => "LICENSE.md" }
   s.author             = { "Srdan Rasic" => "srdan.rasic@gmail.com" }
   s.social_media_url   = "http://twitter.com/srdanrasic"
-  s.ios.deployment_target = "7.0"
+  s.ios.deployment_target = "8.0"
   s.osx.deployment_target = "10.10"
   s.source       = { :git => "https://github.com/SwiftBond/Bond.git", :tag => "v3.6.0" }
   s.source_files  = "Bond"
