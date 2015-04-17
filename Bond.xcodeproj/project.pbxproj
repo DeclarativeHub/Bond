@@ -32,7 +32,6 @@
 		69491BCF1A7C21B600A13B6B /* Bond+Arrays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BCB1A7C21B600A13B6B /* Bond+Arrays.swift */; };
 		69491BD01A7C21B600A13B6B /* Bond+Foundation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BCC1A7C21B600A13B6B /* Bond+Foundation.swift */; };
 		69491BD31A7C242900A13B6B /* DynamicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BD21A7C242900A13B6B /* DynamicTests.swift */; };
-		900BFC071ADFC5D5002B4B6E /* CALayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC061ADFC5D5002B4B6E /* CALayerTests.swift */; };
 		900BFC081ADFC5DC002B4B6E /* CALayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC061ADFC5D5002B4B6E /* CALayerTests.swift */; };
 		900BFC0B1ADFC863002B4B6E /* NSButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC091ADFC860002B4B6E /* NSButtonTests.swift */; };
 		900BFC0E1ADFC9E9002B4B6E /* NSColorWellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC0C1ADFC9A5002B4B6E /* NSColorWellTests.swift */; };
@@ -676,7 +675,6 @@
 				03A5DCA41AAF98DA007616B4 /* UIActivityIndicatorTests.swift in Sources */,
 				03A5DC951AAF95EB007616B4 /* UIButtonTests.swift in Sources */,
 				EC847EB11AA796F5002971B8 /* FoundationTests.swift in Sources */,
-				900BFC071ADFC5D5002B4B6E /* CALayerTests.swift in Sources */,
 				03A5DCAE1AAF9C3F007616B4 /* UIDatePickerTests.swift in Sources */,
 				03A5DC9C1AAF977F007616B4 /* UILabelTests.swift in Sources */,
 				03A5DCAA1AAF99C2007616B4 /* UITextViewTests.swift in Sources */,

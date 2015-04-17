@@ -169,7 +169,7 @@ public class Dynamic<T> {
   }
 
   public init(_ v: T) {
-    value = v
+    _value = v
     valueBond.listener = { [unowned self] v in self.value = v }
   }
   
