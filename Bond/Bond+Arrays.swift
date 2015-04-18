@@ -41,6 +41,8 @@ public class ArrayBond<T>: Bond<Array<T>> {
   public var willUpdateListener: ((DynamicArray<T>, [Int]) -> Void)?
   public var didUpdateListener: ((DynamicArray<T>, [Int]) -> Void)?
 
+  public var willResetListener: (DynamicArray<T> -> Void)?
+  public var didResetListener: (DynamicArray<T> -> Void)?
   
   override public init() {
     super.init()
@@ -61,6 +63,9 @@ public class ArrayBond<T>: Bond<Array<T>> {
 
 // MARK: Dynamic array
 
+/**
+Note: Directly setting `DynamicArray.value` is not recommended. The array's count will not be updated and no array change notification will be emitted. Call `setArray:` instead.
+*/
 public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
   
   public typealias Element = T
@@ -86,10 +91,10 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
     bond.bind(self, fire: fire, strongly: strongly)
   }
   
-  public override var value: Array<T> {
-    didSet {
-      dynCount.value = count
-    }
+  public func setArray(newValue: [T]) {
+    dispatchWillReset()
+    value = newValue
+    dispatchDidReset()
   }
   
   public var count: Int {
@@ -240,6 +245,23 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
       }
     }
   }
+  
+  private func dispatchWillReset() {
+    for bondBox in bonds {
+      if let arrayBond = bondBox.bond as? ArrayBond {
+        arrayBond.willResetListener?(self)
+      }
+    }
+  }
+  
+  private func dispatchDidReset() {
+    dynCount.value = self.count
+    for bondBox in bonds {
+      if let arrayBond = bondBox.bond as? ArrayBond {
+        arrayBond.didResetListener?(self)
+      }
+    }
+  }
 }
 
 public struct DynamicArrayGenerator<T>: GeneratorType {
@@ -295,6 +317,23 @@ private class DynamicArrayMapProxy<T, U>: DynamicArray<U> {
     bond.didUpdateListener = { [unowned self] array, i in
       self.dispatchDidUpdate(i)
     }
+    
+    bond.willResetListener = { [unowned self] array in
+      self.dispatchWillReset()
+    }
+    
+    bond.didResetListener = { [unowned self] array in
+      self.dispatchDidReset()
+    }
+  }
+  
+  override var value: [U] {
+    set(newValue) {
+      fatalError("Modifying proxy array is not supported!")
+    }
+    get {
+      fatalError("Getting proxy array value is not supported!")
+    }
   }
   
   override var count: Int {
@@ -323,6 +362,10 @@ private class DynamicArrayMapProxy<T, U>: DynamicArray<U> {
     } else {
       return nil
     }
+  }
+  
+  override func setArray(newValue: [U]) {
+    fatalError("Modifying proxy array is not supported!")
   }
   
   override func append(newElement: U) {
@@ -379,7 +422,7 @@ func indexOfFirstEqualOrLargerThan(x: Int, array: [Int]) -> Int {
 
 private class DynamicArrayFilterProxy<T>: DynamicArray<T> {
   private unowned var sourceArray: DynamicArray<T>
-  private var pointers: [Int] = []
+  private var pointers: [Int]
   private var filterf: T -> Bool
   private let bond: ArrayBond<T>
   
@@ -388,12 +431,8 @@ private class DynamicArrayFilterProxy<T>: DynamicArray<T> {
     self.filterf = filterf
     self.bond = ArrayBond<T>()
     self.bond.bind(sourceArray, fire: false)
-
-    for (index, element) in enumerate(sourceArray) {
-      if filterf(element) {
-        pointers.append(index)
-      }
-    }
+    
+    self.pointers = DynamicArrayFilterProxy.pointersFromSource(sourceArray, filterf: filterf)
     
     super.init([])
 
@@ -512,8 +551,35 @@ private class DynamicArrayFilterProxy<T>: DynamicArray<T> {
         self.dispatchDidInsert(insertedIndices)
       }
     }
+
+    bond.willResetListener = { [unowned self] array in
+      self.dispatchWillReset()
+    }
+    
+    bond.didResetListener = { [unowned self] array in
+      self.pointers = DynamicArrayFilterProxy.pointersFromSource(array, filterf: filterf)
+      self.dispatchDidReset()
+    }
   }
   
+  class func pointersFromSource(sourceArray: DynamicArray<T>, filterf: T -> Bool) -> [Int] {
+    var pointers = [Int]()
+    for (index, element) in enumerate(sourceArray) {
+      if filterf(element) {
+        pointers.append(index)
+      }
+    }
+    return pointers
+  }
+  
+  override var value: [T] {
+    set(newValue) {
+      fatalError("Modifying proxy array is not supported!")
+    }
+    get {
+      fatalError("Getting proxy array value is not supported!")
+    }
+  }
   
   private override var count: Int {
     return pointers.count
@@ -543,6 +609,10 @@ private class DynamicArrayFilterProxy<T>: DynamicArray<T> {
     }
   }
   
+  override private func setArray(newValue: [T]) {
+    fatalError("Modifying proxy array is not supported!")
+  }
+
   override private func append(newElement: T) {
     fatalError("Modifying proxy array is not supported!")
   }

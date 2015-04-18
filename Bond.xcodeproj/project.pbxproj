@@ -51,6 +51,7 @@
 		907391C01ADF2C99008CE36A /* Bond+NSStatusBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907391B81ADF2C99008CE36A /* Bond+NSStatusBarButton.swift */; };
 		907391C11ADF2C99008CE36A /* Bond+NSTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907391B91ADF2C99008CE36A /* Bond+NSTextField.swift */; };
 		907391C21ADF2C99008CE36A /* Bond+NSTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907391BA1ADF2C99008CE36A /* Bond+NSTextView.swift */; };
+		CC581F761AE23D8B00D69AE7 /* UITableViewDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC581F751AE23D8B00D69AE7 /* UITableViewDataSourceTests.swift */; };
 		DCA979741A83C3A200DD4A30 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCA979691A83C3A100DD4A30 /* Bond.framework */; };
 		DCA979821A83C4F500DD4A30 /* DynamicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BD21A7C242900A13B6B /* DynamicTests.swift */; };
 		DCA979831A83C4F800DD4A30 /* BondTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BC01A7C217100A13B6B /* BondTests.swift */; };
@@ -157,6 +158,7 @@
 		907391B81ADF2C99008CE36A /* Bond+NSStatusBarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+NSStatusBarButton.swift"; sourceTree = "<group>"; };
 		907391B91ADF2C99008CE36A /* Bond+NSTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+NSTextField.swift"; sourceTree = "<group>"; };
 		907391BA1ADF2C99008CE36A /* Bond+NSTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+NSTextView.swift"; sourceTree = "<group>"; };
+		CC581F751AE23D8B00D69AE7 /* UITableViewDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewDataSourceTests.swift; sourceTree = "<group>"; };
 		DCA979691A83C3A100DD4A30 /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCA979731A83C3A200DD4A30 /* BondOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BondOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC0301741AAA23C9004B3071 /* Bond+UICollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UICollectionView.swift"; sourceTree = "<group>"; };
@@ -226,6 +228,7 @@
 		03A5DC961AAF9612007616B4 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
+				CC581F751AE23D8B00D69AE7 /* UITableViewDataSourceTests.swift */,
 				03A5DC991AAF971F007616B4 /* UIViewTests.swift */,
 				03A5DC9F1AAF982D007616B4 /* UIImageViewTests.swift */,
 				03A5DC9D1AAF97E9007616B4 /* UIProgressViewTests.swift */,
@@ -676,6 +679,7 @@
 				03A5DC951AAF95EB007616B4 /* UIButtonTests.swift in Sources */,
 				EC847EB11AA796F5002971B8 /* FoundationTests.swift in Sources */,
 				03A5DCAE1AAF9C3F007616B4 /* UIDatePickerTests.swift in Sources */,
+				CC581F761AE23D8B00D69AE7 /* UITableViewDataSourceTests.swift in Sources */,
 				03A5DC9C1AAF977F007616B4 /* UILabelTests.swift in Sources */,
 				03A5DCAA1AAF99C2007616B4 /* UITextViewTests.swift in Sources */,
 				03A5DCA81AAF995F007616B4 /* UITextFieldTests.swift in Sources */,
