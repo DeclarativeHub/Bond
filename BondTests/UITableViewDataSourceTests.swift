@@ -95,28 +95,27 @@ class TestTableView: UITableView {
 
 class UITableViewDataSourceTests: XCTestCase {
   var tableView: TestTableView!
-  var expectedTableView: TestTableView!
   var array: DynamicArray<DynamicArray<Int>>!
   var bond: UITableViewDataSourceBond<Void>!
+  var expectedOperations: [TableOperation]!
   override func setUp() {
     array = DynamicArray([DynamicArray([1, 2]), DynamicArray([3, 4])])
     let tableView = TestTableView()
     self.tableView = tableView
     tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cellID")
-    expectedTableView = TestTableView()
-
+    expectedOperations = []
     bond = UITableViewDataSourceBond(tableView: tableView, disableAnimation: true)
     array.map { array, sectionIndex in
       array.map { int, index -> UITableViewCell in
         return tableView.dequeueReusableCellWithIdentifier("cellID") as! UITableViewCell
       }
     } ->> bond
-    expectedTableView.reloadData() // `tableView` will get a `reloadData` when the bond is attached
+    expectedOperations.append(.ReloadData) // `tableView` will get a `reloadData` when the bond is attached
   }
   
   func testReload() {
     array.setArray([])
-    expectedTableView.reloadData()
-    XCTAssertEqual(expectedTableView.operations, tableView.operations, "operation sequence did not match")
+    expectedOperations.append(.ReloadData)
+    XCTAssertEqual(expectedOperations, tableView.operations, "operation sequence did not match")
   }
 }
