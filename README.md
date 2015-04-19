@@ -634,7 +634,7 @@ let orientation: Dynamic<UIDeviceOrientation> = dynamicObservableFor(UIDeviceOri
 ### Carthage
 
 1. Add the following to your *Cartfile*:
-  <br> `github "SwiftBond/Bond" ~> 3.0`
+  <br> `github "SwiftBond/Bond" ~> 3.7`
 2. Run `carthage update`
 3. Add the framework as described in [Carthage Readme](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application)
 
@@ -642,7 +642,7 @@ let orientation: Dynamic<UIDeviceOrientation> = dynamicObservableFor(UIDeviceOri
 ### CocoaPods
 
 1. Add the following to your *Podfile*:
-  <br> `pod 'Bond', '~> 3.0'`
+  <br> `pod 'Bond', '~> 3.7'`
 2. Run `pod install` with CocoaPods 0.36 or newer.
 
 ### Git Submodules
