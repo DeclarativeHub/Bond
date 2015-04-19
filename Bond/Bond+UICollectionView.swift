@@ -72,6 +72,12 @@ private class UICollectionViewDataSourceSectionBond<T>: ArrayBond<UICollectionVi
           }, completion: nil)
       }
     }
+    
+    self.didResetListener = { [weak self] array in
+      if let collectionView = self?.collectionView {
+        collectionView.reloadData()
+      }
+    }
   }
   
   deinit {
@@ -148,6 +154,12 @@ public class UICollectionViewDataSourceBond<T>: ArrayBond<DynamicArray<UICollect
           self?.sectionBonds[section].unbindAll()
           self?.sectionBonds[section] = sectionBond
         }
+      }
+    }
+    
+    self.didResetListener = { [weak self] array in
+      if let collectionView = self?.collectionView {
+        collectionView.reloadData()
       }
     }
   }

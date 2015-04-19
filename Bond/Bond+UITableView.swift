@@ -158,6 +158,12 @@ private class UITableViewDataSourceSectionBond<T>: ArrayBond<UITableViewCell> {
         }
       }
     }
+    
+    self.didResetListener = { [weak self] array in
+      if let tableView = self?.tableView {
+        tableView.reloadData()
+      }
+    }
   }
   
   deinit {
