@@ -423,6 +423,7 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
   public func splice(array: Array<T>, atIndex i: Int)
   public func removeAtIndex(index: Int) -> T
   public func removeAll(keepCapacity: Bool)
+  public func setArray(newValue: [T])
   public subscript(index: Int) -> T
 }
 ```
@@ -440,12 +441,17 @@ public class ArrayBond<T>: Bond<Array<T>> {
   public var willUpdateListener: ((DynamicArray<T>, [Int]) -> Void)?
   public var didUpdateListener: ((DynamicArray<T>, [Int]) -> Void)?
   
+  public var willResetListener: (DynamicArray<T> -> Void)?
+  public var didResetListener: (DynamicArray<T> -> Void)?
+  
   override public init()
   override public func bind(dynamic: Dynamic<Array<T>>)
 }
 ```
 
 Yeah, it's straightforward - it allows us to register different listeners for different events. Each listener is a closure that accepts DynamicArray itself and an array of indices of objects that will be or have been changed.
+
+Listeners `will/didReset` will be called when (and only when) method `setArray` is being called. Additionally, no other listener will be called for that operation. 
 
 Let's go through one example. We'll create a new bond to our `repositories` array, this time of ArrayBond type.
 
