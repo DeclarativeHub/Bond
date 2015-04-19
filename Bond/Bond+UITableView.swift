@@ -245,6 +245,12 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
         }
       }
     }
+    
+    self.didResetListener = { [weak self] array in
+      if let tableView = self?.tableView {
+        tableView.reloadData()
+      }
+    }
   }
   
   public func bind(dynamic: DynamicArray<UITableViewCell>) {

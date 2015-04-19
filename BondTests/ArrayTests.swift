@@ -399,7 +399,7 @@ class ArrayTests: XCTestCase {
     XCTAssert(updatedCount.value == 1)
     XCTAssert(array.count == 1)
     
-    array.value = [1, 2, 3, 4, 5]
+    array.setArray([1, 2, 3, 4, 5])
     XCTAssert(updatedCount.value == 5)
     XCTAssert(array.count == 5)
     
@@ -415,12 +415,77 @@ class ArrayTests: XCTestCase {
     let updatedCount = Dynamic(0)
     filtered.dynCount ->> updatedCount
     
-    XCTAssert(updatedCount.value == 3)
+    XCTAssertEqual(updatedCount.value, 3)
     
     array.append([6, 1])
-    XCTAssert(updatedCount.value == 4)
+    XCTAssertEqual(updatedCount.value, 4)
     
     array.removeAll(false)
-    XCTAssert(updatedCount.value == 0)
+    XCTAssertEqual(updatedCount.value, 0)
   }
+  
+  func testResetEventBasic() {
+    let expectedBefore = [1, 2, 3], expectedAfter = [4, 5, 6]
+    let array = DynamicArray(expectedBefore)
+    let bond = ArrayBond<Int>()
+    var testCount = 0
+    bond.willResetListener = { array in
+      testCount++
+      XCTAssert(array == expectedBefore, "before arrays don't match (\(array) vs \(expectedBefore))")
+    }
+    bond.didResetListener = { array in
+      testCount++
+      XCTAssert(array == expectedAfter, "after arrays don't match (\(array) vs \(expectedAfter))")
+    }
+    array ->> bond
+    
+    array.setArray(expectedAfter)
+    
+    XCTAssertEqual(testCount, 2, "reset events did not fire")
+  }
+  
+  func testResetEventMapped() {
+    let sourceBefore = [1, 2, 3], sourceAfter = [4, 5, 6]
+    let expectedBefore = [2, 4, 6], expectedAfter = [8, 10, 12]
+    let source = DynamicArray(sourceBefore)
+    let array = source.map { $0 * 2 }
+    let bond = ArrayBond<Int>()
+    var testCount = 0
+    bond.willResetListener = { array in
+      testCount++
+      XCTAssert(array == expectedBefore, "before arrays don't match (\(array) vs \(expectedBefore))")
+    }
+    bond.didResetListener = { array in
+      testCount++
+      XCTAssert(array == expectedAfter, "after arrays don't match (\(array) vs \(expectedAfter))")
+    }
+    array ->> bond
+    
+    source.setArray(sourceAfter)
+    
+    XCTAssertEqual(testCount, 2, "reset events did not fire")
+  }
+
+  func testResetEventFiltered() {
+    let sourceBefore = [1, 2, 3, 4], sourceAfter = [4, 5, 6, 7]
+    let expectedBefore = [2, 4], expectedAfter = [4, 6]
+    let source = DynamicArray(sourceBefore)
+    let array = source.filter { $0 % 2 == 0  }
+    let bond = ArrayBond<Int>()
+    var testCount = 0
+    bond.willResetListener = { array in
+      testCount++
+      XCTAssert(array == expectedBefore, "before arrays don't match (\(array) vs \(expectedBefore))")
+    }
+    bond.didResetListener = { array in
+      testCount++
+      XCTAssert(array == expectedAfter, "after arrays don't match (\(array) vs \(expectedAfter))")
+    }
+    array ->> bond
+    
+    source.setArray(sourceAfter)
+    
+    XCTAssertEqual(testCount, 2, "reset events did not fire")
+  }
+
 }
