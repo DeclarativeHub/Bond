@@ -118,4 +118,42 @@ class UITableViewDataSourceTests: XCTestCase {
     expectedOperations.append(.ReloadData)
     XCTAssertEqual(expectedOperations, tableView.operations, "operation sequence did not match")
   }
+    
+  func testInsertARow() {
+    array[1].append(5)
+    expectedOperations.append(.InsertRows([NSIndexPath(forRow: 2, inSection: 1)]))
+    XCTAssertEqual(expectedOperations, tableView.operations, "operation sequence did not match")
+  }
+  
+  func testDeleteARow() {
+    array[1].removeLast()
+    expectedOperations.append(.DeleteRows([NSIndexPath(forRow: 1, inSection: 1)]))
+    XCTAssertEqual(expectedOperations, tableView.operations, "operation sequence did not match")
+  }
+  
+  func testReloadARow() {
+    array[1][1] = 5
+    expectedOperations.append(.ReloadRows([NSIndexPath(forRow: 1, inSection: 1)]))
+    XCTAssertEqual(expectedOperations, tableView.operations, "operation sequence did not match")
+  }
+  
+  func testInsertASection() {
+    array.insert(DynamicArray([7, 8, 9]), atIndex: 1)
+    expectedOperations.append(.InsertSections(NSIndexSet(index: 1)))
+    XCTAssertEqual(tableView.numberOfRowsInSection(1), 3, "wrong number of rows in new section")
+    XCTAssertEqual(expectedOperations, tableView.operations, "operation sequence did not match")
+  }
+  
+  func testDeleteASection() {
+    array.removeAtIndex(0)
+    expectedOperations.append(.DeleteSections(NSIndexSet(index: 0)))
+    XCTAssertEqual(expectedOperations, tableView.operations, "operation sequence did not match")
+  }
+  
+  func testReloadASection() {
+    array[1] = DynamicArray([5, 6, 7])
+    expectedOperations.append(.ReloadSections(NSIndexSet(index: 1)))
+    XCTAssertEqual(tableView.numberOfRowsInSection(1), 3, "wrong number of rows in reloaded section")
+    XCTAssertEqual(expectedOperations, tableView.operations, "operation sequence did not match")
+  }
 }
