@@ -175,6 +175,7 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
   weak var tableView: UITableView?
   private var dataSource: TableViewDynamicArrayDataSource?
   private var sectionBonds: [UITableViewDataSourceSectionBond<Void>] = []
+  public let disableAnimation: Bool
   public weak var nextDataSource: UITableViewDataSource? {
     didSet(newValue) {
       dataSource?.nextDataSource = newValue
@@ -182,6 +183,7 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
   }
   
   public init(tableView: UITableView, disableAnimation: Bool = false) {
+    self.disableAnimation = disableAnimation
     self.tableView = tableView
     super.init()
     
@@ -268,7 +270,7 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
     if let dynamic = dynamic as? DynamicArray<DynamicArray<UITableViewCell>> {
       
       for section in 0..<dynamic.count {
-        let sectionBond = UITableViewDataSourceSectionBond<Void>(tableView: self.tableView, section: section)
+        let sectionBond = UITableViewDataSourceSectionBond<Void>(tableView: self.tableView, section: section, disableAnimation: disableAnimation)
         let sectionDynamic = dynamic[section]
         sectionDynamic.bindTo(sectionBond)
         sectionBonds.append(sectionBond)
