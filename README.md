@@ -219,7 +219,7 @@ d3.bindTo(d1.valueBond, fire: false, strongly: false)
 
 ### What about UIKit
 
-UIKit views and controls are not, of course, Dynamics and Bonds, so how can they act as agents in Bond word?
+UIKit views and controls are not, of course, Dynamics and Bonds, so how can they act as agents in a Bond world?
 
 Controls and views for which it makes sense to are extended to provide Dynamics for commonly used properties, like UITextField's `text` property, UISlider's `value` property or UISwitch's `on` property.
 
