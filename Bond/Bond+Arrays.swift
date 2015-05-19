@@ -124,12 +124,7 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
   }
   
   public func append(array: Array<T>) {
-    if array.count > 0 {
-      let count = value.count
-      dispatchWillInsert(Array(count..<value.count))
-      value += array
-      dispatchDidInsert(Array(count..<value.count))
-    }
+	splice(array, atIndex: value.count)
   }
   
   public func removeLast() -> T {
@@ -151,9 +146,10 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
   
   public func splice(array: Array<T>, atIndex i: Int) {
     if array.count > 0 {
-      dispatchWillInsert(Array(i..<i+array.count))
+      let indices = Array(i..<i+array.count)
+      dispatchWillInsert(indices)
       value.splice(array, atIndex: i)
-      dispatchDidInsert(Array(i..<i+array.count))
+      dispatchDidInsert(indices)
     }
   }
   
@@ -166,9 +162,10 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
   
   public func removeAll(keepCapacity: Bool) {
     let count = value.count
-    dispatchWillRemove(Array<Int>(0..<count))
+    let indices = Array(0..<count)
+    dispatchWillRemove(indices)
     value.removeAll(keepCapacity: keepCapacity)
-    dispatchDidRemove(Array<Int>(0..<count))
+    dispatchDidRemove(indices)
   }
   
   public subscript(index: Int) -> T {
