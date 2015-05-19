@@ -124,12 +124,7 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
   }
   
   public func append(array: Array<T>) {
-    if array.count > 0 {
-      let indices = Array(value.count..<value.count+array.count)
-      dispatchWillInsert(indices)
-      value += array
-      dispatchDidInsert(indices)
-    }
+	splice(array, atIndex: value.count)
   }
   
   public func removeLast() -> T {
