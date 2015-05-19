@@ -45,7 +45,7 @@ extension UITextView: Bondable {
         }
       }
       
-      let bond = Bond<String>() { [weak self] v in if let s = self { s.text = v } }
+      let bond = Bond<String>() { [weak self] v in if let s = self { if s.text != v { s.text = v } } }
       d.bindTo(bond, fire: false, strongly: false)
       d.retain(bond)
       objc_setAssociatedObject(self, &textDynamicHandleUITextView, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
