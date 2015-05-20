@@ -66,7 +66,7 @@ extension UITextField /*: Dynamical, Bondable */ {
       return (d as? Dynamic<String>)!
     } else {
       let d = TextFieldDynamic<String>(control: self)
-      let bond = Bond<String>() { [weak self] v in if let s = self { s.text = v } }
+      let bond = Bond<String>() { [weak self] v in if let s = self { if !s.isFirstResponder() { s.text = v } } }
       d.bindTo(bond, fire: false, strongly: false)
       d.retain(bond)
       objc_setAssociatedObject(self, &textDynamicHandleUITextField, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
