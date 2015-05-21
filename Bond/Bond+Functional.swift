@@ -215,3 +215,39 @@ public func any<T>(dynamics: [Dynamic<T>]) -> Dynamic<T> {
   
   return dyn
 }
+
+// MARK: Delay
+
+public func _delay<T>(dynamic: Dynamic<T>, seconds: Double) -> Dynamic<T> {
+  let dyn = InternalDynamic<T>()
+  var timestamp: CFTimeInterval?
+  var listener: (() -> Void)!
+  
+  listener = { [weak dyn, weak dynamic] in
+    let now = CACurrentMediaTime()
+    let delta = now - (timestamp ?? 0)
+    
+    if delta >= seconds {
+      if let dyn = dyn, dynamic = dynamic {
+        dyn.value = dynamic.value
+      }
+      timestamp = nil
+    } else {
+      let delay = dispatch_time(DISPATCH_TIME_NOW, Int64(delta * Double(NSEC_PER_SEC)))
+      dispatch_after(delay, dispatch_get_main_queue(), listener)
+    }
+  }
+  
+  let bond = Bond<T> { _ in
+    if timestamp == nil {
+      let delay = dispatch_time(DISPATCH_TIME_NOW, Int64(seconds * Double(NSEC_PER_SEC)))
+      dispatch_after(delay, dispatch_get_main_queue(), listener)
+    }
+    timestamp = CACurrentMediaTime()
+  }
+  
+  dyn.retain(bond)
+  dynamic.bindTo(bond, fire: false)
+  
+  return dyn
+}

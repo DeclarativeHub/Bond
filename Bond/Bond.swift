@@ -252,6 +252,10 @@ public extension Dynamic
   public func skip(count: Int) -> Dynamic<T> {
     return _skip(self, count)
   }
+    
+  public func delay(seconds: Double) -> Dynamic<T> {
+    return _delay(self, seconds)
+  }
 }
 
 
