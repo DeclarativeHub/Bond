@@ -49,7 +49,12 @@ extension NSTextView: Dynamical, Bondable {
                 }
             }
 
-            let bond = Bond<String>() { v in self.string = v } // NSTextView cannot be referenced weakly
+            let bond = Bond<String>() { [weak d] v in // NSTextView cannot be referenced weakly
+                if let d = d where !d.updatingFromSelf {
+                    self.string = v
+                }
+            }
+          
             d.bindTo(bond, fire: false, strongly: false)
             d.retain(bond)
             objc_setAssociatedObject(self, &stringDynamicHandleNSTextView, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))

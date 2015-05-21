@@ -58,6 +58,7 @@
 		DCA979841A83C52D00DD4A30 /* Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BCA1A7C21B600A13B6B /* Bond.swift */; };
 		DCA979851A83C52D00DD4A30 /* Bond+Arrays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BCB1A7C21B600A13B6B /* Bond+Arrays.swift */; };
 		EC0301751AAA23C9004B3071 /* Bond+UICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0301741AAA23C9004B3071 /* Bond+UICollectionView.swift */; };
+		EC0388991B0DD25700E32454 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69491BAE1A7C217100A13B6B /* Bond.framework */; };
 		EC048D181AA238AF00E9794C /* Bond+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC048D171AA238AF00E9794C /* Bond+Operators.swift */; };
 		EC048D191AA238AF00E9794C /* Bond+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC048D171AA238AF00E9794C /* Bond+Operators.swift */; };
 		EC0F22F61AA353100051723D /* Bond+UIActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0F22F51AA353100051723D /* Bond+UIActivityIndicatorView.swift */; };
@@ -104,6 +105,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = DCA979681A83C3A100DD4A30;
 			remoteInfo = BondOSX;
+		};
+		EC0388971B0DD25200E32454 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 69491BA51A7C217100A13B6B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 69491BAD1A7C217100A13B6B;
+			remoteInfo = Bond;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -189,6 +197,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC0388991B0DD25700E32454 /* Bond.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -457,6 +466,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				EC0388981B0DD25200E32454 /* PBXTargetDependency */,
 			);
 			name = iOSAppForTesting;
 			productName = iOSAppForTesting;
@@ -747,6 +757,11 @@
 			isa = PBXTargetDependency;
 			target = DCA979681A83C3A100DD4A30 /* BondOSX */;
 			targetProxy = DCA979751A83C3A200DD4A30 /* PBXContainerItemProxy */;
+		};
+		EC0388981B0DD25200E32454 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 69491BAD1A7C217100A13B6B /* Bond */;
+			targetProxy = EC0388971B0DD25200E32454 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

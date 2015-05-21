@@ -49,7 +49,11 @@ class TextFieldDynamic<T>: InternalDynamic<String> {
     init(control: NSTextField) {
         self.helper = TextFieldDynamicHelper(control: control)
         super.init(control.stringValue ?? "")
-        self.helper.listener =  { [unowned self] in self.value = $0 }
+        self.helper.listener =  { [unowned self] in
+          self.updatingFromSelf = true
+          self.value = $0
+          self.updatingFromSelf = false
+      }
     }
 
 }
@@ -71,7 +75,13 @@ extension NSTextField: Dynamical, Bondable {
             return (d as? Dynamic<String>)!
         } else {
             let d = TextFieldDynamic<String>(control: self)
-            let bond = Bond<String>() { [weak self] v in if let s = self { s.stringValue = v } }
+          
+            let bond = Bond<String>() { [weak self, weak d] v in
+                if let s = self, d = d where !d.updatingFromSelf {
+                    s.stringValue = v
+                }
+            }
+          
             d.bindTo(bond, fire: false, strongly: false)
             d.retain(bond)
             objc_setAssociatedObject(self, &stringValueDynamicHandleNSTextField, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))

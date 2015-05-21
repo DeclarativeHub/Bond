@@ -53,7 +53,11 @@ class SwitchDynamic<T>: InternalDynamic<Bool>
   init(control: UISwitch) {
     self.helper = SwitchDynamicHelper(control: control)
     super.init(control.on)
-    self.helper.listener =  { [unowned self] in self.value = $0 }
+    self.helper.listener =  { [unowned self] in
+      self.updatingFromSelf = true
+      self.value = $0
+      self.updatingFromSelf = false
+    }
   }
 }
 
@@ -65,7 +69,13 @@ extension UISwitch /*: Dynamical, Bondable */ {
       return (d as? Dynamic<Bool>)!
     } else {
       let d = SwitchDynamic<Bool>(control: self)
-      let bond = Bond<Bool>() { [weak self] v in if let s = self { s.on = v } }
+      
+      let bond = Bond<Bool>() { [weak self, weak d] v in
+        if let s = self, d = d where !d.updatingFromSelf {
+          s.on = v
+        }
+      }
+      
       d.bindTo(bond, fire: false, strongly: false)
       d.retain(bond)
       objc_setAssociatedObject(self, &onDynamicHandleUISwitch, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))

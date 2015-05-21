@@ -196,6 +196,7 @@ public class InternalDynamic<T>: Dynamic<T> {
     super.init(value)
   }
   
+  public var updatingFromSelf: Bool = false
   public var retainedObjects: [AnyObject] = []
   public func retain(object: AnyObject) {
     retainedObjects.append(object)
