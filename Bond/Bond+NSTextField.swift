@@ -24,7 +24,7 @@
 
 import Cocoa
 
-@objc class TextFieldDynamicHelper: NSObject {
+class TextFieldDynamicHelper: NSObject {
 
     weak var control: NSTextField?
     var listener: (String -> Void)?
@@ -36,7 +36,7 @@ import Cocoa
         control.action = Selector("textChanged:")
     }
 
-    private func textChanged(sender: AnyObject?) {
+    @objc private func textChanged(sender: AnyObject?) {
         self.listener?(control?.stringValue ?? "")
     }
 
