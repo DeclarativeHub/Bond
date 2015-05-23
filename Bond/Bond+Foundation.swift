@@ -108,7 +108,7 @@ public func dynamicObservableFor<T>(object: NSObject, #keyPath: String, #from: A
   
   let feedbackBond = Bond<T>() { [weak object] value in
     if let object = object {
-      object.setValue(to(value) ?? NSNull(), forKey: keyPath)
+      object.setValue(to(value), forKey: keyPath)
     }
   }
   

@@ -24,7 +24,7 @@
 
 import Cocoa
 
-class TextFieldDynamicHelper: NSObject {
+@objc class TextFieldDynamicHelper: NSObject {
 
     weak var control: NSTextField?
     var listener: (String -> Void)?
