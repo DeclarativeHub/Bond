@@ -216,9 +216,9 @@ public func any<T>(dynamics: [Dynamic<T>]) -> Dynamic<T> {
   return dyn
 }
 
-// MARK: Delay
+// MARK: Throttle
 
-public func _delay<T>(dynamic: Dynamic<T>, seconds: Double) -> Dynamic<T> {
+public func _throttle<T>(dynamic: Dynamic<T>, seconds: Double) -> Dynamic<T> {
   let dyn = InternalDynamic<T>()
   var timestamp: CFTimeInterval?
   var listener: (() -> Void)!

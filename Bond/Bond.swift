@@ -253,8 +253,8 @@ public extension Dynamic
     return _skip(self, count)
   }
     
-  public func delay(seconds: Double) -> Dynamic<T> {
-    return _delay(self, seconds)
+  public func throttle(seconds: Double) -> Dynamic<T> {
+    return _throttle(self, seconds)
   }
 }
 
