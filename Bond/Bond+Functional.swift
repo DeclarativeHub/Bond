@@ -25,6 +25,8 @@
 //  THE SOFTWARE.
 //
 
+import QuartzCore
+
 // MARK: Map
 
 public func map<T, U>(dynamic: Dynamic<T>, f: T -> U) -> Dynamic<U> {
@@ -250,4 +252,8 @@ public func _throttle<T>(dynamic: Dynamic<T>, seconds: Double) -> Dynamic<T> {
   dynamic.bindTo(bond, fire: false)
   
   return dyn
+}
+
+public func throttle<T>(dynamic: Dynamic<T>, seconds: Double) -> Dynamic<T> {
+    return _throttle(dynamic, seconds)
 }
