@@ -326,6 +326,14 @@ skip<T>(dynamic: Dynamic<T>, count: Int) -> Dynamic<T>
 
 You can use skip to create a Dynamic that'll not dispatch change events for `count` times. 
 
+#### Throttle
+
+```swift
+throttle<T>(dynamic: Dynamic<T>, seconds: Double) -> Dynamic<T>
+```
+
+Throttle function creates a new Dynamic that will propagate changes only after `seconds` delay. If any additional changes occurred while delaying, it will eat all previous changes and dispatch only the last one. _Note that all deferred changes will be dispatched on Main Thread!_
+
 #### Any
 
 ```swift
