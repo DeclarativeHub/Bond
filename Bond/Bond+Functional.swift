@@ -25,6 +25,8 @@
 //  THE SOFTWARE.
 //
 
+import QuartzCore
+
 // MARK: Map
 
 public func map<T, U>(dynamic: Dynamic<T>, f: T -> U) -> Dynamic<U> {
@@ -214,4 +216,33 @@ public func any<T>(dynamics: [Dynamic<T>]) -> Dynamic<T> {
   }
   
   return dyn
+}
+
+// MARK: Throttle
+
+public func _throttle<T>(dynamic: Dynamic<T>, seconds: Double, queue: dispatch_queue_t) -> Dynamic<T> {
+  let dyn = InternalDynamic<T>()
+  var shouldDispatch: Bool = true
+  
+  let bond = Bond<T> { _ in
+    if shouldDispatch {
+      shouldDispatch = false
+      let delay = dispatch_time(DISPATCH_TIME_NOW, Int64(seconds * Double(NSEC_PER_SEC)))
+      dispatch_after(delay, queue) { [weak dyn, weak dynamic] in
+        if let dyn = dyn, dynamic = dynamic {
+          dyn.value = dynamic.value
+        }
+        shouldDispatch = true
+      }
+    }
+  }
+  
+  dyn.retain(bond)
+  dynamic.bindTo(bond, fire: false)
+  
+  return dyn
+}
+
+public func throttle<T>(dynamic: Dynamic<T>, seconds: Double, queue: dispatch_queue_t = dispatch_get_main_queue()) -> Dynamic<T> {
+    return _throttle(dynamic, seconds, queue)
 }

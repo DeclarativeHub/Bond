@@ -252,6 +252,10 @@ public extension Dynamic
   public func skip(count: Int) -> Dynamic<T> {
     return _skip(self, count)
   }
+    
+  public func throttle(seconds: Double, queue: dispatch_queue_t = dispatch_get_main_queue()) -> Dynamic<T> {
+    return _throttle(self, seconds, queue)
+  }
 }
 
 
