@@ -329,10 +329,10 @@ You can use skip to create a Dynamic that'll not dispatch change events for `cou
 #### Throttle
 
 ```swift
-throttle<T>(dynamic: Dynamic<T>, seconds: Double) -> Dynamic<T>
+throttle<T>(dynamic: Dynamic<T>, seconds: Double, queue: dispatch_queue_t = dispatch_get_main_queue()) -> Dynamic<T> {
 ```
 
-Throttle function creates a new Dynamic that will propagate changes only after `seconds` delay. If any additional changes occurred while delaying, it will eat all previous changes and dispatch only the last one. _Note that all deferred changes will be dispatched on Main Thread!_
+Throttle function creates a new Dynamic that propagates changes at most once during the interval defined by `seconds` argument. If additional changes occurred while throttling, only the last one will be dispatched. _Note that the last argument defines `queue` to dispatch change events on and defaults to the main queue!_
 
 #### Any
 
