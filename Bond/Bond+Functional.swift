@@ -220,7 +220,7 @@ public func any<T>(dynamics: [Dynamic<T>]) -> Dynamic<T> {
 
 // MARK: Throttle
 
-public func _throttle<T>(dynamic: Dynamic<T>, seconds: Double) -> Dynamic<T> {
+public func _throttle<T>(dynamic: Dynamic<T>, seconds: Double, queue: dispatch_queue_t) -> Dynamic<T> {
   let dyn = InternalDynamic<T>()
   var timestamp: CFTimeInterval?
   var listener: (() -> Void)!
@@ -236,14 +236,14 @@ public func _throttle<T>(dynamic: Dynamic<T>, seconds: Double) -> Dynamic<T> {
       timestamp = nil
     } else {
       let delay = dispatch_time(DISPATCH_TIME_NOW, Int64(delta * Double(NSEC_PER_SEC)))
-      dispatch_after(delay, dispatch_get_main_queue(), listener)
+      dispatch_after(delay, queue, listener)
     }
   }
   
   let bond = Bond<T> { _ in
     if timestamp == nil {
       let delay = dispatch_time(DISPATCH_TIME_NOW, Int64(seconds * Double(NSEC_PER_SEC)))
-      dispatch_after(delay, dispatch_get_main_queue(), listener)
+      dispatch_after(delay, queue, listener)
     }
     timestamp = CACurrentMediaTime()
   }
@@ -254,6 +254,6 @@ public func _throttle<T>(dynamic: Dynamic<T>, seconds: Double) -> Dynamic<T> {
   return dyn
 }
 
-public func throttle<T>(dynamic: Dynamic<T>, seconds: Double) -> Dynamic<T> {
-    return _throttle(dynamic, seconds)
+public func throttle<T>(dynamic: Dynamic<T>, seconds: Double, queue: dispatch_queue_t = dispatch_get_main_queue()) -> Dynamic<T> {
+    return _throttle(dynamic, seconds, queue)
 }
