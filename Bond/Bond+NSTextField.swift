@@ -36,7 +36,7 @@ class TextFieldDynamicHelper: NSObject {
         control.action = Selector("textChanged:")
     }
 
-    @objc private func textChanged(sender: AnyObject?) {
+    @objc func textChanged(sender: AnyObject?) {
         self.listener?(control?.stringValue ?? "")
     }
 
