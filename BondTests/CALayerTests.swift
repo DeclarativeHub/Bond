@@ -13,7 +13,7 @@ import XCTest
 class CALayerTests: XCTestCase {
 
     func testCALayerBackgroundColorBond() {
-        var dynamicDriver = Dynamic<CGColor!>(CGColorCreateGenericGray(1.0, 1.0))
+        let dynamicDriver = Dynamic<CGColor!>(CGColorCreateGenericGray(1.0, 1.0))
         let layer = CALayer()
 
         layer.backgroundColor = CGColorCreateGenericGray(0.4, 1.0)

@@ -13,7 +13,7 @@ import XCTest
 class NSTextFieldTests: XCTestCase {
 
     func testNSTextFieldTextBond() {
-        var dynamicDriver = Dynamic<String>("Hello")
+        let dynamicDriver = Dynamic<String>("Hello")
         let textField = NSTextField(frame: NSZeroRect)
 
         textField.stringValue = "Goodbye"

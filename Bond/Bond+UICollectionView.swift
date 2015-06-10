@@ -107,7 +107,7 @@ public class UICollectionViewDataSourceBond<T>: ArrayBond<DynamicArray<UICollect
             collectionView.insertSections(NSIndexSet(array: i))
             }, completion: nil)
           
-          for section in sorted(i, <) {
+          for section in i.sort(<) {
             let sectionBond = UICollectionViewDataSourceSectionBond<Void>(collectionView: collectionView, section: section)
             let sectionDynamic = array[section]
             sectionDynamic.bindTo(sectionBond)
@@ -128,7 +128,7 @@ public class UICollectionViewDataSourceBond<T>: ArrayBond<DynamicArray<UICollect
             collectionView.deleteSections(NSIndexSet(array: i))
             }, completion: nil)
           
-          for section in sorted(i, >) {
+          for section in i.sort(>) {
             s.sectionBonds[section].unbindAll()
             s.sectionBonds.removeAtIndex(section)
             

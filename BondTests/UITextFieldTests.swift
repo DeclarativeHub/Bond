@@ -13,7 +13,7 @@ import Bond
 class UITextFieldTests: XCTestCase {
 
   func testUITextFieldDynamic() {
-    var dynamicDriver = Dynamic<String>("b")
+    let dynamicDriver = Dynamic<String>("b")
     let textField = UITextField()
     
     textField.text = "a"
@@ -32,7 +32,7 @@ class UITextFieldTests: XCTestCase {
   }
     
   func testUITextFieldEnabledBond() {
-    var dynamicDriver = Dynamic<Bool>(false)
+    let dynamicDriver = Dynamic<Bool>(false)
     let textField = UITextField()
 
     textField.enabled = true
@@ -56,7 +56,7 @@ class UITextFieldTests: XCTestCase {
     
     XCTAssertEqual(bondedValue, "", "Initial value")
     XCTAssertEqual(textView.text, "", "Initial value")
-    XCTAssertEqual(label.text, nil, "Initial value")
+    XCTAssertEqual(label.text, expected: nil, "Initial value")
     
     dynamicDriver ->> textField1
     textField1 ->> textField2
@@ -66,13 +66,13 @@ class UITextFieldTests: XCTestCase {
     
     XCTAssertEqual(bondedValue, "a", "Value after binding")
     XCTAssertEqual(textView.text, "a", "Value after binding")
-    XCTAssertEqual(label.text, "a", "Value after binding")
+    XCTAssertEqual(label.text, expected: "a", "Value after binding")
     
     dynamicDriver.value = "b"
     
     XCTAssertEqual(bondedValue, "b", "Value after change")
     XCTAssertEqual(textView.text, "b", "Value after change")
-    XCTAssertEqual(label.text, "b", "Value after change")
+    XCTAssertEqual(label.text, expected: "b", "Value after change")
   }
   
   func testTwoWayOperators() {

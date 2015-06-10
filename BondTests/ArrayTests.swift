@@ -114,11 +114,11 @@ class ArrayTests: XCTestCase {
     array.append([4, 5])
     XCTAssert(indices == [3, 4])
     
-    let last = array.removeLast()
+    _ = array.removeLast()
     XCTAssert(indices == [4])
     XCTAssert(objects == [5])
     
-    let element = array.removeAtIndex(1)
+    _ = array.removeAtIndex(1)
     XCTAssert(indices == [1])
     XCTAssert(objects == [1])
     

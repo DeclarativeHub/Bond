@@ -74,7 +74,7 @@ class DynamicTests: XCTestCase {
     
     let dynamic = Dynamic<Int>(0)
     var bond1: Bond<Int>? = Bond<Int>({ v in })
-    var bond2: Bond<Int>? = Bond<Int>({ v in })
+    let bond2: Bond<Int>? = Bond<Int>({ v in })
     
     bond1?.bind(dynamic)
     bond2?.bind(dynamic)

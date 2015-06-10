@@ -51,7 +51,7 @@ extension CALayer: Bondable, Dynamical {
 
             d.bindTo(bond, fire: false, strongly: false)
             d.retain(bond)
-            objc_setAssociatedObject(self, &backgroundColorDynamicHandleCALayer, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+            objc_setAssociatedObject(self, &backgroundColorDynamicHandleCALayer, d, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             return d
         }
     }
@@ -69,7 +69,7 @@ extension CALayer: Bondable, Dynamical {
 
             d.bindTo(bond, fire: false, strongly: false)
             d.retain(bond)
-            objc_setAssociatedObject(self, &contentsDynamicHandleCALayer, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+            objc_setAssociatedObject(self, &contentsDynamicHandleCALayer, d, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             return d
         }
     }
@@ -87,7 +87,7 @@ extension CALayer: Bondable, Dynamical {
 
             d.bindTo(bond, fire: false, strongly: false)
             d.retain(bond)
-            objc_setAssociatedObject(self, &opacityDynamicHandleCALayer, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+            objc_setAssociatedObject(self, &opacityDynamicHandleCALayer, d, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             return d
         }
     }

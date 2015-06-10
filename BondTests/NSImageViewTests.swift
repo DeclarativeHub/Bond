@@ -14,7 +14,7 @@ class NSImageViewTests: XCTestCase {
 
     func testNSImageViewImageBond() {
         let image = NSImage()
-        var dynamicDriver = Dynamic<NSImage?>(nil)
+        let dynamicDriver = Dynamic<NSImage?>(nil)
         let control = NSImageView(frame: NSZeroRect)
 
         control.image = image

@@ -92,7 +92,7 @@ extension NSIndexSet {
     }
   }
   
-  func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
+  func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
     if let ds = self.nextDataSource {
       return ds.sectionIndexTitlesForTableView?(tableView) ?? []
     } else {
@@ -194,7 +194,7 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
             tableView.beginUpdates()
             tableView.insertSections(NSIndexSet(array: i), withRowAnimation: UITableViewRowAnimation.Automatic)
             
-            for section in sorted(i, <) {
+            for section in i.sort(<) {
               let sectionBond = UITableViewDataSourceSectionBond<Void>(tableView: tableView, section: section, disableAnimation: disableAnimation)
               let sectionDynamic = array[section]
               sectionDynamic.bindTo(sectionBond)
@@ -217,7 +217,7 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
           perform(animated: !disableAnimation) {
             tableView.beginUpdates()
             tableView.deleteSections(NSIndexSet(array: i), withRowAnimation: UITableViewRowAnimation.Automatic)
-            for section in sorted(i, >) {
+            for section in i.sort(>) {
               s.sectionBonds[section].unbindAll()
               s.sectionBonds.removeAtIndex(section)
               
@@ -290,7 +290,7 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
   }
 }
 
-private func perform(#animated: Bool, block: () -> Void) {
+private func perform(animated animated: Bool, block: () -> Void) {
   if !animated {
     UIView.performWithoutAnimation(block)
   } else {

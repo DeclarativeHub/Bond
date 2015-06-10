@@ -13,7 +13,7 @@ import Bond
 class UIActivityIndicatorTests: XCTestCase {
 
   func testUIActivityIndicatorViewHiddenBond() {
-    var dynamicDriver = Dynamic<Bool>(false)
+    let dynamicDriver = Dynamic<Bool>(false)
     let view = UIActivityIndicatorView()
     
     view.startAnimating()

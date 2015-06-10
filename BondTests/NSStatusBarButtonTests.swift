@@ -13,7 +13,7 @@ import XCTest
 class NSStatusBarButtonTests: XCTestCase {
 
     func testNSStatusBarButtonAppearsDisabledBond() {
-        var dynamicDriver = Dynamic<Bool>(false)
+        let dynamicDriver = Dynamic<Bool>(false)
         let statusBarButton = NSStatusBarButton()
 
         statusBarButton.appearsDisabled = true

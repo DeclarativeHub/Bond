@@ -34,7 +34,7 @@ func ==(op0: TableOperation, op1: TableOperation) -> Bool {
   }
 }
 
-extension TableOperation: Equatable, Printable {
+extension TableOperation: Equatable, CustomStringConvertible {
   var description: String {
     switch self {
     case let .InsertRows(indexPaths):
@@ -57,18 +57,18 @@ extension TableOperation: Equatable, Printable {
 
 class TestTableView: UITableView {
   var operations = [TableOperation]()
-  override func insertRowsAtIndexPaths(indexPaths: [AnyObject], withRowAnimation animation: UITableViewRowAnimation) {
-    operations.append(.InsertRows(indexPaths as! [NSIndexPath]))
+  override func insertRowsAtIndexPaths(indexPaths: [NSIndexPath], withRowAnimation animation: UITableViewRowAnimation) {
+    operations.append(.InsertRows(indexPaths))
     super.insertRowsAtIndexPaths(indexPaths, withRowAnimation: animation)
   }
   
-  override func deleteRowsAtIndexPaths(indexPaths: [AnyObject], withRowAnimation animation: UITableViewRowAnimation) {
-    operations.append(.DeleteRows(indexPaths as! [NSIndexPath]))
+  override func deleteRowsAtIndexPaths(indexPaths: [NSIndexPath], withRowAnimation animation: UITableViewRowAnimation) {
+    operations.append(.DeleteRows(indexPaths))
     super.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: animation)
   }
   
-  override func reloadRowsAtIndexPaths(indexPaths: [AnyObject], withRowAnimation animation: UITableViewRowAnimation) {
-    operations.append(.ReloadRows(indexPaths as! [NSIndexPath]))
+  override func reloadRowsAtIndexPaths(indexPaths: [NSIndexPath], withRowAnimation animation: UITableViewRowAnimation) {
+    operations.append(.ReloadRows(indexPaths))
     super.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: animation)
   }
   
@@ -107,7 +107,7 @@ class UITableViewDataSourceTests: XCTestCase {
     bond = UITableViewDataSourceBond(tableView: tableView, disableAnimation: true)
     array.map { array, sectionIndex in
       array.map { int, index -> UITableViewCell in
-        return tableView.dequeueReusableCellWithIdentifier("cellID") as! UITableViewCell
+        return tableView.dequeueReusableCellWithIdentifier("cellID")!
       }
     } ->> bond
     expectedOperations.append(.ReloadData) // `tableView` will get a `reloadData` when the bond is attached
