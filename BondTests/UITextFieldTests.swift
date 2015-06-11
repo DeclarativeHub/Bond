@@ -30,6 +30,20 @@ class UITextFieldTests: XCTestCase {
     XCTAssertEqual(textField.dynText.value, "d", "Dynamic value reflects text field value change")
     XCTAssertEqual(dynamicDriver.value, "d", "Dynamic value reflects text view field change")
   }
+    
+  func testUITextFieldEnabledBond() {
+    var dynamicDriver = Dynamic<Bool>(false)
+    let textField = UITextField()
+
+    textField.enabled = true
+    XCTAssert(textField.enabled == true, "Initial value")
+
+    dynamicDriver ->> textField.dynEnabled
+    XCTAssert(textField.enabled == false, "Value after binding")
+
+    dynamicDriver.value = true
+    XCTAssert(textField.enabled == true, "Value after dynamic change")
+  }
   
   func testOneWayOperators() {
     var bondedValue = ""
