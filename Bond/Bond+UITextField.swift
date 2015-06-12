@@ -62,6 +62,7 @@ class TextFieldDynamic<T>: InternalDynamic<String>
 }
 
 private var textDynamicHandleUITextField: UInt8 = 0;
+private var enabledDynamicHandleUITextField: UInt8 = 0;
 
 extension UITextField /*: Dynamical, Bondable */ {
   
@@ -81,7 +82,20 @@ extension UITextField /*: Dynamical, Bondable */ {
       return d
     }
   }
-  
+
+  public var dynEnabled: Dynamic<Bool> {
+    if let d: AnyObject = objc_getAssociatedObject(self, &enabledDynamicHandleUITextField) {
+      return (d as? Dynamic<Bool>)!
+    } else {
+      let d = InternalDynamic<Bool>(self.enabled)
+      let bond = Bond<Bool>() { [weak self] v in if let s = self { s.enabled = v } }
+      d.bindTo(bond, fire: false, strongly: false)
+      d.retain(bond)
+      objc_setAssociatedObject(self, &enabledDynamicHandleUITextField, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return d
+    }
+  }
+
   public var designatedDynamic: Dynamic<String> {
     return self.dynText
   }
