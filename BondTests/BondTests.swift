@@ -61,4 +61,47 @@ class BondTests: XCTestCase {
     // assert: it should change again
     XCTAssertEqual(newValue, 1)
   }
+
+  func testEquatable() {
+    let bond1 = Bond<Int>({ value in })
+    let bond2 = Bond<Int>({ value in })
+
+    XCTAssert(bond1 == bond1 && bond2 == bond2, "Bonds should be equal if they are identical")
+    XCTAssert(bond1 != bond2, "Bonds should not be equal if they are not identical")
+  }
+
+  func testBoxEquatable() {
+    let bond1 = Bond<Int>({ value in })
+    let bond2 = Bond<Int>({ value in })
+
+    // Referencing to the same bond.
+    let bondBox1 = BondBox(bond1)
+    let bondBox2 = BondBox(bond1)
+
+    // Referencing to other bond.
+    let bondBox3 = BondBox(bond2)
+
+    XCTAssert(bondBox1 == bondBox2, "BondBoxes should be equal if wrapped Bonds are identical")
+    XCTAssert(bondBox1 != bondBox3 && bondBox2 != bondBox3, "BondBoxes should not be equal if wrapped Bonds are not identical")
+  }
+
+  func testBoxEquatableIfNilled() {
+    var bond: Bond? = Bond<Int>({ value in })
+
+    // Referencing to the same bond.
+    let bondBox1 = BondBox(bond!)
+    let bondBox2 = BondBox(bond!)
+
+    // Nil out the bond.
+    bond = nil
+
+    XCTAssert(bondBox1 == bondBox2, "BondBoxes that used to wrap the same Bond should be marked equal even if the wrapped Bond is lost")
+  }
+
+  func testHashable() {
+    let bond = Bond<Int>({ value in })
+    let ptrHash = unsafeAddressOf(bond).hashValue
+
+    XCTAssert(bond.hashValue == ptrHash, "Each Bond should have draw its hash from memory address")
+  }
 }
