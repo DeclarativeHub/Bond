@@ -256,9 +256,9 @@ public func _deliver<T>(dynamic: Dynamic<T>, on queue: dispatch_queue_t) -> Dyna
     dyn.value = value
   }
   
-  let bond = Bond<T> { [unowned dyn] t in
+  let bond = Bond<T> { [weak dyn] t in
     dispatch_async(queue) {
-      dyn.value = t
+      dyn?.value = t
     }
   }
   
