@@ -31,7 +31,8 @@ import Foundation
 
 public class BondBox<T> {
   weak var bond: Bond<T>?
-  public init(_ b: Bond<T>) { bond = b }
+  internal var _hash: Int
+  public init(_ b: Bond<T>) { bond = b; _hash = b.hashValue }
 }
 
 public class DynamicBox<T> {
@@ -66,8 +67,8 @@ public class Bond<T> {
   }
   
   public func bind(dynamic: Dynamic<T>, fire: Bool, strongly: Bool) {
-    dynamic.bonds.append(BondBox(self))
-    
+    dynamic.bonds.insert(BondBox(self))
+
     if strongly {
       self.bondedDynamics.append(dynamic)
     } else {
@@ -89,15 +90,7 @@ public class Bond<T> {
     }
     
     for dynamic in dynamics {
-      var bondsToKeep: [BondBox<T>] = []
-      for bondBox in dynamic.bonds {
-        if let bond = bondBox.bond {
-          if bond !== self {
-            bondsToKeep.append(bondBox)
-          }
-        }
-      }
-      dynamic.bonds = bondsToKeep
+      dynamic.bonds.remove(BondBox<T>(self))
     }
     
     self.bondedDynamics.removeAll(keepCapacity: true)
@@ -143,26 +136,30 @@ public class Dynamic<T> {
   }
   
   private func dispatch(value: T) {
-    // clear weak bonds
-    self.bonds = self.bonds.filter {
-      bondBox in bondBox.bond != nil
-    }
-    
     // lock
     self.dispatchInProgress = true
-    
+
+    var emptyBoxes = [BondBox<T>]()
+
     // dispatch change notifications
     for bondBox in self.bonds {
-      bondBox.bond?.listener?(value)
+      if let bond = bondBox.bond {
+        bond.listener?(value)
+      }
+      else {
+        emptyBoxes.append(bondBox)
+      }
     }
-    
+
+    self.bonds.subtractInPlace(emptyBoxes)
+
     // unlock
     self.dispatchInProgress = false
   }
   
   public let valueBond = Bond<T>()
-  public var bonds: [BondBox<T>] = []
-  
+  public var bonds: Set<BondBox<T>> = Set()
+
   private init() {
     _value = nil
     valueBond.listener = { [unowned self] v in self.value = v }
@@ -258,4 +255,21 @@ public extension Dynamic
   }
 }
 
+// MARK: Equatable/Hashable
+
+extension Bond: Hashable, Equatable {
+  public var hashValue: Int { return unsafeAddressOf(self).hashValue }
+}
+
+public func ==<T>(left: Bond<T>, right: Bond<T>) -> Bool {
+  return unsafeAddressOf(left) == unsafeAddressOf(right)
+}
+
+extension BondBox: Equatable, Hashable {
+  public var hashValue: Int { return _hash }
+}
+
+public func ==<T>(left: BondBox<T>, right: BondBox<T>) -> Bool {
+  return left._hash == right._hash
+}
 

@@ -57,6 +57,7 @@
 		DCA979831A83C4F800DD4A30 /* BondTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BC01A7C217100A13B6B /* BondTests.swift */; };
 		DCA979841A83C52D00DD4A30 /* Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BCA1A7C21B600A13B6B /* Bond.swift */; };
 		DCA979851A83C52D00DD4A30 /* Bond+Arrays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BCB1A7C21B600A13B6B /* Bond+Arrays.swift */; };
+		DFC184961B34193A00B3444E /* PerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC184951B34193A00B3444E /* PerformanceTests.swift */; };
 		EC0301751AAA23C9004B3071 /* Bond+UICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0301741AAA23C9004B3071 /* Bond+UICollectionView.swift */; };
 		EC0388991B0DD25700E32454 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69491BAE1A7C217100A13B6B /* Bond.framework */; };
 		EC048D181AA238AF00E9794C /* Bond+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC048D171AA238AF00E9794C /* Bond+Operators.swift */; };
@@ -169,6 +170,7 @@
 		CC581F751AE23D8B00D69AE7 /* UITableViewDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewDataSourceTests.swift; sourceTree = "<group>"; };
 		DCA979691A83C3A100DD4A30 /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCA979731A83C3A200DD4A30 /* BondOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BondOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DFC184951B34193A00B3444E /* PerformanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PerformanceTests.swift; sourceTree = "<group>"; };
 		EC0301741AAA23C9004B3071 /* Bond+UICollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UICollectionView.swift"; sourceTree = "<group>"; };
 		EC048D141AA2386A00E9794C /* Bond+Functional.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+Functional.swift"; sourceTree = "<group>"; };
 		EC048D171AA238AF00E9794C /* Bond+Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+Operators.swift"; sourceTree = "<group>"; };
@@ -349,6 +351,7 @@
 				69491BD21A7C242900A13B6B /* DynamicTests.swift */,
 				ECD653A51A9B6BF30038A9AC /* FunctionalTests.swift */,
 				EC867F891AA73AD5007B4BC4 /* FoundationTests.swift */,
+				DFC184951B34193A00B3444E /* PerformanceTests.swift */,
 				EC6A5A841AB31954006071B6 /* ArrayTests.swift */,
 				900BFC041ADFC5AF002B4B6E /* AppKit */,
 				03A5DC961AAF9612007616B4 /* UIKit */,
@@ -695,6 +698,7 @@
 				03A5DCA81AAF995F007616B4 /* UITextFieldTests.swift in Sources */,
 				03A5DCA61AAF992F007616B4 /* UISwitchTests.swift in Sources */,
 				03A5DC9E1AAF97E9007616B4 /* UIProgressViewTests.swift in Sources */,
+				DFC184961B34193A00B3444E /* PerformanceTests.swift in Sources */,
 				EC7137E41AA25E9300CFC854 /* FunctionalTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
