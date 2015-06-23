@@ -488,4 +488,44 @@ class ArrayTests: XCTestCase {
     XCTAssertEqual(testCount, 2, "reset events did not fire")
   }
 
+  func testArrayDeliverOn() {
+    let array = DynamicArray<Int>([1, 2, 3])
+    let deliveredOn: DynamicArray<Int> = deliver(array, on: dispatch_get_main_queue())
+    let bond = ArrayBond<Int>()
+    
+    let e1 = expectationWithDescription("Insert")
+    let e2 = expectationWithDescription("Remove")
+    let e3 = expectationWithDescription("Update")
+    
+    bond.didInsertListener = { a, i in
+      XCTAssert(NSThread.isMainThread(), "Invalid queue")
+      e1.fulfill()
+    }
+    
+    bond.willRemoveListener = { a, i in
+      XCTAssert(NSThread.isMainThread(), "Invalid queue")
+      e2.fulfill()
+    }
+    
+    bond.willUpdateListener = { a, i in
+      XCTAssert(NSThread.isMainThread(), "Invalid queue")
+      e3.fulfill()
+    }
+        
+    deliveredOn ->| bond
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+      array.append(10)
+    }
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+      array.removeAtIndex(0)
+    }
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+      array[0] = 2
+    }
+    
+    waitForExpectationsWithTimeout(1, handler: nil)
+  }
 }

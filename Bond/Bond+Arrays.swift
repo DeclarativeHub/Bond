@@ -648,6 +648,148 @@ private class DynamicArrayFilterProxy<T>: DynamicArray<T> {
   }
 }
 
+// MARK: Dynamic Array DeliverOn Proxy
+
+private class DynamicArrayDeliverOnProxy<T>: DynamicArray<T> {
+  private unowned var sourceArray: DynamicArray<T>
+  private var queue: dispatch_queue_t
+  private let bond: ArrayBond<T>
+  
+  private init(sourceArray: DynamicArray<T>, queue: dispatch_queue_t) {
+    self.sourceArray = sourceArray
+    self.queue = queue
+    self.bond = ArrayBond<T>()
+    self.bond.bind(sourceArray, fire: false)
+    super.init([])
+    
+    bond.willInsertListener = { [unowned self] array, i in
+      dispatch_async(queue) {
+        self.dispatchWillInsert(i)
+      }
+    }
+    
+    bond.didInsertListener = { [unowned self] array, i in
+      dispatch_async(queue) {
+        self.dispatchDidInsert(i)
+      }
+    }
+    
+    bond.willRemoveListener = { [unowned self] array, i in
+      dispatch_async(queue) {
+        self.dispatchWillRemove(i)
+      }
+    }
+    
+    bond.didRemoveListener = { [unowned self] array, i in
+      dispatch_async(queue) {
+        self.dispatchDidRemove(i)
+      }
+    }
+    
+    bond.willUpdateListener = { [unowned self] array, i in
+      dispatch_async(queue) {
+        self.dispatchWillUpdate(i)
+      }
+    }
+    
+    bond.didUpdateListener = { [unowned self] array, i in
+      dispatch_async(queue) {
+        self.dispatchDidUpdate(i)
+      }
+    }
+    
+    bond.willResetListener = { [unowned self] array in
+      dispatch_async(queue) {
+        self.dispatchWillReset()
+      }
+    }
+    
+    bond.didResetListener = { [unowned self] array in
+      dispatch_async(queue) {
+        self.dispatchDidReset()
+      }
+    }
+  }
+  
+  override var value: [T] {
+    set(newValue) {
+      fatalError("Modifying proxy array is not supported!")
+    }
+    get {
+      fatalError("Getting proxy array value is not supported!")
+    }
+  }
+  
+  override var count: Int {
+    return sourceArray.count
+  }
+  
+  override var capacity: Int {
+    return sourceArray.capacity
+  }
+  
+  override var isEmpty: Bool {
+    return sourceArray.isEmpty
+  }
+  
+  override var first: T? {
+    if let first = sourceArray.first {
+      return first
+    } else {
+      return nil
+    }
+  }
+  
+  override var last: T? {
+    if let last = sourceArray.last {
+      return last
+    } else {
+      return nil
+    }
+  }
+  
+  override func setArray(newValue: [T]) {
+    fatalError("Modifying proxy array is not supported!")
+  }
+  
+  override func append(newElement: T) {
+    fatalError("Modifying proxy array is not supported!")
+  }
+  
+  override func append(array: Array<T>) {
+    fatalError("Modifying proxy array is not supported!")
+  }
+  
+  override func removeLast() -> T {
+    fatalError("Modifying proxy array is not supported!")
+  }
+  
+  override func insert(newElement: T, atIndex i: Int) {
+    fatalError("Modifying proxy array is not supported!")
+  }
+  
+  override func splice(array: Array<T>, atIndex i: Int) {
+    fatalError("Modifying proxy array is not supported!")
+  }
+  
+  override func removeAtIndex(index: Int) -> T {
+    fatalError("Modifying proxy array is not supported!")
+  }
+  
+  override func removeAll(keepCapacity: Bool) {
+    fatalError("Modifying proxy array is not supported!")
+  }
+  
+  override subscript(index: Int) -> T {
+    get {
+      return sourceArray[index]
+    }
+    set(newObject) {
+      fatalError("Modifying proxy array is not supported!")
+    }
+  }
+}
+
 // MARK: Dynamic Array additions
 
 public extension DynamicArray
@@ -676,4 +818,10 @@ private func _map<T, U>(dynamicArray: DynamicArray<T>, f: (T, Int) -> U) -> Dyna
 
 private func _filter<T>(dynamicArray: DynamicArray<T>, f: T -> Bool) -> DynamicArray<T> {
   return DynamicArrayFilterProxy(sourceArray: dynamicArray, filterf: f)
+}
+
+// MARK: DeliverOn
+
+public func deliver<T>(dynamicArray: DynamicArray<T>, on queue: dispatch_queue_t) -> DynamicArray<T> {
+  return DynamicArrayDeliverOnProxy(sourceArray: dynamicArray, queue: queue)
 }

@@ -193,4 +193,25 @@ class ReduceTests: XCTestCase {
     XCTAssert(observedValue == "10", "Should update observed value")
     XCTAssert(callCount == 1, "Count should be 1 instead of \(callCount)")
   }
+  
+  func testDeliverOn() {
+    let d1 = Dynamic<Int>(0)
+    let deliveredOn = deliver(d1, on: dispatch_get_main_queue())
+    
+    let expectation = expectationWithDescription("Dynamic changed")
+    
+    let bond = Bond<Int>() { v in
+      XCTAssert(v == 10, "Value after dynamic change")
+      XCTAssert(NSThread.isMainThread(), "Invalid queue")
+      expectation.fulfill()
+    }
+    
+    deliveredOn ->| bond
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+      d1.value = 10
+    }
+    
+    waitForExpectationsWithTimeout(1, handler: nil)
+  }
 }

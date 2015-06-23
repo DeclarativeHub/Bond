@@ -246,3 +246,28 @@ public func _throttle<T>(dynamic: Dynamic<T>, seconds: Double, queue: dispatch_q
 public func throttle<T>(dynamic: Dynamic<T>, seconds: Double, queue: dispatch_queue_t = dispatch_get_main_queue()) -> Dynamic<T> {
     return _throttle(dynamic, seconds, queue)
 }
+
+// MARK: deliverOn
+
+public func _deliver<T>(dynamic: Dynamic<T>, on queue: dispatch_queue_t) -> Dynamic<T> {
+  let dyn = InternalDynamic<T>()
+  
+  if let value = dynamic._value {
+    dyn.value = value
+  }
+  
+  let bond = Bond<T> { [unowned dyn] t in
+    dispatch_async(queue) {
+      dyn.value = t
+    }
+  }
+  
+  dyn.retain(bond)
+  dynamic.bindTo(bond, fire: false)
+  
+  return dyn
+}
+
+public func deliver<T>(dynamic: Dynamic<T>, on queue: dispatch_queue_t) -> Dynamic<T> {
+  return _deliver(dynamic, on: queue)
+}
