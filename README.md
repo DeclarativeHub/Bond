@@ -1,5 +1,3 @@
-_Notice: Bond v3 is out. Please read this document again if you're using older version._
-
 # Bond, Swift Bond
 
 
@@ -329,10 +327,18 @@ You can use skip to create a Dynamic that'll not dispatch change events for `cou
 #### Throttle
 
 ```swift
-throttle<T>(dynamic: Dynamic<T>, seconds: Double, queue: dispatch_queue_t = dispatch_get_main_queue()) -> Dynamic<T> {
+throttle<T>(dynamic: Dynamic<T>, seconds: Double, queue: dispatch_queue_t = dispatch_get_main_queue()) -> Dynamic<T>
 ```
 
 Throttle function creates a new Dynamic that propagates changes at most once during the interval defined by `seconds` argument. If additional changes occurred while throttling, only the last one will be dispatched. _Note that the last argument defines `queue` to dispatch change events on and defaults to the main queue!_
+
+#### DeliverOn
+
+```swift
+deliver<T>(dynamic: Dynamic<T>, on queue: dispatch_queue_t) -> Dynamic<T>
+```
+
+DeliverOn function creates a new Dynamic whose changes are observer on specified `queue`.
 
 #### Any
 
