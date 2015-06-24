@@ -13,7 +13,7 @@ import Bond
 class UISwitchTests: XCTestCase {
 
   func testUISwitchDynamic() {
-    var dynamicDriver = Dynamic<Bool>(false)
+    let dynamicDriver = Dynamic<Bool>(false)
     let uiSwitch = UISwitch()
     
     uiSwitch.on = true

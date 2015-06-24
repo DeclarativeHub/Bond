@@ -47,9 +47,9 @@ private var XXContext = 0
     object?.removeObserver(self, forKeyPath: keyPath)
   }
   
-  override dynamic func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
+  override dynamic func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [NSObject : AnyObject]?, context: UnsafeMutablePointer<Void>) {
     if context == &XXContext {
-      if let newValue: AnyObject = change[NSKeyValueChangeNewKey] {
+      if let newValue: AnyObject = change?[NSKeyValueChangeNewKey] {
         listener(newValue)
       }
     }
@@ -74,12 +74,12 @@ private var XXContext = 0
   }
 }
 
-public func dynamicObservableFor<T>(object: NSObject, #keyPath: String, #defaultValue: T) -> Dynamic<T> {
+public func dynamicObservableFor<T>(object: NSObject, keyPath: String, defaultValue: T) -> Dynamic<T> {
   let keyPathValue: AnyObject? = object.valueForKeyPath(keyPath)
   let value: T = (keyPathValue != nil) ? (keyPathValue as? T)! : defaultValue
   let dynamic = InternalDynamic(value)
   
-  let helper = DynamicKVOHelper(keyPath: keyPath, object: object as NSObject) {
+  let helper = DynamicKVOHelper(keyPath: keyPath, object: object) {
     [unowned dynamic] (v: AnyObject) -> Void in
     
     dynamic.updatingFromSelf = true
@@ -95,11 +95,11 @@ public func dynamicObservableFor<T>(object: NSObject, #keyPath: String, #default
   return dynamic
 }
 
-public func dynamicObservableFor<T>(object: NSObject, #keyPath: String, #from: AnyObject? -> T, #to: T -> AnyObject?) -> Dynamic<T> {
+public func dynamicObservableFor<T>(object: NSObject, keyPath: String, from: AnyObject? -> T, to: T -> AnyObject?) -> Dynamic<T> {
   let keyPathValue: AnyObject? = object.valueForKeyPath(keyPath)
   let dynamic = InternalDynamic(from(keyPathValue))
   
-  let helper = DynamicKVOHelper(keyPath: keyPath, object: object as NSObject) {
+  let helper = DynamicKVOHelper(keyPath: keyPath, object: object) {
     [unowned dynamic] (v: AnyObject?) -> Void in
     dynamic.updatingFromSelf = true
     dynamic.value = from(v)
@@ -119,7 +119,7 @@ public func dynamicObservableFor<T>(object: NSObject, #keyPath: String, #from: A
   return dynamic
 }
 
-public func dynamicObservableFor<T>(notificationName: String, #object: AnyObject?, #parser: NSNotification -> T) -> InternalDynamic<T> {
+public func dynamicObservableFor<T>(notificationName: String, object: AnyObject?, parser: NSNotification -> T) -> InternalDynamic<T> {
   let dynamic: InternalDynamic<T> = InternalDynamic()
   
   let helper = DynamicNotificationCenterHelper(notificationName: notificationName, object: object) {

@@ -49,7 +49,7 @@ class ReduceTests: XCTestCase {
     let d1 = Dynamic<Int>(1)
     let d2 = Dynamic<Int>(2)
     
-    let r = reduce(d1, d2, *)
+    let r = reduce(d1, dB: d2, f: *)
     
     XCTAssert(r.value == 2, "Initial value")
     XCTAssert(r.valid == true, "Should not be faulty")
@@ -66,7 +66,7 @@ class ReduceTests: XCTestCase {
     let d2 = Dynamic<Int>(2)
     let d3 = Dynamic<Int>(3)
     
-    let r = reduce(d1, d2, d3) { $0 * $1 * $2 }
+    let r = reduce(d1, dB: d2, dC: d3) { $0 * $1 * $2 }
     
     XCTAssert(r.value == 6, "Initial value")
     XCTAssert(r.valid == true, "Should not be faulty")

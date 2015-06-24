@@ -38,7 +38,7 @@ extension UIProgressView: Bondable {
       let bond = Bond<Float>() { [weak self] v in if let s = self { s.progress = v } }
       d.bindTo(bond, fire: false, strongly: false)
       d.retain(bond)
-      objc_setAssociatedObject(self, &progressDynamicHandleUIProgressView, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      objc_setAssociatedObject(self, &progressDynamicHandleUIProgressView, d, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       return d
     }
   }

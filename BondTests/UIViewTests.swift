@@ -13,7 +13,7 @@ import Bond
 class UIViewTests: XCTestCase {
 
   func testUIViewHiddenBond() {
-    var dynamicDriver = Dynamic<Bool>(false)
+    let dynamicDriver = Dynamic<Bool>(false)
     let view = UIView()
     
     view.hidden = true
@@ -27,7 +27,7 @@ class UIViewTests: XCTestCase {
   }
   
   func testUIViewAlphaBond() {
-    var dynamicDriver = Dynamic<CGFloat>(0.1)
+    let dynamicDriver = Dynamic<CGFloat>(0.1)
     let view = UIView()
     
     view.alpha = 0.0
@@ -41,7 +41,7 @@ class UIViewTests: XCTestCase {
   }
   
   func testUIViewBackgroundColorBond() {
-    var dynamicDriver = Dynamic<UIColor>(UIColor.blackColor())
+    let dynamicDriver = Dynamic<UIColor>(UIColor.blackColor())
     let view = UIView()
     
     view.backgroundColor = UIColor.redColor()

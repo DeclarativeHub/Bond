@@ -14,7 +14,7 @@ class UIImageViewTests: XCTestCase {
 
   func testUIImageViewBond() {
     let image = UIImage()
-    var dynamicDriver = Dynamic<UIImage?>(nil)
+    let dynamicDriver = Dynamic<UIImage?>(nil)
     let imageView = UIImageView()
     
     imageView.image = image

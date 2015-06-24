@@ -13,7 +13,7 @@ import Bond
 class UIBarItemTests: XCTestCase {
 
   func testUIBarItemEnabledBond() {
-    var dynamicDriver = Dynamic<Bool>(false)
+    let dynamicDriver = Dynamic<Bool>(false)
     let barItem = UIBarButtonItem()
     
     barItem.enabled = true
@@ -27,7 +27,7 @@ class UIBarItemTests: XCTestCase {
   }
   
   func testUIBarItemTitleBond() {
-    var dynamicDriver = Dynamic<String>("b")
+    let dynamicDriver = Dynamic<String>("b")
     let barItem = UIBarButtonItem()
     
     barItem.title = "a"
@@ -43,7 +43,7 @@ class UIBarItemTests: XCTestCase {
   func testUIBarItemImageBond() {
     let image1 = UIImage()
     let image2 = UIImage()
-    var dynamicDriver = Dynamic<UIImage?>(nil)
+    let dynamicDriver = Dynamic<UIImage?>(nil)
     let barItem = UIBarButtonItem()
     
     barItem.image = image1

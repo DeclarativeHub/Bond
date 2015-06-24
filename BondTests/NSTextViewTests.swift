@@ -13,7 +13,7 @@ import XCTest
 class NSTextViewTests: XCTestCase {
 
     func testNSTextViewTextBond() {
-        var dynamicDriver = Dynamic<String>("Hello")
+        let dynamicDriver = Dynamic<String>("Hello")
         let textView = NSTextView(frame: NSZeroRect)
 
         textView.string = "Goodbye"

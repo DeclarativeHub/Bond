@@ -13,7 +13,7 @@ import Bond
 class UIProgressViewTests: XCTestCase {
 
   func testUIProgressViewBond() {
-    var dynamicDriver = Dynamic<Float>(0)
+    let dynamicDriver = Dynamic<Float>(0)
     let progressView = UIProgressView()
     
     progressView.progress = 0.1

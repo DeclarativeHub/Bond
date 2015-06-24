@@ -86,7 +86,7 @@ extension UIButton /*: Dynamical, Bondable */ {
       return (d as? Dynamic<UIControlEvents>)!
     } else {
       let d = ButtonDynamic<UIControlEvents>(control: self)
-      objc_setAssociatedObject(self, &eventDynamicHandleUIButton, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      objc_setAssociatedObject(self, &eventDynamicHandleUIButton, d, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       return d
     }
   }
@@ -99,7 +99,7 @@ extension UIButton /*: Dynamical, Bondable */ {
       let bond = Bond<Bool>() { [weak self] v in if let s = self { s.enabled = v } }
       d.bindTo(bond, fire: false, strongly: false)
       d.retain(bond)
-      objc_setAssociatedObject(self, &enabledDynamicHandleUIButton, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      objc_setAssociatedObject(self, &enabledDynamicHandleUIButton, d, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       return d
     }
   }
@@ -112,7 +112,7 @@ extension UIButton /*: Dynamical, Bondable */ {
       let bond = Bond<String>() { [weak self] v in if let s = self { s.setTitle(v, forState: .Normal) } }
       d.bindTo(bond, fire: false, strongly: false)
       d.retain(bond)
-      objc_setAssociatedObject(self, &titleDynamicHandleUIButton, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      objc_setAssociatedObject(self, &titleDynamicHandleUIButton, d, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       return d
     }
   }
@@ -125,7 +125,7 @@ extension UIButton /*: Dynamical, Bondable */ {
       let bond = Bond<UIImage?>() { [weak self] img in if let s = self { s.setImage(img, forState: .Normal) } }
       d.bindTo(bond, fire: false, strongly: false)
       d.retain(bond)
-      objc_setAssociatedObject(self, &imageForNormalStateDynamicHandleUIButton, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      objc_setAssociatedObject(self, &imageForNormalStateDynamicHandleUIButton, d, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       return d
     }
   }
