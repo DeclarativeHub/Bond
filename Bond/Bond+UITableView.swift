@@ -133,7 +133,7 @@ private class UITableViewDataSourceSectionBond<T>: ArrayBond<UITableViewCell> {
       if let tableView: UITableView = self.tableView {
         perform(animated: !disableAnimation) {
           tableView.beginUpdates()
-          tableView.insertRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) }, withRowAnimation: UITableViewRowAnimation.Automatic)
+          tableView.insertRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: section) }, withRowAnimation: UITableViewRowAnimation.Automatic)
           tableView.endUpdates()
         }
       }
@@ -143,7 +143,7 @@ private class UITableViewDataSourceSectionBond<T>: ArrayBond<UITableViewCell> {
       if let tableView = self.tableView {
         perform(animated: !disableAnimation) {
           tableView.beginUpdates()
-          tableView.deleteRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) }, withRowAnimation: UITableViewRowAnimation.Automatic)
+          tableView.deleteRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: section) }, withRowAnimation: UITableViewRowAnimation.Automatic)
           tableView.endUpdates()
         }
       }
@@ -153,7 +153,7 @@ private class UITableViewDataSourceSectionBond<T>: ArrayBond<UITableViewCell> {
       if let tableView = self.tableView {
         perform(animated: !disableAnimation) {
           tableView.beginUpdates()
-          tableView.reloadRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) }, withRowAnimation: UITableViewRowAnimation.Automatic)
+          tableView.reloadRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: section) }, withRowAnimation: UITableViewRowAnimation.Automatic)
           tableView.endUpdates()
         }
       }
