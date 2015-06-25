@@ -52,7 +52,7 @@ private class UICollectionViewDataSourceSectionBond<T>: ArrayBond<UICollectionVi
     self.didInsertListener = { [unowned self] a, i in
       if let collectionView: UICollectionView = self.collectionView {
         collectionView.performBatchUpdates({
-          collectionView.insertItemsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) })
+          collectionView.insertItemsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: section) })
           }, completion: nil)
       }
     }
@@ -60,7 +60,7 @@ private class UICollectionViewDataSourceSectionBond<T>: ArrayBond<UICollectionVi
     self.didRemoveListener = { [unowned self] a, i in
       if let collectionView = self.collectionView {
         collectionView.performBatchUpdates({
-          collectionView.deleteItemsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) })
+          collectionView.deleteItemsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: section) })
           }, completion: nil)
       }
     }
@@ -68,7 +68,7 @@ private class UICollectionViewDataSourceSectionBond<T>: ArrayBond<UICollectionVi
     self.didUpdateListener = { [unowned self] a, i in
       if let collectionView = self.collectionView {
         collectionView.performBatchUpdates({
-          collectionView.reloadItemsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) })
+          collectionView.reloadItemsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: section) })
           }, completion: nil)
       }
     }
@@ -107,7 +107,7 @@ public class UICollectionViewDataSourceBond<T>: ArrayBond<DynamicArray<UICollect
             collectionView.insertSections(NSIndexSet(array: i))
             }, completion: nil)
           
-          for section in sorted(i, <) {
+          for section in i.sort(<) {
             let sectionBond = UICollectionViewDataSourceSectionBond<Void>(collectionView: collectionView, section: section)
             let sectionDynamic = array[section]
             sectionDynamic.bindTo(sectionBond)
@@ -128,7 +128,7 @@ public class UICollectionViewDataSourceBond<T>: ArrayBond<DynamicArray<UICollect
             collectionView.deleteSections(NSIndexSet(array: i))
             }, completion: nil)
           
-          for section in sorted(i, >) {
+          for section in i.sort(>) {
             s.sectionBonds[section].unbindAll()
             s.sectionBonds.removeAtIndex(section)
             

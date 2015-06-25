@@ -13,7 +13,7 @@ import XCTest
 class NSColorWellTests: XCTestCase {
 
     func testNSColorWellColorBond() {
-        var dynamicDriver = Dynamic<NSColor>(NSColor.cyanColor())
+        let dynamicDriver = Dynamic<NSColor>(NSColor.cyanColor())
         let colorWell = NSColorWell(frame: NSZeroRect)
 
         colorWell.color = NSColor.redColor()

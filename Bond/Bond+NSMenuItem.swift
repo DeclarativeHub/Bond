@@ -50,7 +50,7 @@ extension NSMenuItem: Bondable, Dynamical {
 
             d.bindTo(bond, fire: false, strongly: false)
             d.retain(bond)
-            objc_setAssociatedObject(self, &enabledDynamicHandleNSMenuItem, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+            objc_setAssociatedObject(self, &enabledDynamicHandleNSMenuItem, d, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             return d
         }
     }
@@ -68,7 +68,7 @@ extension NSMenuItem: Bondable, Dynamical {
 
             d.bindTo(bond, fire: false, strongly: false)
             d.retain(bond)
-            objc_setAssociatedObject(self, &stateDynamicHandleNSMenuItem, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+            objc_setAssociatedObject(self, &stateDynamicHandleNSMenuItem, d, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             return d
         }
     }

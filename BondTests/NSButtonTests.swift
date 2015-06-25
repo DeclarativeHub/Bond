@@ -13,7 +13,7 @@ import XCTest
 class NSButtonTests: XCTestCase {
 
     func testNSButtonStateBond() {
-        var dynamicDriver = Dynamic<Int>(NSOffState)
+        let dynamicDriver = Dynamic<Int>(NSOffState)
         let button = NSButton(frame: NSZeroRect)
 
         button.state = NSOnState

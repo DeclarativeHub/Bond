@@ -13,7 +13,7 @@ import Bond
 class UISliderTests: XCTestCase {
 
   func testUISliderDynamic() {
-    var dynamicDriver = Dynamic<Float>(0)
+    let dynamicDriver = Dynamic<Float>(0)
     let slider = UISlider()
     
     slider.value = 0.1

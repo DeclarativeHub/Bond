@@ -405,7 +405,7 @@ private class DynamicArrayMapProxy<T, U>: DynamicArray<U> {
 
 func indexOfFirstEqualOrLargerThan(x: Int, array: [Int]) -> Int {
   var idx: Int = -1
-  for (index, element) in enumerate(array) {
+  for (index, element) in array.enumerate() {
     if element < x {
       idx = index
     } else {
@@ -439,7 +439,7 @@ private class DynamicArrayFilterProxy<T>: DynamicArray<T> {
       
       for idx in indices {
 
-        for (index, element) in enumerate(pointers) {
+        for (index, element) in pointers.enumerate() {
           if element >= idx {
             pointers[index] = element + 1
           }
@@ -447,7 +447,7 @@ private class DynamicArrayFilterProxy<T>: DynamicArray<T> {
         
         let element = array[idx]
         if filterf(element) {
-          let position = indexOfFirstEqualOrLargerThan(idx, pointers)
+          let position = indexOfFirstEqualOrLargerThan(idx, array: pointers)
           pointers.insert(idx, atIndex: position)
           insertedIndices.append(position)
         }
@@ -468,14 +468,14 @@ private class DynamicArrayFilterProxy<T>: DynamicArray<T> {
       var removedIndices: [Int] = []
       var pointers = self.pointers
       
-      for idx in reverse(indices) {
+      for idx in Array(indices.reverse()) {
         
-        if let idx = find(pointers, idx) {
+        if let idx = pointers.indexOf(idx) {
           pointers.removeAtIndex(idx)
           removedIndices.append(idx)
         }
         
-        for (index, element) in enumerate(pointers) {
+        for (index, element) in pointers.enumerate() {
           if element >= idx {
             pointers[index] = element - 1
           }
@@ -483,13 +483,13 @@ private class DynamicArrayFilterProxy<T>: DynamicArray<T> {
       }
       
       if removedIndices.count > 0 {
-        self.dispatchWillRemove(reverse(removedIndices))
+        self.dispatchWillRemove(Array(removedIndices.reverse()))
       }
       
       self.pointers = pointers
       
       if removedIndices.count > 0 {
-        self.dispatchDidRemove(reverse(removedIndices))
+        self.dispatchDidRemove(Array(removedIndices.reverse()))
       }
     }
     
@@ -503,7 +503,7 @@ private class DynamicArrayFilterProxy<T>: DynamicArray<T> {
       var updatedIndices: [Int] = []
       var pointers = self.pointers
       
-      if let idx = find(pointers, idx) {
+      if let idx = pointers.indexOf(idx) {
         if filterf(element) {
           // update
           updatedIndices.append(idx)
@@ -514,7 +514,7 @@ private class DynamicArrayFilterProxy<T>: DynamicArray<T> {
         }
       } else {
         if filterf(element) {
-          let position = indexOfFirstEqualOrLargerThan(idx, pointers)
+          let position = indexOfFirstEqualOrLargerThan(idx, array: pointers)
           pointers.insert(idx, atIndex: position)
           insertedIndices.append(position)
         } else {
@@ -561,7 +561,7 @@ private class DynamicArrayFilterProxy<T>: DynamicArray<T> {
   
   class func pointersFromSource(sourceArray: DynamicArray<T>, filterf: T -> Bool) -> [Int] {
     var pointers = [Int]()
-    for (index, element) in enumerate(sourceArray) {
+    for (index, element) in sourceArray.enumerate() {
       if filterf(element) {
         pointers.append(index)
       }
@@ -795,16 +795,16 @@ private class DynamicArrayDeliverOnProxy<T>: DynamicArray<T> {
 public extension DynamicArray
 {
   public func map<U>(f: (T, Int) -> U) -> DynamicArray<U> {
-    return _map(self, f)
+    return _map(self, f: f)
   }
   
   public func map<U>(f: T -> U) -> DynamicArray<U> {
     let mapf = { (o: T, i: Int) -> U in f(o) }
-    return _map(self, mapf)
+    return _map(self, f: mapf)
   }
   
   public func filter(f: T -> Bool) -> DynamicArray<T> {
-    return _filter(self, f)
+    return _filter(self, f: f)
   }
 }
 

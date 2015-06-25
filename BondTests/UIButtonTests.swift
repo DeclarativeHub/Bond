@@ -13,7 +13,7 @@ import Bond
 class UIButtonTests: XCTestCase {
 
   func testUIButtonEnabledBond() {
-    var dynamicDriver = Dynamic<Bool>(false)
+    let dynamicDriver = Dynamic<Bool>(false)
     let button = UIButton()
     
     button.enabled = true
@@ -27,7 +27,7 @@ class UIButtonTests: XCTestCase {
   }
   
   func testUIButtonTitleBond() {
-    var dynamicDriver = Dynamic<String>("b")
+    let dynamicDriver = Dynamic<String>("b")
     let button = UIButton()
     
     button.titleLabel?.text = "a"
@@ -43,7 +43,7 @@ class UIButtonTests: XCTestCase {
   func testUIButtonImageBond() {
     let image1 = UIImage()
     let image2 = UIImage()
-    var dynamicDriver = Dynamic<UIImage?>(nil)
+    let dynamicDriver = Dynamic<UIImage?>(nil)
     let button = UIButton()
     
     button.setImage(image1, forState: .Normal)

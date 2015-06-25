@@ -17,7 +17,7 @@ class UIDatePickerTests: XCTestCase {
     let date2 = NSDate(timeIntervalSince1970: 10000)
     let date3 = NSDate(timeIntervalSince1970: 20000)
     
-    var dynamicDriver = Dynamic<NSDate>(date1)
+    let dynamicDriver = Dynamic<NSDate>(date1)
     let datePicker = UIDatePicker()
     
         datePicker.date = date2
