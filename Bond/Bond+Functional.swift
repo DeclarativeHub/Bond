@@ -271,3 +271,24 @@ public func _deliver<T>(dynamic: Dynamic<T>, on queue: dispatch_queue_t) -> Dyna
 public func deliver<T>(dynamic: Dynamic<T>, on queue: dispatch_queue_t) -> Dynamic<T> {
   return _deliver(dynamic, on: queue)
 }
+
+// MARK: Distinct
+
+internal func _distinct<T: Equatable>(dynamic: Dynamic<T>) -> Dynamic<T> {
+  let dyn = InternalDynamic<T>(dynamic.value)
+
+  let bond = Bond<T> { [weak dyn] v in
+    if v != dyn?.value {
+      dyn?.value = v
+    }
+  }
+
+  dyn.retain(bond)
+  dynamic.bindTo(bond, fire: false)
+
+  return dyn
+}
+
+public func distinct<T: Equatable>(dynamic: Dynamic<T>) -> Dynamic<T> {
+  return _distinct(dynamic)
+}

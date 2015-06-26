@@ -214,4 +214,23 @@ class ReduceTests: XCTestCase {
     
     waitForExpectationsWithTimeout(1, handler: nil)
   }
+
+  func testDistinct() {
+    var values = [Int]()
+    let d1 = Dynamic<Int>(0)
+    let bond = Bond<Int>() { v in values.append(v) }
+
+    let distinctD1 = distinct(d1)
+
+    distinctD1 ->> bond
+
+    d1.value = 1
+    d1.value = 2
+    d1.value = 2
+    d1.value = 3
+    d1.value = 3
+    d1.value = 3
+
+    XCTAssert(values == [0, 1, 2, 3], "Values should equal [0, 1, 2, 3] instead of \(values)")
+  }
 }
