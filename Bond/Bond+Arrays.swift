@@ -40,6 +40,9 @@ public class ArrayBond<T>: Bond<Array<T>> {
   
   public var willUpdateListener: ((DynamicArray<T>, [Int]) -> Void)?
   public var didUpdateListener: ((DynamicArray<T>, [Int]) -> Void)?
+    
+  public var willPerformBatchUpdatesListener: (() -> Void)?
+  public var didPerformBatchUpdatesListener: (() -> Void)?
 
   public var willResetListener: (DynamicArray<T> -> Void)?
   public var didResetListener: (DynamicArray<T> -> Void)?
@@ -185,6 +188,14 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
     }
   }
   
+  public func beginBatchUpdates() {
+    dispatchWillPerformBatchUpdates()
+  }
+
+  public func endBatchUpdates() {
+    dispatchDidPerformBatchUpdates()
+  }
+  
   public func generate() -> DynamicArrayGenerator<T> {
     return DynamicArrayGenerator<T>(array: self)
   }
@@ -239,6 +250,22 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
     for bondBox in bonds {
       if let arrayBond = bondBox.bond as? ArrayBond {
         arrayBond.didUpdateListener?(self, indices)
+      }
+    }
+  }
+  
+  private func dispatchWillPerformBatchUpdates() {
+    for bondBox in bonds {
+      if let arrayBond = bondBox.bond as? ArrayBond {
+        arrayBond.willPerformBatchUpdatesListener?()
+      }
+    }
+  }
+  
+  private func dispatchDidPerformBatchUpdates() {
+    for bondBox in bonds {
+      if let arrayBond = bondBox.bond as? ArrayBond {
+        arrayBond.didPerformBatchUpdatesListener?()
       }
     }
   }
@@ -313,6 +340,14 @@ private class DynamicArrayMapProxy<T, U>: DynamicArray<U> {
     
     bond.didUpdateListener = { [unowned self] array, i in
       self.dispatchDidUpdate(i)
+    }
+    
+    bond.willPerformBatchUpdatesListener = { [unowned self] in
+      self.dispatchWillPerformBatchUpdates()
+    }
+    
+    bond.didPerformBatchUpdatesListener = { [unowned self] in
+      self.dispatchDidPerformBatchUpdates()
     }
     
     bond.willResetListener = { [unowned self] array in
@@ -548,6 +583,14 @@ private class DynamicArrayFilterProxy<T>: DynamicArray<T> {
         self.dispatchDidInsert(insertedIndices)
       }
     }
+    
+    bond.willPerformBatchUpdatesListener = { [unowned self] in
+      self.dispatchWillPerformBatchUpdates()
+    }
+    
+    bond.didPerformBatchUpdatesListener = { [unowned self] in
+      self.dispatchDidPerformBatchUpdates()
+    }
 
     bond.willResetListener = { [unowned self] array in
       self.dispatchWillReset()
@@ -695,6 +738,18 @@ private class DynamicArrayDeliverOnProxy<T>: DynamicArray<T> {
     bond.didUpdateListener = { [unowned self] array, i in
       dispatch_async(queue) { [weak self] in
         self?.dispatchDidUpdate(i)
+      }
+    }
+    
+    bond.willPerformBatchUpdatesListener = { [unowned self] in
+      dispatch_async(queue) { [weak self] in
+        self?.dispatchWillPerformBatchUpdates()
+      }
+    }
+    
+    bond.didPerformBatchUpdatesListener = { [unowned self] in
+      dispatch_async(queue) { [weak self] in
+        self?.dispatchDidPerformBatchUpdates()
       }
     }
     

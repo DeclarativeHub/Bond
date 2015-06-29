@@ -496,6 +496,7 @@ class ArrayTests: XCTestCase {
     let e1 = expectationWithDescription("Insert")
     let e2 = expectationWithDescription("Remove")
     let e3 = expectationWithDescription("Update")
+    let e4 = expectationWithDescription("BatchUpdates")
     
     bond.didInsertListener = { a, i in
       XCTAssert(NSThread.isMainThread(), "Invalid queue")
@@ -511,7 +512,12 @@ class ArrayTests: XCTestCase {
       XCTAssert(NSThread.isMainThread(), "Invalid queue")
       e3.fulfill()
     }
-        
+    
+    bond.didPerformBatchUpdatesListener = {
+      XCTAssert(NSThread.isMainThread(), "Invalid queue")
+      e4.fulfill()
+    }
+    
     deliveredOn ->| bond
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
@@ -524,6 +530,12 @@ class ArrayTests: XCTestCase {
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
       array[0] = 2
+    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+      array.beginBatchUpdates()
+    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+      array.endBatchUpdates()
     }
     
     waitForExpectationsWithTimeout(1, handler: nil)
