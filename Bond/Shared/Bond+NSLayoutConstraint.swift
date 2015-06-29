@@ -25,7 +25,11 @@
 //  THE SOFTWARE.
 //
 
-import UIKit
+#if os(iOS)
+  import UIKit
+#else
+  import AppKit
+#endif
 
 private var activeDynamicHandleNSLayoutConstraint: UInt8 = 0;
 
