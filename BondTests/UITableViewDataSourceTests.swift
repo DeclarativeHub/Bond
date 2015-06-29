@@ -4,6 +4,8 @@ import Bond
 import XCTest
 
 enum TableOperation {
+  case BeginUpdates
+  case EndUpdates
   case InsertRows([NSIndexPath])
   case DeleteRows([NSIndexPath])
   case ReloadRows([NSIndexPath])
@@ -15,6 +17,10 @@ enum TableOperation {
 
 func ==(op0: TableOperation, op1: TableOperation) -> Bool {
   switch (op0, op1) {
+  case (.BeginUpdates, .BeginUpdates):
+    return true
+  case (.EndUpdates, .EndUpdates):
+    return true
   case let (.InsertRows(paths0), .InsertRows(paths1)):
     return paths0 == paths1
   case let (.DeleteRows(paths0), .DeleteRows(paths1)):
@@ -34,9 +40,17 @@ func ==(op0: TableOperation, op1: TableOperation) -> Bool {
   }
 }
 
+func wrapUpdate(op: TableOperation) -> [TableOperation] {
+  return [.BeginUpdates, op, .EndUpdates]
+}
+
 extension TableOperation: Equatable, Printable {
   var description: String {
     switch self {
+    case .BeginUpdates:
+      return "BeginUpdates"
+    case .EndUpdates:
+      return "EndUpdates"
     case let .InsertRows(indexPaths):
       return "InsertRows(\(indexPaths)"
     case let .DeleteRows(indexPaths):
@@ -57,6 +71,17 @@ extension TableOperation: Equatable, Printable {
 
 class TestTableView: UITableView {
   var operations = [TableOperation]()
+  
+  override func beginUpdates() {
+    operations.append(.BeginUpdates)
+    super.beginUpdates()
+  }
+  
+  override func endUpdates() {
+    operations.append(.EndUpdates)
+    super.endUpdates()
+  }
+  
   override func insertRowsAtIndexPaths(indexPaths: [AnyObject], withRowAnimation animation: UITableViewRowAnimation) {
     operations.append(.InsertRows(indexPaths as! [NSIndexPath]))
     super.insertRowsAtIndexPaths(indexPaths, withRowAnimation: animation)
@@ -121,39 +146,63 @@ class UITableViewDataSourceTests: XCTestCase {
     
   func testInsertARow() {
     array[1].append(5)
-    expectedOperations.append(.InsertRows([NSIndexPath(forRow: 2, inSection: 1)]))
+    expectedOperations.extend(wrapUpdate(.InsertRows([NSIndexPath(forRow: 2, inSection: 1)])))
     XCTAssertEqual(expectedOperations, tableView.operations, "operation sequence did not match")
   }
   
   func testDeleteARow() {
     array[1].removeLast()
-    expectedOperations.append(.DeleteRows([NSIndexPath(forRow: 1, inSection: 1)]))
+    expectedOperations.extend(wrapUpdate(.DeleteRows([NSIndexPath(forRow: 1, inSection: 1)])))
     XCTAssertEqual(expectedOperations, tableView.operations, "operation sequence did not match")
   }
   
   func testReloadARow() {
     array[1][1] = 5
-    expectedOperations.append(.ReloadRows([NSIndexPath(forRow: 1, inSection: 1)]))
+    expectedOperations.extend(wrapUpdate(.ReloadRows([NSIndexPath(forRow: 1, inSection: 1)])))
     XCTAssertEqual(expectedOperations, tableView.operations, "operation sequence did not match")
   }
   
   func testInsertASection() {
     array.insert(DynamicArray([7, 8, 9]), atIndex: 1)
-    expectedOperations.append(.InsertSections(NSIndexSet(index: 1)))
+    expectedOperations.extend(wrapUpdate(.InsertSections(NSIndexSet(index: 1))))
     XCTAssertEqual(tableView.numberOfRowsInSection(1), 3, "wrong number of rows in new section")
     XCTAssertEqual(expectedOperations, tableView.operations, "operation sequence did not match")
   }
   
   func testDeleteASection() {
     array.removeAtIndex(0)
-    expectedOperations.append(.DeleteSections(NSIndexSet(index: 0)))
+    expectedOperations.extend(wrapUpdate(.DeleteSections(NSIndexSet(index: 0))))
     XCTAssertEqual(expectedOperations, tableView.operations, "operation sequence did not match")
   }
   
   func testReloadASection() {
     array[1] = DynamicArray([5, 6, 7])
-    expectedOperations.append(.ReloadSections(NSIndexSet(index: 1)))
+    expectedOperations.extend(wrapUpdate(.ReloadSections(NSIndexSet(index: 1))))
     XCTAssertEqual(tableView.numberOfRowsInSection(1), 3, "wrong number of rows in reloaded section")
+    XCTAssertEqual(expectedOperations, tableView.operations, "operation sequence did not match")
+  }
+  
+  func testBatchUpdates() {
+    array.beginBatchUpdates()
+    array[1] = DynamicArray([5, 6, 7, 8])
+    array[1].beginBatchUpdates()
+    array[1].insert(4, atIndex: 0)
+    expectedOperations.extend([
+      .BeginUpdates,
+      .ReloadSections(NSIndexSet(index: 1)),
+      .BeginUpdates,
+      .InsertRows([NSIndexPath(forRow: 0, inSection: 1)])
+    ])
+    XCTAssertEqual(expectedOperations, tableView.operations, "operation sequence did not match")
+    XCTAssertEqual(tableView.numberOfRowsInSection(1), 2, "wrong number of rows in reloaded section")
+    
+    array[1].endBatchUpdates()
+    XCTAssertEqual(tableView.numberOfRowsInSection(1), 2, "wrong number of rows in reloaded section")
+    
+    array.endBatchUpdates()
+    XCTAssertEqual(tableView.numberOfRowsInSection(1), 5, "wrong number of rows in reloaded section")
+    
+    expectedOperations.extend([.EndUpdates, .EndUpdates])
     XCTAssertEqual(expectedOperations, tableView.operations, "operation sequence did not match")
   }
 }
