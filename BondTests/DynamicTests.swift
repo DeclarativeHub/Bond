@@ -15,10 +15,12 @@ class DynamicTests: XCTestCase {
   func testValueChangeWithOneListener() {
     let dynamicInt = Dynamic<Int>(0)
     var newValue = NSNotFound
-    let intBond = Bond<Int>({ value in
+    
+    let intBond = Bond<Int> { value in
       newValue = value
-    })
-    dynamicInt.bonds.insert(BondBox<Int>(intBond))
+    }
+    
+    dynamicInt.bindTo(intBond)
     
     // act: change the value to 1
     dynamicInt.value = 1
@@ -38,7 +40,7 @@ class DynamicTests: XCTestCase {
         newValues[i] = value
       })
       bonds.append(bond)
-      dynamicInt.bonds.insert(BondBox<Int>(bond))
+      dynamicInt.bindTo(bond)
     }
     
     // act: change the value to 1
@@ -79,14 +81,14 @@ class DynamicTests: XCTestCase {
     bond1?.bind(dynamic)
     bond2?.bind(dynamic)
 
-    XCTAssert(dynamic.bonds.count == 2, "Initial bonding unsuccessful")
+    XCTAssert(dynamic.numberOfBoundBonds == 2, "Initial bonding unsuccessful")
     
     bond1 = nil
     
     // removal is triggered on next change
     dynamic.value = 1
     
-    XCTAssert(dynamic.bonds.count == 1, "Clearing unsuccessful")
+    XCTAssert(dynamic.numberOfBoundBonds == 1, "Clearing unsuccessful")
   }
   
   func testBiDirectionalBinding() {
