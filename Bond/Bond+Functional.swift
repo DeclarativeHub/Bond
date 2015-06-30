@@ -177,7 +177,7 @@ public func zip<T, U>(d1: Dynamic<T>, d2: Dynamic<U>) -> Dynamic<(T, U)> {
 
 // MARK: Skip
 
-public func _skip<T>(dynamic: Dynamic<T>, var count: Int) -> Dynamic<T> {
+internal func _skip<T>(dynamic: Dynamic<T>, var count: Int) -> Dynamic<T> {
   let dyn = InternalDynamic<T>()
   
   if count <= 0 {
@@ -220,7 +220,7 @@ public func any<T>(dynamics: [Dynamic<T>]) -> Dynamic<T> {
 
 // MARK: Throttle
 
-public func _throttle<T>(dynamic: Dynamic<T>, seconds: Double, queue: dispatch_queue_t) -> Dynamic<T> {
+internal func _throttle<T>(dynamic: Dynamic<T>, seconds: Double, queue: dispatch_queue_t) -> Dynamic<T> {
   let dyn = InternalDynamic<T>()
   var shouldDispatch: Bool = true
   
@@ -249,7 +249,7 @@ public func throttle<T>(dynamic: Dynamic<T>, seconds: Double, queue: dispatch_qu
 
 // MARK: deliverOn
 
-public func _deliver<T>(dynamic: Dynamic<T>, on queue: dispatch_queue_t) -> Dynamic<T> {
+internal func _deliver<T>(dynamic: Dynamic<T>, on queue: dispatch_queue_t) -> Dynamic<T> {
   let dyn = InternalDynamic<T>()
   
   if let value = dynamic._value {
