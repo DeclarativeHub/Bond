@@ -239,6 +239,7 @@ Following table lists all available Dynamics of UIKit objects:
 | UITextView     | dynText <br> dynAttributedText                          | dynText         |
 | UIDatePicker   | dynDate                                                 | dynDate         |
 | UIActivityIndicatorView | dynIsAnimating                                 | dynIsAnimating  |
+| DynamicArray<T> | dynCount                                               | dynCount        |
 
 You might be wondering what _Designated Dynamic_ is. It's way to access most commonly used Dynamic through property `designatedDynamic`. Having common name enables us to define protocol like 
 
