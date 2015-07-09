@@ -47,7 +47,7 @@ private var XXContext = 0
     object?.removeObserver(self, forKeyPath: keyPath)
   }
   
-  override dynamic func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [NSObject : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+  override dynamic func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
     if context == &XXContext {
       if let newValue: AnyObject = change?[NSKeyValueChangeNewKey] {
         listener(newValue)
