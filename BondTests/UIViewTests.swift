@@ -53,4 +53,18 @@ class UIViewTests: XCTestCase {
     dynamicDriver.value = UIColor.blueColor()
     XCTAssert(view.backgroundColor == UIColor.blueColor(), "Value after dynamic change")
   }
+    
+  func testUIViewUserInteractionEnabledBond() {
+    var dynamicDriver = Dynamic<Bool>(false)
+    let view = UIView()
+
+    view.userInteractionEnabled = true
+    XCTAssert(view.userInteractionEnabled == true, "Initial value")
+
+    dynamicDriver ->> view.dynUserInteractionEnabled
+    XCTAssert(view.userInteractionEnabled == false, "Value After Binding")
+
+    dynamicDriver.value = true
+    XCTAssert(view.userInteractionEnabled == true, "Value after dynamic change")
+  }
 }
