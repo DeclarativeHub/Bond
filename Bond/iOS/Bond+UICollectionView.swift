@@ -43,10 +43,11 @@ import UIKit
 private class UICollectionViewDataSourceSectionBond<T>: ArrayBond<UICollectionViewCell> {
   weak var collectionView: UICollectionView?
   var section: Int
-  
-  init(collectionView: UICollectionView?, section: Int) {
+  var shouldReloadItems: ((UICollectionView, [NSIndexPath]) -> Bool)?
+  init(collectionView: UICollectionView?, section: Int, shouldReloadItems: ((UICollectionView, [NSIndexPath]) -> Bool)?) {
     self.collectionView = collectionView
     self.section = section
+    self.shouldReloadItems = shouldReloadItems
     super.init()
     
     self.didInsertListener = { [unowned self] a, i in
@@ -67,9 +68,13 @@ private class UICollectionViewDataSourceSectionBond<T>: ArrayBond<UICollectionVi
     
     self.didUpdateListener = { [unowned self] a, i in
       if let collectionView = self.collectionView {
-        collectionView.performBatchUpdates({
-          collectionView.reloadItemsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) })
+        let indexPaths = i.map { NSIndexPath(forItem: $0, inSection: self.section)! }
+        let shouldReload = self.shouldReloadItems?(collectionView, indexPaths) ?? true
+        if shouldReload {
+          collectionView.performBatchUpdates({
+            collectionView.reloadItemsAtIndexPaths(indexPaths)
           }, completion: nil)
+        }
       }
     }
     
@@ -89,14 +94,21 @@ public class UICollectionViewDataSourceBond<T>: ArrayBond<DynamicArray<UICollect
   weak var collectionView: UICollectionView?
   private var dataSource: CollectionViewDynamicArrayDataSource?
   private var sectionBonds: [UICollectionViewDataSourceSectionBond<Void>] = []
-  
+  /// assumes true if nil
+  public var shouldReloadItems: ((UICollectionView, [NSIndexPath]) -> Bool)? {
+    didSet {
+      for section in sectionBonds {
+        section.shouldReloadItems = shouldReloadItems
+      }
+    }
+  }
   public weak var nextDataSource: UICollectionViewDataSource? {
     didSet(newValue) {
       dataSource?.nextDataSource = newValue
     }
   }
   
-  public init(collectionView: UICollectionView) {
+  public init(collectionView: UICollectionView, shouldReloadItems: ((UICollectionView, [NSIndexPath]) -> Bool)? = nil) {
     self.collectionView = collectionView
     super.init()
     
@@ -108,7 +120,7 @@ public class UICollectionViewDataSourceBond<T>: ArrayBond<DynamicArray<UICollect
             }, completion: nil)
           
           for section in sorted(i, <) {
-            let sectionBond = UICollectionViewDataSourceSectionBond<Void>(collectionView: collectionView, section: section)
+            let sectionBond = UICollectionViewDataSourceSectionBond<Void>(collectionView: collectionView, section: section, shouldReloadItems: shouldReloadItems)
             let sectionDynamic = array[section]
             sectionDynamic.bindTo(sectionBond)
             s.sectionBonds.insert(sectionBond, atIndex: section)
@@ -147,7 +159,7 @@ public class UICollectionViewDataSourceBond<T>: ArrayBond<DynamicArray<UICollect
           }, completion: nil)
         
         for section in i {
-          let sectionBond = UICollectionViewDataSourceSectionBond<Void>(collectionView: collectionView, section: section)
+          let sectionBond = UICollectionViewDataSourceSectionBond<Void>(collectionView: collectionView, section: section, shouldReloadItems: shouldReloadItems)
           let sectionDynamic = array[section]
           sectionDynamic.bindTo(sectionBond)
           
@@ -173,7 +185,7 @@ public class UICollectionViewDataSourceBond<T>: ArrayBond<DynamicArray<UICollect
     if let dynamic = dynamic as? DynamicArray<DynamicArray<UICollectionViewCell>> {
       
       for section in 0..<dynamic.count {
-        let sectionBond = UICollectionViewDataSourceSectionBond<Void>(collectionView: self.collectionView, section: section)
+        let sectionBond = UICollectionViewDataSourceSectionBond<Void>(collectionView: self.collectionView, section: section, shouldReloadItems: self.shouldReloadItems)
         let sectionDynamic = dynamic[section]
         sectionDynamic.bindTo(sectionBond)
         sectionBonds.append(sectionBond)
