@@ -42,10 +42,8 @@ extension NSMenuItem: Bondable, Dynamical {
             return (d as? Dynamic<Bool>)!
         } else {
             let d = InternalDynamic<Bool>(self.enabled)
-            let bond = Bond<Bool>() { [weak self] v in
-                if let s = self {
-                    s.enabled = v
-                }
+            let bond = Bond<Bool>() { [weak self] in
+                self?.enabled = $0
             }
 
             d.bindTo(bond, fire: false, strongly: false)
@@ -60,10 +58,8 @@ extension NSMenuItem: Bondable, Dynamical {
             return (d as? Dynamic<Int>)!
         } else {
             let d = InternalDynamic<Int>(self.state)
-            let bond = Bond<Int>() { [weak self] v in
-                if let s = self {
-                    s.state = v
-                }
+            let bond = Bond<Int>() { [weak self] in
+                self?.state = $0
             }
 
             d.bindTo(bond, fire: false, strongly: false)

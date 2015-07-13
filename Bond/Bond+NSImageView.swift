@@ -41,10 +41,8 @@ extension NSImageView: Bondable, Dynamical {
             return (d as? Dynamic<NSImage?>)!
         } else {
             let d = InternalDynamic<NSImage?>(self.image)
-            let bond = Bond<NSImage?>() { [weak self] v in
-                if let s = self {
-                    s.image = v
-                }
+            let bond = Bond<NSImage?>() { [weak self] in
+                self?.image = $0
             }
 
             d.bindTo(bond, fire: false, strongly: false)

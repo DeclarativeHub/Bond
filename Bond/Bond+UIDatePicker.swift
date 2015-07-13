@@ -70,9 +70,9 @@ extension UIDatePicker /*: Dynamical, Bondable */ {
     } else {
       let d = DatePickerDynamic<NSDate>(control: self)
       
-      let bond = Bond<NSDate>() { [weak self, weak d] v in
-        if let s = self, d = d where !d.updatingFromSelf {
-          s.date = v
+      let bond = Bond<NSDate>() { [weak self, weak d] in
+        if let d = d where !d.updatingFromSelf {
+          self?.date = $0
         }
       }
       

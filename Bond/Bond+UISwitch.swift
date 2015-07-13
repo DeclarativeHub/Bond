@@ -70,9 +70,9 @@ extension UISwitch /*: Dynamical, Bondable */ {
     } else {
       let d = SwitchDynamic<Bool>(control: self)
       
-      let bond = Bond<Bool>() { [weak self, weak d] v in
-        if let s = self, d = d where !d.updatingFromSelf {
-          s.on = v
+      let bond = Bond<Bool>() { [weak self, weak d] in
+        if let d = d where !d.updatingFromSelf {
+          self?.on = $0
         }
       }
       

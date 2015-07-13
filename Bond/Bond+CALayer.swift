@@ -43,10 +43,8 @@ extension CALayer: Bondable, Dynamical {
             return (d as? Dynamic<CGColor!>)!
         } else {
             let d = InternalDynamic<CGColor!>(self.backgroundColor)
-            let bond = Bond<CGColor!>() { [weak self] v in
-                if let s = self {
-                    s.backgroundColor = v
-                }
+            let bond = Bond<CGColor!>() { [weak self] in
+                self?.backgroundColor = $0
             }
 
             d.bindTo(bond, fire: false, strongly: false)
@@ -61,10 +59,8 @@ extension CALayer: Bondable, Dynamical {
             return (d as? Dynamic<AnyObject!>)!
         } else {
             let d = InternalDynamic<AnyObject!>(self.contents)
-            let bond = Bond<AnyObject!>() { [weak self] v in
-                if let s = self {
-                    s.contents = v
-                }
+            let bond = Bond<AnyObject!>() { [weak self] in
+                self?.contents = $0
             }
 
             d.bindTo(bond, fire: false, strongly: false)
@@ -79,10 +75,8 @@ extension CALayer: Bondable, Dynamical {
             return (d as? Dynamic<Float>)!
         } else {
             let d = InternalDynamic<Float>(self.opacity)
-            let bond = Bond<Float>() { [weak self] v in
-                if let s = self {
-                    s.opacity = v
-                }
+            let bond = Bond<Float>() { [weak self] in
+                self?.opacity = $0
             }
 
             d.bindTo(bond, fire: false, strongly: false)

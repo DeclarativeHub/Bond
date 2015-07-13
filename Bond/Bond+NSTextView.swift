@@ -49,9 +49,9 @@ extension NSTextView: Dynamical, Bondable {
                 }
             }
 
-            let bond = Bond<String>() { [weak d] v in // NSTextView cannot be referenced weakly
+            let bond = Bond<String>() { [weak d] in // NSTextView cannot be referenced weakly
                 if let d = d where !d.updatingFromSelf {
-                    self.string = v
+                    self.string = $0
                 }
             }
           

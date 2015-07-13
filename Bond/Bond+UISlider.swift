@@ -71,9 +71,9 @@ extension UISlider /*: Dynamical, Bondable */ {
     } else {
       let d = SliderDynamic<Float>(control: self)
       
-      let bond = Bond<Float>() { [weak self, weak d] v in
-        if let s = self, d = d where !d.updatingFromSelf {
-          s.value = v
+      let bond = Bond<Float>() { [weak self, weak d] in
+        if let d = d where !d.updatingFromSelf {
+          self?.value = $0
         }
       }
       

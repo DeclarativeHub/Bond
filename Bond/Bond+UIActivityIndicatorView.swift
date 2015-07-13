@@ -36,13 +36,11 @@ extension UIActivityIndicatorView: Bondable {
       return (d as? Dynamic<Bool>)!
     } else {
       let d = InternalDynamic<Bool>(self.isAnimating())
-      let bond = Bond<Bool>() { [weak self] v in
-        if let s = self {
-          if v {
-            s.startAnimating()
-          } else {
-            s.stopAnimating()
-          }
+      let bond = Bond<Bool>() { [weak self] in
+        if $0 {
+          self?.startAnimating()
+        } else {
+          self?.stopAnimating()
         }
       }
       d.bindTo(bond, fire: false, strongly: false)

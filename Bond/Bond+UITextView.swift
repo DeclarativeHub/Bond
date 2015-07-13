@@ -45,9 +45,9 @@ extension UITextView: Bondable {
         }
       }
       
-      let bond = Bond<String>() { [weak self, weak d] v in
-        if let s = self, d = d where !d.updatingFromSelf {
-          s.text = v
+      let bond = Bond<String>() { [weak self, weak d] in
+        if let d = d where !d.updatingFromSelf {
+          self?.text = $0
         }
       }
       
@@ -71,9 +71,9 @@ extension UITextView: Bondable {
         }
       }
       
-      let bond = Bond<NSAttributedString>() { [weak self, weak d] v in
-        if let s = self, d = d where !d.updatingFromSelf {
-          s.attributedText = v
+      let bond = Bond<NSAttributedString>() { [weak self, weak d] in
+        if let d = d where !d.updatingFromSelf {
+          self?.attributedText = $0
         }
       }
       

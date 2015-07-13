@@ -38,7 +38,7 @@ extension UIView {
       return (d as? Dynamic<UIColor>)!
     } else {
       let d = InternalDynamic<UIColor>(self.backgroundColor ?? UIColor.clearColor())
-      let bond = Bond<UIColor>() { [weak self] v in if let s = self { s.backgroundColor = v } }
+      let bond = Bond<UIColor>() { [weak self] in self?.backgroundColor = $0 }
       d.bindTo(bond, fire: false, strongly: false)
       d.retain(bond)
       objc_setAssociatedObject(self, &backgroundColorDynamicHandleUIView, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
@@ -51,7 +51,7 @@ extension UIView {
       return (d as? Dynamic<CGFloat>)!
     } else {
       let d = InternalDynamic<CGFloat>(self.alpha)
-      let bond = Bond<CGFloat>() { [weak self] v in if let s = self { s.alpha = v } }
+      let bond = Bond<CGFloat>() { [weak self] in self?.alpha = $0 }
       d.bindTo(bond, fire: false, strongly: false)
       d.retain(bond)
       objc_setAssociatedObject(self, &alphaDynamicHandleUIView, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
@@ -64,7 +64,7 @@ extension UIView {
       return (d as? Dynamic<Bool>)!
     } else {
       let d = InternalDynamic<Bool>(self.hidden)
-      let bond = Bond<Bool>() { [weak self] v in if let s = self { s.hidden = v } }
+      let bond = Bond<Bool>() { [weak self] in self?.hidden = $0 }
       d.bindTo(bond, fire: false, strongly: false)
       d.retain(bond)
       objc_setAssociatedObject(self, &hiddenDynamicHandleUIView, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))

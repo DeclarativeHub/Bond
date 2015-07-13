@@ -76,9 +76,9 @@ extension NSTextField: Dynamical, Bondable {
         } else {
             let d = TextFieldDynamic<String>(control: self)
           
-            let bond = Bond<String>() { [weak self, weak d] v in
-                if let s = self, d = d where !d.updatingFromSelf {
-                    s.stringValue = v
+            let bond = Bond<String>() { [weak self, weak d] in
+                if let d = d where !d.updatingFromSelf {
+                    self?.stringValue = $0
                 }
             }
           

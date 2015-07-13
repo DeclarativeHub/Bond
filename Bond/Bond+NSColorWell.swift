@@ -41,10 +41,8 @@ extension NSColorWell: Bondable, Dynamical {
             return (d as? Dynamic<NSColor>)!
         } else {
             let d = InternalDynamic<NSColor>(self.color)
-            let bond = Bond<NSColor>() { [weak self] v in
-                if let s = self {
-                    s.color = v
-                }
+            let bond = Bond<NSColor>() { [weak self] in
+                self?.color = $0
             }
 
             d.bindTo(bond, fire: false, strongly: false)

@@ -33,10 +33,8 @@ extension NSStatusBarButton {
             return (d as? Dynamic<Bool>)!
         } else {
             let d = InternalDynamic<Bool>(self.appearsDisabled)
-            let bond = Bond<Bool>() { [weak self] v in
-                if let s = self {
-                    s.appearsDisabled = v
-                }
+            let bond = Bond<Bool>() { [weak self] in
+                self?.appearsDisabled = $0
             }
 
             d.bindTo(bond, fire: false, strongly: false)
