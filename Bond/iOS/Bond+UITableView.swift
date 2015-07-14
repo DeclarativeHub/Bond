@@ -157,7 +157,7 @@ private class UITableViewDataSourceSectionBond<T>: ArrayBond<UITableViewCell> {
           var indexPaths = i.map { NSIndexPath(forItem: $0, inSection: self.section)! }
           if let shouldReloadRows = self.shouldReloadRows? {
             indexPaths = shouldReloadRows(tableView, indexPaths)
-					}
+          }
           if !indexPaths.isEmpty {
             tableView.beginUpdates()
             tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: UITableViewRowAnimation.Automatic)
