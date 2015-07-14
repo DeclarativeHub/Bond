@@ -43,8 +43,9 @@ import UIKit
 private class UICollectionViewDataSourceSectionBond<T>: ArrayBond<UICollectionViewCell> {
   weak var collectionView: UICollectionView?
   var section: Int
-  var shouldReloadItems: ((UICollectionView, [NSIndexPath]) -> Bool)?
-  init(collectionView: UICollectionView?, section: Int, shouldReloadItems: ((UICollectionView, [NSIndexPath]) -> Bool)?) {
+  var shouldReloadItems: ((UICollectionView, [NSIndexPath]) -> [NSIndexPath])?
+  
+  init(collectionView: UICollectionView?, section: Int, shouldReloadItems: ((UICollectionView, [NSIndexPath]) -> [NSIndexPath])?) {
     self.collectionView = collectionView
     self.section = section
     self.shouldReloadItems = shouldReloadItems
@@ -68,9 +69,11 @@ private class UICollectionViewDataSourceSectionBond<T>: ArrayBond<UICollectionVi
     
     self.didUpdateListener = { [unowned self] a, i in
       if let collectionView = self.collectionView {
-        let indexPaths = i.map { NSIndexPath(forItem: $0, inSection: self.section)! }
-        let shouldReload = self.shouldReloadItems?(collectionView, indexPaths) ?? true
-        if shouldReload {
+        var indexPaths = i.map { NSIndexPath(forItem: $0, inSection: self.section)! }
+        if let shouldReloadItems = self.shouldReloadItems {
+          indexPaths = shouldReloadItems(collectionView, indexPaths)
+        }
+        if !indexPaths.isEmpty {
           collectionView.performBatchUpdates({
             collectionView.reloadItemsAtIndexPaths(indexPaths)
           }, completion: nil)
@@ -94,21 +97,26 @@ public class UICollectionViewDataSourceBond<T>: ArrayBond<DynamicArray<UICollect
   weak var collectionView: UICollectionView?
   private var dataSource: CollectionViewDynamicArrayDataSource?
   private var sectionBonds: [UICollectionViewDataSourceSectionBond<Void>] = []
-  /// assumes true if nil
-  public var shouldReloadItems: ((UICollectionView, [NSIndexPath]) -> Bool)? {
+  
+  /**
+  return only the items that should be reloaded in the collection view.
+  Defaults to reloading all items
+  */
+  public var shouldReloadItems: ((UICollectionView, [NSIndexPath]) -> [NSIndexPath])? {
     didSet {
       for section in sectionBonds {
         section.shouldReloadItems = shouldReloadItems
       }
     }
   }
+  
   public weak var nextDataSource: UICollectionViewDataSource? {
     didSet(newValue) {
       dataSource?.nextDataSource = newValue
     }
   }
   
-  public init(collectionView: UICollectionView, shouldReloadItems: ((UICollectionView, [NSIndexPath]) -> Bool)? = nil) {
+  public init(collectionView: UICollectionView, shouldReloadItems: ((UICollectionView, [NSIndexPath]) -> [NSIndexPath])? = nil) {
     self.collectionView = collectionView
     super.init()
     

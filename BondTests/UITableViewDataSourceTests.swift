@@ -162,7 +162,7 @@ class UITableViewDataSourceTests: XCTestCase {
     var passedIndexPaths: [NSIndexPath] = []
     bond.shouldReloadRows = { _, indexPaths in
       passedIndexPaths = indexPaths
-      return false
+      return []
     }
     array[1][1] = 5
     XCTAssertEqual(expectedIndexPaths, passedIndexPaths, "shouldReloadRows was not called correctly")

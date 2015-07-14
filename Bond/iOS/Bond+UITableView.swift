@@ -123,7 +123,7 @@ extension NSIndexSet {
 
 private class UITableViewDataSourceSectionBond<T>: ArrayBond<UITableViewCell> {
   weak var tableView: UITableView?
-  var shouldReloadRows: ((UITableView, [NSIndexPath]) -> Bool)?
+  var shouldReloadRows: ((UITableView, [NSIndexPath]) -> [NSIndexPath])?
   var section: Int
   init(tableView: UITableView?, section: Int, disableAnimation: Bool = false, shouldReloadRows: ((UITableView, [NSIndexPath]) -> Bool)?) {
     self.tableView = tableView
@@ -154,9 +154,11 @@ private class UITableViewDataSourceSectionBond<T>: ArrayBond<UITableViewCell> {
     self.didUpdateListener = { [unowned self] a, i in
       if let tableView = self.tableView {
         perform(animated: !disableAnimation) {
-          let indexPaths = i.map { NSIndexPath(forItem: $0, inSection: self.section)! }
-          let shouldReload = self.shouldReloadRows?(tableView, indexPaths) ?? true
-          if shouldReload {
+          var indexPaths = i.map { NSIndexPath(forItem: $0, inSection: self.section)! }
+          if let shouldReloadRows = self.shouldReloadRows? {
+            indexPaths = shouldReloadRows(tableView, indexPaths)
+					}
+          if !indexPaths.isEmpty {
             tableView.beginUpdates()
             tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: UITableViewRowAnimation.Automatic)
             tableView.endUpdates()
@@ -183,8 +185,11 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
   private var sectionBonds: [UITableViewDataSourceSectionBond<Void>] = []
   public let disableAnimation: Bool
   
-  /// if nil, assumes true
-  public var shouldReloadRows: ((UITableView, [NSIndexPath]) -> Bool)? {
+  /**
+  return only the rows that should be reloaded in the table view.
+  Defaults to reloading all rows
+  */
+  public var shouldReloadRows: ((UITableView, [NSIndexPath]) -> [NSIndexPath])? {
     didSet {
       for section in sectionBonds {
         section.shouldReloadRows = shouldReloadRows
@@ -198,7 +203,7 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
     }
   }
   
-  public init(tableView: UITableView, disableAnimation: Bool = false, shouldReloadRows: ((UITableView, [NSIndexPath]) -> Bool)? = nil) {
+  public init(tableView: UITableView, disableAnimation: Bool = false, shouldReloadRows: ((UITableView, [NSIndexPath]) -> [NSIndexPath])? = nil) {
     self.disableAnimation = disableAnimation
     self.tableView = tableView
     self.shouldReloadRows = shouldReloadRows
