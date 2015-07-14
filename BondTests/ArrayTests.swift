@@ -278,6 +278,30 @@ class ArrayTests: XCTestCase {
     XCTAssert(mapped.count == 0)
   }
   
+  func testArrayFlatten() {
+    let nestedArray = DynamicArray<DynamicArray<String>>([DynamicArray(["d", "e", "f"])])
+    let flattenedDynArray = DynamicArray.flatten(nestedArray)
+
+    println("\(flattenedDynArray.value)")
+    
+    let bond = ArrayBond<String>()
+    bond.bind(flattenedDynArray)
+    
+    bond.didInsertListener = { array, indices in
+      println("the array: \(array.value), inserting \(indices)")
+    }
+    
+    let innerSectionA = DynamicArray<String>(["b", "c"])
+    let innerSectionB = DynamicArray<String>(["a"])
+    
+    nestedArray.append(innerSectionA)
+    nestedArray.insert(innerSectionB, atIndex: 0)
+    
+    innerSectionA.setArray(reverse(innerSectionA.value))
+    
+    println("\(flattenedDynArray.value)")
+  }
+  
   func testArrayMapCallCount() {
     class Test {
       var value: Int
