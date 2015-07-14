@@ -40,7 +40,7 @@ public class ArrayBond<T>: Bond<Array<T>> {
   
   public var willUpdateListener: ((DynamicArray<T>, [Int]) -> Void)?
   public var didUpdateListener: ((DynamicArray<T>, [Int]) -> Void)?
-  
+
   public var willResetListener: (DynamicArray<T> -> Void)?
   public var didResetListener: (DynamicArray<T> -> Void)?
   
@@ -215,7 +215,7 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
       }
     }
   }
-  
+
   private func dispatchDidRemove(indices: [Int]) {
     if !indices.isEmpty {
       dynCount.value = count
@@ -432,14 +432,14 @@ private class DynamicArrayFilterProxy<T>: DynamicArray<T> {
     self.pointers = DynamicArrayFilterProxy.pointersFromSource(sourceArray, filterf: filterf)
     
     super.init([])
-    
+
     bond.didInsertListener = { [unowned self] array, indices in
       var insertedIndices: [Int] = []
       var insertedCounts: [Int] = []
       var pointers = self.pointers
       
       for idx in indices {
-        
+
         for (index, element) in enumerate(pointers) {
           if element >= idx {
             pointers[index] = element + 1
@@ -498,7 +498,7 @@ private class DynamicArrayFilterProxy<T>: DynamicArray<T> {
       
       let idx = indices[0]
       let element = array[idx]
-      
+
       var insertedIndices: [Int] = []
       var removedIndices: [Int] = []
       var updatedIndices: [Int] = []
@@ -522,7 +522,7 @@ private class DynamicArrayFilterProxy<T>: DynamicArray<T> {
           // nothing
         }
       }
-      
+
       if insertedIndices.count > 0 {
         self.dispatchWillInsert(insertedIndices)
       }
@@ -549,7 +549,7 @@ private class DynamicArrayFilterProxy<T>: DynamicArray<T> {
         self.dispatchDidInsert(insertedIndices)
       }
     }
-    
+
     bond.willResetListener = { [unowned self] array in
       self.dispatchWillReset()
     }
@@ -610,7 +610,7 @@ private class DynamicArrayFilterProxy<T>: DynamicArray<T> {
   override private func setArray(newValue: [T]) {
     fatalError("Modifying proxy array is not supported!")
   }
-  
+
   override private func append(newElement: T) {
     fatalError("Modifying proxy array is not supported!")
   }
@@ -792,7 +792,7 @@ private class DynamicArrayFlattenProxy<T>: DynamicArray<T> {
   }
 }
 
-
+// MARK: Dynamic Array DeliverOn Proxy
 private class DynamicArrayDeliverOnProxy<T>: DynamicArray<T> {
   private unowned var sourceArray: DynamicArray<T>
   private var queue: dispatch_queue_t
@@ -958,13 +958,6 @@ public extension DynamicArray
   }
 }
 
-
-// MARK: DeliverOn
-
-public func deliver<T>(dynamicArray: DynamicArray<T>, on queue: dispatch_queue_t) -> DynamicArray<T> {
-  return DynamicArrayDeliverOnProxy(sourceArray: dynamicArray, queue: queue)
-}
-
 // MARK: Map
 
 private func _map<T, U>(dynamicArray: DynamicArray<T>, f: (T, Int) -> U) -> DynamicArrayMapProxy<T, U> {
@@ -975,4 +968,10 @@ private func _map<T, U>(dynamicArray: DynamicArray<T>, f: (T, Int) -> U) -> Dyna
 
 private func _filter<T>(dynamicArray: DynamicArray<T>, f: T -> Bool) -> DynamicArray<T> {
   return DynamicArrayFilterProxy(sourceArray: dynamicArray, filterf: f)
+}
+
+// MARK: DeliverOn
+
+public func deliver<T>(dynamicArray: DynamicArray<T>, on queue: dispatch_queue_t) -> DynamicArray<T> {
+  return DynamicArrayDeliverOnProxy(sourceArray: dynamicArray, queue: queue)
 }
