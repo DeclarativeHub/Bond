@@ -1,5 +1,6 @@
 # Bond, Swift Bond
 
+[![CI Status](https://travis-ci.org/SwiftBond/Bond.svg?branch=master)](https://travis-ci.org/SwiftBond/Bond)
 
 Bond is a Swift binding framework that takes binding concept to a whole new level - boils it down to just one operator. It's simple, powerful, type-safe and multi-paradigm - just like Swift. 
 
@@ -229,7 +230,7 @@ Following table lists all available Dynamics of UIKit objects:
 |----------------|---------------------------------------------------------|-----------------|
 | UIView         | dynAlpha <br> dynHidden <br> dynBackgroundColor         | --              |
 | UISlider       | dynValue                                                | dynValue        |
-| UILabel        | dynText <br> dynAttributedText                          | dynText         |
+| UILabel        | dynText <br> dynAttributedText <br> dynTextColor        | dynText         |
 | UIProgressView | dynProgress                                             | dynProgress     |
 | UIImageView    | dynImage                                                | dynImage        |
 | UIButton       | dynEnabled <br> dynTitle <br> dynImageForNormalState    | dynEnabled      |
@@ -239,6 +240,7 @@ Following table lists all available Dynamics of UIKit objects:
 | UITextView     | dynText <br> dynAttributedText                          | dynText         |
 | UIDatePicker   | dynDate                                                 | dynDate         |
 | UIActivityIndicatorView | dynIsAnimating                                 | dynIsAnimating  |
+| DynamicArray<T> | dynCount                                               | dynCount        |
 
 You might be wondering what _Designated Dynamic_ is. It's way to access most commonly used Dynamic through property `designatedDynamic`. Having common name enables us to define protocol like 
 

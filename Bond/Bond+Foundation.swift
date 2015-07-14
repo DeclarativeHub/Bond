@@ -95,6 +95,14 @@ public func dynamicObservableFor<T>(object: NSObject, #keyPath: String, #default
   return dynamic
 }
 
+public func dynamicOptionalObservableFor<T>(object: NSObject, #keyPath: String, defaultValue: T? = nil) -> Dynamic<T?> {
+    return dynamicObservableFor(object, keyPath: keyPath, from: { (value: AnyObject?) -> T? in
+        return value as? T
+        }, to: { (value: T?) -> AnyObject? in
+            return value as? AnyObject
+    })
+}
+
 public func dynamicObservableFor<T>(object: NSObject, #keyPath: String, #from: AnyObject? -> T, #to: T -> AnyObject?) -> Dynamic<T> {
   let keyPathValue: AnyObject? = object.valueForKeyPath(keyPath)
   let dynamic = InternalDynamic(from(keyPathValue))
