@@ -649,11 +649,6 @@ private class DynamicArrayFilterProxy<T>: DynamicArray<T> {
   }
 }
 
-public func ==<T> (x: ArrayBond<T>, y: ArrayBond<T>) -> Bool {
-  return x === y
-}
-
-extension ArrayBond:Equatable {}
 
 /**
 Note: Directly setting `DynamicArray.value` is not recommended. The array's count will not be updated and no array change notification will be emitted. Call `setArray:` instead.
@@ -949,13 +944,15 @@ public extension DynamicArray
   public func filter(f: T -> Bool) -> DynamicArray<T> {
     return _filter(self, f)
   }
-  
-  /**
-  Note: The returned flattened DynamicArray should not be modified directly.
-  */
-  static public func flatten(nestedDynamicArray: DynamicArray<DynamicArray<T>>) -> DynamicArray<T> {
-    return DynamicArrayFlattenProxy(nestedSourceArray: nestedDynamicArray)
-  }
+}
+
+// MARK: Flatten
+
+/**
+Note: The returned flattened DynamicArray should not be modified directly.
+*/
+public func flatten<T>(nestedDynamicArray: DynamicArray<DynamicArray<T>>) -> DynamicArray<T> {
+  return DynamicArrayFlattenProxy(nestedSourceArray: nestedDynamicArray)
 }
 
 // MARK: Map

@@ -280,26 +280,43 @@ class ArrayTests: XCTestCase {
   
   func testArrayFlatten() {
     let nestedArray = DynamicArray<DynamicArray<String>>([DynamicArray(["d", "e", "f"])])
-    let flattenedDynArray = DynamicArray.flatten(nestedArray)
+    let flattenedDynArray = flatten(nestedArray)
 
-    println("\(flattenedDynArray.value)")
+    XCTAssertEqual(["d", "e", "f"], flattenedDynArray.value, "Single section flat array should equal first section.")
     
     let bond = ArrayBond<String>()
     bond.bind(flattenedDynArray)
     
+    var arrayAfterLastInsert: [String] = []
+    var indicesFromLastInsert: [Int] = []
+    
     bond.didInsertListener = { array, indices in
-      println("the array: \(array.value), inserting \(indices)")
+      arrayAfterLastInsert = array.value
+      indicesFromLastInsert = indices
     }
     
     let innerSectionA = DynamicArray<String>(["b", "c"])
     let innerSectionB = DynamicArray<String>(["a"])
     
     nestedArray.append(innerSectionA)
+    
+    XCTAssertEqual(["d", "e", "f", "b", "c"], arrayAfterLastInsert)
+    XCTAssertEqual([3, 4], indicesFromLastInsert)
+    
     nestedArray.insert(innerSectionB, atIndex: 0)
     
-    innerSectionA.setArray(reverse(innerSectionA.value))
+    XCTAssertEqual(["a", "d", "e", "f", "b", "c"], arrayAfterLastInsert)
+    XCTAssertEqual([0], indicesFromLastInsert)
     
-    println("\(flattenedDynArray.value)")
+    var didCallResetListener = false
+    bond.didResetListener = { array in
+      didCallResetListener = true
+    }
+
+    nestedArray.setArray([DynamicArray(["a", "b"]), DynamicArray(["c", "d"])])
+    
+    XCTAssertTrue(didCallResetListener)
+    XCTAssertEqual(["a", "b", "c", "d"], flattenedDynArray.value)
   }
   
   func testArrayMapCallCount() {
