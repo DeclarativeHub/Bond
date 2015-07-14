@@ -125,7 +125,7 @@ private class UITableViewDataSourceSectionBond<T>: ArrayBond<UITableViewCell> {
   weak var tableView: UITableView?
   var shouldReloadRows: ((UITableView, [NSIndexPath]) -> [NSIndexPath])?
   var section: Int
-  init(tableView: UITableView?, section: Int, disableAnimation: Bool = false, shouldReloadRows: ((UITableView, [NSIndexPath]) -> Bool)?) {
+  init(tableView: UITableView?, section: Int, disableAnimation: Bool = false, shouldReloadRows: ((UITableView, [NSIndexPath]) -> [NSIndexPath])?) {
     self.tableView = tableView
     self.section = section
     self.shouldReloadRows = shouldReloadRows
@@ -155,7 +155,7 @@ private class UITableViewDataSourceSectionBond<T>: ArrayBond<UITableViewCell> {
       if let tableView = self.tableView {
         perform(animated: !disableAnimation) {
           var indexPaths = i.map { NSIndexPath(forItem: $0, inSection: self.section)! }
-          if let shouldReloadRows = self.shouldReloadRows? {
+          if let shouldReloadRows = self.shouldReloadRows {
             indexPaths = shouldReloadRows(tableView, indexPaths)
           }
           if !indexPaths.isEmpty {
