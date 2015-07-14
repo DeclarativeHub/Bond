@@ -891,6 +891,38 @@ private class DynamicArrayDeliverOnProxy<T>: DynamicArray<T> {
     }
   }
   
+  override func setArray(newValue: [T]) {
+    fatalError("Modifying proxy array is not supported!")
+  }
+  
+  override func append(newElement: T) {
+    fatalError("Modifying proxy array is not supported!")
+  }
+  
+  override func append(array: Array<T>) {
+    fatalError("Modifying proxy array is not supported!")
+  }
+  
+  override func removeLast() -> T {
+    fatalError("Modifying proxy array is not supported!")
+  }
+  
+  override func insert(newElement: T, atIndex i: Int) {
+    fatalError("Modifying proxy array is not supported!")
+  }
+  
+  override func splice(array: Array<T>, atIndex i: Int) {
+    fatalError("Modifying proxy array is not supported!")
+  }
+  
+  override func removeAtIndex(index: Int) -> T {
+    fatalError("Modifying proxy array is not supported!")
+  }
+  
+  override func removeAll(keepCapacity: Bool) {
+    fatalError("Modifying proxy array is not supported!")
+  }
+  
   override subscript(index: Int) -> T {
     get {
       return sourceArray[index]
@@ -924,6 +956,13 @@ public extension DynamicArray
   static public func flatten(nestedDynamicArray: DynamicArray<DynamicArray<T>>) -> DynamicArray<T> {
     return DynamicArrayFlattenProxy(nestedSourceArray: nestedDynamicArray)
   }
+}
+
+
+// MARK: DeliverOn
+
+public func deliver<T>(dynamicArray: DynamicArray<T>, on queue: dispatch_queue_t) -> DynamicArray<T> {
+  return DynamicArrayDeliverOnProxy(sourceArray: dynamicArray, queue: queue)
 }
 
 // MARK: Map
