@@ -125,7 +125,7 @@ private class UITableViewDataSourceSectionBond<T>: ArrayBond<UITableViewCell> {
   weak var tableView: UITableView?
   var shouldReloadRows: ((UITableView, [NSIndexPath]) -> Bool)?
   var section: Int
-    init(tableView: UITableView?, section: Int, disableAnimation: Bool = false, shouldReloadRows: ((UITableView, [NSIndexPath]) -> Bool)?) {
+  init(tableView: UITableView?, section: Int, disableAnimation: Bool = false, shouldReloadRows: ((UITableView, [NSIndexPath]) -> Bool)?) {
     self.tableView = tableView
     self.section = section
     self.shouldReloadRows = shouldReloadRows
