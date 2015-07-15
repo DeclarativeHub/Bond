@@ -435,7 +435,6 @@ private class DynamicArrayFilterProxy<T>: DynamicArray<T> {
 
     bond.didInsertListener = { [unowned self] array, indices in
       var insertedIndices: [Int] = []
-      var insertedCounts: [Int] = []
       var pointers = self.pointers
       
       for idx in indices {
