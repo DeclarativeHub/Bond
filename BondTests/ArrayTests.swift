@@ -295,19 +295,30 @@ class ArrayTests: XCTestCase {
       indicesFromLastInsert = indices
     }
     
-    let innerSectionA = DynamicArray<String>(["b", "c"])
-    let innerSectionB = DynamicArray<String>(["a"])
-    
-    nestedArray.append(innerSectionA)
-    
+    let sectionToAppend = DynamicArray<String>(["b", "c"])
+    nestedArray.append(sectionToAppend)
+
     XCTAssertEqual(["d", "e", "f", "b", "c"], arrayAfterLastInsert)
     XCTAssertEqual([3, 4], indicesFromLastInsert)
-    
-    nestedArray.insert(innerSectionB, atIndex: 0)
+
+    let sectionToInsert = DynamicArray<String>(["a"])
+    nestedArray.insert(sectionToInsert, atIndex: 0)
     
     XCTAssertEqual(["a", "d", "e", "f", "b", "c"], arrayAfterLastInsert)
     XCTAssertEqual([0], indicesFromLastInsert)
     
+    var indicesFromLastRemoval: [Int] = []
+    bond.didRemoveListener = { array, indices in
+      indicesFromLastRemoval = indices
+    }
+    
+    let sectionForUpdate = DynamicArray<String>(["g", "h"])
+    nestedArray[0] = sectionForUpdate
+
+    XCTAssertEqual(["g", "h", "d", "e", "f", "b", "c"], arrayAfterLastInsert)
+    XCTAssertEqual([0], indicesFromLastRemoval)
+    XCTAssertEqual([0, 1], indicesFromLastInsert)
+      
     var didCallResetListener = false
     bond.didResetListener = { array in
       didCallResetListener = true

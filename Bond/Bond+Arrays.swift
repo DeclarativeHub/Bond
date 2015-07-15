@@ -676,7 +676,8 @@ private class DynamicArrayFlattenProxy<T>: DynamicArray<T> {
         let handleReset = { (subArray: DynamicArray<T>) -> Void in
           if let globalSectionIndex = find(nestedBonds, bond) {
             let toSplice = (0..<subArray.count).map { index in subArray[index] }
-            self.splice(toSplice, atIndex: globalSectionIndex)
+            let globalRowIndex = self.getGlobalIndex((section: globalSectionIndex, row: 0))
+            self.splice(toSplice, atIndex: globalRowIndex)
           } else {
             assertionFailure("Bond doesn't exist in our internal array.")
           }
@@ -724,8 +725,9 @@ private class DynamicArrayFlattenProxy<T>: DynamicArray<T> {
       }
     }
     
-    let handleGlobalReset = { (array: DynamicArray<DynamicArray<T>>) -> Void in
+    let handleGlobalReset = { [unowned self] (array: DynamicArray<DynamicArray<T>>) -> Void in
       nestedBonds = []
+      self.setArray([])
       handleInsert(array, Array(0..<array.count))
     }
     
