@@ -196,21 +196,35 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
   
   private func dispatchWillInsert(indices: [Int]) {
     assert(bondsForCurrentInsertion == nil, "dispatchWillInsert: called twice without dispatchDidInsert:")
-    bondsForCurrentInsertion = bonds
-    for bondBox in bonds {
-      if let arrayBond = bondBox.bond as? ArrayBond {
-        arrayBond.willInsertListener?(self, indices)
+    
+    // all the bonds we've dispatched so far
+    var totalDispatched = Set<BondBox<Array<T>>>()
+    
+    // are we done?
+    var allBondsDispatched = false
+    
+    // keep doing passes until we aren't dispatching any more
+    while !allBondsDispatched {
+      allBondsDispatched = true
+      // never dispatch the same bond twice
+      for bondBox in bonds.subtract(totalDispatched) {
+        if let arrayBond = bondBox.bond as? ArrayBond, let listener = arrayBond.willInsertListener {
+          listener(self, indices)
+          allBondsDispatched = false
+        }
+        totalDispatched.insert(bondBox)
       }
     }
+    bondsForCurrentInsertion = totalDispatched
   }
   
   private func dispatchDidInsert(indices: [Int]) {
     if !indices.isEmpty {
       dynCount.value = count
     }
-    if let bonds = bondsForCurrentInsertion {
-      for bondBox in bonds {
-        if let arrayBond = bondBox.bond as? ArrayBond {
+    if let bondsFromBefore = bondsForCurrentInsertion {
+      for bondBox in bondsFromBefore {
+        if let arrayBond = bondBox.bond as? ArrayBond where bonds.contains(bondBox) {
           arrayBond.didInsertListener?(self, indices)
         }
       }
@@ -222,21 +236,35 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
   
   private func dispatchWillRemove(indices: [Int]) {
     assert(bondsForCurrentRemoval == nil, "dispatchWillRemove: called twice without dispatchDidRemove:")
-    bondsForCurrentRemoval = bonds
-    for bondBox in bonds {
-      if let arrayBond = bondBox.bond as? ArrayBond {
-        arrayBond.willRemoveListener?(self, indices)
+
+    // all the bonds we've dispatched so far
+    var totalDispatched = Set<BondBox<Array<T>>>()
+    
+    // are we done?
+    var allBondsDispatched = false
+    
+    // keep doing passes until we aren't dispatching any more
+    while !allBondsDispatched {
+      allBondsDispatched = true
+      // never dispatch the same bond twice
+      for bondBox in bonds.subtract(totalDispatched) {
+        if let arrayBond = bondBox.bond as? ArrayBond, let listener = arrayBond.willRemoveListener {
+          listener(self, indices)
+          allBondsDispatched = false
+        }
+        totalDispatched.insert(bondBox)
       }
     }
+    bondsForCurrentRemoval = totalDispatched
   }
 
   private func dispatchDidRemove(indices: [Int]) {
     if !indices.isEmpty {
       dynCount.value = count
     }
-    if let bonds = bondsForCurrentRemoval {
-      for bondBox in bonds {
-        if let arrayBond = bondBox.bond as? ArrayBond {
+    if let bondsFromBefore = bondsForCurrentRemoval {
+      for bondBox in bondsFromBefore {
+        if let arrayBond = bondBox.bond as? ArrayBond where bonds.contains(bondBox) {
           arrayBond.didRemoveListener?(self, indices)
         }
       }
@@ -248,18 +276,31 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
   
   private func dispatchWillUpdate(indices: [Int]) {
     assert(bondsForCurrentUpdate == nil, "dispatchWillUpdate: called twice without dispatchDidUpdate:")
-    bondsForCurrentUpdate = bonds
-    for bondBox in bonds {
-      if let arrayBond = bondBox.bond as? ArrayBond {
-        arrayBond.willUpdateListener?(self, indices)
+    // all the bonds we've dispatched so far
+    var totalDispatched = Set<BondBox<Array<T>>>()
+    
+    // are we done?
+    var allBondsDispatched = false
+    
+    // keep doing passes until we aren't dispatching any more
+    while !allBondsDispatched {
+      allBondsDispatched = true
+      // never dispatch the same bond twice
+      for bondBox in bonds.subtract(totalDispatched) {
+        if let arrayBond = bondBox.bond as? ArrayBond, let listener = arrayBond.willUpdateListener {
+          listener(self, indices)
+          allBondsDispatched = false
+        }
+        totalDispatched.insert(bondBox)
       }
     }
+    bondsForCurrentUpdate = totalDispatched
   }
   
   private func dispatchDidUpdate(indices: [Int]) {
-    if let bonds = bondsForCurrentUpdate {
-      for bondBox in bonds {
-        if let arrayBond = bondBox.bond as? ArrayBond {
+    if let bondsFromBefore = bondsForCurrentUpdate {
+      for bondBox in bondsFromBefore {
+        if let arrayBond = bondBox.bond as? ArrayBond where bonds.contains(bondBox) {
           arrayBond.didUpdateListener?(self, indices)
         }
       }
@@ -271,19 +312,32 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
   
   private func dispatchWillReset() {
     assert(bondsForCurrentReset == nil, "dispatchWillReset called twice without dispatchDidReset")
-    bondsForCurrentReset = bonds
-    for bondBox in bonds {
-      if let arrayBond = bondBox.bond as? ArrayBond {
-        arrayBond.willResetListener?(self)
+    // all the bonds we've dispatched so far
+    var totalDispatched = Set<BondBox<Array<T>>>()
+    
+    // are we done?
+    var allBondsDispatched = false
+    
+    // keep doing passes until we aren't dispatching any more
+    while !allBondsDispatched {
+      allBondsDispatched = true
+      // never dispatch the same bond twice
+      for bondBox in bonds.subtract(totalDispatched) {
+        if let arrayBond = bondBox.bond as? ArrayBond, let listener = arrayBond.willResetListener {
+          listener(self)
+          allBondsDispatched = false
+        }
+        totalDispatched.insert(bondBox)
       }
     }
+    bondsForCurrentReset = totalDispatched
   }
   
   private func dispatchDidReset() {
     dynCount.value = self.count
-    if let bonds = bondsForCurrentReset {
-      for bondBox in bonds {
-        if let arrayBond = bondBox.bond as? ArrayBond {
+    if let bondsFromBefore = bondsForCurrentReset {
+      for bondBox in bondsFromBefore {
+        if let arrayBond = bondBox.bond as? ArrayBond where bonds.contains(bondBox) {
           arrayBond.didResetListener?(self)
         }
       }
