@@ -201,16 +201,16 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
     var totalDispatched = Set<BondBox<Array<T>>>()
     
     // are we done?
-    var allBondsDispatched = false
+    var needsAnotherPass = true
     
     // keep doing passes until we aren't dispatching any more
-    while !allBondsDispatched {
-      allBondsDispatched = true
+    while !needsAnotherPass {
+      needsAnotherPass = false
       // never dispatch the same bond twice
       for bondBox in bonds.subtract(totalDispatched) {
         if let arrayBond = bondBox.bond as? ArrayBond, let listener = arrayBond.willInsertListener {
           listener(self, indices)
-          allBondsDispatched = false
+          needsAnotherPass = true
         }
         totalDispatched.insert(bondBox)
       }
@@ -241,16 +241,16 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
     var totalDispatched = Set<BondBox<Array<T>>>()
     
     // are we done?
-    var allBondsDispatched = false
+    var needsAnotherPass = true
     
     // keep doing passes until we aren't dispatching any more
-    while !allBondsDispatched {
-      allBondsDispatched = true
+    while !needsAnotherPass {
+      needsAnotherPass = false
       // never dispatch the same bond twice
       for bondBox in bonds.subtract(totalDispatched) {
         if let arrayBond = bondBox.bond as? ArrayBond, let listener = arrayBond.willRemoveListener {
           listener(self, indices)
-          allBondsDispatched = false
+          needsAnotherPass = true
         }
         totalDispatched.insert(bondBox)
       }
@@ -280,16 +280,16 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
     var totalDispatched = Set<BondBox<Array<T>>>()
     
     // are we done?
-    var allBondsDispatched = false
+    var needsAnotherPass = true
     
     // keep doing passes until we aren't dispatching any more
-    while !allBondsDispatched {
-      allBondsDispatched = true
+    while !needsAnotherPass {
+      needsAnotherPass = false
       // never dispatch the same bond twice
       for bondBox in bonds.subtract(totalDispatched) {
         if let arrayBond = bondBox.bond as? ArrayBond, let listener = arrayBond.willUpdateListener {
           listener(self, indices)
-          allBondsDispatched = false
+          needsAnotherPass = true
         }
         totalDispatched.insert(bondBox)
       }
@@ -316,16 +316,16 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
     var totalDispatched = Set<BondBox<Array<T>>>()
     
     // are we done?
-    var allBondsDispatched = false
+    var needsAnotherPass = true
     
     // keep doing passes until we aren't dispatching any more
-    while !allBondsDispatched {
-      allBondsDispatched = true
+    while !needsAnotherPass {
+      needsAnotherPass = false
       // never dispatch the same bond twice
       for bondBox in bonds.subtract(totalDispatched) {
         if let arrayBond = bondBox.bond as? ArrayBond, let listener = arrayBond.willResetListener {
           listener(self)
-          allBondsDispatched = false
+          needsAnotherPass = true
         }
         totalDispatched.insert(bondBox)
       }
