@@ -204,7 +204,7 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
     var needsAnotherPass = true
     
     // keep doing passes until we aren't dispatching any more
-    while !needsAnotherPass {
+    while needsAnotherPass {
       needsAnotherPass = false
       // never dispatch the same bond twice
       for bondBox in bonds.subtract(totalDispatched) {
@@ -244,7 +244,7 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
     var needsAnotherPass = true
     
     // keep doing passes until we aren't dispatching any more
-    while !needsAnotherPass {
+    while needsAnotherPass {
       needsAnotherPass = false
       // never dispatch the same bond twice
       for bondBox in bonds.subtract(totalDispatched) {
@@ -283,7 +283,7 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
     var needsAnotherPass = true
     
     // keep doing passes until we aren't dispatching any more
-    while !needsAnotherPass {
+    while needsAnotherPass {
       needsAnotherPass = false
       // never dispatch the same bond twice
       for bondBox in bonds.subtract(totalDispatched) {
@@ -319,7 +319,7 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
     var needsAnotherPass = true
     
     // keep doing passes until we aren't dispatching any more
-    while !needsAnotherPass {
+    while needsAnotherPass {
       needsAnotherPass = false
       // never dispatch the same bond twice
       for bondBox in bonds.subtract(totalDispatched) {
