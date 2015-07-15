@@ -123,10 +123,12 @@ extension NSIndexSet {
 
 private class UITableViewDataSourceSectionBond<T>: ArrayBond<UITableViewCell> {
   weak var tableView: UITableView?
+  var shouldReloadRows: ((UITableView, [NSIndexPath]) -> [NSIndexPath])?
   var section: Int
-  init(tableView: UITableView?, section: Int, disableAnimation: Bool = false) {
+  init(tableView: UITableView?, section: Int, disableAnimation: Bool = false, shouldReloadRows: ((UITableView, [NSIndexPath]) -> [NSIndexPath])?) {
     self.tableView = tableView
     self.section = section
+    self.shouldReloadRows = shouldReloadRows
     super.init()
     
     self.didInsertListener = { [unowned self] a, i in
@@ -152,9 +154,15 @@ private class UITableViewDataSourceSectionBond<T>: ArrayBond<UITableViewCell> {
     self.didUpdateListener = { [unowned self] a, i in
       if let tableView = self.tableView {
         perform(animated: !disableAnimation) {
-          tableView.beginUpdates()
-          tableView.reloadRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) }, withRowAnimation: UITableViewRowAnimation.Automatic)
-          tableView.endUpdates()
+          var indexPaths = i.map { NSIndexPath(forItem: $0, inSection: self.section)! }
+          if let shouldReloadRows = self.shouldReloadRows {
+            indexPaths = shouldReloadRows(tableView, indexPaths)
+          }
+          if !indexPaths.isEmpty {
+            tableView.beginUpdates()
+            tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: UITableViewRowAnimation.Automatic)
+            tableView.endUpdates()
+          }
         }
       }
     }
@@ -176,15 +184,29 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
   private var dataSource: TableViewDynamicArrayDataSource?
   private var sectionBonds: [UITableViewDataSourceSectionBond<Void>] = []
   public let disableAnimation: Bool
+  
+  /**
+  return only the rows that should be reloaded in the table view.
+  Defaults to reloading all rows
+  */
+  public var shouldReloadRows: ((UITableView, [NSIndexPath]) -> [NSIndexPath])? {
+    didSet {
+      for section in sectionBonds {
+        section.shouldReloadRows = shouldReloadRows
+      }
+    }
+  }
+  
   public weak var nextDataSource: UITableViewDataSource? {
     didSet(newValue) {
       dataSource?.nextDataSource = newValue
     }
   }
   
-  public init(tableView: UITableView, disableAnimation: Bool = false) {
+  public init(tableView: UITableView, disableAnimation: Bool = false, shouldReloadRows: ((UITableView, [NSIndexPath]) -> [NSIndexPath])? = nil) {
     self.disableAnimation = disableAnimation
     self.tableView = tableView
+    self.shouldReloadRows = shouldReloadRows
     super.init()
     
     self.didInsertListener = { [weak self] array, i in
@@ -195,7 +217,7 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
             tableView.insertSections(NSIndexSet(array: i), withRowAnimation: UITableViewRowAnimation.Automatic)
             
             for section in sorted(i, <) {
-              let sectionBond = UITableViewDataSourceSectionBond<Void>(tableView: tableView, section: section, disableAnimation: disableAnimation)
+              let sectionBond = UITableViewDataSourceSectionBond<Void>(tableView: tableView, section: section, disableAnimation: disableAnimation, shouldReloadRows: self?.shouldReloadRows)
               let sectionDynamic = array[section]
               sectionDynamic.bindTo(sectionBond)
               s.sectionBonds.insert(sectionBond, atIndex: section)
@@ -240,7 +262,7 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
             tableView.reloadSections(NSIndexSet(array: i), withRowAnimation: UITableViewRowAnimation.Automatic)
 
             for section in i {
-              let sectionBond = UITableViewDataSourceSectionBond<Void>(tableView: tableView, section: section, disableAnimation: disableAnimation)
+              let sectionBond = UITableViewDataSourceSectionBond<Void>(tableView: tableView, section: section, disableAnimation: disableAnimation, shouldReloadRows: self?.shouldReloadRows)
               let sectionDynamic = array[section]
               sectionDynamic.bindTo(sectionBond)
               
@@ -270,7 +292,7 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
     if let dynamic = dynamic as? DynamicArray<DynamicArray<UITableViewCell>> {
       
       for section in 0..<dynamic.count {
-        let sectionBond = UITableViewDataSourceSectionBond<Void>(tableView: self.tableView, section: section, disableAnimation: disableAnimation)
+        let sectionBond = UITableViewDataSourceSectionBond<Void>(tableView: self.tableView, section: section, disableAnimation: disableAnimation, shouldReloadRows: shouldReloadRows)
         let sectionDynamic = dynamic[section]
         sectionDynamic.bindTo(sectionBond)
         sectionBonds.append(sectionBond)

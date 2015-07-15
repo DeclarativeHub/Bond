@@ -156,4 +156,16 @@ class UITableViewDataSourceTests: XCTestCase {
     XCTAssertEqual(tableView.numberOfRowsInSection(1), 3, "wrong number of rows in reloaded section")
     XCTAssertEqual(expectedOperations, tableView.operations, "operation sequence did not match")
   }
+  
+  func testReloadRowsPreventing() {
+    let expectedIndexPaths = [NSIndexPath(forRow: 1, inSection: 1)!]
+    var passedIndexPaths: [NSIndexPath] = []
+    bond.shouldReloadRows = { _, indexPaths in
+      passedIndexPaths = indexPaths
+      return []
+    }
+    array[1][1] = 5
+    XCTAssertEqual(expectedIndexPaths, passedIndexPaths, "shouldReloadRows was not called correctly")
+    XCTAssertEqual(expectedOperations, tableView.operations, "operation sequence did not match")
+  }
 }
