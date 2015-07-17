@@ -655,13 +655,15 @@ Note: Directly setting `DynamicArray.value` is not recommended. The array's coun
 private class DynamicArrayFlattenProxy<T>: DynamicArray<T> {
   private let sourceArray: DynamicArray<DynamicArray<T>>
   
+  private var nestedBonds: [ArrayBond<T>] = [] // An ArrayBond for each section
+  private let globalBond: ArrayBond<DynamicArray<T>>
+  
   init(nestedSourceArray: DynamicArray<DynamicArray<T>>) {
     self.sourceArray = nestedSourceArray
+    globalBond = ArrayBond()
+    
     super.init([])
     
-    var nestedBonds: [ArrayBond<T>] = [] // An ArrayBond for each section
-    let globalBond: ArrayBond<DynamicArray<T>>
-    globalBond = ArrayBond()
     globalBond.bind(self.sourceArray, fire: false)
     
     let handleInsert = { [unowned self] (array: DynamicArray<DynamicArray<T>>, indices: [Int]) -> Void in
@@ -670,10 +672,10 @@ private class DynamicArrayFlattenProxy<T>: DynamicArray<T> {
         
         let bond = ArrayBond<T>()
         bond.bind(innerArray)
-        nestedBonds.insert(bond, atIndex: indice)
+        self.nestedBonds.insert(bond, atIndex: indice)
         
         let handleReset = { (subArray: DynamicArray<T>) -> Void in
-          if let globalSectionIndex = find(nestedBonds, bond) {
+          if let globalSectionIndex = find(self.nestedBonds, bond) {
             let toSplice = (0..<subArray.count).map { index in subArray[index] }
             let globalRowIndex = self.getGlobalIndex((section: globalSectionIndex, row: 0))
             self.splice(toSplice, atIndex: globalRowIndex)
@@ -684,16 +686,16 @@ private class DynamicArrayFlattenProxy<T>: DynamicArray<T> {
         
         handleReset(innerArray)
         
-        bond.didInsertListener = { subArray, subIndices in
-          if let globalSectionIndex = find(nestedBonds, bond) {
+        bond.didInsertListener = { [unowned self] subArray, subIndices in
+          if let globalSectionIndex = find(self.nestedBonds, bond) {
             let toSplice = sorted(subIndices, <).map { index in subArray[index] }
             self.splice(toSplice, atIndex: globalSectionIndex)
           } else {
             assertionFailure("Bond doesn't exist in our internal array.")
           }
         }
-        bond.didRemoveListener = { subArray, subIndices in
-          if let globalSectionIndex = find(nestedBonds, bond) {
+        bond.didRemoveListener = { [unowned self] subArray, subIndices in
+          if let globalSectionIndex = find(self.nestedBonds, bond) {
             for i in sorted(subIndices, >) {
               self.removeAtIndex(globalSectionIndex + i)
             }
@@ -701,8 +703,8 @@ private class DynamicArrayFlattenProxy<T>: DynamicArray<T> {
             assertionFailure("Bond doesn't exist in our internal array.")
           }
         }
-        bond.didUpdateListener = { subArray, subIndices in
-          if let globalSectionIndex = find(nestedBonds, bond) {
+        bond.didUpdateListener = { [unowned self] subArray, subIndices in
+          if let globalSectionIndex = find(self.nestedBonds, bond) {
             for i in subIndices {
               self[globalSectionIndex + i] = subArray[i]
             }
@@ -710,8 +712,8 @@ private class DynamicArrayFlattenProxy<T>: DynamicArray<T> {
             assertionFailure("Bond doesn't exist in our internal array.")
           }
         }
-        bond.willResetListener = { subArray in
-          if let globalSectionIndex = find(nestedBonds, bond) {
+        bond.willResetListener = { [unowned self] subArray in
+          if let globalSectionIndex = find(self.nestedBonds, bond) {
             for i in 0..<subArray.count {
               self.removeAtIndex(globalSectionIndex)
             }
@@ -725,7 +727,7 @@ private class DynamicArrayFlattenProxy<T>: DynamicArray<T> {
     }
     
     let handleGlobalReset = { [unowned self] (array: DynamicArray<DynamicArray<T>>) -> Void in
-      nestedBonds = []
+      self.nestedBonds = []
       self.setArray([])
       handleInsert(array, Array(0..<array.count))
     }
@@ -736,14 +738,14 @@ private class DynamicArrayFlattenProxy<T>: DynamicArray<T> {
     
     globalBond.willRemoveListener = { [unowned self] array, indices in
       
-      for indice in sorted(indices, >) {
-        let globalSectionStart = self.getGlobalIndex((section: indice, row: 0))
+      for index in sorted(indices, >) {
+        let globalSectionStart = self.getGlobalIndex((section: index, row: 0))
         
-        for i in reverse(globalSectionStart..<globalSectionStart+array[indice].count) {
+        for i in reverse(globalSectionStart..<globalSectionStart+array[index].count) {
           self.removeAtIndex(i)
         }
         
-        nestedBonds.removeAtIndex(indice)
+         self.nestedBonds.removeAtIndex(index)
       }
     }
     
