@@ -27,13 +27,14 @@
 
 import UIKit
 
-@objc class SwitchDynamicHelper
+class SwitchDynamicHelper: NSObject
 {
   weak var control: UISwitch?
   var listener: (Bool -> Void)?
   
   init(control: UISwitch) {
     self.control = control
+    super.init()
     control.addTarget(self, action: Selector("valueChanged:"), forControlEvents: .ValueChanged)
   }
   

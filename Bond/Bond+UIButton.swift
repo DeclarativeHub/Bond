@@ -27,13 +27,14 @@
 
 import UIKit
 
-@objc class ButtonDynamicHelper
+class ButtonDynamicHelper: NSObject
 {
   weak var control: UIButton?
   var listener: (UIControlEvents -> Void)?
   
   init(control: UIButton) {
     self.control = control
+    super.init()
     control.addTarget(self, action: Selector("touchDown:"), forControlEvents: .TouchDown)
     control.addTarget(self, action: Selector("touchUpInside:"), forControlEvents: .TouchUpInside)
     control.addTarget(self, action: Selector("touchUpOutside:"), forControlEvents: .TouchUpOutside)

@@ -269,7 +269,7 @@ public struct DynamicArrayGenerator<T>: GeneratorType {
     self.array = array
   }
   
-  typealias Element = T
+  public typealias Element = T
   
   public mutating func next() -> T? {
     index++
@@ -663,50 +663,50 @@ private class DynamicArrayDeliverOnProxy<T>: DynamicArray<T> {
     super.init([])
     
     bond.willInsertListener = { [unowned self] array, i in
-      dispatch_async(queue) { [weak self] in
-        self?.dispatchWillInsert(i)
+      dispatch_async(queue) {
+        self.dispatchWillInsert(i)
       }
     }
     
     bond.didInsertListener = { [unowned self] array, i in
-      dispatch_async(queue) { [weak self] in
-        self?.dispatchDidInsert(i)
+      dispatch_async(queue) {
+        self.dispatchDidInsert(i)
       }
     }
     
     bond.willRemoveListener = { [unowned self] array, i in
-      dispatch_async(queue) { [weak self] in
-        self?.dispatchWillRemove(i)
+      dispatch_async(queue) {
+        self.dispatchWillRemove(i)
       }
     }
     
     bond.didRemoveListener = { [unowned self] array, i in
-      dispatch_async(queue) { [weak self] in
-        self?.dispatchDidRemove(i)
+      dispatch_async(queue) {
+        self.dispatchDidRemove(i)
       }
     }
     
     bond.willUpdateListener = { [unowned self] array, i in
-      dispatch_async(queue) { [weak self] in
-        self?.dispatchWillUpdate(i)
+      dispatch_async(queue) {
+        self.dispatchWillUpdate(i)
       }
     }
     
     bond.didUpdateListener = { [unowned self] array, i in
-      dispatch_async(queue) { [weak self] in
-        self?.dispatchDidUpdate(i)
+      dispatch_async(queue) {
+        self.dispatchDidUpdate(i)
       }
     }
     
     bond.willResetListener = { [unowned self] array in
-      dispatch_async(queue) { [weak self] in
-        self?.dispatchWillReset()
+      dispatch_async(queue) {
+        self.dispatchWillReset()
       }
     }
     
     bond.didResetListener = { [unowned self] array in
-      dispatch_async(queue) { [weak self] in
-        self?.dispatchDidReset()
+      dispatch_async(queue) {
+        self.dispatchDidReset()
       }
     }
   }
