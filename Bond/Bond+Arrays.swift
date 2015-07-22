@@ -269,7 +269,7 @@ public struct DynamicArrayGenerator<T>: GeneratorType {
     self.array = array
   }
   
-  typealias Element = T
+  public typealias Element = T
   
   public mutating func next() -> T? {
     index++
