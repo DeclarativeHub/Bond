@@ -48,8 +48,8 @@ public class Bond<T> {
   public typealias Listener = T -> Void
   
   public var listener: Listener?
-  public var bondedDynamics: [Dynamic<T>] = []
-  public var bondedWeakDynamics: [DynamicBox<T>] = []
+  internal var bondedDynamics: [Dynamic<T>] = []
+  internal var bondedWeakDynamics: [DynamicBox<T>] = []
   
   public init() {
   }
@@ -135,6 +135,10 @@ public class Dynamic<T> {
     }
   }
   
+  public var numberOfBoundBonds: Int {
+    return bonds.count
+  }
+  
   private func dispatch(value: T) {
     // lock
     self.dispatchInProgress = true
@@ -158,7 +162,7 @@ public class Dynamic<T> {
   }
   
   public let valueBond = Bond<T>()
-  public var bonds: Set<BondBox<T>> = Set()
+  internal var bonds: Set<BondBox<T>> = Set()
 
   private init() {
     _value = nil

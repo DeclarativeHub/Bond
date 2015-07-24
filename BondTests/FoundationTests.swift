@@ -12,6 +12,7 @@ import Bond
 @objc class User: NSObject {
   dynamic var name: NSString?
   dynamic var height: NSNumber = NSNumber(float: 0.0)
+  dynamic var date: NSDate?
   
   init(name: NSString?) {
     self.name = name
@@ -77,5 +78,19 @@ class FoundationTests: XCTestCase {
     
     height.value = 7.1
     XCTAssert(abs(user.height.floatValue - 7.1) < 0.0001, "Value after dynamic change.")
+  }
+    
+  func testKVO5() {
+    let user = User(name: nil)
+    let dynamic: Dynamic<NSDate?> = dynamicOptionalObservableFor(user, keyPath: "date")
+    
+    XCTAssert(dynamic.value == nil, "Value after initialization.")
+
+    let date = NSDate()
+    user.date = date
+    XCTAssert(user.date == date, "Value after property change.")
+
+    user.date = nil
+    XCTAssert(dynamic.value == nil, "Value after property change.")
   }
 }

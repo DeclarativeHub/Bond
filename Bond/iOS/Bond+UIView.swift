@@ -30,6 +30,7 @@ import UIKit
 private var backgroundColorDynamicHandleUIView: UInt8 = 0;
 private var alphaDynamicHandleUIView: UInt8 = 0;
 private var hiddenDynamicHandleUIView: UInt8 = 0;
+private var userInteractionEnabledUIView: UInt8 = 0;
 
 extension UIView {
   
@@ -71,4 +72,18 @@ extension UIView {
       return d
     }
   }
+    
+  public var dynUserInteractionEnabled: Dynamic<Bool> {
+    if let d: AnyObject = objc_getAssociatedObject(self, &userInteractionEnabledUIView) {
+      return (d as? Dynamic<Bool>)!
+    } else {
+      let d = InternalDynamic<Bool>(self.userInteractionEnabled)
+      let bond = Bond<Bool>() { [weak self] v in if let s = self { s.userInteractionEnabled = v } }
+      d.bindTo(bond, fire: false, strongly: false)
+      d.retain(bond)
+      objc_setAssociatedObject(self, &hiddenDynamicHandleUIView, d, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+      return d
+    }
+  }
+
 }

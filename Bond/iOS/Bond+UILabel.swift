@@ -29,6 +29,7 @@ import UIKit
 
 private var textDynamicHandleUILabel: UInt8 = 0;
 private var attributedTextDynamicHandleUILabel: UInt8 = 0;
+private var textColorDynamicHandleUILabel: UInt8 = 0;
 
 extension UILabel: Bondable {
   public var dynText: Dynamic<String> {
@@ -43,7 +44,7 @@ extension UILabel: Bondable {
       return d
     }
   }
-  
+    
   public var dynAttributedText: Dynamic<NSAttributedString> {
     if let d: AnyObject = objc_getAssociatedObject(self, &attributedTextDynamicHandleUILabel) {
       return (d as? Dynamic<NSAttributedString>)!
@@ -56,7 +57,20 @@ extension UILabel: Bondable {
       return d
     }
   }
-  
+    
+  public var dynTextColor: Dynamic<UIColor> {
+    if let d: AnyObject = objc_getAssociatedObject(self, &textColorDynamicHandleUILabel) {
+      return (d as? Dynamic<UIColor>)!
+    } else {
+      let d = InternalDynamic<UIColor>(self.textColor ?? UIColor.blackColor())
+      let bond = Bond<UIColor>() { [weak self] v in if let s = self { s.textColor = v } }
+      d.bindTo(bond, fire: false, strongly: false)
+      d.retain(bond)
+      objc_setAssociatedObject(self, &textColorDynamicHandleUILabel, d, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+      return d
+    }
+  }
+    
   public var designatedBond: Bond<String> {
     return self.dynText.valueBond
   }

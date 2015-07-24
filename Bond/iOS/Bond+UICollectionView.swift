@@ -193,6 +193,29 @@ public class UICollectionViewDataSourceBond<T>: ArrayBond<DynamicArray<UICollect
   }
 }
 
+
+private var bondDynamicHandleUICollectionView: UInt8 = 0
+
+extension UICollectionView /*: Bondable */ {
+  public var designatedBond: UICollectionViewDataSourceBond<UICollectionViewCell> {
+    if let d: AnyObject = objc_getAssociatedObject(self, &bondDynamicHandleUICollectionView) {
+      return (d as? UICollectionViewDataSourceBond<UICollectionViewCell>)!
+    } else {
+      let bond = UICollectionViewDataSourceBond<UICollectionViewCell>(collectionView: self)
+      objc_setAssociatedObject(self, &bondDynamicHandleUICollectionView, bond, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+      return bond
+    }
+  }
+}
+
 public func ->> <T>(left: DynamicArray<UICollectionViewCell>, right: UICollectionViewDataSourceBond<T>) {
   right.bind(left)
+}
+
+public func ->> (left: DynamicArray<UICollectionViewCell>, right: UICollectionView) {
+  left ->> right.designatedBond
+}
+
+public func ->> (left: DynamicArray<DynamicArray<UICollectionViewCell>>, right: UICollectionView) {
+  left ->> right.designatedBond
 }

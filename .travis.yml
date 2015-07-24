@@ -1,0 +1,7 @@
+language: objective-c
+xcode_project: Bond.xcodeproj
+xcode_scheme: Bond
+osx_image: xcode6.4
+
+script: xctool -project Bond.xcodeproj -scheme Bond -sdk iphonesimulator test && xctool -project Bond.xcodeproj -scheme BondOSX -sdk macosx test
+
