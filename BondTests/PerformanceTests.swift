@@ -51,7 +51,7 @@ class DynamicPerformanceTests: XCTestCase {
       let dynamicInt = Dynamic<Int>(0)
       let intBond = Bond<Int>({ value in })
 
-      dynamicInt.bonds.insert(BondBox<Int>(intBond))
+      dynamicInt.bindTo(intBond)
 
       // Test
       self.startMeasuring()
