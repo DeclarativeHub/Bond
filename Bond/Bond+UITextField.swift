@@ -27,13 +27,14 @@
 
 import UIKit
 
-@objc class TextFieldDynamicHelper
+class TextFieldDynamicHelper: NSObject
 {
   weak var control: UITextField?
   var listener: (String -> Void)?
   
   init(control: UITextField) {
     self.control = control
+    super.init()
     control.addTarget(self, action: Selector("editingChanged:"), forControlEvents: .EditingChanged)
   }
   

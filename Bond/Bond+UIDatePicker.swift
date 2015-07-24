@@ -27,13 +27,14 @@
 
 import UIKit
 
-@objc class DatePickerDynamicHelper
+class DatePickerDynamicHelper: NSObject
 {
   weak var control: UIDatePicker?
   var listener: (NSDate -> Void)?
   
   init(control: UIDatePicker) {
     self.control = control
+    super.init()
     control.addTarget(self, action: Selector("valueChanged:"), forControlEvents: .ValueChanged)
   }
   

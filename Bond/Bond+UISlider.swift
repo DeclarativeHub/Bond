@@ -27,13 +27,14 @@
 
 import UIKit
 
-@objc class SliderDynamicHelper
+class SliderDynamicHelper: NSObject
 {
   weak var control: UISlider?
   var listener: (Float -> Void)?
   
   init(control: UISlider) {
     self.control = control
+    super.init()
     control.addTarget(self, action: Selector("valueChanged:"), forControlEvents: .ValueChanged)
   }
   
