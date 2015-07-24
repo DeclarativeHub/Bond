@@ -41,8 +41,8 @@ class UILabelTests: XCTestCase {
   }
     
   func testUILabelTextColorBond() {
-    var dynamicDriver = Dynamic<UIColor>(UIColor.blackColor())
-    var label = UILabel()
+    let dynamicDriver = Dynamic<UIColor>(UIColor.blackColor())
+    let label = UILabel()
         
     label.textColor = UIColor.redColor()
     XCTAssert(label.textColor == UIColor.redColor(), "Initial Value")

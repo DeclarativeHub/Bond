@@ -19,7 +19,7 @@ import Bond
 class NSLayoutConstraintTests : XCTestCase {
     
     func testNSLayoutConstraintActiveBond() {
-        var dynamicDriver = Dynamic<Bool>(true)
+        let dynamicDriver = Dynamic<Bool>(true)
         let view = View()
         let constraint = NSLayoutConstraint(item: view, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 100)
         

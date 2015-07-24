@@ -66,7 +66,7 @@ extension UILabel: Bondable {
       let bond = Bond<UIColor>() { [weak self] v in if let s = self { s.textColor = v } }
       d.bindTo(bond, fire: false, strongly: false)
       d.retain(bond)
-      objc_setAssociatedObject(self, &textColorDynamicHandleUILabel, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      objc_setAssociatedObject(self, &textColorDynamicHandleUILabel, d, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       return d
     }
   }

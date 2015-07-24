@@ -202,7 +202,7 @@ extension UICollectionView /*: Bondable */ {
       return (d as? UICollectionViewDataSourceBond<UICollectionViewCell>)!
     } else {
       let bond = UICollectionViewDataSourceBond<UICollectionViewCell>(collectionView: self)
-      objc_setAssociatedObject(self, &bondDynamicHandleUICollectionView, bond, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      objc_setAssociatedObject(self, &bondDynamicHandleUICollectionView, bond, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       return bond
     }
   }

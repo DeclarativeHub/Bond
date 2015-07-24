@@ -55,7 +55,7 @@ class UIViewTests: XCTestCase {
   }
     
   func testUIViewUserInteractionEnabledBond() {
-    var dynamicDriver = Dynamic<Bool>(false)
+    let dynamicDriver = Dynamic<Bool>(false)
     let view = UIView()
 
     view.userInteractionEnabled = true

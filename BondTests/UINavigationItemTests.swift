@@ -13,7 +13,7 @@ import Bond
 class UINavigationItemTests : XCTestCase {
     
     func testUINavigationItemTitleBond() {
-        var dynamicDriver = Dynamic<String>("TestTitle")
+        let dynamicDriver = Dynamic<String>("TestTitle")
         let item = UINavigationItem()
         
         XCTAssert(item.title == nil, "Initial value")

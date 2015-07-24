@@ -298,7 +298,7 @@ extension UITableView /*: Bondable */ {
       return (d as? UITableViewDataSourceBond<UITableViewCell>)!
     } else {
       let bond = UITableViewDataSourceBond<UITableViewCell>(tableView: self, disableAnimation: false)
-      objc_setAssociatedObject(self, &bondDynamicHandleUITableView, bond, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      objc_setAssociatedObject(self, &bondDynamicHandleUITableView, bond, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       return bond
     }
   }
