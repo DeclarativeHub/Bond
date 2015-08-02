@@ -51,6 +51,7 @@
 		DCA979851A83C52D00DD4A30 /* Bond+Arrays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BCB1A7C21B600A13B6B /* Bond+Arrays.swift */; };
 		DFC184961B34193A00B3444E /* PerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC184951B34193A00B3444E /* PerformanceTests.swift */; };
 		EA3E36B81B41702100559641 /* NSLayoutConstraintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */; };
+		EA45874A1B41936600C1F4C3 /* UICollectionViewDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4587491B41936600C1F4C3 /* UICollectionViewDataSourceTests.swift */; };
 		EA4BFACD1B41722D00DFA736 /* UINavigationItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4BFACC1B41722D00DFA736 /* UINavigationItemTests.swift */; };
 		EAD8B2DD1B41AF4300995CE9 /* NSLayoutConstraintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */; };
 		EAD8B2FB1B41B04500995CE9 /* Bond+NSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD8B2DF1B41B04500995CE9 /* Bond+NSButton.swift */; };
@@ -173,6 +174,7 @@
 		DCA979731A83C3A200DD4A30 /* BondOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BondOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFC184951B34193A00B3444E /* PerformanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PerformanceTests.swift; sourceTree = "<group>"; };
 		EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSLayoutConstraintTests.swift; sourceTree = "<group>"; };
+		EA4587491B41936600C1F4C3 /* UICollectionViewDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UICollectionViewDataSourceTests.swift; sourceTree = "<group>"; };
 		EA4BFACC1B41722D00DFA736 /* UINavigationItemTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UINavigationItemTests.swift; sourceTree = "<group>"; };
 		EAD8B2DF1B41B04500995CE9 /* Bond+NSButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+NSButton.swift"; sourceTree = "<group>"; };
 		EAD8B2E01B41B04500995CE9 /* Bond+NSColorWell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+NSColorWell.swift"; sourceTree = "<group>"; };
@@ -254,6 +256,7 @@
 			isa = PBXGroup;
 			children = (
 				CC581F751AE23D8B00D69AE7 /* UITableViewDataSourceTests.swift */,
+				EA4587491B41936600C1F4C3 /* UICollectionViewDataSourceTests.swift */,
 				03A5DC991AAF971F007616B4 /* UIViewTests.swift */,
 				03A5DC9F1AAF982D007616B4 /* UIImageViewTests.swift */,
 				03A5DC9D1AAF97E9007616B4 /* UIProgressViewTests.swift */,
@@ -706,6 +709,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA45874A1B41936600C1F4C3 /* UICollectionViewDataSourceTests.swift in Sources */,
 				03A5DCA01AAF982D007616B4 /* UIImageViewTests.swift in Sources */,
 				03A5DCA21AAF9893007616B4 /* UIBarItemTests.swift in Sources */,
 				EA4BFACD1B41722D00DFA736 /* UINavigationItemTests.swift in Sources */,

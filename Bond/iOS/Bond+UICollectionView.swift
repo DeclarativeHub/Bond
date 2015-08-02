@@ -40,37 +40,53 @@ import UIKit
   }
 }
 
+protocol UICollectionViewDataSourceSectionBondDelegate: class {
+  func performOperation(operation: () -> ())
+  func beginUpdates()
+  func endUpdates()
+}
+
 private class UICollectionViewDataSourceSectionBond<T>: ArrayBond<UICollectionViewCell> {
   weak var collectionView: UICollectionView?
   var section: Int
+  weak var delegate: UICollectionViewDataSourceSectionBondDelegate?
   
-  init(collectionView: UICollectionView?, section: Int) {
+  init(collectionView: UICollectionView?, section: Int, delegate: UICollectionViewDataSourceSectionBondDelegate) {
     self.collectionView = collectionView
     self.section = section
+    self.delegate = delegate
     super.init()
     
     self.didInsertListener = { [unowned self] a, i in
       if let collectionView: UICollectionView = self.collectionView {
-        collectionView.performBatchUpdates({
+        self.delegate?.performOperation() {
           collectionView.insertItemsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) })
-          }, completion: nil)
+        }
       }
     }
     
     self.didRemoveListener = { [unowned self] a, i in
       if let collectionView = self.collectionView {
-        collectionView.performBatchUpdates({
+        self.delegate?.performOperation() {
           collectionView.deleteItemsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) })
-          }, completion: nil)
+        }
       }
     }
     
     self.didUpdateListener = { [unowned self] a, i in
       if let collectionView = self.collectionView {
-        collectionView.performBatchUpdates({
+        self.delegate?.performOperation() {
           collectionView.reloadItemsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) })
-          }, completion: nil)
+        }
       }
+    }
+    
+    self.willPerformBatchUpdatesListener = { [unowned self] in
+      self.delegate?.beginUpdates()
+    }
+    
+    self.didPerformBatchUpdatesListener = { [unowned self] in
+      self.delegate?.endUpdates()
     }
     
     self.didResetListener = { [weak self] array in
@@ -89,6 +105,8 @@ public class UICollectionViewDataSourceBond<T>: ArrayBond<DynamicArray<UICollect
   weak var collectionView: UICollectionView?
   private var dataSource: CollectionViewDynamicArrayDataSource?
   private var sectionBonds: [UICollectionViewDataSourceSectionBond<Void>] = []
+  private var unpairedBatchNotificationCount = 0
+  private var batchedUpdates: [(() -> ())] = []
   
   public weak var nextDataSource: UICollectionViewDataSource? {
     didSet(newValue) {
@@ -103,12 +121,12 @@ public class UICollectionViewDataSourceBond<T>: ArrayBond<DynamicArray<UICollect
     self.didInsertListener = { [weak self] array, i in
       if let s = self {
         if let collectionView: UICollectionView = self?.collectionView {
-          collectionView.performBatchUpdates({
+          s.performOperation() {
             collectionView.insertSections(NSIndexSet(array: i))
-            }, completion: nil)
+          }
           
           for section in sorted(i, <) {
-            let sectionBond = UICollectionViewDataSourceSectionBond<Void>(collectionView: collectionView, section: section)
+            let sectionBond = UICollectionViewDataSourceSectionBond<Void>(collectionView: collectionView, section: section, delegate: s)
             let sectionDynamic = array[section]
             sectionDynamic.bindTo(sectionBond)
             s.sectionBonds.insert(sectionBond, atIndex: section)
@@ -124,9 +142,9 @@ public class UICollectionViewDataSourceBond<T>: ArrayBond<DynamicArray<UICollect
     self.didRemoveListener = { [weak self] array, i in
       if let s = self {
         if let collectionView = s.collectionView {
-          collectionView.performBatchUpdates({
+          s.performOperation() {
             collectionView.deleteSections(NSIndexSet(array: i))
-            }, completion: nil)
+          }
           
           for section in sorted(i, >) {
             s.sectionBonds[section].unbindAll()
@@ -141,20 +159,30 @@ public class UICollectionViewDataSourceBond<T>: ArrayBond<DynamicArray<UICollect
     }
     
     self.didUpdateListener = { [weak self] array, i in
-      if let collectionView = self?.collectionView {
-        collectionView.performBatchUpdates({
-          collectionView.reloadSections(NSIndexSet(array: i))
-          }, completion: nil)
-        
-        for section in i {
-          let sectionBond = UICollectionViewDataSourceSectionBond<Void>(collectionView: collectionView, section: section)
-          let sectionDynamic = array[section]
-          sectionDynamic.bindTo(sectionBond)
+      if let s = self {
+        if let collectionView = self?.collectionView {
+          self?.performOperation() {
+            collectionView.reloadSections(NSIndexSet(array: i))
+          }
           
-          self?.sectionBonds[section].unbindAll()
-          self?.sectionBonds[section] = sectionBond
+          for section in i {
+            let sectionBond = UICollectionViewDataSourceSectionBond<Void>(collectionView: collectionView, section: section, delegate: s)
+            let sectionDynamic = array[section]
+            sectionDynamic.bindTo(sectionBond)
+            
+            self?.sectionBonds[section].unbindAll()
+            self?.sectionBonds[section] = sectionBond
+          }
         }
       }
+    }
+    
+    self.willPerformBatchUpdatesListener = { [weak self] in
+      self?.beginUpdates()
+    }
+    
+    self.didPerformBatchUpdatesListener = { [weak self] in
+      self?.endUpdates()
     }
     
     self.didResetListener = { [weak self] array in
@@ -173,7 +201,7 @@ public class UICollectionViewDataSourceBond<T>: ArrayBond<DynamicArray<UICollect
     if let dynamic = dynamic as? DynamicArray<DynamicArray<UICollectionViewCell>> {
       
       for section in 0..<dynamic.count {
-        let sectionBond = UICollectionViewDataSourceSectionBond<Void>(collectionView: self.collectionView, section: section)
+        let sectionBond = UICollectionViewDataSourceSectionBond<Void>(collectionView: self.collectionView, section: section, delegate: self)
         let sectionDynamic = dynamic[section]
         sectionDynamic.bindTo(sectionBond)
         sectionBonds.append(sectionBond)
@@ -204,6 +232,35 @@ extension UICollectionView /*: Bondable */ {
       let bond = UICollectionViewDataSourceBond<UICollectionViewCell>(collectionView: self)
       objc_setAssociatedObject(self, &bondDynamicHandleUICollectionView, bond, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
       return bond
+    }
+  }
+}
+
+// TODO: Incorporate UICollectionView bug fixes from https://github.com/jessesquires/JSQDataSourcesKit
+// In particular apply object updates before section updates
+extension UICollectionViewDataSourceBond: UICollectionViewDataSourceSectionBondDelegate {
+  func performOperation(operation: () -> ()) {
+    if self.unpairedBatchNotificationCount == 0 {
+      collectionView?.performBatchUpdates(operation, completion: nil)
+    } else {
+      batchedUpdates.append(operation)
+    }
+  }
+  
+  func beginUpdates() {
+    self.unpairedBatchNotificationCount++
+  }
+  
+  func endUpdates() {
+    self.unpairedBatchNotificationCount--
+    assert(self.unpairedBatchNotificationCount >= 0, "End updates not paired with beginUpdates")
+    if self.unpairedBatchNotificationCount == 0 && batchedUpdates.count > 0 {
+      collectionView?.performBatchUpdates({
+        for operation in self.batchedUpdates {
+          operation()
+        }
+        }, completion: nil)
+      batchedUpdates.removeAll(keepCapacity: false)
     }
   }
 }

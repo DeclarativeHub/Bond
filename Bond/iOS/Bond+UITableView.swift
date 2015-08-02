@@ -124,6 +124,8 @@ extension NSIndexSet {
 private class UITableViewDataSourceSectionBond<T>: ArrayBond<UITableViewCell> {
   weak var tableView: UITableView?
   var section: Int
+  private var batchUpdating = false
+  
   init(tableView: UITableView?, section: Int, disableAnimation: Bool = false) {
     self.tableView = tableView
     self.section = section
@@ -132,9 +134,9 @@ private class UITableViewDataSourceSectionBond<T>: ArrayBond<UITableViewCell> {
     self.didInsertListener = { [unowned self] a, i in
       if let tableView: UITableView = self.tableView {
         perform(animated: !disableAnimation) {
-          tableView.beginUpdates()
+          if !self.batchUpdating { tableView.beginUpdates() }
           tableView.insertRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) }, withRowAnimation: UITableViewRowAnimation.Automatic)
-          tableView.endUpdates()
+          if !self.batchUpdating { tableView.endUpdates() }
         }
       }
     }
@@ -142,9 +144,9 @@ private class UITableViewDataSourceSectionBond<T>: ArrayBond<UITableViewCell> {
     self.didRemoveListener = { [unowned self] a, i in
       if let tableView = self.tableView {
         perform(animated: !disableAnimation) {
-          tableView.beginUpdates()
+          if !self.batchUpdating { tableView.beginUpdates() }
           tableView.deleteRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) }, withRowAnimation: UITableViewRowAnimation.Automatic)
-          tableView.endUpdates()
+          if !self.batchUpdating { tableView.endUpdates() }
         }
       }
     }
@@ -152,12 +154,23 @@ private class UITableViewDataSourceSectionBond<T>: ArrayBond<UITableViewCell> {
     self.didUpdateListener = { [unowned self] a, i in
       if let tableView = self.tableView {
         perform(animated: !disableAnimation) {
-          tableView.beginUpdates()
+          if !self.batchUpdating { tableView.beginUpdates() }
           tableView.reloadRowsAtIndexPaths(i.map { NSIndexPath(forItem: $0, inSection: self.section) }, withRowAnimation: UITableViewRowAnimation.Automatic)
-          tableView.endUpdates()
+          if !self.batchUpdating { tableView.endUpdates() }
         }
       }
     }
+    
+    self.willPerformBatchUpdatesListener = { [weak self] in
+      self?.batchUpdating = true
+      self?.tableView?.beginUpdates()
+    }
+    
+    self.didPerformBatchUpdatesListener = { [weak self] in
+      self?.tableView?.endUpdates()
+      self?.batchUpdating = false
+    }
+
     
     self.didResetListener = { [weak self] array in
       if let tableView = self?.tableView {
@@ -175,6 +188,7 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
   weak var tableView: UITableView?
   private var dataSource: TableViewDynamicArrayDataSource?
   private var sectionBonds: [UITableViewDataSourceSectionBond<Void>] = []
+  private var batchUpdating = false
   public let disableAnimation: Bool
   public weak var nextDataSource: UITableViewDataSource? {
     didSet(newValue) {
@@ -191,7 +205,7 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
       if let s = self {
         if let tableView: UITableView = self?.tableView {
           perform(animated: !disableAnimation) {
-            tableView.beginUpdates()
+            if !s.batchUpdating { tableView.beginUpdates() }
             tableView.insertSections(NSIndexSet(array: i), withRowAnimation: UITableViewRowAnimation.Automatic)
             
             for section in sorted(i, <) {
@@ -205,7 +219,7 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
               }
             }
             
-            tableView.endUpdates()
+            if !s.batchUpdating { tableView.endUpdates() }
           }
         }
       }
@@ -215,7 +229,7 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
       if let s = self {
         if let tableView = s.tableView {
           perform(animated: !disableAnimation) {
-            tableView.beginUpdates()
+            if !s.batchUpdating { tableView.beginUpdates() }
             tableView.deleteSections(NSIndexSet(array: i), withRowAnimation: UITableViewRowAnimation.Automatic)
             for section in sorted(i, >) {
               s.sectionBonds[section].unbindAll()
@@ -226,7 +240,7 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
               }
             }
             
-            tableView.endUpdates()
+            if !s.batchUpdating { tableView.endUpdates() }
           }
         }
       }
@@ -236,7 +250,7 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
       if let s = self {
         if let tableView = s.tableView {
           perform(animated: !disableAnimation) {
-            tableView.beginUpdates()
+            if !s.batchUpdating { tableView.beginUpdates() }
             tableView.reloadSections(NSIndexSet(array: i), withRowAnimation: UITableViewRowAnimation.Automatic)
 
             for section in i {
@@ -248,10 +262,20 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
               self?.sectionBonds[section] = sectionBond
             }
             
-            tableView.endUpdates()
+            if !s.batchUpdating { tableView.endUpdates() }
           }
         }
       }
+    }
+    
+    self.willPerformBatchUpdatesListener = { [weak self] in
+      self?.batchUpdating = true
+      self?.tableView?.beginUpdates()
+    }
+    
+    self.didPerformBatchUpdatesListener = { [weak self] in
+      self?.tableView?.endUpdates()
+      self?.batchUpdating = false
     }
     
     self.didResetListener = { [weak self] array in
