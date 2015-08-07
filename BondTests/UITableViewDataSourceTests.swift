@@ -93,6 +93,21 @@ class TestTableView: UITableView {
   }
 }
 
+class TestNextDataSource:NSObject, UITableViewDataSource {
+  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return 1
+  }
+  
+  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    return UITableViewCell()
+  }
+  
+  func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    return true
+  }
+}
+
+
 class UITableViewDataSourceTests: XCTestCase {
   var tableView: TestTableView!
   var array: DynamicArray<DynamicArray<Int>>!
@@ -155,5 +170,12 @@ class UITableViewDataSourceTests: XCTestCase {
     expectedOperations.append(.ReloadSections(NSIndexSet(index: 1)))
     XCTAssertEqual(tableView.numberOfRowsInSection(1), 3, "wrong number of rows in reloaded section")
     XCTAssertEqual(expectedOperations, tableView.operations, "operation sequence did not match")
+  }
+  
+  func testNextDataSource() {
+    let nextDataSource = TestNextDataSource()
+    bond.nextDataSource = nextDataSource
+    XCTAssertEqual(tableView.numberOfRowsInSection(1), 2, "wrong number of rows in section 1, nextDataSource should not override numberOfRowsInSection")
+    XCTAssertEqual(tableView.dataSource!.tableView!(tableView, canEditRowAtIndexPath: NSIndexPath(forRow: 0, inSection: 0)), true, "nextDataSource should override canEdiRowAtIndexPath")
   }
 }

@@ -177,7 +177,7 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
   private var sectionBonds: [UITableViewDataSourceSectionBond<Void>] = []
   public let disableAnimation: Bool
   public weak var nextDataSource: UITableViewDataSource? {
-    didSet(newValue) {
+    willSet(newValue) {
       dataSource?.nextDataSource = newValue
     }
   }
