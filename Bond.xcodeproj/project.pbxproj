@@ -25,6 +25,8 @@
 		03ACB50A1AB555D6001B3E64 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03ACB5091AB555D6001B3E64 /* Images.xcassets */; };
 		03ACB50D1AB555D6001B3E64 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03ACB50B1AB555D6001B3E64 /* LaunchScreen.xib */; };
 		03ACB5231AB6C840001B3E64 /* AssertEqualForOptionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ACB5221AB6C840001B3E64 /* AssertEqualForOptionals.swift */; };
+		5AC4262C1B555918009B9C6F /* Bond+UISegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC4262B1B555918009B9C6F /* Bond+UISegmentedControl.swift */; };
+		5AC4262E1B555933009B9C6F /* UISegmentedControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC4262D1B555933009B9C6F /* UISegmentedControlTests.swift */; };
 		69491BB41A7C217100A13B6B /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = 69491BB31A7C217100A13B6B /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69491BBA1A7C217100A13B6B /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69491BAE1A7C217100A13B6B /* Bond.framework */; };
 		69491BC11A7C217100A13B6B /* BondTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BC01A7C217100A13B6B /* BondTests.swift */; };
@@ -145,6 +147,8 @@
 		03ACB5171AB555D6001B3E64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03ACB5181AB555D6001B3E64 /* iOSAppForTestingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSAppForTestingTests.swift; sourceTree = "<group>"; };
 		03ACB5221AB6C840001B3E64 /* AssertEqualForOptionals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssertEqualForOptionals.swift; sourceTree = "<group>"; };
+		5AC4262B1B555918009B9C6F /* Bond+UISegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UISegmentedControl.swift"; sourceTree = "<group>"; };
+		5AC4262D1B555933009B9C6F /* UISegmentedControlTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UISegmentedControlTests.swift; sourceTree = "<group>"; };
 		69491BAE1A7C217100A13B6B /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		69491BB21A7C217100A13B6B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		69491BB31A7C217100A13B6B /* Bond.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bond.h; sourceTree = "<group>"; };
@@ -257,6 +261,7 @@
 				03A5DC9B1AAF977F007616B4 /* UILabelTests.swift */,
 				03A5DC971AAF96AD007616B4 /* UISliderTests.swift */,
 				03A5DC941AAF95EB007616B4 /* UIButtonTests.swift */,
+				5AC4262D1B555933009B9C6F /* UISegmentedControlTests.swift */,
 				03A5DCA51AAF992F007616B4 /* UISwitchTests.swift */,
 				03A5DCA71AAF995F007616B4 /* UITextFieldTests.swift */,
 				03A5DCA91AAF99C2007616B4 /* UITextViewTests.swift */,
@@ -316,7 +321,10 @@
 				03ACB5151AB555D6001B3E64 /* iOSAppForTestingTests */,
 				69491BAF1A7C217100A13B6B /* Products */,
 			);
+			indentWidth = 2;
 			sourceTree = "<group>";
+			tabWidth = 2;
+			usesTabs = 0;
 		};
 		69491BAF1A7C217100A13B6B /* Products */ = {
 			isa = PBXGroup;
@@ -441,6 +449,7 @@
 				EAD8B2F11B41B04500995CE9 /* Bond+UILabel.swift */,
 				EAD8B2F21B41B04500995CE9 /* Bond+UINavigationItem.swift */,
 				EAD8B2F31B41B04500995CE9 /* Bond+UIProgressView.swift */,
+				5AC4262B1B555918009B9C6F /* Bond+UISegmentedControl.swift */,
 				EAD8B2F41B41B04500995CE9 /* Bond+UISlider.swift */,
 				EAD8B2F51B41B04500995CE9 /* Bond+UISwitch.swift */,
 				EAD8B2F61B41B04500995CE9 /* Bond+UITableView.swift */,
@@ -682,6 +691,7 @@
 				EAD8B30A1B41B04500995CE9 /* Bond+CALayer.swift in Sources */,
 				EC048D181AA238AF00E9794C /* Bond+Operators.swift in Sources */,
 				EAD8B32A1B41B04500995CE9 /* Bond+UIView.swift in Sources */,
+				5AC4262C1B555918009B9C6F /* Bond+UISegmentedControl.swift in Sources */,
 				EAD8B3221B41B04500995CE9 /* Bond+UISwitch.swift in Sources */,
 				EC7137E31AA239FD00CFC854 /* Bond+Functional.swift in Sources */,
 				EAD8B3101B41B04500995CE9 /* Bond+UIBarItem.swift in Sources */,
@@ -701,6 +711,7 @@
 				EA4BFACD1B41722D00DFA736 /* UINavigationItemTests.swift in Sources */,
 				03ACB5231AB6C840001B3E64 /* AssertEqualForOptionals.swift in Sources */,
 				69491BC11A7C217100A13B6B /* BondTests.swift in Sources */,
+				5AC4262E1B555933009B9C6F /* UISegmentedControlTests.swift in Sources */,
 				EC6A5A851AB31954006071B6 /* ArrayTests.swift in Sources */,
 				69491BD31A7C242900A13B6B /* DynamicTests.swift in Sources */,
 				03A5DC9A1AAF971F007616B4 /* UIViewTests.swift in Sources */,

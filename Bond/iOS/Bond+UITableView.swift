@@ -177,7 +177,7 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
   private var sectionBonds: [UITableViewDataSourceSectionBond<Void>] = []
   public let disableAnimation: Bool
   public weak var nextDataSource: UITableViewDataSource? {
-    didSet(newValue) {
+    willSet(newValue) {
       dataSource?.nextDataSource = newValue
     }
   }
@@ -290,6 +290,20 @@ public class UITableViewDataSourceBond<T>: ArrayBond<DynamicArray<UITableViewCel
   }
 }
 
+private var bondDynamicHandleUITableView: UInt8 = 0
+
+extension UITableView /*: Bondable */ {
+  public var designatedBond: UITableViewDataSourceBond<UITableViewCell> {
+    if let d: AnyObject = objc_getAssociatedObject(self, &bondDynamicHandleUITableView) {
+      return (d as? UITableViewDataSourceBond<UITableViewCell>)!
+    } else {
+      let bond = UITableViewDataSourceBond<UITableViewCell>(tableView: self, disableAnimation: false)
+      objc_setAssociatedObject(self, &bondDynamicHandleUITableView, bond, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return bond
+    }
+  }
+}
+
 private func perform(#animated: Bool, block: () -> Void) {
   if !animated {
     UIView.performWithoutAnimation(block)
@@ -300,4 +314,12 @@ private func perform(#animated: Bool, block: () -> Void) {
 
 public func ->> <T>(left: DynamicArray<UITableViewCell>, right: UITableViewDataSourceBond<T>) {
   right.bind(left)
+}
+
+public func ->> (left: DynamicArray<UITableViewCell>, right: UITableView) {
+  left ->> right.designatedBond
+}
+
+public func ->> (left: DynamicArray<DynamicArray<UITableViewCell>>, right: UITableView) {
+  left ->> right.designatedBond
 }

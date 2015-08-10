@@ -71,7 +71,7 @@ viewModel.username <->> usernameTextField.dynText
 
 Notice the asymmetry of bi-directional bind operator. It's important which side of the expression something is on. In Bond, right side always retains left side! In this example, binding will exist as long as `usernameTextField` lives.
 
-Not impressed? Let me give you one last example. Say you have an array of repositories you would like to display in a table view. For each repository you have a name and its owner's profile photo. Of course, photo is not immediately available as it has to be downloaded, but once you get it, you want it to appear in table view's cell. Additionly, when user does 'pull down to refresh', and your array gets new repositiories, you want those in table view too. 
+Not impressed? Let me give you one last example. Say you have an array of repositories you would like to display in a table view. For each repository you have a name and its owner's profile photo. Of course, photo is not immediately available as it has to be downloaded, but once you get it, you want it to appear in table view's cell. Additionally, when user does 'pull down to refresh', and your array gets new repositiories, you want those in table view too. 
 
 So how do you proceed? Well, instead of implementing a data source object, observing photo downloads with KVO and manually updating table view with new items, with Bond you can do all that in just few lines:
 
