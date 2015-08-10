@@ -11,26 +11,26 @@ import XCTest
 import Bond
 
 class UIDatePickerTests: XCTestCase {
-
-  func testUIDatePickerDynamic() {
+  
+  func testUIDatePickerScalar() {
     let date1 = NSDate(timeIntervalSince1970: 10)
     let date2 = NSDate(timeIntervalSince1970: 10000)
     let date3 = NSDate(timeIntervalSince1970: 20000)
     
-    var dynamicDriver = Dynamic<NSDate>(date1)
+    let scalar = Scalar<NSDate>(date1)
     let datePicker = UIDatePicker()
     
-        datePicker.date = date2
-        XCTAssert(datePicker.date == date2, "Initial value")
+    datePicker.date = date2
+    XCTAssert(datePicker.date == date2, "Initial value")
     
-        dynamicDriver <->> datePicker.dynDate
-        XCTAssert(datePicker.date == date1, "DatePicker value after binding")
+    scalar |>< datePicker.bnd_date
+    XCTAssert(datePicker.date == date1, "DatePicker value after binding")
     
-        dynamicDriver.value = date3
-        XCTAssert(datePicker.date == date3, "DatePicker value reflects dynamic value change")
+    scalar.value = date3
+    XCTAssert(datePicker.date == date3, "DatePicker value reflects scalar value change")
     
-        datePicker.dynDate.value = date2 // ideally we should simulate user input
-        XCTAssert(dynamicDriver.value == date2, "Dynamic value reflects DatePicker value change")
+    datePicker.bnd_date.value = date2 // ideally we should simulate user input
+    XCTAssert(scalar.value == date2, "Scalar value reflects DatePicker value change")
   }
   
   func testOneWayOperators() {
@@ -39,22 +39,23 @@ class UIDatePickerTests: XCTestCase {
     let date3 = NSDate(timeIntervalSince1970: 3)
     
     var bondedValue = date1
-    let bond = Bond { bondedValue = $0 }
-    let dynamicDriver = Dynamic<NSDate>(date2)
+    let scalar = Scalar<NSDate>(date2)
     let datePicker1 = UIDatePicker()
     let datePicker2 = UIDatePicker()
     
     XCTAssertEqual(bondedValue, date1, "Intial value")
     
-    dynamicDriver ->> datePicker1
-    datePicker1 ->> datePicker2
-    datePicker2 ->> bond
+    scalar |> datePicker1.bnd_date
+    datePicker1.bnd_date |> datePicker2.bnd_date
+    
+    datePicker2.bnd_date.observe {
+      bondedValue = $0
+    }
     
     XCTAssertEqual(bondedValue, date2, "Value after binding")
     
-    dynamicDriver.value = date3
-    
-    XCTAssertEqual(bondedValue, date3, "Value after dynamic update")
+    scalar.value = date3
+    XCTAssertEqual(bondedValue, date3, "Value after scalar update")
   }
   
   func testTwoWayOperators() {
@@ -63,30 +64,30 @@ class UIDatePickerTests: XCTestCase {
     let date3 = NSDate(timeIntervalSince1970: 3)
     let date4 = NSDate(timeIntervalSince1970: 4)
     
-    let dynamicDriver1 = Dynamic<NSDate>(date1)
-    let dynamicDriver2 = Dynamic<NSDate>(date2)
+    let scalar1 = Scalar<NSDate>(date1)
+    let scalar2 = Scalar<NSDate>(date2)
     let datePicker1 = UIDatePicker()
     let datePicker2 = UIDatePicker()
     
-    XCTAssertEqual(dynamicDriver1.value, date1, "Intial value")
-    XCTAssertEqual(dynamicDriver2.value, date2, "Intial value")
+    XCTAssertEqual(scalar1.value, date1, "Intial value")
+    XCTAssertEqual(scalar2.value, date2, "Intial value")
     
-    dynamicDriver1 <->> datePicker1
-    datePicker1 <->> datePicker2
-    datePicker2 <->> dynamicDriver2
+    scalar1 |>< datePicker1.bnd_date
+    datePicker1.bnd_date |>< datePicker2.bnd_date
+    datePicker2.bnd_date |>< scalar2
     
-    XCTAssertEqual(dynamicDriver1.value, date1, "Value after binding")
-    XCTAssertEqual(dynamicDriver2.value, date1, "Value after binding")
+    XCTAssertEqual(scalar1.value, date1, "Value after binding")
+    XCTAssertEqual(scalar2.value, date1, "Value after binding")
     
-    dynamicDriver1.value = date3
+    scalar1.value = date3
     
-    XCTAssertEqual(dynamicDriver1.value, date3, "Value after dynamic update")
-    XCTAssertEqual(dynamicDriver2.value, date3, "Value after dynamic update")
+    XCTAssertEqual(scalar1.value, date3, "Value after scalar update")
+    XCTAssertEqual(scalar2.value, date3, "Value after scalar update")
     
-    dynamicDriver2.value = date4
+    scalar2.value = date4
     
-    XCTAssertEqual(dynamicDriver1.value, date4, "Value after dynamic update")
-    XCTAssertEqual(dynamicDriver2.value, date4, "Value after dynamic update")
-
+    XCTAssertEqual(scalar1.value, date4, "Value after scalar update")
+    XCTAssertEqual(scalar2.value, date4, "Value after scalar update")
+    
   }
 }

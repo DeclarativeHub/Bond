@@ -10,20 +10,28 @@ import Bond
 import QuartzCore
 import XCTest
 
+#if os(iOS)
+  import UIKit
+  typealias Color = UIColor
+  #else
+  import AppKit
+  typealias Color = NSColor
+#endif
+
 class CALayerTests: XCTestCase {
+  
+  func testCALayerBackgroundColorBond() {
+    let driver = Scalar<CGColor>(Color.whiteColor().CGColor)
+    let layer = CALayer()
 
-    func testCALayerBackgroundColorBond() {
-        var dynamicDriver = Dynamic<CGColor!>(CGColorCreateGenericGray(1.0, 1.0))
-        let layer = CALayer()
-
-        layer.backgroundColor = CGColorCreateGenericGray(0.4, 1.0)
-        XCTAssert(CGColorEqualToColor(layer.backgroundColor, CGColorCreateGenericGray(0.4, 1.0)), "Initial value")
-
-        dynamicDriver ->> layer.dynBackgroundColor
-        XCTAssert(CGColorEqualToColor(layer.backgroundColor, CGColorCreateGenericGray(1.0, 1.0)), "Value after binding")
-
-        dynamicDriver.value = CGColorCreateGenericRGB(255, 255, 0, 1)
-        XCTAssert(CGColorEqualToColor(layer.backgroundColor, CGColorCreateGenericRGB(255, 255, 0, 1)), "Value after dynamic change")
-    }
-
+    layer.backgroundColor = Color.redColor().CGColor
+    XCTAssert(CGColorEqualToColor(layer.backgroundColor, Color.redColor().CGColor), "Initial value")
+    
+    driver.bindTo(layer.bnd_backgroundColor)
+    XCTAssert(CGColorEqualToColor(layer.backgroundColor, Color.whiteColor().CGColor), "Value after binding")
+    
+    driver.value = Color.greenColor().CGColor
+    XCTAssert(CGColorEqualToColor(layer.backgroundColor, Color.greenColor().CGColor), "Value after dynamic change")
+  }
+  
 }

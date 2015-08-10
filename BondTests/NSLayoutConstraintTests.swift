@@ -13,22 +13,23 @@
   import AppKit
   typealias View = NSView
 #endif
+
 import XCTest
 import Bond
 
 class NSLayoutConstraintTests : XCTestCase {
+  
+  func testNSLayoutConstraintActiveBond() {
+    let driver = Scalar<Bool>(true)
+    let view = View()
+    let constraint = NSLayoutConstraint(item: view, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 100)
     
-    func testNSLayoutConstraintActiveBond() {
-        var dynamicDriver = Dynamic<Bool>(true)
-        let view = View()
-        let constraint = NSLayoutConstraint(item: view, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 100)
-        
-        XCTAssert(constraint.active == false, "Initial value")
-
-        dynamicDriver ->> constraint.dynActive
-        XCTAssert(constraint.active == true, "Value after binding")
-
-        dynamicDriver.value = false
-        XCTAssert(constraint.active == false, "Value after dynamic change")
-    }
+    XCTAssert(constraint.active == false, "Initial value")
+    
+    driver.bindTo(constraint.bnd_active)
+    XCTAssert(constraint.active == true, "Value after binding")
+    
+    driver.value = false
+    XCTAssert(constraint.active == false, "Value after dynamic change")
+  }
 }

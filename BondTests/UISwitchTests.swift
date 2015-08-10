@@ -12,68 +12,68 @@ import Bond
 
 class UISwitchTests: XCTestCase {
 
-  func testUISwitchDynamic() {
-    var dynamicDriver = Dynamic<Bool>(false)
+  func testUISwitchScalar() {
+    let scalar = Scalar<Bool>(false)
     let uiSwitch = UISwitch()
     
     uiSwitch.on = true
     XCTAssert(uiSwitch.on == true, "Initial value")
     
-    dynamicDriver <->> uiSwitch.dynOn
+    scalar |>< uiSwitch.bnd_on
     XCTAssert(uiSwitch.on == false, "Switch value after binding")
     
-    dynamicDriver.value = true
-    XCTAssert(uiSwitch.on == true, "Switch value reflects dynamic value change")
+    scalar.value = true
+    XCTAssert(uiSwitch.on == true, "Switch value reflects scalar value change")
     
     uiSwitch.on = false
     uiSwitch.sendActionsForControlEvents(.ValueChanged) //simulate user input
-    XCTAssert(dynamicDriver.value == false, "Dynamic value reflects switch value change")
+    XCTAssert(scalar.value == false, "Scalar value reflects switch value change")
   }
   
   func testOneWayOperators() {
     var bondedValue = true
-    let bond = Bond { bondedValue = $0 }
-    let dynamicDriver = Dynamic<Bool>(false)
+    let scalar = Scalar<Bool>(false)
     let switch1 = UISwitch()
     let switch2 = UISwitch()
     
     XCTAssertEqual(bondedValue, true, "Initial value")
     
-    dynamicDriver ->> switch1
-    switch1 ->> switch2
-    switch2 ->> bond
+    scalar |> switch1.bnd_on
+    switch1.bnd_on |> switch2.bnd_on
+    switch2.bnd_on.observe {
+      bondedValue = $0
+    }
     
     XCTAssertEqual(bondedValue, false, "Value after binding")
-    
-    dynamicDriver.value = true
-    
+
+    scalar.value = true
     XCTAssertEqual(bondedValue, true, "Value after change")
   }
   
   func testTwoWayOperators() {
-    let dynamicDriver1 = Dynamic<Bool>(true)
-    let dynamicDriver2 = Dynamic<Bool>(false)
+    let scalar1 = Scalar<Bool>(true)
+    let scalar2 = Scalar<Bool>(false)
     let switch1 = UISwitch()
     let switch2 = UISwitch()
     
-    XCTAssertEqual(dynamicDriver1.value, true, "Initial value")
-    XCTAssertEqual(dynamicDriver2.value, false, "Initial value")
+    XCTAssertEqual(scalar1.value, true, "Initial value")
+    XCTAssertEqual(scalar2.value, false, "Initial value")
     
-    dynamicDriver1 <->> switch1
-    switch1 <->> switch2
-    switch2 <->> dynamicDriver2
+    scalar1 |>< switch1.bnd_on
+    switch1.bnd_on |>< switch2.bnd_on
+    switch2.bnd_on |>< scalar2
     
-    XCTAssertEqual(dynamicDriver1.value, true, "Value after binding")
-    XCTAssertEqual(dynamicDriver2.value, true, "Value after binding")
+    XCTAssertEqual(scalar1.value, true, "Value after binding")
+    XCTAssertEqual(scalar2.value, true, "Value after binding")
     
-    dynamicDriver1.value = false
+    scalar1.value = false
     
-    XCTAssertEqual(dynamicDriver1.value, false, "Value after change")
-    XCTAssertEqual(dynamicDriver2.value, false, "Value after change")
+    XCTAssertEqual(scalar1.value, false, "Value after change")
+    XCTAssertEqual(scalar2.value, false, "Value after change")
 
-    dynamicDriver2.value = true
+    scalar2.value = true
     
-    XCTAssertEqual(dynamicDriver1.value, true, "Value after change")
-    XCTAssertEqual(dynamicDriver2.value, true, "Value after change")
+    XCTAssertEqual(scalar1.value, true, "Value after change")
+    XCTAssertEqual(scalar2.value, true, "Value after change")
   }
 }

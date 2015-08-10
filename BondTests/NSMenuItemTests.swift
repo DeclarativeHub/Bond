@@ -11,33 +11,32 @@ import Cocoa
 import XCTest
 
 class NSMenuItemTests: XCTestCase {
-
-    func testNSMenuItemEnabledBond() {
-        var dynamicDriver = Dynamic<Bool>(false)
-        let menuItem = NSMenuItem()
-
-        menuItem.enabled = true
-        XCTAssertTrue(menuItem.enabled, "Initial value")
-
-        dynamicDriver ->> menuItem.dynEnabled
-        XCTAssertFalse(menuItem.enabled, "Value after binding")
-
-        dynamicDriver.value = true
-        XCTAssertTrue(menuItem.enabled, "Value after dynamic change")
-    }
-
-    func testNSMenuItemStateBond() {
-        var dynamicDriver = Dynamic<Int>(NSOffState)
-        let menuItem = NSMenuItem()
-
-        menuItem.state = NSOnState
-        XCTAssertEqual(menuItem.state, NSOnState, "Initial value")
-
-        dynamicDriver ->> menuItem.dynState
-        XCTAssertEqual(menuItem.state, NSOffState, "Value after binding")
-
-        dynamicDriver.value = NSOnState
-        XCTAssertEqual(menuItem.state, NSOnState, "Value after dynamic change")
-    }
-
+  
+  func testNSMenuItemEnabledBond() {
+    let dynamicDriver = Scalar<Bool>(false)
+    let menuItem = NSMenuItem()
+    
+    menuItem.enabled = true
+    XCTAssertTrue(menuItem.enabled, "Initial value")
+    
+    dynamicDriver |> menuItem.bnd_enabled
+    XCTAssertFalse(menuItem.enabled, "Value after binding")
+    
+    dynamicDriver.value = true
+    XCTAssertTrue(menuItem.enabled, "Value after dynamic change")
+  }
+  
+  func testNSMenuItemStateBond() {
+    let dynamicDriver = Scalar<Int>(NSOffState)
+    let menuItem = NSMenuItem()
+    
+    menuItem.state = NSOnState
+    XCTAssertEqual(menuItem.state, NSOnState, "Initial value")
+    
+    dynamicDriver |> menuItem.bnd_state
+    XCTAssertEqual(menuItem.state, NSOffState, "Value after binding")
+    
+    dynamicDriver.value = NSOnState
+    XCTAssertEqual(menuItem.state, NSOnState, "Value after dynamic change")
+  }
 }

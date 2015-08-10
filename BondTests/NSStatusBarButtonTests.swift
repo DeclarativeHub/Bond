@@ -11,19 +11,19 @@ import Cocoa
 import XCTest
 
 class NSStatusBarButtonTests: XCTestCase {
-
-    func testNSStatusBarButtonAppearsDisabledBond() {
-        var dynamicDriver = Dynamic<Bool>(false)
-        let statusBarButton = NSStatusBarButton()
-
-        statusBarButton.appearsDisabled = true
-        XCTAssertTrue(statusBarButton.appearsDisabled, "Initial value")
-
-        dynamicDriver ->> statusBarButton.dynAppearsDisabled
-        XCTAssertFalse(statusBarButton.appearsDisabled, "Value after binding")
-
-        dynamicDriver.value = true
-        XCTAssertTrue(statusBarButton.appearsDisabled, "Value after dynamic change")
-    }
-
+  
+  func testNSStatusBarButtonAppearsDisabledBond() {
+    let dynamicDriver = Scalar<Bool>(false)
+    let statusBarButton = NSStatusBarButton()
+    
+    statusBarButton.appearsDisabled = true
+    XCTAssertTrue(statusBarButton.appearsDisabled, "Initial value")
+    
+    dynamicDriver |> statusBarButton.bnd_appearsDisabled
+    XCTAssertFalse(statusBarButton.appearsDisabled, "Value after binding")
+    
+    dynamicDriver.value = true
+    XCTAssertTrue(statusBarButton.appearsDisabled, "Value after dynamic change")
+  }
+  
 }

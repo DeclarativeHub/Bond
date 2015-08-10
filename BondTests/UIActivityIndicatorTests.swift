@@ -13,16 +13,16 @@ import Bond
 class UIActivityIndicatorTests: XCTestCase {
 
   func testUIActivityIndicatorViewHiddenBond() {
-    var dynamicDriver = Dynamic<Bool>(false)
+    let scalar = Scalar<Bool>(false)
     let view = UIActivityIndicatorView()
     
     view.startAnimating()
     XCTAssert(view.isAnimating() == true, "Initial value")
     
-    dynamicDriver ->> view.dynIsAnimating
+    scalar |> view.bnd_animating
     XCTAssert(view.isAnimating() == false, "Value after binding")
     
-    dynamicDriver.value = true
-    XCTAssert(view.isAnimating() == true, "Value after dynamic change")
+    scalar.value = true
+    XCTAssert(view.isAnimating() == true, "Value after scalar change")
   }
 }

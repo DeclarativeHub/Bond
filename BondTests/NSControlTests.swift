@@ -11,19 +11,18 @@ import Cocoa
 import XCTest
 
 class NSControlTests: XCTestCase {
-
-    func testNSControlEnabledBond() {
-        var dynamicDriver = Dynamic<Bool>(false)
-        let control = NSControl(frame: NSZeroRect)
-
-        control.enabled = true
-        XCTAssertTrue(control.enabled, "Initial value")
-
-        dynamicDriver ->> control.dynEnabled
-        XCTAssertFalse(control.enabled, "Value after binding")
-
-        dynamicDriver.value = true
-        XCTAssertTrue(control.enabled, "Value after dynamic change")
-    }
+  
+  func testNSControlEnabledBond() {
+    let dynamicDriver = Scalar<Bool>(false)
+    let control = NSControl(frame: NSZeroRect)
     
+    control.enabled = true
+    XCTAssertTrue(control.enabled, "Initial value")
+    
+    dynamicDriver |> control.bnd_enabled
+    XCTAssertFalse(control.enabled, "Value after binding")
+    
+    dynamicDriver.value = true
+    XCTAssertTrue(control.enabled, "Value after dynamic change")
+  }
 }

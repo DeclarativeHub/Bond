@@ -11,19 +11,19 @@ import Cocoa
 import XCTest
 
 class NSButtonTests: XCTestCase {
-
-    func testNSButtonStateBond() {
-        var dynamicDriver = Dynamic<Int>(NSOffState)
-        let button = NSButton(frame: NSZeroRect)
-
-        button.state = NSOnState
-        XCTAssertEqual(button.state, NSOnState, "Initial value")
-
-        dynamicDriver ->> button.dynState
-        XCTAssertEqual(button.state, NSOffState, "Value after binding")
-
-        dynamicDriver.value = NSOnState
-        XCTAssertEqual(button.state, NSOnState, "Value after dynamic change")
-    }
+  
+  func testNSButtonStateBond() {
+    let dynamicDriver = Scalar<Int>(NSOffState)
+    let button = NSButton(frame: NSZeroRect)
     
+    button.state = NSOnState
+    XCTAssertEqual(button.state, NSOnState, "Initial value")
+    
+    dynamicDriver |> button.bnd_state
+    XCTAssertEqual(button.state, NSOffState, "Value after binding")
+    
+    dynamicDriver.value = NSOnState
+    XCTAssertEqual(button.state, NSOnState, "Value after dynamic change")
+  }
+  
 }
