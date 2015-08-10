@@ -28,7 +28,7 @@ import Foundation
 public struct Buffer<EventType> {
   
   /// Internal buffer
-  public var buffer: [EventType] = []
+  internal var buffer: [EventType] = []
   
   /// Buffer size
   public var size: Int
