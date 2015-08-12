@@ -186,8 +186,9 @@ public final class Promise<SuccessType, FailureType: ErrorType>: Observable<Futu
 
 Just get *.swift* files from Bond/ Directory and add them to your project.
 
-<a name="migration-3-4"></a>
+
 ## Migrating from v3 to v4
+<a name="migration-3-4"></a>
 
 Bond v4 represents a major evolution of the framework. It's core has been rewritten from scratch and, while concepts are still pretty much the same, some things have changed from the outside to.
 
