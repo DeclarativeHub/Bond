@@ -1,4 +1,4 @@
-# Bond, Rx Bond
+# Bond, Swift Bond
 
 [![CI Status](https://travis-ci.org/SwiftBond/Bond.svg?branch=master)](https://travis-ci.org/SwiftBond/Bond)
 
@@ -6,93 +6,116 @@ Bond is a Swift binding framework that takes binding concept to a whole new leve
 
 Bond was created with two goals in mind: simple to use and simple to understand. One might argue whether the former implies the latter, but Bond will save you some thinking because both are true in this case. Its foundation are two simple classes - everything else are extensions and syntactic sugars.
 
+**Note: If you're migrating from Bond v3.x, check out [migration](#migration-3-4) section. You should also re-read this document because some things have changed.**
 
 
 ## What can it do?
 
+Say you'd like to act on a text change event of a UITextField. Well, you could setup 'target-action' mechanism between your object and go through all that target-action selector registration pain, or you could simply use Bond and do this:
+
 ```swift
-textField.bnd_text.observe { text in 
-  print(text)
-}
+textField.bnd_text
+  .observe { text in
+    print(text)
+  }
 ```
 
+Now, instead of printing what user has typed, you could even _bind_ it to a UILabel:
+
 ```swift
-textField.bnd_text.bindTo(label.bnd_text)
-textField.bnd_text |> label.bnd_text
+textField.bnd_text
+  .bindTo(label.bnd_text)
 ```
 
+That one line establishes a binding between text field's text property and label's text property. In effect, whenever user makes a change to the text field, that change will be automatically propagated to the label.
+
+More often than not, direct binding is not enough. Usually you need to transform input is some way, like prepending a greeting to a name. Of course, Bond has full confidence in functional paradigm.
+
+
 ```swift
-textField.bnd_text.map { "Hi " + $0 } |> label.bnd_text
+textField.bnd_text
+  .map { "Hi " + $0 }
+  .bindTo(label.bnd_text)
 ```
 
+Whenever a change occurs in the text field, new value will be transformed by the closure and propagated to the label.
+
+Notice how we've used `bnd_text` property of the UITextField. It's an observable representation of the `text` property provided by Bond framework. There are many other extensions like that one for various UIKit components. Just start typing _.bnd_ on any UIKit object and you'll get the list of available extensions.
+
+In addition to `map`, another important functional construct is `filter` function. It's useful when we are interested only in some values of a domain. For example, when observing events of a button, we might be interested only in `TouchUpInside` event so we can perform certain action when user taps the button:
+
 ```swift
-textField.bnd_text.filter { count($0) > 3 } |> label.bnd_text
+button.bnd_controlEvent
+  .filter { $0 == UIControlEvents.TouchUpInside }
+  .observe { e in
+    print("Button tapped.")
+  }
 ```
 
+Handling `TouchUpInside` event is used so frequently that Bond comes with the extension just for that event:
 
 ```swift
-combineLatest(emailField.bnd_text, passField.bnd_text) { email, pass in
-  count(email) > 0 && count(pass) > 0
-} |> loginButton.bnd_enabled
+button.bnd_tap
+  .observe {
+    print("Button tapped.")
+  }  
 ```
 
+Bond can also combine multiple inputs into a single output. Following snippet depicts how values of two text fields can be reduced to a boolean value and applied to button's enabled property.
+
 ```swift
-viewModel.numberOfFollowers.map { "\($0)" } |> label.bnd_text
+combineLatest(emailField.bnd_text, passField.bnd_text)
+  .map { email, pass in
+    return email.length > 0 && pass.length > 0
+  }
+  .bindTo(button.bnd_enabled)
 ```
 
+Whenever user types something into any of these text fields, expression will be evaluated and button state updated.
+
+Bond's power is not, however, in coupling various UI components, but in the binding of a Model (or a ViewModel) to a View and vice-versa. It's great for MVVM paradigm. Here is how one could bind user's number of followers property of the model to the label.
+
 ```swift
-viewModel.username |>< usernameTextField.bnd_text
+viewModel.numberOfFollowers
+  .map { "\($0)" }
+  .bindTo(label.bnd_text)
 ```
 
+Point here is not in the simplicity of value assignment to text property of a label, but in the creation of a binding which automatically updates label text property whenever number of followers change.
+
+Bond also supports two way bindings. Here is an example of how you could keep username text field and username property of your view model in sync (whenever any of them change, other one will be updated too):
+
 ```swift
-loginButton.bnd_tap.observe {
-  print("Hi")
-}
+viewModel.username.bindTo(usernameTextField.bnd_text)
+usernameTextField.bnd_text.bindTo(viewModel.username)
 ```
 
-```swift
-let disposable = loginButton.bnd_tap.observe {
-  print("Hi")
-}
+Bond is also great for observing various different events and asynchronous task. For example, you could observe a notification just like this:
 
-disposable.dispose()
+```swift
+NSNotificationCenter.defaultCenter().bnd_notification("MyNotification")
+  .observe { notification in
+    print("Got \(notification)")
+  }
+  .disposeWith(disposeBag)
 ```
 
-```swift
-let collectionView = UICollectionView()
-let data = Vector([Vector([1, 2, 3]), Vector([10, 20, 30])])
+Let me give you one last example. Say you have an array of repositories you would like to display in a collection view. For each repository you have a name and its owner's profile photo. Of course, photo is not immediately available as it has to be downloaded, but once you get it, you want it to appear in table view's cell. Additionally, when user does 'pull down to refresh', and your array gets new repositories, you want those in table view too.
 
-data.bindTo(collectionView, createCell: { (indexPath, vector, collectionView) -> UICollectionViewCell in
-  return collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath)
+So how do you proceed? Well, instead of implementing a data source object, observing photo downloads with KVO and manually updating table view with new items, with Bond you can do all that in just few lines:
+
+```swift
+repositories.bindTo(collectionView, createCell: { (indexPath, vector, collectionView) -> UICollectionViewCell in
+  let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! RepositoryCell
+  let repository = vector[indexPath.section][indexPath.item]
+  repository.name.bindTo(cell.nameLabel.bnd_text)
+  repository.photo.bindTo(cell.avatarImageView.bnd_image)
+  return cell
 })
 ```
 
-```swift
-NSNotificationCenter.defaultCenter().bnd_notification("MyNotification").observe { notification in
-  print("Got \(notification)")
-}
-```
+Yes, that's right!
 
-```swift
-NSURLSession.sharedSession().bnd_dataWithURL(NSURL(string: "http://example.com/my-data")!).onSuccess { data in
-  print("Got data \(data)")
-}
-```
-
-```swift
-searchTextField.bnd_text
-  .throttle(0.3, queue: Queue.Main)
-  .distinct()
-  .map(searchResultsForQuery)
-  .switchToLatest()
-  .onSuccess { results in
-    print("Got results: \(results)")
-  }
-    
-// given that:
-
-  func searchResultsForQuery(query: String) -> Promise<[String], NSError>
-```
 
 ## How does it work?
 
@@ -164,6 +187,21 @@ public final class Promise<SuccessType, FailureType: ErrorType>: Observable<Futu
 Just get *.swift* files from Bond/ Directory and add them to your project.
 
 
+## Migration from v3.x to v4.x
+<a name="migration-3-4"></a>
+
+Bond v4 represents a major evolution of the framework. It's core has been rewritten from scratch and, while concepts are still pretty much the same, some things have changed from the outside to.
+
+* Dynamic is renamed to **Scalar**.
+* DynamicArray is renamed to **Vector**.
+* Bond and ArrayBond are deprecated. Use `observe` method to observe events.
+* Extension are now prefixed with `bnd_` instead of `dyn`.
+* `reduce` method is deprecated. Same effect can be achieved with `combineLatest` method.
+* _Bind only_ operator `->|` is gone.
+* Method `bindTo` is now preferred way to bind objects, not the `->>` operator.
+* In order to break the binding, dispose a disposable object return from `observe` or `bindTo` methods.
+
+ 
 ## Release Notes
 
 https://github.com/SwiftBond/Bond/releases
