@@ -6,7 +6,7 @@ Bond is a Swift binding framework that takes binding concept to a whole new leve
 
 Bond was created with two goals in mind: simple to use and simple to understand. One might argue whether the former implies the latter, but Bond will save you some thinking because both are true in this case. Its foundation are two simple classes - everything else are extensions and syntactic sugars.
 
-**Note: If you're migrating from Bond v3.x, check out [migration](#migration-3-4) section. You should also re-read this document because some things have changed.**
+**Note: If you're migrating from Bond v3.x, check out the [migrating from v3 to v4](#migration-3-4) section. You should also re-read this document because some things have changed.**
 
 
 ## What can it do?
@@ -186,9 +186,8 @@ public final class Promise<SuccessType, FailureType: ErrorType>: Observable<Futu
 
 Just get *.swift* files from Bond/ Directory and add them to your project.
 
-
-## Migration from v3.x to v4.x
 <a name="migration-3-4"></a>
+## Migrating from v3 to v4
 
 Bond v4 represents a major evolution of the framework. It's core has been rewritten from scratch and, while concepts are still pretty much the same, some things have changed from the outside to.
 
