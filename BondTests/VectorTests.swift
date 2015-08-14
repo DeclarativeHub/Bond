@@ -132,7 +132,7 @@ class VectorTests: XCTestCase {
     XCTAssert(callCount == 7)
     
     mapped.observe { vectorEvent in
-      vectorEvent.array.first // just access any element
+      vectorEvent.sequence.first // just access any element
     }
     
     XCTAssert(callCount == 8)

@@ -56,7 +56,7 @@ public final class Vector<ElementType>: Observable<VectorEvent<Array<ElementType
     }
     
     self.capturedSink = capturedSink
-    self.capturedSink(VectorEvent(array: array, operation: VectorOperation.Reset(array: array)))
+    self.capturedSink(VectorEvent(sequence: array, operation: VectorOperation.Reset(array: array)))
   }
   
   /// Performs batch updates on the vector.
@@ -76,7 +76,7 @@ public final class Vector<ElementType>: Observable<VectorEvent<Array<ElementType
     update(self)
     let operation = VectorOperation.Batch(batchedOperations!)
     batchedOperations = nil
-    capturedSink(VectorEvent(array: array, operation: operation))
+    capturedSink(VectorEvent(sequence: array, operation: operation))
   }
   
   /// Applies given vector operation and generates change event.
@@ -95,7 +95,7 @@ public final class Vector<ElementType>: Observable<VectorEvent<Array<ElementType
       performUnitOperationOnArray(operation)
     }
     
-    capturedSink(VectorEvent(array: array, operation: operation))
+    capturedSink(VectorEvent(sequence: array, operation: operation))
   }
   
   private func applyOperation(operation: VectorOperation<ElementType>) {
@@ -250,16 +250,16 @@ public extension Vector {
 
 public extension ObservableType where EventType: VectorEventType {
   
-  private typealias ElementType = EventType.VectorCollectionType.Generator.Element
+  private typealias ElementType = EventType.VectorEventSequenceType.Generator.Element
   
   /// Map overload that simplifies mapping of observables that generate Vector events.
   /// Instead of mapping Vector events, it maps the vector elements from those events.
-  public func map<T>(transform: ElementType -> T) -> Observable<VectorEvent<AnyForwardCollection<T>>> {
+  public func map<T>(transform: ElementType -> T) -> Observable<VectorEvent<LazySequence<MapSequence<Self.EventType.VectorEventSequenceType, T>>>> {
     return Observable(replayLength: replayLength) { sink in
       return observe { vectorEvent in
-        let array = lazy(vectorEvent.array).map(transform)
+        let sequence = lazy(vectorEvent.sequence).map(transform)
         let operation = vectorEvent.operation.map(transform)
-        sink(VectorEvent(array: AnyForwardCollection(array), operation: operation))
+        sink(VectorEvent(sequence: sequence, operation: operation))
       }
     }
   }
@@ -272,7 +272,7 @@ public extension ObservableType where EventType: VectorEventType {
     }
     
     var capturedArray: [ElementType] = []
-    observe{ capturedArray = Array($0.array) }.dispose()
+    observe{ capturedArray = Array($0.sequence) }.dispose()
     
     let vector = Vector<ElementType>(capturedArray)
     vector.deinitDisposable += skip(replayLength).observe { event in
@@ -280,6 +280,23 @@ public extension ObservableType where EventType: VectorEventType {
       return
     }
     return vector
+  }
+}
+
+public extension ObservableType where EventType: VectorEventType, EventType.VectorEventSequenceType: CollectionType {
+  
+  private typealias _ElementType = EventType.VectorEventSequenceType.Generator.Element
+  
+  /// Map overload that simplifies mapping of observables that generate Vector events.
+  /// Instead of mapping Vector events, it maps the vector elements from those events.
+  public func map<T>(transform: _ElementType -> T) -> Observable<VectorEvent<LazyForwardCollection<MapCollection<Self.EventType.VectorEventSequenceType, T>>>> {
+    return Observable(replayLength: replayLength) { sink in
+      return observe { vectorEvent in
+        let sequence = lazy(vectorEvent.sequence).map(transform)
+        let operation = vectorEvent.operation.map(transform)
+        sink(VectorEvent(sequence: sequence, operation: operation))
+      }
+    }
   }
 }
 
