@@ -26,15 +26,15 @@
 /// Vector event encapsulates current state of the vector, as well
 /// as the operation that has triggered an event.
 public protocol VectorEventType {
-  typealias ElementType
-  var array: [ElementType] { get }
-  var operation: VectorOperation<ElementType> { get }
+  typealias VectorCollectionType: CollectionType
+  var array: VectorCollectionType { get }
+  var operation: VectorOperation<VectorCollectionType.Generator.Element> { get }
 }
 
 /// A concrete vector event type.
-public struct VectorEvent<ElementType>: VectorEventType {
-  public let array: [ElementType]
-  public let operation: VectorOperation<ElementType>
+public struct VectorEvent<VectorCollectionType: CollectionType>: VectorEventType {
+  public let array: VectorCollectionType
+  public let operation: VectorOperation<VectorCollectionType.Generator.Element>
 }
 
 /// Represents an operation that can be applied to a Vector.

@@ -545,8 +545,8 @@
 				ECAD69801B77D45600837A36 /* ObservableTests.swift */,
 				ECAD69811B77D45600837A36 /* PromiseTests.swift */,
 				ECAD69821B77D45600837A36 /* ScalarTests.swift */,
-				ECAD69831B77D45600837A36 /* VectorEventTests.swift */,
 				ECAD69841B77D45600837A36 /* VectorTests.swift */,
+				ECAD69831B77D45600837A36 /* VectorEventTests.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";

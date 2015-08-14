@@ -29,7 +29,7 @@ public protocol VectorType {
 }
 
 /// A type that can be used to encapsulate an array and observe its (incremental) changes.
-public final class Vector<ElementType>: Observable<VectorEvent<ElementType>>, VectorType {
+public final class Vector<ElementType>: Observable<VectorEvent<Array<ElementType>>>, VectorType {
   
   /// The underlying sink to dispatch events to.
   private var capturedSink: SinkType! = nil
@@ -250,28 +250,31 @@ public extension Vector {
 
 public extension ObservableType where EventType: VectorEventType {
   
+  private typealias ElementType = EventType.VectorCollectionType.Generator.Element
+  
   /// Map overload that simplifies mapping of observables that generate Vector events.
   /// Instead of mapping Vector events, it maps the vector elements from those events.
-  public func map<T>(transform: EventType.ElementType -> T) -> Observable<Vector<T>.EventType> {
+  public func map<T>(transform: ElementType -> T) -> Observable<VectorEvent<AnyForwardCollection<T>>> {
     return Observable(replayLength: replayLength) { sink in
       return observe { vectorEvent in
-        // TODO: Make vector mapping lazy
-        sink(VectorEvent(array: vectorEvent.array.map(transform), operation: vectorEvent.operation.map(transform)))
+        let array = lazy(vectorEvent.array).map(transform)
+        let operation = vectorEvent.operation.map(transform)
+        sink(VectorEvent(array: AnyForwardCollection(array), operation: operation))
       }
     }
   }
   
   /// Creates a vector from the observable.
   /// If the observable is already a vector, returns that vector.
-  public func crystallize() -> Vector<EventType.ElementType> {
-    if let vector = self as? Vector<EventType.ElementType> {
+  public func crystallize() -> Vector<ElementType> {
+    if let vector = self as? Vector<ElementType> {
       return vector
     }
     
-    var capturedArray: [EventType.ElementType] = []
-    observe{ capturedArray = $0.array }.dispose()
+    var capturedArray: [ElementType] = []
+    observe{ capturedArray = Array($0.array) }.dispose()
     
-    let vector = Vector<EventType.ElementType>(capturedArray)
+    let vector = Vector<ElementType>(capturedArray)
     vector.deinitDisposable += skip(replayLength).observe { event in
       vector.put(event.operation)
       return

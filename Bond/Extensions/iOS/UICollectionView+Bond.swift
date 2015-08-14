@@ -129,9 +129,9 @@ extension UICollectionView {
   }
 }
 
-public extension ObservableType where EventType: VectorEventType, EventType.ElementType: ObservableType, EventType.ElementType.EventType: VectorEventType {
+public extension ObservableType where EventType: VectorEventType, EventType.VectorCollectionType.Generator.Element: ObservableType, EventType.VectorCollectionType.Generator.Element.EventType: VectorEventType {
   
-  private typealias ElementType = EventType.ElementType.EventType.ElementType
+  private typealias ElementType = EventType.VectorCollectionType.Generator.Element.EventType.VectorCollectionType.Generator.Element
   
   public func bindTo(collectionView: UICollectionView, createCell: (NSIndexPath, Vector<Vector<ElementType>>, UICollectionView) -> UICollectionViewCell) -> DisposableType {
     
