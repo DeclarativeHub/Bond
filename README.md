@@ -97,7 +97,7 @@ NSNotificationCenter.defaultCenter().bnd_notification("MyNotification")
   .observe { notification in
     print("Got \(notification)")
   }
-  .disposeWith(disposeBag)
+  .disposeIn(bnd_bag)
 ```
 
 Let me give you one last example. Say you have an array of repositories you would like to display in a collection view. For each repository you have a name and its owner's profile photo. Of course, photo is not immediately available as it has to be downloaded, but once you get it, you want it to appear in table view's cell. Additionally, when user does 'pull down to refresh', and your array gets new repositories, you want those in table view too.

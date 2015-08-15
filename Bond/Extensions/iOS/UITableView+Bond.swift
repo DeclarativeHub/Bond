@@ -68,7 +68,7 @@ class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
       }
       
       unwrappedSelf.setupPerSectionObservers()
-    }.disposeWith(disposeBag)
+    }.disposeIn(bnd_bag)
   }
   
   private func setupPerSectionObservers() {
@@ -89,7 +89,7 @@ class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
         default:
           BNDTableViewDataSource.applyRowUnitChangeSet(vectorEvent.operation.changeSet(), tableView: tableView, sectionIndex: sectionIndex)
         }
-      }.disposeWith(sectionObservingDisposeBag)
+      }.disposeIn(sectionObservingDisposeBag)
     }
   }
   

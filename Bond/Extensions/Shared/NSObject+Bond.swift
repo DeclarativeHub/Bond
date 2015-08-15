@@ -30,7 +30,8 @@ public extension NSObject {
     static var DisposeBagKey = "bnd_DisposeBagKey"
   }
   
-  public var disposeBag: DisposeBag {
+  // A dispose bag will will dispose upon object deinit.
+  public var bnd_bag: DisposeBag {
     if let disposeBag: AnyObject = objc_getAssociatedObject(self, &AssociatedKeys.DisposeBagKey) {
       return disposeBag as! DisposeBag
     } else {
@@ -40,7 +41,7 @@ public extension NSObject {
     }
   }
   
-  public func bnd_associatedScalarForValueForKey<T>(key: String, inout associationKey: String) -> Scalar<T> {
+  internal func bnd_associatedScalarForValueForKey<T>(key: String, inout associationKey: String) -> Scalar<T> {
     if let scalar: AnyObject = objc_getAssociatedObject(self, &associationKey) {
       return scalar as! Scalar<T>
     } else {
@@ -59,7 +60,7 @@ public extension NSObject {
     }
   }
   
-  public func bnd_associatedScalarForOptionalValueForKey<T>(key: String, inout associationKey: String) -> Scalar<T?> {
+  internal func bnd_associatedScalarForOptionalValueForKey<T>(key: String, inout associationKey: String) -> Scalar<T?> {
     if let scalar: AnyObject = objc_getAssociatedObject(self, &associationKey) {
       return scalar as! Scalar<T?>
     } else {

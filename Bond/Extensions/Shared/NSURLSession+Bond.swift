@@ -29,17 +29,17 @@ extension NSURLSession {
   public func bnd_dataWithURL(url: NSURL) -> Promise<(NSData!, NSURLResponse!), NSError> {
     let promise = Promise<(NSData!, NSURLResponse!), NSError>()
     
-    let downloadTask = self.dataTaskWithURL(url) { data, response, error in
+    let dataTask = self.dataTaskWithURL(url) { data, response, error in
       if let data = data where response != nil {
         promise.success((data, response))
       } else {
         promise.failure(error ?? NSError(domain: "com.swift-bond.Bond.NSURLSession", code: 0, userInfo: nil))
       }
     }
-    downloadTask.resume()
+    dataTask.resume()
     
-    promise.onCancel {
-      downloadTask.cancel()
+    promise.onCancel { [weak dataTask] in
+      dataTask?.cancel()
     }
     
     return promise

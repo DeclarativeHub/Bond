@@ -58,7 +58,7 @@ class BNDCollectionViewDataSource<T>: NSObject, UICollectionViewDataSource {
       }
       
       unwrappedSelf.setupPerSectionObservers()
-      }.disposeWith(disposeBag)
+      }.disposeIn(bnd_bag)
   }
   
   private func setupPerSectionObservers() {
@@ -79,7 +79,7 @@ class BNDCollectionViewDataSource<T>: NSObject, UICollectionViewDataSource {
         default:
           BNDCollectionViewDataSource.applyRowUnitChangeSet(vectorEvent.operation.changeSet(), collectionView: collectionView, sectionIndex: sectionIndex)
         }
-        }.disposeWith(sectionObservingDisposeBag)
+        }.disposeIn(sectionObservingDisposeBag)
     }
   }
   

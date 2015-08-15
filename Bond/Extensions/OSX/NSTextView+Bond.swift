@@ -52,7 +52,7 @@ extension NSTextView {
           bnd_string.set(textView.string ?? "")
           updatingFromSelf = false
         }
-        }.disposeWith(disposeBag)
+        }.disposeIn(disposeBag)
       
       return bnd_string
     }
