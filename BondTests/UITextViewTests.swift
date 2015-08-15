@@ -19,7 +19,7 @@ class UITextViewTests: XCTestCase {
     textView.text = "a"
     XCTAssert(textView.text == "a", "Initial value")
     
-    scalar.bidirectionBindTo(textView.bnd_text)
+    scalar.bidirectionalBindTo(textView.bnd_text)
     XCTAssert(textView.text == "b", "Text view value after binding")
     
     scalar.value = "c"
@@ -38,7 +38,7 @@ class UITextViewTests: XCTestCase {
     textView.attributedText = NSAttributedString(string: "a")
     XCTAssert(textView.attributedText.string == "a", "Initial value")
     
-    scalar.bidirectionBindTo(textView.bnd_attributedText)
+    scalar.bidirectionalBindTo(textView.bnd_attributedText)
     XCTAssert(textView.attributedText.string == "b", "Text view value after binding")
     
     scalar.value = NSAttributedString(string: "c")
@@ -91,10 +91,10 @@ class UITextViewTests: XCTestCase {
     XCTAssertEqual(scalar2.value, "z", "Initial value")
     XCTAssert(textField.text == "1", "Initial value")
     
-    scalar1.bidirectionBindTo(textView1.bnd_text)
-    textView1.bnd_text.bidirectionBindTo(textView2.bnd_text)
-    textView2.bnd_text.bidirectionBindTo(scalar2)
-    textView2.bnd_text.bidirectionBindTo(textField.bnd_text)
+    scalar1.bidirectionalBindTo(textView1.bnd_text)
+    textView1.bnd_text.bidirectionalBindTo(textView2.bnd_text)
+    textView2.bnd_text.bidirectionalBindTo(scalar2)
+    textView2.bnd_text.bidirectionalBindTo(textField.bnd_text)
     
     XCTAssertEqual(scalar1.value, "a", "Value after binding")
     XCTAssertEqual(scalar2.value, "a", "Value after binding")

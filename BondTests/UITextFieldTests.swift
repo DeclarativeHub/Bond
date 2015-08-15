@@ -19,7 +19,7 @@ class UITextFieldTests: XCTestCase {
     textField.text = "a"
     XCTAssert(textField.text == "a", "Initial value")
     
-    scalar.bidirectionBindTo(textField.bnd_text)
+    scalar.bidirectionalBindTo(textField.bnd_text)
     XCTAssert(textField.text == "b", "Text field value after binding")
     
     scalar.value = "c"
@@ -84,10 +84,10 @@ class UITextFieldTests: XCTestCase {
     XCTAssertEqual(scalar1.value, "a", "Initial value")
     XCTAssertEqual(scalar2.value, "z", "Initial value")
 
-    scalar1.bidirectionBindTo(textField1.bnd_text)
-    textField1.bnd_text.bidirectionBindTo(textView.bnd_text)
-    textView.bnd_text.bidirectionBindTo(textField2.bnd_text)
-    textField2.bnd_text.bidirectionBindTo(scalar2)
+    scalar1.bidirectionalBindTo(textField1.bnd_text)
+    textField1.bnd_text.bidirectionalBindTo(textView.bnd_text)
+    textView.bnd_text.bidirectionalBindTo(textField2.bnd_text)
+    textField2.bnd_text.bidirectionalBindTo(scalar2)
     
     XCTAssertEqual(scalar1.value, "a", "After binding")
     XCTAssertEqual(scalar2.value, "a", "After binding")

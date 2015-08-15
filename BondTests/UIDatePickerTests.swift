@@ -23,7 +23,7 @@ class UIDatePickerTests: XCTestCase {
     datePicker.date = date2
     XCTAssert(datePicker.date == date2, "Initial value")
     
-    scalar.bidirectionBindTo(datePicker.bnd_date)
+    scalar.bidirectionalBindTo(datePicker.bnd_date)
     XCTAssert(datePicker.date == date1, "DatePicker value after binding")
     
     scalar.value = date3
@@ -72,9 +72,9 @@ class UIDatePickerTests: XCTestCase {
     XCTAssertEqual(scalar1.value, date1, "Intial value")
     XCTAssertEqual(scalar2.value, date2, "Intial value")
     
-    scalar1.bidirectionBindTo(datePicker1.bnd_date)
-    datePicker1.bnd_date.bidirectionBindTo(datePicker2.bnd_date)
-    datePicker2.bnd_date.bidirectionBindTo(scalar2)
+    scalar1.bidirectionalBindTo(datePicker1.bnd_date)
+    datePicker1.bnd_date.bidirectionalBindTo(datePicker2.bnd_date)
+    datePicker2.bnd_date.bidirectionalBindTo(scalar2)
     
     XCTAssertEqual(scalar1.value, date1, "Value after binding")
     XCTAssertEqual(scalar2.value, date1, "Value after binding")

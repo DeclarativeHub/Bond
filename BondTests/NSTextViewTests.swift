@@ -63,10 +63,10 @@ class NSTextViewTests: XCTestCase {
     XCTAssertEqual(dynamicDriver2.value, "z", "Initial value")
     XCTAssertEqual(textField.stringValue, "1", "Initial value")
     
-    dynamicDriver1.bidirectionBindTo(textView1.bnd_string)
-    textView1.bnd_string.bidirectionBindTo(textView2.bnd_string)
-    textView2.bnd_string.bidirectionBindTo(dynamicDriver2)
-    textView2.bnd_string.bidirectionBindTo(textField.bnd_text)
+    dynamicDriver1.bidirectionalBindTo(textView1.bnd_string)
+    textView1.bnd_string.bidirectionalBindTo(textView2.bnd_string)
+    textView2.bnd_string.bidirectionalBindTo(dynamicDriver2)
+    textView2.bnd_string.bidirectionalBindTo(textField.bnd_text)
     
     XCTAssertEqual(dynamicDriver1.value, "a", "Value after binding")
     XCTAssertEqual(dynamicDriver2.value, "a", "Value after binding")

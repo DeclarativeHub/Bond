@@ -19,7 +19,7 @@ class UISliderTests: XCTestCase {
     slider.value = 0.1
     XCTAssert(slider.value == 0.1, "Initial value")
     
-    scalar.bidirectionBindTo(slider.bnd_value)
+    scalar.bidirectionalBindTo(slider.bnd_value)
     XCTAssert(slider.value == 0.0, "Slider value after binding")
     
     scalar.value = 0.5
@@ -60,9 +60,9 @@ class UISliderTests: XCTestCase {
     XCTAssertEqual(scalar1.value, Float(0.1), "Initial value")
     XCTAssertEqual(scalar2.value, Float(0.2), "Initial value")
     
-    scalar1.bidirectionBindTo(slider1.bnd_value)
-    slider1.bnd_value.bidirectionBindTo(slider2.bnd_value)
-    slider2.bnd_value.bidirectionBindTo(scalar2)
+    scalar1.bidirectionalBindTo(slider1.bnd_value)
+    slider1.bnd_value.bidirectionalBindTo(slider2.bnd_value)
+    slider2.bnd_value.bidirectionalBindTo(scalar2)
     
     XCTAssertEqual(scalar1.value, Float(0.1), "Value after binding")
     XCTAssertEqual(scalar2.value, Float(0.1), "Value after binding")
