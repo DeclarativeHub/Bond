@@ -40,7 +40,7 @@ public final class BlockDisposable: DisposableType {
   
   private var handler: (() -> ())?
   
-  init(_ handler: () -> ()) {
+  public init(_ handler: () -> ()) {
     self.handler = handler
   }
   
@@ -52,52 +52,56 @@ public final class BlockDisposable: DisposableType {
 
 /// A disposable that disposes other disposable.
 public final class SerialDisposable: DisposableType {
-  public var isDisposed: Bool {
-    return otherDisposable?.isDisposed ?? true
+  
+  public private(set) var isDisposed: Bool = false
+  
+  /// Will dispose other disposable immediately if self is already disposed.
+  public var otherDisposable: DisposableType? {
+    didSet {
+      if isDisposed {
+        otherDisposable?.dispose()
+      }
+    }
   }
   
-  public var otherDisposable: DisposableType?
-  
-  init(otherDisposable: DisposableType?) {
+  public init(otherDisposable: DisposableType?) {
     self.otherDisposable = otherDisposable
   }
   
   public func dispose() {
+    isDisposed = true
     otherDisposable?.dispose()
   }
 }
 
 /// A disposable that disposes a collection of disposables upon disposing.
 public final class CompositeDisposable: DisposableType {
-  public var isDisposed: Bool {
-    return disposables == nil
-  }
   
-  private var disposables: [DisposableType]?
+  public private(set) var isDisposed: Bool = false
+  private var disposables: [DisposableType] = []
   
-  convenience init() {
+  public convenience init() {
     self.init([])
   }
   
-  init(_ disposables: [DisposableType]) {
+  public init(_ disposables: [DisposableType]) {
     self.disposables = disposables
   }
   
   public func addDisposable(disposable: DisposableType) {
-    disposables?.append(disposable)
-    if let disposables = disposables {
+    if isDisposed {
+      disposable.dispose()
+    } else {
+      disposables.append(disposable)
       self.disposables = disposables.filter { $0.isDisposed == false }
     }
   }
   
   public func dispose() {
-    if let disposables = disposables {
-      for disposable in disposables {
-        disposable.dispose()
-      }
+    isDisposed = true
+    for disposable in disposables {
+      disposable.dispose()
     }
-    
-    disposables = nil
   }
 }
 

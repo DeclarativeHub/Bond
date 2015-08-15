@@ -29,6 +29,7 @@
 		EAD8B2DD1B41AF4300995CE9 /* NSLayoutConstraintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */; };
 		EC0388991B0DD25700E32454 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69491BAE1A7C217100A13B6B /* Bond.framework */; };
 		EC2AE4A91B788F8B00296781 /* UIRefreshControl+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2AE4A81B788F8B00296781 /* UIRefreshControl+Bond.swift */; };
+		EC6F105B1B7F9C2700E55A5F /* ScalarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69821B77D45600837A36 /* ScalarTests.swift */; };
 		ECAD68EB1B77BB1D00837A36 /* BindableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68B81B77BB1D00837A36 /* BindableType.swift */; };
 		ECAD68EC1B77BB1D00837A36 /* BindableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68B81B77BB1D00837A36 /* BindableType.swift */; };
 		ECAD68ED1B77BB1D00837A36 /* Buffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68B91B77BB1D00837A36 /* Buffer.swift */; };
@@ -859,6 +860,7 @@
 			files = (
 				900BFC0B1ADFC863002B4B6E /* NSButtonTests.swift in Sources */,
 				900BFC0E1ADFC9E9002B4B6E /* NSColorWellTests.swift in Sources */,
+				EC6F105B1B7F9C2700E55A5F /* ScalarTests.swift in Sources */,
 				900BFC141ADFCBA8002B4B6E /* NSMenuItemTests.swift in Sources */,
 				900BFC1A1ADFCD63002B4B6E /* NSTextViewTests.swift in Sources */,
 				900BFC101ADFCA46002B4B6E /* NSControlTests.swift in Sources */,
