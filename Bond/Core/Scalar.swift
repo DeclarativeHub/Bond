@@ -81,7 +81,7 @@ public extension ObservableType {
   /// Note that the given observable must have `replayLength` value of at least `1`!
   public func crystallize() -> Scalar<EventType> {
     guard self.replayLength > 0 else {
-      fatalError("Cannot crystallize observables that have `replayLength` less than `1`.")
+      fatalError("Dear Sir/Madam, observables that have `replayLength` less than `1` cannot be crystallized!")
     }
     
     if let scalar = self as? Scalar<EventType> {
@@ -97,4 +97,3 @@ public extension ObservableType {
     return scalar
   }
 }
-

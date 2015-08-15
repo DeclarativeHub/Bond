@@ -83,7 +83,7 @@ public final class Vector<ElementType>: Observable<VectorEvent<Array<ElementType
   private func put(operation: VectorOperation<ElementType>) {
     
     guard !isBatchUpdateInProgress else {
-      fatalError("Putting operations into the vector while batch updates are in progress is not supported!")
+      fatalError("Dear Sir/Madam, putting operations into the vector while batch updates are in progress is not supported!")
     }
     
     switch operation {
@@ -120,7 +120,7 @@ public final class Vector<ElementType>: Observable<VectorEvent<Array<ElementType
     case .Remove(let range):
       array.removeRange(range)
     case .Batch:
-      fatalError("Not a unit operation.")
+      fatalError("Hmm, not a unit operation.")
     }
   }
 }
@@ -143,7 +143,7 @@ public extension Vector {
       applyOperation(VectorOperation.Remove(range: count-1..<count))
       return last
     } else {
-      fatalError("Cannot remove an element from the empty array.")
+      fatalError("Dear Sir/Madam, removing an element from the empty array is not possible. Sorry if I caused (you) any trouble.")
     }
   }
   

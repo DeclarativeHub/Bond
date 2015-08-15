@@ -211,7 +211,7 @@ public extension VectorOperation {
     case .Reset:
       fallthrough
     case .Batch:
-      fatalError("Should have been handled earlier.")
+      fatalError("Dear Sir/Madam, I cannot generate changeset for \(self) operation.")
     }
   }
 }
@@ -305,9 +305,9 @@ public func changeSetsFromBatchOperations<T>(operations: [VectorOperation<T>]) -
       
       deletes.unionInPlace(reallyRemoved)
     case .Reset:
-      fatalError("The .Reset operation within the .Batch not supported at the moment!")
+      fatalError("Dear Sir/Madam, the .Reset operation within the .Batch is not supported at the moment!")
     case .Batch:
-      fatalError("Nesting the .Batch operations not supported at the moment!")
+      fatalError("Dear Sir/Madam, nesting the .Batch operations is not supported at the moment!")
     }
   }
   
