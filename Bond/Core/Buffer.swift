@@ -35,6 +35,7 @@ public struct Buffer<EventType> {
   
   public init(size: Int) {
     self.size = size
+    buffer.reserveCapacity(size)
   }
   
   /// Adds the given element to the buffer. If the buffer is already 
@@ -42,7 +43,7 @@ public struct Buffer<EventType> {
   public mutating func push(event: EventType) {
     buffer.append(event)
     if buffer.count > size {
-      buffer.removeAtIndex(0)
+      buffer.removeFirst()
     }
   }
 }
