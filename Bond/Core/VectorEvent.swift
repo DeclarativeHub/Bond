@@ -87,6 +87,118 @@ public extension VectorOperation {
     }
   }
   
+  public func filter(includeElement: ElementType -> Bool, inout pointers: [Int]) -> VectorOperation<ElementType>? {
+    
+    switch self {
+    case .Insert(let elements, let fromIndex):
+      
+      for (index, element) in pointers.enumerate() {
+        if element >= fromIndex {
+          pointers[index] = element + elements.count
+        }
+      }
+      
+      var insertedIndices: [Int] = []
+      var insertedElements: [ElementType] = []
+      
+      for (index, element) in elements.enumerate() {
+        if includeElement(element) {
+          insertedIndices.append(fromIndex + index)
+          insertedElements.append(element)
+        }
+      }
+      
+      if insertedIndices.count > 0 {
+        let insertionPoint = startingIndexForIndex(fromIndex, forPointers: pointers)
+        pointers.splice(insertedIndices, atIndex: insertionPoint)
+        return .Insert(elements: insertedElements, fromIndex: insertionPoint)
+      }
+      
+    case .Update(let elements, let fromIndex):
+      
+      var operations: [VectorOperation<ElementType>] = []
+      
+      for (index, element) in elements.enumerate() {
+        let realIndex = fromIndex + index
+        
+        // if element on this index is currently included in filtered array
+        if let location = pointers.indexOf(realIndex) {
+          if includeElement(element) {
+            // update
+            operations.append(.Update(elements: [element], fromIndex: location))
+          } else {
+            // remove
+            pointers.removeAtIndex(location)
+            operations.append(.Remove(range: location..<location+1))
+          }
+        } else { // element in this index is currently NOT included
+          if includeElement(element) {
+            // insert
+            let insertionPoint = startingIndexForIndex(realIndex, forPointers: pointers)
+            pointers.insert(realIndex, atIndex: insertionPoint)
+            operations.append(.Insert(elements: [element], fromIndex: insertionPoint))
+          } else {
+            // not contained, not inserted - do nothing
+          }
+        }
+      }
+      
+      if operations.count == 1 {
+        return operations.first!
+      } else if operations.count > 1 {
+        return .Batch(operations)
+      }
+      
+    case .Remove(let range):
+      
+      var startIndex = -1
+      var endIndex = -1
+      
+      for (index, element) in pointers.enumerate() {
+        if element >= range.startIndex {
+          if element < range.endIndex {
+            if startIndex < 0 {
+              startIndex = index
+              endIndex = index + 1
+            } else {
+              endIndex = index + 1
+            }
+          }
+          
+          pointers[index] = element - range.count
+        }
+      }
+      
+      if startIndex >= 0 {
+        let removedRange = Range(start: startIndex, end: endIndex)
+        pointers.removeRange(removedRange)
+        return .Remove(range: removedRange)
+      }
+      
+    case .Reset(let array):
+      pointers = pointersFromSequence(array, includeElement: includeElement)
+      return .Reset(array: array.filter(includeElement))
+      
+    case .Batch(let operations):
+      
+      var filteredOperations: [VectorOperation<ElementType>] = []
+      
+      for operation in operations {
+        if let filtered = operation.filter(includeElement, pointers: &pointers) {
+          filteredOperations.append(filtered)
+        }
+      }
+      
+      if filteredOperations.count == 1 {
+        return filteredOperations.first!
+      } else if filteredOperations.count > 0 {
+        return .Batch(filteredOperations)
+      }
+    }
+    
+    return nil
+  }
+  
   /// Generates the `VectorEventChangeSet` representation of the operation.
   public func changeSet() -> VectorEventChangeSet {
     switch self {
@@ -102,6 +214,28 @@ public extension VectorOperation {
       fatalError("Should have been handled earlier.")
     }
   }
+}
+
+internal func pointersFromSequence<S: SequenceType>(sequence: S, includeElement: S.Generator.Element -> Bool) -> [Int] {
+  var pointers: [Int] = []
+  for (index, element) in sequence.enumerate() {
+    if includeElement(element) {
+      pointers.append(index)
+    }
+  }
+  return pointers
+}
+
+internal func startingIndexForIndex(x: Int, forPointers pointers: [Int]) -> Int {
+  var idx: Int = -1
+  for (index, element) in pointers.enumerate() {
+    if element < x {
+      idx = index
+    } else {
+      break
+    }
+  }
+  return idx + 1
 }
 
 

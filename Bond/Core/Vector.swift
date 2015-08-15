@@ -264,6 +264,26 @@ public extension ObservableType where EventType: VectorEventType {
     }
   }
   
+  /// Filter overload that filters vector elements instead of its events.
+  public func filter(includeElement: ElementType -> Bool) -> Observable<VectorEvent<LazySequence<FilterSequence<Self.EventType.VectorEventSequenceType>>>> {
+    
+    var pointers: [Int]? = nil
+    
+    return Observable(replayLength: replayLength) { sink in
+      return observe { vectorEvent in
+        
+        if pointers == nil {
+          pointers = pointersFromSequence(vectorEvent.sequence, includeElement: includeElement)
+        }
+        
+        let sequence = lazy(vectorEvent.sequence).filter(includeElement)
+        if let operation = vectorEvent.operation.filter(includeElement, pointers: &pointers!) {
+          sink(VectorEvent(sequence: sequence, operation: operation))
+        }
+      }
+    }
+  }
+  
   /// Creates a vector from the observable.
   /// If the observable is already a vector, returns that vector.
   public func crystallize() -> Vector<ElementType> {
@@ -299,5 +319,3 @@ public extension ObservableType where EventType: VectorEventType, EventType.Vect
     }
   }
 }
-
-
