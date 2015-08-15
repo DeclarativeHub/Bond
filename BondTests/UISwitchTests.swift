@@ -19,7 +19,7 @@ class UISwitchTests: XCTestCase {
     uiSwitch.on = true
     XCTAssert(uiSwitch.on == true, "Initial value")
     
-    scalar |>< uiSwitch.bnd_on
+    scalar.bidirectionBindTo(uiSwitch.bnd_on)
     XCTAssert(uiSwitch.on == false, "Switch value after binding")
     
     scalar.value = true
@@ -38,8 +38,8 @@ class UISwitchTests: XCTestCase {
     
     XCTAssertEqual(bondedValue, true, "Initial value")
     
-    scalar |> switch1.bnd_on
-    switch1.bnd_on |> switch2.bnd_on
+    scalar.bindTo(switch1.bnd_on)
+    switch1.bnd_on.bindTo(switch2.bnd_on)
     switch2.bnd_on.observe {
       bondedValue = $0
     }
@@ -59,9 +59,9 @@ class UISwitchTests: XCTestCase {
     XCTAssertEqual(scalar1.value, true, "Initial value")
     XCTAssertEqual(scalar2.value, false, "Initial value")
     
-    scalar1 |>< switch1.bnd_on
-    switch1.bnd_on |>< switch2.bnd_on
-    switch2.bnd_on |>< scalar2
+    scalar1.bidirectionBindTo(switch1.bnd_on)
+    switch1.bnd_on.bidirectionBindTo(switch2.bnd_on)
+    switch2.bnd_on.bidirectionBindTo(scalar2)
     
     XCTAssertEqual(scalar1.value, true, "Value after binding")
     XCTAssertEqual(scalar2.value, true, "Value after binding")

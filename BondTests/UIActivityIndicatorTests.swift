@@ -19,7 +19,7 @@ class UIActivityIndicatorTests: XCTestCase {
     view.startAnimating()
     XCTAssert(view.isAnimating() == true, "Initial value")
     
-    scalar |> view.bnd_animating
+    scalar.bindTo(view.bnd_animating)
     XCTAssert(view.isAnimating() == false, "Value after binding")
     
     scalar.value = true

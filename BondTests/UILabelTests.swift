@@ -19,7 +19,7 @@ class UILabelTests: XCTestCase {
     label.text = "a"
     XCTAssert(label.text == "a", "Initial value")
         
-    scalar |> label.bnd_text
+    scalar.bindTo(label.bnd_text)
     XCTAssert(label.text == "b", "Value after binding")
         
     scalar.value = "c"
@@ -33,7 +33,7 @@ class UILabelTests: XCTestCase {
     label.text = "a"
     XCTAssert(label.text == "a", "Initial value")
         
-    scalar |> label.bnd_attributedText
+    scalar.bindTo(label.bnd_attributedText)
     XCTAssert(label.attributedText!.string == "b", "Value after binding")
         
     scalar.value = NSAttributedString(string: "c")
@@ -47,7 +47,7 @@ class UILabelTests: XCTestCase {
     label.textColor = UIColor.redColor()
     XCTAssert(label.textColor == UIColor.redColor(), "Initial Value")
         
-    scalar |> label.bnd_textColor
+    scalar.bindTo(label.bnd_textColor)
     XCTAssert(label.textColor == UIColor.blackColor(), "Value after binding")
         
     scalar.value = UIColor.blueColor()

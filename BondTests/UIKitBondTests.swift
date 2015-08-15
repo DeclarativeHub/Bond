@@ -19,7 +19,7 @@ class UIKitTests: XCTestCase {
     view.hidden = true
     XCTAssert(view.hidden == true, "Initial value")
     
-    scalar |> view.bnd_hidden
+    scalar.bindTo(view.bnd_hidden)
     XCTAssert(view.hidden == false, "Value after binding")
     
     scalar.value = true
@@ -33,7 +33,7 @@ class UIKitTests: XCTestCase {
     view.alpha = 0.0
     XCTAssert(abs(view.alpha - 0.0) < 0.0001, "Initial value")
     
-    scalar |> view.bnd_alpha
+    scalar.bindTo(view.bnd_alpha)
     XCTAssert(abs(view.alpha - 0.1) < 0.0001, "Value after binding")
     
     scalar.value = 0.5
@@ -47,7 +47,7 @@ class UIKitTests: XCTestCase {
     view.backgroundColor = UIColor.redColor()
     XCTAssert(view.backgroundColor == UIColor.redColor(), "Initial value")
     
-    scalar |> view.bnd_backgroundColor
+    scalar.bindTo(view.bnd_backgroundColor)
     XCTAssert(view.backgroundColor == UIColor.blackColor(), "Value after binding")
     
     scalar.value = UIColor.blueColor()
@@ -61,7 +61,7 @@ class UIKitTests: XCTestCase {
     label.text = "a"
     XCTAssert(label.text == "a", "Initial value")
     
-    scalar |> label.bnd_text
+    scalar.bindTo(label.bnd_text)
     XCTAssert(label.text == "b", "Value after binding")
     
     scalar.value = "c"
@@ -75,7 +75,7 @@ class UIKitTests: XCTestCase {
     label.text = "a"
     XCTAssert(label.text == "a", "Initial value")
     
-    scalar |> label.bnd_attributedText
+    scalar.bindTo(label.bnd_attributedText)
     XCTAssert(label.attributedText!.string == "b", "Value after binding")
     
     scalar.value = NSAttributedString(string: "c")
@@ -89,7 +89,7 @@ class UIKitTests: XCTestCase {
     progressView.progress = 0.1
     XCTAssert(progressView.progress == 0.1, "Initial value")
     
-    scalar |> progressView.bnd_progress
+    scalar.bindTo(progressView.bnd_progress)
     XCTAssert(progressView.progress == 0.0, "Value after binding")
     
     scalar.value = 0.5
@@ -104,7 +104,7 @@ class UIKitTests: XCTestCase {
     imageView.image = image
     XCTAssert(imageView.image == image, "Initial value")
     
-    scalar |> imageView.bnd_image
+    scalar.bindTo(imageView.bnd_image)
     XCTAssert(imageView.image == nil, "Value after binding")
     
     imageView.image = image
@@ -118,7 +118,7 @@ class UIKitTests: XCTestCase {
     button.enabled = true
     XCTAssert(button.enabled == true, "Initial value")
     
-    scalar |> button.bnd_enabled
+    scalar.bindTo(button.bnd_enabled)
     XCTAssert(button.enabled == false, "Value after binding")
     
     scalar.value = true
@@ -132,7 +132,7 @@ class UIKitTests: XCTestCase {
     button.titleLabel?.text = "a"
     XCTAssert(button.titleLabel?.text == "a", "Initial value")
     
-    scalar |> button.bnd_title
+    scalar.bindTo(button.bnd_title)
     XCTAssert(button.titleLabel?.text == "b", "Value after binding")
     
     scalar.value = "c"
@@ -146,7 +146,7 @@ class UIKitTests: XCTestCase {
     barItem.enabled = true
     XCTAssert(barItem.enabled == true, "Initial value")
     
-    scalar |> barItem.bnd_enabled
+    scalar.bindTo(barItem.bnd_enabled)
     XCTAssert(barItem.enabled == false, "Value after binding")
     
     scalar.value = true
@@ -160,7 +160,7 @@ class UIKitTests: XCTestCase {
     barItem.title = "a"
     XCTAssert(barItem.title == "a", "Initial value")
     
-    scalar |> barItem.bnd_title
+    scalar.bindTo(barItem.bnd_title)
     XCTAssert(barItem.title == "b", "Value after binding")
     
     scalar.value = "c"
@@ -176,7 +176,7 @@ class UIKitTests: XCTestCase {
     barItem.image = image1
     XCTAssert(barItem.image == image1, "Initial value")
     
-    scalar |> barItem.bnd_image
+    scalar.bindTo(barItem.bnd_image)
     XCTAssert(barItem.image == nil, "Value after binding")
     
     scalar.value = image2
@@ -190,7 +190,7 @@ class UIKitTests: XCTestCase {
     view.startAnimating()
     XCTAssert(view.isAnimating() == true, "Initial value")
     
-    scalar |> view.bnd_animating
+    scalar.bindTo(view.bnd_animating)
     XCTAssert(view.isAnimating() == false, "Value after binding")
     
     scalar.value = true

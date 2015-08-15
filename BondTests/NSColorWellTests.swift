@@ -19,7 +19,7 @@ class NSColorWellTests: XCTestCase {
     colorWell.color = NSColor.redColor()
     XCTAssertEqual(colorWell.color, NSColor.redColor(), "Initial value")
     
-    dynamicDriver |> colorWell.bnd_color
+    dynamicDriver.bindTo(colorWell.bnd_color)
     XCTAssertEqual(colorWell.color, NSColor.cyanColor(), "Value after binding")
     
     dynamicDriver.value = NSColor.yellowColor()

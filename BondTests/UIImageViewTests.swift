@@ -20,7 +20,7 @@ class UIImageViewTests: XCTestCase {
     imageView.image = image
     XCTAssert(imageView.image == image, "Initial value")
     
-    scalar |> imageView.bnd_image
+    scalar.bindTo(imageView.bnd_image)
     XCTAssert(imageView.image == nil, "Value after binding")
     
     imageView.image = image

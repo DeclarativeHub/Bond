@@ -19,7 +19,7 @@ class NSControlTests: XCTestCase {
     control.enabled = true
     XCTAssertTrue(control.enabled, "Initial value")
     
-    dynamicDriver |> control.bnd_enabled
+    dynamicDriver.bindTo(control.bnd_enabled)
     XCTAssertFalse(control.enabled, "Value after binding")
     
     dynamicDriver.value = true

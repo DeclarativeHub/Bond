@@ -19,7 +19,7 @@ class UITextViewTests: XCTestCase {
     textView.text = "a"
     XCTAssert(textView.text == "a", "Initial value")
     
-    scalar |>< textView.bnd_text
+    scalar.bidirectionBindTo(textView.bnd_text)
     XCTAssert(textView.text == "b", "Text view value after binding")
     
     scalar.value = "c"
@@ -38,7 +38,7 @@ class UITextViewTests: XCTestCase {
     textView.attributedText = NSAttributedString(string: "a")
     XCTAssert(textView.attributedText.string == "a", "Initial value")
     
-    scalar |>< textView.bnd_attributedText
+    scalar.bidirectionBindTo(textView.bnd_attributedText)
     XCTAssert(textView.attributedText.string == "b", "Text view value after binding")
     
     scalar.value = NSAttributedString(string: "c")
@@ -62,11 +62,11 @@ class UITextViewTests: XCTestCase {
     XCTAssert(textField.text == "", "Initial value")
     XCTAssert(label.text == nil, "Initial value")
     
-    scalar |> textView1.bnd_text
-    textView1.bnd_text |> textView2.bnd_text
+    scalar.bindTo(textView1.bnd_text)
+    textView1.bnd_text.bindTo(textView2.bnd_text)
     textView2.bnd_text.observe { bondedValue = $0 }
-    textView2.bnd_text |> textField.bnd_text
-    textView2.bnd_text |> label.bnd_text
+    textView2.bnd_text.bindTo(textField.bnd_text)
+    textView2.bnd_text.bindTo(label.bnd_text)
     
     XCTAssertEqual(bondedValue, "a", "Value after binding")
     XCTAssert(textField.text == "a", "Value after binding")
@@ -91,10 +91,10 @@ class UITextViewTests: XCTestCase {
     XCTAssertEqual(scalar2.value, "z", "Initial value")
     XCTAssert(textField.text == "1", "Initial value")
     
-    scalar1 |>< textView1.bnd_text
-    textView1.bnd_text |>< textView2.bnd_text
-    textView2.bnd_text |>< scalar2
-    textView2.bnd_text |>< textField.bnd_text
+    scalar1.bidirectionBindTo(textView1.bnd_text)
+    textView1.bnd_text.bidirectionBindTo(textView2.bnd_text)
+    textView2.bnd_text.bidirectionBindTo(scalar2)
+    textView2.bnd_text.bidirectionBindTo(textField.bnd_text)
     
     XCTAssertEqual(scalar1.value, "a", "Value after binding")
     XCTAssertEqual(scalar2.value, "a", "Value after binding")

@@ -19,7 +19,7 @@ class NSButtonTests: XCTestCase {
     button.state = NSOnState
     XCTAssertEqual(button.state, NSOnState, "Initial value")
     
-    dynamicDriver |> button.bnd_state
+    dynamicDriver.bindTo(button.bnd_state)
     XCTAssertEqual(button.state, NSOffState, "Value after binding")
     
     dynamicDriver.value = NSOnState

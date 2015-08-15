@@ -25,22 +25,22 @@
 import Foundation
 
 /// Unidirectional binding operator
-infix operator |> { associativity left precedence 95 }
+infix operator ->> { associativity left precedence 95 }
 
 /// Bidirectional binding operator
-infix operator |>< { associativity left precedence 95 }
+infix operator ->>< { associativity left precedence 95 }
 
 /// Establishes a unidirectional binding between the source observer and the destination sink.
-public func |> <O: ObservableType, B: BindableType where B.Element == O.EventType>(source: O, destination: B) -> DisposableType {
+public func ->> <O: ObservableType, B: BindableType where B.Element == O.EventType>(source: O, destination: B) -> DisposableType {
   return source.bindTo(destination)
 }
 
-public func |> <O: ObservableType, B: BindableType where B.Element == Optional<O.EventType>>(source: O, destination: B) -> DisposableType {
+public func ->> <O: ObservableType, B: BindableType where B.Element == Optional<O.EventType>>(source: O, destination: B) -> DisposableType {
   return source.bindTo(destination)
 }
 
 /// Establishes a bidirectional binding between the source and the destination.
-public func |>< <B: BindableType where B: ObservableType, B.Element == B.EventType>(source: B, destination: B) -> DisposableType {
+public func ->>< <B: BindableType where B: ObservableType, B.Element == B.EventType>(source: B, destination: B) -> DisposableType {
   let d1 = source.bindTo(destination)
   let d2 = destination.bindTo(source)
   return CompositeDisposable([d1, d2])

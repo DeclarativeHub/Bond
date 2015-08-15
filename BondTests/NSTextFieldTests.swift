@@ -19,7 +19,7 @@ class NSTextFieldTests: XCTestCase {
     textField.stringValue = "Goodbye"
     XCTAssertEqual(textField.stringValue, "Goodbye", "Initial value")
     
-    dynamicDriver |> textField.bnd_text
+    dynamicDriver.bindTo(textField.bnd_text)
     XCTAssertEqual(textField.stringValue, "Hello", "Value after binding")
     
     dynamicDriver.value = "Welcome"
@@ -36,10 +36,10 @@ class NSTextFieldTests: XCTestCase {
     XCTAssertEqual(bondedValue, "", "Initial value")
     XCTAssertEqual(textView.string!, "", "Initial value")
     
-    dynamicDriver |> textField1.bnd_text
-    textField1.bnd_text |> textField2.bnd_text
+    dynamicDriver.bindTo(textField1.bnd_text)
+    textField1.bnd_text.bindTo(textField2.bnd_text)
     textField2.bnd_text.observe { text in bondedValue = text }
-    textField2.bnd_text |> textView.bnd_string
+    textField2.bnd_text.bindTo(textView.bnd_string)
     
     XCTAssertEqual(bondedValue, "a", "Value after binding")
     XCTAssertEqual(textView.string!, "a", "Value after binding")
@@ -60,10 +60,10 @@ class NSTextFieldTests: XCTestCase {
     XCTAssertEqual(dynamicDriver1.value, "a", "Initial value")
     XCTAssertEqual(dynamicDriver2.value, "z", "Initial value")
     
-    dynamicDriver1 |>< textField1.bnd_text
-    textField1.bnd_text |>< textView.bnd_string
-    textView.bnd_string |>< textField2.bnd_text
-    textField2.bnd_text |>< dynamicDriver2
+    dynamicDriver1.bidirectionBindTo(textField1.bnd_text)
+    textField1.bnd_text.bidirectionBindTo(textView.bnd_string)
+    textView.bnd_string.bidirectionBindTo(textField2.bnd_text)
+    textField2.bnd_text.bidirectionBindTo(dynamicDriver2)
     
     XCTAssertEqual(dynamicDriver1.value, "a", "After binding")
     XCTAssertEqual(dynamicDriver2.value, "a", "After binding")

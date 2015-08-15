@@ -19,7 +19,7 @@ class UIButtonTests: XCTestCase {
     button.enabled = true
     XCTAssert(button.enabled == true, "Initial value")
     
-    scalar |> button.bnd_enabled
+    scalar.bindTo(button.bnd_enabled)
     XCTAssert(button.enabled == false, "Value after binding")
     
     scalar.value = true
@@ -33,7 +33,7 @@ class UIButtonTests: XCTestCase {
     button.titleLabel?.text = "a"
     XCTAssert(button.titleLabel?.text == "a", "Initial value")
     
-    scalar |> button.bnd_title
+    scalar.bindTo(button.bnd_title)
     XCTAssert(button.titleLabel?.text == "b", "Value after binding")
     
     scalar.value = "c"

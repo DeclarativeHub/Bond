@@ -20,7 +20,7 @@ class NSImageViewTests: XCTestCase {
     control.image = image
     XCTAssertEqual(control.image!, image, "Initial value")
     
-    dynamicDriver |> control.bnd_image
+    dynamicDriver.bindTo(control.bnd_image)
     XCTAssertNil(control.image, "Value after binding")
     
     dynamicDriver.value = image

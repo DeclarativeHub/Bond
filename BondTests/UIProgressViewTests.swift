@@ -19,7 +19,7 @@ class UIProgressViewTests: XCTestCase {
     progressView.progress = 0.1
     XCTAssert(progressView.progress == 0.1, "Initial value")
     
-    scalar |> progressView.bnd_progress
+    scalar.bindTo(progressView.bnd_progress)
     XCTAssert(progressView.progress == 0.0, "Value after binding")
     
     scalar.value = 0.5

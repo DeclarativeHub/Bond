@@ -19,7 +19,7 @@ class UIBarItemTests: XCTestCase {
     barItem.enabled = true
     XCTAssert(barItem.enabled == true, "Initial value")
     
-    scalar |> barItem.bnd_enabled
+    scalar.bindTo(barItem.bnd_enabled)
     XCTAssert(barItem.enabled == false, "Value after binding")
     
     scalar.value = true
@@ -33,7 +33,7 @@ class UIBarItemTests: XCTestCase {
     barItem.title = "a"
     XCTAssert(barItem.title == "a", "Initial value")
     
-    scalar |> barItem.bnd_title
+    scalar.bindTo(barItem.bnd_title)
     XCTAssert(barItem.title == "b", "Value after binding")
     
     scalar.value = "c"
@@ -49,7 +49,7 @@ class UIBarItemTests: XCTestCase {
     barItem.image = image1
     XCTAssert(barItem.image == image1, "Initial value")
     
-    scalar |> barItem.bnd_image
+    scalar.bindTo(barItem.bnd_image)
     XCTAssert(barItem.image == nil, "Value after binding")
     
     scalar.value = image2

@@ -18,7 +18,7 @@ class UINavigationItemTests : XCTestCase {
         
         XCTAssert(item.title == nil, "Initial value")
         
-        scalar |> item.bnd_title
+        scalar.bindTo(item.bnd_title)
         XCTAssert(item.title == "TestTitle", "Value after binding")
         
         scalar.value = "TestTitle2"

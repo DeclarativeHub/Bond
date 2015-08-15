@@ -19,7 +19,7 @@ class UIViewTests: XCTestCase {
     view.hidden = true
     XCTAssert(view.hidden == true, "Initial value")
     
-    scalar |> view.bnd_hidden
+    scalar.bindTo(view.bnd_hidden)
     XCTAssert(view.hidden == false, "Value after binding")
     
     scalar.value = true
@@ -33,7 +33,7 @@ class UIViewTests: XCTestCase {
     view.alpha = 0.0
     XCTAssert(abs(view.alpha - 0.0) < 0.0001, "Initial value")
     
-    scalar |> view.bnd_alpha
+    scalar.bindTo(view.bnd_alpha)
     XCTAssert(abs(view.alpha - 0.1) < 0.0001, "Value after binding")
     
     scalar.value = 0.5
@@ -47,7 +47,7 @@ class UIViewTests: XCTestCase {
     view.backgroundColor = UIColor.redColor()
     XCTAssert(view.backgroundColor == UIColor.redColor(), "Initial value")
     
-    scalar |> view.bnd_backgroundColor
+    scalar.bindTo(view.bnd_backgroundColor)
     XCTAssert(view.backgroundColor == UIColor.blackColor(), "Value after binding")
     
     scalar.value = UIColor.blueColor()
@@ -61,7 +61,7 @@ class UIViewTests: XCTestCase {
     view.userInteractionEnabled = true
     XCTAssert(view.userInteractionEnabled == true, "Initial value")
 
-    scalar |> view.bnd_userInteractionEnabled
+    scalar.bindTo(view.bnd_userInteractionEnabled)
     XCTAssert(view.userInteractionEnabled == false, "Value After Binding")
 
     scalar.value = true

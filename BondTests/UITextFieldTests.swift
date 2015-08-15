@@ -19,7 +19,7 @@ class UITextFieldTests: XCTestCase {
     textField.text = "a"
     XCTAssert(textField.text == "a", "Initial value")
     
-    scalar |>< textField.bnd_text
+    scalar.bidirectionBindTo(textField.bnd_text)
     XCTAssert(textField.text == "b", "Text field value after binding")
     
     scalar.value = "c"
@@ -38,7 +38,7 @@ class UITextFieldTests: XCTestCase {
     textField.enabled = true
     XCTAssert(textField.enabled == true, "Initial value")
 
-    scalar |> textField.bnd_enabled
+    scalar.bindTo(textField.bnd_enabled)
     XCTAssert(textField.enabled == false, "Value after binding")
 
     scalar.value = true
@@ -57,11 +57,11 @@ class UITextFieldTests: XCTestCase {
     XCTAssertEqual(textView.text, "", "Initial value")
     XCTAssert(label.text == nil, "Initial value")
     
-    scalar |> textField1.bnd_text
-    textField1.bnd_text |> textField2.bnd_text
+    scalar.bindTo(textField1.bnd_text)
+    textField1.bnd_text.bindTo(textField2.bnd_text)
     textField2.bnd_text.observe { bondedValue = $0 }
-    textField2.bnd_text |> textView.bnd_text
-    textField2.bnd_text |> label.bnd_text
+    textField2.bnd_text.bindTo(textView.bnd_text)
+    textField2.bnd_text.bindTo(label.bnd_text)
     
     XCTAssertEqual(bondedValue, "a", "Value after binding")
     XCTAssertEqual(textView.text, "a", "Value after binding")
@@ -84,10 +84,10 @@ class UITextFieldTests: XCTestCase {
     XCTAssertEqual(scalar1.value, "a", "Initial value")
     XCTAssertEqual(scalar2.value, "z", "Initial value")
 
-    scalar1 |>< textField1.bnd_text
-    textField1.bnd_text |>< textView.bnd_text
-    textView.bnd_text |>< textField2.bnd_text
-    textField2.bnd_text |>< scalar2
+    scalar1.bidirectionBindTo(textField1.bnd_text)
+    textField1.bnd_text.bidirectionBindTo(textView.bnd_text)
+    textView.bnd_text.bidirectionBindTo(textField2.bnd_text)
+    textField2.bnd_text.bidirectionBindTo(scalar2)
     
     XCTAssertEqual(scalar1.value, "a", "After binding")
     XCTAssertEqual(scalar2.value, "a", "After binding")

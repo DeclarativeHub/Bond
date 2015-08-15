@@ -19,7 +19,7 @@ class NSMenuItemTests: XCTestCase {
     menuItem.enabled = true
     XCTAssertTrue(menuItem.enabled, "Initial value")
     
-    dynamicDriver |> menuItem.bnd_enabled
+    dynamicDriver.bindTo(menuItem.bnd_enabled)
     XCTAssertFalse(menuItem.enabled, "Value after binding")
     
     dynamicDriver.value = true
@@ -33,7 +33,7 @@ class NSMenuItemTests: XCTestCase {
     menuItem.state = NSOnState
     XCTAssertEqual(menuItem.state, NSOnState, "Initial value")
     
-    dynamicDriver |> menuItem.bnd_state
+    dynamicDriver.bindTo(menuItem.bnd_state)
     XCTAssertEqual(menuItem.state, NSOffState, "Value after binding")
     
     dynamicDriver.value = NSOnState

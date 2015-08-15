@@ -194,6 +194,17 @@ public extension ObservableType {
   }
 }
 
+public extension ObservableType where Self: BindableType {
+  
+  /// Establishes a one-way binding between the source and the bindable's sink
+  /// and returns a disposable that can cancel observing.
+  public func bidirectionBindTo<B: BindableType where B: ObservableType, B.EventType == Element, B.Element == EventType>(bindable: B) -> DisposableType {
+    let d1 = bindTo(bindable)
+    let d2 = bindable.bindTo(self)
+    return CompositeDisposable([d1, d2])
+  }
+}
+
 public extension ObservableType where EventType: OptionalType {
   
   /// Forwards only events that are not `nil`, unwrapped into non-optional type.

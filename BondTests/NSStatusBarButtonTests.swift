@@ -19,7 +19,7 @@ class NSStatusBarButtonTests: XCTestCase {
     statusBarButton.appearsDisabled = true
     XCTAssertTrue(statusBarButton.appearsDisabled, "Initial value")
     
-    dynamicDriver |> statusBarButton.bnd_appearsDisabled
+    dynamicDriver.bindTo(statusBarButton.bnd_appearsDisabled)
     XCTAssertFalse(statusBarButton.appearsDisabled, "Value after binding")
     
     dynamicDriver.value = true
