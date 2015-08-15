@@ -34,16 +34,29 @@ extension NSIndexSet {
   }
 }
 
-class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
+@objc public protocol BNDTableViewProxyDataSource {
+  optional func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String?
+  optional func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String?
+  optional func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool
+  optional func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool
+  optional func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]?
+  optional func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int
+  optional func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath)
+  optional func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath)
+}
+
+private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
   
   private let vector: Vector<Vector<T>>
   private weak var tableView: UITableView!
   private let createCell: (NSIndexPath, Vector<Vector<T>>, UITableView) -> UITableViewCell
+  private weak var proxyDataSource: BNDTableViewProxyDataSource?
   private let sectionObservingDisposeBag = DisposeBag()
   
-  private init(vector: Vector<Vector<T>>, tableView: UITableView, createCell: (NSIndexPath, Vector<Vector<T>>, UITableView) -> UITableViewCell) {
+  private init(vector: Vector<Vector<T>>, tableView: UITableView, proxyDataSource: BNDTableViewProxyDataSource?, createCell: (NSIndexPath, Vector<Vector<T>>, UITableView) -> UITableViewCell) {
     self.tableView = tableView
     self.createCell = createCell
+    self.proxyDataSource = proxyDataSource
     self.vector = vector
     super.init()
     
@@ -120,7 +133,7 @@ class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
   
   /// MARK - UITableViewDataSource
   
-  func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+  @objc func numberOfSectionsInTableView(tableView: UITableView) -> Int {
     return vector.count
   }
   
@@ -130,6 +143,42 @@ class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
   
   @objc func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     return createCell(indexPath, vector, tableView)
+  }
+  
+  @objc func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    return proxyDataSource?.tableView?(tableView, titleForHeaderInSection: section)
+  }
+  
+  @objc func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+      return proxyDataSource?.tableView?(tableView, titleForFooterInSection: section)
+  }
+  
+  @objc func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    return proxyDataSource?.tableView?(tableView, canEditRowAtIndexPath: indexPath) ?? false
+  }
+  
+  @objc func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    return proxyDataSource?.tableView?(tableView, canMoveRowAtIndexPath: indexPath) ?? false
+  }
+  
+  @objc func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
+    return proxyDataSource?.sectionIndexTitlesForTableView?(tableView)
+  }
+  
+  @objc func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
+    if let section = proxyDataSource?.tableView?(tableView, sectionForSectionIndexTitle: title, atIndex: index) {
+      return section
+    } else {
+      fatalError("Dear Sir/Madam, your table view has asked for section for section index title \(title). Please provide a proxy data source object in bindTo() method that implements `tableView(tableView:sectionForSectionIndexTitle:atIndex:)` method!")
+    }
+  }
+  
+  @objc func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    proxyDataSource?.tableView?(tableView, commitEditingStyle: editingStyle, forRowAtIndexPath: indexPath)
+  }
+  
+  @objc func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+    proxyDataSource?.tableView?(tableView, moveRowAtIndexPath: sourceIndexPath, toIndexPath: destinationIndexPath)
   }
 }
 
@@ -146,7 +195,7 @@ public extension ObservableType where
   
   private typealias ElementType = EventType.VectorEventSequenceType.Generator.Element.EventType.VectorEventSequenceType.Generator.Element
   
-  public func bindTo(tableView: UITableView, createCell: (NSIndexPath, Vector<Vector<ElementType>>, UITableView) -> UITableViewCell) -> DisposableType {
+  public func bindTo(tableView: UITableView, proxyDataSource: BNDTableViewProxyDataSource? = nil, createCell: (NSIndexPath, Vector<Vector<ElementType>>, UITableView) -> UITableViewCell) -> DisposableType {
     
     let vector: Vector<Vector<ElementType>>
     if let downcastedVector = self as? Vector<Vector<ElementType>> {
@@ -155,7 +204,7 @@ public extension ObservableType where
       vector = self.map { $0.crystallize() }.crystallize()
     }
     
-    let dataSource = BNDTableViewDataSource(vector: vector, tableView: tableView, createCell: createCell)
+    let dataSource = BNDTableViewDataSource(vector: vector, tableView: tableView, proxyDataSource: proxyDataSource, createCell: createCell)
     tableView.dataSource = dataSource
     objc_setAssociatedObject(tableView, UITableView.AssociatedKeys.BondDataSourceKey, dataSource, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     

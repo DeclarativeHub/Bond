@@ -24,16 +24,24 @@
 
 import UIKit
 
-class BNDCollectionViewDataSource<T>: NSObject, UICollectionViewDataSource {
+@objc public protocol BNDCollectionViewProxyDataSource {
+  optional func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView
+  optional func collectionView(collectionView: UICollectionView, canMoveItemAtIndexPath indexPath: NSIndexPath) -> Bool
+  optional func collectionView(collectionView: UICollectionView, moveItemAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath)
+}
+
+private class BNDCollectionViewDataSource<T>: NSObject, UICollectionViewDataSource {
   
   private let vector: Vector<Vector<T>>
   private weak var collectionView: UICollectionView!
   private let createCell: (NSIndexPath, Vector<Vector<T>>, UICollectionView) -> UICollectionViewCell
+  private weak var proxyDataSource: BNDCollectionViewProxyDataSource?
   private let sectionObservingDisposeBag = DisposeBag()
   
-  private init(vector: Vector<Vector<T>>, collectionView: UICollectionView, createCell: (NSIndexPath, Vector<Vector<T>>, UICollectionView) -> UICollectionViewCell) {
+  private init(vector: Vector<Vector<T>>, collectionView: UICollectionView, proxyDataSource: BNDCollectionViewProxyDataSource?, createCell: (NSIndexPath, Vector<Vector<T>>, UICollectionView) -> UICollectionViewCell) {
     self.collectionView = collectionView
     self.createCell = createCell
+    self.proxyDataSource = proxyDataSource
     self.vector = vector
     super.init()
     
@@ -110,7 +118,7 @@ class BNDCollectionViewDataSource<T>: NSObject, UICollectionViewDataSource {
   
   /// MARK - UICollectionViewDataSource
   
-  func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+  @objc func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
     return vector.count
   }
   
@@ -120,6 +128,22 @@ class BNDCollectionViewDataSource<T>: NSObject, UICollectionViewDataSource {
   
   @objc func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
     return createCell(indexPath, vector, collectionView)
+  }
+  
+  @objc func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+    if let view = proxyDataSource?.collectionView?(collectionView, viewForSupplementaryElementOfKind: kind, atIndexPath: indexPath) {
+      return view
+    } else {
+      fatalError("Dear Sir/Madam, your collection view has asked for a supplementary view of a \(kind) kind. Please provide a proxy data source object in bindTo() method that implements `collectionView(collectionView:viewForSupplementaryElementOfKind:atIndexPath)` method!")
+    }
+  }
+  
+  @objc func collectionView(collectionView: UICollectionView, canMoveItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+    return proxyDataSource?.collectionView?(collectionView, canMoveItemAtIndexPath: indexPath) ?? false
+  }
+  
+  @objc func collectionView(collectionView: UICollectionView, moveItemAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+    proxyDataSource?.collectionView?(collectionView, moveItemAtIndexPath: sourceIndexPath, toIndexPath: destinationIndexPath)
   }
 }
 
@@ -136,7 +160,7 @@ public extension ObservableType where
   
   private typealias ElementType = EventType.VectorEventSequenceType.Generator.Element.EventType.VectorEventSequenceType.Generator.Element
   
-  public func bindTo(collectionView: UICollectionView, createCell: (NSIndexPath, Vector<Vector<ElementType>>, UICollectionView) -> UICollectionViewCell) -> DisposableType {
+  public func bindTo(collectionView: UICollectionView, proxyDataSource: BNDCollectionViewProxyDataSource? = nil, createCell: (NSIndexPath, Vector<Vector<ElementType>>, UICollectionView) -> UICollectionViewCell) -> DisposableType {
     
     let vector: Vector<Vector<ElementType>>
     if let downcastedVector = self as? Vector<Vector<ElementType>> {
@@ -145,7 +169,7 @@ public extension ObservableType where
       vector = self.map { $0.crystallize() }.crystallize()
     }
     
-    let dataSource = BNDCollectionViewDataSource(vector: vector, collectionView: collectionView, createCell: createCell)
+    let dataSource = BNDCollectionViewDataSource(vector: vector, collectionView: collectionView, proxyDataSource: proxyDataSource, createCell: createCell)
     collectionView.dataSource = dataSource
     objc_setAssociatedObject(collectionView, UICollectionView.AssociatedKeys.BondDataSourceKey, dataSource, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     
