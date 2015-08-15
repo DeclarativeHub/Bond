@@ -85,6 +85,9 @@ public final class CompositeDisposable: DisposableType {
   
   public func addDisposable(disposable: DisposableType) {
     disposables?.append(disposable)
+    if let disposables = disposables {
+      self.disposables = disposables.filter { $0.isDisposed == false }
+    }
   }
   
   public func dispose() {
@@ -109,6 +112,9 @@ public final class DisposeBag: DisposableType {
   /// This will return true whenever the bag is empty.
   public var isDisposed: Bool {
     return disposables.count == 0
+  }
+  
+  public init() {
   }
   
   /// Adds the given disposable to the bag.

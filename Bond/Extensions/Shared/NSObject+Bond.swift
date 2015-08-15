@@ -48,13 +48,14 @@ public extension NSObject {
       let scalar = Scalar<T>(self.valueForKey(key) as! T)
       objc_setAssociatedObject(self, &associationKey, scalar, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       
-      scalar.observeNew { [weak self] (value: T) in
-        if let value = value as? AnyObject {
-          self?.setValue(value, forKey: key)
-        } else {
-          self?.setValue(nil, forKey: key)
+      scalar
+        .observeNew { [weak self] (value: T) in
+          if let value = value as? AnyObject {
+            self?.setValue(value, forKey: key)
+          } else {
+            self?.setValue(nil, forKey: key)
+          }
         }
-      }
       
       return scalar
     }
@@ -67,9 +68,10 @@ public extension NSObject {
       let scalar = Scalar<T?>(self.valueForKey(key) as? T ?? nil)
       objc_setAssociatedObject(self, &associationKey, scalar, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       
-      scalar.observeNew { [weak self] (value: T?) in
-        self?.setValue(value as! AnyObject?, forKey: key)
-      }
+      scalar
+        .observeNew { [weak self] (value: T?) in
+          self?.setValue(value as! AnyObject?, forKey: key)
+        }
       
       return scalar
     }

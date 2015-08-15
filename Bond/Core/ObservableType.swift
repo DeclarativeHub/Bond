@@ -55,9 +55,9 @@ public extension ObservableType {
   /// Establishes a one-way binding between the source and the bindable's sink
   /// and returns a disposable that can cancel observing.
   public func bindTo<B: BindableType where B.Element == EventType>(bindable: B) -> DisposableType {
-    let disposable = CompositeDisposable()
+    let disposable = SerialDisposable(otherDisposable: nil)
     let sink = bindable.sink(disposable)
-    disposable += observe { value in
+    disposable.otherDisposable = observe { value in
       sink(value)
     }
     return disposable
@@ -66,9 +66,9 @@ public extension ObservableType {
   /// Establishes a one-way binding between the source and the bindable's sink
   /// and returns a disposable that can cancel observing.
   public func bindTo<B: BindableType where B.Element == Optional<EventType>>(bindable: B) -> DisposableType {
-    let disposable = CompositeDisposable()
+    let disposable = SerialDisposable(otherDisposable: nil)
     let sink = bindable.sink(disposable)
-    disposable += observe { value in
+    disposable.otherDisposable = observe { value in
       sink(value)
     }
     return disposable

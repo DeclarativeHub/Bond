@@ -27,7 +27,7 @@ import Foundation
 extension NSURLSession {
   
   public func bnd_dataWithURL(url: NSURL) -> Promise<(NSData!, NSURLResponse!), NSError> {
-    let promise = Promise<(NSData!, NSURLResponse!), NSError>()
+    let promise: Promise<(NSData!, NSURLResponse!), NSError>! = Promise()
     
     let dataTask = self.dataTaskWithURL(url) { data, response, error in
       if let data = data where response != nil {

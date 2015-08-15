@@ -23,8 +23,8 @@
 //
 
 public enum ObservableLifetime {
-  case Normal
-  case UntilDisposed
+  case Normal   /// Normal lifetime (alive as long as there exists at least one strong reference to it).
+  case Managed  /// Normal + retained by the sink given to the producer whenever we have at least one observer.
 }
 
 public class Observable<EventType>: ObservableType {
@@ -46,13 +46,17 @@ public class Observable<EventType>: ObservableType {
   /// Internal buffer for event replaying.
   private var buffer: Buffer<EventType>? = nil
 
-  /// Used to manage lifecycle of the observable. Captured by the producer sink. It will hold a
-  /// strong reference to self when there is at least one observer registered.
+  /// Used to manage lifecycle of the observable when lifetime == .Managed. 
+  /// Captured by the producer sink. It will hold a strong reference to self
+  /// when there is at least one observer registered.
   ///
   /// When all observers are unregistered, the reference will weakify its reference to self.
   /// That means the observable will be deallocated if no one else holds a strong reference to it.
   /// Deallocation will dispose `deinitDisposable` and thus break the connection with the source.
   private weak var selfReference: Reference<Observable<EventType>>?
+  
+  /// Consult `ObservableLifetime` for more info.
+  public private(set) var lifetime: ObservableLifetime
   
   /// Creates a new observable with the given replay length and the producer that is used
   /// to generate events that will be dispatched to the registered observers.
@@ -63,7 +67,8 @@ public class Observable<EventType>: ObservableType {
   /// Producer closure will be executed immediately. It will receive a sink into which
   /// events can be dispatched. If producer returns a disposable, the observable will store
   /// it and dispose upon [observable's] deallocation.
-  public init(replayLength: Int = 0, @noescape producer: SinkType -> DisposableType?) {
+  public init(replayLength: Int = 0, lifetime: ObservableLifetime = .Managed, @noescape producer: SinkType -> DisposableType?) {
+    self.lifetime = lifetime
     
     let tmpSelfReference = Reference(self)
     tmpSelfReference.release()
@@ -87,7 +92,10 @@ public class Observable<EventType>: ObservableType {
   /// Registers the given observer and returns a disposable that can cancel observing.
   public func observe(observer: EventType -> ()) -> DisposableType {
     
-    selfReference?.retain()
+    if lifetime == .Managed {
+      selfReference?.retain()
+    }
+    
     let disposable = dispatcher.addObserver(observer)
     
     if let buffer = buffer {

@@ -54,7 +54,7 @@ public final class Promise<SuccessType, FailureType: ErrorType>: Observable<Futu
     let cancelDisposable = CompositeDisposable()
     
     var capturedSink: SinkType! = nil
-    super.init(replayLength: 1) { sink in
+    super.init(replayLength: 1, lifetime: .Normal) { sink in
       capturedSink = sink
       return cancelDisposable
     }
