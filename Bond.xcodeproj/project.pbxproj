@@ -39,10 +39,6 @@
 		ECAD68F21B77BB1D00837A36 /* Disposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BB1B77BB1D00837A36 /* Disposable.swift */; };
 		ECAD68F31B77BB1D00837A36 /* DisposableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BC1B77BB1D00837A36 /* DisposableType.swift */; };
 		ECAD68F41B77BB1D00837A36 /* DisposableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BC1B77BB1D00837A36 /* DisposableType.swift */; };
-		ECAD68F51B77BB1D00837A36 /* Either.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BD1B77BB1D00837A36 /* Either.swift */; };
-		ECAD68F61B77BB1D00837A36 /* Either.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BD1B77BB1D00837A36 /* Either.swift */; };
-		ECAD68F71B77BB1D00837A36 /* Future.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BE1B77BB1D00837A36 /* Future.swift */; };
-		ECAD68F81B77BB1D00837A36 /* Future.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BE1B77BB1D00837A36 /* Future.swift */; };
 		ECAD68F91B77BB1D00837A36 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BF1B77BB1D00837A36 /* Observable.swift */; };
 		ECAD68FA1B77BB1D00837A36 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BF1B77BB1D00837A36 /* Observable.swift */; };
 		ECAD68FB1B77BB1D00837A36 /* ObservableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C01B77BB1D00837A36 /* ObservableType.swift */; };
@@ -51,8 +47,6 @@
 		ECAD68FE1B77BB1D00837A36 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C11B77BB1D00837A36 /* Operators.swift */; };
 		ECAD68FF1B77BB1D00837A36 /* OptionalType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C21B77BB1D00837A36 /* OptionalType.swift */; };
 		ECAD69001B77BB1D00837A36 /* OptionalType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C21B77BB1D00837A36 /* OptionalType.swift */; };
-		ECAD69011B77BB1D00837A36 /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C31B77BB1D00837A36 /* Promise.swift */; };
-		ECAD69021B77BB1D00837A36 /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C31B77BB1D00837A36 /* Promise.swift */; };
 		ECAD69031B77BB1D00837A36 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C41B77BB1D00837A36 /* Queue.swift */; };
 		ECAD69041B77BB1D00837A36 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C41B77BB1D00837A36 /* Queue.swift */; };
 		ECAD69051B77BB1D00837A36 /* Reference.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C51B77BB1D00837A36 /* Reference.swift */; };
@@ -81,8 +75,6 @@
 		ECAD69441B77BB1D00837A36 /* NSNotificationCenter+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E81B77BB1D00837A36 /* NSNotificationCenter+Bond.swift */; };
 		ECAD69451B77BB1D00837A36 /* NSObject+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E91B77BB1D00837A36 /* NSObject+Bond.swift */; };
 		ECAD69461B77BB1D00837A36 /* NSObject+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E91B77BB1D00837A36 /* NSObject+Bond.swift */; };
-		ECAD69471B77BB1D00837A36 /* NSURLSession+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68EA1B77BB1D00837A36 /* NSURLSession+Bond.swift */; };
-		ECAD69481B77BB1D00837A36 /* NSURLSession+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68EA1B77BB1D00837A36 /* NSURLSession+Bond.swift */; };
 		ECAD69491B77BB2800837A36 /* UIActivityIndicatorView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CB1B77BB1D00837A36 /* UIActivityIndicatorView+Bond.swift */; };
 		ECAD694A1B77BB2800837A36 /* UIBarItem+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CC1B77BB1D00837A36 /* UIBarItem+Bond.swift */; };
 		ECAD694B1B77BB2800837A36 /* UIButton+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CD1B77BB1D00837A36 /* UIButton+Bond.swift */; };
@@ -118,7 +110,6 @@
 		ECAD697D1B77D43D00837A36 /* UITextViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD696C1B77D43D00837A36 /* UITextViewTests.swift */; };
 		ECAD697E1B77D43D00837A36 /* UIViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD696D1B77D43D00837A36 /* UIViewTests.swift */; };
 		ECAD69851B77D45600837A36 /* ObservableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69801B77D45600837A36 /* ObservableTests.swift */; };
-		ECAD69861B77D45600837A36 /* PromiseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69811B77D45600837A36 /* PromiseTests.swift */; };
 		ECAD69871B77D45600837A36 /* ScalarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69821B77D45600837A36 /* ScalarTests.swift */; };
 		ECAD69881B77D45600837A36 /* VectorEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69831B77D45600837A36 /* VectorEventTests.swift */; };
 		ECAD69891B77D45600837A36 /* VectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69841B77D45600837A36 /* VectorTests.swift */; };
@@ -189,13 +180,10 @@
 		ECAD68BA1B77BB1D00837A36 /* Dispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dispatcher.swift; sourceTree = "<group>"; };
 		ECAD68BB1B77BB1D00837A36 /* Disposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Disposable.swift; sourceTree = "<group>"; };
 		ECAD68BC1B77BB1D00837A36 /* DisposableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisposableType.swift; sourceTree = "<group>"; };
-		ECAD68BD1B77BB1D00837A36 /* Either.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Either.swift; sourceTree = "<group>"; };
-		ECAD68BE1B77BB1D00837A36 /* Future.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Future.swift; sourceTree = "<group>"; };
 		ECAD68BF1B77BB1D00837A36 /* Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		ECAD68C01B77BB1D00837A36 /* ObservableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableType.swift; sourceTree = "<group>"; };
 		ECAD68C11B77BB1D00837A36 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		ECAD68C21B77BB1D00837A36 /* OptionalType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionalType.swift; sourceTree = "<group>"; };
-		ECAD68C31B77BB1D00837A36 /* Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Promise.swift; sourceTree = "<group>"; };
 		ECAD68C41B77BB1D00837A36 /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		ECAD68C51B77BB1D00837A36 /* Reference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reference.swift; sourceTree = "<group>"; };
 		ECAD68C61B77BB1D00837A36 /* Scalar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scalar.swift; sourceTree = "<group>"; };
@@ -230,7 +218,6 @@
 		ECAD68E71B77BB1D00837A36 /* NSLock+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLock+Bond.swift"; sourceTree = "<group>"; };
 		ECAD68E81B77BB1D00837A36 /* NSNotificationCenter+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNotificationCenter+Bond.swift"; sourceTree = "<group>"; };
 		ECAD68E91B77BB1D00837A36 /* NSObject+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+Bond.swift"; sourceTree = "<group>"; };
-		ECAD68EA1B77BB1D00837A36 /* NSURLSession+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURLSession+Bond.swift"; sourceTree = "<group>"; };
 		ECAD695D1B77D43D00837A36 /* UIActivityIndicatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIActivityIndicatorTests.swift; sourceTree = "<group>"; };
 		ECAD695E1B77D43D00837A36 /* UIBarItemTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBarItemTests.swift; sourceTree = "<group>"; };
 		ECAD695F1B77D43D00837A36 /* UIButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButtonTests.swift; sourceTree = "<group>"; };
@@ -249,7 +236,6 @@
 		ECAD696C1B77D43D00837A36 /* UITextViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextViewTests.swift; sourceTree = "<group>"; };
 		ECAD696D1B77D43D00837A36 /* UIViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewTests.swift; sourceTree = "<group>"; };
 		ECAD69801B77D45600837A36 /* ObservableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableTests.swift; sourceTree = "<group>"; };
-		ECAD69811B77D45600837A36 /* PromiseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromiseTests.swift; sourceTree = "<group>"; };
 		ECAD69821B77D45600837A36 /* ScalarTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScalarTests.swift; sourceTree = "<group>"; };
 		ECAD69831B77D45600837A36 /* VectorEventTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VectorEventTests.swift; sourceTree = "<group>"; };
 		ECAD69841B77D45600837A36 /* VectorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VectorTests.swift; sourceTree = "<group>"; };
@@ -437,13 +423,10 @@
 				ECAD68BA1B77BB1D00837A36 /* Dispatcher.swift */,
 				ECAD68BB1B77BB1D00837A36 /* Disposable.swift */,
 				ECAD68BC1B77BB1D00837A36 /* DisposableType.swift */,
-				ECAD68BD1B77BB1D00837A36 /* Either.swift */,
-				ECAD68BE1B77BB1D00837A36 /* Future.swift */,
 				ECAD68BF1B77BB1D00837A36 /* Observable.swift */,
 				ECAD68C01B77BB1D00837A36 /* ObservableType.swift */,
 				ECAD68C11B77BB1D00837A36 /* Operators.swift */,
 				ECAD68C21B77BB1D00837A36 /* OptionalType.swift */,
-				ECAD68C31B77BB1D00837A36 /* Promise.swift */,
 				ECAD68C41B77BB1D00837A36 /* Queue.swift */,
 				ECAD68C51B77BB1D00837A36 /* Reference.swift */,
 				ECAD68C61B77BB1D00837A36 /* Scalar.swift */,
@@ -509,7 +492,6 @@
 				ECAD68E61B77BB1D00837A36 /* NSLayoutConstraint+Bond.swift */,
 				ECAD68E81B77BB1D00837A36 /* NSNotificationCenter+Bond.swift */,
 				ECAD68E91B77BB1D00837A36 /* NSObject+Bond.swift */,
-				ECAD68EA1B77BB1D00837A36 /* NSURLSession+Bond.swift */,
 				ECAD68E71B77BB1D00837A36 /* NSLock+Bond.swift */,
 			);
 			path = Shared;
@@ -543,7 +525,6 @@
 			isa = PBXGroup;
 			children = (
 				ECAD69801B77D45600837A36 /* ObservableTests.swift */,
-				ECAD69811B77D45600837A36 /* PromiseTests.swift */,
 				ECAD69821B77D45600837A36 /* ScalarTests.swift */,
 				ECAD69841B77D45600837A36 /* VectorTests.swift */,
 				ECAD69831B77D45600837A36 /* VectorEventTests.swift */,
@@ -784,7 +765,6 @@
 				ECAD694B1B77BB2800837A36 /* UIButton+Bond.swift in Sources */,
 				ECAD694A1B77BB2800837A36 /* UIBarItem+Bond.swift in Sources */,
 				ECAD69551B77BB2800837A36 /* UITableView+Bond.swift in Sources */,
-				ECAD68F71B77BB1D00837A36 /* Future.swift in Sources */,
 				ECAD69501B77BB2800837A36 /* UILabel+Bond.swift in Sources */,
 				ECAD69571B77BB2800837A36 /* UITextView+Bond.swift in Sources */,
 				ECAD68FB1B77BB1D00837A36 /* ObservableType.swift in Sources */,
@@ -800,14 +780,11 @@
 				ECAD69091B77BB1D00837A36 /* Vector.swift in Sources */,
 				ECAD69071B77BB1D00837A36 /* Scalar.swift in Sources */,
 				ECAD68F31B77BB1D00837A36 /* DisposableType.swift in Sources */,
-				ECAD68F51B77BB1D00837A36 /* Either.swift in Sources */,
 				ECAD68EF1B77BB1D00837A36 /* Dispatcher.swift in Sources */,
 				ECAD694F1B77BB2800837A36 /* UIImageView+Bond.swift in Sources */,
 				ECAD69581B77BB2800837A36 /* UIView+Bond.swift in Sources */,
 				ECAD69511B77BB2800837A36 /* UINavigationItem+Bond.swift in Sources */,
-				ECAD69471B77BB1D00837A36 /* NSURLSession+Bond.swift in Sources */,
 				ECAD693F1B77BB1D00837A36 /* NSLayoutConstraint+Bond.swift in Sources */,
-				ECAD69011B77BB1D00837A36 /* Promise.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -816,7 +793,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				ECAD697E1B77D43D00837A36 /* UIViewTests.swift in Sources */,
-				ECAD69861B77D45600837A36 /* PromiseTests.swift in Sources */,
 				ECAD69851B77D45600837A36 /* ObservableTests.swift in Sources */,
 				ECAD69741B77D43D00837A36 /* UIImageViewTests.swift in Sources */,
 				ECAD697C1B77D43D00837A36 /* UITextFieldTests.swift in Sources */,
@@ -856,7 +832,6 @@
 				ECAD68FE1B77BB1D00837A36 /* Operators.swift in Sources */,
 				ECAD68EC1B77BB1D00837A36 /* BindableType.swift in Sources */,
 				ECAD69041B77BB1D00837A36 /* Queue.swift in Sources */,
-				ECAD68F81B77BB1D00837A36 /* Future.swift in Sources */,
 				ECAD69381B77BB1D00837A36 /* NSStatusBarButton+Bond.swift in Sources */,
 				ECAD68FC1B77BB1D00837A36 /* ObservableType.swift in Sources */,
 				ECAD693E1B77BB1D00837A36 /* CALayer+Bond.swift in Sources */,
@@ -870,13 +845,10 @@
 				ECAD690A1B77BB1D00837A36 /* Vector.swift in Sources */,
 				ECAD69081B77BB1D00837A36 /* Scalar.swift in Sources */,
 				ECAD68F41B77BB1D00837A36 /* DisposableType.swift in Sources */,
-				ECAD68F61B77BB1D00837A36 /* Either.swift in Sources */,
 				ECAD68F01B77BB1D00837A36 /* Dispatcher.swift in Sources */,
-				ECAD69481B77BB1D00837A36 /* NSURLSession+Bond.swift in Sources */,
 				ECAD69301B77BB1D00837A36 /* NSColorWell+Bond.swift in Sources */,
 				ECAD69401B77BB1D00837A36 /* NSLayoutConstraint+Bond.swift in Sources */,
 				ECAD693A1B77BB1D00837A36 /* NSTextField+Bond.swift in Sources */,
-				ECAD69021B77BB1D00837A36 /* Promise.swift in Sources */,
 				ECAD692E1B77BB1D00837A36 /* NSButton+Bond.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

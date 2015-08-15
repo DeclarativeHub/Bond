@@ -144,13 +144,6 @@ public final class Vector<ElementType>: Observable<VectorEvent<ElementType>>, Ve
 }
 ```
 
-```swift
-public final class Promise<SuccessType, FailureType: ErrorType>: Observable<Future<SuccessType, FailureType>> {
-  public func success(value: SuccessType)
-  public func failure(error: FailureType)
-}
-```
-
 
 ## Installation
 

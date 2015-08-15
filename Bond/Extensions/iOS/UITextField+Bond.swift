@@ -89,19 +89,3 @@ extension UITextField {
   }
 }
 
-func searchResultsForQuery(query: String) -> Promise<[String], NSError> {
-  return Promise(value: [])
-}
-
-func a() {
-  let searchTextField = UITextField()
-  
-  searchTextField.bnd_text
-    .throttle(0.3, queue: Queue.Main)
-    .distinct()
-    .map(searchResultsForQuery)
-    .switchToLatest()
-    .onSuccess { results in
-      print("Got results: \(results)")
-    }
-}
