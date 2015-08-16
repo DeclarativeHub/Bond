@@ -50,7 +50,7 @@ public final class Vector<ElementType>: Observable<VectorEvent<Array<ElementType
     self.array = array
     
     var capturedSink: SinkType! = nil
-    super.init(replayLength: 1, lifetime: .Normal) { sink in
+    super.init(replayLength: 1, lifecycle: .Normal) { sink in
       capturedSink = sink
       return nil
     }

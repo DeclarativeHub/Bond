@@ -48,7 +48,7 @@ class ScalarTests: XCTestCase {
     XCTAssertEqual(observedValue, 8)
   }
   
-  func testLifetime() {
+  func testLifecycle() {
     let srcScalar: Scalar<Int> = Scalar(0)
     var dstScalar: Scalar<Int>! = Scalar(0)
     weak var dstScalarWeak: Scalar<Int>! = dstScalar

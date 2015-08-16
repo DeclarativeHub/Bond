@@ -47,7 +47,7 @@ public final class Scalar<ValueType>: Observable<ValueType>, ScalarType, Bindabl
     self.value = value
     
     var capturedSink: SinkType! = nil
-    super.init(replayLength: 1, lifetime: .Normal) { sink in
+    super.init(replayLength: 1, lifecycle: .Normal) { sink in
       capturedSink = sink
       return nil
     }

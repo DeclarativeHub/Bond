@@ -22,9 +22,9 @@
 //  THE SOFTWARE.
 //
 
-public enum ObservableLifetime {
-  case Normal   /// Normal lifetime (alive as long as there exists at least one strong reference to it).
-  case Managed  /// Normal + retained by the sink given to the producer whenever we have at least one observer.
+public enum ObservableLifecycle {
+  case Normal   /// Normal lifecycle (alive as long as there exists at least one strong reference to it).
+  case Managed  /// Normal + retained by the sink given to the producer whenever there is at least one observer.
 }
 
 public class Observable<EventType>: ObservableType {
@@ -56,7 +56,7 @@ public class Observable<EventType>: ObservableType {
   private weak var selfReference: Reference<Observable<EventType>>?
   
   /// Consult `ObservableLifetime` for more info.
-  public private(set) var lifetime: ObservableLifetime
+  public private(set) var lifecycle: ObservableLifecycle
   
   /// Creates a new observable with the given replay length and the producer that is used
   /// to generate events that will be dispatched to the registered observers.
@@ -67,8 +67,8 @@ public class Observable<EventType>: ObservableType {
   /// Producer closure will be executed immediately. It will receive a sink into which
   /// events can be dispatched. If producer returns a disposable, the observable will store
   /// it and dispose upon [observable's] deallocation.
-  public init(replayLength: Int = 0, lifetime: ObservableLifetime = .Managed, @noescape producer: SinkType -> DisposableType?) {
-    self.lifetime = lifetime
+  public init(replayLength: Int = 0, lifecycle: ObservableLifecycle = .Managed, @noescape producer: SinkType -> DisposableType?) {
+    self.lifecycle = lifecycle
     
     let tmpSelfReference = Reference(self)
     tmpSelfReference.release()
@@ -92,7 +92,7 @@ public class Observable<EventType>: ObservableType {
   /// Registers the given observer and returns a disposable that can cancel observing.
   public func observe(observer: EventType -> ()) -> DisposableType {
     
-    if lifetime == .Managed {
+    if lifecycle == .Managed {
       selfReference?.retain()
     }
     
