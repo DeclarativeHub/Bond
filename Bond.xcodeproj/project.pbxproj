@@ -71,7 +71,6 @@
 		ECAD693F1B77BB1D00837A36 /* NSLayoutConstraint+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E61B77BB1D00837A36 /* NSLayoutConstraint+Bond.swift */; };
 		ECAD69401B77BB1D00837A36 /* NSLayoutConstraint+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E61B77BB1D00837A36 /* NSLayoutConstraint+Bond.swift */; };
 		ECAD69411B77BB1D00837A36 /* NSLock+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E71B77BB1D00837A36 /* NSLock+Bond.swift */; };
-		ECAD69421B77BB1D00837A36 /* NSLock+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E71B77BB1D00837A36 /* NSLock+Bond.swift */; };
 		ECAD69431B77BB1D00837A36 /* NSNotificationCenter+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E81B77BB1D00837A36 /* NSNotificationCenter+Bond.swift */; };
 		ECAD69441B77BB1D00837A36 /* NSNotificationCenter+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E81B77BB1D00837A36 /* NSNotificationCenter+Bond.swift */; };
 		ECAD69451B77BB1D00837A36 /* NSObject+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E91B77BB1D00837A36 /* NSObject+Bond.swift */; };
@@ -116,6 +115,7 @@
 		ECBF04DD1B8089DE001F6BCA /* ScalarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69821B77D45600837A36 /* ScalarTests.swift */; };
 		ECBF04DF1B808B20001F6BCA /* DisposableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */; };
 		ECBF04E01B808B20001F6BCA /* DisposableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */; };
+		ECBF04E11B810100001F6BCA /* NSLock+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E71B77BB1D00837A36 /* NSLock+Bond.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -829,7 +829,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ECAD69421B77BB1D00837A36 /* NSLock+Bond.swift in Sources */,
 				ECAD68FA1B77BB1D00837A36 /* Observable.swift in Sources */,
 				ECAD693C1B77BB1D00837A36 /* NSTextView+Bond.swift in Sources */,
 				ECAD69341B77BB1D00837A36 /* NSImageView+Bond.swift in Sources */,
@@ -840,6 +839,7 @@
 				ECAD69041B77BB1D00837A36 /* Queue.swift in Sources */,
 				ECAD69381B77BB1D00837A36 /* NSStatusBarButton+Bond.swift in Sources */,
 				ECAD68FC1B77BB1D00837A36 /* ObservableType.swift in Sources */,
+				ECBF04E11B810100001F6BCA /* NSLock+Bond.swift in Sources */,
 				ECAD693E1B77BB1D00837A36 /* CALayer+Bond.swift in Sources */,
 				ECAD69321B77BB1D00837A36 /* NSControl+Bond.swift in Sources */,
 				ECAD69461B77BB1D00837A36 /* NSObject+Bond.swift in Sources */,

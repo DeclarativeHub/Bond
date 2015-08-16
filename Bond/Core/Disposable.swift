@@ -22,6 +22,8 @@
 //  THE SOFTWARE.
 //
 
+import Foundation
+
 /// A disposable that does not do anything but encapsulating disposed state.
 public final class SimpleDisposable: DisposableType {
   public private(set) var isDisposed: Bool = false
