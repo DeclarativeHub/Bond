@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "Bond"
-  s.version      = "v4.0.0-alpha.1"
+  s.version      = "4.0.0-alpha.1"
   s.summary      = "A Swift binding framework"
 
   s.description  = <<-DESC
