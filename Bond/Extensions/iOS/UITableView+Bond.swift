@@ -24,16 +24,6 @@
 
 import UIKit
 
-extension NSIndexSet {
-  convenience init(set: Set<Int>) {
-    let indexSet = NSMutableIndexSet()
-    for index in set {
-      indexSet.addIndex(index)
-    }
-    self.init(indexSet: indexSet)
-  }
-}
-
 @objc public protocol BNDTableViewProxyDataSource {
   optional func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String?
   optional func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String?
