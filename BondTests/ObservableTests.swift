@@ -25,10 +25,27 @@ class ObservableTests: XCTestCase {
     XCTAssert(simpleDisposable.isDisposed == true, "Should be disposed when observable is gone.")
   }
   
+  func testDeallocationDisposesObserversDisposables() {
+    var observable: Observable<Int>! = Observable { sink in
+      return nil
+    }
+    
+    let observerDisposable1 = observable.observe { v in }
+    let observerDisposable2 = observable.observe { v in }
+    
+    XCTAssert(observerDisposable1.isDisposed == false, "Initial state.")
+    XCTAssert(observerDisposable2.isDisposed == false, "Initial state.")
+    
+    observable = nil
+    
+    XCTAssert(observerDisposable1.isDisposed == true, "Must be disposed now.")
+    XCTAssert(observerDisposable1.isDisposed == true, "Must be disposed now.")
+  }
+  
   func testObservingAndDisposingObserver() {
     var observedValue = -1
-    
     var capturedSink: (Int -> ())!
+    
     let observable = Observable<Int> { sink in
       capturedSink = sink
       return nil
@@ -131,6 +148,22 @@ class ObservableTests: XCTestCase {
     
     disposable.dispose()
     XCTAssert(cascadingDisposable.isDisposed == false, "Should not be disposed.")
+  }
+  
+  func testNormalLifecycleDoesNotCauseSinkToRetainObservableWhenThereIsAnObserver() {
+    var capturedSink: (Int -> ())!
+    var observable: Observable<Int>! = Observable(lifecycle: .Normal) { sink in
+      capturedSink = sink
+      return nil
+    }
+    
+    let observerDisposable = observable.observe { v in }
+    
+    XCTAssert(capturedSink != nil, "Initial state.")
+    XCTAssert(observerDisposable.isDisposed == false, "Initial state.")
+
+    observable = nil
+    XCTAssert(observerDisposable.isDisposed == true, "Must be disposed now.")
   }
   
   func testReplaysCorrectly() {

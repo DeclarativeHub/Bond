@@ -52,8 +52,13 @@ public final class Dispatcher<EventType> {
   
   /// Registers the given observer and returns a disposable that can cancel observing.
   public func addObserver(observer: EventType -> Void) -> DisposableType {
-    observers[nextToken++] = observer
-    return DispatcherDisposable(dispatcher: self, token: nextToken - 1)
+    lock.lock()
+    let token = nextToken
+    nextToken = nextToken + 1
+    lock.unlock()
+    
+    observers[token] = observer
+    return DispatcherDisposable(dispatcher: self, token: token)
   }
   
   private func removeObserver(disposable: DispatcherDisposable<EventType>) {

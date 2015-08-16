@@ -96,7 +96,7 @@ public class Observable<EventType>: ObservableType {
       selfReference?.retain()
     }
     
-    let disposable = dispatcher.addObserver(observer)
+    let dispatcherDisposable = dispatcher.addObserver(observer)
     
     if let buffer = buffer {
       for event in buffer.buffer {
@@ -104,8 +104,8 @@ public class Observable<EventType>: ObservableType {
       }
     }
     
-    return BlockDisposable { [weak self] in
-      disposable.dispose()
+    let observerDisposable = BlockDisposable { [weak self] in
+      dispatcherDisposable.dispose()
       
       if let unwrappedSelf = self {
         if unwrappedSelf.dispatcher.numberOfObservers == 0 {
@@ -113,6 +113,9 @@ public class Observable<EventType>: ObservableType {
         }
       }
     }
+    
+    deinitDisposable += observerDisposable
+    return observerDisposable
   }
   
   deinit {

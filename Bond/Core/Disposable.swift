@@ -39,14 +39,17 @@ public final class BlockDisposable: DisposableType {
   }
   
   private var handler: (() -> ())?
+  private let lock = NSRecursiveLock(name: "com.swift-bond.Bond.BlockDisposable")
   
   public init(_ handler: () -> ()) {
     self.handler = handler
   }
   
   public func dispose() {
+    lock.lock()
     handler?()
     handler = nil
+    lock.unlock()
   }
 }
 
@@ -54,13 +57,16 @@ public final class BlockDisposable: DisposableType {
 public final class SerialDisposable: DisposableType {
   
   public private(set) var isDisposed: Bool = false
+  private let lock = NSRecursiveLock(name: "com.swift-bond.Bond.SerialDisposable")
   
   /// Will dispose other disposable immediately if self is already disposed.
   public var otherDisposable: DisposableType? {
     didSet {
+      lock.lock()
       if isDisposed {
         otherDisposable?.dispose()
       }
+      lock.unlock()
     }
   }
   
@@ -69,8 +75,12 @@ public final class SerialDisposable: DisposableType {
   }
   
   public func dispose() {
-    isDisposed = true
-    otherDisposable?.dispose()
+    lock.lock()
+    if !isDisposed {
+      isDisposed = true
+      otherDisposable?.dispose()
+    }
+    lock.unlock()
   }
 }
 
@@ -79,6 +89,7 @@ public final class CompositeDisposable: DisposableType {
   
   public private(set) var isDisposed: Bool = false
   private var disposables: [DisposableType] = []
+  private let lock = NSRecursiveLock(name: "com.swift-bond.Bond.CompositeDisposable")
   
   public convenience init() {
     self.init([])
@@ -89,19 +100,24 @@ public final class CompositeDisposable: DisposableType {
   }
   
   public func addDisposable(disposable: DisposableType) {
+    lock.lock()
     if isDisposed {
       disposable.dispose()
     } else {
       disposables.append(disposable)
       self.disposables = disposables.filter { $0.isDisposed == false }
     }
+    lock.unlock()
   }
   
   public func dispose() {
+    lock.lock()
     isDisposed = true
     for disposable in disposables {
       disposable.dispose()
     }
+    disposables = []
+    lock.unlock()
   }
 }
 

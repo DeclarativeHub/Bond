@@ -111,9 +111,11 @@
 		ECAD697D1B77D43D00837A36 /* UITextViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD696C1B77D43D00837A36 /* UITextViewTests.swift */; };
 		ECAD697E1B77D43D00837A36 /* UIViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD696D1B77D43D00837A36 /* UIViewTests.swift */; };
 		ECAD69851B77D45600837A36 /* ObservableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69801B77D45600837A36 /* ObservableTests.swift */; };
-		ECAD69871B77D45600837A36 /* ScalarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69821B77D45600837A36 /* ScalarTests.swift */; };
 		ECAD69881B77D45600837A36 /* VectorEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69831B77D45600837A36 /* VectorEventTests.swift */; };
 		ECAD69891B77D45600837A36 /* VectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69841B77D45600837A36 /* VectorTests.swift */; };
+		ECBF04DD1B8089DE001F6BCA /* ScalarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69821B77D45600837A36 /* ScalarTests.swift */; };
+		ECBF04DF1B808B20001F6BCA /* DisposableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */; };
+		ECBF04E01B808B20001F6BCA /* DisposableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -240,6 +242,7 @@
 		ECAD69821B77D45600837A36 /* ScalarTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScalarTests.swift; sourceTree = "<group>"; };
 		ECAD69831B77D45600837A36 /* VectorEventTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VectorEventTests.swift; sourceTree = "<group>"; };
 		ECAD69841B77D45600837A36 /* VectorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VectorTests.swift; sourceTree = "<group>"; };
+		ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisposableTests.swift; sourceTree = "<group>"; };
 		ECD653A21A9B6B6B0038A9AC /* Bond.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Bond.podspec; sourceTree = "<group>"; };
 		ECD653A41A9B6B770038A9AC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -526,6 +529,7 @@
 			isa = PBXGroup;
 			children = (
 				ECAD69801B77D45600837A36 /* ObservableTests.swift */,
+				ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */,
 				ECAD69821B77D45600837A36 /* ScalarTests.swift */,
 				ECAD69841B77D45600837A36 /* VectorTests.swift */,
 				ECAD69831B77D45600837A36 /* VectorEventTests.swift */,
@@ -797,6 +801,7 @@
 				ECAD69851B77D45600837A36 /* ObservableTests.swift in Sources */,
 				ECAD69741B77D43D00837A36 /* UIImageViewTests.swift in Sources */,
 				ECAD697C1B77D43D00837A36 /* UITextFieldTests.swift in Sources */,
+				ECBF04DF1B808B20001F6BCA /* DisposableTests.swift in Sources */,
 				ECAD697A1B77D43D00837A36 /* UISwitchTests.swift in Sources */,
 				ECAD696F1B77D43D00837A36 /* UIBarItemTests.swift in Sources */,
 				ECAD69721B77D43D00837A36 /* UIControlTests.swift in Sources */,
@@ -812,9 +817,9 @@
 				ECAD69881B77D45600837A36 /* VectorEventTests.swift in Sources */,
 				ECAD69751B77D43D00837A36 /* UIKitBondTests.swift in Sources */,
 				ECAD69771B77D43D00837A36 /* UINavigationItemTests.swift in Sources */,
-				ECAD69871B77D45600837A36 /* ScalarTests.swift in Sources */,
 				ECAD69731B77D43D00837A36 /* UIDatePickerTests.swift in Sources */,
 				ECAD69761B77D43D00837A36 /* UILabelTests.swift in Sources */,
+				ECBF04DD1B8089DE001F6BCA /* ScalarTests.swift in Sources */,
 				EA3E36B81B41702100559641 /* NSLayoutConstraintTests.swift in Sources */,
 				ECAD69891B77D45600837A36 /* VectorTests.swift in Sources */,
 			);
@@ -859,6 +864,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				900BFC0B1ADFC863002B4B6E /* NSButtonTests.swift in Sources */,
+				ECBF04E01B808B20001F6BCA /* DisposableTests.swift in Sources */,
 				900BFC0E1ADFC9E9002B4B6E /* NSColorWellTests.swift in Sources */,
 				EC6F105B1B7F9C2700E55A5F /* ScalarTests.swift in Sources */,
 				900BFC141ADFCBA8002B4B6E /* NSMenuItemTests.swift in Sources */,
