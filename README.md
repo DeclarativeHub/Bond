@@ -4,9 +4,9 @@
 
 Bond is a Swift binding framework that takes binding concept to a whole new level. It's simple, powerful, type-safe and multi-paradigm - just like Swift. 
 
-Bond was created with two goals in mind: simple to use and simple to understand. One might argue whether the former implies the latter, but Bond will save you some thinking because both are true in this case. Its foundation are two simple classes - everything else are extensions and syntactic sugars.
+Bond was created with two goals in mind: simple to use and simple to understand. One might argue whether the former implies the latter, but Bond will save you some thinking because both are true in this case. Its foundation are few simple classes - everything else are extensions and syntactic sugars.
 
-**Note: If you're migrating from Bond v3.x, check out the [migrating from v3 to v4](#migration-3-4) section. You should also re-read this document because some things have changed.**
+**Note: This document describes Bond v4. If you are using a previous version of the framework, check out the [Migration to Bond v4](#migration) section. Bond v4 will be the only officially supported version for Swift 2.0.**
 
 
 ## What can it do?
@@ -179,20 +179,113 @@ public final class Vector<ElementType>: Observable<VectorEvent<ElementType>>, Ve
 Just get *.swift* files from Bond/ Directory and add them to your project.
 
 
-## Migrating from v3 to v4
-<a name="migration-3-4"></a>
+<a name="migration"></a>
+## Migration to Bond v4
 
-Bond v4 represents a major evolution of the framework. It's core has been rewritten from scratch and, while concepts are still pretty much the same, some things have changed from the outside to.
 
-* Dynamic is renamed to **Scalar**.
-* DynamicArray is renamed to **Vector**.
-* Bond and ArrayBond are deprecated. Use `observe` method to observe events.
-* Extension are now prefixed with `bnd_` instead of `dyn`.
-* `reduce` method is deprecated. Same effect can be achieved with `combineLatest` method.
-* _Bind only_ operator `->|` is gone.
-* Method `bindTo` is now preferred way to bind objects, not the `->>` operator.
-* In order to break the binding, dispose a disposable object return from `observe` or `bindTo` methods.
+Bond v4 represents a major evolution of the framework. It's core has been rewritten from scratch and, while concepts are still pretty much the same, some things have changed from the outside to. In order to successfully upgrade your project to Bond v4, it is recommended to re-read this document. After that, you can proceed with the conversion: 
 
+### Dynamic become **Scalar**
+
+Convert objects of `Dynamic` type to `Scalar` type. Simple renaming should do the trick. 
+
+### DynamicArray become **Vector**
+
+Convert objects of `DynamicArray` type to `Vector` type. Simple renaming should do the trick. 
+
+### Bond and ArrayBond are deprecated
+
+Bonds were used to observe changes of an object. With Bond v4, observing changes is much simpler. Instead of creating a new object, you can now use `observe` method on any Observable type. In other words, code like
+
+```swift
+let myBond = Bond<Int>() { value in
+  print("Number of followers changed to \(value).")
+}
+
+numberOfFollowers.bindTo(myBond)
+```
+
+becomes
+
+```swift
+numberOfFollowers.observe { value in
+  println("Number of followers changed to \(value).")
+}
+```
+
+To cancel observing in v3 you have used `unbindAll` method on the Bond. In v4, cancelling the observation or unbinding the object is done with a *disposable*. Methods `observe` and `bindTo` return an object of a Disposable type. You can use that object to cancel observing, like this:
+
+```swift
+let disposable = numberOfFollowers.observe { value in
+  println("Number of followers changed to \(value).")
+}
+
+// ... and if you wish to cancel observing later, just call:
+disposable.dispose()
+```
+
+Observing Vectors is similar. Instead of calling various closures like DynamicArray did in v3, Vector in v4 is an observable that sends events that describe operation that was just applied to the Vector. You can observe those in a following way:
+
+```swift
+vector.observe { event in
+ switch event.operation {
+ case .Insert(let elements, let fromIndex):
+   // Did insert elements
+ case .Update(let elements, let fromIndex):
+   // Did update elements
+ case .Remove(let range):
+   // Did remove elements
+ case .Reset(let array):
+   // Did replace whole array with the another array
+ case .Batch(let operations):
+   // Did perform batch updates
+ }
+}
+```
+
+### Extension are now prefixed with `bnd_`
+
+In Bond v3, extensions were prefixed with `dyn`, like in `textField.dynText`. As Dynamics are now gone it makes no sense to keep that prefix. In v4 all extensions provided by Bond framework are prefixed with `bnd_`.
+
+### Designated Dynamics are gone
+
+While in Bond v3 you were able to bind, for example, a boolean Dynamic to a button,
+
+```swift
+canLogin.bindTo(loginButton)
+```
+
+it would not be clear from that line of code where you were really binding the value to. In Bond v4 you have to be specific and always provide a bindable destination, like:
+
+
+```swift
+canLogin.bindTo(loginButton.bnd_enabled)
+```
+ 
+Hope is that this will reduce any confusion and improve the code readability.
+
+### Method `bindTo` is now preferred way to bind objects
+
+Talking about the code readability, another important decision has been made. In order to clearly express action behind a line of the code, method `bindTo` has become a preferred way to bind objects. Operators `->>` and `->><` are still available, but their usage is not recommended. 
+
+
+### _Bind only_ operator `->|` is gone
+
+You can use method `observeNew` to observe only events that happen after the binding took place. Alternatively, you can use `skip` method to skip event replaying:
+
+```swift
+name.skip(name.replayLength).bindTo(nameLabel.bnd_text)
+```
+
+### Method `reduce` is deprecated
+
+What method `reduce` did in v3 can now be achieved with a combination of `combineLatest` and `map` methods.
+
+```swift
+combineLatest(userLabel.bnd_text, passLabel.bnd_text).map { user, pass in
+  // do something
+}
+```
  
 ## Release Notes
 
