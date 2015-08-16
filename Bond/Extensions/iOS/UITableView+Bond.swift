@@ -195,7 +195,6 @@ public extension EventProducerType where
     }
     
     let dataSource = BNDTableViewDataSource(array: array, tableView: tableView, proxyDataSource: proxyDataSource, createCell: createCell)
-    tableView.dataSource = dataSource
     objc_setAssociatedObject(tableView, UITableView.AssociatedKeys.BondDataSourceKey, dataSource, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     
     return BlockDisposable { [weak tableView] in
