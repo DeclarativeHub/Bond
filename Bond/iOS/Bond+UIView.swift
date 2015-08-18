@@ -31,6 +31,7 @@ private var backgroundColorDynamicHandleUIView: UInt8 = 0;
 private var alphaDynamicHandleUIView: UInt8 = 0;
 private var hiddenDynamicHandleUIView: UInt8 = 0;
 private var userInteractionEnabledUIView: UInt8 = 0;
+private var tintColorDynamicHandleUIView: UInt8 = 0;
 
 extension UIView {
   
@@ -86,4 +87,17 @@ extension UIView {
     }
   }
 
+  public var dynTintColor: Dynamic<UIColor> {
+    if let d: AnyObject = objc_getAssociatedObject(self, &tintColorDynamicHandleUIView) {
+      return (d as? Dynamic<UIColor>)!
+    } else {
+      let d = InternalDynamic<UIColor>(self.tintColor ?? UIColor.clearColor())
+      let bond = Bond<UIColor>() { [weak self] v in if let s = self { s.tintColor = v } }
+      d.bindTo(bond, fire: false, strongly: false)
+      d.retain(bond)
+      objc_setAssociatedObject(self, &tintColorDynamicHandleUIView, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
+      return d
+    }
+  }
+  
 }

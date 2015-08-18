@@ -67,4 +67,18 @@ class UIViewTests: XCTestCase {
     dynamicDriver.value = true
     XCTAssert(view.userInteractionEnabled == true, "Value after dynamic change")
   }
+  
+  func testUIViewTintColorBond() {
+    var dynamicDriver = Dynamic<UIColor>(UIColor.blackColor())
+    let view = UIView()
+    
+    view.tintColor = UIColor.redColor()
+    XCTAssert(view.tintColor == UIColor.redColor(), "Initial value")
+    
+    dynamicDriver ->> view.dynTintColor
+    XCTAssert(view.tintColor == UIColor.blackColor(), "Value after binding")
+    
+    dynamicDriver.value = UIColor.blueColor()
+    XCTAssert(view.tintColor == UIColor.blueColor(), "Value after dynamic change")
+  }
 }
