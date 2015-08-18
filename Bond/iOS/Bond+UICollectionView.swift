@@ -158,8 +158,14 @@ public class UICollectionViewDataSourceBond<T>: ArrayBond<DynamicArray<UICollect
     }
     
     self.didResetListener = { [weak self] array in
-      if let collectionView = self?.collectionView {
-        collectionView.reloadData()
+      if let s = self, let collectionView = s.collectionView {
+        for section in 0..<array.count {
+          let sectionBond = UICollectionViewDataSourceSectionBond<Void>(collectionView: collectionView, section: section, shouldReloadItems: s.shouldReloadItems)
+          let sectionDynamic = array[section]
+          sectionDynamic.bindTo(sectionBond)
+          s.sectionBonds.append(sectionBond)
+          collectionView.reloadData()
+        }
       }
     }
   }
