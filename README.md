@@ -237,6 +237,7 @@ Following table lists all available Dynamics of UIKit objects:
 | UIImageView    | dynImage                                                | dynImage        |
 | UIButton       | dynEnabled <br> dynTitle <br> dynImageForNormalState    | dynEnabled      |
 | UIBarItem      | dynEnabled <br> dynTitle <br> dynImage                  | dynEnabled      |
+| UINavigationBar      | dynBarTintColor                  | dynBarTintColor      |
 | UISwitch       | dynOn                                                   | dynOn           |
 | UITextField    | dynText <br> dynEnabled                                 | dynText         |
 | UITextView     | dynText <br> dynAttributedText                          | dynText         |

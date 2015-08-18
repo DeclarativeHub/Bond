@@ -44,6 +44,8 @@
 		900BFC181ADFCCEE002B4B6E /* NSTextFieldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC171ADFCCEE002B4B6E /* NSTextFieldTests.swift */; };
 		900BFC1A1ADFCD63002B4B6E /* NSTextViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC191ADFCD63002B4B6E /* NSTextViewTests.swift */; };
 		CC581F761AE23D8B00D69AE7 /* UITableViewDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC581F751AE23D8B00D69AE7 /* UITableViewDataSourceTests.swift */; };
+		CDB1DBB01B832F63008CA09D /* UINavigationBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB1DBAF1B832F63008CA09D /* UINavigationBarTests.swift */; };
+		CDB1DBB21B83302A008CA09D /* Bond+UINavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB1DBB11B83302A008CA09D /* Bond+UINavigationBar.swift */; };
 		DCA979741A83C3A200DD4A30 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCA979691A83C3A100DD4A30 /* Bond.framework */; };
 		DCA979821A83C4F500DD4A30 /* DynamicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BD21A7C242900A13B6B /* DynamicTests.swift */; };
 		DCA979831A83C4F800DD4A30 /* BondTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69491BC01A7C217100A13B6B /* BondTests.swift */; };
@@ -169,6 +171,8 @@
 		900BFC171ADFCCEE002B4B6E /* NSTextFieldTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTextFieldTests.swift; sourceTree = "<group>"; };
 		900BFC191ADFCD63002B4B6E /* NSTextViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTextViewTests.swift; sourceTree = "<group>"; };
 		CC581F751AE23D8B00D69AE7 /* UITableViewDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewDataSourceTests.swift; sourceTree = "<group>"; };
+		CDB1DBAF1B832F63008CA09D /* UINavigationBarTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UINavigationBarTests.swift; sourceTree = "<group>"; };
+		CDB1DBB11B83302A008CA09D /* Bond+UINavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UINavigationBar.swift"; sourceTree = "<group>"; };
 		DCA979691A83C3A100DD4A30 /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCA979731A83C3A200DD4A30 /* BondOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BondOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFC184951B34193A00B3444E /* PerformanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PerformanceTests.swift; sourceTree = "<group>"; };
@@ -268,6 +272,7 @@
 				03A5DCAD1AAF9C3F007616B4 /* UIDatePickerTests.swift */,
 				03A5DCA31AAF98DA007616B4 /* UIActivityIndicatorTests.swift */,
 				EA4BFACC1B41722D00DFA736 /* UINavigationItemTests.swift */,
+				CDB1DBAF1B832F63008CA09D /* UINavigationBarTests.swift */,
 			);
 			name = UIKit;
 			sourceTree = "<group>";
@@ -456,6 +461,7 @@
 				EAD8B2F71B41B04500995CE9 /* Bond+UITextField.swift */,
 				EAD8B2F81B41B04500995CE9 /* Bond+UITextView.swift */,
 				EAD8B2F91B41B04500995CE9 /* Bond+UIView.swift */,
+				CDB1DBB11B83302A008CA09D /* Bond+UINavigationBar.swift */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -698,6 +704,7 @@
 				EAD8B3161B41B04500995CE9 /* Bond+UIDatePicker.swift in Sources */,
 				EAD8B3241B41B04500995CE9 /* Bond+UITableView.swift in Sources */,
 				EAD8B3181B41B04500995CE9 /* Bond+UIImageView.swift in Sources */,
+				CDB1DBB21B83302A008CA09D /* Bond+UINavigationBar.swift in Sources */,
 				EAD8B31A1B41B04500995CE9 /* Bond+UILabel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -709,6 +716,7 @@
 				03A5DCA01AAF982D007616B4 /* UIImageViewTests.swift in Sources */,
 				03A5DCA21AAF9893007616B4 /* UIBarItemTests.swift in Sources */,
 				EA4BFACD1B41722D00DFA736 /* UINavigationItemTests.swift in Sources */,
+				CDB1DBB01B832F63008CA09D /* UINavigationBarTests.swift in Sources */,
 				03ACB5231AB6C840001B3E64 /* AssertEqualForOptionals.swift in Sources */,
 				69491BC11A7C217100A13B6B /* BondTests.swift in Sources */,
 				5AC4262E1B555933009B9C6F /* UISegmentedControlTests.swift in Sources */,
