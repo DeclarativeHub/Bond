@@ -26,26 +26,13 @@ import UIKit
 
 extension UIActivityIndicatorView {
   
-  private struct AssociatedKeys {
-    static var AnimatingKey = "bnd_AnimatingKey"
-  }
-  
   public var bnd_animating: Observable<Bool> {
-    if let bnd_animating: AnyObject = objc_getAssociatedObject(self, &AssociatedKeys.AnimatingKey) {
-      return bnd_animating as! Observable<Bool>
-    } else {
-      let bnd_animating = Observable<Bool>(self.isAnimating())
-      objc_setAssociatedObject(self, &AssociatedKeys.AnimatingKey, bnd_animating, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-      
-      bnd_animating.observeNew { [weak self] (animating: Bool) in
-        if animating {
-          self?.startAnimating()
-        } else {
-          self?.stopAnimating()
-        }
+    return bnd_associatedObservableForValueForKey("isAnimating", initial: self.isAnimating()) { [weak self] animating in
+      if animating {
+        self?.startAnimating()
+      } else {
+        self?.stopAnimating()
       }
-      
-      return bnd_animating
     }
   }
 }

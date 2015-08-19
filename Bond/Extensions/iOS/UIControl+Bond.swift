@@ -115,7 +115,6 @@ extension UIControl {
   private struct AssociatedKeys {
     static var ControlEventKey = "bnd_ControlEventKey"
     static var ControlBondHelperKey = "bnd_ControlBondHelperKey"
-    static var EnabledKey = "bnd_EnabledKey"
   }
   
   public var bnd_controlEvent: Observable<UIControlEvents> {
@@ -138,6 +137,6 @@ extension UIControl {
   }
   
   public var bnd_enabled: Observable<Bool> {
-    return bnd_associatedObservableForValueForKey("enabled", associationKey: &AssociatedKeys.EnabledKey)
+    return bnd_associatedObservableForValueForKey("enabled")
   }
 }

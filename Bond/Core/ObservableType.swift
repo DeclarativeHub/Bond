@@ -209,7 +209,13 @@ public extension ObservableType where EventType: OptionalType {
   
   /// Forwards only events that are not `nil`, unwrapped into non-optional type.
   public func ignoreNil() -> Observable<EventType.SomeType> {
-    return filter{ !$0.isNil }.map { $0.value! }
+    return Observable(replayLength: replayLength) { sink in
+      return observe { event in
+        if !event.isNil {
+          sink(event.value!)
+        }
+      }
+    }
   }
 }
 

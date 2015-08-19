@@ -26,11 +26,7 @@ import Cocoa
 
 extension NSStatusBarButton {
   
-  private struct AssociatedKeys {
-    static var AppearsDisabled = "bnd_AppearsDisabled"
-  }
-  
   public var bnd_appearsDisabled: Observable<Bool> {
-    return bnd_associatedObservableForValueForKey("appearsDisabled", associationKey: &AssociatedKeys.AppearsDisabled)
+    return bnd_associatedObservableForValueForKey("appearsDisabled")
   }
 }

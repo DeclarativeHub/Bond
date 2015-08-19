@@ -13,7 +13,7 @@ import Bond
 class UITextFieldTests: XCTestCase {
 
   func testUITextFieldObservable() {
-    let observable = Observable<String>("b")
+    let observable = Observable<String?>("b")
     let textField = UITextField()
     
     textField.text = "a"
@@ -46,8 +46,8 @@ class UITextFieldTests: XCTestCase {
   }
   
   func testOneWayOperators() {
-    var bondedValue = ""
-    let observable = Observable<String>("a")
+    var bondedValue: String? = ""
+    let observable = Observable<String?>("a")
     let textField1 = UITextField()
     let textField2 = UITextField()
     let textView = UITextView()
@@ -75,8 +75,8 @@ class UITextFieldTests: XCTestCase {
   }
   
   func testTwoWayOperators() {
-    let observable1 = Observable<String>("a")
-    let observable2 = Observable<String>("z")
+    let observable1 = Observable<String?>("a")
+    let observable2 = Observable<String?>("z")
     let textField1 = UITextField()
     let textField2 = UITextField()
     let textView = UITextView()

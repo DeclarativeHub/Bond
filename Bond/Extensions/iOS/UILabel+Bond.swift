@@ -26,21 +26,15 @@ import UIKit
 
 extension UILabel {
   
-  private struct AssociatedKeys {
-    static var TextKey = "bnd_TextKey"
-    static var AttributedTextKey = "bnd_AttributedTextKey"
-    static var TextColorKey = "bnd_TextColorKey"
-  }
-  
   public var bnd_text: Observable<String?> {
-    return bnd_associatedObservableForOptionalValueForKey("text", associationKey: &AssociatedKeys.TextKey)
+    return bnd_associatedObservableForValueForKey("text")
   }
   
   public var bnd_attributedText: Observable<NSAttributedString?> {
-    return bnd_associatedObservableForOptionalValueForKey("attributedText", associationKey: &AssociatedKeys.AttributedTextKey)
+    return bnd_associatedObservableForValueForKey("attributedText")
   }
   
   public var bnd_textColor: Observable<UIColor?> {
-    return bnd_associatedObservableForOptionalValueForKey("textColor", associationKey: &AssociatedKeys.TextColorKey)
+    return bnd_associatedObservableForValueForKey("textColor")
   }
 }

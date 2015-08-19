@@ -25,12 +25,8 @@
 import Cocoa
 
 extension NSImageView {
-
-  private struct AssociatedKeys {
-    static var ImageKey = "bnd_ImageKey"
-  }
   
   public var bnd_image: Observable<NSImage?> {
-    return bnd_associatedObservableForOptionalValueForKey("image", associationKey: &AssociatedKeys.ImageKey)
+    return bnd_associatedObservableForValueForKey("image")
   }
 }

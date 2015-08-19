@@ -25,12 +25,8 @@
 import Cocoa
 
 extension NSColorWell {
-  
-  private struct AssociatedKeys {
-    static var ColorKey = "bnd_ColorKey"
-  }
 
   public var bnd_color: Observable<NSColor> {
-    return bnd_associatedObservableForValueForKey("color", associationKey: &AssociatedKeys.ColorKey)
+    return bnd_associatedObservableForValueForKey("color")
   }
 }

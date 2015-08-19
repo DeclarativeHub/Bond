@@ -26,21 +26,15 @@ import QuartzCore
 
 extension CALayer {
   
-  private struct AssociatedKeys {
-    static var ContentsKey = "bnd_ContentsKey"
-    static var BackgroundColorKey = "bnd_BackgroundColorKey"
-    static var OpacityKey = "bnd_OpacityKey"
-  }
-  
   public var bnd_opacity: Observable<Float> {
-    return bnd_associatedObservableForValueForKey("opacity", associationKey: &AssociatedKeys.OpacityKey)
+    return bnd_associatedObservableForValueForKey("opacity")
   }
   
   public var bnd_backgroundColor: Observable<CGColor?> {
-    return bnd_associatedObservableForOptionalValueForKey("backgroundColor", associationKey: &AssociatedKeys.BackgroundColorKey)
+    return bnd_associatedObservableForValueForKey("backgroundColor")
   }
   
   public var bnd_contents: Observable<AnyObject?> {
-    return bnd_associatedObservableForOptionalValueForKey("contents", associationKey: &AssociatedKeys.ContentsKey)
+    return bnd_associatedObservableForValueForKey("contents")
   }
 }

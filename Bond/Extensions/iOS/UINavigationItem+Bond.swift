@@ -26,11 +26,7 @@ import UIKit
 
 extension UINavigationItem {
   
-  private struct AssociatedKeys {
-    static var TitleKey = "bnd_TitleKey"
-  }
-  
   public var bnd_title: Observable<String?> {
-    return bnd_associatedObservableForOptionalValueForKey("title", associationKey: &AssociatedKeys.TitleKey)
+    return bnd_associatedObservableForValueForKey("title")
   }
 }

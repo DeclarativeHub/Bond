@@ -25,12 +25,8 @@
 import Cocoa
 
 extension NSButton {
-
-  private struct AssociatedKeys {
-    static var StateKey = "bnd_StateKey"
-  }
   
   public var bnd_state: Observable<Int> {
-    return bnd_associatedObservableForValueForKey("state", associationKey: &AssociatedKeys.StateKey)
+    return bnd_associatedObservableForValueForKey("state")
   }
 }

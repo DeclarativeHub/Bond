@@ -25,27 +25,20 @@
 import UIKit
 
 extension UIView {
-  
-  private struct AssociatedKeys {
-    static var AlphaKey = "bnd_AlphaKey"
-    static var BackgroundColorKey = "bnd_BackgroundColorKey"
-    static var HiddenKey = "bnd_HiddenKey"
-    static var UserInteractionEnabled = "bnd_UserInteractionEnabled"
-  }
-  
+
   public var bnd_alpha: Observable<CGFloat> {
-    return bnd_associatedObservableForValueForKey("alpha", associationKey: &AssociatedKeys.AlphaKey)
+    return bnd_associatedObservableForValueForKey("alpha")
   }
   
   public var bnd_backgroundColor: Observable<UIColor?> {
-    return bnd_associatedObservableForOptionalValueForKey("backgroundColor", associationKey: &AssociatedKeys.BackgroundColorKey)
+    return bnd_associatedObservableForValueForKey("backgroundColor")
   }
   
   public var bnd_hidden: Observable<Bool> {
-    return bnd_associatedObservableForValueForKey("hidden", associationKey: &AssociatedKeys.HiddenKey)
+    return bnd_associatedObservableForValueForKey("hidden")
   }
   
   public var bnd_userInteractionEnabled: Observable<Bool> {
-    return bnd_associatedObservableForValueForKey("userInteractionEnabled", associationKey: &AssociatedKeys.UserInteractionEnabled)
+    return bnd_associatedObservableForValueForKey("userInteractionEnabled")
   }
 }

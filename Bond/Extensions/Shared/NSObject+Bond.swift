@@ -28,6 +28,7 @@ public extension NSObject {
   
   private struct AssociatedKeys {
     static var DisposeBagKey = "bnd_DisposeBagKey"
+    static var AssociatedObservablesKey = "bnd_AssociatedObservablesKey"
   }
   
   // A dispose bag will will dispose upon object deinit.
@@ -138,23 +139,34 @@ public extension Observable where EventType: OptionalType {
   }
 }
 
-
-
 internal extension NSObject {
   
-  internal func bnd_associatedObservableForValueForKey<T>(key: String, inout associationKey: String) -> Observable<T> {
-    if let observable: AnyObject = objc_getAssociatedObject(self, &associationKey) {
+  internal var bnd_associatedObservables: [String:AnyObject] {
+    get {
+      return objc_getAssociatedObject(self, &AssociatedKeys.AssociatedObservablesKey) as? [String:AnyObject] ?? [:]
+    }
+    set(observable) {
+      objc_setAssociatedObject(self, &AssociatedKeys.AssociatedObservablesKey, observable, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+    }
+  }
+  
+  internal func bnd_associatedObservableForValueForKey<T>(key: String, initial: T? = nil, set: (T -> ())? = nil) -> Observable<T> {
+    if let observable: AnyObject = bnd_associatedObservables[key] {
       return observable as! Observable<T>
     } else {
-      let observable = Observable<T>(self.valueForKey(key) as! T)
-      objc_setAssociatedObject(self, &associationKey, observable, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+      let observable = Observable<T>(initial ?? self.valueForKey(key) as! T)
+      bnd_associatedObservables[key] = observable
       
       observable
         .observeNew { [weak self] (value: T) in
-          if let value = value as? AnyObject {
-            self?.setValue(value, forKey: key)
+          if let set = set {
+            set(value)
           } else {
-            self?.setValue(nil, forKey: key)
+            if let value = value as? AnyObject {
+              self?.setValue(value, forKey: key)
+            } else {
+              self?.setValue(nil, forKey: key)
+            }
           }
         }
       
@@ -162,16 +174,28 @@ internal extension NSObject {
     }
   }
   
-  internal func bnd_associatedObservableForOptionalValueForKey<T>(key: String, inout associationKey: String) -> Observable<T?> {
-    if let observable: AnyObject = objc_getAssociatedObject(self, &associationKey) {
-      return observable as! Observable<T?>
+  internal func bnd_associatedObservableForValueForKey<T: OptionalType>(key: String, initial: T? = nil, set: (T -> ())? = nil) -> Observable<T> {
+    if let observable: AnyObject = bnd_associatedObservables[key] {
+      return observable as! Observable<T>
     } else {
-      let observable = Observable<T?>(self.valueForKey(key) as? T ?? nil)
-      objc_setAssociatedObject(self, &associationKey, observable, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+      let observable: Observable<T>
+      if let initial = initial {
+        observable = Observable(initial)
+      } else if let value = self.valueForKey(key) as? T.SomeType {
+        observable = Observable(T(optional: value))
+      } else {
+        observable = Observable(T(optional: nil))
+      }
+      
+      bnd_associatedObservables[key] = observable
       
       observable
-        .observeNew { [weak self] (value: T?) in
-          self?.setValue(value as! AnyObject?, forKey: key)
+        .observeNew { [weak self] (value: T) in
+          if let set = set {
+            set(value)
+          } else {
+            self?.setValue(value.value as! AnyObject?, forKey: key)
+          }
         }
       
       return observable

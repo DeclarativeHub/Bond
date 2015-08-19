@@ -26,26 +26,21 @@ import UIKit
 
 extension UIButton {
   
-  private struct AssociatedKeys {
-    static var TitleKey = "bnd_TitleKey"
-  }
-  
-  public var bnd_title: Observable<String> {
-    if let bnd_title: AnyObject = objc_getAssociatedObject(self, &AssociatedKeys.TitleKey) {
-      return bnd_title as! Observable<String>
-    } else {
-      let bnd_title = Observable<String>(self.titleLabel?.text ?? "")
-      objc_setAssociatedObject(self, &AssociatedKeys.TitleKey, bnd_title, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-      
-      bnd_title.observeNew { [weak self] (text: String) in
-        self?.setTitle(text, forState: UIControlState.Normal)
-      }
-      
-      return bnd_title
+  public var bnd_title: Observable<String?> {
+    return bnd_associatedObservableForValueForKey("title", initial: self.titleLabel?.text) { [weak self] title in
+      self?.setTitle(title, forState: UIControlState.Normal)
     }
   }
   
   public var bnd_tap: Observable<Void> {
     return self.bnd_controlEvent.filter { $0 == UIControlEvents.TouchUpInside }.map { e in }
+  }
+  
+  public var bnd_selected: Observable<Bool> {
+    return bnd_associatedObservableForValueForKey("selected")
+  }
+  
+  public var bnd_highlighted: Observable<Bool> {
+    return bnd_associatedObservableForValueForKey("highlighted")
   }
 }

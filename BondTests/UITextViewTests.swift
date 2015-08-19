@@ -13,7 +13,7 @@ import Bond
 class UITextViewTests: XCTestCase {
 
   func testUITextViewObservable() {
-    let observable = Observable<String>("b")
+    let observable = Observable<String?>("b")
     let textView = UITextView()
     
     textView.text = "a"
@@ -32,7 +32,7 @@ class UITextViewTests: XCTestCase {
   }
   
   func testUITextViewAttributedObservable() {
-    let observable = Observable<NSAttributedString>(NSAttributedString(string: "b"))
+    let observable = Observable<NSAttributedString?>(NSAttributedString(string: "b"))
     let textView = UITextView()
     
     textView.attributedText = NSAttributedString(string: "a")
@@ -46,13 +46,13 @@ class UITextViewTests: XCTestCase {
     
     textView.attributedText = NSAttributedString(string: "d")
     NSNotificationCenter.defaultCenter().postNotificationName(UITextViewTextDidChangeNotification, object: textView)
-    XCTAssert(textView.bnd_attributedText.value.string == "d", "Observable value reflects text view value change")
-    XCTAssert(observable.value.string == "d", "Observable value reflects text view value change")
+    XCTAssert(textView.bnd_attributedText.value == textView.attributedText, "Observable value reflects text view value change")
+    XCTAssert(observable.value == textView.attributedText, "Observable value reflects text view value change")
   }
   
   func testOneWayOperators() {
-    var bondedValue: String = ""
-    let observable = Observable<String>("a")
+    var bondedValue: String? = ""
+    let observable = Observable<String?>("a")
     let textView1 = UITextView()
     let textView2 = UITextView()
     let textField = UITextField()
@@ -91,32 +91,37 @@ class UITextViewTests: XCTestCase {
     XCTAssertEqual(observable2.value, "z", "Initial value")
     XCTAssert(textField.text == "1", "Initial value")
     
-    observable1.bidirectionalBindTo(textView1.bnd_text)
+    observable1.bindTo(textView1.bnd_text)
+    textView1.bnd_text.ignoreNil().bindTo(observable1)
+
     textView1.bnd_text.bidirectionalBindTo(textView2.bnd_text)
-    textView2.bnd_text.bidirectionalBindTo(observable2)
+    
+    textView2.bnd_text.ignoreNil().bindTo(observable2)
+    observable2.bindTo(textView2.bnd_text)
+    
     textView2.bnd_text.bidirectionalBindTo(textField.bnd_text)
     
     XCTAssertEqual(observable1.value, "a", "Value after binding")
     XCTAssertEqual(observable2.value, "a", "Value after binding")
-    XCTAssert(textField.text == "a", "Value after binding")
+    XCTAssert(textField.text! == "a", "Value after binding")
     
     observable1.value = "b"
     
     XCTAssertEqual(observable1.value, "b", "Value after change")
     XCTAssertEqual(observable2.value, "b", "Value after change")
-    XCTAssert(textField.text == "b", "Value after change")
+    XCTAssert(textField.text! == "b", "Value after change")
 
     observable2.value = "y"
     
     XCTAssertEqual(observable1.value, "y", "Value after change")
     XCTAssertEqual(observable2.value, "y", "Value after change")
-    XCTAssert(textField.text == "y", "Value after change")
+    XCTAssert(textField.text! == "y", "Value after change")
     
     textField.text = "2"
     textField.sendActionsForControlEvents(.EditingChanged)
     
     XCTAssertEqual(observable1.value, "2", "Value after change")
     XCTAssertEqual(observable2.value, "2", "Value after change")
-    XCTAssert(textField.text == "2", "Value after change")
+    XCTAssert(textField.text! == "2", "Value after change")
   }
 }

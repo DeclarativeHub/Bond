@@ -33,7 +33,7 @@ extension Optional: OptionalType {
   public typealias SomeType = T
   
   public var isNil: Bool {
-    return self != nil
+    return self == nil
   }
   
   public var value: T? {

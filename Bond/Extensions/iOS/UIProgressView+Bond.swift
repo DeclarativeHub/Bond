@@ -26,11 +26,7 @@ import UIKit
 
 extension UIProgressView {
   
-  private struct AssociatedKeys {
-    static var ProgressKey = "bnd_ProgressKey"
-  }
-  
   public var bnd_progress: Observable<Float> {
-    return bnd_associatedObservableForValueForKey("progress", associationKey: &AssociatedKeys.ProgressKey)
+    return bnd_associatedObservableForValueForKey("progress")
   }
 }

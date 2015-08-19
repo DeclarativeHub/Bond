@@ -25,17 +25,12 @@
 import Cocoa
 
 extension NSMenuItem {
-
-  private struct AssociatedKeys {
-    static var StateKey = "bnd_StateKey"
-    static var EnabledKey = "bnd_EnabledKey"
-  }
   
   public var bnd_state: Observable<Int> {
-    return bnd_associatedObservableForValueForKey("state", associationKey: &AssociatedKeys.StateKey)
+    return bnd_associatedObservableForValueForKey("state")
   }
   
   public var bnd_enabled: Observable<Bool> {
-    return bnd_associatedObservableForValueForKey("enabled", associationKey: &AssociatedKeys.EnabledKey)
+    return bnd_associatedObservableForValueForKey("enabled")
   }
 }

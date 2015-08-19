@@ -26,11 +26,7 @@ import UIKit
 
 extension UIImageView {
   
-  private struct AssociatedKeys {
-    static var ImageKey = "bnd_ImageKey"
-  }
-  
   public var bnd_image: Observable<UIImage?> {
-    return bnd_associatedObservableForOptionalValueForKey("image", associationKey: &AssociatedKeys.ImageKey)
+    return bnd_associatedObservableForValueForKey("image")
   }
 }

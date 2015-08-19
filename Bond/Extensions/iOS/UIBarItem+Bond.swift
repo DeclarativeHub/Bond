@@ -25,22 +25,16 @@
 import UIKit
 
 extension UIBarItem {
-  
-  private struct AssociatedKeys {
-    static var TitleKey = "bnd_TitleKey"
-    static var ImageKey = "bnd_ImageKey"
-    static var EnabledKey = "bnd_EnabledKey"
-  }
-  
+
   public var bnd_title: Observable<String?> {
-    return bnd_associatedObservableForOptionalValueForKey("title", associationKey: &AssociatedKeys.TitleKey)
+    return bnd_associatedObservableForValueForKey("title")
   }
   
   public var bnd_image: Observable<UIImage?> {
-    return bnd_associatedObservableForOptionalValueForKey("image", associationKey: &AssociatedKeys.ImageKey)
+    return bnd_associatedObservableForValueForKey("image")
   }
   
   public var bnd_enabled: Observable<Bool> {
-    return bnd_associatedObservableForValueForKey("enabled", associationKey: &AssociatedKeys.EnabledKey)
+    return bnd_associatedObservableForValueForKey("enabled")
   }
 }

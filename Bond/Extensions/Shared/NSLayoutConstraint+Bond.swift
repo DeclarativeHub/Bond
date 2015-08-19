@@ -30,11 +30,7 @@
 
 extension NSLayoutConstraint {
 
-  private struct AssociatedKeys {
-    static var ActiveKey = "bnd_ActiveKey"
-  }
-  
   public var bnd_active: Observable<Bool> {
-    return bnd_associatedObservableForValueForKey("active", associationKey: &AssociatedKeys.ActiveKey)
+    return bnd_associatedObservableForValueForKey("active")
   }
 }
