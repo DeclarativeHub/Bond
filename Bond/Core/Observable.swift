@@ -53,7 +53,7 @@ public class Observable<EventType>: ObservableType {
   /// When all observers are unregistered, the reference will weakify its reference to self.
   /// That means the observable will be deallocated if no one else holds a strong reference to it.
   /// Deallocation will dispose `deinitDisposable` and thus break the connection with the source.
-  private weak var selfReference: Reference<Observable<EventType>>?
+  private weak var selfReference: Reference<Observable<EventType>>? = nil
   
   /// Consult `ObservableLifetime` for more info.
   public private(set) var lifecycle: ObservableLifecycle
@@ -67,7 +67,7 @@ public class Observable<EventType>: ObservableType {
   /// Producer closure will be executed immediately. It will receive a sink into which
   /// events can be dispatched. If producer returns a disposable, the observable will store
   /// it and dispose upon [observable's] deallocation.
-  public required init(replayLength: Int = 0, lifecycle: ObservableLifecycle = .Managed, @noescape producer: SinkType -> DisposableType?) {
+  public init(replayLength: Int = 0, lifecycle: ObservableLifecycle = .Managed, @noescape producer: SinkType -> DisposableType?) {
     self.lifecycle = lifecycle
     
     let tmpSelfReference = Reference(self)
@@ -87,6 +87,13 @@ public class Observable<EventType>: ObservableType {
     }
     
     self.selfReference = tmpSelfReference
+  }
+  
+  /// Creates a new Observable that replays given value as an event.
+  public init(_ value: EventType) {
+    lifecycle = .Normal
+    buffer = Buffer(size: 1)
+    next(value)
   }
   
   /// Sends an event to the observers
@@ -130,14 +137,6 @@ public class Observable<EventType>: ObservableType {
 }
 
 public extension Observable {
-  
-  /// Creates a new Observable that replays given value as an event.
-  public convenience init(_ value: EventType) {
-    self.init(replayLength: 1, lifecycle: .Normal) { sink in
-      sink(value)
-      return nil
-    }
-  }
   
   /// Observable's value.
   ///

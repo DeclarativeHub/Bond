@@ -26,6 +26,7 @@ public protocol OptionalType {
   typealias SomeType
   var isNil: Bool { get }
   var value: SomeType? { get }
+  init(optional: SomeType?)
 }
 
 extension Optional: OptionalType {
@@ -37,5 +38,13 @@ extension Optional: OptionalType {
   
   public var value: T? {
     return self
+  }
+  
+  public init(optional: SomeType?) {
+    if let some = optional {
+      self = .Some(some)
+    } else {
+      self = .None
+    }
   }
 }

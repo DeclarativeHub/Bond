@@ -114,6 +114,8 @@
 		ECBF04DF1B808B20001F6BCA /* DisposableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */; };
 		ECBF04E01B808B20001F6BCA /* DisposableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */; };
 		ECBF04E11B810100001F6BCA /* NSLock+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E71B77BB1D00837A36 /* NSLock+Bond.swift */; };
+		ECFFF4BB1B84B840001B5B0D /* NSObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFFF4BA1B84B840001B5B0D /* NSObjectTests.swift */; };
+		ECFFF4BC1B84B840001B5B0D /* NSObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFFF4BA1B84B840001B5B0D /* NSObjectTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -242,6 +244,7 @@
 		ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisposableTests.swift; sourceTree = "<group>"; };
 		ECD653A21A9B6B6B0038A9AC /* Bond.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Bond.podspec; sourceTree = "<group>"; };
 		ECD653A41A9B6B770038A9AC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		ECFFF4BA1B84B840001B5B0D /* NSObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSObjectTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -410,6 +413,7 @@
 		900BFC051ADFC5B5002B4B6E /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				ECFFF4BA1B84B840001B5B0D /* NSObjectTests.swift */,
 				EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */,
 				900BFC061ADFC5D5002B4B6E /* CALayerTests.swift */,
 			);
@@ -805,6 +809,7 @@
 				ECAD697B1B77D43D00837A36 /* UITableViewTests.swift in Sources */,
 				ECAD69701B77D43D00837A36 /* UIButtonTests.swift in Sources */,
 				ECAD696E1B77D43D00837A36 /* UIActivityIndicatorTests.swift in Sources */,
+				ECFFF4BB1B84B840001B5B0D /* NSObjectTests.swift in Sources */,
 				03ACB5231AB6C840001B3E64 /* AssertEqualForOptionals.swift in Sources */,
 				ECAD69781B77D43D00837A36 /* UIProgressViewTests.swift in Sources */,
 				ECAD695B1B77C7B700837A36 /* CALayerTests.swift in Sources */,
@@ -857,6 +862,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECFFF4BC1B84B840001B5B0D /* NSObjectTests.swift in Sources */,
 				900BFC0B1ADFC863002B4B6E /* NSButtonTests.swift in Sources */,
 				ECBF04E01B808B20001F6BCA /* DisposableTests.swift in Sources */,
 				900BFC0E1ADFC9E9002B4B6E /* NSColorWellTests.swift in Sources */,

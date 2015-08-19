@@ -40,6 +40,107 @@ public extension NSObject {
       return disposeBag
     }
   }
+}
+
+@objc private class BNDKVOObserver: NSObject {
+  
+  static private var XXContext = 0
+  
+  var object: NSObject
+  let keyPath: String
+  let listener: AnyObject? -> Void
+  
+  init(object: NSObject, keyPath: String, options: NSKeyValueObservingOptions, listener: AnyObject? -> Void) {
+    self.object = object
+    self.keyPath = keyPath
+    self.listener = listener
+    super.init()
+    self.object.addObserver(self, forKeyPath: keyPath, options: options, context: &BNDKVOObserver.XXContext)
+  }
+  
+  func set(value: AnyObject?) {
+    object.setValue(value, forKey: keyPath)
+  }
+  
+  deinit {
+    object.removeObserver(self, forKeyPath: keyPath)
+  }
+  
+  override dynamic func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    if context == &BNDKVOObserver.XXContext {
+      if let newValue: AnyObject? = change?[NSKeyValueChangeNewKey] {
+        listener(newValue)
+      }
+    }
+  }
+}
+
+public extension Observable {
+  
+  public convenience init(object: NSObject, keyPath: String) {
+    
+    if let value = object.valueForKeyPath(keyPath) as? EventType {
+      self.init(value)
+    } else {
+      fatalError("Dear Sir/Madam, you are creating a Scalar of non-optional \(EventType.self) type, but the value at the given key path is nil or not of \(EventType.self) type. Please check the type or have your Scalar encapsulate optional type like Scalar<\(EventType.self)?>.")
+    }
+    
+    var updatingFromSelf = false
+    
+    let observer = BNDKVOObserver(object: object, keyPath: keyPath, options: .New) { [weak self] value in
+      updatingFromSelf = true
+      if let value = value as? EventType {
+        self?.value = value
+      } else {
+        fatalError("Dear Sir/Madam, it appears that the observed key path can hold nil values or values of type different than \(EventType.self). Please check the type or have your Scalar encapsulate optional type like Scalar<\(EventType.self)?>.")
+      }
+      updatingFromSelf = false
+    }
+    
+    observeNew { value in
+      if !updatingFromSelf {
+        observer.set(value as? AnyObject)
+      }
+    }
+  }
+}
+
+public extension Observable where EventType: OptionalType {
+  
+  public convenience init(object: NSObject, keyPath: String) {
+    
+    let initialValue: EventType.SomeType?
+    if let value = object.valueForKeyPath(keyPath) as? EventType.SomeType {
+      initialValue = value
+    } else {
+      initialValue = nil
+    }
+    
+    self.init(EventType(optional: initialValue))
+    
+    var updatingFromSelf = false
+    
+    let observer = BNDKVOObserver(object: object, keyPath: keyPath, options: .New) { [weak self] value in
+      updatingFromSelf = true
+      if let value = value as? EventType.SomeType {
+        self?.value = EventType(optional: value)
+      } else {
+        self?.value = EventType(optional: nil)
+      }
+      updatingFromSelf = false
+    }
+    
+    observeNew { value in
+      if !updatingFromSelf {
+        observer.set(value as? AnyObject)
+      }
+    }
+  }
+}
+
+
+
+internal extension NSObject {
   
   internal func bnd_associatedObservableForValueForKey<T>(key: String, inout associationKey: String) -> Observable<T> {
     if let observable: AnyObject = objc_getAssociatedObject(self, &associationKey) {
