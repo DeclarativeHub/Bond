@@ -21,7 +21,7 @@ import XCTest
 class CALayerTests: XCTestCase {
   
   func testCALayerBackgroundColorBond() {
-    let driver = Scalar<CGColor>(Color.whiteColor().CGColor)
+    let driver = Observable<CGColor>(Color.whiteColor().CGColor)
     let layer = CALayer()
 
     layer.backgroundColor = Color.redColor().CGColor

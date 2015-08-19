@@ -13,7 +13,7 @@ import XCTest
 class NSTextViewTests: XCTestCase {
   
   func testNSTextViewTextBond() {
-    let dynamicDriver = Scalar<String>("Hello")
+    let dynamicDriver = Observable<String>("Hello")
     let textView = NSTextView(frame: NSZeroRect)
     
     textView.string = "Goodbye"
@@ -29,7 +29,7 @@ class NSTextViewTests: XCTestCase {
   
   func testOneWayOperators() {
     var bondedValue: String = ""
-    let dynamicDriver = Scalar<String>("a")
+    let dynamicDriver = Observable<String>("a")
     let textView1 = NSTextView()
     let textView2 = NSTextView()
     let textField = NSTextField()
@@ -52,8 +52,8 @@ class NSTextViewTests: XCTestCase {
   }
   
   func testTwoWayOperators() {
-    let dynamicDriver1 = Scalar<String>("a")
-    let dynamicDriver2 = Scalar<String>("z")
+    let dynamicDriver1 = Observable<String>("a")
+    let dynamicDriver2 = Observable<String>("z")
     let textView1 = NSTextView()
     let textView2 = NSTextView()
     let textField = NSTextField()

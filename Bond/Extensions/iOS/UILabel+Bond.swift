@@ -32,15 +32,15 @@ extension UILabel {
     static var TextColorKey = "bnd_TextColorKey"
   }
   
-  public var bnd_text: Scalar<String?> {
-    return bnd_associatedScalarForOptionalValueForKey("text", associationKey: &AssociatedKeys.TextKey)
+  public var bnd_text: Observable<String?> {
+    return bnd_associatedObservableForOptionalValueForKey("text", associationKey: &AssociatedKeys.TextKey)
   }
   
-  public var bnd_attributedText: Scalar<NSAttributedString?> {
-    return bnd_associatedScalarForOptionalValueForKey("attributedText", associationKey: &AssociatedKeys.AttributedTextKey)
+  public var bnd_attributedText: Observable<NSAttributedString?> {
+    return bnd_associatedObservableForOptionalValueForKey("attributedText", associationKey: &AssociatedKeys.AttributedTextKey)
   }
   
-  public var bnd_textColor: Scalar<UIColor?> {
-    return bnd_associatedScalarForOptionalValueForKey("textColor", associationKey: &AssociatedKeys.TextColorKey)
+  public var bnd_textColor: Observable<UIColor?> {
+    return bnd_associatedObservableForOptionalValueForKey("textColor", associationKey: &AssociatedKeys.TextColorKey)
   }
 }

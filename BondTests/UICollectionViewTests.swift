@@ -13,14 +13,14 @@ import XCTest
 class UICollectionViewTests: XCTestCase {
   
   let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 500, height: 500), collectionViewLayout: UICollectionViewFlowLayout())
-  let data = Vector<Int>([1, 2, 3])
+  let data = ObservableArray<Int>([1, 2, 3])
   
   override func setUp() {
     super.setUp()
     
     collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
 
-    data.lift().bindTo(collectionView, createCell: { (indexPath, vector, collectionView) -> UICollectionViewCell in
+    data.lift().bindTo(collectionView, createCell: { (indexPath, array, collectionView) -> UICollectionViewCell in
       return collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath)
     })
   }

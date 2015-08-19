@@ -1,5 +1,5 @@
 //
-//  ScalarTests.swift
+//  ObservableTests.swift
 //  Bond
 //
 //  Created by Srđan Rašić on 22/07/15.
@@ -9,13 +9,13 @@
 import XCTest
 @testable import Bond
 
-class ScalarTests: XCTestCase {
+class ObservableValueTests: XCTestCase {
 
   func testObservingAndDisposing() {
-    let age = Scalar(2)
+    let age = Observable(2)
     
-    age.set(1)
-    age.set(0)
+    age.next(1)
+    age.next(0)
     
     var observedValue = -1
     var numberOfInitialReplays = 0
@@ -31,7 +31,7 @@ class ScalarTests: XCTestCase {
     age.value = 1
     XCTAssertEqual(1, observedValue)
     
-    age.set(2)
+    age.next(2)
     XCTAssertEqual(2, observedValue)
     
     disposable.dispose()
@@ -41,10 +41,10 @@ class ScalarTests: XCTestCase {
   }
   
   func testFilterMapChain() {
-    let scalar = Scalar(2)
+    let observable = Observable(2)
     var observedValue = -1
     
-    scalar
+    observable
       .filter { $0 % 2 == 0 }
       .map { $0 * 2 }
       .observe { value in
@@ -53,56 +53,56 @@ class ScalarTests: XCTestCase {
     
     XCTAssertEqual(observedValue, 4)
     
-    scalar.value = 3
+    observable.value = 3
     XCTAssertEqual(observedValue, 4)
 
-    scalar.value = 4
+    observable.value = 4
     XCTAssertEqual(observedValue, 8)
   }
   
   func testDisposesOnReleasingEvenThoughBeingObserved() {
-    var scalar: Scalar<Int>! = Scalar(0)
-    weak var scalarWeak: Scalar<Int>! = scalar
+    var observable: Observable<Int>! = Observable(0)
+    weak var observableWeak: Observable<Int>! = observable
     
-    let disposable = scalar.observe { v in }
+    let disposable = observable.observe { v in }
     
-    XCTAssertNotNil(scalarWeak)
+    XCTAssertNotNil(observableWeak)
     XCTAssertFalse(disposable.isDisposed)
     
-    scalar = nil
-    XCTAssertNil(scalarWeak)
+    observable = nil
+    XCTAssertNil(observableWeak)
     XCTAssertTrue(disposable.isDisposed)
   }
   
   func testDisposesOnReleasingEvenThoughBeingBound() {
-    let srcScalar: Scalar<Int> = Scalar(0)
+    let srcObservable: Observable<Int> = Observable(0)
     
-    var dstScalar: Scalar<Int>! = Scalar(0)
-    weak var dstScalarWeak: Scalar<Int>! = dstScalar
+    var dstObservable: Observable<Int>! = Observable(0)
+    weak var dstObservableWeak: Observable<Int>! = dstObservable
     
-    let disposable = srcScalar.bindTo(dstScalar)
+    let disposable = srcObservable.bindTo(dstObservable)
     
-    XCTAssertNotNil(dstScalarWeak)
+    XCTAssertNotNil(dstObservableWeak)
     XCTAssertFalse(disposable.isDisposed)
     
-    dstScalar = nil
-    XCTAssertNil(dstScalarWeak)
+    dstObservable = nil
+    XCTAssertNil(dstObservableWeak)
     XCTAssertTrue(disposable.isDisposed)
   }
   
   func testNotRetainedByCreatedSinkAndDisposesGivenDisposableOnDeinit() {
-    var scalar: Scalar<Int>! = Scalar(0)
-    weak var scalarWeak: Scalar<Int>! = scalar
+    var observable: Observable<Int>! = Observable(0)
+    weak var observableWeak: Observable<Int>! = observable
     let disposable = SimpleDisposable()
     
-    let sink: (Int -> ())? = scalar.sink(disposable)
+    let sink: (Int -> ())? = observable.sink(disposable)
     
     XCTAssert(sink != nil)
-    XCTAssertNotNil(scalarWeak)
+    XCTAssertNotNil(observableWeak)
     XCTAssertFalse(disposable.isDisposed)
     
-    scalar = nil
-    XCTAssertNil(scalarWeak)
+    observable = nil
+    XCTAssertNil(observableWeak)
     XCTAssertTrue(disposable.isDisposed)
   }
 }

@@ -30,7 +30,7 @@ extension NSStatusBarButton {
     static var AppearsDisabled = "bnd_AppearsDisabled"
   }
   
-  public var bnd_appearsDisabled: Scalar<Bool> {
-    return bnd_associatedScalarForValueForKey("appearsDisabled", associationKey: &AssociatedKeys.AppearsDisabled)
+  public var bnd_appearsDisabled: Observable<Bool> {
+    return bnd_associatedObservableForValueForKey("appearsDisabled", associationKey: &AssociatedKeys.AppearsDisabled)
   }
 }

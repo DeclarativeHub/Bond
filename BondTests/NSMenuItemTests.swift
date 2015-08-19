@@ -13,7 +13,7 @@ import XCTest
 class NSMenuItemTests: XCTestCase {
   
   func testNSMenuItemEnabledBond() {
-    let dynamicDriver = Scalar<Bool>(false)
+    let dynamicDriver = Observable<Bool>(false)
     let menuItem = NSMenuItem()
     
     menuItem.enabled = true
@@ -27,7 +27,7 @@ class NSMenuItemTests: XCTestCase {
   }
   
   func testNSMenuItemStateBond() {
-    let dynamicDriver = Scalar<Int>(NSOffState)
+    let dynamicDriver = Observable<Int>(NSOffState)
     let menuItem = NSMenuItem()
     
     menuItem.state = NSOnState

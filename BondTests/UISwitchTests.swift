@@ -12,33 +12,33 @@ import Bond
 
 class UISwitchTests: XCTestCase {
 
-  func testUISwitchScalar() {
-    let scalar = Scalar<Bool>(false)
+  func testUISwitchObservable() {
+    let observable = Observable<Bool>(false)
     let uiSwitch = UISwitch()
     
     uiSwitch.on = true
     XCTAssert(uiSwitch.on == true, "Initial value")
     
-    scalar.bidirectionalBindTo(uiSwitch.bnd_on)
+    observable.bidirectionalBindTo(uiSwitch.bnd_on)
     XCTAssert(uiSwitch.on == false, "Switch value after binding")
     
-    scalar.value = true
-    XCTAssert(uiSwitch.on == true, "Switch value reflects scalar value change")
+    observable.value = true
+    XCTAssert(uiSwitch.on == true, "Switch value reflects observable value change")
     
     uiSwitch.on = false
     uiSwitch.sendActionsForControlEvents(.ValueChanged) //simulate user input
-    XCTAssert(scalar.value == false, "Scalar value reflects switch value change")
+    XCTAssert(observable.value == false, "Observable value reflects switch value change")
   }
   
   func testOneWayOperators() {
     var bondedValue = true
-    let scalar = Scalar<Bool>(false)
+    let observable = Observable<Bool>(false)
     let switch1 = UISwitch()
     let switch2 = UISwitch()
     
     XCTAssertEqual(bondedValue, true, "Initial value")
     
-    scalar.bindTo(switch1.bnd_on)
+    observable.bindTo(switch1.bnd_on)
     switch1.bnd_on.bindTo(switch2.bnd_on)
     switch2.bnd_on.observe {
       bondedValue = $0
@@ -46,34 +46,34 @@ class UISwitchTests: XCTestCase {
     
     XCTAssertEqual(bondedValue, false, "Value after binding")
 
-    scalar.value = true
+    observable.value = true
     XCTAssertEqual(bondedValue, true, "Value after change")
   }
   
   func testTwoWayOperators() {
-    let scalar1 = Scalar<Bool>(true)
-    let scalar2 = Scalar<Bool>(false)
+    let observable1 = Observable<Bool>(true)
+    let observable2 = Observable<Bool>(false)
     let switch1 = UISwitch()
     let switch2 = UISwitch()
     
-    XCTAssertEqual(scalar1.value, true, "Initial value")
-    XCTAssertEqual(scalar2.value, false, "Initial value")
+    XCTAssertEqual(observable1.value, true, "Initial value")
+    XCTAssertEqual(observable2.value, false, "Initial value")
     
-    scalar1.bidirectionalBindTo(switch1.bnd_on)
+    observable1.bidirectionalBindTo(switch1.bnd_on)
     switch1.bnd_on.bidirectionalBindTo(switch2.bnd_on)
-    switch2.bnd_on.bidirectionalBindTo(scalar2)
+    switch2.bnd_on.bidirectionalBindTo(observable2)
     
-    XCTAssertEqual(scalar1.value, true, "Value after binding")
-    XCTAssertEqual(scalar2.value, true, "Value after binding")
+    XCTAssertEqual(observable1.value, true, "Value after binding")
+    XCTAssertEqual(observable2.value, true, "Value after binding")
     
-    scalar1.value = false
+    observable1.value = false
     
-    XCTAssertEqual(scalar1.value, false, "Value after change")
-    XCTAssertEqual(scalar2.value, false, "Value after change")
+    XCTAssertEqual(observable1.value, false, "Value after change")
+    XCTAssertEqual(observable2.value, false, "Value after change")
 
-    scalar2.value = true
+    observable2.value = true
     
-    XCTAssertEqual(scalar1.value, true, "Value after change")
-    XCTAssertEqual(scalar2.value, true, "Value after change")
+    XCTAssertEqual(observable1.value, true, "Value after change")
+    XCTAssertEqual(observable2.value, true, "Value after change")
   }
 }

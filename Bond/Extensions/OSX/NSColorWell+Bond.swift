@@ -30,7 +30,7 @@ extension NSColorWell {
     static var ColorKey = "bnd_ColorKey"
   }
 
-  public var bnd_color: Scalar<NSColor> {
-    return bnd_associatedScalarForValueForKey("color", associationKey: &AssociatedKeys.ColorKey)
+  public var bnd_color: Observable<NSColor> {
+    return bnd_associatedObservableForValueForKey("color", associationKey: &AssociatedKeys.ColorKey)
   }
 }

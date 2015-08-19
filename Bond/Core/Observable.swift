@@ -67,7 +67,7 @@ public class Observable<EventType>: ObservableType {
   /// Producer closure will be executed immediately. It will receive a sink into which
   /// events can be dispatched. If producer returns a disposable, the observable will store
   /// it and dispose upon [observable's] deallocation.
-  public init(replayLength: Int = 0, lifecycle: ObservableLifecycle = .Managed, @noescape producer: SinkType -> DisposableType?) {
+  public required init(replayLength: Int = 0, lifecycle: ObservableLifecycle = .Managed, @noescape producer: SinkType -> DisposableType?) {
     self.lifecycle = lifecycle
     
     let tmpSelfReference = Reference(self)
@@ -87,6 +87,12 @@ public class Observable<EventType>: ObservableType {
     }
     
     self.selfReference = tmpSelfReference
+  }
+  
+  /// Sends an event to the observers
+  public func next(event: EventType) {
+    buffer?.push(event)
+    dispatcher.dispatch(event)
   }
 
   /// Registers the given observer and returns a disposable that can cancel observing.
@@ -120,5 +126,46 @@ public class Observable<EventType>: ObservableType {
   
   deinit {
     deinitDisposable.dispose()
+  }
+}
+
+public extension Observable {
+  
+  /// Creates a new Observable that replays given value as an event.
+  public convenience init(_ value: EventType) {
+    self.init(replayLength: 1, lifecycle: .Normal) { sink in
+      sink(value)
+      return nil
+    }
+  }
+  
+  /// Observable's value.
+  ///
+  /// Note that if the receiver is not an instance initialized with Observable(_ value: EventType) initializer
+  /// nor any derivation of such instance, this will contain last sent event or nil if not events were sent
+  /// or the Observable has replayLength less than 1.
+  public var value: EventType! {
+    set(newValue) {
+      next(newValue)
+    }
+    get {
+      return buffer?.last
+    }
+  }
+}
+
+extension Observable: BindableType {
+  
+  /// Creates a new sink that can be used to update the receiver.
+  /// Optionally accepts a disposable that will be disposed on receiver's deinit.
+  public func sink(disconnectDisposable: DisposableType?) -> EventType -> () {
+    
+    if let disconnectDisposable = disconnectDisposable {
+      deinitDisposable += disconnectDisposable
+    }
+    
+    return { [weak self] value in
+      self?.value = value
+    }
   }
 }

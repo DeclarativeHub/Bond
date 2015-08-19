@@ -13,34 +13,34 @@ import Bond
 class UIButtonTests: XCTestCase {
 
   func testUIButtonEnabledBond() {
-    let scalar = Scalar<Bool>(false)
+    let observable = Observable<Bool>(false)
     let button = UIButton()
     
     button.enabled = true
     XCTAssert(button.enabled == true, "Initial value")
     
-    scalar.bindTo(button.bnd_enabled)
+    observable.bindTo(button.bnd_enabled)
     XCTAssert(button.enabled == false, "Value after binding")
     
-    scalar.value = true
-    XCTAssert(button.enabled == true, "Value after scalar change")
+    observable.value = true
+    XCTAssert(button.enabled == true, "Value after observable change")
   }
   
   func testUIButtonTitleBond() {
-    let scalar = Scalar<String>("b")
+    let observable = Observable<String>("b")
     let button = UIButton()
     
     button.titleLabel?.text = "a"
     XCTAssert(button.titleLabel?.text == "a", "Initial value")
     
-    scalar.bindTo(button.bnd_title)
+    observable.bindTo(button.bnd_title)
     XCTAssert(button.titleLabel?.text == "b", "Value after binding")
     
-    scalar.value = "c"
-    XCTAssert(button.titleLabel?.text == "c", "Value after scalar change")
+    observable.value = "c"
+    XCTAssert(button.titleLabel?.text == "c", "Value after observable change")
   }
   
-  func testUIButtonScalar() {
+  func testUIButtonObservable() {
     let button = UIButton()
     
     var observedValue = UIControlEvents.AllEvents
@@ -52,9 +52,9 @@ class UIButtonTests: XCTestCase {
     XCTAssert(observedValue == UIControlEvents.AllEvents, "Value after binding should not be changed")
     
     button.sendActionsForControlEvents(.TouchDragInside)
-    XCTAssert(observedValue == UIControlEvents.AllEvents, "Scalar change does not pass test - should not update observedValue")
+    XCTAssert(observedValue == UIControlEvents.AllEvents, "Observable change does not pass test - should not update observedValue")
     
     button.sendActionsForControlEvents(.TouchUpInside)
-    XCTAssert(observedValue == UIControlEvents.TouchUpInside, "Scalar change passes test - should update observedValue")
+    XCTAssert(observedValue == UIControlEvents.TouchUpInside, "Observable change passes test - should update observedValue")
   }
 }

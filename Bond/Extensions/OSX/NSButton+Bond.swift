@@ -30,7 +30,7 @@ extension NSButton {
     static var StateKey = "bnd_StateKey"
   }
   
-  public var bnd_state: Scalar<Int> {
-    return bnd_associatedScalarForValueForKey("state", associationKey: &AssociatedKeys.StateKey)
+  public var bnd_state: Observable<Int> {
+    return bnd_associatedObservableForValueForKey("state", associationKey: &AssociatedKeys.StateKey)
   }
 }

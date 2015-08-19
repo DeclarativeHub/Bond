@@ -29,7 +29,7 @@
 		EAD8B2DD1B41AF4300995CE9 /* NSLayoutConstraintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */; };
 		EC0388991B0DD25700E32454 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69491BAE1A7C217100A13B6B /* Bond.framework */; };
 		EC2AE4A91B788F8B00296781 /* UIRefreshControl+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2AE4A81B788F8B00296781 /* UIRefreshControl+Bond.swift */; };
-		EC6F105B1B7F9C2700E55A5F /* ScalarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69821B77D45600837A36 /* ScalarTests.swift */; };
+		EC6F105B1B7F9C2700E55A5F /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69821B77D45600837A36 /* ObservableValue.swift */; };
 		ECAD68EB1B77BB1D00837A36 /* BindableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68B81B77BB1D00837A36 /* BindableType.swift */; };
 		ECAD68EC1B77BB1D00837A36 /* BindableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68B81B77BB1D00837A36 /* BindableType.swift */; };
 		ECAD68ED1B77BB1D00837A36 /* Buffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68B91B77BB1D00837A36 /* Buffer.swift */; };
@@ -52,12 +52,10 @@
 		ECAD69041B77BB1D00837A36 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C41B77BB1D00837A36 /* Queue.swift */; };
 		ECAD69051B77BB1D00837A36 /* Reference.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C51B77BB1D00837A36 /* Reference.swift */; };
 		ECAD69061B77BB1D00837A36 /* Reference.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C51B77BB1D00837A36 /* Reference.swift */; };
-		ECAD69071B77BB1D00837A36 /* Scalar.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C61B77BB1D00837A36 /* Scalar.swift */; };
-		ECAD69081B77BB1D00837A36 /* Scalar.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C61B77BB1D00837A36 /* Scalar.swift */; };
-		ECAD69091B77BB1D00837A36 /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C71B77BB1D00837A36 /* Vector.swift */; };
-		ECAD690A1B77BB1D00837A36 /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C71B77BB1D00837A36 /* Vector.swift */; };
-		ECAD690B1B77BB1D00837A36 /* VectorEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C81B77BB1D00837A36 /* VectorEvent.swift */; };
-		ECAD690C1B77BB1D00837A36 /* VectorEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C81B77BB1D00837A36 /* VectorEvent.swift */; };
+		ECAD69091B77BB1D00837A36 /* ObservableArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C71B77BB1D00837A36 /* ObservableArray.swift */; };
+		ECAD690A1B77BB1D00837A36 /* ObservableArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C71B77BB1D00837A36 /* ObservableArray.swift */; };
+		ECAD690B1B77BB1D00837A36 /* ObservableArrayEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C81B77BB1D00837A36 /* ObservableArrayEvent.swift */; };
+		ECAD690C1B77BB1D00837A36 /* ObservableArrayEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C81B77BB1D00837A36 /* ObservableArrayEvent.swift */; };
 		ECAD692E1B77BB1D00837A36 /* NSButton+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68DC1B77BB1D00837A36 /* NSButton+Bond.swift */; };
 		ECAD69301B77BB1D00837A36 /* NSColorWell+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68DD1B77BB1D00837A36 /* NSColorWell+Bond.swift */; };
 		ECAD69321B77BB1D00837A36 /* NSControl+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68DE1B77BB1D00837A36 /* NSControl+Bond.swift */; };
@@ -110,9 +108,9 @@
 		ECAD697D1B77D43D00837A36 /* UITextViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD696C1B77D43D00837A36 /* UITextViewTests.swift */; };
 		ECAD697E1B77D43D00837A36 /* UIViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD696D1B77D43D00837A36 /* UIViewTests.swift */; };
 		ECAD69851B77D45600837A36 /* ObservableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69801B77D45600837A36 /* ObservableTests.swift */; };
-		ECAD69881B77D45600837A36 /* VectorEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69831B77D45600837A36 /* VectorEventTests.swift */; };
-		ECAD69891B77D45600837A36 /* VectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69841B77D45600837A36 /* VectorTests.swift */; };
-		ECBF04DD1B8089DE001F6BCA /* ScalarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69821B77D45600837A36 /* ScalarTests.swift */; };
+		ECAD69881B77D45600837A36 /* ObservableArrayEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69831B77D45600837A36 /* ObservableArrayEventTests.swift */; };
+		ECAD69891B77D45600837A36 /* ObservableArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69841B77D45600837A36 /* ObservableArrayTests.swift */; };
+		ECBF04DD1B8089DE001F6BCA /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69821B77D45600837A36 /* ObservableValue.swift */; };
 		ECBF04DF1B808B20001F6BCA /* DisposableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */; };
 		ECBF04E01B808B20001F6BCA /* DisposableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */; };
 		ECBF04E11B810100001F6BCA /* NSLock+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E71B77BB1D00837A36 /* NSLock+Bond.swift */; };
@@ -189,9 +187,8 @@
 		ECAD68C21B77BB1D00837A36 /* OptionalType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionalType.swift; sourceTree = "<group>"; };
 		ECAD68C41B77BB1D00837A36 /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		ECAD68C51B77BB1D00837A36 /* Reference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reference.swift; sourceTree = "<group>"; };
-		ECAD68C61B77BB1D00837A36 /* Scalar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scalar.swift; sourceTree = "<group>"; };
-		ECAD68C71B77BB1D00837A36 /* Vector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector.swift; sourceTree = "<group>"; };
-		ECAD68C81B77BB1D00837A36 /* VectorEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VectorEvent.swift; sourceTree = "<group>"; };
+		ECAD68C71B77BB1D00837A36 /* ObservableArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableArray.swift; sourceTree = "<group>"; };
+		ECAD68C81B77BB1D00837A36 /* ObservableArrayEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableArrayEvent.swift; sourceTree = "<group>"; };
 		ECAD68CB1B77BB1D00837A36 /* UIActivityIndicatorView+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIActivityIndicatorView+Bond.swift"; sourceTree = "<group>"; };
 		ECAD68CC1B77BB1D00837A36 /* UIBarItem+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBarItem+Bond.swift"; sourceTree = "<group>"; };
 		ECAD68CD1B77BB1D00837A36 /* UIButton+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Bond.swift"; sourceTree = "<group>"; };
@@ -239,9 +236,9 @@
 		ECAD696C1B77D43D00837A36 /* UITextViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextViewTests.swift; sourceTree = "<group>"; };
 		ECAD696D1B77D43D00837A36 /* UIViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewTests.swift; sourceTree = "<group>"; };
 		ECAD69801B77D45600837A36 /* ObservableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableTests.swift; sourceTree = "<group>"; };
-		ECAD69821B77D45600837A36 /* ScalarTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScalarTests.swift; sourceTree = "<group>"; };
-		ECAD69831B77D45600837A36 /* VectorEventTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VectorEventTests.swift; sourceTree = "<group>"; };
-		ECAD69841B77D45600837A36 /* VectorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VectorTests.swift; sourceTree = "<group>"; };
+		ECAD69821B77D45600837A36 /* ObservableValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableValue.swift; sourceTree = "<group>"; };
+		ECAD69831B77D45600837A36 /* ObservableArrayEventTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableArrayEventTests.swift; sourceTree = "<group>"; };
+		ECAD69841B77D45600837A36 /* ObservableArrayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableArrayTests.swift; sourceTree = "<group>"; };
 		ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisposableTests.swift; sourceTree = "<group>"; };
 		ECD653A21A9B6B6B0038A9AC /* Bond.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Bond.podspec; sourceTree = "<group>"; };
 		ECD653A41A9B6B770038A9AC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -422,20 +419,19 @@
 		ECAD68B71B77BB1D00837A36 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				ECAD68B81B77BB1D00837A36 /* BindableType.swift */,
-				ECAD68B91B77BB1D00837A36 /* Buffer.swift */,
-				ECAD68BA1B77BB1D00837A36 /* Dispatcher.swift */,
-				ECAD68BB1B77BB1D00837A36 /* Disposable.swift */,
-				ECAD68BC1B77BB1D00837A36 /* DisposableType.swift */,
-				ECAD68BF1B77BB1D00837A36 /* Observable.swift */,
 				ECAD68C01B77BB1D00837A36 /* ObservableType.swift */,
-				ECAD68C11B77BB1D00837A36 /* Operators.swift */,
+				ECAD68BF1B77BB1D00837A36 /* Observable.swift */,
+				ECAD68C71B77BB1D00837A36 /* ObservableArray.swift */,
+				ECAD68C81B77BB1D00837A36 /* ObservableArrayEvent.swift */,
+				ECAD68BC1B77BB1D00837A36 /* DisposableType.swift */,
+				ECAD68BB1B77BB1D00837A36 /* Disposable.swift */,
+				ECAD68B81B77BB1D00837A36 /* BindableType.swift */,
 				ECAD68C21B77BB1D00837A36 /* OptionalType.swift */,
+				ECAD68B91B77BB1D00837A36 /* Buffer.swift */,
 				ECAD68C41B77BB1D00837A36 /* Queue.swift */,
 				ECAD68C51B77BB1D00837A36 /* Reference.swift */,
-				ECAD68C61B77BB1D00837A36 /* Scalar.swift */,
-				ECAD68C71B77BB1D00837A36 /* Vector.swift */,
-				ECAD68C81B77BB1D00837A36 /* VectorEvent.swift */,
+				ECAD68C11B77BB1D00837A36 /* Operators.swift */,
+				ECAD68BA1B77BB1D00837A36 /* Dispatcher.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -529,10 +525,10 @@
 			isa = PBXGroup;
 			children = (
 				ECAD69801B77D45600837A36 /* ObservableTests.swift */,
+				ECAD69821B77D45600837A36 /* ObservableValue.swift */,
+				ECAD69841B77D45600837A36 /* ObservableArrayTests.swift */,
+				ECAD69831B77D45600837A36 /* ObservableArrayEventTests.swift */,
 				ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */,
-				ECAD69821B77D45600837A36 /* ScalarTests.swift */,
-				ECAD69841B77D45600837A36 /* VectorTests.swift */,
-				ECAD69831B77D45600837A36 /* VectorEventTests.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -778,12 +774,11 @@
 				ECAD69451B77BB1D00837A36 /* NSObject+Bond.swift in Sources */,
 				ECAD68F11B77BB1D00837A36 /* Disposable.swift in Sources */,
 				ECAD68ED1B77BB1D00837A36 /* Buffer.swift in Sources */,
-				ECAD690B1B77BB1D00837A36 /* VectorEvent.swift in Sources */,
+				ECAD690B1B77BB1D00837A36 /* ObservableArrayEvent.swift in Sources */,
 				ECAD694C1B77BB2800837A36 /* UICollectionView+Bond.swift in Sources */,
 				ECAD69051B77BB1D00837A36 /* Reference.swift in Sources */,
 				ECAD694D1B77BB2800837A36 /* UIControl+Bond.swift in Sources */,
-				ECAD69091B77BB1D00837A36 /* Vector.swift in Sources */,
-				ECAD69071B77BB1D00837A36 /* Scalar.swift in Sources */,
+				ECAD69091B77BB1D00837A36 /* ObservableArray.swift in Sources */,
 				ECAD68F31B77BB1D00837A36 /* DisposableType.swift in Sources */,
 				ECAD68EF1B77BB1D00837A36 /* Dispatcher.swift in Sources */,
 				ECAD694F1B77BB2800837A36 /* UIImageView+Bond.swift in Sources */,
@@ -814,14 +809,14 @@
 				ECAD69781B77D43D00837A36 /* UIProgressViewTests.swift in Sources */,
 				ECAD695B1B77C7B700837A36 /* CALayerTests.swift in Sources */,
 				ECAD69791B77D43D00837A36 /* UISliderTests.swift in Sources */,
-				ECAD69881B77D45600837A36 /* VectorEventTests.swift in Sources */,
+				ECAD69881B77D45600837A36 /* ObservableArrayEventTests.swift in Sources */,
 				ECAD69751B77D43D00837A36 /* UIKitBondTests.swift in Sources */,
 				ECAD69771B77D43D00837A36 /* UINavigationItemTests.swift in Sources */,
 				ECAD69731B77D43D00837A36 /* UIDatePickerTests.swift in Sources */,
 				ECAD69761B77D43D00837A36 /* UILabelTests.swift in Sources */,
-				ECBF04DD1B8089DE001F6BCA /* ScalarTests.swift in Sources */,
+				ECBF04DD1B8089DE001F6BCA /* ObservableValue.swift in Sources */,
 				EA3E36B81B41702100559641 /* NSLayoutConstraintTests.swift in Sources */,
-				ECAD69891B77D45600837A36 /* VectorTests.swift in Sources */,
+				ECAD69891B77D45600837A36 /* ObservableArrayTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -846,10 +841,9 @@
 				ECAD69361B77BB1D00837A36 /* NSMenuItem+Bond.swift in Sources */,
 				ECAD68F21B77BB1D00837A36 /* Disposable.swift in Sources */,
 				ECAD68EE1B77BB1D00837A36 /* Buffer.swift in Sources */,
-				ECAD690C1B77BB1D00837A36 /* VectorEvent.swift in Sources */,
+				ECAD690C1B77BB1D00837A36 /* ObservableArrayEvent.swift in Sources */,
 				ECAD69061B77BB1D00837A36 /* Reference.swift in Sources */,
-				ECAD690A1B77BB1D00837A36 /* Vector.swift in Sources */,
-				ECAD69081B77BB1D00837A36 /* Scalar.swift in Sources */,
+				ECAD690A1B77BB1D00837A36 /* ObservableArray.swift in Sources */,
 				ECAD68F41B77BB1D00837A36 /* DisposableType.swift in Sources */,
 				ECAD68F01B77BB1D00837A36 /* Dispatcher.swift in Sources */,
 				ECAD69301B77BB1D00837A36 /* NSColorWell+Bond.swift in Sources */,
@@ -866,7 +860,7 @@
 				900BFC0B1ADFC863002B4B6E /* NSButtonTests.swift in Sources */,
 				ECBF04E01B808B20001F6BCA /* DisposableTests.swift in Sources */,
 				900BFC0E1ADFC9E9002B4B6E /* NSColorWellTests.swift in Sources */,
-				EC6F105B1B7F9C2700E55A5F /* ScalarTests.swift in Sources */,
+				EC6F105B1B7F9C2700E55A5F /* ObservableValue.swift in Sources */,
 				900BFC141ADFCBA8002B4B6E /* NSMenuItemTests.swift in Sources */,
 				900BFC1A1ADFCD63002B4B6E /* NSTextViewTests.swift in Sources */,
 				900BFC101ADFCA46002B4B6E /* NSControlTests.swift in Sources */,

@@ -30,7 +30,7 @@ extension UINavigationItem {
     static var TitleKey = "bnd_TitleKey"
   }
   
-  public var bnd_title: Scalar<String?> {
-    return bnd_associatedScalarForOptionalValueForKey("title", associationKey: &AssociatedKeys.TitleKey)
+  public var bnd_title: Observable<String?> {
+    return bnd_associatedObservableForOptionalValueForKey("title", associationKey: &AssociatedKeys.TitleKey)
   }
 }

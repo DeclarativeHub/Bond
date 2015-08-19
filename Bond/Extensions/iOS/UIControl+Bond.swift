@@ -137,7 +137,7 @@ extension UIControl {
     }
   }
   
-  public var bnd_enabled: Scalar<Bool> {
-    return bnd_associatedScalarForValueForKey("enabled", associationKey: &AssociatedKeys.EnabledKey)
+  public var bnd_enabled: Observable<Bool> {
+    return bnd_associatedObservableForValueForKey("enabled", associationKey: &AssociatedKeys.EnabledKey)
   }
 }

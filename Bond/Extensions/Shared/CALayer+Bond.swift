@@ -32,15 +32,15 @@ extension CALayer {
     static var OpacityKey = "bnd_OpacityKey"
   }
   
-  public var bnd_opacity: Scalar<Float> {
-    return bnd_associatedScalarForValueForKey("opacity", associationKey: &AssociatedKeys.OpacityKey)
+  public var bnd_opacity: Observable<Float> {
+    return bnd_associatedObservableForValueForKey("opacity", associationKey: &AssociatedKeys.OpacityKey)
   }
   
-  public var bnd_backgroundColor: Scalar<CGColor?> {
-    return bnd_associatedScalarForOptionalValueForKey("backgroundColor", associationKey: &AssociatedKeys.BackgroundColorKey)
+  public var bnd_backgroundColor: Observable<CGColor?> {
+    return bnd_associatedObservableForOptionalValueForKey("backgroundColor", associationKey: &AssociatedKeys.BackgroundColorKey)
   }
   
-  public var bnd_contents: Scalar<AnyObject?> {
-    return bnd_associatedScalarForOptionalValueForKey("contents", associationKey: &AssociatedKeys.ContentsKey)
+  public var bnd_contents: Observable<AnyObject?> {
+    return bnd_associatedObservableForOptionalValueForKey("contents", associationKey: &AssociatedKeys.ContentsKey)
   }
 }

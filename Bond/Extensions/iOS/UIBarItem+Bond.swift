@@ -32,15 +32,15 @@ extension UIBarItem {
     static var EnabledKey = "bnd_EnabledKey"
   }
   
-  public var bnd_title: Scalar<String?> {
-    return bnd_associatedScalarForOptionalValueForKey("title", associationKey: &AssociatedKeys.TitleKey)
+  public var bnd_title: Observable<String?> {
+    return bnd_associatedObservableForOptionalValueForKey("title", associationKey: &AssociatedKeys.TitleKey)
   }
   
-  public var bnd_image: Scalar<UIImage?> {
-    return bnd_associatedScalarForOptionalValueForKey("image", associationKey: &AssociatedKeys.ImageKey)
+  public var bnd_image: Observable<UIImage?> {
+    return bnd_associatedObservableForOptionalValueForKey("image", associationKey: &AssociatedKeys.ImageKey)
   }
   
-  public var bnd_enabled: Scalar<Bool> {
-    return bnd_associatedScalarForValueForKey("enabled", associationKey: &AssociatedKeys.EnabledKey)
+  public var bnd_enabled: Observable<Bool> {
+    return bnd_associatedObservableForValueForKey("enabled", associationKey: &AssociatedKeys.EnabledKey)
   }
 }

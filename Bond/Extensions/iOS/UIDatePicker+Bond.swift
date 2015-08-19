@@ -30,11 +30,11 @@ extension UIDatePicker {
     static var DateKey = "bnd_DateKey"
   }
   
-  public var bnd_date: Scalar<NSDate> {
+  public var bnd_date: Observable<NSDate> {
     if let bnd_date: AnyObject = objc_getAssociatedObject(self, &AssociatedKeys.DateKey) {
-      return bnd_date as! Scalar<NSDate>
+      return bnd_date as! Observable<NSDate>
     } else {
-      let bnd_date = Scalar<NSDate>(self.date)
+      let bnd_date = Observable<NSDate>(self.date)
       objc_setAssociatedObject(self, &AssociatedKeys.DateKey, bnd_date, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       
       var updatingFromSelf: Bool = false
@@ -48,7 +48,7 @@ extension UIDatePicker {
       self.bnd_controlEvent.filter { $0 == UIControlEvents.ValueChanged }.observe { [weak self, weak bnd_date] event in
         guard let unwrappedSelf = self, let bnd_date = bnd_date else { return }
         updatingFromSelf = true
-        bnd_date.set(unwrappedSelf.date)
+        bnd_date.next(unwrappedSelf.date)
         updatingFromSelf = false
       }
       

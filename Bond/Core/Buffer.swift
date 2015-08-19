@@ -33,6 +33,12 @@ public struct Buffer<EventType> {
   /// Buffer size
   public var size: Int
   
+  /// Last event pushed into the buffer
+  public var last: EventType? {
+    return buffer.last
+  }
+  
+  /// Creates a new buffer of given size
   public init(size: Int) {
     self.size = size
     buffer.reserveCapacity(size)

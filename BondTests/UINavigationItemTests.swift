@@ -13,15 +13,15 @@ import Bond
 class UINavigationItemTests : XCTestCase {
     
     func testUINavigationItemTitleBond() {
-        let scalar = Scalar<String>("TestTitle")
+        let observable = Observable<String>("TestTitle")
         let item = UINavigationItem()
         
         XCTAssert(item.title == nil, "Initial value")
         
-        scalar.bindTo(item.bnd_title)
+        observable.bindTo(item.bnd_title)
         XCTAssert(item.title == "TestTitle", "Value after binding")
         
-        scalar.value = "TestTitle2"
-        XCTAssert(item.title == "TestTitle2", "Value after scalar change")
+        observable.value = "TestTitle2"
+        XCTAssert(item.title == "TestTitle2", "Value after observable change")
     }
 }

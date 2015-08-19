@@ -47,27 +47,27 @@ extension NSIndexSet {
 
 private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
   
-  private let vector: Vector<Vector<T>>
+  private let array: ObservableArray<ObservableArray<T>>
   private weak var tableView: UITableView!
-  private let createCell: (NSIndexPath, Vector<Vector<T>>, UITableView) -> UITableViewCell
+  private let createCell: (NSIndexPath, ObservableArray<ObservableArray<T>>, UITableView) -> UITableViewCell
   private weak var proxyDataSource: BNDTableViewProxyDataSource?
   private let sectionObservingDisposeBag = DisposeBag()
   
-  private init(vector: Vector<Vector<T>>, tableView: UITableView, proxyDataSource: BNDTableViewProxyDataSource?, createCell: (NSIndexPath, Vector<Vector<T>>, UITableView) -> UITableViewCell) {
+  private init(array: ObservableArray<ObservableArray<T>>, tableView: UITableView, proxyDataSource: BNDTableViewProxyDataSource?, createCell: (NSIndexPath, ObservableArray<ObservableArray<T>>, UITableView) -> UITableViewCell) {
     self.tableView = tableView
     self.createCell = createCell
     self.proxyDataSource = proxyDataSource
-    self.vector = vector
+    self.array = array
     super.init()
     
     tableView.dataSource = self
     tableView.reloadData()
     setupPerSectionObservers()
     
-    vector.observeNew { [weak self] vectorEvent in
+    array.observeNew { [weak self] arrayEvent in
       guard let unwrappedSelf = self, let tableView = unwrappedSelf.tableView else { return }
       
-      switch vectorEvent.operation {
+      switch arrayEvent.operation {
       case .Batch(let operations):
         tableView.beginUpdates()
         for diff in changeSetsFromBatchOperations(operations) {
@@ -77,7 +77,7 @@ private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
       case .Reset:
         tableView.reloadData()
       default:
-        BNDTableViewDataSource.applySectionUnitChangeSet(vectorEvent.operation.changeSet(), tableView: tableView)
+        BNDTableViewDataSource.applySectionUnitChangeSet(arrayEvent.operation.changeSet(), tableView: tableView)
       }
       
       unwrappedSelf.setupPerSectionObservers()
@@ -87,10 +87,10 @@ private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
   private func setupPerSectionObservers() {
     sectionObservingDisposeBag.dispose()
 
-    for (sectionIndex, sectionVector) in vector.enumerate() {
-      sectionVector.observeNew { [weak tableView] vectorEvent in
+    for (sectionIndex, sectionObservableArray) in array.enumerate() {
+      sectionObservableArray.observeNew { [weak tableView] arrayEvent in
         guard let tableView = tableView else { return }
-        switch vectorEvent.operation {
+        switch arrayEvent.operation {
         case .Batch(let operations):
           tableView.beginUpdates()
           for diff in changeSetsFromBatchOperations(operations) {
@@ -100,13 +100,13 @@ private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
         case .Reset:
           tableView.reloadSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Automatic)
         default:
-          BNDTableViewDataSource.applyRowUnitChangeSet(vectorEvent.operation.changeSet(), tableView: tableView, sectionIndex: sectionIndex)
+          BNDTableViewDataSource.applyRowUnitChangeSet(arrayEvent.operation.changeSet(), tableView: tableView, sectionIndex: sectionIndex)
         }
       }.disposeIn(sectionObservingDisposeBag)
     }
   }
   
-  private class func applySectionUnitChangeSet(changeSet: VectorEventChangeSet, tableView: UITableView) {
+  private class func applySectionUnitChangeSet(changeSet: ObservableArrayEventChangeSet, tableView: UITableView) {
     switch changeSet {
     case .Inserts(let indices):
       tableView.insertSections(NSIndexSet(set: indices), withRowAnimation: .Automatic)
@@ -117,7 +117,7 @@ private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
     }
   }
   
-  private class func applyRowUnitChangeSet(changeSet: VectorEventChangeSet, tableView: UITableView, sectionIndex: Int) {
+  private class func applyRowUnitChangeSet(changeSet: ObservableArrayEventChangeSet, tableView: UITableView, sectionIndex: Int) {
     switch changeSet {
     case .Inserts(let indices):
       let indexPaths = indices.map { NSIndexPath(forItem: $0, inSection: sectionIndex) }
@@ -134,15 +134,15 @@ private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
   /// MARK - UITableViewDataSource
   
   @objc func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-    return vector.count
+    return array.count
   }
   
   @objc func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return vector[section].count
+    return array[section].count
   }
   
   @objc func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    return createCell(indexPath, vector, tableView)
+    return createCell(indexPath, array, tableView)
   }
   
   @objc func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -189,22 +189,22 @@ extension UITableView {
 }
 
 public extension ObservableType where
-  EventType: VectorEventType,
-  EventType.VectorEventSequenceType.Generator.Element: ObservableType,
-  EventType.VectorEventSequenceType.Generator.Element.EventType: VectorEventType {
+  EventType: ObservableArrayEventType,
+  EventType.ObservableArrayEventSequenceType.Generator.Element: ObservableType,
+  EventType.ObservableArrayEventSequenceType.Generator.Element.EventType: ObservableArrayEventType {
   
-  private typealias ElementType = EventType.VectorEventSequenceType.Generator.Element.EventType.VectorEventSequenceType.Generator.Element
+  private typealias ElementType = EventType.ObservableArrayEventSequenceType.Generator.Element.EventType.ObservableArrayEventSequenceType.Generator.Element
   
-  public func bindTo(tableView: UITableView, proxyDataSource: BNDTableViewProxyDataSource? = nil, createCell: (NSIndexPath, Vector<Vector<ElementType>>, UITableView) -> UITableViewCell) -> DisposableType {
+  public func bindTo(tableView: UITableView, proxyDataSource: BNDTableViewProxyDataSource? = nil, createCell: (NSIndexPath, ObservableArray<ObservableArray<ElementType>>, UITableView) -> UITableViewCell) -> DisposableType {
     
-    let vector: Vector<Vector<ElementType>>
-    if let downcastedVector = self as? Vector<Vector<ElementType>> {
-      vector = downcastedVector
+    let array: ObservableArray<ObservableArray<ElementType>>
+    if let downcastedObservableArray = self as? ObservableArray<ObservableArray<ElementType>> {
+      array = downcastedObservableArray
     } else {
-      vector = self.map { $0.crystallize() }.crystallize()
+      array = self.map { $0.crystallize() }.crystallize()
     }
     
-    let dataSource = BNDTableViewDataSource(vector: vector, tableView: tableView, proxyDataSource: proxyDataSource, createCell: createCell)
+    let dataSource = BNDTableViewDataSource(array: array, tableView: tableView, proxyDataSource: proxyDataSource, createCell: createCell)
     tableView.dataSource = dataSource
     objc_setAssociatedObject(tableView, UITableView.AssociatedKeys.BondDataSourceKey, dataSource, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     

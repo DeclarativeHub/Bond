@@ -95,18 +95,18 @@ class TestTableView: UITableView {
 
 class UITableViewDataSourceTests: XCTestCase {
   var tableView: TestTableView!
-  var array: Vector<Vector<Int>>!
+  var array: ObservableArray<ObservableArray<Int>>!
   var expectedOperations: [TableOperation]!
   
   override func setUp() {
-    self.array = Vector([Vector([1, 2]), Vector([3, 4])])
+    self.array = ObservableArray([ObservableArray([1, 2]), ObservableArray([3, 4])])
     self.tableView = TestTableView()
     
     tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cellID")
     
     expectedOperations = []
     
-    array.bindTo(tableView) { (indexPath, vector, tableView) -> UITableViewCell in
+    array.bindTo(tableView) { (indexPath, array, tableView) -> UITableViewCell in
       let cell = tableView.dequeueReusableCellWithIdentifier("cellID", forIndexPath: indexPath)
       return cell
     }
@@ -139,7 +139,7 @@ class UITableViewDataSourceTests: XCTestCase {
   }
   
   func testInsertASection() {
-    array.insert(Vector([7, 8, 9]), atIndex: 1)
+    array.insert(ObservableArray([7, 8, 9]), atIndex: 1)
     expectedOperations.append(.InsertSections(NSIndexSet(index: 1)))
     XCTAssertEqual(tableView.numberOfRowsInSection(1), 3, "wrong number of rows in new section")
     XCTAssertEqual(expectedOperations, tableView.operations, "operation sequence did not match")
@@ -152,7 +152,7 @@ class UITableViewDataSourceTests: XCTestCase {
   }
   
   func testReloadASection() {
-    array[1] = Vector([5, 6, 7])
+    array[1] = ObservableArray([5, 6, 7])
     expectedOperations.append(.ReloadSections(NSIndexSet(index: 1)))
     XCTAssertEqual(tableView.numberOfRowsInSection(1), 3, "wrong number of rows in reloaded section")
     XCTAssertEqual(expectedOperations, tableView.operations, "operation sequence did not match")

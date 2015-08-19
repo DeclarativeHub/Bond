@@ -30,7 +30,7 @@ extension NSImageView {
     static var ImageKey = "bnd_ImageKey"
   }
   
-  public var bnd_image: Scalar<NSImage?> {
-    return bnd_associatedScalarForOptionalValueForKey("image", associationKey: &AssociatedKeys.ImageKey)
+  public var bnd_image: Observable<NSImage?> {
+    return bnd_associatedObservableForOptionalValueForKey("image", associationKey: &AssociatedKeys.ImageKey)
   }
 }

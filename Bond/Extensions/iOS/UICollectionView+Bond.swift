@@ -32,27 +32,27 @@ import UIKit
 
 private class BNDCollectionViewDataSource<T>: NSObject, UICollectionViewDataSource {
   
-  private let vector: Vector<Vector<T>>
+  private let array: ObservableArray<ObservableArray<T>>
   private weak var collectionView: UICollectionView!
-  private let createCell: (NSIndexPath, Vector<Vector<T>>, UICollectionView) -> UICollectionViewCell
+  private let createCell: (NSIndexPath, ObservableArray<ObservableArray<T>>, UICollectionView) -> UICollectionViewCell
   private weak var proxyDataSource: BNDCollectionViewProxyDataSource?
   private let sectionObservingDisposeBag = DisposeBag()
   
-  private init(vector: Vector<Vector<T>>, collectionView: UICollectionView, proxyDataSource: BNDCollectionViewProxyDataSource?, createCell: (NSIndexPath, Vector<Vector<T>>, UICollectionView) -> UICollectionViewCell) {
+  private init(array: ObservableArray<ObservableArray<T>>, collectionView: UICollectionView, proxyDataSource: BNDCollectionViewProxyDataSource?, createCell: (NSIndexPath, ObservableArray<ObservableArray<T>>, UICollectionView) -> UICollectionViewCell) {
     self.collectionView = collectionView
     self.createCell = createCell
     self.proxyDataSource = proxyDataSource
-    self.vector = vector
+    self.array = array
     super.init()
     
     collectionView.dataSource = self
     collectionView.reloadData()
     setupPerSectionObservers()
     
-    vector.observeNew { [weak self] vectorEvent in
+    array.observeNew { [weak self] arrayEvent in
       guard let unwrappedSelf = self, let collectionView = unwrappedSelf.collectionView else { return }
       
-      switch vectorEvent.operation {
+      switch arrayEvent.operation {
       case .Batch(let operations):
         collectionView.performBatchUpdates({
           for operation in changeSetsFromBatchOperations(operations) {
@@ -62,7 +62,7 @@ private class BNDCollectionViewDataSource<T>: NSObject, UICollectionViewDataSour
       case .Reset:
         collectionView.reloadData()
       default:
-        BNDCollectionViewDataSource.applySectionUnitChangeSet(vectorEvent.operation.changeSet(), collectionView: collectionView)
+        BNDCollectionViewDataSource.applySectionUnitChangeSet(arrayEvent.operation.changeSet(), collectionView: collectionView)
       }
       
       unwrappedSelf.setupPerSectionObservers()
@@ -72,10 +72,10 @@ private class BNDCollectionViewDataSource<T>: NSObject, UICollectionViewDataSour
   private func setupPerSectionObservers() {
     sectionObservingDisposeBag.dispose()
     
-    for (sectionIndex, sectionVector) in vector.enumerate() {
-      sectionVector.observeNew { [weak collectionView] vectorEvent in
+    for (sectionIndex, sectionObservableArray) in array.enumerate() {
+      sectionObservableArray.observeNew { [weak collectionView] arrayEvent in
         guard let collectionView = collectionView else { return }
-        switch vectorEvent.operation {
+        switch arrayEvent.operation {
         case .Batch(let operations):
           collectionView.performBatchUpdates({
             for operation in changeSetsFromBatchOperations(operations) {
@@ -85,13 +85,13 @@ private class BNDCollectionViewDataSource<T>: NSObject, UICollectionViewDataSour
         case .Reset:
           collectionView.reloadSections(NSIndexSet(index: sectionIndex))
         default:
-          BNDCollectionViewDataSource.applyRowUnitChangeSet(vectorEvent.operation.changeSet(), collectionView: collectionView, sectionIndex: sectionIndex)
+          BNDCollectionViewDataSource.applyRowUnitChangeSet(arrayEvent.operation.changeSet(), collectionView: collectionView, sectionIndex: sectionIndex)
         }
         }.disposeIn(sectionObservingDisposeBag)
     }
   }
   
-  private class func applySectionUnitChangeSet(changeSet: VectorEventChangeSet, collectionView: UICollectionView) {
+  private class func applySectionUnitChangeSet(changeSet: ObservableArrayEventChangeSet, collectionView: UICollectionView) {
     switch changeSet {
     case .Inserts(let indices):
       collectionView.insertSections(NSIndexSet(set: indices))
@@ -102,7 +102,7 @@ private class BNDCollectionViewDataSource<T>: NSObject, UICollectionViewDataSour
     }
   }
   
-  private class func applyRowUnitChangeSet(changeSet: VectorEventChangeSet, collectionView: UICollectionView, sectionIndex: Int) {
+  private class func applyRowUnitChangeSet(changeSet: ObservableArrayEventChangeSet, collectionView: UICollectionView, sectionIndex: Int) {
     switch changeSet {
     case .Inserts(let indices):
       let indexPaths = indices.map { NSIndexPath(forItem: $0, inSection: sectionIndex) }
@@ -119,15 +119,15 @@ private class BNDCollectionViewDataSource<T>: NSObject, UICollectionViewDataSour
   /// MARK - UICollectionViewDataSource
   
   @objc func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-    return vector.count
+    return array.count
   }
   
   @objc func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return vector[section].count
+    return array[section].count
   }
   
   @objc func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-    return createCell(indexPath, vector, collectionView)
+    return createCell(indexPath, array, collectionView)
   }
   
   @objc func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
@@ -154,22 +154,22 @@ extension UICollectionView {
 }
 
 public extension ObservableType where
-  EventType: VectorEventType,
-  EventType.VectorEventSequenceType.Generator.Element: ObservableType,
-  EventType.VectorEventSequenceType.Generator.Element.EventType: VectorEventType {
+  EventType: ObservableArrayEventType,
+  EventType.ObservableArrayEventSequenceType.Generator.Element: ObservableType,
+  EventType.ObservableArrayEventSequenceType.Generator.Element.EventType: ObservableArrayEventType {
   
-  private typealias ElementType = EventType.VectorEventSequenceType.Generator.Element.EventType.VectorEventSequenceType.Generator.Element
+  private typealias ElementType = EventType.ObservableArrayEventSequenceType.Generator.Element.EventType.ObservableArrayEventSequenceType.Generator.Element
   
-  public func bindTo(collectionView: UICollectionView, proxyDataSource: BNDCollectionViewProxyDataSource? = nil, createCell: (NSIndexPath, Vector<Vector<ElementType>>, UICollectionView) -> UICollectionViewCell) -> DisposableType {
+  public func bindTo(collectionView: UICollectionView, proxyDataSource: BNDCollectionViewProxyDataSource? = nil, createCell: (NSIndexPath, ObservableArray<ObservableArray<ElementType>>, UICollectionView) -> UICollectionViewCell) -> DisposableType {
     
-    let vector: Vector<Vector<ElementType>>
-    if let downcastedVector = self as? Vector<Vector<ElementType>> {
-      vector = downcastedVector
+    let array: ObservableArray<ObservableArray<ElementType>>
+    if let downcastedObservableArray = self as? ObservableArray<ObservableArray<ElementType>> {
+      array = downcastedObservableArray
     } else {
-      vector = self.map { $0.crystallize() }.crystallize()
+      array = self.map { $0.crystallize() }.crystallize()
     }
     
-    let dataSource = BNDCollectionViewDataSource(vector: vector, collectionView: collectionView, proxyDataSource: proxyDataSource, createCell: createCell)
+    let dataSource = BNDCollectionViewDataSource(array: array, collectionView: collectionView, proxyDataSource: proxyDataSource, createCell: createCell)
     collectionView.dataSource = dataSource
     objc_setAssociatedObject(collectionView, UICollectionView.AssociatedKeys.BondDataSourceKey, dataSource, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     

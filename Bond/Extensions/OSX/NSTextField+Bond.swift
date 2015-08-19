@@ -30,11 +30,11 @@ extension NSTextField {
     static var TextKey = "bnd_TextKey"
   }
   
-  public var bnd_text: Scalar<String> {
+  public var bnd_text: Observable<String> {
     if let bnd_text: AnyObject = objc_getAssociatedObject(self, &AssociatedKeys.TextKey) {
-      return bnd_text as! Scalar<String>
+      return bnd_text as! Observable<String>
     } else {
-      let bnd_text = Scalar<String>(self.stringValue ?? "")
+      let bnd_text = Observable<String>(self.stringValue ?? "")
       objc_setAssociatedObject(self, &AssociatedKeys.TextKey, bnd_text, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       
       var updatingFromSelf: Bool = false
@@ -48,7 +48,7 @@ extension NSTextField {
       self.bnd_controlEvent.map { $0 as! String }.observe { [weak bnd_text] event in
         guard let bnd_text = bnd_text else { return }
         updatingFromSelf = true
-        bnd_text.set(event)
+        bnd_text.next(event)
         updatingFromSelf = false
       }
       

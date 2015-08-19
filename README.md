@@ -104,9 +104,9 @@ Let me give you one last example. Say you have an array of repositories you woul
 So how do you proceed? Well, instead of implementing a data source object, observing photo downloads with KVO and manually updating table view with new items, with Bond you can do all that in just few lines:
 
 ```swift
-repositories.bindTo(collectionView, createCell: { (indexPath, vector, collectionView) -> UICollectionViewCell in
+repositories.bindTo(collectionView, createCell: { (indexPath, array, collectionView) -> UICollectionViewCell in
   let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! RepositoryCell
-  let repository = vector[indexPath.section][indexPath.item]
+  let repository = array[indexPath.section][indexPath.item]
   repository.name.bindTo(cell.nameLabel.bnd_text)
   repository.photo.bindTo(cell.avatarImageView.bnd_image)
   return cell
@@ -131,15 +131,9 @@ public class Observable<EventType>: ObservableType {
 ```
 
 ```swift
-public final class Scalar<ValueType>: Observable<ValueType>, ScalarType, BindableType {
-  var value: ValueType
-}
-```
-
-```swift
-public final class Vector<ElementType>: Observable<VectorEvent<ElementType>>, VectorType {
+public final class ObservableArray<ElementType>: Observable<ObservableArrayEvent<ElementType>>, ObservableArrayType {
   public var array: [ElementType]
-  public func performBatchUpdates(@noescape update: Vector<ElementType> -> ())
+  public func performBatchUpdates(@noescape update: ObservableArray<ElementType> -> ())
 }
 ```
 
@@ -185,17 +179,17 @@ Just get *.swift* files from Bond/ Directory and add them to your project.
 
 Bond v4 represents a major evolution of the framework. It's core has been rewritten from scratch and, while concepts are still pretty much the same, some things have changed from the outside to. In order to successfully upgrade your project to Bond v4, it is recommended to re-read this document. After that, you can proceed with the conversion: 
 
-### Dynamic become **Scalar**
+### Dynamic become **Observable**
 
-Convert objects of `Dynamic` type to `Scalar` type. Simple renaming should do the trick. 
+Convert objects of `Dynamic` type to `Observable` type. Simple renaming should do the trick. 
 
-### DynamicArray become **Vector**
+### DynamicArray become **ObservableArray**
 
-Convert objects of `DynamicArray` type to `Vector` type. Simple renaming should do the trick. 
+Convert objects of `DynamicArray` type to `ObservableArray` type. Simple renaming should do the trick. 
 
 ### Bond and ArrayBond are deprecated
 
-Bonds were used to observe changes of an object. With Bond v4, observing changes is much simpler. Instead of creating a new object, you can now use `observe` method on any Observable type. In other words, code like
+Bonds were used to observe changes of a Dynamic. With Bond v4, observing changes is much simpler. Instead of creating a new object, you can now use `observe` method on any Observable type. In other words, code like
 
 ```swift
 let myBond = Bond<Int>() { value in
@@ -224,10 +218,10 @@ let disposable = numberOfFollowers.observe { value in
 disposable.dispose()
 ```
 
-Observing Vectors is similar. Instead of calling various closures like DynamicArray did in v3, Vector in v4 is an observable that sends events that describe operation that was just applied to the Vector. You can observe those in a following way:
+Observing ObservableArrays is similar. Instead of calling various closures like DynamicArray did in v3, ObservableArray in v4 is an Observable that sends events that describe operation that was just applied to the ObservableArray. You can observe those in a following way:
 
 ```swift
-vector.observe { event in
+array.observe { event in
  switch event.operation {
  case .Insert(let elements, let fromIndex):
    // Did insert elements

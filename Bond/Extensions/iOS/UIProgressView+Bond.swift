@@ -30,7 +30,7 @@ extension UIProgressView {
     static var ProgressKey = "bnd_ProgressKey"
   }
   
-  public var bnd_progress: Scalar<Float> {
-    return bnd_associatedScalarForValueForKey("progress", associationKey: &AssociatedKeys.ProgressKey)
+  public var bnd_progress: Observable<Float> {
+    return bnd_associatedObservableForValueForKey("progress", associationKey: &AssociatedKeys.ProgressKey)
   }
 }

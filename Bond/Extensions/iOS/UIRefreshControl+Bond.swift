@@ -30,11 +30,11 @@ extension UIRefreshControl {
     static var RefreshingKey = "bnd_RefreshingKey"
   }
   
-  public var bnd_refreshing: Scalar<Bool> {
+  public var bnd_refreshing: Observable<Bool> {
     if let bnd_refreshing: AnyObject = objc_getAssociatedObject(self, &AssociatedKeys.RefreshingKey) {
-      return bnd_refreshing as! Scalar<Bool>
+      return bnd_refreshing as! Observable<Bool>
     } else {
-      let bnd_refreshing = Scalar<Bool>(self.refreshing)
+      let bnd_refreshing = Observable<Bool>(self.refreshing)
       objc_setAssociatedObject(self, &AssociatedKeys.RefreshingKey, bnd_refreshing, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       
       bnd_refreshing.observeNew { [weak self] (refreshing: Bool) in

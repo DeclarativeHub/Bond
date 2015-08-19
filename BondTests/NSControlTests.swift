@@ -13,7 +13,7 @@ import XCTest
 class NSControlTests: XCTestCase {
   
   func testNSControlEnabledBond() {
-    let dynamicDriver = Scalar<Bool>(false)
+    let dynamicDriver = Observable<Bool>(false)
     let control = NSControl(frame: NSZeroRect)
     
     control.enabled = true

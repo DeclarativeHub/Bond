@@ -34,7 +34,7 @@ extension NSLayoutConstraint {
     static var ActiveKey = "bnd_ActiveKey"
   }
   
-  public var bnd_active: Scalar<Bool> {
-    return bnd_associatedScalarForValueForKey("active", associationKey: &AssociatedKeys.ActiveKey)
+  public var bnd_active: Observable<Bool> {
+    return bnd_associatedObservableForValueForKey("active", associationKey: &AssociatedKeys.ActiveKey)
   }
 }

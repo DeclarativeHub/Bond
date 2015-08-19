@@ -33,19 +33,19 @@ extension UIView {
     static var UserInteractionEnabled = "bnd_UserInteractionEnabled"
   }
   
-  public var bnd_alpha: Scalar<CGFloat> {
-    return bnd_associatedScalarForValueForKey("alpha", associationKey: &AssociatedKeys.AlphaKey)
+  public var bnd_alpha: Observable<CGFloat> {
+    return bnd_associatedObservableForValueForKey("alpha", associationKey: &AssociatedKeys.AlphaKey)
   }
   
-  public var bnd_backgroundColor: Scalar<UIColor?> {
-    return bnd_associatedScalarForOptionalValueForKey("backgroundColor", associationKey: &AssociatedKeys.BackgroundColorKey)
+  public var bnd_backgroundColor: Observable<UIColor?> {
+    return bnd_associatedObservableForOptionalValueForKey("backgroundColor", associationKey: &AssociatedKeys.BackgroundColorKey)
   }
   
-  public var bnd_hidden: Scalar<Bool> {
-    return bnd_associatedScalarForValueForKey("hidden", associationKey: &AssociatedKeys.HiddenKey)
+  public var bnd_hidden: Observable<Bool> {
+    return bnd_associatedObservableForValueForKey("hidden", associationKey: &AssociatedKeys.HiddenKey)
   }
   
-  public var bnd_userInteractionEnabled: Scalar<Bool> {
-    return bnd_associatedScalarForValueForKey("userInteractionEnabled", associationKey: &AssociatedKeys.UserInteractionEnabled)
+  public var bnd_userInteractionEnabled: Observable<Bool> {
+    return bnd_associatedObservableForValueForKey("userInteractionEnabled", associationKey: &AssociatedKeys.UserInteractionEnabled)
   }
 }

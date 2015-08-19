@@ -32,11 +32,11 @@ extension UITextField {
     static var TextColorKey = "bnd_TextColorKey"
   }
   
-  public var bnd_text: Scalar<String> {
+  public var bnd_text: Observable<String> {
     if let bnd_text: AnyObject = objc_getAssociatedObject(self, &AssociatedKeys.TextKey) {
-      return bnd_text as! Scalar<String>
+      return bnd_text as! Observable<String>
     } else {
-      let bnd_text = Scalar<String>(self.text ?? "")
+      let bnd_text = Observable<String>(self.text ?? "")
       objc_setAssociatedObject(self, &AssociatedKeys.TextKey, bnd_text, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       
       var updatingFromSelf: Bool = false
@@ -50,7 +50,7 @@ extension UITextField {
       self.bnd_controlEvent.filter { $0 == UIControlEvents.EditingChanged }.observe { [weak self, weak bnd_text] event in
         guard let unwrappedSelf = self, let bnd_text = bnd_text else { return }
         updatingFromSelf = true
-        bnd_text.set(unwrappedSelf.text ?? "")
+        bnd_text.next(unwrappedSelf.text ?? "")
         updatingFromSelf = false
       }
       
@@ -58,11 +58,11 @@ extension UITextField {
     }
   }
   
-  public var bnd_attributedText: Scalar<NSAttributedString> {
+  public var bnd_attributedText: Observable<NSAttributedString> {
     if let bnd_attributedText: AnyObject = objc_getAssociatedObject(self, &AssociatedKeys.AttributedTextKey) {
-      return bnd_attributedText as! Scalar<NSAttributedString>
+      return bnd_attributedText as! Observable<NSAttributedString>
     } else {
-      let bnd_attributedText = Scalar<NSAttributedString>(self.attributedText ?? NSAttributedString(string: ""))
+      let bnd_attributedText = Observable<NSAttributedString>(self.attributedText ?? NSAttributedString(string: ""))
       objc_setAssociatedObject(self, &AssociatedKeys.AttributedTextKey, bnd_attributedText, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       
       var updatingFromSelf: Bool = false
@@ -76,7 +76,7 @@ extension UITextField {
       self.bnd_controlEvent.filter { $0 == UIControlEvents.EditingChanged }.observe { [weak self, weak bnd_attributedText] event in
         guard let unwrappedSelf = self, let bnd_attributedText = bnd_attributedText else { return }
         updatingFromSelf = true
-        bnd_attributedText.set(unwrappedSelf.attributedText ?? NSAttributedString(string: ""))
+        bnd_attributedText.next(unwrappedSelf.attributedText ?? NSAttributedString(string: ""))
         updatingFromSelf = false
       }
       
@@ -84,8 +84,8 @@ extension UITextField {
     }
   }
   
-  public var bnd_textColor: Scalar<UIColor?> {
-    return bnd_associatedScalarForOptionalValueForKey("textColor", associationKey: &AssociatedKeys.TextColorKey)
+  public var bnd_textColor: Observable<UIColor?> {
+    return bnd_associatedObservableForOptionalValueForKey("textColor", associationKey: &AssociatedKeys.TextColorKey)
   }
 }
 

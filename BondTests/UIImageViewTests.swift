@@ -14,16 +14,16 @@ class UIImageViewTests: XCTestCase {
 
   func testUIImageViewBond() {
     let image = UIImage()
-    let scalar = Scalar<UIImage?>(nil)
+    let observable = Observable<UIImage?>(nil)
     let imageView = UIImageView()
     
     imageView.image = image
     XCTAssert(imageView.image == image, "Initial value")
     
-    scalar.bindTo(imageView.bnd_image)
+    observable.bindTo(imageView.bnd_image)
     XCTAssert(imageView.image == nil, "Value after binding")
     
     imageView.image = image
-    XCTAssert(imageView.image == image, "Value after scalar change")
+    XCTAssert(imageView.image == image, "Value after observable change")
   }
 }

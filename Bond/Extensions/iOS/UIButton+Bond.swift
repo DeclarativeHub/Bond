@@ -30,11 +30,11 @@ extension UIButton {
     static var TitleKey = "bnd_TitleKey"
   }
   
-  public var bnd_title: Scalar<String> {
+  public var bnd_title: Observable<String> {
     if let bnd_title: AnyObject = objc_getAssociatedObject(self, &AssociatedKeys.TitleKey) {
-      return bnd_title as! Scalar<String>
+      return bnd_title as! Observable<String>
     } else {
-      let bnd_title = Scalar<String>(self.titleLabel?.text ?? "")
+      let bnd_title = Observable<String>(self.titleLabel?.text ?? "")
       objc_setAssociatedObject(self, &AssociatedKeys.TitleKey, bnd_title, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       
       bnd_title.observeNew { [weak self] (text: String) in

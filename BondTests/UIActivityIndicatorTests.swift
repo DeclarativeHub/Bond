@@ -13,16 +13,16 @@ import Bond
 class UIActivityIndicatorTests: XCTestCase {
 
   func testUIActivityIndicatorViewHiddenBond() {
-    let scalar = Scalar<Bool>(false)
+    let observable = Observable<Bool>(false)
     let view = UIActivityIndicatorView()
     
     view.startAnimating()
     XCTAssert(view.isAnimating() == true, "Initial value")
     
-    scalar.bindTo(view.bnd_animating)
+    observable.bindTo(view.bnd_animating)
     XCTAssert(view.isAnimating() == false, "Value after binding")
     
-    scalar.value = true
-    XCTAssert(view.isAnimating() == true, "Value after scalar change")
+    observable.value = true
+    XCTAssert(view.isAnimating() == true, "Value after observable change")
   }
 }

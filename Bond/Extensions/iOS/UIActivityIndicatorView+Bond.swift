@@ -30,11 +30,11 @@ extension UIActivityIndicatorView {
     static var AnimatingKey = "bnd_AnimatingKey"
   }
   
-  public var bnd_animating: Scalar<Bool> {
+  public var bnd_animating: Observable<Bool> {
     if let bnd_animating: AnyObject = objc_getAssociatedObject(self, &AssociatedKeys.AnimatingKey) {
-      return bnd_animating as! Scalar<Bool>
+      return bnd_animating as! Observable<Bool>
     } else {
-      let bnd_animating = Scalar<Bool>(self.isAnimating())
+      let bnd_animating = Observable<Bool>(self.isAnimating())
       objc_setAssociatedObject(self, &AssociatedKeys.AnimatingKey, bnd_animating, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       
       bnd_animating.observeNew { [weak self] (animating: Bool) in

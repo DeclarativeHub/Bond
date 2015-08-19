@@ -30,11 +30,11 @@ extension UISlider {
     static var ValueKey = "bnd_ValueKey"
   }
   
-  public var bnd_value: Scalar<Float> {
+  public var bnd_value: Observable<Float> {
     if let bnd_value: AnyObject = objc_getAssociatedObject(self, &AssociatedKeys.ValueKey) {
-      return bnd_value as! Scalar<Float>
+      return bnd_value as! Observable<Float>
     } else {
-      let bnd_value = Scalar<Float>(self.value)
+      let bnd_value = Observable<Float>(self.value)
       objc_setAssociatedObject(self, &AssociatedKeys.ValueKey, bnd_value, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       
       var updatingFromSelf: Bool = false
@@ -48,7 +48,7 @@ extension UISlider {
       self.bnd_controlEvent.filter { $0 == UIControlEvents.ValueChanged }.observe { [weak self, weak bnd_value] event in
         guard let unwrappedSelf = self, let bnd_value = bnd_value else { return }
         updatingFromSelf = true
-        bnd_value.set(unwrappedSelf.value)
+        bnd_value.next(unwrappedSelf.value)
         updatingFromSelf = false
       }
       

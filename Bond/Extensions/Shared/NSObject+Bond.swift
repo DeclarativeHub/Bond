@@ -41,14 +41,14 @@ public extension NSObject {
     }
   }
   
-  internal func bnd_associatedScalarForValueForKey<T>(key: String, inout associationKey: String) -> Scalar<T> {
-    if let scalar: AnyObject = objc_getAssociatedObject(self, &associationKey) {
-      return scalar as! Scalar<T>
+  internal func bnd_associatedObservableForValueForKey<T>(key: String, inout associationKey: String) -> Observable<T> {
+    if let observable: AnyObject = objc_getAssociatedObject(self, &associationKey) {
+      return observable as! Observable<T>
     } else {
-      let scalar = Scalar<T>(self.valueForKey(key) as! T)
-      objc_setAssociatedObject(self, &associationKey, scalar, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+      let observable = Observable<T>(self.valueForKey(key) as! T)
+      objc_setAssociatedObject(self, &associationKey, observable, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       
-      scalar
+      observable
         .observeNew { [weak self] (value: T) in
           if let value = value as? AnyObject {
             self?.setValue(value, forKey: key)
@@ -57,23 +57,23 @@ public extension NSObject {
           }
         }
       
-      return scalar
+      return observable
     }
   }
   
-  internal func bnd_associatedScalarForOptionalValueForKey<T>(key: String, inout associationKey: String) -> Scalar<T?> {
-    if let scalar: AnyObject = objc_getAssociatedObject(self, &associationKey) {
-      return scalar as! Scalar<T?>
+  internal func bnd_associatedObservableForOptionalValueForKey<T>(key: String, inout associationKey: String) -> Observable<T?> {
+    if let observable: AnyObject = objc_getAssociatedObject(self, &associationKey) {
+      return observable as! Observable<T?>
     } else {
-      let scalar = Scalar<T?>(self.valueForKey(key) as? T ?? nil)
-      objc_setAssociatedObject(self, &associationKey, scalar, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+      let observable = Observable<T?>(self.valueForKey(key) as? T ?? nil)
+      objc_setAssociatedObject(self, &associationKey, observable, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       
-      scalar
+      observable
         .observeNew { [weak self] (value: T?) in
           self?.setValue(value as! AnyObject?, forKey: key)
         }
       
-      return scalar
+      return observable
     }
   }
 }

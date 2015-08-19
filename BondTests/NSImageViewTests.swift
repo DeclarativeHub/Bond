@@ -14,7 +14,7 @@ class NSImageViewTests: XCTestCase {
   
   func testNSImageViewImageBond() {
     let image = NSImage()
-    let dynamicDriver = Scalar<NSImage?>(nil)
+    let dynamicDriver = Observable<NSImage?>(nil)
     let control = NSImageView(frame: NSZeroRect)
     
     control.image = image

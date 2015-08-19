@@ -20,7 +20,7 @@ import Bond
 class NSLayoutConstraintTests : XCTestCase {
   
   func testNSLayoutConstraintActiveBond() {
-    let driver = Scalar<Bool>(true)
+    let driver = Observable<Bool>(true)
     let view = View()
     let constraint = NSLayoutConstraint(item: view, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1, constant: 100)
     

@@ -31,11 +31,11 @@ extension NSTextView {
     static var StringKey = "bnd_StringKey"
   }
   
-  public var bnd_string: Scalar<String> {
+  public var bnd_string: Observable<String> {
     if let bnd_string: AnyObject = objc_getAssociatedObject(self, &AssociatedKeys.StringKey) {
-      return bnd_string as! Scalar<String>
+      return bnd_string as! Observable<String>
     } else {
-      let bnd_string = Scalar<String>(self.string ?? "")
+      let bnd_string = Observable<String>(self.string ?? "")
       objc_setAssociatedObject(self, &AssociatedKeys.StringKey, bnd_string, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       
       var updatingFromSelf: Bool = false
@@ -49,7 +49,7 @@ extension NSTextView {
       NSNotificationCenter.defaultCenter().bnd_notification(NSTextViewDidChangeTypingAttributesNotification, object: self).observe { [weak bnd_string] notification in
         if let textView = notification.object as? NSTextView, bnd_string = bnd_string {
           updatingFromSelf = true
-          bnd_string.set(textView.string ?? "")
+          bnd_string.next(textView.string ?? "")
           updatingFromSelf = false
         }
         }.disposeIn(bnd_bag)

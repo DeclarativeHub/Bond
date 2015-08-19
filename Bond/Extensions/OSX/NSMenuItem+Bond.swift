@@ -31,11 +31,11 @@ extension NSMenuItem {
     static var EnabledKey = "bnd_EnabledKey"
   }
   
-  public var bnd_state: Scalar<Int> {
-    return bnd_associatedScalarForValueForKey("state", associationKey: &AssociatedKeys.StateKey)
+  public var bnd_state: Observable<Int> {
+    return bnd_associatedObservableForValueForKey("state", associationKey: &AssociatedKeys.StateKey)
   }
   
-  public var bnd_enabled: Scalar<Bool> {
-    return bnd_associatedScalarForValueForKey("enabled", associationKey: &AssociatedKeys.EnabledKey)
+  public var bnd_enabled: Observable<Bool> {
+    return bnd_associatedObservableForValueForKey("enabled", associationKey: &AssociatedKeys.EnabledKey)
   }
 }

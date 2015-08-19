@@ -1,5 +1,5 @@
 //
-//  VectorOperationTests.swift
+//  ObservableArrayOperationTests.swift
 //  Bond
 //
 //  Created by Srđan Rašić on 06/08/15.
@@ -16,7 +16,7 @@ enum Letters {
   case D
 }
 
-func ==(lsh: [VectorEventChangeSet], rhs: [VectorEventChangeSet]) -> Bool {
+func ==(lsh: [ObservableArrayEventChangeSet], rhs: [ObservableArrayEventChangeSet]) -> Bool {
   if lsh.count != rhs.count {
     return false
   } else {
@@ -29,13 +29,13 @@ func ==(lsh: [VectorEventChangeSet], rhs: [VectorEventChangeSet]) -> Bool {
   }
 }
 
-class VectorEventTests: XCTestCase {
+class ObservableArrayEventTests: XCTestCase {
   
   // Assuming change set has at most three elements in 
   // the following order: .Inserts, .Updates, .Deletes
   
   func testChangeSetInsert() {
-    let operations: [VectorOperation<Letters>] = [
+    let operations: [ObservableArrayOperation<Letters>] = [
       .Insert(elements: [.A, .B, .C], fromIndex: 1)
     ]
     
@@ -44,7 +44,7 @@ class VectorEventTests: XCTestCase {
   }
   
   func testChangeSetDelete() {
-    let operations: [VectorOperation<Letters>] = [
+    let operations: [ObservableArrayOperation<Letters>] = [
       .Remove(range: 1..<4)
     ]
     
@@ -53,7 +53,7 @@ class VectorEventTests: XCTestCase {
   }
   
   func testChangeSetUpdate() {
-    let operations: [VectorOperation<Letters>] = [
+    let operations: [ObservableArrayOperation<Letters>] = [
       .Update(elements: [.A, .B, .C], fromIndex: 1)
     ]
     
@@ -62,7 +62,7 @@ class VectorEventTests: XCTestCase {
   }
   
   func testChangeSetInsertDeleteOverlapping() {
-    let operations: [VectorOperation<Letters>] = [
+    let operations: [ObservableArrayOperation<Letters>] = [
       .Insert(elements: [.A, .B, .C], fromIndex: 1),
       .Remove(range: 1...2)
     ]
@@ -72,7 +72,7 @@ class VectorEventTests: XCTestCase {
   }
   
   func testChangeSetInsertDeleteNonOverlapping1() {
-    let operations: [VectorOperation<Letters>] = [
+    let operations: [ObservableArrayOperation<Letters>] = [
       .Insert(elements: [.A, .B, .C], fromIndex: 1),
       .Remove(range: 0..<1)
     ]
@@ -82,7 +82,7 @@ class VectorEventTests: XCTestCase {
   }
   
   func testChangeSetInsertDeleteNonOverlapping2() {
-    let operations: [VectorOperation<Letters>] = [
+    let operations: [ObservableArrayOperation<Letters>] = [
       .Insert(elements: [.A, .B, .C], fromIndex: 1),
       .Remove(range: 5...6)
     ]
@@ -92,7 +92,7 @@ class VectorEventTests: XCTestCase {
   }
   
   func testChangeSetDeleteInsertOverlapping() {
-    let operations: [VectorOperation<Letters>] = [
+    let operations: [ObservableArrayOperation<Letters>] = [
       .Remove(range: 1...2),
       .Insert(elements: [.A, .B, .C], fromIndex: 1)
     ]
@@ -102,7 +102,7 @@ class VectorEventTests: XCTestCase {
   }
   
   func testChangeSetDeleteInsertNonOverlapping1() {
-    let operations: [VectorOperation<Letters>] = [
+    let operations: [ObservableArrayOperation<Letters>] = [
       .Remove(range: 0...1),
       .Insert(elements: [.A, .B, .C], fromIndex: 2)
     ]
