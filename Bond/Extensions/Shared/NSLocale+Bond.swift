@@ -30,7 +30,7 @@ public extension NSLocale {
     .bnd_notification(NSCurrentLocaleDidChangeNotification, object: nil)
     .map { _ in NSLocale.autoupdatingCurrentLocale() }
   
-  public class func observableOfDisplayNameForKey<Key: AnyObject, Value: AnyObject>(key: Key, value: Value) -> Observable<String?> {
+  public class func observableOfDisplayNameForKey(key: AnyObject, value: AnyObject) -> Observable<String?> {
     return NSLocale.currentLocaleObservable.map { $0.displayNameForKey(key, value: value) }
   }
   
