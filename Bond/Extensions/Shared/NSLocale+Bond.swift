@@ -34,7 +34,7 @@ public extension NSLocale {
     return NSLocale.currentLocaleObservable.map { $0.displayNameForKey(key, value: value) }
   }
   
-  public class func observableOfDisplayNameForKey<Key: AnyObject, Value: AnyObject>(key: Key, valueObservable: Observable<Value>) -> Observable<String?> {
+  public class func observableOfDisplayNameForKey<Value: AnyObject>(key: AnyObject, valueObservable: Observable<Value>) -> Observable<String?> {
     return NSLocale.currentLocaleObservable
       .combineLatestWith(valueObservable)
       .map { $0.0.displayNameForKey(key, value: $0.1) }
