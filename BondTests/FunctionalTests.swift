@@ -22,6 +22,21 @@ class ReduceTests: XCTestCase {
     d1.value = 2
     XCTAssert(m.value == "2", "Value after dynamic change")
   }
+
+  func testMap2() {
+    let d1 = Dynamic<Int>(0)
+    let m = d1.map(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { "\($0)" }
+
+    dispatch_async(dispatch_get_main_queue()) {
+      XCTAssert(m.value == "0", "Initial value")
+      XCTAssert(m.valid == true, "Should not be faulty")
+    }
+
+    d1.value = 2
+    dispatch_async(dispatch_get_main_queue()) {
+      XCTAssert(m.value == "2", "Value after dynamic change")
+    }
+  }
   
   func testFilter() {
     let d1 = Dynamic<Int>(0)
