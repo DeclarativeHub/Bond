@@ -229,6 +229,10 @@ public extension Dynamic
   public func map<U>(f: T -> U) -> Dynamic<U> {
     return _map(self, f)
   }
+
+  public func map<U>(queue: dispatch_queue_t, f: T -> U) -> Dynamic<U> {
+    return _map(self, f, queue)
+  }
   
   public func filter(f: T -> Bool) -> Dynamic<T> {
     return _filter(self, f)

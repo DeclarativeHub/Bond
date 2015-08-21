@@ -33,6 +33,10 @@ public func map<T, U>(dynamic: Dynamic<T>, f: T -> U) -> Dynamic<U> {
   return _map(dynamic, f)
 }
 
+public func map<T, U>(dynamic: Dynamic<T>, queue: dispatch_queue_t, f: T -> U) -> Dynamic<U> {
+  return _map(dynamic, f, queue)
+}
+
 public func map<S: Dynamical, T, U where S.DynamicType == T>(dynamical: S, f: T -> U) -> Dynamic<U> {
   return _map(dynamical.designatedDynamic, f)
 }
@@ -52,6 +56,34 @@ internal func _map<T, U>(dynamic: Dynamic<T>, f: T -> U) -> Dynamic<U> {
   dyn.retain(bond)
   dynamic.bindTo(bond, fire: false)
   
+  return dyn
+}
+
+internal func _map<T, U>(dynamic: Dynamic<T>, f: T -> U, queue: dispatch_queue_t) -> Dynamic<U> {
+
+  let dyn = InternalDynamic<U>()
+
+  if let value = dynamic._value {
+    dispatch_async(queue) {
+      let ret = f(value)
+      dispatch_async(dispatch_get_main_queue()) {
+        dyn.value = ret
+      }
+    }
+  }
+
+  let bond = Bond<T> { [unowned dyn] t in
+    dispatch_async(queue) {
+      let ret = f(t)
+      dispatch_async(dispatch_get_main_queue()) {
+        dyn.value = ret
+      }
+    }
+  }
+
+  dyn.retain(bond)
+  dynamic.bindTo(bond, fire: false)
+
   return dyn
 }
 
