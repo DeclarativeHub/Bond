@@ -116,6 +116,8 @@
 		ECBF04E11B810100001F6BCA /* NSLock+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E71B77BB1D00837A36 /* NSLock+Bond.swift */; };
 		ECFFF4BB1B84B840001B5B0D /* NSObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFFF4BA1B84B840001B5B0D /* NSObjectTests.swift */; };
 		ECFFF4BC1B84B840001B5B0D /* NSObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFFF4BA1B84B840001B5B0D /* NSObjectTests.swift */; };
+		EE0D29D91B86EE3000ED3329 /* NSLocale+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0D29D81B86EE3000ED3329 /* NSLocale+Bond.swift */; };
+		EE0D29DA1B86EE3000ED3329 /* NSLocale+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0D29D81B86EE3000ED3329 /* NSLocale+Bond.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -245,6 +247,7 @@
 		ECD653A21A9B6B6B0038A9AC /* Bond.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Bond.podspec; sourceTree = "<group>"; };
 		ECD653A41A9B6B770038A9AC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		ECFFF4BA1B84B840001B5B0D /* NSObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSObjectTests.swift; sourceTree = "<group>"; };
+		EE0D29D81B86EE3000ED3329 /* NSLocale+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLocale+Bond.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -497,6 +500,7 @@
 				ECAD68E81B77BB1D00837A36 /* NSNotificationCenter+Bond.swift */,
 				ECAD68E91B77BB1D00837A36 /* NSObject+Bond.swift */,
 				ECAD68E71B77BB1D00837A36 /* NSLock+Bond.swift */,
+				EE0D29D81B86EE3000ED3329 /* NSLocale+Bond.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -755,6 +759,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ECAD69411B77BB1D00837A36 /* NSLock+Bond.swift in Sources */,
+				EE0D29D91B86EE3000ED3329 /* NSLocale+Bond.swift in Sources */,
 				ECAD68F91B77BB1D00837A36 /* Observable.swift in Sources */,
 				EC2AE4A91B788F8B00296781 /* UIRefreshControl+Bond.swift in Sources */,
 				ECAD69431B77BB1D00837A36 /* NSNotificationCenter+Bond.swift in Sources */,
@@ -848,6 +853,7 @@
 				ECAD68EE1B77BB1D00837A36 /* Buffer.swift in Sources */,
 				ECAD690C1B77BB1D00837A36 /* ObservableArrayEvent.swift in Sources */,
 				ECAD69061B77BB1D00837A36 /* Reference.swift in Sources */,
+				EE0D29DA1B86EE3000ED3329 /* NSLocale+Bond.swift in Sources */,
 				ECAD690A1B77BB1D00837A36 /* ObservableArray.swift in Sources */,
 				ECAD68F41B77BB1D00837A36 /* DisposableType.swift in Sources */,
 				ECAD68F01B77BB1D00837A36 /* Dispatcher.swift in Sources */,
