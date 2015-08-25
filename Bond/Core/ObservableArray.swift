@@ -112,7 +112,7 @@ public final class ObservableArray<ElementType>: Observable<ObservableArrayEvent
     case .Reset(let newArray):
       array = newArray
     case .Insert(let elements, let fromIndex):
-      array.splice(elements, atIndex: fromIndex)
+      array.insertContentsOf(elements, at: fromIndex)
     case .Update(let elements, let fromIndex):
       for (index, element) in elements.enumerate() {
         array[fromIndex + index] = element
@@ -170,7 +170,7 @@ public extension ObservableArray {
   }
   
   /// Insertes the array at the given index.
-  public func splice(newElements: [ElementType], atIndex i: Int) {
+  public func insertContentsOf(newElements: [ElementType], atIndex i: Int) {
     applyOperation(ObservableArrayOperation.Insert(elements: newElements, fromIndex:i))
   }
   
@@ -254,10 +254,10 @@ public extension ObservableType where EventType: ObservableArrayEventType {
   
   /// Map overload that simplifies mapping of observables that generate ObservableArray events.
   /// Instead of mapping ObservableArray events, it maps the array elements from those events.
-  public func map<T>(transform: ElementType -> T) -> Observable<ObservableArrayEvent<LazySequence<MapSequence<Self.EventType.ObservableArrayEventSequenceType, T>>>> {
+  public func map<T>(transform: ElementType -> T) -> Observable<ObservableArrayEvent<LazyMapSequence<Self.EventType.ObservableArrayEventSequenceType, T>>> {
     return Observable(replayLength: replayLength) { sink in
       return observe { arrayEvent in
-        let sequence = lazy(arrayEvent.sequence).map(transform)
+        let sequence = arrayEvent.sequence.lazy.map(transform)
         let operation = arrayEvent.operation.map(transform)
         sink(ObservableArrayEvent(sequence: sequence, operation: operation))
       }
@@ -265,7 +265,7 @@ public extension ObservableType where EventType: ObservableArrayEventType {
   }
   
   /// Filter overload that filters array elements instead of its events.
-  public func filter(includeElement: ElementType -> Bool) -> Observable<ObservableArrayEvent<LazySequence<FilterSequence<Self.EventType.ObservableArrayEventSequenceType>>>> {
+  public func filter(includeElement: ElementType -> Bool) -> Observable<ObservableArrayEvent<LazyFilterSequence<Self.EventType.ObservableArrayEventSequenceType>>> {
     
     var pointers: [Int]? = nil
     
@@ -276,7 +276,7 @@ public extension ObservableType where EventType: ObservableArrayEventType {
           pointers = pointersFromSequence(arrayEvent.sequence, includeElement: includeElement)
         }
         
-        let sequence = lazy(arrayEvent.sequence).filter(includeElement)
+        let sequence = arrayEvent.sequence.lazy.filter(includeElement)
         if let operation = arrayEvent.operation.filter(includeElement, pointers: &pointers!) {
           sink(ObservableArrayEvent(sequence: sequence, operation: operation))
         }
@@ -309,10 +309,10 @@ public extension ObservableType where EventType: ObservableArrayEventType, Event
   
   /// Map overload that simplifies mapping of observables that generate ObservableArray events.
   /// Instead of mapping ObservableArray events, it maps the array elements from those events.
-  public func map<T>(transform: _ElementType -> T) -> Observable<ObservableArrayEvent<LazyForwardCollection<MapCollection<Self.EventType.ObservableArrayEventSequenceType, T>>>> {
+  public func map<T>(transform: _ElementType -> T) -> Observable<ObservableArrayEvent<LazyMapCollection<Self.EventType.ObservableArrayEventSequenceType, T>>> {
     return Observable(replayLength: replayLength) { sink in
       return observe { arrayEvent in
-        let sequence = lazy(arrayEvent.sequence).map(transform)
+        let sequence = arrayEvent.sequence.lazy.map(transform)
         let operation = arrayEvent.operation.map(transform)
         sink(ObservableArrayEvent(sequence: sequence, operation: operation))
       }

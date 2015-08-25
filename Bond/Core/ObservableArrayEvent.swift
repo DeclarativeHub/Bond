@@ -110,7 +110,7 @@ public extension ObservableArrayOperation {
       
       if insertedIndices.count > 0 {
         let insertionPoint = startingIndexForIndex(fromIndex, forPointers: pointers)
-        pointers.splice(insertedIndices, atIndex: insertionPoint)
+        pointers.insertContentsOf(insertedIndices, at: insertionPoint)
         return .Insert(elements: insertedElements, fromIndex: insertionPoint)
       }
       

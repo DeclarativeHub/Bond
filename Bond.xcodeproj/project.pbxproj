@@ -114,6 +114,7 @@
 		ECBF04DF1B808B20001F6BCA /* DisposableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */; };
 		ECBF04E01B808B20001F6BCA /* DisposableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */; };
 		ECBF04E11B810100001F6BCA /* NSLock+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E71B77BB1D00837A36 /* NSLock+Bond.swift */; };
+		ECF53FE61B8CDEA200628FCD /* ObservableArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69841B77D45600837A36 /* ObservableArrayTests.swift */; settings = {ASSET_TAGS = (); }; };
 		ECFFF4BB1B84B840001B5B0D /* NSObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFFF4BA1B84B840001B5B0D /* NSObjectTests.swift */; };
 		ECFFF4BC1B84B840001B5B0D /* NSObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFFF4BA1B84B840001B5B0D /* NSObjectTests.swift */; };
 /* End PBXBuildFile section */
@@ -870,6 +871,7 @@
 				900BFC141ADFCBA8002B4B6E /* NSMenuItemTests.swift in Sources */,
 				900BFC1A1ADFCD63002B4B6E /* NSTextViewTests.swift in Sources */,
 				900BFC101ADFCA46002B4B6E /* NSControlTests.swift in Sources */,
+				ECF53FE61B8CDEA200628FCD /* ObservableArrayTests.swift in Sources */,
 				900BFC181ADFCCEE002B4B6E /* NSTextFieldTests.swift in Sources */,
 				900BFC161ADFCC00002B4B6E /* NSStatusBarButtonTests.swift in Sources */,
 				900BFC121ADFCAC6002B4B6E /* NSImageViewTests.swift in Sources */,
