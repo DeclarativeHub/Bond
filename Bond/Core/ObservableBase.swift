@@ -25,20 +25,26 @@
 import Foundation
 
 /// Coordinates a collection of observables and a dispatching of events to them.
-public final class Dispatcher<EventType> {
+public class ObservableBase<EventType>: ObservableType {
   
   private var isDispatchInProgress: Bool = false
   private var observers: [Int64:EventType -> Void] = [:]
   private var nextToken: Int64 = 0
-  private let lock = NSRecursiveLock(name: "com.swift-bond.Bond.Dispatcher")
+  private let lock = NSRecursiveLock(name: "com.swift-bond.Bond.ObservableBase")
   
   /// Number of registered observers.
   public var numberOfObservers: Int {
     return observers.count
   }
   
+  public init() {}
+  
+  public var replayLength: Int {
+    return 0
+  }
+  
   /// Dispatches the given event to all registered observers.
-  public func dispatch(event: EventType) {
+  public func next(event: EventType) {
     guard !isDispatchInProgress else { return }
     
     lock.lock()
@@ -51,39 +57,39 @@ public final class Dispatcher<EventType> {
   }
   
   /// Registers the given observer and returns a disposable that can cancel observing.
-  public func addObserver(observer: EventType -> Void) -> DisposableType {
+  public func observe(observer: EventType -> Void) -> DisposableType {
     lock.lock()
     let token = nextToken
     nextToken = nextToken + 1
     lock.unlock()
     
     observers[token] = observer
-    return DispatcherDisposable(dispatcher: self, token: token)
+    return ObservableBaseDisposable(observableBase: self, token: token)
   }
   
-  private func removeObserver(disposable: DispatcherDisposable<EventType>) {
+  private func removeObserver(disposable: ObservableBaseDisposable<EventType>) {
     observers.removeValueForKey(disposable.token)
   }
 }
 
-public final class DispatcherDisposable<EventType>: DisposableType {
+public final class ObservableBaseDisposable<EventType>: DisposableType {
   
-  private var dispatcher: Dispatcher<EventType>!
+  private weak var observableBase: ObservableBase<EventType>!
   private var token: Int64
   
   public var isDisposed: Bool {
-    return dispatcher == nil
+    return observableBase == nil
   }
   
-  private init(dispatcher: Dispatcher<EventType>, token: Int64) {
-    self.dispatcher = dispatcher
+  private init(observableBase: ObservableBase<EventType>, token: Int64) {
+    self.observableBase = observableBase
     self.token = token
   }
   
   public func dispose() {
-    if let dispatcher = dispatcher {
-      dispatcher.removeObserver(self)
-      self.dispatcher = nil
+    if let observableBase = observableBase {
+      observableBase.removeObserver(self)
+      self.observableBase = nil
     }
   }
 }

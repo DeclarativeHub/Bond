@@ -27,18 +27,15 @@ public enum ObservableLifecycle {
   case Managed  /// Normal + retained by the sink given to the producer whenever there is at least one observer.
 }
 
-public class Observable<EventType>: ObservableType {
+public class Observable<EventType>: ObservableBase<EventType> {
   
   /// Type of the sink used by the observable producer.
   public typealias SinkType = EventType -> ()
   
   /// Number of events to replay to each new observer.
-  public var replayLength: Int {
+  public override var replayLength: Int {
     return buffer?.size ?? 0
   }
-  
-  /// Internal dispatcher that coordinates event dispatching.
-  private var dispatcher: Dispatcher<EventType> = Dispatcher()
   
   /// A composite disposable that will be disposed when the observable is deallocated.
   public let deinitDisposable = CompositeDisposable()
@@ -69,6 +66,7 @@ public class Observable<EventType>: ObservableType {
   /// it and dispose upon [observable's] deallocation.
   public init(replayLength: Int = 0, lifecycle: ObservableLifecycle = .Managed, @noescape producer: SinkType -> DisposableType?) {
     self.lifecycle = lifecycle
+    super.init()
     
     let tmpSelfReference = Reference(self)
     tmpSelfReference.release()
@@ -78,8 +76,7 @@ public class Observable<EventType>: ObservableType {
     }
     
     let disposable = producer { event in
-      tmpSelfReference.object?.buffer?.push(event)
-      tmpSelfReference.object?.dispatcher.dispatch(event)
+      tmpSelfReference.object?.next(event)
     }
     
     if let disposable = disposable {
@@ -93,23 +90,24 @@ public class Observable<EventType>: ObservableType {
   public init(_ value: EventType) {
     lifecycle = .Normal
     buffer = Buffer(size: 1)
+    super.init()
     next(value)
   }
   
   /// Sends an event to the observers
-  public func next(event: EventType) {
+  public override func next(event: EventType) {
     buffer?.push(event)
-    dispatcher.dispatch(event)
+    super.next(event)
   }
 
   /// Registers the given observer and returns a disposable that can cancel observing.
-  public func observe(observer: EventType -> ()) -> DisposableType {
+  public override func observe(observer: EventType -> ()) -> DisposableType {
     
     if lifecycle == .Managed {
       selfReference?.retain()
     }
     
-    let dispatcherDisposable = dispatcher.addObserver(observer)
+    let observableBaseDisposable = super.observe(observer)
     
     if let buffer = buffer {
       for event in buffer.buffer {
@@ -118,10 +116,10 @@ public class Observable<EventType>: ObservableType {
     }
     
     let observerDisposable = BlockDisposable { [weak self] in
-      dispatcherDisposable.dispose()
+      observableBaseDisposable.dispose()
       
       if let unwrappedSelf = self {
-        if unwrappedSelf.dispatcher.numberOfObservers == 0 {
+        if unwrappedSelf.numberOfObservers == 0 {
           unwrappedSelf.selfReference?.release()
         }
       }
