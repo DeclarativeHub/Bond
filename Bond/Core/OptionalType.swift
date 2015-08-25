@@ -30,13 +30,13 @@ public protocol OptionalType {
 }
 
 extension Optional: OptionalType {
-  public typealias SomeType = T
+  public typealias SomeType = Wrapped
   
   public var isNil: Bool {
     return self == nil
   }
   
-  public var value: T? {
+  public var value: Wrapped? {
     return self
   }
   
