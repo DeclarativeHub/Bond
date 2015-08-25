@@ -42,7 +42,7 @@ class ObservableArrayTests: XCTestCase {
     XCTAssert(array.array == [3, 2, 4])
     XCTAssert(element == 1)
     
-    array.splice([8, 9], atIndex: 1)
+    array.insertContentsOf([8, 9], atIndex: 1)
     XCTAssert(array.count == 5)
     XCTAssert(array.array == [3, 8, 9, 2, 4])
     
@@ -86,7 +86,7 @@ class ObservableArrayTests: XCTestCase {
     array.removeRange(1...2) // 8
     XCTAssert(filtered.array == [8])
     
-    array.splice([3, 4, 5], atIndex: 0) // 3, 4, 5, 8
+    array.insertContentsOf([3, 4, 5], atIndex: 0) // 3, 4, 5, 8
     XCTAssert(filtered.array == [4, 8])
     
     array.insert(6, atIndex: 2) // 3, 4, 6, 5, 8
@@ -145,7 +145,7 @@ class ObservableArrayTests: XCTestCase {
     array.insert(2, atIndex: 0)
     XCTAssert(mapped.array == [4, 2])
     
-    array.splice([3, 4], atIndex: 1)
+    array.insertContentsOf([3, 4], atIndex: 1)
     XCTAssert(mapped.array == [4, 6, 8, 2])
     
     array.removeLast()
@@ -192,7 +192,7 @@ class ObservableArrayTests: XCTestCase {
     array.removeLast()
     XCTAssert(callCount == 2)
     
-    array.splice([1, 2, 3, 4], atIndex: 0)
+    array.insertContentsOf([1, 2, 3, 4], atIndex: 0)
     XCTAssert(callCount == 6)
 
     array.removeAtIndex(1)
@@ -271,7 +271,7 @@ class ObservableArrayTests: XCTestCase {
     array.insert(3, atIndex: 0) // 3, 1
     XCTAssert(mapped.array == [6])
     
-    array.splice([1, 4], atIndex: 1) // 3, 1, 4, 1
+    array.insertContentsOf([1, 4], atIndex: 1) // 3, 1, 4, 1
     XCTAssert(mapped.array == [6, 8])
     
     array.removeLast() // 3, 1, 4
@@ -282,7 +282,7 @@ class ObservableArrayTests: XCTestCase {
     
     array.performBatchUpdates { array in
       array.append(2) // 3, 1, 2
-      array.splice([1, 5], atIndex: 0) // 1, 5, 3, 1, 2
+      array.insertContentsOf([1, 5], atIndex: 0) // 1, 5, 3, 1, 2
       array[4] = 4 // 1, 5, 3, 1, 4
     }
     XCTAssert(mapped.array == [10, 6, 8])

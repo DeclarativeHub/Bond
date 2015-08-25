@@ -170,7 +170,7 @@ public extension ObservableArray {
   }
   
   /// Insertes the array at the given index.
-  public func splice(newElements: [ElementType], atIndex i: Int) {
+  public func insertContentsOf(newElements: [ElementType], atIndex i: Int) {
     applyOperation(ObservableArrayOperation.Insert(elements: newElements, fromIndex:i))
   }
   
