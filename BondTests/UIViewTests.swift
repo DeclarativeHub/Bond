@@ -67,4 +67,19 @@ class UIViewTests: XCTestCase {
     observable.value = true
     XCTAssert(view.userInteractionEnabled == true, "Value after observable change")
   }
+
+  func testUIViewTintColorBond() {
+    let observable = Observable<UIColor>(UIColor.blackColor())
+    let view = UIView()
+
+    view.tintColor = UIColor.redColor()
+    XCTAssert(view.tintColor == UIColor.redColor(), "Initial value")
+
+    observable.bindTo(view.bnd_tintColor)
+    XCTAssert(view.tintColor == UIColor.blackColor(), "Value after binding")
+
+    observable.value = UIColor.blueColor()
+    XCTAssert(view.tintColor == UIColor.blueColor(), "Value after observable change")
+  }
+
 }
