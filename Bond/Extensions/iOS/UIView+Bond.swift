@@ -41,4 +41,8 @@ extension UIView {
   public var bnd_userInteractionEnabled: Observable<Bool> {
     return bnd_associatedObservableForValueForKey("userInteractionEnabled")
   }
+
+  public var bnd_tintColor: Observable<UIColor?> {
+    return bnd_associatedObservableForValueForKey("tintColor")
+  }
 }
