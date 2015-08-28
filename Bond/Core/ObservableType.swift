@@ -217,6 +217,22 @@ public extension ObservableType where EventType: OptionalType {
       }
     }
   }
+	
+  /// Forwards `value` if the event is `nil`, otherwise the event itself.
+  public func mapNil(value: EventType.SomeType) -> Observable<EventType.SomeType> {
+    return map { event in
+      guard let eventValue = event.value else { return value }
+      return eventValue
+    }
+  }
+}
+
+public extension ObservableType where EventType: OptionalType, EventType.SomeType == String {
+	
+  /// Forwards an empty string if the event is `nil`, otherwise the event itself.
+  public func mapNilToEmpty() -> Observable<String> {
+    return mapNil("")
+  }
 }
 
 public enum ObservableFlatMapStrategy {
