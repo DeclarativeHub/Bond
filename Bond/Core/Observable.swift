@@ -22,147 +22,41 @@
 //  THE SOFTWARE.
 //
 
-public enum ObservableLifecycle {
-  case Normal   /// Normal lifecycle (alive as long as there exists at least one strong reference to it).
-  case Managed  /// Normal + retained by the sink given to the producer whenever there is at least one observer.
-}
 
-public class Observable<EventType>: ObservableBase<EventType> {
+/// A type that can be used to encapsulate an array and observe its (incremental) changes.
+public final class Observable<Wrapped>: EventProducer<Wrapped> {
   
-  /// Type of the sink used by the observable producer.
-  public typealias SinkType = EventType -> ()
+  /// The underlying sink to dispatch events to.
+  private var capturedSink: SinkType! = nil
   
-  /// Number of events to replay to each new observer.
-  public override var replayLength: Int {
-    return buffer?.size ?? 0
-  }
-  
-  /// A composite disposable that will be disposed when the observable is deallocated.
-  public let deinitDisposable = CompositeDisposable()
-  
-  /// Internal buffer for event replaying.
-  private var buffer: Buffer<EventType>? = nil
+  private var underlyingValue: Wrapped
 
-  /// Used to manage lifecycle of the observable when lifetime == .Managed. 
-  /// Captured by the producer sink. It will hold a strong reference to self
-  /// when there is at least one observer registered.
-  ///
-  /// When all observers are unregistered, the reference will weakify its reference to self.
-  /// That means the observable will be deallocated if no one else holds a strong reference to it.
-  /// Deallocation will dispose `deinitDisposable` and thus break the connection with the source.
-  private weak var selfReference: Reference<Observable<EventType>>? = nil
-  
-  /// Consult `ObservableLifetime` for more info.
-  public private(set) var lifecycle: ObservableLifecycle
-  
-  /// Creates a new observable with the given replay length and the producer that is used
-  /// to generate events that will be dispatched to the registered observers.
-  ///
-  /// Replay length specifies how many previous events should be buffered and then replayed
-  /// to each new observer. Observable buffers only latest `replayLength` events, discarding old ones.
-  ///
-  /// Producer closure will be executed immediately. It will receive a sink into which
-  /// events can be dispatched. If producer returns a disposable, the observable will store
-  /// it and dispose upon [observable's] deallocation.
-  public init(replayLength: Int = 0, lifecycle: ObservableLifecycle = .Managed, @noescape producer: SinkType -> DisposableType?) {
-    self.lifecycle = lifecycle
-    super.init()
-    
-    let tmpSelfReference = Reference(self)
-    tmpSelfReference.release()
-    
-    if replayLength > 0 {
-      buffer = Buffer(size: replayLength)
+  /// The encapsulated value.
+  public var value: Wrapped {
+    get {
+      return underlyingValue
     }
-    
-    let disposable = producer { event in
-      tmpSelfReference.object?.next(event)
-    }
-    
-    if let disposable = disposable {
-      deinitDisposable += disposable
-    }
-    
-    self.selfReference = tmpSelfReference
-  }
-  
-  /// Creates a new Observable that replays given value as an event.
-  public init(_ value: EventType) {
-    lifecycle = .Normal
-    buffer = Buffer(size: 1)
-    super.init()
-    next(value)
-  }
-  
-  /// Sends an event to the observers
-  public override func next(event: EventType) {
-    buffer?.push(event)
-    super.next(event)
-  }
-
-  /// Registers the given observer and returns a disposable that can cancel observing.
-  public override func observe(observer: EventType -> ()) -> DisposableType {
-    
-    if lifecycle == .Managed {
-      selfReference?.retain()
-    }
-    
-    let observableBaseDisposable = super.observe(observer)
-    
-    if let buffer = buffer {
-      for event in buffer.buffer {
-        observer(event)
-      }
-    }
-    
-    let observerDisposable = BlockDisposable { [weak self] in
-      observableBaseDisposable.dispose()
-      
-      if let unwrappedSelf = self {
-        if unwrappedSelf.numberOfObservers == 0 {
-          unwrappedSelf.selfReference?.release()
-        }
-      }
-    }
-    
-    deinitDisposable += observerDisposable
-    return observerDisposable
-  }
-  
-  deinit {
-    deinitDisposable.dispose()
-  }
-}
-
-public extension Observable {
-  
-  /// Observable's value.
-  ///
-  /// Note that if the receiver is not an instance initialized with Observable(_ value: EventType) initializer
-  /// nor any derivation of such instance, this will contain last sent event or nil if not events were sent
-  /// or the Observable has replayLength less than 1.
-  public var value: EventType! {
-    set(newValue) {
+    set {
       next(newValue)
     }
-    get {
-      return buffer?.last
-    }
   }
-}
-
-extension Observable: BindableType {
   
-  /// Creates a new sink that can be used to update the receiver.
-  /// Optionally accepts a disposable that will be disposed on receiver's deinit.
-  public func sink(disconnectDisposable: DisposableType?) -> EventType -> () {
+  /// Creates a new array with the given initial value.
+  public init(_ value: Wrapped) {
+    self.underlyingValue = value
     
-    if let disconnectDisposable = disconnectDisposable {
-      deinitDisposable += disconnectDisposable
+    var capturedSink: SinkType! = nil
+    super.init(replayLength: 1, lifecycle: .Normal) { sink in
+      capturedSink = sink
+      return nil
     }
     
-    return { [weak self] value in
-      self?.value = value
-    }
+    self.capturedSink = capturedSink
+    self.capturedSink(value)
+  }
+  
+  public override func next(event: Wrapped) {
+    underlyingValue = event
+    super.next(event)
   }
 }

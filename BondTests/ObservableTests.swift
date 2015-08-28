@@ -2,185 +2,107 @@
 //  ObservableTests.swift
 //  Bond
 //
-//  Created by Srđan Rašić on 01/08/15.
+//  Created by Srđan Rašić on 22/07/15.
 //  Copyright © 2015 Srdan Rasic. All rights reserved.
 //
 
 import XCTest
 @testable import Bond
 
-class ObservableTests: XCTestCase {
-  
-  func testDeallocationTriggersCascadingDisposable() {
-    let simpleDisposable = SimpleDisposable()
+class ObservableValueTests: XCTestCase {
+
+  func testObservingAndDisposing() {
+    let age = Observable(2)
     
-    var observable: Observable<Int>! = Observable<Int> { sink in
-      return simpleDisposable
-    }
+    age.next(1)
+    age.next(0)
     
-    XCTAssert(observable != nil)
-    XCTAssert(simpleDisposable.isDisposed == false, "Initial state.")
-    
-    observable = nil
-    XCTAssert(simpleDisposable.isDisposed == true, "Should be disposed when observable is gone.")
-  }
-  
-  func testDeallocationDisposesObserversDisposables() {
-    var observable: Observable<Int>! = Observable { sink in
-      return nil
-    }
-    
-    let observerDisposable1 = observable.observe { v in }
-    let observerDisposable2 = observable.observe { v in }
-    
-    XCTAssert(observerDisposable1.isDisposed == false, "Initial state.")
-    XCTAssert(observerDisposable2.isDisposed == false, "Initial state.")
-    
-    observable = nil
-    
-    XCTAssert(observerDisposable1.isDisposed == true, "Must be disposed now.")
-    XCTAssert(observerDisposable1.isDisposed == true, "Must be disposed now.")
-  }
-  
-  func testObservingAndDisposingObserver() {
     var observedValue = -1
-    var capturedSink: (Int -> ())!
+    var numberOfInitialReplays = 0
     
-    let observable = Observable<Int> { sink in
-      capturedSink = sink
-      return nil
+    let disposable = age.observe { value in
+      observedValue = value
+      numberOfInitialReplays++
     }
     
-    let observerDisposable = observable.observe { v in
-      observedValue = v
-    }
+    XCTAssertEqual(1, numberOfInitialReplays)
+    XCTAssertEqual(0, observedValue)
     
-    XCTAssert(observedValue == -1, "Initial state.")
-    XCTAssert(observerDisposable.isDisposed == false, "Initial state.")
+    age.value = 1
+    XCTAssertEqual(1, observedValue)
     
-    capturedSink(0)
-    XCTAssert(observedValue == 0, "Should be updated.")
-    XCTAssert(observerDisposable.isDisposed == false, "Must not be disposed yet.")
+    age.next(2)
+    XCTAssertEqual(2, observedValue)
     
-    observerDisposable.dispose()
-    capturedSink(1)
-    XCTAssert(observerDisposable.isDisposed == true, "Should be disposed now.")
-    XCTAssert(observedValue == 0, "Should not be updated after disposing.")
-  }
-  
-  func testDisposableByDisposingSink() {
-    var capturedSink: Observable<Int>.SinkType!
-    let cascadingDisposable = SimpleDisposable()
-    
-    let producer = { (sink: Observable<Int>.SinkType) -> DisposableType? in
-      capturedSink = sink
-      return cascadingDisposable
-    }
-    
-    var observable: Observable<Int>! = Observable<Int>(replayLength: 0, producer: producer)
-    
-    // Observer should not cause retention when sink goes away
-    observable.observe { v in }
-    
-    XCTAssert(capturedSink != nil, "We should have sink captured now.")
-    XCTAssert(observable != nil, "Should be retained by the sink.")
-    XCTAssert(cascadingDisposable.isDisposed == false, "Should not be disposed yet.")
-    
-    capturedSink = nil
-    
-    XCTAssert(observable != nil, "Should be retained by the variable.")
-    XCTAssert(cascadingDisposable.isDisposed == false, "Should not be disposed yet.")
-    
-    weak var observableWeak: Observable<Int>! = observable
-    observable = nil
-    
-    XCTAssert(observableWeak == nil, "Should be deallocated.")
-    XCTAssert(cascadingDisposable.isDisposed == true, "Should be disposed now.")
-  }
-  
-  func testDisposedAfterRemovingAllObserversIfNotStronglyReferenced() {
-    var capturedSink: Observable<Int>.SinkType!
-    let cascadingDisposable = SimpleDisposable()
-    
-    let producer = { (sink: Observable<Int>.SinkType) -> DisposableType? in
-      capturedSink = sink
-      return cascadingDisposable
-    }
-    
-    var observable: Observable<Int>! = Observable<Int>(replayLength: 0, producer: producer)
-    
-    XCTAssert(capturedSink != nil, "We should have sink captured now.")
-    XCTAssert(observable != nil, "Should be retained by the sink.")
-    XCTAssert(cascadingDisposable.isDisposed == false, "Should not be disposed yet.")
-    
-    let disposable = observable.observe { v in }
-    XCTAssert(observable != nil, "Should still be retained by the sink.")
-    XCTAssert(cascadingDisposable.isDisposed == false, "Should not be disposed yet.")
-
     disposable.dispose()
     
-    XCTAssert(observable != nil, "Should be retained by the variable.")
-    XCTAssert(cascadingDisposable.isDisposed == false, "Should not be disposed yet.")
-    
-    weak var observableWeak: Observable<Int>! = observable
-    observable = nil
-    
-    XCTAssert(observableWeak == nil, "Should be deallocated.")
-    XCTAssert(cascadingDisposable.isDisposed == true, "Should be disposed now.")
+    age.value = 3
+    XCTAssertEqual(2, observedValue)
   }
   
-  func testNotDisposedAfterRemovingAllObserversIfStronglyReferenced() {
-    var capturedSink: Observable<Int>.SinkType!
-    let cascadingDisposable = SimpleDisposable()
+  func testFilterMapChain() {
+    let observable = Observable(2)
+    var observedValue = -1
     
-    let producer = { (sink: Observable<Int>.SinkType) -> DisposableType? in
-      capturedSink = sink
-      return cascadingDisposable
-    }
-    
-    let observable: Observable<Int> = Observable<Int>(replayLength: 0, producer: producer)
-    
-    XCTAssert(capturedSink != nil, "We should have sink captured now.")
-    XCTAssert(cascadingDisposable.isDisposed == false, "Should not be disposed.")
-    
-    let disposable = observable.observe { v in }
-    XCTAssert(cascadingDisposable.isDisposed == false, "Should not be disposed.")
-    
-    disposable.dispose()
-    XCTAssert(cascadingDisposable.isDisposed == false, "Should not be disposed.")
-  }
-  
-  func testNormalLifecycleDoesNotCauseSinkToRetainObservableWhenThereIsAnObserver() {
-    var capturedSink: (Int -> ())!
-    var observable: Observable<Int>! = Observable(lifecycle: .Normal) { sink in
-      capturedSink = sink
-      return nil
-    }
-    
-    let observerDisposable = observable.observe { v in }
-    
-    XCTAssert(capturedSink != nil, "Initial state.")
-    XCTAssert(observerDisposable.isDisposed == false, "Initial state.")
-
-    observable = nil
-    XCTAssert(observerDisposable.isDisposed == true, "Must be disposed now.")
-  }
-  
-  func testReplaysCorrectly() {
-    let sentValues: [Int] = [1, 2, 3]
-    var receivedValues: [Int] = []
-
-    let observable = Observable<Int>(replayLength: sentValues.count) { sink in
-      for value in sentValues {
-        sink(value)
+    observable
+      .filter { $0 % 2 == 0 }
+      .map { $0 * 2 }
+      .observe { value in
+        observedValue = value
       }
-      return nil
-    }
     
-    observable.observe { v in
-      receivedValues += [v]
-    }
+    XCTAssertEqual(observedValue, 4)
     
-    XCTAssert(sentValues == receivedValues, "Initial state.")
+    observable.value = 3
+    XCTAssertEqual(observedValue, 4)
+
+    observable.value = 4
+    XCTAssertEqual(observedValue, 8)
+  }
+  
+  func testDisposesOnReleasingEvenThoughBeingObserved() {
+    var observable: Observable<Int>! = Observable(0)
+    weak var observableWeak: Observable<Int>! = observable
+    
+    let disposable = observable.observe { v in }
+    
+    XCTAssertNotNil(observableWeak)
+    XCTAssertFalse(disposable.isDisposed)
+    
+    observable = nil
+    XCTAssertNil(observableWeak)
+    XCTAssertTrue(disposable.isDisposed)
+  }
+  
+  func testDisposesOnReleasingEvenThoughBeingBound() {
+    let srcObservable: Observable<Int> = Observable(0)
+    
+    var dstObservable: Observable<Int>! = Observable(0)
+    weak var dstObservableWeak: Observable<Int>! = dstObservable
+    
+    let disposable = srcObservable.bindTo(dstObservable)
+    
+    XCTAssertNotNil(dstObservableWeak)
+    XCTAssertFalse(disposable.isDisposed)
+    
+    dstObservable = nil
+    XCTAssertNil(dstObservableWeak)
+    XCTAssertTrue(disposable.isDisposed)
+  }
+  
+  func testNotRetainedByCreatedSinkAndDisposesGivenDisposableOnDeinit() {
+    var observable: Observable<Int>! = Observable(0)
+    weak var observableWeak: Observable<Int>! = observable
+    let disposable = SimpleDisposable()
+    
+    let sink: (Int -> ())? = observable.sink(disposable)
+    
+    XCTAssert(sink != nil)
+    XCTAssertNotNil(observableWeak)
+    XCTAssertFalse(disposable.isDisposed)
+    
+    observable = nil
+    XCTAssertNil(observableWeak)
+    XCTAssertTrue(disposable.isDisposed)
   }
 }

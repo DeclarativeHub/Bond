@@ -188,9 +188,9 @@ extension UITableView {
   }
 }
 
-public extension ObservableType where
+public extension EventProducerType where
   EventType: ObservableArrayEventType,
-  EventType.ObservableArrayEventSequenceType.Generator.Element: ObservableType,
+  EventType.ObservableArrayEventSequenceType.Generator.Element: EventProducerType,
   EventType.ObservableArrayEventSequenceType.Generator.Element.EventType: ObservableArrayEventType {
   
   private typealias ElementType = EventType.ObservableArrayEventSequenceType.Generator.Element.EventType.ObservableArrayEventSequenceType.Generator.Element

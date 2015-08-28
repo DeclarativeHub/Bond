@@ -116,33 +116,115 @@ repositories.bindTo(collectionView, createCell: { (indexPath, array, collectionV
 Yes, that's right!
 
 
-## The ObservableAt the core of the framework is the class *Observable*. It represents an abstract event generator that provides the mechanisms that enable interested parties, called *observers*, to observe generated events. For example, it can represent a subject with a mutable state, like a variable or an array, and then inform observers of the state change whenever it happens. On the other hand it can represent an action, something without a state, and generate an event whenever the action occurs.### The Observable Variable
-The most common use of the Observable type is to have it mimic a variable or a property in order to enable observation of its change. In that case, it makes the most sense for events to be something as simple as the newly set value. As the Observable is a generic type generalized over its event type, when acting as a variable or a property it is specialized to the type of the values it can encapsulate. To create such observable just initialize it with a value:```swiftlet captain = Observable(“Jim”)```
-Swift automatically infers the type of the Observable from the passed value. In our example the type of the variable captain is `Observable<String>`. To change its value afterwards, you can use the method `next`:```swiftcaptain.next(“Spock”)```
-The value is accessible through the property value:```swiftprint(captain.value) // prints: Spock```
-The property is both a getter that returns the observable’s value and a setter that updates the observable with a new value just like the method `next`. Now comes the interesting part. In order to make the observable useful it should be observed. Observing the observable means observing the events it generates, that is, in our case, the values that are being set. To observe the observable we register a closure of the type `EventType -> ()` to it with the method observe, where *EventType* is the event (value) type:```swiftcaptain.observe { name in  print(“Now the captain is \(name).”)}// prints: Now the captain is Spock.```
-The closure will be called at the time of the registration with the value currently set to the observable. If you are not interested in the current value, but only in the new ones, you can use the method `observeNew` instead.Now, whenever the value is changed, the observer closure will be called and side effects performed:```swiftcaptain.next(“Scotty” ) // prints: Now the captain is Scotty.```
-which is same as:+```swiftcaptain.value = “Scotty” // prints: Now the captain is Scotty.```
-### The Stateless Observable
-Using the observable to act as a variable or a property that can be observed is just a specific usage of the class *Observable*. As was already said, the observable represents an abstract event generator. To create such event generator you can use the following designated initializer:```swiftinit(replayLength: Int, @noescape producer: (EventType -> ()) -> DisposableType?)```
-Parameter `replayLength` defines how many events should be replayed to each new observer. It represents the memory of the observable. Observables don't have to have memory so zero is a valid value for this parameter. Observables without a memory are used to represent actions, something without a state, like button taps.Parameter `producer` is a closure that actually generates events. The closure accepts a sink (another closure) through which it sends events and optionally returns a disposable that should be disposed when the created observable is disposed. Initializer `init(_ value: EventType)` is just a simpler way of initializing an observable with replay length of 1 and using the producer to send the initial value.### About the Observation
-An observable can be observed by any number of observers. A new observer is registered with the already mentioned `observe` method. Here is its signature:```swiftfunc observe(observer: EventType -> ()) -> DisposableType```
-We've already talked about the closure parameter `observer`, but it is also important to understand what the method returns. An observer stays registered until it’s unregistered or until the observable is destroyed. To unregistered the observer manually we use a disposable object returned by the method `observe`. Think of it as a subscription that can be cancelled. To cancel it simply use the method `dispose`.```swiftlet subscription = captain.observe { name in … }...
-subscription.dispose()```
-### Transforming the Observables
-The observables are much more useful when they can be transformed and combined into another observables. Bond comes with a number of methods that can transform an observable into an another observable.#### Map
+## The Observable
+
+At the core of the framework is the class *Observable*. It represents an abstract event generator that provides the mechanisms that enable interested parties, called *observers*, to observe generated events. For example, it can represent a subject with a mutable state, like a variable or an array, and then inform observers of the state change whenever it happens. On the other hand it can represent an action, something without a state, and generate an event whenever the action occurs.
+
+### The Observable Variable
+
+The most common use of the Observable type is to have it mimic a variable or a property in order to enable observation of its change. In that case, it makes the most sense for events to be something as simple as the newly set value. As the Observable is a generic type generalized over its event type, when acting as a variable or a property it is specialized to the type of the values it can encapsulate. To create such observable just initialize it with a value:
+
+```swift
+let captain = Observable(“Jim”)
+```
+
+Swift automatically infers the type of the Observable from the passed value. In our example the type of the variable captain is `Observable<String>`. To change its value afterwards, you can use the method `next`:
+
+```swift
+captain.next(“Spock”)
+```
+
+The value is accessible through the property value:
+
+```swift
+print(captain.value) // prints: Spock
+```
+
+The property is both a getter that returns the observable’s value and a setter that updates the observable with a new value just like the method `next`. 
+
+Now comes the interesting part. In order to make the observable useful it should be observed. Observing the observable means observing the events it generates, that is, in our case, the values that are being set. To observe the observable we register a closure of the type `EventType -> ()` to it with the method observe, where *EventType* is the event (value) type:
+
+```swift
+captain.observe { name in
+  print(“Now the captain is \(name).”)
+}
+
+// prints: Now the captain is Spock.
+```
+
+The closure will be called at the time of the registration with the value currently set to the observable. If you are not interested in the current value, but only in the new ones, you can use the method `observeNew` instead.
+
+Now, whenever the value is changed, the observer closure will be called and side effects performed:
+
+```swift
+captain.next(“Scotty” ) // prints: Now the captain is Scotty.
+```
+
+which is same as:+
+
+```swift
+captain.value = “Scotty” // prints: Now the captain is Scotty.
+```
+
+### The Stateless Observable
+
+Using the observable to act as a variable or a property that can be observed is just a specific usage of the class *Observable*. As was already said, the observable represents an abstract event generator. To create such event generator you can use the following designated initializer:
+
+```swift
+init(replayLength: Int, @noescape producer: (EventType -> ()) -> DisposableType?)
+```
+
+Parameter `replayLength` defines how many events should be replayed to each new observer. It represents the memory of the observable. Observables don't have to have memory so zero is a valid value for this parameter. Observables without a memory are used to represent actions, something without a state, like button taps.
+
+Parameter `producer` is a closure that actually generates events. The closure accepts a sink (another closure) through which it sends events and optionally returns a disposable that should be disposed when the created observable is disposed. 
+
+Initializer `init(_ value: EventType)` is just a simpler way of initializing an observable with replay length of 1 and using the producer to send the initial value.
+
+### About the Observation
+
+An observable can be observed by any number of observers. A new observer is registered with the already mentioned `observe` method. Here is its signature:
+
+```swift
+func observe(observer: EventType -> ()) -> DisposableType
+```
+
+We've already talked about the closure parameter `observer`, but it is also important to understand what the method returns. An observer stays registered until it’s unregistered or until the observable is destroyed. To unregistered the observer manually we use a disposable object returned by the method `observe`. Think of it as a subscription that can be cancelled. To cancel it simply use the method `dispose`.
+
+```swift
+let subscription = captain.observe { name in … }
+
+...
+
+subscription.dispose()
+```
+
+### Transforming the Observables
+
+The observables are much more useful when they can be transformed and combined into another observables. Bond comes with a number of methods that can transform an observable into an another observable.
+
+#### Map
 
 ```swift
 func map<T>(transform: EventType -> T) -> Observable<T>
-```Creates an observable that transforms each event from the receiver by the given transform closure.#### Filter
+```
 
-```swiftfunc filter(includeEvent: EventType -> Bool) -> Observable<EventType>
-```Creates an observable that forwards only events from the receiver that pass the given `includeEvent` closure. #### DeliverOn
+Creates an observable that transforms each event from the receiver by the given transform closure.
+
+#### Filter
+
+```swift
+func filter(includeEvent: EventType -> Bool) -> Observable<EventType>
+```
+
+Creates an observable that forwards only events from the receiver that pass the given `includeEvent` closure. 
+
+#### DeliverOn
 
 ```swift
 func deliverOn(queue: Queue) -> Observable<EventType>
 ```
-Creates an observable that forwards events from the receiver to the given `Queue`.
+
+Creates an observable that forwards events from the receiver to the given `Queue`.
 
 #### Throttle
 
@@ -171,7 +253,7 @@ Creates an observable that sends the given event and then continues by forwardin
 #### CombineLatestWith
 
 ```swift
-func combineLatestWith<U: ObservableType>(other: U) -> Observable<(EventType, U.EventType)>
+func combineLatestWith<U: EventProducerType>(other: U) -> Observable<(EventType, U.EventType)>
 ```
 
 Creates an observable that combines the latest value of the receiver with the latest value from the given observable. Will not generate an event until both observables have generated at least one event.
@@ -206,12 +288,32 @@ Applicable only to the observables whose events are optionals. Creates an observ
 func distinct() -> Observable<EventType>
 ```
 
-Applicable only to the observables whose events conform to the protocol `Equatable`. Creates an observable that forwards only distinct events, i.e. no two equal events will be sent one after another.### Bindings
-Binding is a very simple concept. It's a way to propagate change. Change of the subject, like the observable, to the object, like a UI element or another observable. Let's say we need to update the observable that represents text of a label Here is what we can do:```swiftlet captainName: Observable<String>let nameLabelText: Observable<String>captainName.observe { name in  nameLabelText.next(name)}
-```That well make the label text update whenever the captain changes. ```swiftcaptainName.next(“Janeway”)print(nameLabelText.value) // prints: Janeway```
-Bindings are at the core of Bond and there ought to be even simpler way to establish them. And, as you've seen it in the introduction, there is:
+Applicable only to the observables whose events conform to the protocol `Equatable`. Creates an observable that forwards only distinct events, i.e. no two equal events will be sent one after another.
 
-```swiftcaptainName.bindTo(nameLabelText)
+### Bindings
+
+Binding is a very simple concept. It's a way to propagate change. Change of the subject, like the observable, to the object, like a UI element or another observable. Let's say we need to update the observable that represents text of a label Here is what we can do:
+
+```swift
+let captainName: Observable<String>
+let nameLabelText: Observable<String>
+
+captainName.observe { name in
+  nameLabelText.next(name)
+}
+```
+
+That well make the label text update whenever the captain changes. 
+
+```swift
+captainName.next(“Janeway”)
+print(nameLabelText.value) // prints: Janeway
+```
+
+Bindings are at the core of Bond and there ought to be even simpler way to establish them. And, as you've seen it in the introduction, there is:
+
+```swift
+captainName.bindTo(nameLabelText)
 ```
 
 Observables can be bound to any object that conforms to `BindableType` protocol. Observables themselves conform to that protocol, but you can make any type conform to it.

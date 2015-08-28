@@ -25,12 +25,12 @@
 import Foundation
 
 /// Coordinates a collection of observables and a dispatching of events to them.
-public class ObservableBase<EventType>: ObservableType {
+public class EventProducerBase<EventType>: EventProducerType {
   
   private var isDispatchInProgress: Bool = false
   private var observers: [Int64:EventType -> Void] = [:]
   private var nextToken: Int64 = 0
-  private let lock = NSRecursiveLock(name: "com.swift-bond.Bond.ObservableBase")
+  private let lock = NSRecursiveLock(name: "com.swift-bond.Bond.EventProducerBase")
   
   /// Number of registered observers.
   public var numberOfObservers: Int {
@@ -64,32 +64,32 @@ public class ObservableBase<EventType>: ObservableType {
     lock.unlock()
     
     observers[token] = observer
-    return ObservableBaseDisposable(observableBase: self, token: token)
+    return EventProducerBaseDisposable(eventProducerBase: self, token: token)
   }
   
-  private func removeObserver(disposable: ObservableBaseDisposable<EventType>) {
+  private func removeObserver(disposable: EventProducerBaseDisposable<EventType>) {
     observers.removeValueForKey(disposable.token)
   }
 }
 
-public final class ObservableBaseDisposable<EventType>: DisposableType {
+public final class EventProducerBaseDisposable<EventType>: DisposableType {
   
-  private weak var observableBase: ObservableBase<EventType>!
+  private weak var eventProducerBase: EventProducerBase<EventType>!
   private var token: Int64
   
   public var isDisposed: Bool {
-    return observableBase == nil
+    return eventProducerBase == nil
   }
   
-  private init(observableBase: ObservableBase<EventType>, token: Int64) {
-    self.observableBase = observableBase
+  private init(eventProducerBase: EventProducerBase<EventType>, token: Int64) {
+    self.eventProducerBase = eventProducerBase
     self.token = token
   }
   
   public func dispose() {
-    if let observableBase = observableBase {
-      observableBase.removeObserver(self)
-      self.observableBase = nil
+    if let eventProducerBase = eventProducerBase {
+      eventProducerBase.removeObserver(self)
+      self.eventProducerBase = nil
     }
   }
 }

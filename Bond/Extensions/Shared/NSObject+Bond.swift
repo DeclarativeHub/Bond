@@ -80,7 +80,7 @@ public extension Observable {
   
   public convenience init(object: NSObject, keyPath: String) {
     
-    if let value = object.valueForKeyPath(keyPath) as? EventType {
+    if let value = object.valueForKeyPath(keyPath) as? Wrapped {
       self.init(value)
     } else {
       fatalError("Dear Sir/Madam, you are creating a Scalar of non-optional \(EventType.self) type, but the value at the given key path is nil or not of \(EventType.self) type. Please check the type or have your Scalar encapsulate optional type like Scalar<\(EventType.self)?>.")
@@ -106,12 +106,12 @@ public extension Observable {
   }
 }
 
-public extension Observable where EventType: OptionalType {
+public extension Observable where Wrapped: OptionalType {
   
   public convenience init(object: NSObject, keyPath: String) {
     
-    let initialValue: EventType.SomeType?
-    if let value = object.valueForKeyPath(keyPath) as? EventType.SomeType {
+    let initialValue: Wrapped.SomeType?
+    if let value = object.valueForKeyPath(keyPath) as? Wrapped.SomeType {
       initialValue = value
     } else {
       initialValue = nil

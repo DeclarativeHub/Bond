@@ -27,23 +27,46 @@
 		DCA979741A83C3A200DD4A30 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCA979691A83C3A100DD4A30 /* Bond.framework */; };
 		EA3E36B81B41702100559641 /* NSLayoutConstraintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */; };
 		EAD8B2DD1B41AF4300995CE9 /* NSLayoutConstraintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */; };
+		EC0075B31B90D39500249C31 /* EventProducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0075B21B90D39500249C31 /* EventProducer.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075B41B90D39500249C31 /* EventProducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0075B21B90D39500249C31 /* EventProducer.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075B51B90D73800249C31 /* NSLock+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E71B77BB1D00837A36 /* NSLock+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075B71B90DC2100249C31 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BF1B77BB1D00837A36 /* Observable.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075B91B90E4DC00249C31 /* NSObject+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E91B77BB1D00837A36 /* NSObject+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075BA1B90E55400249C31 /* NSNotificationCenter+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E81B77BB1D00837A36 /* NSNotificationCenter+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075BB1B90E56D00249C31 /* NSLayoutConstraint+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E61B77BB1D00837A36 /* NSLayoutConstraint+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075BC1B90E57300249C31 /* CALayer+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E51B77BB1D00837A36 /* CALayer+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075CF1B90E5F400249C31 /* UIActivityIndicatorView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CB1B77BB1D00837A36 /* UIActivityIndicatorView+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075D01B90E5F400249C31 /* UIRefreshControl+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2AE4A81B788F8B00296781 /* UIRefreshControl+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075D11B90E5F400249C31 /* UIBarItem+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CC1B77BB1D00837A36 /* UIBarItem+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075D21B90E5F400249C31 /* UIButton+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CD1B77BB1D00837A36 /* UIButton+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075D31B90E5F400249C31 /* UICollectionView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CE1B77BB1D00837A36 /* UICollectionView+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075D41B90E5F400249C31 /* UIControl+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CF1B77BB1D00837A36 /* UIControl+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075D51B90E5F400249C31 /* UIDatePicker+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D01B77BB1D00837A36 /* UIDatePicker+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075D61B90E5F400249C31 /* UIImageView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D11B77BB1D00837A36 /* UIImageView+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075D71B90E5F400249C31 /* UILabel+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D21B77BB1D00837A36 /* UILabel+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075D81B90E5F400249C31 /* UINavigationItem+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D31B77BB1D00837A36 /* UINavigationItem+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075D91B90E5F400249C31 /* UIProgressView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D41B77BB1D00837A36 /* UIProgressView+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075DA1B90E5F400249C31 /* UISlider+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D51B77BB1D00837A36 /* UISlider+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075DB1B90E5F400249C31 /* UISwitch+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D61B77BB1D00837A36 /* UISwitch+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075DC1B90E5F400249C31 /* UITableView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D71B77BB1D00837A36 /* UITableView+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075DD1B90E5F400249C31 /* UITextField+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D81B77BB1D00837A36 /* UITextField+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075DE1B90E5F400249C31 /* UITextView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D91B77BB1D00837A36 /* UITextView+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075DF1B90E5F400249C31 /* UIView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68DA1B77BB1D00837A36 /* UIView+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075E01B90E6C800249C31 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BF1B77BB1D00837A36 /* Observable.swift */; settings = {ASSET_TAGS = (); }; };
 		EC0388991B0DD25700E32454 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69491BAE1A7C217100A13B6B /* Bond.framework */; };
-		EC2AE4A91B788F8B00296781 /* UIRefreshControl+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2AE4A81B788F8B00296781 /* UIRefreshControl+Bond.swift */; };
-		EC6F105B1B7F9C2700E55A5F /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69821B77D45600837A36 /* ObservableValue.swift */; };
+		EC6F105B1B7F9C2700E55A5F /* ObservableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69821B77D45600837A36 /* ObservableTests.swift */; };
 		ECAD68EB1B77BB1D00837A36 /* BindableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68B81B77BB1D00837A36 /* BindableType.swift */; };
 		ECAD68EC1B77BB1D00837A36 /* BindableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68B81B77BB1D00837A36 /* BindableType.swift */; };
 		ECAD68ED1B77BB1D00837A36 /* Buffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68B91B77BB1D00837A36 /* Buffer.swift */; };
 		ECAD68EE1B77BB1D00837A36 /* Buffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68B91B77BB1D00837A36 /* Buffer.swift */; };
-		ECAD68EF1B77BB1D00837A36 /* ObservableBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BA1B77BB1D00837A36 /* ObservableBase.swift */; };
-		ECAD68F01B77BB1D00837A36 /* ObservableBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BA1B77BB1D00837A36 /* ObservableBase.swift */; };
+		ECAD68EF1B77BB1D00837A36 /* EventProducerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BA1B77BB1D00837A36 /* EventProducerBase.swift */; };
+		ECAD68F01B77BB1D00837A36 /* EventProducerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BA1B77BB1D00837A36 /* EventProducerBase.swift */; };
 		ECAD68F11B77BB1D00837A36 /* Disposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BB1B77BB1D00837A36 /* Disposable.swift */; };
 		ECAD68F21B77BB1D00837A36 /* Disposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BB1B77BB1D00837A36 /* Disposable.swift */; };
 		ECAD68F31B77BB1D00837A36 /* DisposableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BC1B77BB1D00837A36 /* DisposableType.swift */; };
 		ECAD68F41B77BB1D00837A36 /* DisposableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BC1B77BB1D00837A36 /* DisposableType.swift */; };
-		ECAD68F91B77BB1D00837A36 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BF1B77BB1D00837A36 /* Observable.swift */; };
-		ECAD68FA1B77BB1D00837A36 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BF1B77BB1D00837A36 /* Observable.swift */; };
-		ECAD68FB1B77BB1D00837A36 /* ObservableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C01B77BB1D00837A36 /* ObservableType.swift */; };
-		ECAD68FC1B77BB1D00837A36 /* ObservableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C01B77BB1D00837A36 /* ObservableType.swift */; };
+		ECAD68FB1B77BB1D00837A36 /* EventProducerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C01B77BB1D00837A36 /* EventProducerType.swift */; };
+		ECAD68FC1B77BB1D00837A36 /* EventProducerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C01B77BB1D00837A36 /* EventProducerType.swift */; };
 		ECAD68FD1B77BB1D00837A36 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C11B77BB1D00837A36 /* Operators.swift */; };
 		ECAD68FE1B77BB1D00837A36 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C11B77BB1D00837A36 /* Operators.swift */; };
 		ECAD68FF1B77BB1D00837A36 /* OptionalType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C21B77BB1D00837A36 /* OptionalType.swift */; };
@@ -64,31 +87,10 @@
 		ECAD69381B77BB1D00837A36 /* NSStatusBarButton+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E11B77BB1D00837A36 /* NSStatusBarButton+Bond.swift */; };
 		ECAD693A1B77BB1D00837A36 /* NSTextField+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E21B77BB1D00837A36 /* NSTextField+Bond.swift */; };
 		ECAD693C1B77BB1D00837A36 /* NSTextView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E31B77BB1D00837A36 /* NSTextView+Bond.swift */; };
-		ECAD693D1B77BB1D00837A36 /* CALayer+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E51B77BB1D00837A36 /* CALayer+Bond.swift */; };
 		ECAD693E1B77BB1D00837A36 /* CALayer+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E51B77BB1D00837A36 /* CALayer+Bond.swift */; };
-		ECAD693F1B77BB1D00837A36 /* NSLayoutConstraint+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E61B77BB1D00837A36 /* NSLayoutConstraint+Bond.swift */; };
 		ECAD69401B77BB1D00837A36 /* NSLayoutConstraint+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E61B77BB1D00837A36 /* NSLayoutConstraint+Bond.swift */; };
-		ECAD69411B77BB1D00837A36 /* NSLock+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E71B77BB1D00837A36 /* NSLock+Bond.swift */; };
-		ECAD69431B77BB1D00837A36 /* NSNotificationCenter+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E81B77BB1D00837A36 /* NSNotificationCenter+Bond.swift */; };
 		ECAD69441B77BB1D00837A36 /* NSNotificationCenter+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E81B77BB1D00837A36 /* NSNotificationCenter+Bond.swift */; };
-		ECAD69451B77BB1D00837A36 /* NSObject+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E91B77BB1D00837A36 /* NSObject+Bond.swift */; };
 		ECAD69461B77BB1D00837A36 /* NSObject+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E91B77BB1D00837A36 /* NSObject+Bond.swift */; };
-		ECAD69491B77BB2800837A36 /* UIActivityIndicatorView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CB1B77BB1D00837A36 /* UIActivityIndicatorView+Bond.swift */; };
-		ECAD694A1B77BB2800837A36 /* UIBarItem+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CC1B77BB1D00837A36 /* UIBarItem+Bond.swift */; };
-		ECAD694B1B77BB2800837A36 /* UIButton+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CD1B77BB1D00837A36 /* UIButton+Bond.swift */; };
-		ECAD694C1B77BB2800837A36 /* UICollectionView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CE1B77BB1D00837A36 /* UICollectionView+Bond.swift */; };
-		ECAD694D1B77BB2800837A36 /* UIControl+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CF1B77BB1D00837A36 /* UIControl+Bond.swift */; };
-		ECAD694E1B77BB2800837A36 /* UIDatePicker+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D01B77BB1D00837A36 /* UIDatePicker+Bond.swift */; };
-		ECAD694F1B77BB2800837A36 /* UIImageView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D11B77BB1D00837A36 /* UIImageView+Bond.swift */; };
-		ECAD69501B77BB2800837A36 /* UILabel+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D21B77BB1D00837A36 /* UILabel+Bond.swift */; };
-		ECAD69511B77BB2800837A36 /* UINavigationItem+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D31B77BB1D00837A36 /* UINavigationItem+Bond.swift */; };
-		ECAD69521B77BB2800837A36 /* UIProgressView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D41B77BB1D00837A36 /* UIProgressView+Bond.swift */; };
-		ECAD69531B77BB2800837A36 /* UISlider+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D51B77BB1D00837A36 /* UISlider+Bond.swift */; };
-		ECAD69541B77BB2800837A36 /* UISwitch+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D61B77BB1D00837A36 /* UISwitch+Bond.swift */; };
-		ECAD69551B77BB2800837A36 /* UITableView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D71B77BB1D00837A36 /* UITableView+Bond.swift */; };
-		ECAD69561B77BB2800837A36 /* UITextField+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D81B77BB1D00837A36 /* UITextField+Bond.swift */; };
-		ECAD69571B77BB2800837A36 /* UITextView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D91B77BB1D00837A36 /* UITextView+Bond.swift */; };
-		ECAD69581B77BB2800837A36 /* UIView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68DA1B77BB1D00837A36 /* UIView+Bond.swift */; };
 		ECAD695B1B77C7B700837A36 /* CALayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC061ADFC5D5002B4B6E /* CALayerTests.swift */; };
 		ECAD696E1B77D43D00837A36 /* UIActivityIndicatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD695D1B77D43D00837A36 /* UIActivityIndicatorTests.swift */; };
 		ECAD696F1B77D43D00837A36 /* UIBarItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD695E1B77D43D00837A36 /* UIBarItemTests.swift */; };
@@ -107,10 +109,10 @@
 		ECAD697C1B77D43D00837A36 /* UITextFieldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD696B1B77D43D00837A36 /* UITextFieldTests.swift */; };
 		ECAD697D1B77D43D00837A36 /* UITextViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD696C1B77D43D00837A36 /* UITextViewTests.swift */; };
 		ECAD697E1B77D43D00837A36 /* UIViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD696D1B77D43D00837A36 /* UIViewTests.swift */; };
-		ECAD69851B77D45600837A36 /* ObservableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69801B77D45600837A36 /* ObservableTests.swift */; };
+		ECAD69851B77D45600837A36 /* EventProducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69801B77D45600837A36 /* EventProducerTests.swift */; };
 		ECAD69881B77D45600837A36 /* ObservableArrayEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69831B77D45600837A36 /* ObservableArrayEventTests.swift */; };
 		ECAD69891B77D45600837A36 /* ObservableArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69841B77D45600837A36 /* ObservableArrayTests.swift */; };
-		ECBF04DD1B8089DE001F6BCA /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69821B77D45600837A36 /* ObservableValue.swift */; };
+		ECBF04DD1B8089DE001F6BCA /* ObservableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69821B77D45600837A36 /* ObservableTests.swift */; };
 		ECBF04DF1B808B20001F6BCA /* DisposableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */; };
 		ECBF04E01B808B20001F6BCA /* DisposableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */; };
 		ECBF04E11B810100001F6BCA /* NSLock+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E71B77BB1D00837A36 /* NSLock+Bond.swift */; };
@@ -178,14 +180,15 @@
 		DCA979691A83C3A100DD4A30 /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCA979731A83C3A200DD4A30 /* BondOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BondOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSLayoutConstraintTests.swift; sourceTree = "<group>"; };
+		EC0075B21B90D39500249C31 /* EventProducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventProducer.swift; sourceTree = "<group>"; };
 		EC2AE4A81B788F8B00296781 /* UIRefreshControl+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIRefreshControl+Bond.swift"; sourceTree = "<group>"; };
 		ECAD68B81B77BB1D00837A36 /* BindableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BindableType.swift; sourceTree = "<group>"; };
 		ECAD68B91B77BB1D00837A36 /* Buffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Buffer.swift; sourceTree = "<group>"; };
-		ECAD68BA1B77BB1D00837A36 /* ObservableBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableBase.swift; sourceTree = "<group>"; };
+		ECAD68BA1B77BB1D00837A36 /* EventProducerBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventProducerBase.swift; sourceTree = "<group>"; };
 		ECAD68BB1B77BB1D00837A36 /* Disposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Disposable.swift; sourceTree = "<group>"; };
 		ECAD68BC1B77BB1D00837A36 /* DisposableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisposableType.swift; sourceTree = "<group>"; };
 		ECAD68BF1B77BB1D00837A36 /* Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
-		ECAD68C01B77BB1D00837A36 /* ObservableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableType.swift; sourceTree = "<group>"; };
+		ECAD68C01B77BB1D00837A36 /* EventProducerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventProducerType.swift; sourceTree = "<group>"; };
 		ECAD68C11B77BB1D00837A36 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		ECAD68C21B77BB1D00837A36 /* OptionalType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionalType.swift; sourceTree = "<group>"; };
 		ECAD68C41B77BB1D00837A36 /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
@@ -238,8 +241,8 @@
 		ECAD696B1B77D43D00837A36 /* UITextFieldTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextFieldTests.swift; sourceTree = "<group>"; };
 		ECAD696C1B77D43D00837A36 /* UITextViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextViewTests.swift; sourceTree = "<group>"; };
 		ECAD696D1B77D43D00837A36 /* UIViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewTests.swift; sourceTree = "<group>"; };
-		ECAD69801B77D45600837A36 /* ObservableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableTests.swift; sourceTree = "<group>"; };
-		ECAD69821B77D45600837A36 /* ObservableValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableValue.swift; sourceTree = "<group>"; };
+		ECAD69801B77D45600837A36 /* EventProducerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventProducerTests.swift; sourceTree = "<group>"; };
+		ECAD69821B77D45600837A36 /* ObservableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableTests.swift; sourceTree = "<group>"; };
 		ECAD69831B77D45600837A36 /* ObservableArrayEventTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableArrayEventTests.swift; sourceTree = "<group>"; };
 		ECAD69841B77D45600837A36 /* ObservableArrayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableArrayTests.swift; sourceTree = "<group>"; };
 		ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisposableTests.swift; sourceTree = "<group>"; };
@@ -424,8 +427,9 @@
 		ECAD68B71B77BB1D00837A36 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				ECAD68C01B77BB1D00837A36 /* ObservableType.swift */,
-				ECAD68BA1B77BB1D00837A36 /* ObservableBase.swift */,
+				ECAD68C01B77BB1D00837A36 /* EventProducerType.swift */,
+				ECAD68BA1B77BB1D00837A36 /* EventProducerBase.swift */,
+				EC0075B21B90D39500249C31 /* EventProducer.swift */,
 				ECAD68BF1B77BB1D00837A36 /* Observable.swift */,
 				ECAD68C71B77BB1D00837A36 /* ObservableArray.swift */,
 				ECAD68C81B77BB1D00837A36 /* ObservableArrayEvent.swift */,
@@ -529,8 +533,8 @@
 		ECAD697F1B77D44A00837A36 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				ECAD69801B77D45600837A36 /* ObservableTests.swift */,
-				ECAD69821B77D45600837A36 /* ObservableValue.swift */,
+				ECAD69801B77D45600837A36 /* EventProducerTests.swift */,
+				ECAD69821B77D45600837A36 /* ObservableTests.swift */,
 				ECAD69841B77D45600837A36 /* ObservableArrayTests.swift */,
 				ECAD69831B77D45600837A36 /* ObservableArrayEventTests.swift */,
 				ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */,
@@ -755,41 +759,42 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ECAD69411B77BB1D00837A36 /* NSLock+Bond.swift in Sources */,
-				ECAD68F91B77BB1D00837A36 /* Observable.swift in Sources */,
-				EC2AE4A91B788F8B00296781 /* UIRefreshControl+Bond.swift in Sources */,
-				ECAD69431B77BB1D00837A36 /* NSNotificationCenter+Bond.swift in Sources */,
+				EC0075B71B90DC2100249C31 /* Observable.swift in Sources */,
+				EC0075D71B90E5F400249C31 /* UILabel+Bond.swift in Sources */,
 				ECAD68FF1B77BB1D00837A36 /* OptionalType.swift in Sources */,
-				ECAD694E1B77BB2800837A36 /* UIDatePicker+Bond.swift in Sources */,
-				ECAD69491B77BB2800837A36 /* UIActivityIndicatorView+Bond.swift in Sources */,
+				EC0075D01B90E5F400249C31 /* UIRefreshControl+Bond.swift in Sources */,
 				ECAD68FD1B77BB1D00837A36 /* Operators.swift in Sources */,
-				ECAD69521B77BB2800837A36 /* UIProgressView+Bond.swift in Sources */,
+				EC0075DC1B90E5F400249C31 /* UITableView+Bond.swift in Sources */,
+				EC0075B31B90D39500249C31 /* EventProducer.swift in Sources */,
+				EC0075B91B90E4DC00249C31 /* NSObject+Bond.swift in Sources */,
 				ECAD68EB1B77BB1D00837A36 /* BindableType.swift in Sources */,
-				ECAD69531B77BB2800837A36 /* UISlider+Bond.swift in Sources */,
+				EC0075B51B90D73800249C31 /* NSLock+Bond.swift in Sources */,
 				ECAD69031B77BB1D00837A36 /* Queue.swift in Sources */,
-				ECAD69541B77BB2800837A36 /* UISwitch+Bond.swift in Sources */,
-				ECAD694B1B77BB2800837A36 /* UIButton+Bond.swift in Sources */,
-				ECAD694A1B77BB2800837A36 /* UIBarItem+Bond.swift in Sources */,
-				ECAD69551B77BB2800837A36 /* UITableView+Bond.swift in Sources */,
-				ECAD69501B77BB2800837A36 /* UILabel+Bond.swift in Sources */,
-				ECAD69571B77BB2800837A36 /* UITextView+Bond.swift in Sources */,
-				ECAD68FB1B77BB1D00837A36 /* ObservableType.swift in Sources */,
-				ECAD693D1B77BB1D00837A36 /* CALayer+Bond.swift in Sources */,
-				ECAD69561B77BB2800837A36 /* UITextField+Bond.swift in Sources */,
-				ECAD69451B77BB1D00837A36 /* NSObject+Bond.swift in Sources */,
+				EC0075D31B90E5F400249C31 /* UICollectionView+Bond.swift in Sources */,
+				EC0075DE1B90E5F400249C31 /* UITextView+Bond.swift in Sources */,
+				EC0075D61B90E5F400249C31 /* UIImageView+Bond.swift in Sources */,
+				EC0075DB1B90E5F400249C31 /* UISwitch+Bond.swift in Sources */,
+				EC0075DA1B90E5F400249C31 /* UISlider+Bond.swift in Sources */,
+				ECAD68FB1B77BB1D00837A36 /* EventProducerType.swift in Sources */,
+				EC0075D41B90E5F400249C31 /* UIControl+Bond.swift in Sources */,
+				EC0075D51B90E5F400249C31 /* UIDatePicker+Bond.swift in Sources */,
+				EC0075D81B90E5F400249C31 /* UINavigationItem+Bond.swift in Sources */,
 				ECAD68F11B77BB1D00837A36 /* Disposable.swift in Sources */,
 				ECAD68ED1B77BB1D00837A36 /* Buffer.swift in Sources */,
 				ECAD690B1B77BB1D00837A36 /* ObservableArrayEvent.swift in Sources */,
-				ECAD694C1B77BB2800837A36 /* UICollectionView+Bond.swift in Sources */,
 				ECAD69051B77BB1D00837A36 /* Reference.swift in Sources */,
-				ECAD694D1B77BB2800837A36 /* UIControl+Bond.swift in Sources */,
+				EC0075D91B90E5F400249C31 /* UIProgressView+Bond.swift in Sources */,
+				EC0075DD1B90E5F400249C31 /* UITextField+Bond.swift in Sources */,
+				EC0075D21B90E5F400249C31 /* UIButton+Bond.swift in Sources */,
 				ECAD69091B77BB1D00837A36 /* ObservableArray.swift in Sources */,
+				EC0075CF1B90E5F400249C31 /* UIActivityIndicatorView+Bond.swift in Sources */,
+				EC0075BA1B90E55400249C31 /* NSNotificationCenter+Bond.swift in Sources */,
 				ECAD68F31B77BB1D00837A36 /* DisposableType.swift in Sources */,
-				ECAD68EF1B77BB1D00837A36 /* ObservableBase.swift in Sources */,
-				ECAD694F1B77BB2800837A36 /* UIImageView+Bond.swift in Sources */,
-				ECAD69581B77BB2800837A36 /* UIView+Bond.swift in Sources */,
-				ECAD69511B77BB2800837A36 /* UINavigationItem+Bond.swift in Sources */,
-				ECAD693F1B77BB1D00837A36 /* NSLayoutConstraint+Bond.swift in Sources */,
+				EC0075BC1B90E57300249C31 /* CALayer+Bond.swift in Sources */,
+				EC0075BB1B90E56D00249C31 /* NSLayoutConstraint+Bond.swift in Sources */,
+				ECAD68EF1B77BB1D00837A36 /* EventProducerBase.swift in Sources */,
+				EC0075D11B90E5F400249C31 /* UIBarItem+Bond.swift in Sources */,
+				EC0075DF1B90E5F400249C31 /* UIView+Bond.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -798,7 +803,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ECAD697E1B77D43D00837A36 /* UIViewTests.swift in Sources */,
-				ECAD69851B77D45600837A36 /* ObservableTests.swift in Sources */,
+				ECAD69851B77D45600837A36 /* EventProducerTests.swift in Sources */,
 				ECAD69741B77D43D00837A36 /* UIImageViewTests.swift in Sources */,
 				ECAD697C1B77D43D00837A36 /* UITextFieldTests.swift in Sources */,
 				ECBF04DF1B808B20001F6BCA /* DisposableTests.swift in Sources */,
@@ -820,7 +825,7 @@
 				ECAD69771B77D43D00837A36 /* UINavigationItemTests.swift in Sources */,
 				ECAD69731B77D43D00837A36 /* UIDatePickerTests.swift in Sources */,
 				ECAD69761B77D43D00837A36 /* UILabelTests.swift in Sources */,
-				ECBF04DD1B8089DE001F6BCA /* ObservableValue.swift in Sources */,
+				ECBF04DD1B8089DE001F6BCA /* ObservableTests.swift in Sources */,
 				EA3E36B81B41702100559641 /* NSLayoutConstraintTests.swift in Sources */,
 				ECAD69891B77D45600837A36 /* ObservableArrayTests.swift in Sources */,
 			);
@@ -830,7 +835,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ECAD68FA1B77BB1D00837A36 /* Observable.swift in Sources */,
 				ECAD693C1B77BB1D00837A36 /* NSTextView+Bond.swift in Sources */,
 				ECAD69341B77BB1D00837A36 /* NSImageView+Bond.swift in Sources */,
 				ECAD69441B77BB1D00837A36 /* NSNotificationCenter+Bond.swift in Sources */,
@@ -839,19 +843,21 @@
 				ECAD68EC1B77BB1D00837A36 /* BindableType.swift in Sources */,
 				ECAD69041B77BB1D00837A36 /* Queue.swift in Sources */,
 				ECAD69381B77BB1D00837A36 /* NSStatusBarButton+Bond.swift in Sources */,
-				ECAD68FC1B77BB1D00837A36 /* ObservableType.swift in Sources */,
+				ECAD68FC1B77BB1D00837A36 /* EventProducerType.swift in Sources */,
 				ECBF04E11B810100001F6BCA /* NSLock+Bond.swift in Sources */,
 				ECAD693E1B77BB1D00837A36 /* CALayer+Bond.swift in Sources */,
 				ECAD69321B77BB1D00837A36 /* NSControl+Bond.swift in Sources */,
 				ECAD69461B77BB1D00837A36 /* NSObject+Bond.swift in Sources */,
+				EC0075E01B90E6C800249C31 /* Observable.swift in Sources */,
 				ECAD69361B77BB1D00837A36 /* NSMenuItem+Bond.swift in Sources */,
 				ECAD68F21B77BB1D00837A36 /* Disposable.swift in Sources */,
 				ECAD68EE1B77BB1D00837A36 /* Buffer.swift in Sources */,
+				EC0075B41B90D39500249C31 /* EventProducer.swift in Sources */,
 				ECAD690C1B77BB1D00837A36 /* ObservableArrayEvent.swift in Sources */,
 				ECAD69061B77BB1D00837A36 /* Reference.swift in Sources */,
 				ECAD690A1B77BB1D00837A36 /* ObservableArray.swift in Sources */,
 				ECAD68F41B77BB1D00837A36 /* DisposableType.swift in Sources */,
-				ECAD68F01B77BB1D00837A36 /* ObservableBase.swift in Sources */,
+				ECAD68F01B77BB1D00837A36 /* EventProducerBase.swift in Sources */,
 				ECAD69301B77BB1D00837A36 /* NSColorWell+Bond.swift in Sources */,
 				ECAD69401B77BB1D00837A36 /* NSLayoutConstraint+Bond.swift in Sources */,
 				ECAD693A1B77BB1D00837A36 /* NSTextField+Bond.swift in Sources */,
@@ -867,7 +873,7 @@
 				900BFC0B1ADFC863002B4B6E /* NSButtonTests.swift in Sources */,
 				ECBF04E01B808B20001F6BCA /* DisposableTests.swift in Sources */,
 				900BFC0E1ADFC9E9002B4B6E /* NSColorWellTests.swift in Sources */,
-				EC6F105B1B7F9C2700E55A5F /* ObservableValue.swift in Sources */,
+				EC6F105B1B7F9C2700E55A5F /* ObservableTests.swift in Sources */,
 				900BFC141ADFCBA8002B4B6E /* NSMenuItemTests.swift in Sources */,
 				900BFC1A1ADFCD63002B4B6E /* NSTextViewTests.swift in Sources */,
 				900BFC101ADFCA46002B4B6E /* NSControlTests.swift in Sources */,

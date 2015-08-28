@@ -24,7 +24,7 @@
 
 /// Abstract producer.
 /// Can be given an observer (a sink) into which it should put (dispatch) events.
-public protocol ObservableType {
+public protocol EventProducerType {
   
   /// Type of event objects or values that the observable generates.
   typealias EventType
@@ -37,7 +37,7 @@ public protocol ObservableType {
   func observe(observer: EventType -> Void) -> DisposableType
 }
 
-public extension ObservableType {
+public extension EventProducerType {
   
   /// Registers the observer that will receive only events generated after registering.
   /// A better performing verion of observable.skip(observable.replyLength).observe().
@@ -75,8 +75,8 @@ public extension ObservableType {
   }
   
   /// Transformes each event by the given `transform` function.
-  public func map<T>(transform: EventType -> T) -> Observable<T> {
-    return Observable(replayLength: replayLength) { sink in
+  public func map<T>(transform: EventType -> T) -> EventProducer<T> {
+    return EventProducer(replayLength: replayLength) { sink in
       return observe { event in
         sink(transform(event))
       }
@@ -84,8 +84,8 @@ public extension ObservableType {
   }
   
   /// Forwards only events for which the given closure returns 'true'.
-  public func filter(includeEvent: EventType -> Bool) -> Observable<EventType> {
-    return Observable(replayLength: replayLength) { sink in
+  public func filter(includeEvent: EventType -> Bool) -> EventProducer<EventType> {
+    return EventProducer(replayLength: replayLength) { sink in
       return observe { event in
         if includeEvent(event) {
           sink(event)
@@ -95,8 +95,8 @@ public extension ObservableType {
   }
   
   /// Delivers events onto the given queue.
-  public func deliverOn(queue: Queue) -> Observable<EventType> {
-    return Observable(replayLength: replayLength) { sink in
+  public func deliverOn(queue: Queue) -> EventProducer<EventType> {
+    return EventProducer(replayLength: replayLength) { sink in
       return observe { event in
         queue.async {
           sink(event)
@@ -106,8 +106,8 @@ public extension ObservableType {
   }
   
   /// Throttles event dispatching for a given number of seconds and then dispatches last event.
-  public func throttle(seconds: Queue.TimeInterval, queue: Queue) -> Observable<EventType> {
-    return Observable(replayLength: replayLength) { sink in
+  public func throttle(seconds: Queue.TimeInterval, queue: Queue) -> EventProducer<EventType> {
+    return EventProducer(replayLength: replayLength) { sink in
       var shouldDispatch: Bool = true
       var lastEvent: EventType! = nil
       return observe { event in
@@ -125,8 +125,8 @@ public extension ObservableType {
   }
   
   /// Ignores first `count` events and forwards any subsequent.
-  public func skip(var count: Int) -> Observable<EventType> {
-    return Observable(replayLength: max(replayLength - count, 0)) { sink in
+  public func skip(var count: Int) -> EventProducer<EventType> {
+    return EventProducer(replayLength: max(replayLength - count, 0)) { sink in
       return observe { event in
         if count > 0 {
           count--
@@ -138,8 +138,8 @@ public extension ObservableType {
   }
   
   /// Sends the given event and then forwards events from the receiver.
-  public func startWith(event: EventType) -> Observable<EventType> {
-    return Observable(replayLength: replayLength) { sink in
+  public func startWith(event: EventType) -> EventProducer<EventType> {
+    return EventProducer(replayLength: replayLength) { sink in
       sink(event)
       return observe { subsequentEvent in
         sink(subsequentEvent)
@@ -149,8 +149,8 @@ public extension ObservableType {
   
   /// Combines the latest value of the receiver with the latest value from the given observable.
   /// Will not generate an event until both observables have generated one.
-  public func combineLatestWith<U: ObservableType>(other: U) -> Observable<(EventType, U.EventType)> {
-    return Observable(replayLength: min(replayLength + other.replayLength, 1)) { sink in
+  public func combineLatestWith<U: EventProducerType>(other: U) -> EventProducer<(EventType, U.EventType)> {
+    return EventProducer(replayLength: min(replayLength + other.replayLength, 1)) { sink in
       var myEvent: EventType! = nil
       var itsEvent: U.EventType! = nil
       
@@ -174,7 +174,7 @@ public extension ObservableType {
     }
   }
   
-  public func flatMap<U: ObservableType>(strategy: ObservableFlatMapStrategy, transform: EventType -> U) -> Observable<U.EventType> {
+  public func flatMap<U: EventProducerType>(strategy: ObservableFlatMapStrategy, transform: EventType -> U) -> EventProducer<U.EventType> {
     switch strategy {
     case .Latest:
       return map(transform).switchToLatest()
@@ -183,8 +183,8 @@ public extension ObservableType {
     }
   }
   
-  public func reduce<T>(initial: T, combine: (T, EventType) -> T) -> Observable<T> {
-    return Observable { sink in
+  public func reduce<T>(initial: T, combine: (T, EventType) -> T) -> EventProducer<T> {
+    return EventProducer { sink in
       var accumulator = initial
       return observe { event in
         accumulator = combine(accumulator, event)
@@ -194,22 +194,22 @@ public extension ObservableType {
   }
 }
 
-public extension ObservableType where Self: BindableType {
+public extension EventProducerType where Self: BindableType {
   
   /// Establishes a one-way binding between the source and the bindable's sink
   /// and returns a disposable that can cancel observing.
-  public func bidirectionalBindTo<B: BindableType where B: ObservableType, B.EventType == Element, B.Element == EventType>(bindable: B) -> DisposableType {
+  public func bidirectionalBindTo<B: BindableType where B: EventProducerType, B.EventType == Element, B.Element == EventType>(bindable: B) -> DisposableType {
     let d1 = bindTo(bindable)
     let d2 = bindable.bindTo(self)
     return CompositeDisposable([d1, d2])
   }
 }
 
-public extension ObservableType where EventType: OptionalType {
+public extension EventProducerType where EventType: OptionalType {
   
   /// Forwards only events that are not `nil`, unwrapped into non-optional type.
-  public func ignoreNil() -> Observable<EventType.SomeType> {
-    return Observable(replayLength: replayLength) { sink in
+  public func ignoreNil() -> EventProducer<EventType.SomeType> {
+    return EventProducer(replayLength: replayLength) { sink in
       return observe { event in
         if !event.isNil {
           sink(event.value!)
@@ -224,10 +224,10 @@ public enum ObservableFlatMapStrategy {
   case Merge
 }
 
-public extension ObservableType where EventType: ObservableType {
+public extension EventProducerType where EventType: EventProducerType {
   
-  public func merge() -> Observable<EventType.EventType> {
-    return Observable(replayLength: replayLength) { sink in
+  public func merge() -> EventProducer<EventType.EventType> {
+    return EventProducer(replayLength: replayLength) { sink in
       let compositeDisposable = CompositeDisposable()
       compositeDisposable += observe { observer in
         compositeDisposable += observer.observe { event in
@@ -238,8 +238,8 @@ public extension ObservableType where EventType: ObservableType {
     }
   }
   
-  public func switchToLatest() -> Observable<EventType.EventType> {
-    return Observable(replayLength: replayLength) { sink in
+  public func switchToLatest() -> EventProducer<EventType.EventType> {
+    return EventProducer(replayLength: replayLength) { sink in
       let serialDisposable = SerialDisposable(otherDisposable: nil)
       let compositeDisposable = CompositeDisposable([serialDisposable])
       
@@ -255,10 +255,10 @@ public extension ObservableType where EventType: ObservableType {
   }
 }
 
-public extension ObservableType where EventType: Equatable {
+public extension EventProducerType where EventType: Equatable {
   
-  public func distinct() -> Observable<EventType> {
-    return Observable(replayLength: replayLength) { sink in
+  public func distinct() -> EventProducer<EventType> {
+    return EventProducer(replayLength: replayLength) { sink in
       var lastEvent: EventType? = nil
       return observe { event in
         if lastEvent == nil || lastEvent! != event {
@@ -270,10 +270,10 @@ public extension ObservableType where EventType: Equatable {
   }
 }
 
-public func combineLatest<A: ObservableType, B: ObservableType>(a: A, _ b: B) -> Observable<(A.EventType, B.EventType)> {
+public func combineLatest<A: EventProducerType, B: EventProducerType>(a: A, _ b: B) -> EventProducer<(A.EventType, B.EventType)> {
   return a.combineLatestWith(b)
 }
 
-public func combineLatest<A: ObservableType, B: ObservableType, C: ObservableType>(a: A, _ b: B, _ c: C) -> Observable<(A.EventType, B.EventType, C.EventType)> {
+public func combineLatest<A: EventProducerType, B: EventProducerType, C: EventProducerType>(a: A, _ b: B, _ c: C) -> EventProducer<(A.EventType, B.EventType, C.EventType)> {
   return combineLatest(a, b).combineLatestWith(c).map { ($0.0, $0.1, $1) }
 }

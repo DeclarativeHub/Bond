@@ -117,13 +117,13 @@ extension UIControl {
     static var ControlBondHelperKey = "bnd_ControlBondHelperKey"
   }
   
-  public var bnd_controlEvent: Observable<UIControlEvents> {
+  public var bnd_controlEvent: EventProducer<UIControlEvents> {
     if let bnd_controlEvent: AnyObject = objc_getAssociatedObject(self, &AssociatedKeys.ControlEventKey) {
-      return bnd_controlEvent as! Observable<UIControlEvents>
+      return bnd_controlEvent as! EventProducer<UIControlEvents>
     } else {
       var capturedSink: (UIControlEvents -> ())! = nil
       
-      let bnd_controlEvent = Observable<UIControlEvents> { sink in
+      let bnd_controlEvent = EventProducer<UIControlEvents> { sink in
         capturedSink = sink
         return nil
       }

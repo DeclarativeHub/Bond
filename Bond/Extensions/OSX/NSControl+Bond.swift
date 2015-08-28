@@ -59,13 +59,13 @@ extension NSControl {
     return bnd_associatedObservableForValueForKey("enabled")
   }
   
-  public var bnd_controlEvent: Observable<AnyObject?> {
+  public var bnd_controlEvent: EventProducer<AnyObject?> {
     if let bnd_controlEvent: AnyObject = objc_getAssociatedObject(self, &AssociatedKeys.ControlEventKey) {
-      return bnd_controlEvent as! Observable<AnyObject?>
+      return bnd_controlEvent as! EventProducer<AnyObject?>
     } else {
       var capturedSink: (AnyObject? -> ())! = nil
       
-      let bnd_controlEvent = Observable<AnyObject?> { sink in
+      let bnd_controlEvent = EventProducer<AnyObject?> { sink in
         capturedSink = sink
         return nil
       }

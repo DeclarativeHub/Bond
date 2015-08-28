@@ -32,7 +32,7 @@ extension UIButton {
     }
   }
   
-  public var bnd_tap: Observable<Void> {
+  public var bnd_tap: EventProducer<Void> {
     return self.bnd_controlEvent.filter { $0 == UIControlEvents.TouchUpInside }.map { e in }
   }
   
