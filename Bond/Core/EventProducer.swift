@@ -29,6 +29,7 @@ public enum EventProducerLifecycle {
   case Managed  /// Normal + retained by the sink given to the producer whenever there is at least one observer.
 }
 
+/// Enables production of the events and dispatches them to the registered observers.
 public class EventProducer<Event>: EventProducerType {
   
   private var isDispatchInProgress: Bool = false

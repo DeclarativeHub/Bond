@@ -43,7 +43,7 @@ public final class Observable<Wrapped>: EventProducer<Wrapped> {
     }
   }
   
-  /// Creates a new array with the given initial value.
+  /// Creates a observable with the given initial value.
   public init(_ value: Wrapped) {
     self.underlyingValue = value
     
