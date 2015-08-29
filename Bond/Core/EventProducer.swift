@@ -116,11 +116,7 @@ public class EventProducer<Event>: EventProducerType {
     
     let eventProducerBaseDisposable = addObserver(observer)
     
-    if let replayBuffer = replayBuffer {
-      for event in replayBuffer.buffer {
-        observer(event)
-      }
-    }
+    replayBuffer?.replayTo(observer)
     
     let observerDisposable = BlockDisposable { [weak self] in
       eventProducerBaseDisposable.dispose()

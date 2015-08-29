@@ -40,16 +40,34 @@ public struct Buffer<EventType> {
   
   /// Creates a new buffer of given size
   public init(size: Int) {
+    guard size > 0 else {
+      fatalError("Dear Sir/Madam, buffer has to have the size of least 1.")
+    }
+    
     self.size = size
     buffer.reserveCapacity(size)
   }
   
-  /// Adds the given element to the buffer. If the buffer is already 
+  /// Adds the given element to the buffer. If the buffer is already
   /// at its capacity, it will discard the oldest element.
   public mutating func push(event: EventType) {
-    buffer.append(event)
-    if buffer.count > size {
-      buffer.removeFirst()
+    if size == 1 {
+      if buffer.count == 0 {
+        buffer.append(event)
+      } else {
+        buffer[0] = event;
+      }
+    } else {
+      buffer.append(event)
+      if buffer.count > size {
+        buffer.removeFirst()
+      }
+    }
+  }
+  
+  public func replayTo(sink: EventType -> ()) {
+    for event in buffer {
+      sink(event)
     }
   }
 }
