@@ -23,14 +23,13 @@
 //
 
 public protocol OptionalType {
-  typealias SomeType
+  typealias WrappedType
   var isNil: Bool { get }
-  var value: SomeType? { get }
-  init(optional: SomeType?)
+  var value: WrappedType? { get }
+  init(optional: WrappedType?)
 }
 
 extension Optional: OptionalType {
-  public typealias SomeType = Wrapped
   
   public var isNil: Bool {
     return self == nil
@@ -40,7 +39,7 @@ extension Optional: OptionalType {
     return self
   }
   
-  public init(optional: SomeType?) {
+  public init(optional: Wrapped?) {
     if let some = optional {
       self = .Some(some)
     } else {

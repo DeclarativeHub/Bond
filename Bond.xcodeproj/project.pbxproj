@@ -59,8 +59,6 @@
 		ECAD68EC1B77BB1D00837A36 /* BindableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68B81B77BB1D00837A36 /* BindableType.swift */; };
 		ECAD68ED1B77BB1D00837A36 /* Buffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68B91B77BB1D00837A36 /* Buffer.swift */; };
 		ECAD68EE1B77BB1D00837A36 /* Buffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68B91B77BB1D00837A36 /* Buffer.swift */; };
-		ECAD68EF1B77BB1D00837A36 /* EventProducerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BA1B77BB1D00837A36 /* EventProducerBase.swift */; };
-		ECAD68F01B77BB1D00837A36 /* EventProducerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BA1B77BB1D00837A36 /* EventProducerBase.swift */; };
 		ECAD68F11B77BB1D00837A36 /* Disposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BB1B77BB1D00837A36 /* Disposable.swift */; };
 		ECAD68F21B77BB1D00837A36 /* Disposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BB1B77BB1D00837A36 /* Disposable.swift */; };
 		ECAD68F31B77BB1D00837A36 /* DisposableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BC1B77BB1D00837A36 /* DisposableType.swift */; };
@@ -184,7 +182,6 @@
 		EC2AE4A81B788F8B00296781 /* UIRefreshControl+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIRefreshControl+Bond.swift"; sourceTree = "<group>"; };
 		ECAD68B81B77BB1D00837A36 /* BindableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BindableType.swift; sourceTree = "<group>"; };
 		ECAD68B91B77BB1D00837A36 /* Buffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Buffer.swift; sourceTree = "<group>"; };
-		ECAD68BA1B77BB1D00837A36 /* EventProducerBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventProducerBase.swift; sourceTree = "<group>"; };
 		ECAD68BB1B77BB1D00837A36 /* Disposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Disposable.swift; sourceTree = "<group>"; };
 		ECAD68BC1B77BB1D00837A36 /* DisposableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisposableType.swift; sourceTree = "<group>"; };
 		ECAD68BF1B77BB1D00837A36 /* Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
@@ -428,7 +425,6 @@
 			isa = PBXGroup;
 			children = (
 				ECAD68C01B77BB1D00837A36 /* EventProducerType.swift */,
-				ECAD68BA1B77BB1D00837A36 /* EventProducerBase.swift */,
 				EC0075B21B90D39500249C31 /* EventProducer.swift */,
 				ECAD68BF1B77BB1D00837A36 /* Observable.swift */,
 				ECAD68C71B77BB1D00837A36 /* ObservableArray.swift */,
@@ -792,7 +788,6 @@
 				ECAD68F31B77BB1D00837A36 /* DisposableType.swift in Sources */,
 				EC0075BC1B90E57300249C31 /* CALayer+Bond.swift in Sources */,
 				EC0075BB1B90E56D00249C31 /* NSLayoutConstraint+Bond.swift in Sources */,
-				ECAD68EF1B77BB1D00837A36 /* EventProducerBase.swift in Sources */,
 				EC0075D11B90E5F400249C31 /* UIBarItem+Bond.swift in Sources */,
 				EC0075DF1B90E5F400249C31 /* UIView+Bond.swift in Sources */,
 			);
@@ -857,7 +852,6 @@
 				ECAD69061B77BB1D00837A36 /* Reference.swift in Sources */,
 				ECAD690A1B77BB1D00837A36 /* ObservableArray.swift in Sources */,
 				ECAD68F41B77BB1D00837A36 /* DisposableType.swift in Sources */,
-				ECAD68F01B77BB1D00837A36 /* EventProducerBase.swift in Sources */,
 				ECAD69301B77BB1D00837A36 /* NSColorWell+Bond.swift in Sources */,
 				ECAD69401B77BB1D00837A36 /* NSLayoutConstraint+Bond.swift in Sources */,
 				ECAD693A1B77BB1D00837A36 /* NSTextField+Bond.swift in Sources */,

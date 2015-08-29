@@ -110,8 +110,8 @@ public extension Observable where Wrapped: OptionalType {
   
   public convenience init(object: NSObject, keyPath: String) {
     
-    let initialValue: Wrapped.SomeType?
-    if let value = object.valueForKeyPath(keyPath) as? Wrapped.SomeType {
+    let initialValue: Wrapped.WrappedType?
+    if let value = object.valueForKeyPath(keyPath) as? Wrapped.WrappedType {
       initialValue = value
     } else {
       initialValue = nil
@@ -123,7 +123,7 @@ public extension Observable where Wrapped: OptionalType {
     
     let observer = BNDKVOObserver(object: object, keyPath: keyPath, options: .New) { [weak self] value in
       updatingFromSelf = true
-      if let value = value as? EventType.SomeType {
+      if let value = value as? EventType.WrappedType {
         self?.value = EventType(optional: value)
       } else {
         self?.value = EventType(optional: nil)
@@ -181,7 +181,7 @@ internal extension NSObject {
       let observable: Observable<T>
       if let initial = initial {
         observable = Observable(initial)
-      } else if let value = self.valueForKey(key) as? T.SomeType {
+      } else if let value = self.valueForKey(key) as? T.WrappedType {
         observable = Observable(T(optional: value))
       } else {
         observable = Observable(T(optional: nil))

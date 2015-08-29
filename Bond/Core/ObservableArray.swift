@@ -32,7 +32,7 @@ public protocol ObservableArrayType {
 public final class ObservableArray<ElementType>: EventProducer<ObservableArrayEvent<Array<ElementType>>>, ObservableArrayType {
   
   /// The underlying sink to dispatch events to.
-  private var capturedSink: SinkType! = nil
+  private var capturedSink: Sink! = nil
   
   /// Batched array operations.
   private var batchedOperations: [ObservableArrayOperation<ElementType>]! = nil
@@ -49,7 +49,7 @@ public final class ObservableArray<ElementType>: EventProducer<ObservableArrayEv
   public init(_ array: [ElementType]) {
     self.array = array
     
-    var capturedSink: SinkType! = nil
+    var capturedSink: Sink! = nil
     super.init(replayLength: 1, lifecycle: .Normal) { sink in
       capturedSink = sink
       return nil

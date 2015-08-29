@@ -208,7 +208,7 @@ public extension EventProducerType where Self: BindableType {
 public extension EventProducerType where EventType: OptionalType {
   
   /// Forwards only events that are not `nil`, unwrapped into non-optional type.
-  public func ignoreNil() -> EventProducer<EventType.SomeType> {
+  public func ignoreNil() -> EventProducer<EventType.WrappedType> {
     return EventProducer(replayLength: replayLength) { sink in
       return observe { event in
         if !event.isNil {

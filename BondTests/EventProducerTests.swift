@@ -69,10 +69,10 @@ class ObservableTests: XCTestCase {
   }
   
   func testDisposableByDisposingSink() {
-    var capturedSink: EventProducer<Int>.SinkType!
+    var capturedSink: EventProducer<Int>.Sink!
     let cascadingDisposable = SimpleDisposable()
     
-    let producer = { (sink: Observable<Int>.SinkType) -> DisposableType? in
+    let producer = { (sink: Observable<Int>.Sink) -> DisposableType? in
       capturedSink = sink
       return cascadingDisposable
     }
@@ -99,10 +99,10 @@ class ObservableTests: XCTestCase {
   }
   
   func testDisposedAfterRemovingAllObserversIfNotStronglyReferenced() {
-    var capturedSink: EventProducer<Int>.SinkType!
+    var capturedSink: EventProducer<Int>.Sink!
     let cascadingDisposable = SimpleDisposable()
     
-    let producer = { (sink: EventProducer<Int>.SinkType) -> DisposableType? in
+    let producer = { (sink: EventProducer<Int>.Sink) -> DisposableType? in
       capturedSink = sink
       return cascadingDisposable
     }
@@ -130,10 +130,10 @@ class ObservableTests: XCTestCase {
   }
   
   func testNotDisposedAfterRemovingAllObserversIfStronglyReferenced() {
-    var capturedSink: EventProducer<Int>.SinkType!
+    var capturedSink: EventProducer<Int>.Sink!
     let cascadingDisposable = SimpleDisposable()
     
-    let producer = { (sink: EventProducer<Int>.SinkType) -> DisposableType? in
+    let producer = { (sink: EventProducer<Int>.Sink) -> DisposableType? in
       capturedSink = sink
       return cascadingDisposable
     }

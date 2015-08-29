@@ -23,12 +23,14 @@
 //
 
 
-/// A type that can be used to encapsulate an array and observe its (incremental) changes.
+/// A type that can be used to mimic a variable or a property
+/// that enables observation of its change.
 public final class Observable<Wrapped>: EventProducer<Wrapped> {
   
   /// The underlying sink to dispatch events to.
-  private var capturedSink: SinkType! = nil
+  private var capturedSink: Sink! = nil
   
+  /// The real encapsulated value.
   private var underlyingValue: Wrapped
 
   /// The encapsulated value.
@@ -45,7 +47,7 @@ public final class Observable<Wrapped>: EventProducer<Wrapped> {
   public init(_ value: Wrapped) {
     self.underlyingValue = value
     
-    var capturedSink: SinkType! = nil
+    var capturedSink: Sink! = nil
     super.init(replayLength: 1, lifecycle: .Normal) { sink in
       capturedSink = sink
       return nil
