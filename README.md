@@ -2,649 +2,559 @@
 
 [![CI Status](https://travis-ci.org/SwiftBond/Bond.svg?branch=master)](https://travis-ci.org/SwiftBond/Bond)
 
-**Note: If you're developing in Swift 2, check out [Bond v4](https://github.com/SwiftBond/Bond/tree/bond-4).**
+Bond is a Swift binding framework that takes binding concept to a whole new level. It's simple, powerful, type-safe and multi-paradigm - just like Swift. 
 
-Bond is a Swift binding framework that takes binding concept to a whole new level - boils it down to just one operator. It's simple, powerful, type-safe and multi-paradigm - just like Swift. 
+Bond was created with two goals in mind: simple to use and simple to understand. One might argue whether the former implies the latter, but Bond will save you some thinking because both are true in this case. Its foundation are few simple classes - everything else are extensions and syntactic sugars.
 
-Bond was created with two goals in mind: simple to use and simple to understand. One might argue whether the former implies the latter, but Bond will save you some thinking because both are true in this case. Its foundation are two simple classes - everything else are extensions and syntactic sugars.
-
+**Note: This document describes Bond v4. If you are using a previous version of the framework, check out the [Migration to Bond v4](#migration) section. Bond v4 is the only officially supported version for Swift 2.0.**
 
 
 ## What can it do?
 
-
-Say you'd like a label to reflect state of a text field. Instead of going through all the 'action-target' pain, with Bond you'll do it like this:
+Say you'd like to act on a text change event of a UITextField. Well, you could setup 'target-action' mechanism between your object and go through all that target-action selector registration pain, or you could simply use Bond and do this:
 
 ```swift
-textField ->> label
+textField.bnd_text
+  .observe { text in
+    print(text)
+  }
 ```
 
-That one line establishes a _bond_ between text field's text property and label's text property. In effect, whenever user makes a change to the text field, that change will be automatically propagated to the label.
-
-More often than not, direct binding is not enough. Usually you need to transform input is some way, like prepending a greeting to a name. Of course, Bond has full confidence in functional paradigm. 
+Now, instead of printing what user has typed, you could even _bind_ it to a UILabel:
 
 ```swift
-textField.dynText.map { "Hi " + $0 } ->> label
+textField.bnd_text
+  .bindTo(label.bnd_text)
+```
+
+That one line establishes a binding between text field's text property and label's text property. In effect, whenever user makes a change to the text field, that change will be automatically propagated to the label.
+
+More often than not, direct binding is not enough. Usually you need to transform input is some way, like prepending a greeting to a name. Of course, Bond has full confidence in functional paradigm.
+
+
+```swift
+textField.bnd_text
+  .map { "Hi " + $0 }
+  .bindTo(label.bnd_text)
 ```
 
 Whenever a change occurs in the text field, new value will be transformed by the closure and propagated to the label.
 
-Notice how we've used `dynText` property of the UITextField. It's an observable representation of `text` property provided by Bond framework. There are many other properties like that one for various UIKit components.
+Notice how we've used `bnd_text` property of the UITextField. It's an observable representation of the `text` property provided by Bond framework. There are many other extensions like that one for various UIKit components. Just start typing _.bnd_ on any UIKit object and you'll get the list of available extensions.
 
-In addition to `map`, another important functional construct is  `filter`. It's useful when we are interested only in some values of  domain. For example, when observing events of a button, we might be interested only in `TouchUpInside` event so we can perform certain action when user taps the button: 
-
-```swift
-lazy var loginButtonTapListener = Bond<UIControlEvents>() { event in
-  // perform login
-}
-
-...
-
-loginButton.dynEvent.filter(==, .TouchUpInside) ->> loginButtonTapListener
-```
-
-As you see, our binding target doesn't have to be an UI component, rather it can be an arbitrary action wrapped in a closure created by instantiating a `Bond` object. 
-
-Closure is our `Listener`, while `Bond` is an object that manages bindings. We save actions in properties as we need to retain them.
-
-Bond can also `reduce` multiple inputs into a single output. Following snippet depicts how values of two text fields can be reduced to a boolean value and applied to button's `enabled` property.
+In addition to `map`, another important functional construct is `filter` function. It's useful when we are interested only in some values of a domain. For example, when observing events of a button, we might be interested only in `TouchUpInside` event so we can perform certain action when user taps the button:
 
 ```swift
-reduce(emailField.dynText, passField.dynText) { email, pass  in
-  return countElements(email) > 0 && countElements(pass) > 0
-} ->> loginButton.dynEnabled
+button.bnd_controlEvent
+  .filter { $0 == UIControlEvents.TouchUpInside }
+  .observe { e in
+    print("Button tapped.")
+  }
 ```
 
-Whenever user types something into any of the text fields, expression will be evaluated and button state updated.
+Handling `TouchUpInside` event is used so frequently that Bond comes with the extension just for that event:
+
+```swift
+button.bnd_tap
+  .observe {
+    print("Button tapped.")
+  }  
+```
+
+Bond can also combine multiple inputs into a single output. Following snippet depicts how values of two text fields can be reduced to a boolean value and applied to button's enabled property.
+
+```swift
+combineLatest(emailField.bnd_text, passField.bnd_text)
+  .map { email, pass in
+    return email.length > 0 && pass.length > 0
+  }
+  .bindTo(button.bnd_enabled)
+```
+
+Whenever user types something into any of these text fields, expression will be evaluated and button state updated.
+
+Bond's power is not, however, in coupling various UI components, but in the binding of a Model (or a ViewModel) to a View and vice-versa. It's great for MVVM paradigm. Here is how one could bind user's number of followers property of the model to the label.
+
+```swift
+viewModel.numberOfFollowers
+  .map { "\($0)" }
+  .bindTo(label.bnd_text)
+```
+
+Point here is not in the simplicity of value assignment to text property of a label, but in the creation of a binding which automatically updates label text property whenever number of followers change.
+
+Bond also supports two way bindings. Here is an example of how you could keep username text field and username property of your view model in sync (whenever any of them change, other one will be updated too):
+
+```swift
+viewModel.username.bidirectionalBindTo(usernameTextField.bnd_text)
+```
+
+Bond is also great for observing various different events and asynchronous tasks. For example, you could observe a notification just like this:
+
+```swift
+NSNotificationCenter.defaultCenter().bnd_notification("MyNotification")
+  .observe { notification in
+    print("Got \(notification)")
+  }
+  .disposeIn(bnd_bag)
+```
+
+Let me give you one last example. Say you have an array of repositories you would like to display in a collection view. For each repository you have a name and its owner's profile photo. Of course, photo is not immediately available as it has to be downloaded, but once you get it, you want it to appear in collection view's cell. Additionally, when user does 'pull down to refresh' and your array gets new repositories, you want those in collection view too.
+
+So how do you proceed? Well, instead of implementing a data source object, observing photo downloads with KVO and manually updating the collection view with new items, with Bond you can do all that in just few lines:
+
+```swift
+repositories.bindTo(collectionView) { indexPath, array, collectionView in
+  let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! RepositoryCell
+  let repository = array[indexPath.section][indexPath.item]
+  
+  repository.name
+    .bindTo(cell.nameLabel.bnd_text)
+    .disposeIn(cell.onReuseBag)
     
-Bond's power is not, however, in coupling various UI components, but in a bonding of Model (or ViewModel) to View and vice-versa. It's great for MVVM paradigm. Here is how one could bond user's number of followers property of a model to a label. 
+  repository.photo
+    .bindTo(cell.avatarImageView.bnd_image)
+    .disposeIn(cell.onReuseBag)
 
-```swift
-viewModel.numberOfFollowers.map { "\($0)" } ->> label
-```
-
-Point here is not in the simplicity of value assignment to text property of a label, but in the creation of a bond which automatically updates label text property whenever number of followers change.
-
-Bond also supports *two way* bindings. Here is an example of how you could keep username text field and username property of your view model in sync (whenever any of them change, other one will be updated to):
-
-```swift
-viewModel.username <->> usernameTextField.dynText
-```
-
-Notice the asymmetry of bi-directional bind operator. It's important which side of the expression something is on. In Bond, right side always retains left side! In this example, binding will exist as long as `usernameTextField` lives.
-
-Not impressed? Let me give you one last example. Say you have an array of repositories you would like to display in a table view. For each repository you have a name and its owner's profile photo. Of course, photo is not immediately available as it has to be downloaded, but once you get it, you want it to appear in table view's cell. Additionally, when user does 'pull down to refresh', and your array gets new repositiories, you want those in table view too. 
-
-So how do you proceed? Well, instead of implementing a data source object, observing photo downloads with KVO and manually updating table view with new items, with Bond you can do all that in just few lines:
-
-```swift
-var tableViewDataSourceBond: UITableViewDataSourceBond<UITableViewCell>!
-
-override func viewDidLoad() {
-  super.viewDidLoad()
-
-  // create a data source bond for table view
-  tableViewDataSourceBond = UITableViewDataSourceBond(tableView: self.tableView)
-
-  // map repositories to cells and bind
-  repositories.map { [unowned self] (repository: Repository) -> RepositoryTableViewCell in
-    let cell = self.tableView.dequeueReusableCellWithIdentifier("cell") as RepositoryTableViewCell
-    repository.name ->> cell.nameLabel
-    repository.photo ->> cell.avatarImageView
-    return cell
-  } ->> tableViewDataSourceBond
-}
+  return cell
+})
 ```
 
 Yes, that's right!
 
-(As always, when working with closures by extremely careful not to cause retain cycles! Note how we used `unowned self` in above example. If you are not familiar with concept of retain cycles, check out this: [Resolving Strong Reference Cycles for Closures](https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/AutomaticReferenceCounting.html#//apple_ref/doc/uid/TP40014097-CH20-ID57))
 
-(You can find demo app with additional examples [here](https://github.com/SwiftBond/Bond-Demo-App).)
+## The Event Producer
 
-## How does it work?
+At the core of the framework is the class `EventProducer`. It represents an abstract event generator that provides the mechanisms that enable interested parties, called *observers*, to observe generated events. For example, it can be used to represent a subject with a mutable state, like a variable or an array, and then inform observers of the state change whenever it happens. On the other hand it can represent an action, something without a state, and generate an event whenever the action occurs.
 
-Bond is in essence a variation of the [Observer pattern](http://en.wikipedia.org/wiki/Observer_pattern). There is a subject of type `Dynamic<T>` and a listener (observer) of type `T -> Void` (closure). Dynamic holds a value of some type `T` and calls bound listeners whenever new value is set.
+### The Observable
 
-In addition to basic Observer pattern, Bond leverages additional object to make bindings lifecycle simple. It's type is `Bond<T>`. It wraps listener closure and can bind itself to Dynamics of same generic type `T`. The simplicity lies in that the bindings exist as long as corresponding Bond object exists. There is no need to manually unregister listeners.
-
-Let's dive deeper.
-
-### Dynamic
-
-Consider `numberOfFollowers` property from earlier example. What's its type? An `Int`? Well, kind of. Let's see how it is defined.
+The most common use of the event producer is through its subclass `Observable` that can mimic a variable or a property and enable observation of its change. The Observable is a generic type generalized over the wrapped value type. As the EventProducer is also a generic type, generalized over its event type, it is only natural to specialize such event producer to the type of the values it can encapsulate. To create the observable just initialize it with a value:
 
 ```swift
-let numberOfFollowers: Dynamic<Int>
+let captain = Observable(“Jim”)
 ```
 
-So it is an `Int`, but an `Int` wrapped in a generic object of type `Dynamic<T>`. That's the type you'll use to define a property or a variable whose changes you want to observe. Dynamic is the first of two classes that make up Bond framework.
-
-How do you set its value? Just set it to the `value` property, like this:
+Swift automatically infers the type of the observable from the passed value. In our example the type of the variable `captain` is `Observable<String>`. To change its value afterwards, you can use the method `next`:
 
 ```swift
-numberOfFollowers.value = 42
+captain.next(“Spock”)
 ```
 
-Dynamic is defined like this:
+The value is accessible through the property `value`:
 
 ```swift
-public class Dynamic<T> {
-  public init(_ v: T)
-  public func bindTo(bond: Bond<T>)
-  
-  public var value: T
-  public let valueBond: Bond<T>
-}
+print(captain.value) // prints: Spock
 ```
 
-### Bond
+The property is both a getter that returns the observable’s value and a setter that updates the observable with a new value just like the method `next`. 
 
-We've already seen how to propagate change of value, but let's define it formally. Propagation of the change is done through a `Bond` established between a `Dynamic` and a `Listener` (a closure). Bond is the second of two classes that make up Bond framework. You create a bond by instantiating Bond object with a Listener and by binding a Dynamic to it, like this:
+Now comes the interesting part. In order to make the observable useful it should be observed. Observing the observable means observing the events it generates, that is, in our case, the values that are being set. To observe the observable we register a closure of the type `EventType -> ()` to it with the method observe, where *EventType* is the event (value) type:
 
 ```swift
-let myBond = Bond<Int>() { value in
-  println("Number of followers changed to \(value).")
+captain.observe { name in
+  print(“Now the captain is \(name).”)
 }
 
-numberOfFollowers.bindTo(myBond)
+// prints: Now the captain is Spock.
 ```
 
-Those few lines will establish a bond between the `numberOfFollowers` and the closure that prints each change. Bond lives as long as it is retained by someone else. Usually you'll create bonds as properties in your classes. `Bond` object retains bonded `Dynamic` object(s)!
+The closure will be called at the time of the registration with the value currently set to the observable. If you are not interested in the current value, but only in the new ones, you can use the method `observeNew` instead.
 
-Calling `bindTo` method is old-fashioned so it can be simplified by an already mentioned `->>` operator. Previous line can be rewritten like:
+Now, whenever the value is changed, the observer closure will be called and side effects performed:
 
 ```swift
-numberOfFollowers ->> myBond
+captain.next(“Scotty” ) // prints: Now the captain is Scotty.
 ```
 
-Very simple indeed. Dynamic on the left side, Bond on the right side.
-
-Bond is defined like this:
+which is same as:
 
 ```swift
-public class Bond<T> {
-  public typealias Listener = T -> Void
-  public var listener: Listener?
-  
-  public init()
-  public init(_ listener: Listener)
-  
-  public func bind(dynamic: Dynamic<T>)
-  public func unbindAll()
-}
+captain.value = “Scotty” // prints: Now the captain is Scotty.
 ```
 
-#### Dynamic as Bond
+### The Event Producer
 
-Dynamic can also act as a Bond because it has a Bond attached to itself that updates its value. You can access that bond through `valueBond` property. What that means is that you can bind one Dynamic to another.
+Using the observable that acts as a variable or a property that can be observed is just a specific usage of the EventProducer. As was already said, the event producer represents an abstract event generator. To create such event generator you can use the following designated initializer on EventProducer:
 
 ```swift
-// given that both 'usernames' are of type Dynamic<String>
-viewmodel.username ->> self.username
+init(replayLength: Int, @noescape producer: (EventType -> ()) -> DisposableType?)
 ```
 
-#### The cycle of doom
+Parameter `replayLength` defines how many events should be replayed to each new observer. It represents the memory of the event producer. Event producers don't have to have memory so zero is a valid value for this parameter. Event producers without a memory are used to represent actions, something without a state, like button taps.
 
-Be very careful not to make binding cycles like this:
+Parameter `producer` is a closure that actually generates events. The closure accepts a sink (another closure) through which it sends events and optionally returns a disposable that should be disposed when the created event producer is disposed. 
+
+### About the Observation
+
+An event producer (and so observable) can be observed by any number of observers. A new observer is registered with the already mentioned `observe` method. Here is its signature:
 
 ```swift
-d1 ->> d2
-d2 ->> d1
+func observe(observer: EventType -> ()) -> DisposableType
 ```
 
-Or even more subtile:
+We've already talked about the closure parameter `observer`, but it is also important to understand what the method returns. An observer stays registered until it’s unregistered or until the event producer is destroyed. To unregistered the observer manually we use a disposable object returned by the method `observe`. Think of it as a subscription that can be cancelled. To cancel it simply use the method `dispose`.
 
 ```swift
-d1 ->> d2
-d2 ->> d3
-d3 ->> d1
+let subscription = captain.observe { name in … }
+
+...
+
+subscription.dispose()
 ```
 
-While they'll work, they'll cause retain cycles and will stay in memory until your app is killed.
+### Transforming the Event Producers
 
-You can fix first example by using *two way binding* operator
-
-```swift
-d1 <->> d2
-```
-
-You should probably never be in situation that you need something as in second example, but should you be, you can fix it by making feedback binding weak. You cannot use operator for that, but it can be achieved like this:
-
-```swift
-d1 ->> d2
-d2 ->> d3
-d3.bindTo(d1.valueBond, fire: false, strongly: false)
-```
-
-
-### What about UIKit
-
-UIKit views and controls are not, of course, Dynamics and Bonds, so how can they act as agents in a Bond world?
-
-Controls and views for which it makes sense to are extended to provide Dynamics for commonly used properties, like UITextField's `text` property, UISlider's `value` property or UISwitch's `on` property.
-
-To get a Dynamic representation of a property of UIKit object, use the variant that has `dyn*` prefix. For example, to get dynamic representation of UITextField's `text` property, use `dynText` property. Returned Dynamic object is coupled to the control or the view whose value it observes and updates through mechanism like _Action-Target_ or _Key-Value-Observing_.
-
-Following table lists all available Dynamics of UIKit objects:
-
-| Class          | Dynamic(s)                                              | Designated Dynamic |
-|----------------|---------------------------------------------------------|-----------------|
-| UIView         | dynAlpha <br> dynHidden <br> dynBackgroundColor         | --              |
-| UISlider       | dynValue                                                | dynValue        |
-| UILabel        | dynText <br> dynAttributedText <br> dynTextColor        | dynText         |
-| UIProgressView | dynProgress                                             | dynProgress     |
-| UIImageView    | dynImage                                                | dynImage        |
-| UIButton       | dynEnabled <br> dynTitle <br> dynImageForNormalState    | dynEnabled      |
-| UIBarItem      | dynEnabled <br> dynTitle <br> dynImage                  | dynEnabled      |
-| UISwitch       | dynOn                                                   | dynOn           |
-| UITextField    | dynText <br> dynEnabled                                 | dynText         |
-| UITextView     | dynText <br> dynAttributedText                          | dynText         |
-| UIDatePicker   | dynDate                                                 | dynDate         |
-| UIActivityIndicatorView | dynIsAnimating                                 | dynIsAnimating  |
-| DynamicArray<T> | dynCount                                               | dynCount        |
-
-You might be wondering what _Designated Dynamic_ is. It's way to access most commonly used Dynamic through property `designatedDynamic`. Having common name enables us to define protocol like 
-
-```swift
-public protocol Dynamical {
-  typealias DynamicType
-  var designatedDynamic: Dynamic<DynamicType> { get }
-}
-```
-
-and use that protocol to make binding easier. Instead of doing binding like
-
-```swift
-titleTextField.dynText ->> titleLabel
-```
-
-it allows us to do just
-
-```swift
-titleTextField ->> titleLabel
-```
-
-because operator `->>` is overloaded to work with `Dynamical`.
-
-
-### Functional concepts explained
-
-Functions map, filter, reduce, zip, rewrite and skip operate on Dynamic object by creating a new Dynamic that is bonded with source one. Newly created Dynamic retain their source Dynamic!
+The event producers are much more useful when they can be transformed and combined into another event producers. Bond comes with a number of methods that can transform an event producer into another event producer. Note that transforming an observable  does not create another observable, but the event producer that has not concept of 'current value'.
 
 #### Map
 
 ```swift
-func map<T, U>(dynamic: Dynamic<T>, f: T -> U) -> Dynamic<U>
+func map<T>(transform: EventType -> T) -> EventProducer<T>
 ```
 
-Map function maps a Dynamic to a new Dynamic of different type. Value transformation from source type to destination type is performed by a given closure. Newly created Dynamic internally holds a Bond to source Dynamic that's updating its value whenever value of source Dynamic changes. It applies given transformation closure on each update.
-
-Map is also available as a method of Dynamic class with first parameter omitted (which is assumed to be `self`). 
+Creates an event producer that transforms each event from the receiver by the given transform closure.
 
 #### Filter
 
 ```swift
-func filter<T>(dynamic: Dynamic<T>, f: T -> Bool) -> Dynamic<T> 
+func filter(includeEvent: EventType -> Bool) -> EventProducer<EventType>
 ```
 
-Filter function creates a new Dynamic that's bonded to its source Dynamic in similar way as it is done with map function. Difference is that there are no type transformations, but the filtering of source values. Newly created Dynamic changes its value only when new value of source Dynamic satisfies expression in a given closure.
-
-Filter is also available as a method of Dynamic class with first parameter omitted (which is assumed to be `self`). 
-
-#### Reduce
-
-```swift
-reduce<A, B, T>(dA: Dynamic<A>, dB: Dynamic<B>, f: (A, B) -> T) -> Dynamic<T>  
-reduce<A, B, C, T>(dA: Dynamic<A>, dB: Dynamic<B>, dC: Dynamic<C>, f: (A, B, C) -> T) -> Dynamic<T>
-```
-
-Reduce is a simple function that takes two or more Dynamics and returns a new Dynamic of arbitrary type. New Dynamic holds a Bond to each of source Dynamics and updates its value whenever any of source Dynamics change. It updates its value by applying a given closure to values of source Dynamics.
-
-#### Zip
-
-```swift
-zip<T, U>(dynamic: Dynamic<T>, value: U) -> Dynamic<(T, U)>
-zip<T, U>(d1: Dynamic<T>, d2: Dynamic<U>) -> Dynamic<(T, U)>
-```
-
-First variant of zip takes a Dynamic and a value and produces new Dynamic with those two in a tuple. Produced Dynamic fires whenever source Dynamic fires. _Note that if you pass an object as a value, it'll be retained by the produced Dynamic!_
-
-Second variant of zip takes two Dynamics and produces new Dynamic with those two in a tuple. Produced Dynamic fires whenever any of source Dynamics fire.
-
-#### Rewrite
-
-```swift
-rewrite<T, U>(dynamic: Dynamic<T>, value: U) -> Dynamic<U>
-```
-
-When you don't care about a value of a Dynamic but are still interested in change events, you can create a Dynamic that rewrites value of source Dynamic with some constant. _Note that if you pass an object as a value, it'll be retained by the produced Dynamic!_
-
-#### Skip
-
-```swift
-skip<T>(dynamic: Dynamic<T>, count: Int) -> Dynamic<T>
-```
-
-You can use skip to create a Dynamic that'll not dispatch change events for `count` times. 
-
-#### Throttle
-
-```swift
-throttle<T>(dynamic: Dynamic<T>, seconds: Double, queue: dispatch_queue_t = dispatch_get_main_queue()) -> Dynamic<T>
-```
-
-Throttle function creates a new Dynamic that propagates changes at most once during the interval defined by `seconds` argument. If additional changes occurred while throttling, only the last one will be dispatched. _Note that the last argument defines `queue` to dispatch change events on and defaults to the main queue!_
+Creates an event producer that forwards only events from the receiver that pass the given `includeEvent` closure. 
 
 #### DeliverOn
 
 ```swift
-deliver<T>(dynamic: Dynamic<T>, on queue: dispatch_queue_t) -> Dynamic<T>
+func deliverOn(queue: Queue) -> EventProducer<EventType>
 ```
 
-DeliverOn function creates a new Dynamic whose changes are observer on specified `queue`.
+Creates an event producer that forwards events from the receiver to the given `Queue`.
 
-#### Any
+#### Throttle
 
 ```swift
-any<T>(dynamics: [Dynamic<T>]) -> Dynamic<T>
+func throttle(seconds: Queue.TimeInterval, queue: Queue) -> EventProducer<EventType>
 ```
 
-Any expects an array of one or more Dynamics of same type and produces a Dynamic that'll fire whenever any of source Dynamics fire.
+Creates an event producer that forwards no more than one event in the given number of seconds.
 
-#### Composition
-
-As each of these functions return another Dynamic, it is possible to compose (chain) more than one of them in order to get desired behaviour. For example, if we need to bind an Int property to a label (which provides a Bond of String type), but only if number is greater than 10, we could do it like this.
+#### Skip
 
 ```swift
-number.filter { $0 > 10 }.map { "\($0)" } ->> label
+func skip(var count: Int) -> EventProducer<EventType>
 ```
 
-### The three operators
+Creates an event producer that ignores first count events from the receiver but forwards any subsequent.
 
-#### Bind and fire
+#### StartWith
 
 ```swift
-d ->> b
+func startWith(event: EventType) -> EventProducer<EventType>
 ```
 
+Creates an event producer that sends the given event and then continues by forwarding events from the receiver.
+
+#### CombineLatestWith
+
 ```swift
-d1 ->> d2
+func combineLatestWith<U: EventProducerType>(other: U) -> EventProducer<(EventType, U.EventType)>
 ```
 
-Establishes binding between a Dynamic and a Bond or another Dynamics's `valueBond`. Calls Listener closure right after binding. Equivalent to:
+Creates an event producer that combines the latest value of the receiver with the latest value from the given event producer. Will not generate an event until both event producers have generated at least one event.
+
+#### SwitchToLatest
 
 ```swift
-d.bindTo(b, fire: true, strongly: true)
+func switchToLatest() -> EventProducer<EventType.EventType>
 ```
 
+Applicable only to the event producers whose events are also event producer. Creates an event producer that forwards events from the latest inner event producer.
+
+#### Merge
+
 ```swift
-d1.bindTo(d2.valueBond, fire: true, strongly: true)
+func merge() -> EventProducer<EventType.EventType>
 ```
 
-#### Bind only
+Applicable only to the event producers whose events are also event producer. Creates an event producer that forwards events from all received inner event producers.
+
+#### IgnoreNil
 
 ```swift
-d ->| b
-d1 ->| d2
+func ignoreNil() -> EventProducer<EventType.SomeType>
 ```
 
-Establishes binding between a Dynamic and a Bond or another Dynamics's `valueBond`. Does not call Listener closure after binding. Equivalent to:
+Applicable only to the event producers whose events are optionals. Creates an event producer that forwards only events that are not nil values.
+
+#### Distinct
 
 ```swift
-d.bindTo(b, fire: false, strongly: true)
+func distinct() -> EventProducer<EventType>
 ```
 
-```swift
-d1.bindTo(d2.valueBond, fire: false, strongly: true)
-```
+Applicable only to the event producers whose events conform to the protocol `Equatable`. Creates an event producer that forwards only distinct events, i.e. no two equal events will be sent one after another.
 
-#### Bi-directional bind 
+### Bindings
 
-```swift
-d1 <->> d2
-```
-
-Establishes two way binding between two Dynamics. Equivalent to:
+Binding is a very simple concept. It's a way to propagate change. Change of a subject, like an observable, to an object, like a UI element or another observable. Let's say we need to update the observable that represents text of a label. Here is what we can do:
 
 ```swift
-d1.bindTo(d2.valueBond, fire: true, strongly: true)
-d2.bindTo(d1.valueBond, fire: false, strongly: false)
-```
+let captainName: Observable<String>
+let nameLabelText: Observable<String>
 
-### Arrays are special (and great)
-
-Remember that famous table view example from earlier? Let's see how that repositories array is defined.
-
-```swift
-let repositories: DynamicArray<Repository>
-```
-
-As you can see, arrays are special kind of Dynamics. Reason behind that is that we are usually not interested in change of the array object as whole, rather we are interested in changes that occurred within the array like insertions, deletions or updates.
-
-DynamicArray is a subclass of the Dynamic class with additional methods for array manipulation. It is designed to resemble standard Swift array. It implements same manipulation methods, subscript syntax and a support for `for-in` iteration. It's defined like this:
-
-```swift
-public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
-  public override init(_ v: Array<T>)
-  
-  public var count: Int 
-  public var capacity: Int
-  public var isEmpty: Bool 
-  public var first: T?
-  public var last: T?
-  
-  public func append(newElement: T)
-  public func append(array: Array<T>)
-  public func removeLast() -> T 
-  public func insert(newElement: T, atIndex i: Int)
-  public func splice(array: Array<T>, atIndex i: Int)
-  public func removeAtIndex(index: Int) -> T
-  public func removeAll(keepCapacity: Bool)
-  public func setArray(newValue: [T])
-  public subscript(index: Int) -> T
+captainName.observe { name in
+  nameLabelText.next(name)
 }
 ```
 
-As the DynamicArray is the subclass of the Dynamic, it can be bonded with any Bond of same generic type, but that's not what we usually want. Basic Bond object allows us to observe only value changes, and value is in this case an array as whole. In order to observe fine-grain changes, we need a special kind of Bond. It's called `ArrayBond` and it's defined in following way:
+That well make the label text update whenever the captain changes. 
 
 ```swift
-public class ArrayBond<T>: Bond<Array<T>> {
-  public var willInsertListener: ((DynamicArray<T>, [Int]) -> Void)?
-  public var didInsertListener: ((DynamicArray<T>, [Int]) -> Void)?
-
-  public var willRemoveListener: ((DynamicArray<T>, [Int]) -> Void)?
-  public var didRemoveListener: ((DynamicArray<T>, [Int]) -> Void)?
-
-  public var willUpdateListener: ((DynamicArray<T>, [Int]) -> Void)?
-  public var didUpdateListener: ((DynamicArray<T>, [Int]) -> Void)?
-  
-  public var willResetListener: (DynamicArray<T> -> Void)?
-  public var didResetListener: (DynamicArray<T> -> Void)?
-  
-  override public init()
-  override public func bind(dynamic: Dynamic<Array<T>>)
-}
+captainName.next(“Janeway”)
+print(nameLabelText.value) // prints: Janeway
 ```
 
-Yeah, it's straightforward - it allows us to register different listeners for different events. Each listener is a closure that accepts DynamicArray itself and an array of indices of objects that will be or have been changed.
-
-Listeners `will/didReset` will be called when (and only when) method `setArray` is being called. Additionally, no other listener will be called for that operation. 
-
-Let's go through one example. We'll create a new bond to our `repositories` array, this time of ArrayBond type.
+Bindings are at the core of Bond and there ought to be even simpler way to establish them. And, as you've seen it in the introduction, there is:
 
 ```swift
-let myBond = ArrayBond<Repository>()
-	
-myBond.didInsertListener = { array, indices in
-	println("Inserted objects at indices \(indices)")
-}
-	
-myBond.didUpdateListener = { array, indices in
-	println("Updated objects at indices \(indices)")
-}
-	
-repositories ->> myBond
-	
-repositories.insert(Repository(...), atIndex: 0)
-// prints: Inserted objects at indices [0]
-	
-repositories[4] = Repository(...)
-// prints: Updated objects at indices [4]
+captainName.bindTo(nameLabelText)
 ```
 
-Nice!
+Event producers and obsevables can be bound to any object that conforms to `BindableType` protocol. Event producers themselves conform to that protocol, but you can make any type conform to it.
 
-#### Map and Filter
+Method `bindTo` returns a disposable that can cancel the binding. You usually don't need to worry about that because binding will be automatically canceled when either the event producer or target are deallocated.
 
-DynamicArray supports per-element map and filter function. It does not support other functions at the moment.
+### UIKit and AppKit
 
-Map and filter functions that operate on DynamicArray differ from functions that operate on basic Dynamic in a way that they evaluate values lazily. It means that at the moment of mapping or filtering, no element from source array is transformed to destination array. Elements are transformed on an as-needed basis. Thus the map function has O(1) complexity and no unnecessary table view cell will ever get created. Filter function has O(n) complexity. (Beware that accessing `value` property of mapped or filtered DynamicArray returns empty array.)
-
-
-#### UITableView
-
-You can use dynamic array to feed a UITableView. To do this, first create a bond of type `UITableViewDataSourceBond`. You'll need to pass a table view during initialization.
+UIKit and AppKit elements, of course, do not provide properties that are observable. UIKit and AppKit are also not KVO-compliant. Bond, therefore, provides its own extensions of the UIKit and AppKit elements in order to make bindings and property observations a piece of cake. For example, Bond provides its own variant of `text` property to the `UITextField` called `bnd_text`. It's an observable of `Observable<String?>` type that you can observe or make a binding to or from it.
 
 ```swift
-var tableViewDataSourceBond: UITableViewDataSourceBond<UITableViewCell>!
+let searchTextField = UITextField()
 
-override func viewDidLoad() {
-  super.viewDidLoad()
+...
 
-  // create a data source bond for table view
-  tableViewDataSourceBond = UITableViewDataSourceBond(tableView: self.tableView)
-  
+searchTextField.bnd_text.observeNew { text in
+  print("Searching for \(text).")
   ...
 }
 ```
 
-`UITableViewDataSourceBond` will register itself as a `dataSource` for table view so you should not change table view's data source or it'll break binding! Next, you need to bind an array of type DynamicArray<UITableViewCell> to that bond. You can do that by doing map on your data source array, like this:
+To learn about available extensions just start typing `.bnd` on any UIKit or AppKit object or consult the [Extensions section](http://cocoadocs.org/docsets/Bond/4.0.0-alpha.2/Extensions.html) of the code reference. Extensions usually correspond to their respective UIKit or AppKit property names, just prefixed with `bnd_`, so it shouldn't be hard to find them.
+
+#### NSObject
+
+You rarely have to worry about disposing the observations, but when you do, Bond tries to be helpful. If you need to dispose an observation when your object (like view controller) is deallocated, you can use `bnd_bag` extension provided on NSObject (and thus on all its subclasses). It's a dispose bag, a collection of disposables, that will dispose all added disposables when your object is deallocated.
+
+For example, if your view model outlives the view controller that uses it you must manually dispose any observation you've made. The simplest way to do that is to add the disposable returned by the `observe` method to the provided dispose bag:
 
 ```swift
-  // map repositories to cells and bind
-  repositories.map { [unowned self] (repository: Repository) -> UITableViewCell in
-    let cell = self.tableView.dequeueReusableCellWithIdentifier("cell") as RepositoryTableViewCell
-    repository.name ->> cell.nameLabel
-    repository.photo ->> cell.avatarImageView
-    return cell
-  } ->> tableViewDataSourceBond
-```
-
-`UITableViewDataSourceBond` implements following methods of `UITableViewDataSource` protocol:
-
-```swift
-numberOfSectionsInTableView:
-tableView:numberOfRowsInSection:
-tableView:cellForRowAtIndexPath:
-```
-
-If you need to provide other information to the table view, you can have your class adhere to protocol `UITableViewDataSource` and implement methods you need. After that, set `nextDataSource` property of UITableViewDataSourceBond to your object.
-
-#### Multiple sections
-
-If your table view needs to display more than one section, you can feed it with a DynamicArray of DynamicArrays of UITableViewCells. Don't run away, it's actually as simple as:
-
-
-```swift
-  let sectionOfApples = apples.map { [unowned self] (apple: Apple) -> UITableViewCell in
-    let cell = self.tableView.dequeueReusableCellWithIdentifier("cell") as AppleTableViewCell
-    cell.nameLabel = apple.name
-    return cell
+class MyViewController: UIViewController {
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    
+    viewModel.name
+      .observe { name in
+        print(name)
+      }
+      .disposeIn(bnd_bag)
   }
-  
-  let sectionOfPears = pears.map { [unowned self] (pear: Pear) -> UITableViewCell in
-    let cell = self.tableView.dequeueReusableCellWithIdentifier("cell") as PearTableViewCell
-    cell.nameLabel = pear.name
-    return cell
-  }
-  
-  DynamicArray([sectionOfApples, sectionOfPears]) ->> tableViewDataSourceBond
-```
+}
+``` 
 
-#### UICollectionView
-
-Just as you can bind dynamic arrays to table views, you can bind them to collection views. Steps are same identical, just with different types: map your dynamic array to a dynamic array of `UICollectionViewCell` objects and bind it to a bond of type `UICollectionViewDataSourceBond`. Here is an example:
+Note that it's not necessary to dispose bindings. When the binding target is deallocated, the binding will be automatically disposed. That means that the following code is valid even if the view model outlives the view controller:
 
 ```swift
-var collectionViewDataSourceBond: UICollectionViewDataSourceBond<UICollectionViewCell>!
-
-override func viewDidLoad() {
-  super.viewDidLoad()
-
-  // create a data source bond for collection view
-  collectionViewDataSourceBond = UICollectionViewDataSourceBond(collectionView: self.collectionView)
+class MyViewController: UIViewController {
   
-    // map repositories to cells and bind
-  repositories.map { [unowned self] (repository: Repository, index: Int) -> UICollectionViewCell in
-    let indexPath = NSIndexPath(forItem: index, inSection: 0)
-    let cell = self.collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as RepositoryCollectionViewCell
-    repository.name ->> cell.nameLabel
-    repository.photo ->> cell.avatarImageView
-    return cell
-  } ->> collectionViewDataSourceBond
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    viewModel.name.bindTo(nameLabel.bnd_text)
+  }
+}
+``` 
+
+
+#### Notification Center
+
+You can use Bond to observe notifications from NSNotificationCenter. To do that use the following extension:
+
+```swift
+extension NSNotificationCenter {
+  public func bnd_notification(name: String, object: AnyObject?) -> EventProducer<NSNotification>
 }
 ```
 
-Notice how we've used variant of `map` that provides both an object to map and its index in the array. We need that index in order to build index path. Collection view differs from table view in that the index path is required when dequeueing cell. 
-
-It's also possible to bind multiple sections by placing individual section dynamic arrays into another dynamic array, just like it's done for table views.
+All you need to provide is a notification name you want to observe. Additionally, you can provide an object whose notifications you want to receive. Note that you should always manually dispose the observation when you no longer need it, preferably by putting the disposable in the dispose bag:
 
 ```swift
-  DynamicArray([sectionOfApples, sectionOfPears]) ->> collectionViewDataSourceBond
+NSNotificationCenter.defaultCenter().bnd_notification("MyNotification", object: nil)
+  .observe { notification in
+    print("Received \(notification).")
+  }
+  .disposeIn(bnd_bag)
+}
 ```
 
+### Observable Array
+
+When working with arrays, it's usually not enough to know only that the array has changed, but how exactly did it change. New elements could have been inserted into the array and old ones deleted or updated. Bond provides mechanisms for observing such fine-grained changes.
+
+Creating an Observable with an array would enable observation of change of the array as whole, but to observe fine-grained changes you have to use `ObservableArray` type. Just like the Observable, it is a subclass of the `EventProducer` class, but instead of sending events that match the wrapped value type, it sends events of the `ObservableArrayEvent` type.  Such event contains both the new state of the array (array itself) and the operation that was just applied to the array (like element insertion or deletion). Operation is an enum type that describes the change.
+
+Let's go through an example. Say that we need an array of names that we would like to observe. We would define it like this:
+
+```swift
+let names = ObservableArray(["Jim", "Spock"])
+```
+
+`ObservableArray` type mimics `Array` type so you can do same operations on it that you can do on the `Array` type. It also conforms to  `CollectionType` and `SequenceType` protocols.
+
+Observation is done in the same way as the observation of the Observable or EventProducer. Main point to learn is that events it generates are of `ObservableArrayEvent` type. For example:
+
+```swift
+names.observe { event in
+ print("Array is now: \(event.sequence)")
+ 
+ switch event.operation {
+ case .Insert(let elements, let fromIndex):
+   print("Inserted \(elements) from index \(fromIndex)")
+ case .Remove(let range):
+   print("Removed elements in range \(range)")
+ case .Update(let elements, let fromIndex):
+   print("Updated \(elements) from index \(fromIndex)")
+ case .Reset(let array):
+   print("Array was reset to \(array)")
+ case .Batch(let operations):
+   print("Operations \(operations) were perform on the array")
+ }
+}
+```
+
+Our observer will then be called whenever an operation is applied to the array. It will also be called initially, at the time of the registration, with the last operation that was applied to the array. In our case that would be `.Reset` operation because it represents setting the array - something that the constructor does. Following will be printed:
+
+```swift
+$ Array is now: ["Jim", "Spock"]
+$ Array was reset to ["Jim", "Spock"]
+```
+
+When we then change the array, our observer will be called. Appending new item
+
+```swift
+names.append("Scotty")
+```
+
+will result in
+
+```swift
+$ Array is now: ["Jim", "Spock", "Scotty"]
+$ Inserted ["Scotty"] from index 2
+```
+
+Updating first element 
+
+```swift
+names[0] = "Uhura"
+```
+
+will then result in
+
+```swift
+$ Array is now: ["Uhura", "Spock", "Scotty"]
+$ Updated ["Uhura"] from index 0
+```
+
+Removing first element afterwards
+
+```swift
+names.removeAtIndex(0)
+```
+
+will result in
+
+```swift
+$ Array is now: ["Spock", "Scotty"]
+$ Removed elements in range 0..<1
+```
+
+Sometimes it is necessary to batch operations to the single event. It can be done like this:
+
+
+```swift
+names.performBatchUpdates { names in
+  names.insert("Jim", atIndex: 0)
+  names.removeLast()
+}
+```
+
+will result in
+
+```swift
+$ Array is now: ["Jim", "Spock"]
+$ Operations [.Insert(elements: ["Jim"], fromIndex: 0), .Remove(range: 2..<3)] were perform on the array.
+```
+
+#### UITableView and UICollectionView
+
+Observable arrays can bound to UITableViews and UICollectionViews, leveraging that mechanisms of fine-grained change events. To bind them to those views, use following methods:
+
+```swift
+public func bindTo(tableView: UITableView, proxyDataSource: BNDTableViewProxyDataSource? = nil, createCell: (NSIndexPath, ObservableArray<ObservableArray<ElementType>>, UITableView) -> UITableViewCell) -> DisposableType {
+public func bindTo(collectionView: UICollectionView, proxyDataSource: BNDCollectionViewProxyDataSource? = nil, createCell: (NSIndexPath, ObservableArray<ObservableArray<ElementType>>, UICollectionView) -> UICollectionViewCell) -> DisposableType {
+
+```
+
+Don't let the long method signature scare you. Methods accept three arguments: a table or collection view, optional proxy data source if you need to provide other data then the cells (like section names) and a `createCell` closure that will be used to create cells. Closure must accept three arguments that you use to create a cell and it must return a cell. Arguments it must accept are index path of the needed cell, a 2D observable array and a table or a collection view to dequeue cells from.
+
+Such `bindTo` methods are provided only on two-dimensional observable arrays. The outer one represents sections and each inner one represents rows or items of the respective section. If your data is not arranged in sections so you have a one-dimension array, you can simply use `lift` method to wrap it into another array.
+
+For example, let say we have two groups of names we would like to display in two sections of a table view:
+
+```swift
+let captains = ObservableArray(["Archer", "Kirk", "Picard"])
+let firstOfficers = ObservableArray(["T'Pol", "Spock", "Riker"])
+let dataSource = ObservableArray([captains, firstOfficers])
+let tableView = UITableView()
+
+dataSource.bindTo(tableView) { indexPath, dataSource, tableView in
+  let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+  let name = dataSource[indexPath.section][indexPath.row]
+  cell.textLabel.text = name
+  return cell
+}
+
+```
+
+If, on the other hand, we want to display only captains - a one-dimensional array - we could do this:
+
+```swift
+captains.lift().bindTo(tableView) { indexPath, dataSource, tableView in
+  let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+  let name = dataSource[indexPath.section][indexPath.row]
+  cell.textLabel.text = name
+  return cell
+}
+
+```
+ 
 ### Key-Value-Observing
 
-You can create a Dynamic that observers value changes of some KVO-observable property. For example, you can bind a property of your existing Objective-C model object to a label with this simple one-liner:
+Using the Bond framework can simplify interaction with KVO properties. You can make an observable representation of them using the following constructor:
 
 ```swift
-dynamicObservableFor(self.user, keyPath: "name", defaultValue: "") ->> nameLabel
-```
-
-Default value is used when observed property is set to `nil`. Dynamic returned by this method will only observe changes the property. Setting its `value` will have no effect on bound property. If you need two way binding, keep reading.
-
-#### Two way Key-Value-Observing
-
-To create bi-directional Dynamic representation a KVO property, use the following variant of the method:
-
-```swift
-dynamicObservableFor<T>(object: NSObject, #keyPath: String, #from: AnyObject? -> T, #to: T -> AnyObject?) -> Dynamic<T> 
-```
-
-Difference is that instead of the default value you need to provide transformations *from* and *to* observed type. KVO is not type-safe so you can't see actually type, rather you see `AnyObject?`. 
-
-For example, if KVO property is of NSString type and you want its `Dynamic<String>` representation, you can do following:
-
-```swift
-let name: Dynamic<String> = dynamicObservableFor(self.user, keyPath: "name", from: { ($0 as? String) ?? "" }, to: { $0 })
-```
-
-`from` closure optionally downcasts passed value to String. That will succeed if passed value is of NSString type. It will fail if it is of some other type or if it is `nil`. `to` closure converts value to NSString. Swift can do that implicitly, so you can just pass the object.
-
-After you get a Dynamic, you can easily bind it to, for example, UITextField.
-
-```swift
-name <->> nameTextField
-```
-
-For some other types, you might need to do something like this:
-
-```swift
-let height: Dynamic<Float> = dynamicObservableFor(self.user, keyPath: "height", from: { ($0 as NSNumber).floatValue }, to: { NSNumber(float: $0) })
-```
-
-
-### NSNotificationCenter
-
-You can create a Dynamic that observers notifications posted by NSNotificationCenter. During initialization you need to provide notification name and a closure that'll parse notification into Dynamic's type. If you are interested only in notifications from specific object, pass that object too. 
-
-```swift
-let orientation: Dynamic<UIDeviceOrientation> = dynamicObservableFor(UIDeviceOrientationDidChangeNotification, object: nil) {
-  notification -> UIDeviceOrientation in
-  return UIDevice.currentDevice().orientation
+extension Observable {
+  public convenience init(object: NSObject, keyPath: String)
 }
 ```
+
+You need to provide the `object` whose `keyPath` you want observed. Note that you also need to manually specialize the observable because Swift cannot infer the type of the property given only the key path.
+
+```swift
+let name = Observable<NSString?>(object: self.viewModel, keyPath: "name")
+```
+
+Be aware that the observable strongly references the given object. You never want to observe `self`!
 
 
 ## Installation
@@ -652,7 +562,7 @@ let orientation: Dynamic<UIDeviceOrientation> = dynamicObservableFor(UIDeviceOri
 ### Carthage
 
 1. Add the following to your *Cartfile*:
-  <br> `github "SwiftBond/Bond" ~> 3.7`
+  <br> `github "SwiftBond/Bond" ~> 4.0`
 2. Run `carthage update`
 3. Add the framework as described in [Carthage Readme](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application)
 
@@ -660,7 +570,7 @@ let orientation: Dynamic<UIDeviceOrientation> = dynamicObservableFor(UIDeviceOri
 ### CocoaPods
 
 1. Add the following to your *Podfile*:
-  <br> `pod 'Bond', '~> 3.7'`
+  <br> `pod 'Bond', '~> 4.0'`
 2. Run `pod install` with CocoaPods 0.36 or newer.
 
 ### Git Submodules
@@ -682,11 +592,114 @@ let orientation: Dynamic<UIDeviceOrientation> = dynamicObservableFor(UIDeviceOri
 Just get *.swift* files from Bond/ Directory and add them to your project.
 
 
-## Roadmap
+<a name="migration"></a>
+## Migration to Bond v4
 
-Bond has yet to be shipped in an app. It was tested with many examples, but if there is a bug, please don't yell. Open an Issue, fix it yourself and make a pull request or contact me on Twitter (@srdanrasic) or by email (srdan.rasic@gmail.com). Should you have any suggestion or a critique, do the same.
+
+Bond v4 represents a major evolution of the framework. It's core has been rewritten from scratch and, while concepts are still pretty much the same, some things have changed from the outside to. In order to successfully upgrade your project to Bond v4, it is recommended to re-read this document. After that, you can proceed with the conversion: 
+
+### Dynamic become **Observable**
+
+Convert objects of `Dynamic` type to `Observable` type. Simple renaming should do the trick. 
+
+### DynamicArray become **ObservableArray**
+
+Convert objects of `DynamicArray` type to `ObservableArray` type. Simple renaming should do the trick. 
+
+### Bond and ArrayBond are deprecated
+
+Bonds were used to observe changes of a Dynamic. With Bond v4, observing changes is much simpler. Instead of creating a new object, you can now use `observe` method on any Observable type. In other words, code like
+
+```swift
+let myBond = Bond<Int>() { value in
+  print("Number of followers changed to \(value).")
+}
+
+numberOfFollowers.bindTo(myBond)
+```
+
+becomes
+
+```swift
+numberOfFollowers.observe { value in
+  println("Number of followers changed to \(value).")
+}
+```
+
+To cancel observing in v3 you have used `unbindAll` method on the Bond. In v4, cancelling the observation or unbinding the object is done with a *disposable*. Methods `observe` and `bindTo` return an object of a Disposable type. You can use that object to cancel observing, like this:
+
+```swift
+let disposable = numberOfFollowers.observe { value in
+  println("Number of followers changed to \(value).")
+}
+
+// ... and if you wish to cancel observing later, just call:
+disposable.dispose()
+```
+
+Observing ObservableArrays is similar. Instead of calling various closures like DynamicArray did in v3, ObservableArray in v4 is an Observable that sends events that describe operation that was just applied to the ObservableArray. You can observe those in a following way:
+
+```swift
+array.observe { event in
+ switch event.operation {
+ case .Insert(let elements, let fromIndex):
+   // Did insert elements
+ case .Update(let elements, let fromIndex):
+   // Did update elements
+ case .Remove(let range):
+   // Did remove elements
+ case .Reset(let array):
+   // Did replace whole array with the another array
+ case .Batch(let operations):
+   // Did perform batch updates
+ }
+}
+```
+
+### Extension are now prefixed with `bnd_`
+
+In Bond v3, extensions were prefixed with `dyn`, like in `textField.dynText`. As Dynamics are now gone it makes no sense to keep that prefix. In v4 all extensions provided by Bond framework are prefixed with `bnd_`.
+
+### Designated Dynamics are gone
+
+While in Bond v3 you were able to bind, for example, a boolean Dynamic to a button,
+
+```swift
+canLogin.bindTo(loginButton)
+```
+
+it would not be clear from that line of code where you were really binding the value to. In Bond v4 you have to be specific and always provide a bindable destination, like:
 
 
+```swift
+canLogin.bindTo(loginButton.bnd_enabled)
+```
+ 
+Hope is that this will reduce any confusion and improve the code readability.
+
+### Method `bindTo` is now preferred way to bind objects
+
+Talking about the code readability, another important decision has been made. In order to clearly express action behind a line of the code, method `bindTo` has become a preferred way to bind objects. Operators `->>` and `->><` are still available, but their usage is not recommended. 
+
+
+### _Bind only_ operator `->|` is gone
+
+You can use method `observeNew` to observe only events that happen after the binding took place. Alternatively, you can use `skip` method to skip event replaying:
+
+```swift
+name.skip(name.replayLength).bindTo(nameLabel.bnd_text)
+```
+
+### Method `reduce` is deprecated
+
+What method `reduce` did in v3 can now be achieved with a combination of `combineLatest` and `map` methods.
+
+```swift
+combineLatest(userLabel.bnd_text, passLabel.bnd_text).map { user, pass in
+  // do something
+}
+```
+ 
 ## Release Notes
 
 https://github.com/SwiftBond/Bond/releases

@@ -13,15 +13,15 @@ import Bond
 class UINavigationItemTests : XCTestCase {
     
     func testUINavigationItemTitleBond() {
-        var dynamicDriver = Dynamic<String>("TestTitle")
+        let observable = Observable<String>("TestTitle")
         let item = UINavigationItem()
         
         XCTAssert(item.title == nil, "Initial value")
         
-        dynamicDriver ->> item.dynTitle
+        observable.bindTo(item.bnd_title)
         XCTAssert(item.title == "TestTitle", "Value after binding")
         
-        dynamicDriver.value = "TestTitle2"
-        XCTAssert(item.title == "TestTitle2", "Value after dynamic change")
+        observable.value = "TestTitle2"
+        XCTAssert(item.title == "TestTitle2", "Value after observable change")
     }
 }

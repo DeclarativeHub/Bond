@@ -13,46 +13,46 @@ import Bond
 class UIBarItemTests: XCTestCase {
 
   func testUIBarItemEnabledBond() {
-    var dynamicDriver = Dynamic<Bool>(false)
+    let observable = Observable<Bool>(false)
     let barItem = UIBarButtonItem()
     
     barItem.enabled = true
     XCTAssert(barItem.enabled == true, "Initial value")
     
-    dynamicDriver ->> barItem.designatedBond
+    observable.bindTo(barItem.bnd_enabled)
     XCTAssert(barItem.enabled == false, "Value after binding")
     
-    dynamicDriver.value = true
-    XCTAssert(barItem.enabled == true, "Value after dynamic change")
+    observable.value = true
+    XCTAssert(barItem.enabled == true, "Value after observable change")
   }
   
   func testUIBarItemTitleBond() {
-    var dynamicDriver = Dynamic<String>("b")
+    let observable = Observable<String>("b")
     let barItem = UIBarButtonItem()
     
     barItem.title = "a"
     XCTAssert(barItem.title == "a", "Initial value")
     
-    dynamicDriver ->> barItem.dynTitle
+    observable.bindTo(barItem.bnd_title)
     XCTAssert(barItem.title == "b", "Value after binding")
     
-    dynamicDriver.value = "c"
-    XCTAssert(barItem.title == "c", "Value after dynamic change")
+    observable.value = "c"
+    XCTAssert(barItem.title == "c", "Value after observable change")
   }
   
   func testUIBarItemImageBond() {
     let image1 = UIImage()
     let image2 = UIImage()
-    var dynamicDriver = Dynamic<UIImage?>(nil)
+    let observable = Observable<UIImage?>(nil)
     let barItem = UIBarButtonItem()
     
     barItem.image = image1
     XCTAssert(barItem.image == image1, "Initial value")
     
-    dynamicDriver ->> barItem.dynImage
+    observable.bindTo(barItem.bnd_image)
     XCTAssert(barItem.image == nil, "Value after binding")
     
-    dynamicDriver.value = image2
-    XCTAssert(barItem.image == image2, "Value after dynamic change")
+    observable.value = image2
+    XCTAssert(barItem.image == image2, "Value after observable change")
   }
 }

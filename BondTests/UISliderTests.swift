@@ -12,68 +12,69 @@ import Bond
 
 class UISliderTests: XCTestCase {
 
-  func testUISliderDynamic() {
-    var dynamicDriver = Dynamic<Float>(0)
+  func testUISliderObservable() {
+    let observable = Observable<Float>(0)
     let slider = UISlider()
     
     slider.value = 0.1
     XCTAssert(slider.value == 0.1, "Initial value")
     
-    dynamicDriver <->> slider.dynValue
+    observable.bidirectionalBindTo(slider.bnd_value)
     XCTAssert(slider.value == 0.0, "Slider value after binding")
     
-    dynamicDriver.value = 0.5
-    XCTAssert(slider.value == 0.5, "Slider value reflects dynamic value change")
+    observable.value = 0.5
+    XCTAssert(slider.value == 0.5, "Slider value reflects observable value change")
     
     slider.value = 0.8
     slider.sendActionsForControlEvents(.ValueChanged) // simulate user input
-    XCTAssert(dynamicDriver.value == 0.8, "Dynamic value reflects slider value change")
+    XCTAssert(observable.value == 0.8, "Observable value reflects slider value change")
   }
   
   func testOneWayOperators() {
     var bondedValue: Float = 0
-    let bond = Bond { bondedValue = $0 }
-    let dynamicDriver = Dynamic<Float>(0.1)
+    let observable = Observable<Float>(0.1)
     let slider1 = UISlider()
     let slider2 = UISlider()
     
     XCTAssertEqual(bondedValue, Float(0), "Initial value")
     
-    dynamicDriver ->> slider1
-    slider1 ->> slider2
-    slider2 ->> bond
+    observable.bindTo(slider1.bnd_value)
+    slider1.bnd_value.bindTo(slider2.bnd_value)
+    slider2.bnd_value.observe {
+      bondedValue = $0
+    }
     
     XCTAssertEqual(bondedValue, Float(0.1), "Value after binding")
     
-    dynamicDriver.value = 0.7
+    observable.value = 0.7
     
     XCTAssertEqual(bondedValue, Float(0.7), "Value after change")
   }
 
   func testTwoWayOperators() {
-    let dynamicDriver1 = Dynamic<Float>(0.1)
-    let dynamicDriver2 = Dynamic<Float>(0.2)
+    let observable1 = Observable<Float>(0.1)
+    let observable2 = Observable<Float>(0.2)
     let slider1 = UISlider()
     let slider2 = UISlider()
     
-    XCTAssertEqual(dynamicDriver1.value, Float(0.1), "Initial value")
-    XCTAssertEqual(dynamicDriver2.value, Float(0.2), "Initial value")
+    XCTAssertEqual(observable1.value, Float(0.1), "Initial value")
+    XCTAssertEqual(observable2.value, Float(0.2), "Initial value")
     
-    dynamicDriver1 <->> slider1
-    slider1 <->> slider2
-    slider2 <->> dynamicDriver2
+    observable1.bidirectionalBindTo(slider1.bnd_value)
+    slider1.bnd_value.bidirectionalBindTo(slider2.bnd_value)
+    slider2.bnd_value.bidirectionalBindTo(observable2)
     
-    XCTAssertEqual(dynamicDriver1.value, Float(0.1), "Value after binding")
-    XCTAssertEqual(dynamicDriver2.value, Float(0.1), "Value after binding")
+    XCTAssertEqual(observable1.value, Float(0.1), "Value after binding")
+    XCTAssertEqual(observable2.value, Float(0.1), "Value after binding")
     
-    dynamicDriver1.value = 0.3
+    observable1.value = 0.3
     
-    XCTAssertEqual(dynamicDriver1.value, Float(0.3), "Value after change")
-    XCTAssertEqual(dynamicDriver2.value, Float(0.3), "Value after change")
+    XCTAssertEqual(observable1.value, Float(0.3), "Value after change")
+    XCTAssertEqual(observable2.value, Float(0.3), "Value after change")
 
-    dynamicDriver2.value = 0.4
+    observable2.value = 0.4
     
-    XCTAssertEqual(dynamicDriver1.value, Float(0.4), "Value after change")
-    XCTAssertEqual(dynamicDriver2.value, Float(0.4), "Value after change")
+    XCTAssertEqual(observable1.value, Float(0.4), "Value after change")
+    XCTAssertEqual(observable2.value, Float(0.4), "Value after change")
   }
 }

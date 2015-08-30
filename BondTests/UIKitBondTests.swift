@@ -13,203 +13,187 @@ import Bond
 class UIKitTests: XCTestCase {
   
   func testUIViewHiddenBond() {
-    var dynamicDriver = Dynamic<Bool>(false)
+    let observable = Observable<Bool>(false)
     let view = UIView()
     
     view.hidden = true
     XCTAssert(view.hidden == true, "Initial value")
     
-    dynamicDriver ->> view.dynHidden
+    observable.bindTo(view.bnd_hidden)
     XCTAssert(view.hidden == false, "Value after binding")
     
-    dynamicDriver.value = true
-    XCTAssert(view.hidden == true, "Value after dynamic change")
+    observable.value = true
+    XCTAssert(view.hidden == true, "Value after observable change")
   }
   
   func testUIViewAlphaBond() {
-    var dynamicDriver = Dynamic<CGFloat>(0.1)
+    let observable = Observable<CGFloat>(0.1)
     let view = UIView()
     
     view.alpha = 0.0
     XCTAssert(abs(view.alpha - 0.0) < 0.0001, "Initial value")
     
-    dynamicDriver ->> view.dynAlpha
+    observable.bindTo(view.bnd_alpha)
     XCTAssert(abs(view.alpha - 0.1) < 0.0001, "Value after binding")
     
-    dynamicDriver.value = 0.5
-    XCTAssert(abs(view.alpha - 0.5) < 0.0001, "Value after dynamic change")
+    observable.value = 0.5
+    XCTAssert(abs(view.alpha - 0.5) < 0.0001, "Value after observable change")
   }
   
   func testUIViewBackgroundColorBond() {
-    var dynamicDriver = Dynamic<UIColor>(UIColor.blackColor())
+    let observable = Observable<UIColor>(UIColor.blackColor())
     let view = UIView()
     
     view.backgroundColor = UIColor.redColor()
     XCTAssert(view.backgroundColor == UIColor.redColor(), "Initial value")
     
-    dynamicDriver ->> view.dynBackgroundColor
+    observable.bindTo(view.bnd_backgroundColor)
     XCTAssert(view.backgroundColor == UIColor.blackColor(), "Value after binding")
     
-    dynamicDriver.value = UIColor.blueColor()
-    XCTAssert(view.backgroundColor == UIColor.blueColor(), "Value after dynamic change")
+    observable.value = UIColor.blueColor()
+    XCTAssert(view.backgroundColor == UIColor.blueColor(), "Value after observable change")
   }
   
   func testUILabelBond() {
-    var dynamicDriver = Dynamic<String>("b")
+    let observable = Observable<String>("b")
     let label = UILabel()
     
     label.text = "a"
     XCTAssert(label.text == "a", "Initial value")
     
-    dynamicDriver ->> label.designatedBond
+    observable.bindTo(label.bnd_text)
     XCTAssert(label.text == "b", "Value after binding")
     
-    dynamicDriver.value = "c"
-    XCTAssert(label.text == "c", "Value after dynamic change")
+    observable.value = "c"
+    XCTAssert(label.text == "c", "Value after observable change")
   }
   
   func testUILabelAttributedTextBond() {
-    var dynamicDriver = Dynamic<NSAttributedString>(NSAttributedString(string: "b"))
+    let observable = Observable<NSAttributedString>(NSAttributedString(string: "b"))
     let label = UILabel()
     
     label.text = "a"
     XCTAssert(label.text == "a", "Initial value")
     
-    dynamicDriver ->> label.dynAttributedText
-    XCTAssert(label.attributedText.string == "b", "Value after binding")
+    observable.bindTo(label.bnd_attributedText)
+    XCTAssert(label.attributedText!.string == "b", "Value after binding")
     
-    dynamicDriver.value = NSAttributedString(string: "c")
-    XCTAssert(label.attributedText.string == "c", "Value after dynamic change")
+    observable.value = NSAttributedString(string: "c")
+    XCTAssert(label.attributedText!.string == "c", "Value after observable change")
   }
 
   func testUIProgressViewBond() {
-    var dynamicDriver = Dynamic<Float>(0)
+    let observable = Observable<Float>(0)
     let progressView = UIProgressView()
     
     progressView.progress = 0.1
     XCTAssert(progressView.progress == 0.1, "Initial value")
     
-    dynamicDriver ->> progressView.designatedBond
+    observable.bindTo(progressView.bnd_progress)
     XCTAssert(progressView.progress == 0.0, "Value after binding")
     
-    dynamicDriver.value = 0.5
-    XCTAssert(progressView.progress == 0.5, "Value after dynamic change")
+    observable.value = 0.5
+    XCTAssert(progressView.progress == 0.5, "Value after observable change")
   }
   
   func testUIImageViewBond() {
     let image = UIImage()
-    var dynamicDriver = Dynamic<UIImage?>(nil)
+    let observable = Observable<UIImage?>(nil)
     let imageView = UIImageView()
     
     imageView.image = image
     XCTAssert(imageView.image == image, "Initial value")
     
-    dynamicDriver ->> imageView.designatedBond
+    observable.bindTo(imageView.bnd_image)
     XCTAssert(imageView.image == nil, "Value after binding")
     
     imageView.image = image
-    XCTAssert(imageView.image == image, "Value after dynamic change")
+    XCTAssert(imageView.image == image, "Value after observable change")
   }
   
   func testUIButtonEnabledBond() {
-    var dynamicDriver = Dynamic<Bool>(false)
+    let observable = Observable<Bool>(false)
     let button = UIButton()
     
     button.enabled = true
     XCTAssert(button.enabled == true, "Initial value")
     
-    dynamicDriver ->> button.designatedBond
+    observable.bindTo(button.bnd_enabled)
     XCTAssert(button.enabled == false, "Value after binding")
     
-    dynamicDriver.value = true
-    XCTAssert(button.enabled == true, "Value after dynamic change")
+    observable.value = true
+    XCTAssert(button.enabled == true, "Value after observable change")
   }
   
   func testUIButtonTitleBond() {
-    var dynamicDriver = Dynamic<String>("b")
+    let observable = Observable<String>("b")
     let button = UIButton()
     
     button.titleLabel?.text = "a"
     XCTAssert(button.titleLabel?.text == "a", "Initial value")
     
-    dynamicDriver ->> button.dynTitle
+    observable.bindTo(button.bnd_title)
     XCTAssert(button.titleLabel?.text == "b", "Value after binding")
     
-    dynamicDriver.value = "c"
-    XCTAssert(button.titleLabel?.text == "c", "Value after dynamic change")
-  }
-  
-  func testUIButtonImageBond() {
-    let image1 = UIImage()
-    let image2 = UIImage()
-    var dynamicDriver = Dynamic<UIImage?>(nil)
-    let button = UIButton()
-    
-    button.setImage(image1, forState: .Normal)
-    XCTAssert(button.imageForState(.Normal) == image1, "Initial value")
-    
-    dynamicDriver ->> button.dynImageForNormalState
-    XCTAssert(button.imageForState(.Normal) == nil, "Value after binding")
-    
-    dynamicDriver.value = image2
-    XCTAssert(button.imageForState(.Normal) == image2, "Value after dynamic change")
+    observable.value = "c"
+    XCTAssert(button.titleLabel?.text == "c", "Value after observable change")
   }
   
   func testUIBarItemEnabledBond() {
-    var dynamicDriver = Dynamic<Bool>(false)
+    let observable = Observable<Bool>(false)
     let barItem = UIBarButtonItem()
     
     barItem.enabled = true
     XCTAssert(barItem.enabled == true, "Initial value")
     
-    dynamicDriver ->> barItem.designatedBond
+    observable.bindTo(barItem.bnd_enabled)
     XCTAssert(barItem.enabled == false, "Value after binding")
     
-    dynamicDriver.value = true
-    XCTAssert(barItem.enabled == true, "Value after dynamic change")
+    observable.value = true
+    XCTAssert(barItem.enabled == true, "Value after observable change")
   }
   
   func testUIBarItemTitleBond() {
-    var dynamicDriver = Dynamic<String>("b")
+    let observable = Observable<String>("b")
     let barItem = UIBarButtonItem()
     
     barItem.title = "a"
     XCTAssert(barItem.title == "a", "Initial value")
     
-    dynamicDriver ->> barItem.dynTitle
+    observable.bindTo(barItem.bnd_title)
     XCTAssert(barItem.title == "b", "Value after binding")
     
-    dynamicDriver.value = "c"
-    XCTAssert(barItem.title == "c", "Value after dynamic change")
+    observable.value = "c"
+    XCTAssert(barItem.title == "c", "Value after observable change")
   }
   
   func testUIBarItemImageBond() {
     let image1 = UIImage()
     let image2 = UIImage()
-    var dynamicDriver = Dynamic<UIImage?>(nil)
+    let observable = Observable<UIImage?>(nil)
     let barItem = UIBarButtonItem()
     
     barItem.image = image1
     XCTAssert(barItem.image == image1, "Initial value")
     
-    dynamicDriver ->> barItem.dynImage
+    observable.bindTo(barItem.bnd_image)
     XCTAssert(barItem.image == nil, "Value after binding")
     
-    dynamicDriver.value = image2
-    XCTAssert(barItem.image == image2, "Value after dynamic change")
+    observable.value = image2
+    XCTAssert(barItem.image == image2, "Value after observable change")
   }
   
   func testUIActivityIndicatorViewHiddenBond() {
-    var dynamicDriver = Dynamic<Bool>(false)
+    let observable = Observable<Bool>(false)
     let view = UIActivityIndicatorView()
     
     view.startAnimating()
     XCTAssert(view.isAnimating() == true, "Initial value")
     
-    dynamicDriver ->> view.dynIsAnimating
+    observable.bindTo(view.bnd_animating)
     XCTAssert(view.isAnimating() == false, "Value after binding")
     
-    dynamicDriver.value = true
-    XCTAssert(view.isAnimating() == true, "Value after dynamic change")
+    observable.value = true
+    XCTAssert(view.isAnimating() == true, "Value after observable change")
   }
 }

@@ -13,16 +13,16 @@ import Bond
 class UIProgressViewTests: XCTestCase {
 
   func testUIProgressViewBond() {
-    var dynamicDriver = Dynamic<Float>(0)
+    let observable = Observable<Float>(0)
     let progressView = UIProgressView()
     
     progressView.progress = 0.1
     XCTAssert(progressView.progress == 0.1, "Initial value")
     
-    dynamicDriver ->> progressView.designatedBond
+    observable.bindTo(progressView.bnd_progress)
     XCTAssert(progressView.progress == 0.0, "Value after binding")
     
-    dynamicDriver.value = 0.5
-    XCTAssert(progressView.progress == 0.5, "Value after dynamic change")
+    observable.value = 0.5
+    XCTAssert(progressView.progress == 0.5, "Value after observable change")
   }
 }

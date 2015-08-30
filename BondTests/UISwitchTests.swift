@@ -12,68 +12,68 @@ import Bond
 
 class UISwitchTests: XCTestCase {
 
-  func testUISwitchDynamic() {
-    var dynamicDriver = Dynamic<Bool>(false)
+  func testUISwitchObservable() {
+    let observable = Observable<Bool>(false)
     let uiSwitch = UISwitch()
     
     uiSwitch.on = true
     XCTAssert(uiSwitch.on == true, "Initial value")
     
-    dynamicDriver <->> uiSwitch.dynOn
+    observable.bidirectionalBindTo(uiSwitch.bnd_on)
     XCTAssert(uiSwitch.on == false, "Switch value after binding")
     
-    dynamicDriver.value = true
-    XCTAssert(uiSwitch.on == true, "Switch value reflects dynamic value change")
+    observable.value = true
+    XCTAssert(uiSwitch.on == true, "Switch value reflects observable value change")
     
     uiSwitch.on = false
     uiSwitch.sendActionsForControlEvents(.ValueChanged) //simulate user input
-    XCTAssert(dynamicDriver.value == false, "Dynamic value reflects switch value change")
+    XCTAssert(observable.value == false, "Observable value reflects switch value change")
   }
   
   func testOneWayOperators() {
     var bondedValue = true
-    let bond = Bond { bondedValue = $0 }
-    let dynamicDriver = Dynamic<Bool>(false)
+    let observable = Observable<Bool>(false)
     let switch1 = UISwitch()
     let switch2 = UISwitch()
     
     XCTAssertEqual(bondedValue, true, "Initial value")
     
-    dynamicDriver ->> switch1
-    switch1 ->> switch2
-    switch2 ->> bond
+    observable.bindTo(switch1.bnd_on)
+    switch1.bnd_on.bindTo(switch2.bnd_on)
+    switch2.bnd_on.observe {
+      bondedValue = $0
+    }
     
     XCTAssertEqual(bondedValue, false, "Value after binding")
-    
-    dynamicDriver.value = true
-    
+
+    observable.value = true
     XCTAssertEqual(bondedValue, true, "Value after change")
   }
   
   func testTwoWayOperators() {
-    let dynamicDriver1 = Dynamic<Bool>(true)
-    let dynamicDriver2 = Dynamic<Bool>(false)
+    let observable1 = Observable<Bool>(true)
+    let observable2 = Observable<Bool>(false)
     let switch1 = UISwitch()
     let switch2 = UISwitch()
     
-    XCTAssertEqual(dynamicDriver1.value, true, "Initial value")
-    XCTAssertEqual(dynamicDriver2.value, false, "Initial value")
+    XCTAssertEqual(observable1.value, true, "Initial value")
+    XCTAssertEqual(observable2.value, false, "Initial value")
     
-    dynamicDriver1 <->> switch1
-    switch1 <->> switch2
-    switch2 <->> dynamicDriver2
+    observable1.bidirectionalBindTo(switch1.bnd_on)
+    switch1.bnd_on.bidirectionalBindTo(switch2.bnd_on)
+    switch2.bnd_on.bidirectionalBindTo(observable2)
     
-    XCTAssertEqual(dynamicDriver1.value, true, "Value after binding")
-    XCTAssertEqual(dynamicDriver2.value, true, "Value after binding")
+    XCTAssertEqual(observable1.value, true, "Value after binding")
+    XCTAssertEqual(observable2.value, true, "Value after binding")
     
-    dynamicDriver1.value = false
+    observable1.value = false
     
-    XCTAssertEqual(dynamicDriver1.value, false, "Value after change")
-    XCTAssertEqual(dynamicDriver2.value, false, "Value after change")
+    XCTAssertEqual(observable1.value, false, "Value after change")
+    XCTAssertEqual(observable2.value, false, "Value after change")
 
-    dynamicDriver2.value = true
+    observable2.value = true
     
-    XCTAssertEqual(dynamicDriver1.value, true, "Value after change")
-    XCTAssertEqual(dynamicDriver2.value, true, "Value after change")
+    XCTAssertEqual(observable1.value, true, "Value after change")
+    XCTAssertEqual(observable2.value, true, "Value after change")
   }
 }

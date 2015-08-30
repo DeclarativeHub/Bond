@@ -12,112 +12,116 @@ import Bond
 
 class UITextViewTests: XCTestCase {
 
-  func testUITextViewDynamic() {
-    var dynamicDriver = Dynamic<String>("b")
+  func testUITextViewObservable() {
+    let observable = Observable<String?>("b")
     let textView = UITextView()
     
     textView.text = "a"
     XCTAssert(textView.text == "a", "Initial value")
     
-    dynamicDriver <->> textView.dynText
+    observable.bidirectionalBindTo(textView.bnd_text)
     XCTAssert(textView.text == "b", "Text view value after binding")
     
-    dynamicDriver.value = "c"
-    XCTAssert(textView.text == "c", "Text view value reflects dynamic value change")
+    observable.value = "c"
+    XCTAssert(textView.text == "c", "Text view value reflects observable value change")
     
     textView.text = "d"
     NSNotificationCenter.defaultCenter().postNotificationName(UITextViewTextDidChangeNotification, object: textView)
-    XCTAssert(textView.dynText.value == "d", "Dynamic value reflects text view value change")
-    XCTAssert(dynamicDriver.value == "d", "Dynamic value reflects text view value change")
+    XCTAssert(textView.bnd_text.value == "d", "Observable value reflects text view value change")
+    XCTAssert(observable.value == "d", "Observable value reflects text view value change")
   }
   
-  func testUITextViewAttributedDynamic() {
-    var dynamicDriver = Dynamic<NSAttributedString>(NSAttributedString(string: "b"))
+  func testUITextViewAttributedObservable() {
+    let observable = Observable<NSAttributedString?>(NSAttributedString(string: "b"))
     let textView = UITextView()
     
     textView.attributedText = NSAttributedString(string: "a")
     XCTAssert(textView.attributedText.string == "a", "Initial value")
     
-    dynamicDriver <->> textView.dynAttributedText
+    observable.bidirectionalBindTo(textView.bnd_attributedText)
     XCTAssert(textView.attributedText.string == "b", "Text view value after binding")
     
-    dynamicDriver.value = NSAttributedString(string: "c")
-    XCTAssert(textView.attributedText.string == "c", "Text view value reflects dynamic value change")
+    observable.value = NSAttributedString(string: "c")
+    XCTAssert(textView.attributedText.string == "c", "Text view value reflects observable value change")
     
     textView.attributedText = NSAttributedString(string: "d")
     NSNotificationCenter.defaultCenter().postNotificationName(UITextViewTextDidChangeNotification, object: textView)
-    XCTAssert(textView.dynAttributedText.value.string == "d", "Dynamic value reflects text view value change")
-    XCTAssert(dynamicDriver.value.string == "d", "Dynamic value reflects text view value change")
+    XCTAssert(textView.bnd_attributedText.value == textView.attributedText, "Observable value reflects text view value change")
+    XCTAssert(observable.value == textView.attributedText, "Observable value reflects text view value change")
   }
   
   func testOneWayOperators() {
-    var bondedValue: String = ""
-    let bond = Bond { bondedValue = $0 }
-    let dynamicDriver = Dynamic<String>("a")
+    var bondedValue: String? = ""
+    let observable = Observable<String?>("a")
     let textView1 = UITextView()
     let textView2 = UITextView()
     let textField = UITextField()
     let label = UILabel()
     
     XCTAssertEqual(bondedValue, "", "Initial value")
-    XCTAssertEqual(textField.text, "", "Initial value")
-    XCTAssertEqual(label.text, nil, "Initial value")
+    XCTAssert(textField.text == "", "Initial value")
+    XCTAssert(label.text == nil, "Initial value")
     
-    dynamicDriver ->> textView1
-    textView1 ->> textView2
-    textView2 ->> bond
-    textView2 ->> textField
-    textView2 ->> label
+    observable.bindTo(textView1.bnd_text)
+    textView1.bnd_text.bindTo(textView2.bnd_text)
+    textView2.bnd_text.observe { bondedValue = $0 }
+    textView2.bnd_text.bindTo(textField.bnd_text)
+    textView2.bnd_text.bindTo(label.bnd_text)
     
     XCTAssertEqual(bondedValue, "a", "Value after binding")
-    XCTAssertEqual(textField.text, "a", "Value after binding")
-    XCTAssertEqual(label.text, "a", "Value after binding")
+    XCTAssert(textField.text == "a", "Value after binding")
+    XCTAssert(label.text == "a", "Value after binding")
     
-    dynamicDriver.value = "b"
+    observable.value = "b"
     
     XCTAssertEqual(bondedValue, "b", "Value after change")
-    XCTAssertEqual(textField.text, "b", "Value after change")
-    XCTAssertEqual(label.text, "b", "Value after change")
+    XCTAssert(textField.text == "b", "Value after change")
+    XCTAssert(label.text == "b", "Value after change")
   }
   
   func testTwoWayOperators() {
-    let dynamicDriver1 = Dynamic<String>("a")
-    let dynamicDriver2 = Dynamic<String>("z")
+    let observable1 = Observable<String>("a")
+    let observable2 = Observable<String>("z")
     let textView1 = UITextView()
     let textView2 = UITextView()
     let textField = UITextField()
     textField.text = "1"
     
-    XCTAssertEqual(dynamicDriver1.value, "a", "Initial value")
-    XCTAssertEqual(dynamicDriver2.value, "z", "Initial value")
-    XCTAssertEqual(textField.text, "1", "Initial value")
+    XCTAssertEqual(observable1.value, "a", "Initial value")
+    XCTAssertEqual(observable2.value, "z", "Initial value")
+    XCTAssert(textField.text == "1", "Initial value")
     
-    dynamicDriver1 <->> textView1
-    textView1 <->> textView2
-    textView2 <->> dynamicDriver2
-    textView2 <->> textField
-    
-    XCTAssertEqual(dynamicDriver1.value, "a", "Value after binding")
-    XCTAssertEqual(dynamicDriver2.value, "a", "Value after binding")
-    XCTAssertEqual(textField.text, "a", "Value after binding")
-    
-    dynamicDriver1.value = "b"
-    
-    XCTAssertEqual(dynamicDriver1.value, "b", "Value after change")
-    XCTAssertEqual(dynamicDriver2.value, "b", "Value after change")
-    XCTAssertEqual(textField.text, "b", "Value after change")
+    observable1.bindTo(textView1.bnd_text)
+    textView1.bnd_text.ignoreNil().bindTo(observable1)
 
-    dynamicDriver2.value = "y"
+    textView1.bnd_text.bidirectionalBindTo(textView2.bnd_text)
     
-    XCTAssertEqual(dynamicDriver1.value, "y", "Value after change")
-    XCTAssertEqual(dynamicDriver2.value, "y", "Value after change")
-    XCTAssertEqual(textField.text, "y", "Value after change")
+    textView2.bnd_text.ignoreNil().bindTo(observable2)
+    observable2.bindTo(textView2.bnd_text)
+    
+    textView2.bnd_text.bidirectionalBindTo(textField.bnd_text)
+    
+    XCTAssertEqual(observable1.value, "a", "Value after binding")
+    XCTAssertEqual(observable2.value, "a", "Value after binding")
+    XCTAssert(textField.text! == "a", "Value after binding")
+    
+    observable1.value = "b"
+    
+    XCTAssertEqual(observable1.value, "b", "Value after change")
+    XCTAssertEqual(observable2.value, "b", "Value after change")
+    XCTAssert(textField.text! == "b", "Value after change")
+
+    observable2.value = "y"
+    
+    XCTAssertEqual(observable1.value, "y", "Value after change")
+    XCTAssertEqual(observable2.value, "y", "Value after change")
+    XCTAssert(textField.text! == "y", "Value after change")
     
     textField.text = "2"
     textField.sendActionsForControlEvents(.EditingChanged)
     
-    XCTAssertEqual(dynamicDriver1.value, "2", "Value after change")
-    XCTAssertEqual(dynamicDriver2.value, "2", "Value after change")
-    XCTAssertEqual(textField.text, "2", "Value after change")
+    XCTAssertEqual(observable1.value, "2", "Value after change")
+    XCTAssertEqual(observable2.value, "2", "Value after change")
+    XCTAssert(textField.text! == "2", "Value after change")
   }
 }

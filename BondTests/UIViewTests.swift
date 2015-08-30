@@ -13,58 +13,73 @@ import Bond
 class UIViewTests: XCTestCase {
 
   func testUIViewHiddenBond() {
-    var dynamicDriver = Dynamic<Bool>(false)
+    let observable = Observable<Bool>(false)
     let view = UIView()
     
     view.hidden = true
     XCTAssert(view.hidden == true, "Initial value")
     
-    dynamicDriver ->> view.dynHidden
+    observable.bindTo(view.bnd_hidden)
     XCTAssert(view.hidden == false, "Value after binding")
     
-    dynamicDriver.value = true
-    XCTAssert(view.hidden == true, "Value after dynamic change")
+    observable.value = true
+    XCTAssert(view.hidden == true, "Value after observable change")
   }
   
   func testUIViewAlphaBond() {
-    var dynamicDriver = Dynamic<CGFloat>(0.1)
+    let observable = Observable<CGFloat>(0.1)
     let view = UIView()
     
     view.alpha = 0.0
     XCTAssert(abs(view.alpha - 0.0) < 0.0001, "Initial value")
     
-    dynamicDriver ->> view.dynAlpha
+    observable.bindTo(view.bnd_alpha)
     XCTAssert(abs(view.alpha - 0.1) < 0.0001, "Value after binding")
     
-    dynamicDriver.value = 0.5
-    XCTAssert(abs(view.alpha - 0.5) < 0.0001, "Value after dynamic change")
+    observable.value = 0.5
+    XCTAssert(abs(view.alpha - 0.5) < 0.0001, "Value after observable change")
   }
   
   func testUIViewBackgroundColorBond() {
-    var dynamicDriver = Dynamic<UIColor>(UIColor.blackColor())
+    let observable = Observable<UIColor>(UIColor.blackColor())
     let view = UIView()
     
     view.backgroundColor = UIColor.redColor()
     XCTAssert(view.backgroundColor == UIColor.redColor(), "Initial value")
     
-    dynamicDriver ->> view.dynBackgroundColor
+    observable.bindTo(view.bnd_backgroundColor)
     XCTAssert(view.backgroundColor == UIColor.blackColor(), "Value after binding")
     
-    dynamicDriver.value = UIColor.blueColor()
-    XCTAssert(view.backgroundColor == UIColor.blueColor(), "Value after dynamic change")
+    observable.value = UIColor.blueColor()
+    XCTAssert(view.backgroundColor == UIColor.blueColor(), "Value after observable change")
   }
     
   func testUIViewUserInteractionEnabledBond() {
-    var dynamicDriver = Dynamic<Bool>(false)
+    let observable = Observable<Bool>(false)
     let view = UIView()
 
     view.userInteractionEnabled = true
     XCTAssert(view.userInteractionEnabled == true, "Initial value")
 
-    dynamicDriver ->> view.dynUserInteractionEnabled
+    observable.bindTo(view.bnd_userInteractionEnabled)
     XCTAssert(view.userInteractionEnabled == false, "Value After Binding")
 
-    dynamicDriver.value = true
-    XCTAssert(view.userInteractionEnabled == true, "Value after dynamic change")
+    observable.value = true
+    XCTAssert(view.userInteractionEnabled == true, "Value after observable change")
   }
+
+  func testUIViewTintColorBond() {
+    let observable = Observable<UIColor>(UIColor.blackColor())
+    let view = UIView()
+
+    view.tintColor = UIColor.redColor()
+    XCTAssert(view.tintColor == UIColor.redColor(), "Initial value")
+
+    observable.bindTo(view.bnd_tintColor)
+    XCTAssert(view.tintColor == UIColor.blackColor(), "Value after binding")
+
+    observable.value = UIColor.blueColor()
+    XCTAssert(view.tintColor == UIColor.blueColor(), "Value after observable change")
+  }
+
 }

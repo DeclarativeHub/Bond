@@ -13,44 +13,44 @@ import Bond
 class UILabelTests: XCTestCase {
     
   func testUILabelBond() {
-    var dynamicDriver = Dynamic<String>("b")
+    let observable = Observable<String>("b")
     let label = UILabel()
         
     label.text = "a"
     XCTAssert(label.text == "a", "Initial value")
         
-    dynamicDriver ->> label.designatedBond
+    observable.bindTo(label.bnd_text)
     XCTAssert(label.text == "b", "Value after binding")
         
-    dynamicDriver.value = "c"
-    XCTAssert(label.text == "c", "Value after dynamic change")
+    observable.value = "c"
+    XCTAssert(label.text == "c", "Value after observable change")
   }
     
   func testUILabelAttributedTextBond() {
-    var dynamicDriver = Dynamic<NSAttributedString>(NSAttributedString(string: "b"))
+    let observable = Observable<NSAttributedString>(NSAttributedString(string: "b"))
     let label = UILabel()
         
     label.text = "a"
     XCTAssert(label.text == "a", "Initial value")
         
-    dynamicDriver ->> label.dynAttributedText
-    XCTAssert(label.attributedText.string == "b", "Value after binding")
+    observable.bindTo(label.bnd_attributedText)
+    XCTAssert(label.attributedText!.string == "b", "Value after binding")
         
-    dynamicDriver.value = NSAttributedString(string: "c")
-    XCTAssert(label.attributedText.string == "c", "Value after dynamic change")
+    observable.value = NSAttributedString(string: "c")
+    XCTAssert(label.attributedText!.string == "c", "Value after observable change")
   }
     
   func testUILabelTextColorBond() {
-    var dynamicDriver = Dynamic<UIColor>(UIColor.blackColor())
-    var label = UILabel()
+    let observable = Observable<UIColor>(UIColor.blackColor())
+    let label = UILabel()
         
     label.textColor = UIColor.redColor()
     XCTAssert(label.textColor == UIColor.redColor(), "Initial Value")
         
-    dynamicDriver ->> label.dynTextColor
+    observable.bindTo(label.bnd_textColor)
     XCTAssert(label.textColor == UIColor.blackColor(), "Value after binding")
         
-    dynamicDriver.value = UIColor.blueColor()
-    XCTAssert(label.textColor == UIColor.blueColor(), "Value after dynamic change")
+    observable.value = UIColor.blueColor()
+    XCTAssert(label.textColor == UIColor.blueColor(), "Value after observable change")
   }
 }
