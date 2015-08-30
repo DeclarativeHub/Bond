@@ -15,6 +15,10 @@
 		03ACB5231AB6C840001B3E64 /* AssertEqualForOptionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ACB5221AB6C840001B3E64 /* AssertEqualForOptionals.swift */; };
 		69491BB41A7C217100A13B6B /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = 69491BB31A7C217100A13B6B /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69491BBA1A7C217100A13B6B /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69491BAE1A7C217100A13B6B /* Bond.framework */; };
+		795D4C191B8F05C9001B80B0 /* NSIndexSet+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795D4C181B8F05C9001B80B0 /* NSIndexSet+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		795D4C1A1B8F05C9001B80B0 /* NSIndexSet+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795D4C181B8F05C9001B80B0 /* NSIndexSet+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		790FD79C1B7F1C3800136394 /* NSTableView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790FD79B1B7F1C3800136394 /* NSTableView+Bond.swift */; };
+		790FD79E1B7F1CF500136394 /* NSTableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790FD79D1B7F1CF500136394 /* NSTableViewTests.swift */; };
 		900BFC081ADFC5DC002B4B6E /* CALayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC061ADFC5D5002B4B6E /* CALayerTests.swift */; };
 		900BFC0B1ADFC863002B4B6E /* NSButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC091ADFC860002B4B6E /* NSButtonTests.swift */; };
 		900BFC0E1ADFC9E9002B4B6E /* NSColorWellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC0C1ADFC9A5002B4B6E /* NSColorWellTests.swift */; };
@@ -166,6 +170,9 @@
 		69491BB31A7C217100A13B6B /* Bond.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bond.h; sourceTree = "<group>"; };
 		69491BB91A7C217100A13B6B /* BondTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BondTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		69491BBF1A7C217100A13B6B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		795D4C181B8F05C9001B80B0 /* NSIndexSet+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSIndexSet+Bond.swift"; sourceTree = "<group>"; };
+		790FD79B1B7F1C3800136394 /* NSTableView+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSTableView+Bond.swift"; sourceTree = "<group>"; };
+		790FD79D1B7F1CF500136394 /* NSTableViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTableViewTests.swift; sourceTree = "<group>"; };
 		900BFC061ADFC5D5002B4B6E /* CALayerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CALayerTests.swift; sourceTree = "<group>"; };
 		900BFC091ADFC860002B4B6E /* NSButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSButtonTests.swift; sourceTree = "<group>"; };
 		900BFC0C1ADFC9A5002B4B6E /* NSColorWellTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSColorWellTests.swift; sourceTree = "<group>"; };
@@ -405,6 +412,7 @@
 				900BFC111ADFCAC6002B4B6E /* NSImageViewTests.swift */,
 				900BFC131ADFCBA8002B4B6E /* NSMenuItemTests.swift */,
 				900BFC151ADFCC00002B4B6E /* NSStatusBarButtonTests.swift */,
+				790FD79D1B7F1CF500136394 /* NSTableViewTests.swift */,
 				900BFC171ADFCCEE002B4B6E /* NSTextFieldTests.swift */,
 				900BFC191ADFCD63002B4B6E /* NSTextViewTests.swift */,
 			);
@@ -484,6 +492,7 @@
 				ECAD68DF1B77BB1D00837A36 /* NSImageView+Bond.swift */,
 				ECAD68E01B77BB1D00837A36 /* NSMenuItem+Bond.swift */,
 				ECAD68E11B77BB1D00837A36 /* NSStatusBarButton+Bond.swift */,
+				790FD79B1B7F1C3800136394 /* NSTableView+Bond.swift */,
 				ECAD68E21B77BB1D00837A36 /* NSTextField+Bond.swift */,
 				ECAD68E31B77BB1D00837A36 /* NSTextView+Bond.swift */,
 			);
@@ -494,10 +503,11 @@
 			isa = PBXGroup;
 			children = (
 				ECAD68E51B77BB1D00837A36 /* CALayer+Bond.swift */,
+				795D4C181B8F05C9001B80B0 /* NSIndexSet+Bond.swift */,
 				ECAD68E61B77BB1D00837A36 /* NSLayoutConstraint+Bond.swift */,
+				ECAD68E71B77BB1D00837A36 /* NSLock+Bond.swift */,
 				ECAD68E81B77BB1D00837A36 /* NSNotificationCenter+Bond.swift */,
 				ECAD68E91B77BB1D00837A36 /* NSObject+Bond.swift */,
-				ECAD68E71B77BB1D00837A36 /* NSLock+Bond.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -775,6 +785,7 @@
 				EC0075D41B90E5F400249C31 /* UIControl+Bond.swift in Sources */,
 				EC0075D51B90E5F400249C31 /* UIDatePicker+Bond.swift in Sources */,
 				EC0075D81B90E5F400249C31 /* UINavigationItem+Bond.swift in Sources */,
+				795D4C191B8F05C9001B80B0 /* NSIndexSet+Bond.swift in Sources */,
 				ECAD68F11B77BB1D00837A36 /* Disposable.swift in Sources */,
 				ECAD68ED1B77BB1D00837A36 /* Buffer.swift in Sources */,
 				ECAD690B1B77BB1D00837A36 /* ObservableArrayEvent.swift in Sources */,
@@ -831,6 +842,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ECAD693C1B77BB1D00837A36 /* NSTextView+Bond.swift in Sources */,
+				790FD79C1B7F1C3800136394 /* NSTableView+Bond.swift in Sources */,
 				ECAD69341B77BB1D00837A36 /* NSImageView+Bond.swift in Sources */,
 				ECAD69441B77BB1D00837A36 /* NSNotificationCenter+Bond.swift in Sources */,
 				ECAD69001B77BB1D00837A36 /* OptionalType.swift in Sources */,
@@ -852,6 +864,7 @@
 				ECAD69061B77BB1D00837A36 /* Reference.swift in Sources */,
 				ECAD690A1B77BB1D00837A36 /* ObservableArray.swift in Sources */,
 				ECAD68F41B77BB1D00837A36 /* DisposableType.swift in Sources */,
+				795D4C1A1B8F05C9001B80B0 /* NSIndexSet+Bond.swift in Sources */,
 				ECAD69301B77BB1D00837A36 /* NSColorWell+Bond.swift in Sources */,
 				ECAD69401B77BB1D00837A36 /* NSLayoutConstraint+Bond.swift in Sources */,
 				ECAD693A1B77BB1D00837A36 /* NSTextField+Bond.swift in Sources */,
@@ -870,6 +883,7 @@
 				EC6F105B1B7F9C2700E55A5F /* ObservableTests.swift in Sources */,
 				900BFC141ADFCBA8002B4B6E /* NSMenuItemTests.swift in Sources */,
 				900BFC1A1ADFCD63002B4B6E /* NSTextViewTests.swift in Sources */,
+				790FD79E1B7F1CF500136394 /* NSTableViewTests.swift in Sources */,
 				900BFC101ADFCA46002B4B6E /* NSControlTests.swift in Sources */,
 				ECF53FE61B8CDEA200628FCD /* ObservableArrayTests.swift in Sources */,
 				900BFC181ADFCCEE002B4B6E /* NSTextFieldTests.swift in Sources */,

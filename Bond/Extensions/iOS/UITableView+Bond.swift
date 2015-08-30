@@ -24,16 +24,6 @@
 
 import UIKit
 
-extension NSIndexSet {
-  convenience init(set: Set<Int>) {
-    let indexSet = NSMutableIndexSet()
-    for index in set {
-      indexSet.addIndex(index)
-    }
-    self.init(indexSet: indexSet)
-  }
-}
-
 @objc public protocol BNDTableViewProxyDataSource {
   optional func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String?
   optional func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String?
@@ -205,7 +195,6 @@ public extension EventProducerType where
     }
     
     let dataSource = BNDTableViewDataSource(array: array, tableView: tableView, proxyDataSource: proxyDataSource, createCell: createCell)
-    tableView.dataSource = dataSource
     objc_setAssociatedObject(tableView, UITableView.AssociatedKeys.BondDataSourceKey, dataSource, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     
     return BlockDisposable { [weak tableView] in
