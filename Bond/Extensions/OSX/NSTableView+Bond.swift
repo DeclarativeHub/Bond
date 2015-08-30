@@ -25,15 +25,16 @@
 import Cocoa
 
 public protocol BNDTableViewDelegate {
-  func createCell(row: Int, array: AnyObject, tableView: NSTableView) -> NSTableCellView
+  typealias Element
+  func createCell(row: Int, array: ObservableArray<Element>, tableView: NSTableView) -> NSTableCellView
 }
 
-class BNDTableViewDataSource<T>: NSObject, NSTableViewDataSource, NSTableViewDelegate {
-  private let array: ObservableArray<T>
+class BNDTableViewDataSource<DelegateType: BNDTableViewDelegate>: NSObject, NSTableViewDataSource, NSTableViewDelegate {
+  private let array: ObservableArray<DelegateType.Element>
   private weak var tableView: NSTableView!
-  private var delegate: BNDTableViewDelegate?
+  private var delegate: DelegateType?
 
-  private init(array: ObservableArray<T>, tableView: NSTableView, delegate: BNDTableViewDelegate) {
+  private init(array: ObservableArray<DelegateType.Element>, tableView: NSTableView, delegate: DelegateType) {
     self.tableView = tableView
     self.delegate = delegate
     self.array = array
@@ -113,11 +114,11 @@ extension NSTableView {
   }
 }
 
-public extension ObservableType where EventType: ObservableArrayEventType {
+public extension EventProducerType where EventType: ObservableArrayEventType {
 
   private typealias ElementType = EventType.ObservableArrayEventSequenceType.Generator.Element
 
-  public func bindTo(tableView: NSTableView, delegate: BNDTableViewDelegate) -> DisposableType {
+  public func bindTo<DelegateType: BNDTableViewDelegate where DelegateType.Element == ElementType>(tableView: NSTableView, delegate: DelegateType) -> DisposableType {
 
     let array: ObservableArray<ElementType>
     if let downcastedarray = self as? ObservableArray<ElementType> {
@@ -126,7 +127,7 @@ public extension ObservableType where EventType: ObservableArrayEventType {
       array = self.crystallize()
     }
 
-    let dataSource = BNDTableViewDataSource(array: array, tableView: tableView, delegate: delegate)
+    let dataSource = BNDTableViewDataSource<DelegateType>(array: array, tableView: tableView, delegate: delegate)
     objc_setAssociatedObject(tableView, NSTableView.AssociatedKeys.BondDataSourceKey, dataSource, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 
     return BlockDisposable { [weak tableView] in

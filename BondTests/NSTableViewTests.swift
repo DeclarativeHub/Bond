@@ -75,7 +75,7 @@ class TestTableViewDelegate: BNDTableViewDelegate {
     fatalError("should be unused in tests, as we never show the NSTableView")
   }
 
-  func createCell(row: Int, array: AnyObject, tableView: NSTableView) -> NSTableCellView {
+  func createCell(row: Int, array: ObservableArray<Int>, tableView: NSTableView) -> NSTableCellView {
     fatalError("should be unused in tests, as we never show the NSTableView")
   }
 }
