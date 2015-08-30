@@ -6,7 +6,7 @@ Bond is a Swift binding framework that takes binding concept to a whole new leve
 
 Bond was created with two goals in mind: simple to use and simple to understand. One might argue whether the former implies the latter, but Bond will save you some thinking because both are true in this case. Its foundation are few simple classes - everything else are extensions and syntactic sugars.
 
-**Note: This document describes Bond v4. If you are using a previous version of the framework, check out the [Migration to Bond v4](#migration) section. Bond v4 will be the only officially supported version for Swift 2.0.**
+**Note: This document describes Bond v4. If you are using a previous version of the framework, check out the [Migration to Bond v4](#migration) section. Bond v4 is the only officially supported version for Swift 2.0.**
 
 
 ## What can it do?
@@ -89,7 +89,7 @@ Bond also supports two way bindings. Here is an example of how you could keep us
 viewModel.username.bidirectionalBindTo(usernameTextField.bnd_text)
 ```
 
-Bond is also great for observing various different events and asynchronous task. For example, you could observe a notification just like this:
+Bond is also great for observing various different events and asynchronous tasks. For example, you could observe a notification just like this:
 
 ```swift
 NSNotificationCenter.defaultCenter().bnd_notification("MyNotification")
@@ -99,16 +99,23 @@ NSNotificationCenter.defaultCenter().bnd_notification("MyNotification")
   .disposeIn(bnd_bag)
 ```
 
-Let me give you one last example. Say you have an array of repositories you would like to display in a collection view. For each repository you have a name and its owner's profile photo. Of course, photo is not immediately available as it has to be downloaded, but once you get it, you want it to appear in table view's cell. Additionally, when user does 'pull down to refresh', and your array gets new repositories, you want those in table view too.
+Let me give you one last example. Say you have an array of repositories you would like to display in a collection view. For each repository you have a name and its owner's profile photo. Of course, photo is not immediately available as it has to be downloaded, but once you get it, you want it to appear in collection view's cell. Additionally, when user does 'pull down to refresh' and your array gets new repositories, you want those in collection view too.
 
-So how do you proceed? Well, instead of implementing a data source object, observing photo downloads with KVO and manually updating table view with new items, with Bond you can do all that in just few lines:
+So how do you proceed? Well, instead of implementing a data source object, observing photo downloads with KVO and manually updating the collection view with new items, with Bond you can do all that in just few lines:
 
 ```swift
-repositories.bindTo(collectionView, createCell: { (indexPath, array, collectionView) -> UICollectionViewCell in
+repositories.bindTo(collectionView) { indexPath, array, collectionView in
   let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! RepositoryCell
   let repository = array[indexPath.section][indexPath.item]
-  repository.name.bindTo(cell.nameLabel.bnd_text)
-  repository.photo.bindTo(cell.avatarImageView.bnd_image)
+  
+  repository.name
+    .bindTo(cell.nameLabel.bnd_text)
+    .disposeIn(cell.onReuseBag)
+    
+  repository.photo
+    .bindTo(cell.avatarImageView.bnd_image)
+    .disposeIn(cell.onReuseBag)
+
   return cell
 })
 ```
@@ -168,7 +175,7 @@ captain.value = “Scotty” // prints: Now the captain is Scotty.
 
 ### The Event Producer
 
-Using the observable that acts as a variable or a property that can be observed is just a specific usage of the `EventProducer`. As was already said, the event producer represents an abstract event generator. To create such event generator you can use the following designated initializer on `EventProducer`:
+Using the observable that acts as a variable or a property that can be observed is just a specific usage of the EventProducer. As was already said, the event producer represents an abstract event generator. To create such event generator you can use the following designated initializer on EventProducer:
 
 ```swift
 init(replayLength: Int, @noescape producer: (EventType -> ()) -> DisposableType?)
@@ -198,7 +205,7 @@ subscription.dispose()
 
 ### Transforming the Event Producers
 
-The event producers are much more useful when they can be transformed and combined into another event producers. Bond comes with a number of methods that can transform an event producer into an another event producer. Note that transforming an observable  does not create another observable, but the event producer that has not concept of 'current value'.
+The event producers are much more useful when they can be transformed and combined into another event producers. Bond comes with a number of methods that can transform an event producer into another event producer. Note that transforming an observable  does not create another observable, but the event producer that has not concept of 'current value'.
 
 #### Map
 
@@ -316,6 +323,8 @@ captainName.bindTo(nameLabelText)
 
 Event producers and obsevables can be bound to any object that conforms to `BindableType` protocol. Event producers themselves conform to that protocol, but you can make any type conform to it.
 
+Method `bindTo` returns a disposable that can cancel the binding. You usually don't need to worry about that because binding will be automatically canceled when either the event producer or target are deallocated.
+
 ### UIKit and AppKit
 
 UIKit and AppKit elements, of course, do not provide properties that are observable. UIKit and AppKit are also not KVO-compliant. Bond, therefore, provides its own extensions of the UIKit and AppKit elements in order to make bindings and property observations a piece of cake. For example, Bond provides its own variant of `text` property to the `UITextField` called `bnd_text`. It's an observable of `Observable<String?>` type that you can observe or make a binding to or from it.
@@ -331,19 +340,222 @@ searchTextField.bnd_text.observeNew { text in
 }
 ```
 
-To learn about available extension just start typing `.bnd` on any UIKit or AppKit object or consult the [Extensions section](http://cocoadocs.org/docsets/Bond/4.0.0-alpha.2/Extensions.html) of the code reference. Extensions usually correspond to their respective UIKit or AppKit property names, just prefixed with `bnd_`, so it shouldn't be hard to find them.
+To learn about available extensions just start typing `.bnd` on any UIKit or AppKit object or consult the [Extensions section](http://cocoadocs.org/docsets/Bond/4.0.0-alpha.2/Extensions.html) of the code reference. Extensions usually correspond to their respective UIKit or AppKit property names, just prefixed with `bnd_`, so it shouldn't be hard to find them.
 
-### ObservableArray
+#### NSObject
 
-TODO
+You rarely have to worry about disposing the observations, but when you do, Bond tries to be helpful. If you need to dispose an observation when your object (like view controller) is deallocated, you can use `bnd_bag` extension provided on NSObject (and thus on all its subclasses). It's a dispose bag, a collection of disposables, that will dispose all added disposables when your object is deallocated.
 
-### Notification Center
+For example, if your view model outlives the view controller that uses it you must manually dispose any observation you've made. The simplest way to do that is to add the disposable returned by the `observe` method to the provided dispose bag:
 
-TODO
+```swift
+class MyViewController: UIViewController {
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    
+    viewModel.name
+      .observe { name in
+        print(name)
+      }
+      .disposeIn(bnd_bag)
+  }
+}
+``` 
 
+Note that it's not necessary to dispose bindings. When the binding target is deallocated, the binding will be automatically disposed. That means that the following code is valid even if the view model outlives the view controller:
+
+```swift
+class MyViewController: UIViewController {
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    viewModel.name.bindTo(nameLabel.bnd_text)
+  }
+}
+``` 
+
+
+#### Notification Center
+
+You can use Bond to observe notifications from NSNotificationCenter. To do that use the following extension:
+
+```swift
+extension NSNotificationCenter {
+  public func bnd_notification(name: String, object: AnyObject?) -> EventProducer<NSNotification>
+}
+```
+
+All you need to provide is a notification name you want to observe. Additionally, you can provide an object whose notifications you want to receive. Note that you should always manually dispose the observation when you no longer need it, preferably by putting the disposable in the dispose bag:
+
+```swift
+NSNotificationCenter.defaultCenter().bnd_notification("MyNotification", object: nil)
+  .observe { notification in
+    print("Received \(notification).")
+  }
+  .disposeIn(bnd_bag)
+}
+```
+
+### Observable Array
+
+When working with arrays, it's usually not enough to know only that the array has changed, but how exactly did it change. New elements could have been inserted into the array and old ones deleted or updated. Bond provides mechanisms for observing such fine-grained changes.
+
+Creating an Observable with an array would enable observation of change of the array as whole, but to observe fine-grained changes you have to use `ObservableArray` type. Just like the Observable, it is a subclass of the `EventProducer` class, but instead of sending events that match the wrapped value type, it sends events of the `ObservableArrayEvent` type.  Such event contains both the new state of the array (array itself) and the operation that was just applied to the array (like element insertion or deletion). Operation is an enum type that describes the change.
+
+Let's go through an example. Say that we need an array of names that we would like to observe. We would define it like this:
+
+```swift
+let names = ObservableArray(["Jim", "Spock"])
+```
+
+`ObservableArray` type mimics `Array` type so you can do same operations on it that you can do on the `Array` type. It also conforms to  `CollectionType` and `SequenceType` protocols.
+
+Observation is done in the same way as the observation of the Observable or EventProducer. Main point to learn is that events it generates are of `ObservableArrayEvent` type. For example:
+
+```swift
+names.observe { event in
+ print("Array is now: \(event.sequence)")
+ 
+ switch event.operation {
+ case .Insert(let elements, let fromIndex):
+   print("Inserted \(elements) from index \(fromIndex)")
+ case .Remove(let range):
+   print("Removed elements in range \(range)")
+ case .Update(let elements, let fromIndex):
+   print("Updated \(elements) from index \(fromIndex)")
+ case .Reset(let array):
+   print("Array was reset to \(array)")
+ case .Batch(let operations):
+   print("Operations \(operations) were perform on the array")
+ }
+}
+```
+
+Our observer will then be called whenever an operation is applied to the array. It will also be called initially, at the time of the registration, with the last operation that was applied to the array. In our case that would be `.Reset` operation because it represents setting the array - something that the constructor does. Following will be printed:
+
+```swift
+$ Array is now: ["Jim", "Spock"]
+$ Array was reset to ["Jim", "Spock"]
+```
+
+When we then change the array, our observer will be called. Appending new item
+
+```swift
+names.append("Scotty")
+```
+
+will result in
+
+```swift
+$ Array is now: ["Jim", "Spock", "Scotty"]
+$ Inserted ["Scotty"] from index 2
+```
+
+Updating first element 
+
+```swift
+names[0] = "Uhura"
+```
+
+will then result in
+
+```swift
+$ Array is now: ["Uhura", "Spock", "Scotty"]
+$ Updated ["Uhura"] from index 0
+```
+
+Removing first element afterwards
+
+```swift
+names.removeAtIndex(0)
+```
+
+will result in
+
+```swift
+$ Array is now: ["Spock", "Scotty"]
+$ Removed elements in range 0..<1
+```
+
+Sometimes it is necessary to batch operations to the single event. It can be done like this:
+
+
+```swift
+names.performBatchUpdates { names in
+  names.insert("Jim", atIndex: 0)
+  names.removeLast()
+}
+```
+
+will result in
+
+```swift
+$ Array is now: ["Jim", "Spock"]
+$ Operations [.Insert(elements: ["Jim"], fromIndex: 0), .Remove(range: 2..<3)] were perform on the array.
+```
+
+#### UITableView and UICollectionView
+
+Observable arrays can bound to UITableViews and UICollectionViews, leveraging that mechanisms of fine-grained change events. To bind them to those views, use following methods:
+
+```swift
+public func bindTo(tableView: UITableView, proxyDataSource: BNDTableViewProxyDataSource? = nil, createCell: (NSIndexPath, ObservableArray<ObservableArray<ElementType>>, UITableView) -> UITableViewCell) -> DisposableType {
+public func bindTo(collectionView: UICollectionView, proxyDataSource: BNDCollectionViewProxyDataSource? = nil, createCell: (NSIndexPath, ObservableArray<ObservableArray<ElementType>>, UICollectionView) -> UICollectionViewCell) -> DisposableType {
+
+```
+
+Don't let the long method signature scare you. Methods accept three arguments: a table or collection view, optional proxy data source if you need to provide other data then the cells (like section names) and a `createCell` closure that will be used to create cells. Closure must accept three arguments that you use to create a cell and it must return a cell. Arguments it must accept are index path of the needed cell, a 2D observable array and a table or a collection view to dequeue cells from.
+
+Such `bindTo` methods are provided only on two-dimensional observable arrays. The outer one represents sections and each inner one represents rows or items of the respective section. If your data is not arranged in sections so you have a one-dimension array, you can simply use `lift` method to wrap it into another array.
+
+For example, let say we have two groups of names we would like to display in two sections of a table view:
+
+```swift
+let captains = ObservableArray(["Archer", "Kirk", "Picard"])
+let firstOfficers = ObservableArray(["T'Pol", "Spock", "Riker"])
+let dataSource = ObservableArray([captains, firstOfficers])
+let tableView = UITableView()
+
+dataSource.bindTo(tableView) { indexPath, dataSource, tableView in
+  let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+  let name = dataSource[indexPath.section][indexPath.row]
+  cell.textLabel.text = name
+  return cell
+}
+
+```
+
+If, on the other hand, we want to display only captains - a one-dimensional array - we could do this:
+
+```swift
+captains.lift().bindTo(tableView) { indexPath, dataSource, tableView in
+  let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+  let name = dataSource[indexPath.section][indexPath.row]
+  cell.textLabel.text = name
+  return cell
+}
+
+```
+ 
 ### Key-Value-Observing
 
-TODO
+Using the Bond framework can simplify interaction with KVO properties. You can make an observable representation of them using the following constructor:
+
+```swift
+extension Observable {
+  public convenience init(object: NSObject, keyPath: String)
+}
+```
+
+You need to provide the `object` whose `keyPath` you want observed. Note that you also need to manually specialize the observable because Swift cannot infer the type of the property given only the key path.
+
+```swift
+let name = Observable<NSString?>(object: self.viewModel, keyPath: "name")
+```
+
+Be aware that the observable strongly references the given object. You never want to observe `self`!
+
 
 ## Installation
 
