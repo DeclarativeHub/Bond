@@ -26,33 +26,33 @@ import UIKit
 
 extension UISegmentedControl {
     
-    private struct AssociatedKeys {
-        static var SelectedSegmentIndexKey = "bnd_SelectedSegmentIndexKey"
-    }
+  private struct AssociatedKeys {
+    static var SelectedSegmentIndexKey = "bnd_SelectedSegmentIndexKey"
+  }
     
-    public var bnd_selectedSegmentIndex: Observable<Int> {
-        if let bnd_selectedSegmentIndex: AnyObject = objc_getAssociatedObject(self, &AssociatedKeys.SelectedSegmentIndexKey) {
-            return bnd_selectedSegmentIndex as! Observable<Int>
-        } else {
-            let bnd_selectedSegmentIndex = Observable<Int>(self.selectedSegmentIndex)
-            objc_setAssociatedObject(self, &AssociatedKeys.SelectedSegmentIndexKey, bnd_selectedSegmentIndex, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+  public var bnd_selectedSegmentIndex: Observable<Int> {
+    if let bnd_selectedSegmentIndex: AnyObject = objc_getAssociatedObject(self, &AssociatedKeys.SelectedSegmentIndexKey) {
+      return bnd_selectedSegmentIndex as! Observable<Int>
+    } else {
+      let bnd_selectedSegmentIndex = Observable<Int>(self.selectedSegmentIndex)
+      objc_setAssociatedObject(self, &AssociatedKeys.SelectedSegmentIndexKey, bnd_selectedSegmentIndex, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             
-            var updatingFromSelf: Bool = false
+      var updatingFromSelf: Bool = false
             
-            bnd_selectedSegmentIndex.observeNew { [weak self] selectedSegmentIndex in
-                if !updatingFromSelf {
-                    self?.selectedSegmentIndex = selectedSegmentIndex
-                }
-            }
-            
-            self.bnd_controlEvent.filter { $0 == UIControlEvents.ValueChanged }.observe { [weak self, weak bnd_selectedSegmentIndex] event in
-                guard let unwrappedSelf = self, let bnd_selectedSegmentIndex = bnd_selectedSegmentIndex else { return }
-                updatingFromSelf = true
-                bnd_selectedSegmentIndex.next(unwrappedSelf.selectedSegmentIndex)
-                updatingFromSelf = false
-            }
-            
-            return bnd_selectedSegmentIndex
+      bnd_selectedSegmentIndex.observeNew { [weak self] selectedSegmentIndex in
+        if !updatingFromSelf {
+          self?.selectedSegmentIndex = selectedSegmentIndex
         }
+      }
+            
+      self.bnd_controlEvent.filter { $0 == UIControlEvents.ValueChanged }.observe { [weak self, weak bnd_selectedSegmentIndex] event in
+        guard let unwrappedSelf = self, let bnd_selectedSegmentIndex = bnd_selectedSegmentIndex else { return }
+        updatingFromSelf = true
+        bnd_selectedSegmentIndex.next(unwrappedSelf.selectedSegmentIndex)
+        updatingFromSelf = false
+      }
+            
+      return bnd_selectedSegmentIndex
     }
+  }
 }
