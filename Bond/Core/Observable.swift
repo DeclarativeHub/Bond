@@ -25,9 +25,6 @@
 /// A type that can be used to mimic a variable or a property
 /// that enables observation of its change.
 public final class Observable<Wrapped>: EventProducer<Wrapped> {
-  
-  /// The underlying sink to dispatch events to.
-  private var capturedSink: Sink! = nil
 
   /// The encapsulated value.
   public var value: Wrapped {
@@ -43,18 +40,7 @@ public final class Observable<Wrapped>: EventProducer<Wrapped> {
   
   /// Creates a observable with the given initial value.
   public init(_ value: Wrapped) {
-    
-    var capturedSink: Sink! = nil
-    super.init(replayLength: 1, lifecycle: .Normal) { sink in
-      capturedSink = sink
-      return nil
-    }
-    
-    self.capturedSink = capturedSink
-    self.capturedSink(value)
-  }
-  
-  public override func next(event: Wrapped) {
-    super.next(event)
+    super.init(replayLength: 1)
+    next(value)
   }
 }

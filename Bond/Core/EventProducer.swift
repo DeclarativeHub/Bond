@@ -93,8 +93,8 @@ public class EventProducer<Event>: EventProducerType {
     self.selfReference = tmpSelfReference
   }
   
-  public init(replayLength: Int = 0) {
-    lifecycle = .Normal
+  public init(replayLength: Int = 0, lifecycle: EventProducerLifecycle = .Normal) {
+    self.lifecycle = lifecycle
     
     if replayLength > 0 {
       replayBuffer = Buffer(size: replayLength)
