@@ -31,11 +31,11 @@ public protocol ObservableArrayType {
 /// A type that can be used to encapsulate an array and observe its (incremental) changes.
 public final class ObservableArray<ElementType>: EventProducer<ObservableArrayEvent<Array<ElementType>>>, ObservableArrayType {
   
-  /// The underlying sink to dispatch events to.
-  private var capturedSink: Sink! = nil
-  
   /// Batched array operations.
   private var batchedOperations: [ObservableArrayOperation<ElementType>]! = nil
+  
+  /// Temporary array to work with while batch is in progress.
+  private var workingBatchArray: [ElementType]! = nil
   
   /// Returns `true` if batch update is in progress at the moment.
   private var isBatchUpdateInProgress: Bool {
@@ -43,20 +43,23 @@ public final class ObservableArray<ElementType>: EventProducer<ObservableArrayEv
   }
   
   /// The underlying array.
-  public var array: [ElementType]
+  public var array: [ElementType] {
+    get {
+      if let workingBatchArray = workingBatchArray {
+        return workingBatchArray
+      } else {
+        return replayBuffer!.last!.sequence
+      }
+    }
+    set {
+      next(ObservableArrayEvent(sequence: newValue, operation: ObservableArrayOperation.Reset(array: newValue)))
+    }
+  }
   
   /// Creates a new array with the given initial value.
   public init(_ array: [ElementType]) {
-    self.array = array
-    
-    var capturedSink: Sink! = nil
-    super.init(replayLength: 1, lifecycle: .Normal) { sink in
-      capturedSink = sink
-      return nil
-    }
-    
-    self.capturedSink = capturedSink
-    self.capturedSink(ObservableArrayEvent(sequence: array, operation: ObservableArrayOperation.Reset(array: array)))
+    super.init(replayLength: 1)
+    next(ObservableArrayEvent(sequence: array, operation: ObservableArrayOperation.Reset(array: array)))
   }
   
   /// Performs batch updates on the array.
@@ -73,41 +76,27 @@ public final class ObservableArray<ElementType>: EventProducer<ObservableArrayEv
   ///   }
   public func performBatchUpdates(@noescape update: ObservableArray<ElementType> -> ()) {
     batchedOperations = []
+    workingBatchArray = array
     update(self)
-    let operation = ObservableArrayOperation.Batch(batchedOperations!)
+    let operationToSend = ObservableArrayOperation.Batch(batchedOperations!)
+    let arrayToSend = workingBatchArray!
+    workingBatchArray = nil
     batchedOperations = nil
-    capturedSink(ObservableArrayEvent(sequence: array, operation: operation))
+    next(ObservableArrayEvent(sequence: arrayToSend, operation: operationToSend))
   }
   
-  /// Applies given array operation and generates change event.
-  private func put(operation: ObservableArrayOperation<ElementType>) {
-    
-    guard !isBatchUpdateInProgress else {
-      fatalError("Dear Sir/Madam, putting operations into the array while batch updates are in progress is not supported!")
-    }
-    
-    switch operation {
-    case .Batch(let operations):
-      for operation in operations {
-        performUnitOperationOnArray(operation)
-      }
-    default:
-      performUnitOperationOnArray(operation)
-    }
-    
-    capturedSink(ObservableArrayEvent(sequence: array, operation: operation))
-  }
-  
-  private func applyOperation(operation: ObservableArrayOperation<ElementType>) {
+  public func applyOperation(operation: ObservableArrayOperation<ElementType>) {
     if isBatchUpdateInProgress {
-      performUnitOperationOnArray(operation)
+      ObservableArray.performOperation(operation, onArray: &workingBatchArray!)
       batchedOperations!.append(operation)
     } else {
-      put(operation)
+      var arrayCopy = array
+      ObservableArray.performOperation(operation, onArray: &arrayCopy)
+      next(ObservableArrayEvent(sequence: arrayCopy, operation: operation))
     }
   }
   
-  private func performUnitOperationOnArray(operation: ObservableArrayOperation<ElementType>) {
+  private static func performOperation(operation: ObservableArrayOperation<ElementType>, inout onArray array: [ElementType]) {
     switch operation {
     case .Reset(let newArray):
       array = newArray
@@ -119,8 +108,10 @@ public final class ObservableArray<ElementType>: EventProducer<ObservableArrayEv
       }
     case .Remove(let range):
       array.removeRange(range)
-    case .Batch:
-      fatalError("Hmm, not a unit operation.")
+    case .Batch(let operations):
+      for operation in operations {
+        ObservableArray.performOperation(operation, onArray: &array)
+      }
     }
   }
 }
@@ -296,7 +287,7 @@ public extension EventProducerType where EventType: ObservableArrayEventType {
     
     let array = ObservableArray<ElementType>(capturedArray)
     array.deinitDisposable += skip(replayLength).observe { event in
-      array.put(event.operation)
+      array.applyOperation(event.operation)
       return
     }
     return array
