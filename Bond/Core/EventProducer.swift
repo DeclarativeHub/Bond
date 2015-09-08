@@ -36,7 +36,7 @@ public class EventProducer<Event>: EventProducerType {
   private var observers: [Int64:Event -> Void] = [:]
   private var nextToken: Int64 = 0
   private let lock = NSRecursiveLock(name: "com.swift-bond.Bond.EventProducer")
-  private var replayBuffer: Buffer<Event>? = nil
+  internal private(set) var replayBuffer: Buffer<Event>? = nil
   
   /// Type of the sink used by the event producer.
   public typealias Sink = Event -> ()

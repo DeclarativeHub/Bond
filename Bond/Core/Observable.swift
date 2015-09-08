@@ -22,21 +22,19 @@
 //  THE SOFTWARE.
 //
 
-
 /// A type that can be used to mimic a variable or a property
 /// that enables observation of its change.
 public final class Observable<Wrapped>: EventProducer<Wrapped> {
   
   /// The underlying sink to dispatch events to.
   private var capturedSink: Sink! = nil
-  
-  /// The real encapsulated value.
-  private var underlyingValue: Wrapped
 
   /// The encapsulated value.
   public var value: Wrapped {
     get {
-      return underlyingValue
+      // We've created buffer of size 1 and we own it so it is safe
+      // to force unwrap both the buffer and the last element.
+      return replayBuffer!.last!
     }
     set {
       next(newValue)
@@ -45,7 +43,6 @@ public final class Observable<Wrapped>: EventProducer<Wrapped> {
   
   /// Creates a observable with the given initial value.
   public init(_ value: Wrapped) {
-    self.underlyingValue = value
     
     var capturedSink: Sink! = nil
     super.init(replayLength: 1, lifecycle: .Normal) { sink in
@@ -58,7 +55,6 @@ public final class Observable<Wrapped>: EventProducer<Wrapped> {
   }
   
   public override func next(event: Wrapped) {
-    underlyingValue = event
     super.next(event)
   }
 }
