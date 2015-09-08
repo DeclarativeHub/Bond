@@ -15,10 +15,10 @@
 		03ACB5231AB6C840001B3E64 /* AssertEqualForOptionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ACB5221AB6C840001B3E64 /* AssertEqualForOptionals.swift */; };
 		69491BB41A7C217100A13B6B /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = 69491BB31A7C217100A13B6B /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69491BBA1A7C217100A13B6B /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69491BAE1A7C217100A13B6B /* Bond.framework */; };
-		795D4C191B8F05C9001B80B0 /* NSIndexSet+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795D4C181B8F05C9001B80B0 /* NSIndexSet+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		795D4C1A1B8F05C9001B80B0 /* NSIndexSet+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795D4C181B8F05C9001B80B0 /* NSIndexSet+Bond.swift */; settings = {ASSET_TAGS = (); }; };
 		790FD79C1B7F1C3800136394 /* NSTableView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790FD79B1B7F1C3800136394 /* NSTableView+Bond.swift */; };
 		790FD79E1B7F1CF500136394 /* NSTableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790FD79D1B7F1CF500136394 /* NSTableViewTests.swift */; };
+		795D4C191B8F05C9001B80B0 /* NSIndexSet+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795D4C181B8F05C9001B80B0 /* NSIndexSet+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		795D4C1A1B8F05C9001B80B0 /* NSIndexSet+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795D4C181B8F05C9001B80B0 /* NSIndexSet+Bond.swift */; settings = {ASSET_TAGS = (); }; };
 		900BFC081ADFC5DC002B4B6E /* CALayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC061ADFC5D5002B4B6E /* CALayerTests.swift */; };
 		900BFC0B1ADFC863002B4B6E /* NSButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC091ADFC860002B4B6E /* NSButtonTests.swift */; };
 		900BFC0E1ADFC9E9002B4B6E /* NSColorWellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC0C1ADFC9A5002B4B6E /* NSColorWellTests.swift */; };
@@ -58,6 +58,8 @@
 		EC0075DF1B90E5F400249C31 /* UIView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68DA1B77BB1D00837A36 /* UIView+Bond.swift */; settings = {ASSET_TAGS = (); }; };
 		EC0075E01B90E6C800249C31 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BF1B77BB1D00837A36 /* Observable.swift */; settings = {ASSET_TAGS = (); }; };
 		EC0388991B0DD25700E32454 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69491BAE1A7C217100A13B6B /* Bond.framework */; };
+		EC3228AA1B9F5673002BE73A /* UISegmentedControl+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3228A91B9F5673002BE73A /* UISegmentedControl+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		EC3228AC1B9F5691002BE73A /* UISegmentedControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3228AB1B9F5691002BE73A /* UISegmentedControlTests.swift */; settings = {ASSET_TAGS = (); }; };
 		EC6F105B1B7F9C2700E55A5F /* ObservableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69821B77D45600837A36 /* ObservableTests.swift */; };
 		ECAD68EB1B77BB1D00837A36 /* BindableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68B81B77BB1D00837A36 /* BindableType.swift */; };
 		ECAD68EC1B77BB1D00837A36 /* BindableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68B81B77BB1D00837A36 /* BindableType.swift */; };
@@ -170,9 +172,9 @@
 		69491BB31A7C217100A13B6B /* Bond.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bond.h; sourceTree = "<group>"; };
 		69491BB91A7C217100A13B6B /* BondTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BondTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		69491BBF1A7C217100A13B6B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		795D4C181B8F05C9001B80B0 /* NSIndexSet+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSIndexSet+Bond.swift"; sourceTree = "<group>"; };
 		790FD79B1B7F1C3800136394 /* NSTableView+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSTableView+Bond.swift"; sourceTree = "<group>"; };
 		790FD79D1B7F1CF500136394 /* NSTableViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTableViewTests.swift; sourceTree = "<group>"; };
+		795D4C181B8F05C9001B80B0 /* NSIndexSet+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSIndexSet+Bond.swift"; sourceTree = "<group>"; };
 		900BFC061ADFC5D5002B4B6E /* CALayerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CALayerTests.swift; sourceTree = "<group>"; };
 		900BFC091ADFC860002B4B6E /* NSButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSButtonTests.swift; sourceTree = "<group>"; };
 		900BFC0C1ADFC9A5002B4B6E /* NSColorWellTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSColorWellTests.swift; sourceTree = "<group>"; };
@@ -187,6 +189,8 @@
 		EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSLayoutConstraintTests.swift; sourceTree = "<group>"; };
 		EC0075B21B90D39500249C31 /* EventProducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventProducer.swift; sourceTree = "<group>"; };
 		EC2AE4A81B788F8B00296781 /* UIRefreshControl+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIRefreshControl+Bond.swift"; sourceTree = "<group>"; };
+		EC3228A91B9F5673002BE73A /* UISegmentedControl+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl+Bond.swift"; sourceTree = "<group>"; };
+		EC3228AB1B9F5691002BE73A /* UISegmentedControlTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UISegmentedControlTests.swift; sourceTree = "<group>"; };
 		ECAD68B81B77BB1D00837A36 /* BindableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BindableType.swift; sourceTree = "<group>"; };
 		ECAD68B91B77BB1D00837A36 /* Buffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Buffer.swift; sourceTree = "<group>"; };
 		ECAD68BB1B77BB1D00837A36 /* Disposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Disposable.swift; sourceTree = "<group>"; };
@@ -463,6 +467,7 @@
 			isa = PBXGroup;
 			children = (
 				ECAD68CB1B77BB1D00837A36 /* UIActivityIndicatorView+Bond.swift */,
+				EC3228A91B9F5673002BE73A /* UISegmentedControl+Bond.swift */,
 				EC2AE4A81B788F8B00296781 /* UIRefreshControl+Bond.swift */,
 				ECAD68CC1B77BB1D00837A36 /* UIBarItem+Bond.swift */,
 				ECAD68CD1B77BB1D00837A36 /* UIButton+Bond.swift */,
@@ -516,6 +521,7 @@
 			isa = PBXGroup;
 			children = (
 				ECAD695D1B77D43D00837A36 /* UIActivityIndicatorTests.swift */,
+				EC3228AB1B9F5691002BE73A /* UISegmentedControlTests.swift */,
 				ECAD695E1B77D43D00837A36 /* UIBarItemTests.swift */,
 				ECAD695F1B77D43D00837A36 /* UIButtonTests.swift */,
 				ECAD69601B77D43D00837A36 /* UICollectionViewTests.swift */,
@@ -772,6 +778,7 @@
 				ECAD68FD1B77BB1D00837A36 /* Operators.swift in Sources */,
 				EC0075DC1B90E5F400249C31 /* UITableView+Bond.swift in Sources */,
 				EC0075B31B90D39500249C31 /* EventProducer.swift in Sources */,
+				EC3228AA1B9F5673002BE73A /* UISegmentedControl+Bond.swift in Sources */,
 				EC0075B91B90E4DC00249C31 /* NSObject+Bond.swift in Sources */,
 				ECAD68EB1B77BB1D00837A36 /* BindableType.swift in Sources */,
 				EC0075B51B90D73800249C31 /* NSLock+Bond.swift in Sources */,
@@ -816,6 +823,7 @@
 				ECAD697A1B77D43D00837A36 /* UISwitchTests.swift in Sources */,
 				ECAD696F1B77D43D00837A36 /* UIBarItemTests.swift in Sources */,
 				ECAD69721B77D43D00837A36 /* UIControlTests.swift in Sources */,
+				EC3228AC1B9F5691002BE73A /* UISegmentedControlTests.swift in Sources */,
 				ECAD69711B77D43D00837A36 /* UICollectionViewTests.swift in Sources */,
 				ECAD697D1B77D43D00837A36 /* UITextViewTests.swift in Sources */,
 				ECAD697B1B77D43D00837A36 /* UITableViewTests.swift in Sources */,
