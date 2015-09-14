@@ -148,7 +148,7 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
     if array.count > 0 {
       let indices = Array(i..<i+array.count)
       dispatchWillInsert(indices)
-      value.splice(array, atIndex: i)
+      value.insertContentsOf(array, at: i)
       dispatchDidInsert(indices)
     }
   }
