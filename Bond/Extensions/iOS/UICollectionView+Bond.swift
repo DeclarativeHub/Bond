@@ -171,11 +171,11 @@ public extension EventProducerType where
     
     let dataSource = BNDCollectionViewDataSource(array: array, collectionView: collectionView, proxyDataSource: proxyDataSource, createCell: createCell)
     collectionView.dataSource = dataSource
-    objc_setAssociatedObject(collectionView, UICollectionView.AssociatedKeys.BondDataSourceKey, dataSource, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+    objc_setAssociatedObject(collectionView, &UICollectionView.AssociatedKeys.BondDataSourceKey, dataSource, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     
     return BlockDisposable { [weak collectionView] in
       if let collectionView = collectionView {
-        objc_setAssociatedObject(collectionView, UICollectionView.AssociatedKeys.BondDataSourceKey, nil, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        objc_setAssociatedObject(collectionView, &UICollectionView.AssociatedKeys.BondDataSourceKey, nil, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       }
     }
   }
