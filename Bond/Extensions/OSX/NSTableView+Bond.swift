@@ -128,11 +128,11 @@ public extension EventProducerType where EventType: ObservableArrayEventType {
     }
 
     let dataSource = BNDTableViewDataSource<DelegateType>(array: array, tableView: tableView, delegate: delegate)
-    objc_setAssociatedObject(tableView, NSTableView.AssociatedKeys.BondDataSourceKey, dataSource, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+    objc_setAssociatedObject(tableView, &NSTableView.AssociatedKeys.BondDataSourceKey, dataSource, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 
     return BlockDisposable { [weak tableView] in
       if let tableView = tableView {
-        objc_setAssociatedObject(tableView, NSTableView.AssociatedKeys.BondDataSourceKey, nil, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        objc_setAssociatedObject(tableView, &NSTableView.AssociatedKeys.BondDataSourceKey, nil, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       }
     }
   }
