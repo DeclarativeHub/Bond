@@ -319,7 +319,7 @@ Bindings are at the core of Bond and there ought to be even simpler way to estab
 captainName.bindTo(nameLabelText)
 ```
 
-Event producers and obsevables can be bound to any object that conforms to `BindableType` protocol. Event producers themselves conform to that protocol, but you can make any type conform to it.
+Event producers and observables can be bound to any object that conforms to `BindableType` protocol. Event producers themselves conform to that protocol, but you can make any type conform to it.
 
 Method `bindTo` returns a disposable that can cancel the binding. You usually don't need to worry about that because binding will be automatically canceled when either the event producer or observer are deallocated.
 
