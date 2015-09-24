@@ -306,7 +306,7 @@ captainName.observe { name in
 }
 ```
 
-That well make the label text update whenever the captain changes. 
+That will make the label text update whenever the captain changes. 
 
 ```swift
 captainName.next(“Janeway”)
