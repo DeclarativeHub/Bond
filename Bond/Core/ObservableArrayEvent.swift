@@ -238,10 +238,75 @@ internal func startingIndexForIndex(x: Int, forPointers pointers: [Int]) -> Int 
   return idx + 1
 }
 
+public func offsetOfIndex<T>(index: Int, byApplyingOperations operations: ArraySlice<ObservableArrayOperation<T>>) -> Int {
+  var offset = 0
+  
+  for operation in operations {
+    switch operation {
+    case .Insert(let elements, let fromIndex):
+      let endIndex = fromIndex + elements.count
+      if fromIndex < index {
+        let diff = endIndex - fromIndex
+        offset = offset - diff
+      }
+    case .Remove(let range):
+      if range.startIndex <= index {
+        let diff = range.endIndex - range.startIndex
+        offset = offset + diff
+      }
+    default:
+      break
+    }
+  }
+  
+  return offset
+}
+
+public func deletesOffsetOfIndex<T>(index: Int, byApplyingOperations operations: ArraySlice<ObservableArrayOperation<T>>) -> Int {
+  var offset = 0
+  
+  for operation in operations {
+    switch operation {
+    case .Remove(let range):
+      if range.startIndex <= index {
+        let diff = range.endIndex - range.startIndex
+        offset = offset + diff
+      }
+    default:
+      break
+    }
+  }
+  
+  return offset
+}
+
+public func operationOffset<T>(operation: ObservableArrayOperation<T>) -> Int {
+  switch operation {
+  case .Insert(let elements, _):
+    return elements.count
+  case .Remove(let range):
+    return -range.count
+  default:
+    return 0
+  }
+}
+
+public func operationStartIndex<T>(operation: ObservableArrayOperation<T>) -> Int {
+  switch operation {
+  case .Insert(_, let fromIndex):
+    return fromIndex
+  case .Remove(let range):
+    return range.startIndex
+  default:
+    return 0
+  }
+}
 
 /// This function is used by UICollectionView and UITableView bindings.
 /// Batch operations are expected to be sequentially applied to the array/array, which is not what those views do.
 /// The function converts operations into a "diff" discribing elements at what indices changed and in what way.
+///
+/// Complexity: O(n^2) where n is a number of operations applied to the array.
 ///
 /// For example, when following (valid) input is given:
 ///   [.Insert([A], 0), .Insert([B], 0)]
@@ -274,36 +339,63 @@ public func changeSetsFromBatchOperations<T>(operations: [ObservableArrayOperati
   var updates = Set<Int>()
   var deletes = Set<Int>()
   
-  for operation in operations {
+  for (operationIndex, operation) in operations.enumerate() {
     switch operation {
     case .Insert(let elements, let fromIndex):
       
-      inserts = shiftSet(inserts, from: fromIndex, by: elements.count)
-      updates = shiftSet(updates, from: fromIndex, by: elements.count)
+      // All previous inserts that happened on indices equal or greater to current one should be shifted by a number of inserted element
+      inserts = Set(inserts.map { $0 >= fromIndex ? $0 + elements.count : $0 })
       
-      let range = fromIndex..<fromIndex+elements.count
-      let replaced = deletes.intersect(range)
-      let new = Set(range).subtract(replaced)
+      // If there was any prior deletion operation up to our insertion index, it shifts our inserts
+      let correctionOffset = deletesOffsetOfIndex(fromIndex, byApplyingOperations: operations.prefixUpTo(operationIndex))
+      let newInserts = Set(fromIndex + correctionOffset ..< fromIndex + correctionOffset + elements.count)
       
+      // Insertions to deleted indices are actually updates
+      let replaced = deletes.intersect(newInserts)
       deletes.subtractInPlace(replaced)
       updates.unionInPlace(replaced)
-      deletes = shiftSet(deletes, from: fromIndex, by: elements.count)
       
-      inserts.unionInPlace(new)
+      inserts.unionInPlace(newInserts.subtract(replaced))
+      
     case .Update(let elements, let fromIndex):
-      updates.unionInPlace(fromIndex..<fromIndex+elements.count)
-    case .Remove(let range):
-      let annihilated = inserts.intersect(range)
-      let reallyRemoved = Set(range).subtract(annihilated)
+  
+      // Updates done to the elements that were inserted in this batch must be discared
+      var newUpdates = Array(Set(fromIndex..<fromIndex+elements.count).subtract(inserts))
 
-      inserts.subtractInPlace(annihilated)
-      updates.subtractInPlace(range)
-
-      inserts = shiftSet(inserts, from: range.startIndex, by: -range.count)
-      updates = shiftSet(updates, from: range.startIndex, by: -range.count)
-      deletes = shiftSet(deletes, from: range.startIndex, by: -range.count)
+      // Any prior insertion or deletion shifts our indices
+      for operation in operations.prefixUpTo(operationIndex) {
+        let offset = -operationOffset(operation)
+        if offset != 0 {
+          let startIndex = operationStartIndex(operation)
+          newUpdates = newUpdates.map { $0 >= startIndex ? $0 + offset : $0 }
+        }
+      }
       
-      deletes.unionInPlace(reallyRemoved)
+      updates.unionInPlace(newUpdates)
+      
+    case .Remove(let range):
+      let possibleNewDeletes = Set(range)
+      
+      // Elements that were inserted and then removed in this batch must be discared
+      let annihilated = inserts.intersect(possibleNewDeletes)
+      inserts.subtractInPlace(annihilated)
+      
+      let actualNewDeletes = possibleNewDeletes.subtract(annihilated)
+      
+      // Elements that were updated and then removed in this batch must be discared
+      updates.subtractInPlace(actualNewDeletes)
+      
+      // Any prior insertion or deletion shifts our indices
+      let correctionOffset = (operationIndex > 0) ? offsetOfIndex(range.startIndex, byApplyingOperations: operations.prefixUpTo(operationIndex)) : 0
+      let correctedNewDeletes = actualNewDeletes.map { $0 + correctionOffset }
+      
+      deletes.unionInPlace(correctedNewDeletes)
+
+      // Should this be like in updates??
+      if let minIndex = possibleNewDeletes.minElement() {
+        inserts = shiftSet(inserts, from: minIndex, by: -annihilated.count)
+      }
+      
     case .Reset:
       fatalError("Dear Sir/Madam, the .Reset operation within the .Batch is not supported at the moment!")
     case .Batch:
