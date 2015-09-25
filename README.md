@@ -1,5 +1,7 @@
 # Bond, Swift Bond
 
+[![CI Status](https://travis-ci.org/SwiftBond/Bond.svg?branch=master)](https://travis-ci.org/SwiftBond/Bond)
+
 Bond is a Swift binding framework that takes binding concept to a whole new level. It's simple, powerful, type-safe and multi-paradigm - just like Swift. 
 
 Bond was created with two goals in mind: simple to use and simple to understand. One might argue whether the former implies the latter, but Bond will save you some thinking because both are true in this case. Its foundation are few simple classes - everything else are extensions and syntactic sugars.
@@ -306,7 +308,7 @@ captainName.observe { name in
 }
 ```
 
-That well make the label text update whenever the captain changes. 
+That will make the label text update whenever the captain changes. 
 
 ```swift
 captainName.next(“Janeway”)
@@ -319,9 +321,9 @@ Bindings are at the core of Bond and there ought to be even simpler way to estab
 captainName.bindTo(nameLabelText)
 ```
 
-Event producers and obsevables can be bound to any object that conforms to `BindableType` protocol. Event producers themselves conform to that protocol, but you can make any type conform to it.
+Event producers and observables can be bound to any object that conforms to `BindableType` protocol. Event producers themselves conform to that protocol, but you can make any type conform to it.
 
-Method `bindTo` returns a disposable that can cancel the binding. You usually don't need to worry about that because binding will be automatically canceled when either the event producer or target are deallocated.
+Method `bindTo` returns a disposable that can cancel the binding. You usually don't need to worry about that because binding will be automatically canceled when either the event producer or observer are deallocated.
 
 ### UIKit and AppKit
 
@@ -361,7 +363,7 @@ class MyViewController: UIViewController {
 }
 ``` 
 
-Note that it's not necessary to dispose bindings. When the binding target is deallocated, the binding will be automatically disposed. That means that the following code is valid even if the view model outlives the view controller:
+Note that it's not necessary to dispose bindings. When the observer is deallocated, the binding will be automatically disposed. That means that the following code is valid even if the view model outlives the view controller:
 
 ```swift
 class MyViewController: UIViewController {
