@@ -363,7 +363,7 @@ class MyViewController: UIViewController {
 }
 ``` 
 
-Note that it's not necessary to dispose bindings. When the observer is deallocated, the binding will be automatically disposed. That means that the following code is valid even if the view model outlives the view controller:
+Note that it's not necessary to dispose bindings. When the binding target object is deallocated, the binding will be automatically disposed. That means that the following code is valid even if the view model outlives the view controller:
 
 ```swift
 class MyViewController: UIViewController {
