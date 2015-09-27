@@ -238,48 +238,6 @@ internal func startingIndexForIndex(x: Int, forPointers pointers: [Int]) -> Int 
   return idx + 1
 }
 
-public func offsetOfIndex<T>(index: Int, byApplyingOperations operations: ArraySlice<ObservableArrayOperation<T>>) -> Int {
-  var offset = 0
-  
-  for operation in operations {
-    switch operation {
-    case .Insert(let elements, let fromIndex):
-      let endIndex = fromIndex + elements.count
-      if fromIndex < index {
-        let diff = endIndex - fromIndex
-        offset = offset - diff
-      }
-    case .Remove(let range):
-      if range.startIndex <= index {
-        let diff = range.endIndex - range.startIndex
-        offset = offset + diff
-      }
-    default:
-      break
-    }
-  }
-  
-  return offset
-}
-
-public func deletesOffsetOfIndex<T>(index: Int, byApplyingOperations operations: ArraySlice<ObservableArrayOperation<T>>) -> Int {
-  var offset = 0
-  
-  for operation in operations {
-    switch operation {
-    case .Remove(let range):
-      if range.startIndex <= index {
-        let diff = range.endIndex - range.startIndex
-        offset = offset + diff
-      }
-    default:
-      break
-    }
-  }
-  
-  return offset
-}
-
 public func operationOffset<T>(operation: ObservableArrayOperation<T>) -> Int {
   switch operation {
   case .Insert(let elements, _):
@@ -302,38 +260,26 @@ public func operationStartIndex<T>(operation: ObservableArrayOperation<T>) -> In
   }
 }
 
-/// This function is used by UICollectionView and UITableView bindings.
-/// Batch operations are expected to be sequentially applied to the array/array, which is not what those views do.
-/// The function converts operations into a "diff" discribing elements at what indices changed and in what way.
+/// This function is used by UICollectionView and UITableView bindings. Batch operations are expected to be sequentially
+/// applied to the array/array, which is not what those views do. The function converts operations into a "diff" discribing
+/// elements at what indices changed and in what way.
 ///
-/// Complexity: O(n^2) where n is a number of operations applied to the array.
+/// Expected order: .Deletes, .Inserts, .Updates
 ///
-/// For example, when following (valid) input is given:
-///   [.Insert([A], 0), .Insert([B], 0)]
-/// function should produce following output:
-///   [.Inserts([0, 1])]
+/// Deletes are always indexed in the index-space of the original array
+///  -> Deletes are shifted by preceding inserts and deletes at lower indices
+/// Deletes of updated items are substracted from updates set
+/// Deletes of inserted items are substracted from inserts set
+/// Deletes shift preceding inserts at higher indices
 ///
-/// Or:
-///   [.Insert([B], 0), .Remove(1)] -> [.Inserts([0]), .Deletes([0])]
-///   [.Insert([A], 0), .Insert([B], 0), .Remove(1)] -> [.Inserts([0])]
-///   [.Insert([A], 0), .Remove(0)] -> []
-///   [.Insert([A, B], 0), .Insert([C, D], 1)] -> [.Inserts([0, 1, 2, 3])]
+/// Inserts are always indexed in the index-space of the final array
+/// -> Inserts shift preceding inserts at higher indices
+///
+/// Updates are always indexed in the index-space of the original array
+///  -> Updates are shifted by preceding inserts and deletes at lower indices
+/// Updates of inserted items are annihilated
 ///
 public func changeSetsFromBatchOperations<T>(operations: [ObservableArrayOperation<T>]) -> [ObservableArrayEventChangeSet] {
-  
-  func shiftSet(set: Set<Int>, from: Int, by: Int) -> Set<Int> {
-    var shiftedSet = Set<Int>()
-    
-    for element in set {
-      if element >= from {
-        shiftedSet.insert(element + by)
-      } else {
-        shiftedSet.insert(element)
-      }
-    }
-    
-    return shiftedSet
-  }
   
   var inserts = Set<Int>()
   var updates = Set<Int>()
@@ -342,23 +288,16 @@ public func changeSetsFromBatchOperations<T>(operations: [ObservableArrayOperati
   for (operationIndex, operation) in operations.enumerate() {
     switch operation {
     case .Insert(let elements, let fromIndex):
+      // Inserts are always indexed in the index-space of the array as it will look like when all operations are applies
       
-      // All previous inserts that happened on indices equal or greater to current one should be shifted by a number of inserted element
+      // Inserts shift preceding inserts at higher indices
       inserts = Set(inserts.map { $0 >= fromIndex ? $0 + elements.count : $0 })
       
-      // If there was any prior deletion operation up to our insertion index, it shifts our inserts
-      let correctionOffset = deletesOffsetOfIndex(fromIndex, byApplyingOperations: operations.prefixUpTo(operationIndex))
-      let newInserts = Set(fromIndex + correctionOffset ..< fromIndex + correctionOffset + elements.count)
-      
-      // Insertions to deleted indices are actually updates
-      let replaced = deletes.intersect(newInserts)
-      deletes.subtractInPlace(replaced)
-      updates.unionInPlace(replaced)
-      
-      inserts.unionInPlace(newInserts.subtract(replaced))
+      inserts.unionInPlace(fromIndex..<fromIndex+elements.count)
       
     case .Update(let elements, let fromIndex):
-  
+      // Updates are always indexed in the index-space of the array before any operation is applied
+
       // Updates done to the elements that were inserted in this batch must be discared
       var newUpdates = Array(Set(fromIndex..<fromIndex+elements.count).subtract(inserts))
 
@@ -374,6 +313,8 @@ public func changeSetsFromBatchOperations<T>(operations: [ObservableArrayOperati
       updates.unionInPlace(newUpdates)
       
     case .Remove(let range):
+      // Deletes are always indexed in the index-space of the array before any operation is applied
+      
       let possibleNewDeletes = Set(range)
       
       // Elements that were inserted and then removed in this batch must be discared
@@ -385,16 +326,19 @@ public func changeSetsFromBatchOperations<T>(operations: [ObservableArrayOperati
       // Elements that were updated and then removed in this batch must be discared
       updates.subtractInPlace(actualNewDeletes)
       
-      // Any prior insertion or deletion shifts our indices
-      let correctionOffset = (operationIndex > 0) ? offsetOfIndex(range.startIndex, byApplyingOperations: operations.prefixUpTo(operationIndex)) : 0
-      let correctedNewDeletes = actualNewDeletes.map { $0 + correctionOffset }
-      
-      deletes.unionInPlace(correctedNewDeletes)
-
-      // Should this be like in updates??
-      if let minIndex = possibleNewDeletes.minElement() {
-        inserts = shiftSet(inserts, from: minIndex, by: -annihilated.count)
+      // Deletes are shifted by preceding inserts and deletes at lower indices
+      var correctionOffset = 0
+      for operation in operations.prefixUpTo(operationIndex) {
+        if range.startIndex >= operationStartIndex(operation) {
+          correctionOffset -= operationOffset(operation)
+        }
       }
+      
+      let newDeletes = actualNewDeletes.map { $0 + correctionOffset }
+      deletes.unionInPlace(newDeletes)
+
+      // Deletes shift preceding inserts at higher indices
+      inserts = Set(inserts.map { $0 >= range.startIndex ? $0 - range.count : $0 })
       
     case .Reset:
       fatalError("Dear Sir/Madam, the .Reset operation within the .Batch is not supported at the moment!")
@@ -405,16 +349,16 @@ public func changeSetsFromBatchOperations<T>(operations: [ObservableArrayOperati
   
   var changeSets: [ObservableArrayEventChangeSet] = []
   
+  if deletes.count > 0 {
+    changeSets.append(.Deletes(deletes))
+  }
+  
   if inserts.count > 0 {
     changeSets.append(.Inserts(inserts))
   }
   
   if updates.count > 0 {
     changeSets.append(.Updates(updates))
-  }
-  
-  if deletes.count > 0 {
-    changeSets.append(.Deletes(deletes))
   }
   
   return changeSets
