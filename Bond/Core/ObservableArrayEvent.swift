@@ -302,12 +302,12 @@ public func changeSetsFromBatchOperations<T>(operations: [ObservableArrayOperati
       var newUpdates = Array(Set(fromIndex..<fromIndex+elements.count).subtract(inserts))
 
       // Any prior insertion or deletion shifts our indices
-      for operation in operations.prefixUpTo(operationIndex) {
-        let offset = -operationOffset(operation)
-        if offset != 0 {
-          let startIndex = operationStartIndex(operation)
-          newUpdates = newUpdates.map { $0 >= startIndex ? $0 + offset : $0 }
-        }
+      for insert in inserts {
+        newUpdates = newUpdates.map { $0 >= insert ? $0 - 1 : $0 }
+      }
+      
+      for delete in deletes {
+        newUpdates = newUpdates.map { $0 >= delete ? $0 + 1 : $0 }
       }
       
       updates.unionInPlace(newUpdates)
@@ -323,9 +323,6 @@ public func changeSetsFromBatchOperations<T>(operations: [ObservableArrayOperati
       
       let actualNewDeletes = possibleNewDeletes.subtract(annihilated)
       
-      // Elements that were updated and then removed in this batch must be discared
-      updates.subtractInPlace(actualNewDeletes)
-      
       // Deletes are shifted by preceding inserts and deletes at lower indices
       var correctionOffset = 0
       for operation in operations.prefixUpTo(operationIndex) {
@@ -336,6 +333,9 @@ public func changeSetsFromBatchOperations<T>(operations: [ObservableArrayOperati
       
       let newDeletes = actualNewDeletes.map { $0 + correctionOffset }
       deletes.unionInPlace(newDeletes)
+      
+      // Elements that were updated and then removed in this batch must be discared
+      updates.subtractInPlace(newDeletes)
 
       // Deletes shift preceding inserts at higher indices
       inserts = Set(inserts.map { $0 >= range.startIndex ? $0 - range.count : $0 })
