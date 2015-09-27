@@ -230,18 +230,15 @@ public struct ObservableArrayGenerator<ElementType>: GeneratorType {
   }
 }
 
-public extension ObservableArray {
-  
-  /// Wraps the receiver into another array. This basically creates a array of arrays
-  /// with with a single element - the receiver array.
-  public func lift() -> ObservableArray<ObservableArray<ElementType>> {
-    return ObservableArray<ObservableArray<ElementType>>([self])
-  }
-}
-
 public extension EventProducerType where EventType: ObservableArrayEventType {
   
   private typealias ElementType = EventType.ObservableArrayEventSequenceType.Generator.Element
+  
+  /// Wraps the receiver into another array. This basically creates a array of arrays
+  /// with with a single element - the receiver array.
+  public func lift() -> ObservableArray<Self> {
+    return ObservableArray([self])
+  }
   
   /// Map overload that simplifies mapping of observables that generate ObservableArray events.
   /// Instead of mapping ObservableArray events, it maps the array elements from those events.
