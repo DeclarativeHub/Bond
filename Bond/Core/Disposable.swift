@@ -31,6 +31,8 @@ public final class SimpleDisposable: DisposableType {
   public func dispose() {
     isDisposed = true
   }
+  
+  public init() {}
 }
 
 /// A disposable that executes the given block upon disposing.
