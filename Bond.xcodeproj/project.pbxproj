@@ -61,6 +61,9 @@
 		EC3228AA1B9F5673002BE73A /* UISegmentedControl+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3228A91B9F5673002BE73A /* UISegmentedControl+Bond.swift */; settings = {ASSET_TAGS = (); }; };
 		EC3228AC1B9F5691002BE73A /* UISegmentedControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3228AB1B9F5691002BE73A /* UISegmentedControlTests.swift */; settings = {ASSET_TAGS = (); }; };
 		EC6F105B1B7F9C2700E55A5F /* ObservableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69821B77D45600837A36 /* ObservableTests.swift */; };
+		ECA7254E1BB980E0003A4ABA /* ObservableArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69841B77D45600837A36 /* ObservableArrayTests.swift */; settings = {ASSET_TAGS = (); }; };
+		ECA725501BB983A0003A4ABA /* SimpleDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA7254F1BB983A0003A4ABA /* SimpleDiff.swift */; settings = {ASSET_TAGS = (); }; };
+		ECA725511BB983A0003A4ABA /* SimpleDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA7254F1BB983A0003A4ABA /* SimpleDiff.swift */; settings = {ASSET_TAGS = (); }; };
 		ECAD68EB1B77BB1D00837A36 /* BindableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68B81B77BB1D00837A36 /* BindableType.swift */; };
 		ECAD68EC1B77BB1D00837A36 /* BindableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68B81B77BB1D00837A36 /* BindableType.swift */; };
 		ECAD68ED1B77BB1D00837A36 /* Buffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68B91B77BB1D00837A36 /* Buffer.swift */; };
@@ -115,7 +118,6 @@
 		ECAD697E1B77D43D00837A36 /* UIViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD696D1B77D43D00837A36 /* UIViewTests.swift */; };
 		ECAD69851B77D45600837A36 /* EventProducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69801B77D45600837A36 /* EventProducerTests.swift */; };
 		ECAD69881B77D45600837A36 /* ObservableArrayEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69831B77D45600837A36 /* ObservableArrayEventTests.swift */; };
-		ECAD69891B77D45600837A36 /* ObservableArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69841B77D45600837A36 /* ObservableArrayTests.swift */; };
 		ECBF04DD1B8089DE001F6BCA /* ObservableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69821B77D45600837A36 /* ObservableTests.swift */; };
 		ECBF04DF1B808B20001F6BCA /* DisposableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */; };
 		ECBF04E01B808B20001F6BCA /* DisposableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */; };
@@ -191,6 +193,7 @@
 		EC2AE4A81B788F8B00296781 /* UIRefreshControl+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIRefreshControl+Bond.swift"; sourceTree = "<group>"; };
 		EC3228A91B9F5673002BE73A /* UISegmentedControl+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl+Bond.swift"; sourceTree = "<group>"; };
 		EC3228AB1B9F5691002BE73A /* UISegmentedControlTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UISegmentedControlTests.swift; sourceTree = "<group>"; };
+		ECA7254F1BB983A0003A4ABA /* SimpleDiff.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleDiff.swift; sourceTree = "<group>"; };
 		ECAD68B81B77BB1D00837A36 /* BindableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BindableType.swift; sourceTree = "<group>"; };
 		ECAD68B91B77BB1D00837A36 /* Buffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Buffer.swift; sourceTree = "<group>"; };
 		ECAD68BB1B77BB1D00837A36 /* Disposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Disposable.swift; sourceTree = "<group>"; };
@@ -449,6 +452,7 @@
 				ECAD68C41B77BB1D00837A36 /* Queue.swift */,
 				ECAD68C51B77BB1D00837A36 /* Reference.swift */,
 				ECAD68C11B77BB1D00837A36 /* Operators.swift */,
+				ECA7254F1BB983A0003A4ABA /* SimpleDiff.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -777,6 +781,7 @@
 				EC0075D01B90E5F400249C31 /* UIRefreshControl+Bond.swift in Sources */,
 				ECAD68FD1B77BB1D00837A36 /* Operators.swift in Sources */,
 				EC0075DC1B90E5F400249C31 /* UITableView+Bond.swift in Sources */,
+				ECA725501BB983A0003A4ABA /* SimpleDiff.swift in Sources */,
 				EC0075B31B90D39500249C31 /* EventProducer.swift in Sources */,
 				EC3228AA1B9F5673002BE73A /* UISegmentedControl+Bond.swift in Sources */,
 				EC0075B91B90E4DC00249C31 /* NSObject+Bond.swift in Sources */,
@@ -825,6 +830,7 @@
 				ECAD69721B77D43D00837A36 /* UIControlTests.swift in Sources */,
 				EC3228AC1B9F5691002BE73A /* UISegmentedControlTests.swift in Sources */,
 				ECAD69711B77D43D00837A36 /* UICollectionViewTests.swift in Sources */,
+				ECA7254E1BB980E0003A4ABA /* ObservableArrayTests.swift in Sources */,
 				ECAD697D1B77D43D00837A36 /* UITextViewTests.swift in Sources */,
 				ECAD697B1B77D43D00837A36 /* UITableViewTests.swift in Sources */,
 				ECAD69701B77D43D00837A36 /* UIButtonTests.swift in Sources */,
@@ -841,7 +847,6 @@
 				ECAD69761B77D43D00837A36 /* UILabelTests.swift in Sources */,
 				ECBF04DD1B8089DE001F6BCA /* ObservableTests.swift in Sources */,
 				EA3E36B81B41702100559641 /* NSLayoutConstraintTests.swift in Sources */,
-				ECAD69891B77D45600837A36 /* ObservableArrayTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -849,6 +854,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECA725511BB983A0003A4ABA /* SimpleDiff.swift in Sources */,
 				ECAD693C1B77BB1D00837A36 /* NSTextView+Bond.swift in Sources */,
 				790FD79C1B7F1C3800136394 /* NSTableView+Bond.swift in Sources */,
 				ECAD69341B77BB1D00837A36 /* NSImageView+Bond.swift in Sources */,
