@@ -133,7 +133,7 @@ public extension Observable where Wrapped: OptionalType {
     
     observeNew { value in
       if !updatingFromSelf {
-        observer.set(value as? AnyObject)
+        observer.set(value.value as? AnyObject)
       }
     }
   }
