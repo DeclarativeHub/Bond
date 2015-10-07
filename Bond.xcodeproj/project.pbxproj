@@ -13,6 +13,8 @@
 		03ACB50A1AB555D6001B3E64 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03ACB5091AB555D6001B3E64 /* Images.xcassets */; };
 		03ACB50D1AB555D6001B3E64 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03ACB50B1AB555D6001B3E64 /* LaunchScreen.xib */; };
 		03ACB5231AB6C840001B3E64 /* AssertEqualForOptionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ACB5221AB6C840001B3E64 /* AssertEqualForOptionals.swift */; };
+		52CC7A1E1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CC7A1D1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		52CC7A201BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CC7A1F1BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift */; settings = {ASSET_TAGS = (); }; };
 		69491BB41A7C217100A13B6B /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = 69491BB31A7C217100A13B6B /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69491BBA1A7C217100A13B6B /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69491BAE1A7C217100A13B6B /* Bond.framework */; };
 		790FD79C1B7F1C3800136394 /* NSTableView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790FD79B1B7F1C3800136394 /* NSTableView+Bond.swift */; };
@@ -167,6 +169,8 @@
 		03ACB5171AB555D6001B3E64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03ACB5181AB555D6001B3E64 /* iOSAppForTestingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSAppForTestingTests.swift; sourceTree = "<group>"; };
 		03ACB5221AB6C840001B3E64 /* AssertEqualForOptionals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssertEqualForOptionals.swift; sourceTree = "<group>"; };
+		52CC7A1D1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAppearanceCustomization+Bond.swift"; sourceTree = "<group>"; };
+		52CC7A1F1BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSAppearanceCustomizationTests.swift; sourceTree = "<group>"; };
 		69491BAE1A7C217100A13B6B /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		69491BB21A7C217100A13B6B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		69491BB31A7C217100A13B6B /* Bond.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bond.h; sourceTree = "<group>"; };
@@ -410,6 +414,7 @@
 		900BFC041ADFC5AF002B4B6E /* AppKit */ = {
 			isa = PBXGroup;
 			children = (
+				52CC7A1F1BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift */,
 				900BFC091ADFC860002B4B6E /* NSButtonTests.swift */,
 				900BFC0C1ADFC9A5002B4B6E /* NSColorWellTests.swift */,
 				900BFC0F1ADFCA46002B4B6E /* NSControlTests.swift */,
@@ -491,6 +496,7 @@
 		ECAD68DB1B77BB1D00837A36 /* OSX */ = {
 			isa = PBXGroup;
 			children = (
+				52CC7A1D1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift */,
 				ECAD68DC1B77BB1D00837A36 /* NSButton+Bond.swift */,
 				ECAD68DD1B77BB1D00837A36 /* NSColorWell+Bond.swift */,
 				ECAD68DE1B77BB1D00837A36 /* NSControl+Bond.swift */,
@@ -871,6 +877,7 @@
 				ECAD690C1B77BB1D00837A36 /* ObservableArrayEvent.swift in Sources */,
 				ECAD69061B77BB1D00837A36 /* Reference.swift in Sources */,
 				ECAD690A1B77BB1D00837A36 /* ObservableArray.swift in Sources */,
+				52CC7A1E1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift in Sources */,
 				ECAD68F41B77BB1D00837A36 /* DisposableType.swift in Sources */,
 				795D4C1A1B8F05C9001B80B0 /* NSIndexSet+Bond.swift in Sources */,
 				ECAD69301B77BB1D00837A36 /* NSColorWell+Bond.swift in Sources */,
@@ -896,6 +903,7 @@
 				ECF53FE61B8CDEA200628FCD /* ObservableArrayTests.swift in Sources */,
 				900BFC181ADFCCEE002B4B6E /* NSTextFieldTests.swift in Sources */,
 				900BFC161ADFCC00002B4B6E /* NSStatusBarButtonTests.swift in Sources */,
+				52CC7A201BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift in Sources */,
 				900BFC121ADFCAC6002B4B6E /* NSImageViewTests.swift in Sources */,
 				900BFC081ADFC5DC002B4B6E /* CALayerTests.swift in Sources */,
 				EAD8B2DD1B41AF4300995CE9 /* NSLayoutConstraintTests.swift in Sources */,
