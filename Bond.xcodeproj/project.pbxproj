@@ -13,14 +13,14 @@
 		03ACB50A1AB555D6001B3E64 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03ACB5091AB555D6001B3E64 /* Images.xcassets */; };
 		03ACB50D1AB555D6001B3E64 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03ACB50B1AB555D6001B3E64 /* LaunchScreen.xib */; };
 		03ACB5231AB6C840001B3E64 /* AssertEqualForOptionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ACB5221AB6C840001B3E64 /* AssertEqualForOptionals.swift */; };
-		52CC7A1E1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CC7A1D1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		52CC7A201BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CC7A1F1BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift */; settings = {ASSET_TAGS = (); }; };
+		52CC7A1E1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CC7A1D1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift */; };
+		52CC7A201BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CC7A1F1BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift */; };
 		69491BB41A7C217100A13B6B /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = 69491BB31A7C217100A13B6B /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69491BBA1A7C217100A13B6B /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69491BAE1A7C217100A13B6B /* Bond.framework */; };
 		790FD79C1B7F1C3800136394 /* NSTableView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790FD79B1B7F1C3800136394 /* NSTableView+Bond.swift */; };
 		790FD79E1B7F1CF500136394 /* NSTableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790FD79D1B7F1CF500136394 /* NSTableViewTests.swift */; };
-		795D4C191B8F05C9001B80B0 /* NSIndexSet+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795D4C181B8F05C9001B80B0 /* NSIndexSet+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		795D4C1A1B8F05C9001B80B0 /* NSIndexSet+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795D4C181B8F05C9001B80B0 /* NSIndexSet+Bond.swift */; settings = {ASSET_TAGS = (); }; };
+		795D4C191B8F05C9001B80B0 /* NSIndexSet+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795D4C181B8F05C9001B80B0 /* NSIndexSet+Bond.swift */; };
+		795D4C1A1B8F05C9001B80B0 /* NSIndexSet+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795D4C181B8F05C9001B80B0 /* NSIndexSet+Bond.swift */; };
 		900BFC081ADFC5DC002B4B6E /* CALayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC061ADFC5D5002B4B6E /* CALayerTests.swift */; };
 		900BFC0B1ADFC863002B4B6E /* NSButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC091ADFC860002B4B6E /* NSButtonTests.swift */; };
 		900BFC0E1ADFC9E9002B4B6E /* NSColorWellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC0C1ADFC9A5002B4B6E /* NSColorWellTests.swift */; };
@@ -30,38 +30,41 @@
 		900BFC161ADFCC00002B4B6E /* NSStatusBarButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC151ADFCC00002B4B6E /* NSStatusBarButtonTests.swift */; };
 		900BFC181ADFCCEE002B4B6E /* NSTextFieldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC171ADFCCEE002B4B6E /* NSTextFieldTests.swift */; };
 		900BFC1A1ADFCD63002B4B6E /* NSTextViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC191ADFCD63002B4B6E /* NSTextViewTests.swift */; };
+		B54FBF0F1BC6997F00173E74 /* BondtvOS.h in Headers */ = {isa = PBXBuildFile; fileRef = B54FBF0E1BC6997F00173E74 /* BondtvOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B54FBF161BC6997F00173E74 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B54FBF0C1BC6997F00173E74 /* Bond.framework */; };
+		B54FBF1B1BC6997F00173E74 /* BondtvOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54FBF1A1BC6997F00173E74 /* BondtvOSTests.swift */; };
 		DCA979741A83C3A200DD4A30 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCA979691A83C3A100DD4A30 /* Bond.framework */; };
 		EA3E36B81B41702100559641 /* NSLayoutConstraintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */; };
 		EAD8B2DD1B41AF4300995CE9 /* NSLayoutConstraintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */; };
-		EC0075B31B90D39500249C31 /* EventProducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0075B21B90D39500249C31 /* EventProducer.swift */; settings = {ASSET_TAGS = (); }; };
-		EC0075B41B90D39500249C31 /* EventProducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0075B21B90D39500249C31 /* EventProducer.swift */; settings = {ASSET_TAGS = (); }; };
-		EC0075B51B90D73800249C31 /* NSLock+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E71B77BB1D00837A36 /* NSLock+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		EC0075B71B90DC2100249C31 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BF1B77BB1D00837A36 /* Observable.swift */; settings = {ASSET_TAGS = (); }; };
-		EC0075B91B90E4DC00249C31 /* NSObject+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E91B77BB1D00837A36 /* NSObject+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		EC0075BA1B90E55400249C31 /* NSNotificationCenter+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E81B77BB1D00837A36 /* NSNotificationCenter+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		EC0075BB1B90E56D00249C31 /* NSLayoutConstraint+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E61B77BB1D00837A36 /* NSLayoutConstraint+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		EC0075BC1B90E57300249C31 /* CALayer+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E51B77BB1D00837A36 /* CALayer+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		EC0075CF1B90E5F400249C31 /* UIActivityIndicatorView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CB1B77BB1D00837A36 /* UIActivityIndicatorView+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		EC0075D01B90E5F400249C31 /* UIRefreshControl+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2AE4A81B788F8B00296781 /* UIRefreshControl+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		EC0075D11B90E5F400249C31 /* UIBarItem+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CC1B77BB1D00837A36 /* UIBarItem+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		EC0075D21B90E5F400249C31 /* UIButton+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CD1B77BB1D00837A36 /* UIButton+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		EC0075D31B90E5F400249C31 /* UICollectionView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CE1B77BB1D00837A36 /* UICollectionView+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		EC0075D41B90E5F400249C31 /* UIControl+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CF1B77BB1D00837A36 /* UIControl+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		EC0075D51B90E5F400249C31 /* UIDatePicker+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D01B77BB1D00837A36 /* UIDatePicker+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		EC0075D61B90E5F400249C31 /* UIImageView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D11B77BB1D00837A36 /* UIImageView+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		EC0075D71B90E5F400249C31 /* UILabel+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D21B77BB1D00837A36 /* UILabel+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		EC0075D81B90E5F400249C31 /* UINavigationItem+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D31B77BB1D00837A36 /* UINavigationItem+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		EC0075D91B90E5F400249C31 /* UIProgressView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D41B77BB1D00837A36 /* UIProgressView+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		EC0075DA1B90E5F400249C31 /* UISlider+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D51B77BB1D00837A36 /* UISlider+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		EC0075DB1B90E5F400249C31 /* UISwitch+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D61B77BB1D00837A36 /* UISwitch+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		EC0075DC1B90E5F400249C31 /* UITableView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D71B77BB1D00837A36 /* UITableView+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		EC0075DD1B90E5F400249C31 /* UITextField+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D81B77BB1D00837A36 /* UITextField+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		EC0075DE1B90E5F400249C31 /* UITextView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D91B77BB1D00837A36 /* UITextView+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		EC0075DF1B90E5F400249C31 /* UIView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68DA1B77BB1D00837A36 /* UIView+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		EC0075E01B90E6C800249C31 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BF1B77BB1D00837A36 /* Observable.swift */; settings = {ASSET_TAGS = (); }; };
+		EC0075B31B90D39500249C31 /* EventProducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0075B21B90D39500249C31 /* EventProducer.swift */; };
+		EC0075B41B90D39500249C31 /* EventProducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0075B21B90D39500249C31 /* EventProducer.swift */; };
+		EC0075B51B90D73800249C31 /* NSLock+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E71B77BB1D00837A36 /* NSLock+Bond.swift */; };
+		EC0075B71B90DC2100249C31 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BF1B77BB1D00837A36 /* Observable.swift */; };
+		EC0075B91B90E4DC00249C31 /* NSObject+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E91B77BB1D00837A36 /* NSObject+Bond.swift */; };
+		EC0075BA1B90E55400249C31 /* NSNotificationCenter+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E81B77BB1D00837A36 /* NSNotificationCenter+Bond.swift */; };
+		EC0075BB1B90E56D00249C31 /* NSLayoutConstraint+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E61B77BB1D00837A36 /* NSLayoutConstraint+Bond.swift */; };
+		EC0075BC1B90E57300249C31 /* CALayer+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E51B77BB1D00837A36 /* CALayer+Bond.swift */; };
+		EC0075CF1B90E5F400249C31 /* UIActivityIndicatorView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CB1B77BB1D00837A36 /* UIActivityIndicatorView+Bond.swift */; };
+		EC0075D01B90E5F400249C31 /* UIRefreshControl+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2AE4A81B788F8B00296781 /* UIRefreshControl+Bond.swift */; };
+		EC0075D11B90E5F400249C31 /* UIBarItem+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CC1B77BB1D00837A36 /* UIBarItem+Bond.swift */; };
+		EC0075D21B90E5F400249C31 /* UIButton+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CD1B77BB1D00837A36 /* UIButton+Bond.swift */; };
+		EC0075D31B90E5F400249C31 /* UICollectionView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CE1B77BB1D00837A36 /* UICollectionView+Bond.swift */; };
+		EC0075D41B90E5F400249C31 /* UIControl+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CF1B77BB1D00837A36 /* UIControl+Bond.swift */; };
+		EC0075D51B90E5F400249C31 /* UIDatePicker+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D01B77BB1D00837A36 /* UIDatePicker+Bond.swift */; };
+		EC0075D61B90E5F400249C31 /* UIImageView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D11B77BB1D00837A36 /* UIImageView+Bond.swift */; };
+		EC0075D71B90E5F400249C31 /* UILabel+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D21B77BB1D00837A36 /* UILabel+Bond.swift */; };
+		EC0075D81B90E5F400249C31 /* UINavigationItem+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D31B77BB1D00837A36 /* UINavigationItem+Bond.swift */; };
+		EC0075D91B90E5F400249C31 /* UIProgressView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D41B77BB1D00837A36 /* UIProgressView+Bond.swift */; };
+		EC0075DA1B90E5F400249C31 /* UISlider+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D51B77BB1D00837A36 /* UISlider+Bond.swift */; };
+		EC0075DB1B90E5F400249C31 /* UISwitch+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D61B77BB1D00837A36 /* UISwitch+Bond.swift */; };
+		EC0075DC1B90E5F400249C31 /* UITableView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D71B77BB1D00837A36 /* UITableView+Bond.swift */; };
+		EC0075DD1B90E5F400249C31 /* UITextField+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D81B77BB1D00837A36 /* UITextField+Bond.swift */; };
+		EC0075DE1B90E5F400249C31 /* UITextView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D91B77BB1D00837A36 /* UITextView+Bond.swift */; };
+		EC0075DF1B90E5F400249C31 /* UIView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68DA1B77BB1D00837A36 /* UIView+Bond.swift */; };
+		EC0075E01B90E6C800249C31 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BF1B77BB1D00837A36 /* Observable.swift */; };
 		EC0388991B0DD25700E32454 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69491BAE1A7C217100A13B6B /* Bond.framework */; };
-		EC3228AA1B9F5673002BE73A /* UISegmentedControl+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3228A91B9F5673002BE73A /* UISegmentedControl+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		EC3228AC1B9F5691002BE73A /* UISegmentedControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3228AB1B9F5691002BE73A /* UISegmentedControlTests.swift */; settings = {ASSET_TAGS = (); }; };
+		EC3228AA1B9F5673002BE73A /* UISegmentedControl+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3228A91B9F5673002BE73A /* UISegmentedControl+Bond.swift */; };
+		EC3228AC1B9F5691002BE73A /* UISegmentedControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3228AB1B9F5691002BE73A /* UISegmentedControlTests.swift */; };
 		EC6F105B1B7F9C2700E55A5F /* ObservableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69821B77D45600837A36 /* ObservableTests.swift */; };
 		ECAD68EB1B77BB1D00837A36 /* BindableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68B81B77BB1D00837A36 /* BindableType.swift */; };
 		ECAD68EC1B77BB1D00837A36 /* BindableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68B81B77BB1D00837A36 /* BindableType.swift */; };
@@ -122,7 +125,7 @@
 		ECBF04DF1B808B20001F6BCA /* DisposableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */; };
 		ECBF04E01B808B20001F6BCA /* DisposableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */; };
 		ECBF04E11B810100001F6BCA /* NSLock+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E71B77BB1D00837A36 /* NSLock+Bond.swift */; };
-		ECF53FE61B8CDEA200628FCD /* ObservableArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69841B77D45600837A36 /* ObservableArrayTests.swift */; settings = {ASSET_TAGS = (); }; };
+		ECF53FE61B8CDEA200628FCD /* ObservableArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD69841B77D45600837A36 /* ObservableArrayTests.swift */; };
 		ECFFF4BB1B84B840001B5B0D /* NSObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFFF4BA1B84B840001B5B0D /* NSObjectTests.swift */; };
 		ECFFF4BC1B84B840001B5B0D /* NSObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFFF4BA1B84B840001B5B0D /* NSObjectTests.swift */; };
 /* End PBXBuildFile section */
@@ -141,6 +144,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 69491BAD1A7C217100A13B6B;
 			remoteInfo = Bond;
+		};
+		B54FBF171BC6997F00173E74 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 69491BA51A7C217100A13B6B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B54FBF0B1BC6997F00173E74;
+			remoteInfo = BondtvOS;
 		};
 		DCA979751A83C3A200DD4A30 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -188,6 +198,12 @@
 		900BFC151ADFCC00002B4B6E /* NSStatusBarButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSStatusBarButtonTests.swift; sourceTree = "<group>"; };
 		900BFC171ADFCCEE002B4B6E /* NSTextFieldTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTextFieldTests.swift; sourceTree = "<group>"; };
 		900BFC191ADFCD63002B4B6E /* NSTextViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTextViewTests.swift; sourceTree = "<group>"; };
+		B54FBF0C1BC6997F00173E74 /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B54FBF0E1BC6997F00173E74 /* BondtvOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BondtvOS.h; sourceTree = "<group>"; };
+		B54FBF101BC6997F00173E74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B54FBF151BC6997F00173E74 /* BondtvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BondtvOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B54FBF1A1BC6997F00173E74 /* BondtvOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BondtvOSTests.swift; sourceTree = "<group>"; };
+		B54FBF1C1BC6997F00173E74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DCA979691A83C3A100DD4A30 /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCA979731A83C3A200DD4A30 /* BondOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BondOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSLayoutConstraintTests.swift; sourceTree = "<group>"; };
@@ -287,6 +303,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B54FBF081BC6997F00173E74 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B54FBF121BC6997F00173E74 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B54FBF161BC6997F00173E74 /* Bond.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DCA979651A83C3A100DD4A30 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -352,6 +383,8 @@
 				69491BBD1A7C217100A13B6B /* BondTests */,
 				03ACB4FF1AB555D6001B3E64 /* iOSAppForTesting */,
 				03ACB5151AB555D6001B3E64 /* iOSAppForTestingTests */,
+				B54FBF0D1BC6997F00173E74 /* BondtvOS */,
+				B54FBF191BC6997F00173E74 /* BondtvOSTests */,
 				69491BAF1A7C217100A13B6B /* Products */,
 			);
 			indentWidth = 2;
@@ -367,6 +400,8 @@
 				DCA979691A83C3A100DD4A30 /* Bond.framework */,
 				DCA979731A83C3A200DD4A30 /* BondOSXTests.xctest */,
 				03ACB4FE1AB555D6001B3E64 /* iOSAppForTesting.app */,
+				B54FBF0C1BC6997F00173E74 /* Bond.framework */,
+				B54FBF151BC6997F00173E74 /* BondtvOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -436,6 +471,24 @@
 				900BFC061ADFC5D5002B4B6E /* CALayerTests.swift */,
 			);
 			name = Shared;
+			sourceTree = "<group>";
+		};
+		B54FBF0D1BC6997F00173E74 /* BondtvOS */ = {
+			isa = PBXGroup;
+			children = (
+				B54FBF0E1BC6997F00173E74 /* BondtvOS.h */,
+				B54FBF101BC6997F00173E74 /* Info.plist */,
+			);
+			path = BondtvOS;
+			sourceTree = "<group>";
+		};
+		B54FBF191BC6997F00173E74 /* BondtvOSTests */ = {
+			isa = PBXGroup;
+			children = (
+				B54FBF1A1BC6997F00173E74 /* BondtvOSTests.swift */,
+				B54FBF1C1BC6997F00173E74 /* Info.plist */,
+			);
+			path = BondtvOSTests;
 			sourceTree = "<group>";
 		};
 		ECAD68B71B77BB1D00837A36 /* Core */ = {
@@ -571,6 +624,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B54FBF091BC6997F00173E74 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B54FBF0F1BC6997F00173E74 /* BondtvOS.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DCA979661A83C3A100DD4A30 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -636,6 +697,42 @@
 			productReference = 69491BB91A7C217100A13B6B /* BondTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		B54FBF0B1BC6997F00173E74 /* BondtvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B54FBF211BC6997F00173E74 /* Build configuration list for PBXNativeTarget "BondtvOS" */;
+			buildPhases = (
+				B54FBF071BC6997F00173E74 /* Sources */,
+				B54FBF081BC6997F00173E74 /* Frameworks */,
+				B54FBF091BC6997F00173E74 /* Headers */,
+				B54FBF0A1BC6997F00173E74 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BondtvOS;
+			productName = BondtvOS;
+			productReference = B54FBF0C1BC6997F00173E74 /* Bond.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		B54FBF141BC6997F00173E74 /* BondtvOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B54FBF221BC6997F00173E74 /* Build configuration list for PBXNativeTarget "BondtvOSTests" */;
+			buildPhases = (
+				B54FBF111BC6997F00173E74 /* Sources */,
+				B54FBF121BC6997F00173E74 /* Frameworks */,
+				B54FBF131BC6997F00173E74 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B54FBF181BC6997F00173E74 /* PBXTargetDependency */,
+			);
+			name = BondtvOSTests;
+			productName = BondtvOSTests;
+			productReference = B54FBF151BC6997F00173E74 /* BondtvOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		DCA979681A83C3A100DD4A30 /* BondOSX */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DCA9797C1A83C3A200DD4A30 /* Build configuration list for PBXNativeTarget "BondOSX" */;
@@ -692,6 +789,12 @@
 						CreatedOnToolsVersion = 6.1.1;
 						TestTargetID = 03ACB4FD1AB555D6001B3E64;
 					};
+					B54FBF0B1BC6997F00173E74 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					B54FBF141BC6997F00173E74 = {
+						CreatedOnToolsVersion = 7.1;
+					};
 					DCA979681A83C3A100DD4A30 = {
 						CreatedOnToolsVersion = 6.2;
 					};
@@ -718,6 +821,8 @@
 				DCA979681A83C3A100DD4A30 /* BondOSX */,
 				DCA979721A83C3A200DD4A30 /* BondOSXTests */,
 				03ACB4FD1AB555D6001B3E64 /* iOSAppForTesting */,
+				B54FBF0B1BC6997F00173E74 /* BondtvOS */,
+				B54FBF141BC6997F00173E74 /* BondtvOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -741,6 +846,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		69491BB71A7C217100A13B6B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B54FBF0A1BC6997F00173E74 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B54FBF131BC6997F00173E74 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -851,6 +970,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B54FBF071BC6997F00173E74 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B54FBF111BC6997F00173E74 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B54FBF1B1BC6997F00173E74 /* BondtvOSTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DCA979641A83C3A100DD4A30 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -922,6 +1056,11 @@
 			isa = PBXTargetDependency;
 			target = 69491BAD1A7C217100A13B6B /* Bond */;
 			targetProxy = 69491BBB1A7C217100A13B6B /* PBXContainerItemProxy */;
+		};
+		B54FBF181BC6997F00173E74 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B54FBF0B1BC6997F00173E74 /* BondtvOS */;
+			targetProxy = B54FBF171BC6997F00173E74 /* PBXContainerItemProxy */;
 		};
 		DCA979761A83C3A200DD4A30 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1135,6 +1274,80 @@
 			};
 			name = Release;
 		};
+		B54FBF1D1BC6997F00173E74 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = BondtvOS/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = swift.bond.Bond.BondtvOS;
+				PRODUCT_NAME = "$(PROJECT_NAME)";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		B54FBF1E1BC6997F00173E74 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = BondtvOS/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = swift.bond.Bond.BondtvOS;
+				PRODUCT_NAME = "$(PROJECT_NAME)";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Release;
+		};
+		B54FBF1F1BC6997F00173E74 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = BondtvOSTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = swift.bond.Bond.BondtvOSTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		B54FBF201BC6997F00173E74 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = BondtvOSTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = swift.bond.Bond.BondtvOSTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Release;
+		};
 		DCA9797D1A83C3A200DD4A30 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1255,6 +1468,22 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		B54FBF211BC6997F00173E74 /* Build configuration list for PBXNativeTarget "BondtvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B54FBF1D1BC6997F00173E74 /* Debug */,
+				B54FBF1E1BC6997F00173E74 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		B54FBF221BC6997F00173E74 /* Build configuration list for PBXNativeTarget "BondtvOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B54FBF1F1BC6997F00173E74 /* Debug */,
+				B54FBF201BC6997F00173E74 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		DCA9797C1A83C3A200DD4A30 /* Build configuration list for PBXNativeTarget "BondOSX" */ = {
 			isa = XCConfigurationList;
