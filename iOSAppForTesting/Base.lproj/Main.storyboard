@@ -23,16 +23,31 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="this is a text view" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Arv-4Y-lDg">
+                                <rect key="frame" x="88" y="101" width="240" height="73"/>
+                                <animations/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hrO-e2-zau">
+                                <rect key="frame" x="9" y="27" width="68" height="30"/>
+                                <animations/>
+                                <state key="normal" title="Fire Event"/>
+                            </button>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="fireEvent" destination="hrO-e2-zau" id="x7r-uY-M42"/>
                         <outlet property="textField" destination="0af-yH-Hh3" id="xJM-8T-tw1"/>
+                        <outlet property="textView" destination="Arv-4Y-lDg" id="lYf-SJ-Tu8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="360" y="339"/>
         </scene>
     </scenes>
 </document>

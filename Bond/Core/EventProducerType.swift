@@ -52,6 +52,50 @@ public extension EventProducerType {
     }
   }
   
+  public func observeTrue(observer: EventType -> ()) -> DisposableType {
+    return observe{value in
+      if value as! Bool == true{
+        observer(value)
+      }
+    }
+  }
+  
+  public func observeNewTrue(observer: EventType -> ()) -> DisposableType {
+    var skip: Int = replayLength
+    
+    return observe{value in
+      if skip > 0{
+        skip--
+      }else{
+        if value as! Bool == true{
+          observer(value)
+        }
+      }
+    }
+  }
+  
+  public func observeFalse(observer: EventType -> ()) -> DisposableType {
+    return observe{value in
+      if value as! Bool == false{
+        observer(value)
+      }
+    }
+  }
+  
+  public func observeNewFalse(observer: EventType -> ()) -> DisposableType {
+    var skip: Int = replayLength
+    
+    return observe{value in
+      if skip > 0{
+        skip--
+      }else{
+        if value as! Bool == false{
+          observer(value)
+        }
+      }
+    }
+  }
+  
   /// Establishes a one-way binding between the source and the bindable's sink
   /// and returns a disposable that can cancel observing.
   public func bindTo<B: BindableType where B.Element == EventType>(bindable: B) -> DisposableType {
