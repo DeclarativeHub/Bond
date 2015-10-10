@@ -52,15 +52,15 @@ public extension EventProducerType {
     }
   }
   
-  public func observeTrue(observer: EventType -> ()) -> DisposableType {
+  public func observeTrue(observer: () -> ()) -> DisposableType {
     return observe{value in
       if value as! Bool == true{
-        observer(value)
+        observer()
       }
     }
   }
   
-  public func observeNewTrue(observer: EventType -> ()) -> DisposableType {
+  public func observeNewTrue(observer: () -> ()) -> DisposableType {
     var skip: Int = replayLength
     
     return observe{value in
@@ -68,21 +68,21 @@ public extension EventProducerType {
         skip--
       }else{
         if value as! Bool == true{
-          observer(value)
+          observer()
         }
       }
     }
   }
   
-  public func observeFalse(observer: EventType -> ()) -> DisposableType {
+  public func observeFalse(observer: () -> ()) -> DisposableType {
     return observe{value in
       if value as! Bool == false{
-        observer(value)
+        observer()
       }
     }
   }
   
-  public func observeNewFalse(observer: EventType -> ()) -> DisposableType {
+  public func observeNewFalse(observer: () -> ()) -> DisposableType {
     var skip: Int = replayLength
     
     return observe{value in
@@ -90,7 +90,7 @@ public extension EventProducerType {
         skip--
       }else{
         if value as! Bool == false{
-          observer(value)
+          observer()
         }
       }
     }
