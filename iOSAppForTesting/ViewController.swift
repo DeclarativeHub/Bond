@@ -25,19 +25,19 @@ class ViewController: UIViewController {
     self.viewModel.textViewEditing.bindTo(self.textView.bnd_editing)
     
     self.viewModel.someEvent.observeBecameTrue({
-      print("new some event fire")
+      print("fired if event became true")
     })
     
     self.viewModel.someEvent.observeTrue({
-      print("some event fire")
+      print("fired if event is true")
     })
     
     self.viewModel.someEvent.observeFalse({
-      print("some event not fire")
+      print("fired if event is false")
     })
     
     self.viewModel.someEvent.observeBecameFalse({
-      print("new some event not fire")
+      print("fired if event became false")
     })
     
     self.fireEvent.bnd_tap.observe { () -> () in
