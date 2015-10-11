@@ -60,7 +60,7 @@ public extension EventProducerType {
     }
   }
   
-  public func observeNewTrue(observer: () -> ()) -> DisposableType {
+  public func observeBecameTrue(observer: () -> ()) -> DisposableType {
     var skip: Int = replayLength
     
     return observe{value in
@@ -82,7 +82,7 @@ public extension EventProducerType {
     }
   }
   
-  public func observeNewFalse(observer: () -> ()) -> DisposableType {
+  public func observeBecameFalse(observer: () -> ()) -> DisposableType {
     var skip: Int = replayLength
     
     return observe{value in

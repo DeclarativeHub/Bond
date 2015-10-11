@@ -24,7 +24,7 @@ class ViewController: UIViewController {
     self.viewModel.textFieldEditing.bindTo(self.textField.bnd_editing)
     self.viewModel.textViewEditing.bindTo(self.textView.bnd_editing)
     
-    self.viewModel.someEvent.observeNewTrue({
+    self.viewModel.someEvent.observeBecameTrue({
       print("new some event fire")
     })
     
@@ -36,7 +36,7 @@ class ViewController: UIViewController {
       print("some event not fire")
     })
     
-    self.viewModel.someEvent.observeNewFalse({
+    self.viewModel.someEvent.observeBecameFalse({
       print("new some event not fire")
     })
     
