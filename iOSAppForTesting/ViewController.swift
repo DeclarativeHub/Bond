@@ -36,7 +36,7 @@ class ViewController: UIViewController {
       print("some event not fire")
     })
     
-    self.viewModel.someEvent.observeNewFalse({
+    self.viewModel.someEvent.observeNewFalse({5
       print("new some event not fire")
     })
     
