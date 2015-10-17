@@ -267,6 +267,8 @@ public extension EventProducerType where EventType: ObservableArrayEventType {
         let sequence = arrayEvent.sequence.lazy.filter(includeElement)
         if let operation = arrayEvent.operation.filter(includeElement, pointers: &pointers!) {
           sink(ObservableArrayEvent(sequence: sequence, operation: operation))
+        } else {
+          sink(ObservableArrayEvent(sequence: sequence, operation: ObservableArrayOperation.Reset(array: Array(sequence))))
         }
       }
     }

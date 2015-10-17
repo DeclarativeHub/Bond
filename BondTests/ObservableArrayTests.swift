@@ -326,4 +326,13 @@ class ObservableArrayTests: XCTestCase {
     XCTAssert(mappedObservableArray.count == array.count)
     XCTAssert(mappedObservableArray[2].array == array[2].array.map(transform))
   }
+  
+  func testFilteredObservableArrayAlwaysReplayes() {
+    let array = ObservableArray<Int>([1, 2, 3])
+    array.insert(7, atIndex: 0) // 7, 1, 2, 3
+    XCTAssert(array.count == 4)
+    
+    let filtered = array.filter { e in e % 2 == 0 }.crystallize()
+    XCTAssert(filtered.array == [2])
+  }
 }
