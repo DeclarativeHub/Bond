@@ -40,9 +40,7 @@ public struct Buffer<EventType> {
   
   /// Creates a new buffer of given size
   public init(size: Int) {
-    guard size > 0 else {
-      fatalError("Dear Sir/Madam, buffer has to have the size of least 1.")
-    }
+    precondition(size > 0, "Dear Sir/Madam, buffer has to have the size of least 1.")
     
     self.size = size
     buffer.reserveCapacity(size)
