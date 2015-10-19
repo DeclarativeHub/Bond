@@ -109,14 +109,11 @@ public extension EventProducerType {
   public func throttle(seconds: Queue.TimeInterval, queue: Queue) -> EventProducer<EventType> {
     return EventProducer(replayLength: replayLength) { sink in
       var shouldDispatch: Bool = true
-      var lastEvent: EventType! = nil
       return observe { event in
-        lastEvent = event
         if shouldDispatch {
           shouldDispatch = false
           queue.after(seconds) {
-            sink(lastEvent)
-            lastEvent = nil
+            sink(event)
             shouldDispatch = true
           }
         }
@@ -151,12 +148,12 @@ public extension EventProducerType {
   /// Will not generate an event until both observables have generated one.
   public func combineLatestWith<U: EventProducerType>(other: U) -> EventProducer<(EventType, U.EventType)> {
     return EventProducer(replayLength: min(replayLength + other.replayLength, 1)) { sink in
-      var myEvent: EventType! = nil
-      var itsEvent: U.EventType! = nil
+      var myEvent: EventType?
+      var itsEvent: U.EventType?
       
-      let onBothNext = { () -> () in
+      let onBothNext = {
         if let myEvent = myEvent, let itsEvent = itsEvent {
-          sink((myEvent, itsEvent))
+          sink(myEvent, itsEvent)
         }
       }
       
@@ -211,8 +208,8 @@ public extension EventProducerType where EventType: OptionalType {
   public func ignoreNil() -> EventProducer<EventType.WrappedType> {
     return EventProducer(replayLength: replayLength) { sink in
       return observe { event in
-        if !event.isNil {
-          sink(event.value!)
+        if let value = event.value {
+          sink(value)
         }
       }
     }
@@ -259,9 +256,9 @@ public extension EventProducerType where EventType: Equatable {
   
   public func distinct() -> EventProducer<EventType> {
     return EventProducer(replayLength: replayLength) { sink in
-      var lastEvent: EventType? = nil
+      var lastEvent: EventType?
       return observe { event in
-        if lastEvent == nil || lastEvent! != event {
+        if lastEvent == nil || lastEvent != event {
           sink(event)
           lastEvent = event
         }

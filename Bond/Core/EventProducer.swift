@@ -137,7 +137,7 @@ public class EventProducer<Event>: EventProducerType {
     
     lock.lock()
     isDispatchInProgress = true
-    for (_, send) in observers {
+    for send in observers.values {
       send(event)
     }
     isDispatchInProgress = false
@@ -181,7 +181,7 @@ extension EventProducer: BindableType {
 
 public final class EventProducerDisposable<EventType>: DisposableType {
   
-  private weak var eventProducer: EventProducer<EventType>!
+  private weak var eventProducer: EventProducer<EventType>?
   private var token: Int64
   
   public var isDisposed: Bool {

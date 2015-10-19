@@ -98,17 +98,17 @@ public final class ObservableArray<ElementType>: EventProducer<ObservableArrayEv
   
   private static func performOperation(operation: ObservableArrayOperation<ElementType>, inout onArray array: [ElementType]) {
     switch operation {
-    case .Reset(let newArray):
+    case let .Reset(newArray):
       array = newArray
-    case .Insert(let elements, let fromIndex):
+    case let .Insert(elements, fromIndex):
       array.insertContentsOf(elements, at: fromIndex)
-    case .Update(let elements, let fromIndex):
+    case let .Update(elements, fromIndex):
       for (index, element) in elements.enumerate() {
         array[fromIndex + index] = element
       }
-    case .Remove(let range):
+    case let .Remove(range):
       array.removeRange(range)
-    case .Batch(let operations):
+    case let .Batch(operations):
       for operation in operations {
         ObservableArray.performOperation(operation, onArray: &array)
       }
@@ -129,8 +129,7 @@ public extension ObservableArray {
   
   /// Remove an element from the end of the ObservableArray and sends .Remove event.
   public func removeLast() -> ElementType {
-    let last = array.last
-    if let last = last {
+    if let last = array.last {
       applyOperation(ObservableArrayOperation.Remove(range: count-1..<count))
       return last
     } else {
@@ -243,12 +242,12 @@ public extension ObservableArray where ElementType: Equatable, ElementType: Hash
       
       for diffOperation in diff {
         switch diffOperation {
-        case .Noop(let elements):
+        case let .Noop(elements):
           startIndex += elements.count
-        case .Insert(let elements):
+        case let .Insert(elements):
           array.insertContentsOf(elements, atIndex: startIndex)
           startIndex += elements.count
-        case .Delete(let elements):
+        case let .Delete(elements):
           array.removeRange(startIndex ..< startIndex + elements.count)
         }
       }
@@ -306,9 +305,9 @@ public extension EventProducerType where EventType: ObservableArrayEventType {
     }
     
     var capturedArray: [ElementType] = []
-    observe{ capturedArray = Array($0.sequence) }.dispose()
+    observe { capturedArray = Array($0.sequence) }.dispose()
     
-    let array = ObservableArray<ElementType>(capturedArray)
+    let array = ObservableArray(capturedArray)
     array.deinitDisposable += skip(replayLength).observe { event in
       array.applyOperation(event.operation)
       return

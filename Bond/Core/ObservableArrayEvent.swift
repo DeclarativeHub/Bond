@@ -58,14 +58,10 @@ public enum ObservableArrayEventChangeSet {
 
 public func ==(lhs: ObservableArrayEventChangeSet, rhs: ObservableArrayEventChangeSet) -> Bool {
   switch (lhs, rhs) {
-  case (.Inserts(let l), .Inserts(let r)):
-    return l == r
-  case (.Updates(let l), .Updates(let r)):
-    return l == r
-  case (.Deletes(let l), .Deletes(let r)):
-    return l == r
-  default:
-    return false
+  case let (.Inserts(l), .Inserts(r)): return l == r
+  case let (.Updates(l), .Updates(r)): return l == r
+  case let (.Deletes(l), .Deletes(r)): return l == r
+  default: return false
   }
 }
 
@@ -74,23 +70,23 @@ public extension ObservableArrayOperation {
   /// Maps elements encapsulated in the operation.
   public func map<X>(transform: ElementType -> X) -> ObservableArrayOperation<X> {
     switch self {
-    case .Reset(let array):
+    case let .Reset(array):
       return .Reset(array: array.map(transform))
-    case .Insert(let elements, let fromIndex):
+    case let .Insert(elements, fromIndex):
       return .Insert(elements: elements.map(transform), fromIndex: fromIndex)
-    case .Update(let elements, let fromIndex):
+    case let .Update(elements, fromIndex):
       return .Update(elements: elements.map(transform), fromIndex: fromIndex)
-    case .Remove(let range):
+    case let .Remove(range):
       return .Remove(range: range)
-    case .Batch(let operations):
-      return .Batch(operations.map{ $0.map(transform) })
+    case let .Batch(operations):
+      return .Batch(operations.map { $0.map(transform) })
     }
   }
   
   public func filter(includeElement: ElementType -> Bool, inout pointers: [Int]) -> ObservableArrayOperation<ElementType>? {
     
     switch self {
-    case .Insert(let elements, let fromIndex):
+    case let .Insert(elements, fromIndex):
       
       for (index, element) in pointers.enumerate() {
         if element >= fromIndex {
@@ -114,7 +110,7 @@ public extension ObservableArrayOperation {
         return .Insert(elements: insertedElements, fromIndex: insertionPoint)
       }
       
-    case .Update(let elements, let fromIndex):
+    case let .Update(elements, fromIndex):
       
       var operations: [ObservableArrayOperation<ElementType>] = []
       
@@ -149,7 +145,7 @@ public extension ObservableArrayOperation {
         return .Batch(operations)
       }
       
-    case .Remove(let range):
+    case let .Remove(range):
       
       var startIndex = -1
       var endIndex = -1
@@ -175,11 +171,11 @@ public extension ObservableArrayOperation {
         return .Remove(range: removedRange)
       }
       
-    case .Reset(let array):
+    case let .Reset(array):
       pointers = pointersFromSequence(array, includeElement: includeElement)
       return .Reset(array: array.filter(includeElement))
       
-    case .Batch(let operations):
+    case let .Batch(operations):
       
       var filteredOperations: [ObservableArrayOperation<ElementType>] = []
       
@@ -202,15 +198,13 @@ public extension ObservableArrayOperation {
   /// Generates the `ObservableArrayEventChangeSet` representation of the operation.
   public func changeSet() -> ObservableArrayEventChangeSet {
     switch self {
-    case .Insert(let elements, let fromIndex):
+    case let .Insert(elements, fromIndex):
       return .Inserts(Set(fromIndex..<fromIndex+elements.count))
-    case .Update(let elements, let fromIndex):
+    case let .Update(elements, fromIndex):
       return .Updates(Set(fromIndex..<fromIndex+elements.count))
-    case .Remove(let range):
+    case let .Remove(range):
       return .Deletes(Set(range))
-    case .Reset:
-      fallthrough
-    case .Batch:
+    case .Reset, .Batch:
       fatalError("Dear Sir/Madam, I cannot generate changeset for \(self) operation.")
     }
   }
@@ -240,9 +234,9 @@ internal func startingIndexForIndex(x: Int, forPointers pointers: [Int]) -> Int 
 
 public func operationOffset<T>(operation: ObservableArrayOperation<T>) -> Int {
   switch operation {
-  case .Insert(let elements, _):
+  case let .Insert(elements, _):
     return elements.count
-  case .Remove(let range):
+  case let .Remove(range):
     return -range.count
   default:
     return 0
@@ -251,9 +245,9 @@ public func operationOffset<T>(operation: ObservableArrayOperation<T>) -> Int {
 
 public func operationStartIndex<T>(operation: ObservableArrayOperation<T>) -> Int {
   switch operation {
-  case .Insert(_, let fromIndex):
+  case let .Insert(_, fromIndex):
     return fromIndex
-  case .Remove(let range):
+  case let .Remove(range):
     return range.startIndex
   default:
     return 0
@@ -287,7 +281,7 @@ public func changeSetsFromBatchOperations<T>(operations: [ObservableArrayOperati
   
   for (operationIndex, operation) in operations.enumerate() {
     switch operation {
-    case .Insert(let elements, let fromIndex):
+    case let .Insert(elements, fromIndex):
       // Inserts are always indexed in the index-space of the array as it will look like when all operations are applies
       
       // Inserts shift preceding inserts at higher indices
@@ -295,7 +289,7 @@ public func changeSetsFromBatchOperations<T>(operations: [ObservableArrayOperati
       
       inserts.unionInPlace(fromIndex..<fromIndex+elements.count)
       
-    case .Update(let elements, let fromIndex):
+    case let .Update(elements, fromIndex):
       // Updates are always indexed in the index-space of the array before any operation is applied
 
       // Updates done to the elements that were inserted in this batch must be discared
@@ -312,7 +306,7 @@ public func changeSetsFromBatchOperations<T>(operations: [ObservableArrayOperati
       
       updates.unionInPlace(newUpdates)
       
-    case .Remove(let range):
+    case let .Remove(range):
       // Deletes are always indexed in the index-space of the array before any operation is applied
       
       let possibleNewDeletes = Set(range)
