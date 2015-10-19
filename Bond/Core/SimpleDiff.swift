@@ -31,7 +31,7 @@ internal enum SimpleDiffOperation<T> {
   case Noop(elements: [T])
 }
 
-internal func simpleDiff<T where T: Hashable, T: Equatable>(before: Array<T>, after: Array<T>) -> [SimpleDiffOperation<T>] {
+internal func simpleDiff<T where T: Hashable, T: Equatable>(before: [T], after: [T]) -> [SimpleDiffOperation<T>] {
   
   var oldIndexMap: [T: [Int]] = before.enumerate().reduce([:]) { dict, e in
     var newDict = dict

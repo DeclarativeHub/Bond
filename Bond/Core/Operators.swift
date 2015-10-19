@@ -35,7 +35,7 @@ public func ->> <O: EventProducerType, B: BindableType where B.Element == O.Even
   return source.bindTo(destination)
 }
 
-public func ->> <O: EventProducerType, B: BindableType where B.Element == Optional<O.EventType>>(source: O, destination: B) -> DisposableType {
+public func ->> <O: EventProducerType, B: BindableType where B.Element == O.EventType?>(source: O, destination: B) -> DisposableType {
   return source.bindTo(destination)
 }
 

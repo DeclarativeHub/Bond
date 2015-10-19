@@ -29,7 +29,7 @@ public protocol ObservableArrayType {
 }
 
 /// A type that can be used to encapsulate an array and observe its (incremental) changes.
-public final class ObservableArray<ElementType>: EventProducer<ObservableArrayEvent<Array<ElementType>>>, ObservableArrayType {
+public final class ObservableArray<ElementType>: EventProducer<ObservableArrayEvent<[ElementType]>>, ObservableArrayType {
   
   /// Batched array operations.
   private var batchedOperations: [ObservableArrayOperation<ElementType>]! = nil
