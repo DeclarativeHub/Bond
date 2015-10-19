@@ -40,10 +40,6 @@ extension Optional: OptionalType {
   }
   
   public init(optional: Wrapped?) {
-    if let some = optional {
-      self = .Some(some)
-    } else {
-      self = .None
-    }
+    self = optional
   }
 }
