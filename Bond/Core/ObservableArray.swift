@@ -24,18 +24,18 @@
 
 /// Abstraction over a type that can be used to encapsulate an array and observe its (incremental) changes.
 public protocol ObservableArrayType {
-  typealias ElementType
-  var array: [ElementType] { get }
+  typealias Element
+  var array: [Element] { get }
 }
 
 /// A type that can be used to encapsulate an array and observe its (incremental) changes.
-public final class ObservableArray<ElementType>: EventProducer<ObservableArrayEvent<[ElementType]>>, ObservableArrayType {
+public final class ObservableArray<Element>: EventProducer<ObservableArrayEvent<[Element]>>, ObservableArrayType {
   
   /// Batched array operations.
-  private var batchedOperations: [ObservableArrayOperation<ElementType>]! = nil
+  private var batchedOperations: [ObservableArrayOperation<Element>]?
   
   /// Temporary array to work with while batch is in progress.
-  private var workingBatchArray: [ElementType]! = nil
+  private var workingBatchArray: [Element]?
   
   /// Returns `true` if batch update is in progress at the moment.
   private var isBatchUpdateInProgress: Bool {
@@ -43,7 +43,7 @@ public final class ObservableArray<ElementType>: EventProducer<ObservableArrayEv
   }
   
   /// The underlying array.
-  public var array: [ElementType] {
+  public var array: [Element] {
     get {
       if let workingBatchArray = workingBatchArray {
         return workingBatchArray
@@ -57,7 +57,7 @@ public final class ObservableArray<ElementType>: EventProducer<ObservableArrayEv
   }
   
   /// Creates a new array with the given initial value.
-  public init(_ array: [ElementType]) {
+  public init(_ array: [Element] = []) {
     super.init(replayLength: 1)
     next(ObservableArrayEvent(sequence: array, operation: ObservableArrayOperation.Reset(array: array)))
   }
@@ -74,7 +74,7 @@ public final class ObservableArray<ElementType>: EventProducer<ObservableArrayEv
   ///     numbers.append(2)
   ///     ...
   ///   }
-  public func performBatchUpdates(@noescape update: ObservableArray<ElementType> -> ()) {
+  public func performBatchUpdates(@noescape update: ObservableArray<Element> -> ()) {
     batchedOperations = []
     workingBatchArray = array
     update(self)
@@ -85,7 +85,7 @@ public final class ObservableArray<ElementType>: EventProducer<ObservableArrayEv
     next(ObservableArrayEvent(sequence: arrayToSend, operation: operationToSend))
   }
   
-  public func applyOperation(operation: ObservableArrayOperation<ElementType>) {
+  public func applyOperation(operation: ObservableArrayOperation<Element>) {
     if isBatchUpdateInProgress {
       ObservableArray.performOperation(operation, onArray: &workingBatchArray!)
       batchedOperations!.append(operation)
@@ -96,7 +96,7 @@ public final class ObservableArray<ElementType>: EventProducer<ObservableArrayEv
     }
   }
   
-  private static func performOperation(operation: ObservableArrayOperation<ElementType>, inout onArray array: [ElementType]) {
+  private static func performOperation(operation: ObservableArrayOperation<Element>, inout onArray array: [Element]) {
     switch operation {
     case let .Reset(newArray):
       array = newArray
@@ -116,21 +116,21 @@ public final class ObservableArray<ElementType>: EventProducer<ObservableArrayEv
   }
 }
 
-public extension ObservableArray {
+extension ObservableArray {
   
   /// Appends `newElement` to the ObservableArray and sends .Insert event.
-  public func append(newElement: ElementType) {
-    applyOperation(ObservableArrayOperation.Insert(elements: [newElement], fromIndex: count))
+  public func append(newElement: Element) {
+    applyOperation(.Insert(elements: [newElement], fromIndex: count))
   }
   
-  public func insert(newElement: ElementType, atIndex: Int) {
-    applyOperation(ObservableArrayOperation.Insert(elements: [newElement], fromIndex: atIndex))
+  public func insert(newElement: Element, atIndex: Int) {
+    applyOperation(.Insert(elements: [newElement], fromIndex: atIndex))
   }
   
   /// Remove an element from the end of the ObservableArray and sends .Remove event.
-  public func removeLast() -> ElementType {
+  public func removeLast() -> Element {
     if let last = array.last {
-      applyOperation(ObservableArrayOperation.Remove(range: count-1..<count))
+      applyOperation(.Remove(range: count-1..<count))
       return last
     } else {
       fatalError("Dear Sir/Madam, removing an element from the empty array is not possible. Sorry if I caused (you) any trouble.")
@@ -138,7 +138,7 @@ public extension ObservableArray {
   }
   
   /// Removes and returns the element at index `i` and sends .Remove event.
-  public func removeAtIndex(index: Int) -> ElementType {
+  public func removeAtIndex(index: Int) -> Element {
     let element = array[index]
     applyOperation(ObservableArrayOperation.Remove(range: index..<index+1))
     return element
@@ -155,100 +155,61 @@ public extension ObservableArray {
   }
   
   /// Append the elements of `newElements` to `self` and sends .Insert event.
-  public func extend(newElements: [ElementType]) {
+  public func extend(newElements: [Element]) {
     applyOperation(ObservableArrayOperation.Insert(elements: newElements, fromIndex: count))
   }
   
   /// Insertes the array at the given index.
-  public func insertContentsOf(newElements: [ElementType], atIndex i: Int) {
+  public func insertContentsOf(newElements: [Element], atIndex i: Int) {
     applyOperation(ObservableArrayOperation.Insert(elements: newElements, fromIndex:i))
   }
   
   /// Replaces elements in the given range with the given array.
-  public func replaceRange(subRange: Range<Int>, with newElements: [ElementType]) {
+  public func replaceRange<C : CollectionType where C.Generator.Element == Element>(subRange: Range<Index>, with newElements: C) {
     applyOperation(ObservableArrayOperation.Remove(range: subRange))
-    applyOperation(ObservableArrayOperation.Insert(elements: newElements, fromIndex: subRange.startIndex))
+    applyOperation(ObservableArrayOperation.Insert(elements: Array(newElements), fromIndex: subRange.startIndex))
   }
 }
 
-extension ObservableArray: CollectionType {
+extension ObservableArray: MutableCollectionType {
   
-  public func generate() -> ObservableArrayGenerator<ElementType> {
-    return ObservableArrayGenerator(array: self)
-  }
+  public typealias Index = Array<Element>.Index
   
-  public func underestimateCount() -> Int {
-    return array.underestimateCount()
-  }
-  
-  public var startIndex: Int {
+  public var startIndex: Index {
     return array.startIndex
   }
   
-  public var endIndex: Int {
+  public var endIndex: Index {
     return array.endIndex
   }
   
-  public var isEmpty: Bool {
-    return array.isEmpty
-  }
-  
-  public var count: Int {
-    return array.count
-  }
-  
-  public subscript(index: Int) -> ElementType {
+  public subscript(index: Index) -> Element {
     get {
       return array[index]
     }
     set(newElement) {
-      if index == self.count {
-        applyOperation(ObservableArrayOperation.Insert(elements: [newElement], fromIndex: index))
+      if index == endIndex {
+        applyOperation(.Insert(elements: [newElement], fromIndex: index))
       } else {
-        applyOperation(ObservableArrayOperation.Update(elements: [newElement], fromIndex: index))
+        applyOperation(.Update(elements: [newElement], fromIndex: index))
       }
     }
   }
-  
-  public subscript (subRange: Range<Int>) -> ArraySlice<ElementType> {
-    return array[subRange]
-  }
 }
 
-public struct ObservableArrayGenerator<ElementType>: GeneratorType {
-  private var index = -1
-  private let array: ObservableArray<ElementType>
-  
-  public init(array: ObservableArray<ElementType>) {
-    self.array = array
-  }
-  
-  public mutating func next() -> ElementType? {
-    index++
-    return index < array.count ? array[index] : nil
-  }
-}
-
-public extension ObservableArray where ElementType: Equatable, ElementType: Hashable  {
+extension ObservableArray where Element: Equatable {
   
   /// Calculates a difference between the receiver array and the given collection and
   /// then applies the difference as batch updates sending proper batch operation event.
-  public func diffInPlace<C: CollectionType where C.Generator.Element == ElementType>(collection: C) {
-    let diff = simpleDiff(Array(self), after: Array(collection))
+  public func diffInPlace<C: CollectionType where C.Generator.Element == Element>(collection: C) {
     
+    let diff = Array.diff(Array(self), Array(collection))
     self.performBatchUpdates { array in
       
-      var startIndex = 0
-      
-      for diffOperation in diff {
-        switch diffOperation {
-        case let .Noop(elements):
-          startIndex += elements.count
-        case let .Insert(elements):
-          array.insertContentsOf(elements, atIndex: startIndex)
-          startIndex += elements.count
-        case let .Delete(elements):
-          array.removeRange(startIndex ..< startIndex + elements.count)
+      for step in diff {
+        switch step {
+        case let .Insert(element: e, index: i): array.insert(e, atIndex: i)
+        case let .Delete(element: _, index: i): array.removeAtIndex(i)
         }
       }
     }
@@ -257,7 +218,7 @@ public extension ObservableArray where ElementType: Equatable, ElementType: Hash
 
 public extension EventProducerType where EventType: ObservableArrayEventType {
   
-  private typealias ElementType = EventType.ObservableArrayEventSequenceType.Generator.Element
+  private typealias Element = EventType.ObservableArrayEventSequenceType.Generator.Element
   
   /// Wraps the receiver into another array. This basically creates a array of arrays
   /// with with a single element - the receiver array.
@@ -267,7 +228,7 @@ public extension EventProducerType where EventType: ObservableArrayEventType {
   
   /// Map overload that simplifies mapping of observables that generate ObservableArray events.
   /// Instead of mapping ObservableArray events, it maps the array elements from those events.
-  public func map<T>(transform: ElementType -> T) -> EventProducer<ObservableArrayEvent<LazyMapSequence<Self.EventType.ObservableArrayEventSequenceType, T>>> {
+  public func map<T>(transform: Element -> T) -> EventProducer<ObservableArrayEvent<LazyMapSequence<Self.EventType.ObservableArrayEventSequenceType, T>>> {
     return EventProducer(replayLength: replayLength) { sink in
       return observe { arrayEvent in
         let sequence = arrayEvent.sequence.lazy.map(transform)
@@ -278,7 +239,7 @@ public extension EventProducerType where EventType: ObservableArrayEventType {
   }
   
   /// Filter overload that filters array elements instead of its events.
-  public func filter(includeElement: ElementType -> Bool) -> EventProducer<ObservableArrayEvent<LazyFilterSequence<Self.EventType.ObservableArrayEventSequenceType>>> {
+  public func filter(includeElement: Element -> Bool) -> EventProducer<ObservableArrayEvent<LazyFilterSequence<Self.EventType.ObservableArrayEventSequenceType>>> {
     
     var pointers: [Int]? = nil
     
@@ -299,12 +260,12 @@ public extension EventProducerType where EventType: ObservableArrayEventType {
   
   /// Creates a array from the observable.
   /// If the observable is already a array, returns that array.
-  public func crystallize() -> ObservableArray<ElementType> {
-    if let array = self as? ObservableArray<ElementType> {
+  public func crystallize() -> ObservableArray<Element> {
+    if let array = self as? ObservableArray<Element> {
       return array
     }
     
-    var capturedArray: [ElementType] = []
+    var capturedArray: [Element] = []
     observe { capturedArray = Array($0.sequence) }.dispose()
     
     let array = ObservableArray(capturedArray)
@@ -318,11 +279,11 @@ public extension EventProducerType where EventType: ObservableArrayEventType {
 
 public extension EventProducerType where EventType: ObservableArrayEventType, EventType.ObservableArrayEventSequenceType: CollectionType {
   
-  private typealias _ElementType = EventType.ObservableArrayEventSequenceType.Generator.Element
+  private typealias _Element = EventType.ObservableArrayEventSequenceType.Generator.Element
   
   /// Map overload that simplifies mapping of observables that generate ObservableArray events.
   /// Instead of mapping ObservableArray events, it maps the array elements from those events.
-  public func map<T>(transform: _ElementType -> T) -> EventProducer<ObservableArrayEvent<LazyMapCollection<Self.EventType.ObservableArrayEventSequenceType, T>>> {
+  public func map<T>(transform: _Element -> T) -> EventProducer<ObservableArrayEvent<LazyMapCollection<Self.EventType.ObservableArrayEventSequenceType, T>>> {
     return EventProducer(replayLength: replayLength) { sink in
       return observe { arrayEvent in
         let sequence = arrayEvent.sequence.lazy.map(transform)

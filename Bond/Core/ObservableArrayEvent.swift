@@ -39,7 +39,7 @@ public struct ObservableArrayEvent<ObservableArrayEventSequenceType: SequenceTyp
 
 /// Represents an operation that can be applied to a ObservableArray.
 /// Note: Nesting of the .Batch operations is not supported at the moment.
-public indirect enum ObservableArrayOperation<ElementType> {
+public enum ObservableArrayOperation<ElementType> {
   case Insert(elements: [ElementType], fromIndex: Int)
   case Update(elements: [ElementType], fromIndex: Int)
   case Remove(range: Range<Int>)
@@ -47,7 +47,7 @@ public indirect enum ObservableArrayOperation<ElementType> {
   case Batch([ObservableArrayOperation<ElementType>])
 }
 
-/// A array event change set represents a description of the change that 
+/// A array event change set represents a description of the change that
 /// the array event operation does to a array in a way suited for application
 /// to the UIKit collection views like UITableView or UICollectionView
 public enum ObservableArrayEventChangeSet {
@@ -291,10 +291,10 @@ public func changeSetsFromBatchOperations<T>(operations: [ObservableArrayOperati
       
     case let .Update(elements, fromIndex):
       // Updates are always indexed in the index-space of the array before any operation is applied
-
+      
       // Updates done to the elements that were inserted in this batch must be discared
       var newUpdates = Array(Set(fromIndex..<fromIndex+elements.count).subtract(inserts))
-
+      
       // Any prior insertion or deletion shifts our indices
       for insert in inserts {
         newUpdates = newUpdates.map { $0 >= insert ? $0 - 1 : $0 }
@@ -330,7 +330,7 @@ public func changeSetsFromBatchOperations<T>(operations: [ObservableArrayOperati
       
       // Elements that were updated and then removed in this batch must be discared
       updates.subtractInPlace(newDeletes)
-
+      
       // Deletes shift preceding inserts at higher indices
       inserts = Set(inserts.map { $0 >= range.startIndex ? $0 - range.count : $0 })
       
