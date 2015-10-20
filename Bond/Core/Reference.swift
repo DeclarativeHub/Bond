@@ -37,6 +37,11 @@ public final class Reference<T: AnyObject> {
     self.strongReference = object
   }
   
+  /// Creates the wrapper and weakly references the given object.
+  public init(weak object: T) {
+    self.object = object
+  }
+  
   /// Relinquishes strong reference to the object, but keeps weak one.
   /// If object it not strongly referenced by anyone else, it will be deallocated.
   public func release() {

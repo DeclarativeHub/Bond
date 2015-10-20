@@ -32,14 +32,14 @@ public enum EventProducerLifecycle {
 /// Enables production of the events and dispatches them to the registered observers.
 public class EventProducer<Event>: EventProducerType {
   
+  /// Type of the sink used by the event producer.
+  public typealias Sink = Event -> Void
+  
   private var isDispatchInProgress: Bool = false
-  private var observers: [Int64: Event -> Void] = [:]
+  private var observers: [Int64: Sink] = [:]
   private var nextToken: Int64 = 0
   private let lock = NSRecursiveLock(name: "com.swift-bond.Bond.EventProducer")
-  internal private(set) var replayBuffer: Buffer<Event>? = nil
-  
-  /// Type of the sink used by the event producer.
-  public typealias Sink = Event -> ()
+  internal private(set) var replayBuffer: Buffer<Event>?
   
   /// Number of events to replay to each new observer.
   public var replayLength: Int {
@@ -58,7 +58,7 @@ public class EventProducer<Event>: EventProducerType {
   /// When all observers are unregistered, the reference will weakify its reference to self.
   /// That means the event producer will be deallocated if no one else holds a strong reference to it.
   /// Deallocation will dispose `deinitDisposable` and thus break the connection with the source.
-  private weak var selfReference: Reference<EventProducer<Event>>? = nil
+  private weak var selfReference: Reference<EventProducer<Event>>?
   
   /// Consult `EventProducerLifecycle` for more info.
   public private(set) var lifecycle: EventProducerLifecycle
@@ -72,25 +72,20 @@ public class EventProducer<Event>: EventProducerType {
   /// Producer closure will be executed immediately. It will receive a sink into which
   /// events can be dispatched. If producer returns a disposable, the observable will store
   /// it and dispose upon [observable's] deallocation.
-  public init(replayLength: Int = 0, lifecycle: EventProducerLifecycle = .Managed, @noescape producer: Sink -> DisposableType?) {
-    self.lifecycle = lifecycle
+  public convenience init(replayLength: Int = 0, lifecycle: EventProducerLifecycle = .Managed, @noescape producer: Sink -> DisposableType?) {
+    self.init(replayLength: replayLength, lifecycle: lifecycle)
     
-    let tmpSelfReference = Reference(self)
-    tmpSelfReference.release()
-    
-    if replayLength > 0 {
-      replayBuffer = Buffer(size: replayLength)
-    }
+    let tempSelfReference = Reference(weak: self)
     
     let disposable = producer { event in
-      tmpSelfReference.object?.next(event)
+      tempSelfReference.object?.next(event)
     }
+    
+    self.selfReference = tempSelfReference
     
     if let disposable = disposable {
       deinitDisposable += disposable
     }
-    
-    self.selfReference = tmpSelfReference
   }
   
   public init(replayLength: Int = 0, lifecycle: EventProducerLifecycle = .Normal) {
@@ -108,7 +103,7 @@ public class EventProducer<Event>: EventProducerType {
   }
   
   /// Registers the given observer and returns a disposable that can cancel observing.
-  public func observe(observer: Event -> ()) -> DisposableType {
+  public func observe(observer: Sink) -> DisposableType {
     
     if lifecycle == .Managed {
       selfReference?.retain()
@@ -121,10 +116,8 @@ public class EventProducer<Event>: EventProducerType {
     let observerDisposable = BlockDisposable { [weak self] in
       eventProducerBaseDisposable.dispose()
       
-      if let unwrappedSelf = self {
-        if unwrappedSelf.observers.count == 0 {
-          unwrappedSelf.selfReference?.release()
-        }
+      if let unwrappedSelf = self where unwrappedSelf.observers.count == 0 {
+        unwrappedSelf.selfReference?.release()
       }
     }
     
@@ -144,7 +137,7 @@ public class EventProducer<Event>: EventProducerType {
     lock.unlock()
   }
   
-  private func addObserver(observer: Event -> Void) -> DisposableType {
+  private func addObserver(observer: Sink) -> DisposableType {
     lock.lock()
     let token = nextToken
     nextToken = nextToken + 1
@@ -167,7 +160,7 @@ extension EventProducer: BindableType {
   
   /// Creates a new sink that can be used to update the receiver.
   /// Optionally accepts a disposable that will be disposed on receiver's deinit.
-  public func sink(disconnectDisposable: DisposableType?) -> Event -> () {
+  public func sink(disconnectDisposable: DisposableType?) -> Sink {
     
     if let disconnectDisposable = disconnectDisposable {
       deinitDisposable += disconnectDisposable
@@ -194,9 +187,7 @@ public final class EventProducerDisposable<EventType>: DisposableType {
   }
   
   public func dispose() {
-    if let eventProducer = eventProducer {
-      eventProducer.removeObserver(self)
-      self.eventProducer = nil
-    }
+    eventProducer?.removeObserver(self)
+    self.eventProducer = nil
   }
 }

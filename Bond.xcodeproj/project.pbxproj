@@ -549,12 +549,12 @@
 		ECAD697F1B77D44A00837A36 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				6E2FE9031BD640B80050DA83 /* DiffTests.swift */,
 				ECAD69801B77D45600837A36 /* EventProducerTests.swift */,
 				ECAD69821B77D45600837A36 /* ObservableTests.swift */,
 				ECAD69841B77D45600837A36 /* ObservableArrayTests.swift */,
 				ECAD69831B77D45600837A36 /* ObservableArrayEventTests.swift */,
 				ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */,
+				6E2FE9031BD640B80050DA83 /* DiffTests.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";

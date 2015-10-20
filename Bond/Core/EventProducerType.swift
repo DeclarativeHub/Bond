@@ -41,8 +41,8 @@ public extension EventProducerType {
   
   /// Registers the observer that will receive only events generated after registering.
   /// A better performing verion of observable.skip(observable.replyLength).observe().
-  public func observeNew(observer: EventType -> ()) -> DisposableType {
-    var skip: Int = replayLength
+  public func observeNew(observer: EventType -> Void) -> DisposableType {
+    var skip = replayLength
     return observe { value in
       if skip > 0 {
         skip--
@@ -108,7 +108,7 @@ public extension EventProducerType {
   /// Throttles event dispatching for a given number of seconds and then dispatches last event.
   public func throttle(seconds: Queue.TimeInterval, queue: Queue) -> EventProducer<EventType> {
     return EventProducer(replayLength: replayLength) { sink in
-      var shouldDispatch: Bool = true
+      var shouldDispatch = true
       return observe { event in
         if shouldDispatch {
           shouldDispatch = false
