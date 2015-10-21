@@ -39,18 +39,25 @@ import UIKit
   optional func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath)
 }
 
+@objc public protocol BNDTableViewProxyDelegate{
+  optional func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
+  optional func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
+}
+
 private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
   
   private let array: ObservableArray<ObservableArray<T>>
   private weak var tableView: UITableView!
   private let createCell: (NSIndexPath, ObservableArray<ObservableArray<T>>, UITableView) -> UITableViewCell
   private weak var proxyDataSource: BNDTableViewProxyDataSource?
+  private weak var proxyDelegate: BNDTableViewProxyDelegate?
   private let sectionObservingDisposeBag = DisposeBag()
   
-  private init(array: ObservableArray<ObservableArray<T>>, tableView: UITableView, proxyDataSource: BNDTableViewProxyDataSource?, createCell: (NSIndexPath, ObservableArray<ObservableArray<T>>, UITableView) -> UITableViewCell) {
+  private init(array: ObservableArray<ObservableArray<T>>, tableView: UITableView, proxyDataSource: BNDTableViewProxyDataSource?, proxyDelegate:BNDTableViewProxyDelegate, createCell: (NSIndexPath, ObservableArray<ObservableArray<T>>, UITableView) -> UITableViewCell) {
     self.tableView = tableView
     self.createCell = createCell
     self.proxyDataSource = proxyDataSource
+    self.proxyDelegate = proxyDelegate
     self.array = array
     super.init()
     
@@ -197,7 +204,7 @@ public extension EventProducerType where
   
   private typealias ElementType = EventType.ObservableArrayEventSequenceType.Generator.Element.EventType.ObservableArrayEventSequenceType.Generator.Element
   
-  public func bindTo(tableView: UITableView, proxyDataSource: BNDTableViewProxyDataSource? = nil, createCell: (NSIndexPath, ObservableArray<ObservableArray<ElementType>>, UITableView) -> UITableViewCell) -> DisposableType {
+  public func bindTo(tableView: UITableView, proxyDataSource: BNDTableViewProxyDataSource? = nil, proxyDelegate:BNDTableViewProxyDelegate, createCell: (NSIndexPath, ObservableArray<ObservableArray<ElementType>>, UITableView) -> UITableViewCell) -> DisposableType {
     
     let array: ObservableArray<ObservableArray<ElementType>>
     if let downcastedObservableArray = self as? ObservableArray<ObservableArray<ElementType>> {
@@ -206,7 +213,7 @@ public extension EventProducerType where
       array = self.map { $0.crystallize() }.crystallize()
     }
     
-    let dataSource = BNDTableViewDataSource(array: array, tableView: tableView, proxyDataSource: proxyDataSource, createCell: createCell)
+    let dataSource = BNDTableViewDataSource(array: array, tableView: tableView, proxyDataSource: proxyDataSource, proxyDelegate: proxyDelegate, createCell:createCell)
     objc_setAssociatedObject(tableView, &UITableView.AssociatedKeys.BondDataSourceKey, dataSource, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     
     return BlockDisposable { [weak tableView] in
