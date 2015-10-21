@@ -44,7 +44,7 @@ import UIKit
   optional func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
 }
 
-private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
+private class BNDTableViewViewModel<T>: NSObject, UITableViewDataSource, UITableViewDelegate {
   
   private let array: ObservableArray<ObservableArray<T>>
   private weak var tableView: UITableView!
@@ -72,13 +72,13 @@ private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
       case .Batch(let operations):
         tableView.beginUpdates()
         for diff in changeSetsFromBatchOperations(operations) {
-          BNDTableViewDataSource.applySectionUnitChangeSet(diff, tableView: tableView)
+          BNDTableViewViewModel.applySectionUnitChangeSet(diff, tableView: tableView)
         }
         tableView.endUpdates()
       case .Reset:
         tableView.reloadData()
       default:
-        BNDTableViewDataSource.applySectionUnitChangeSet(arrayEvent.operation.changeSet(), tableView: tableView)
+        BNDTableViewViewModel.applySectionUnitChangeSet(arrayEvent.operation.changeSet(), tableView: tableView)
       }
       
       unwrappedSelf.setupPerSectionObservers()
@@ -95,13 +95,13 @@ private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
         case .Batch(let operations):
           tableView.beginUpdates()
           for diff in changeSetsFromBatchOperations(operations) {
-            BNDTableViewDataSource.applyRowUnitChangeSet(diff, tableView: tableView, sectionIndex: sectionIndex)
+            BNDTableViewViewModel.applyRowUnitChangeSet(diff, tableView: tableView, sectionIndex: sectionIndex)
           }
           tableView.endUpdates()
         case .Reset:
           tableView.reloadSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Automatic)
         default:
-          BNDTableViewDataSource.applyRowUnitChangeSet(arrayEvent.operation.changeSet(), tableView: tableView, sectionIndex: sectionIndex)
+          BNDTableViewViewModel.applyRowUnitChangeSet(arrayEvent.operation.changeSet(), tableView: tableView, sectionIndex: sectionIndex)
         }
       }.disposeIn(sectionObservingDisposeBag)
     }
@@ -182,6 +182,14 @@ private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
     }
   }
   
+  @objc func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    self.proxyDelegate?.tableView!(tableView, didSelectRowAtIndexPath: indexPath)
+  }
+  
+  @objc func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    return (self.proxyDelegate?.tableView!(tableView, heightForRowAtIndexPath: indexPath))!
+  }
+  
   @objc func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
     proxyDataSource?.tableView?(tableView, commitEditingStyle: editingStyle, forRowAtIndexPath: indexPath)
   }
@@ -213,7 +221,7 @@ public extension EventProducerType where
       array = self.map { $0.crystallize() }.crystallize()
     }
     
-    let dataSource = BNDTableViewDataSource(array: array, tableView: tableView, proxyDataSource: proxyDataSource, proxyDelegate: proxyDelegate, createCell:createCell)
+    let dataSource = BNDTableViewViewModel(array: array, tableView: tableView, proxyDataSource: proxyDataSource, proxyDelegate: proxyDelegate, createCell:createCell)
     objc_setAssociatedObject(tableView, &UITableView.AssociatedKeys.BondDataSourceKey, dataSource, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     
     return BlockDisposable { [weak tableView] in
