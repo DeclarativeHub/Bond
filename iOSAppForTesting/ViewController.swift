@@ -9,13 +9,18 @@
 import UIKit
 import Bond
 
-class ViewController: UIViewController {
+class ViewController: UIViewController,BNDTableViewProxyDelegate {
 
     @IBOutlet weak var textField: UITextField!
   
     @IBOutlet weak var textView: UITextView!
   
+    @IBOutlet weak var tableView: UITableView!
+  
     @IBOutlet weak var fireEvent: UIButton!
+  
+  let dataSource = ObservableArray([ObservableArray(["Archer", "Kirk", "Picard"]), ObservableArray(["T'Pol", "Spock", "Riker"])])
+  
   var viewModel = ViewModel()
   
   override func viewDidLoad() {
@@ -54,6 +59,21 @@ class ViewController: UIViewController {
     self.view.bringSubviewToFront(self.textField)
     self.view.bringSubviewToFront(self.textView)
     self.view.bringSubviewToFront(self.fireEvent)
+    
+    self.dataSource.bindTo(self.tableView, proxyDataSource: nil, proxyDelegate: self) { (indexPath, dataSource, tableView) -> UITableViewCell in
+      let cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "title")
+      cell.textLabel?.text = self.dataSource[indexPath.section][indexPath.row] as String
+      return cell
+    }
+
+  }
+  
+  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    
+  }
+  
+  func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    return 100
   }
 
   override func didReceiveMemoryWarning() {

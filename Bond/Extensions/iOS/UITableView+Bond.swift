@@ -62,6 +62,7 @@ private class BNDTableViewViewModel<T>: NSObject, UITableViewDataSource, UITable
     super.init()
     
     tableView.dataSource = self
+    tableView.delegate = self
     tableView.reloadData()
     setupPerSectionObservers()
     
