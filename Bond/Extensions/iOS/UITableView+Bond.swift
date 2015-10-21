@@ -53,7 +53,7 @@ private class BNDTableViewViewModel<T>: NSObject, UITableViewDataSource, UITable
   private weak var proxyDelegate: BNDTableViewProxyDelegate?
   private let sectionObservingDisposeBag = DisposeBag()
   
-  private init(array: ObservableArray<ObservableArray<T>>, tableView: UITableView, proxyDataSource: BNDTableViewProxyDataSource?, proxyDelegate:BNDTableViewProxyDelegate, createCell: (NSIndexPath, ObservableArray<ObservableArray<T>>, UITableView) -> UITableViewCell) {
+  private init(array: ObservableArray<ObservableArray<T>>, tableView: UITableView, proxyDataSource: BNDTableViewProxyDataSource?, proxyDelegate:BNDTableViewProxyDelegate?, createCell: (NSIndexPath, ObservableArray<ObservableArray<T>>, UITableView) -> UITableViewCell) {
     self.tableView = tableView
     self.createCell = createCell
     self.proxyDataSource = proxyDataSource
@@ -212,7 +212,7 @@ public extension EventProducerType where
   
   private typealias ElementType = EventType.ObservableArrayEventSequenceType.Generator.Element.EventType.ObservableArrayEventSequenceType.Generator.Element
   
-  public func bindTo(tableView: UITableView, proxyDataSource: BNDTableViewProxyDataSource? = nil, proxyDelegate:BNDTableViewProxyDelegate, createCell: (NSIndexPath, ObservableArray<ObservableArray<ElementType>>, UITableView) -> UITableViewCell) -> DisposableType {
+  public func bindTo(tableView: UITableView, proxyDataSource: BNDTableViewProxyDataSource? = nil, proxyDelegate:BNDTableViewProxyDelegate? = nil, createCell: (NSIndexPath, ObservableArray<ObservableArray<ElementType>>, UITableView) -> UITableViewCell) -> DisposableType {
     
     let array: ObservableArray<ObservableArray<ElementType>>
     if let downcastedObservableArray = self as? ObservableArray<ObservableArray<ElementType>> {
