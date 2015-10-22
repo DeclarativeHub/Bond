@@ -270,6 +270,24 @@ public extension EventProducerType where EventType: Equatable {
   }
 }
 
+extension EventProducerType where EventType: OptionalType, EventType.WrappedType: Equatable {
+
+  /// similar to `distinct()` but works with optional type
+  public func distinctOptional() -> EventProducer<EventType.WrappedType?> {
+    return EventProducer(replayLength: replayLength) { sink in
+      var lastEvent: EventType.WrappedType? = nil
+      return observe { event in
+        if (!event.isNil && !lastEvent.isNil && lastEvent.value! != event.value) ||
+          (event.isNil && !lastEvent.isNil) ||
+          (!event.isNil && lastEvent.isNil) {
+            sink(event.value)
+            lastEvent = event.value
+        }
+      }
+    }
+  }
+}
+
 public func combineLatest<A: EventProducerType, B: EventProducerType>(a: A, _ b: B) -> EventProducer<(A.EventType, B.EventType)> {
   return a.combineLatestWith(b)
 }

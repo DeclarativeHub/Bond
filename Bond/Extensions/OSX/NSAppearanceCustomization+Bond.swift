@@ -1,7 +1,7 @@
 //
 //  The MIT License (MIT)
 //
-//  Copyright (c) 2015 Srdan Rasic (@srdanrasic)
+//  Copyright (c) 2015 Tony Arnold (@tonyarnold)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,15 +22,12 @@
 //  THE SOFTWARE.
 //
 
-#if os(iOS) || os(tvOS)
-  import UIKit
-#else
-  import AppKit
-#endif
+import Cocoa
 
-extension NSLayoutConstraint {
+extension NSAppearanceCustomization where Self: NSObject {
 
-  public var bnd_active: Observable<Bool> {
-    return bnd_associatedObservableForValueForKey("active")
+  public var bnd_appearance: Observable<NSAppearance?> {
+    return bnd_associatedObservableForValueForKey("appearance")
   }
+  
 }
