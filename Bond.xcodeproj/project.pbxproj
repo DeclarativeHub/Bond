@@ -64,6 +64,10 @@
 		B5B474CD1BD87BBE004BD69C /* NSLock+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E71B77BB1D00837A36 /* NSLock+Bond.swift */; };
 		B5B474CE1BD87BBE004BD69C /* NSNotificationCenter+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E81B77BB1D00837A36 /* NSNotificationCenter+Bond.swift */; };
 		B5B474CF1BD87BBE004BD69C /* NSObject+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E91B77BB1D00837A36 /* NSObject+Bond.swift */; };
+		B5E724A91BD88E8600704E16 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E724A81BD88E8600704E16 /* AppDelegate.swift */; };
+		B5E724AB1BD88E8600704E16 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E724AA1BD88E8600704E16 /* ViewController.swift */; };
+		B5E724AE1BD88E8600704E16 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5E724AC1BD88E8600704E16 /* Main.storyboard */; };
+		B5E724B01BD88E8600704E16 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5E724AF1BD88E8600704E16 /* Assets.xcassets */; };
 		DCA979741A83C3A200DD4A30 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCA979691A83C3A100DD4A30 /* Bond.framework */; };
 		EA3E36B81B41702100559641 /* NSLayoutConstraintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */; };
 		EAD8B2DD1B41AF4300995CE9 /* NSLayoutConstraintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */; };
@@ -231,6 +235,12 @@
 		900BFC191ADFCD63002B4B6E /* NSTextViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTextViewTests.swift; sourceTree = "<group>"; };
 		B54FBF0C1BC6997F00173E74 /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54FBF151BC6997F00173E74 /* BondtvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BondtvOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5E724A61BD88E8600704E16 /* tvOSAppForTesting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tvOSAppForTesting.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5E724A81BD88E8600704E16 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B5E724AA1BD88E8600704E16 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		B5E724AD1BD88E8600704E16 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B5E724AF1BD88E8600704E16 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B5E724B11BD88E8600704E16 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DCA979691A83C3A100DD4A30 /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCA979731A83C3A200DD4A30 /* BondOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BondOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSLayoutConstraintTests.swift; sourceTree = "<group>"; };
@@ -345,6 +355,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B5E724A31BD88E8600704E16 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DCA979651A83C3A100DD4A30 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -410,6 +427,7 @@
 				69491BBD1A7C217100A13B6B /* BondTests */,
 				03ACB4FF1AB555D6001B3E64 /* iOSAppForTesting */,
 				03ACB5151AB555D6001B3E64 /* iOSAppForTestingTests */,
+				B5E724A71BD88E8600704E16 /* tvOSAppForTesting */,
 				69491BAF1A7C217100A13B6B /* Products */,
 			);
 			indentWidth = 2;
@@ -427,6 +445,7 @@
 				03ACB4FE1AB555D6001B3E64 /* iOSAppForTesting.app */,
 				B54FBF0C1BC6997F00173E74 /* Bond.framework */,
 				B54FBF151BC6997F00173E74 /* BondtvOSTests.xctest */,
+				B5E724A61BD88E8600704E16 /* tvOSAppForTesting.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -496,6 +515,18 @@
 				900BFC061ADFC5D5002B4B6E /* CALayerTests.swift */,
 			);
 			name = Shared;
+			sourceTree = "<group>";
+		};
+		B5E724A71BD88E8600704E16 /* tvOSAppForTesting */ = {
+			isa = PBXGroup;
+			children = (
+				B5E724A81BD88E8600704E16 /* AppDelegate.swift */,
+				B5E724AA1BD88E8600704E16 /* ViewController.swift */,
+				B5E724AC1BD88E8600704E16 /* Main.storyboard */,
+				B5E724AF1BD88E8600704E16 /* Assets.xcassets */,
+				B5E724B11BD88E8600704E16 /* Info.plist */,
+			);
+			path = tvOSAppForTesting;
 			sourceTree = "<group>";
 		};
 		ECAD68B71B77BB1D00837A36 /* Core */ = {
@@ -739,6 +770,23 @@
 			productReference = B54FBF151BC6997F00173E74 /* BondtvOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		B5E724A51BD88E8600704E16 /* tvOSAppForTesting */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B5E724B21BD88E8600704E16 /* Build configuration list for PBXNativeTarget "tvOSAppForTesting" */;
+			buildPhases = (
+				B5E724A21BD88E8600704E16 /* Sources */,
+				B5E724A31BD88E8600704E16 /* Frameworks */,
+				B5E724A41BD88E8600704E16 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = tvOSAppForTesting;
+			productName = tvOSAppForTesting;
+			productReference = B5E724A61BD88E8600704E16 /* tvOSAppForTesting.app */;
+			productType = "com.apple.product-type.application";
+		};
 		DCA979681A83C3A100DD4A30 /* BondOSX */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DCA9797C1A83C3A200DD4A30 /* Build configuration list for PBXNativeTarget "BondOSX" */;
@@ -801,6 +849,9 @@
 					B54FBF141BC6997F00173E74 = {
 						CreatedOnToolsVersion = 7.1;
 					};
+					B5E724A51BD88E8600704E16 = {
+						CreatedOnToolsVersion = 7.1;
+					};
 					DCA979681A83C3A100DD4A30 = {
 						CreatedOnToolsVersion = 6.2;
 					};
@@ -829,6 +880,7 @@
 				03ACB4FD1AB555D6001B3E64 /* iOSAppForTesting */,
 				B54FBF0B1BC6997F00173E74 /* BondtvOS */,
 				B54FBF141BC6997F00173E74 /* BondtvOSTests */,
+				B5E724A51BD88E8600704E16 /* tvOSAppForTesting */,
 			);
 		};
 /* End PBXProject section */
@@ -869,6 +921,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B5E724A41BD88E8600704E16 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B5E724B01BD88E8600704E16 /* Assets.xcassets in Resources */,
+				B5E724AE1BD88E8600704E16 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1023,6 +1084,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B5E724A21BD88E8600704E16 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B5E724AB1BD88E8600704E16 /* ViewController.swift in Sources */,
+				B5E724A91BD88E8600704E16 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DCA979641A83C3A100DD4A30 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1127,6 +1197,14 @@
 				03ACB50C1AB555D6001B3E64 /* Base */,
 			);
 			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+		B5E724AC1BD88E8600704E16 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B5E724AD1BD88E8600704E16 /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1386,6 +1464,41 @@
 			};
 			name = Release;
 		};
+		B5E724B31BD88E8600704E16 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = tvOSAppForTesting/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.bond.tvOSAppForTesting;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		B5E724B41BD88E8600704E16 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = tvOSAppForTesting/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.bond.tvOSAppForTesting;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Release;
+		};
 		DCA9797D1A83C3A200DD4A30 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1524,6 +1637,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		B5E724B21BD88E8600704E16 /* Build configuration list for PBXNativeTarget "tvOSAppForTesting" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B5E724B31BD88E8600704E16 /* Debug */,
+				B5E724B41BD88E8600704E16 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		DCA9797C1A83C3A200DD4A30 /* Build configuration list for PBXNativeTarget "BondOSX" */ = {
 			isa = XCConfigurationList;
