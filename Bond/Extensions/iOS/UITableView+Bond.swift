@@ -191,7 +191,7 @@ private class BNDTableViewViewModel<T>: NSObject, UITableViewDataSource, UITable
   }
   
   @objc func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-    return (self.proxyDelegate?.tableView!(tableView, heightForRowAtIndexPath: indexPath))!
+    return self.proxyDelegate?.tableView!(tableView, heightForRowAtIndexPath: indexPath) ?? 40.0
   }
   
   @objc func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -199,11 +199,11 @@ private class BNDTableViewViewModel<T>: NSObject, UITableViewDataSource, UITable
   }
   
   @objc func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return (self.proxyDelegate?.tableView?(tableView, heightForHeaderInSection: section))!
+    return self.proxyDelegate?.tableView?(tableView, heightForHeaderInSection: section) ?? 0.0
   }
   
   @objc func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    return (self.proxyDelegate?.tableView?(tableView, heightForFooterInSection: section))!
+    return self.proxyDelegate?.tableView?(tableView, heightForFooterInSection: section) ?? 0.0
   }
   
   @objc func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
