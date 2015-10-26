@@ -45,6 +45,7 @@ import UIKit
   optional func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
   optional func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
   optional func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath)
+  optional func scrollViewDidScroll(scrollView: UIScrollView)
 }
 
 private class BNDTableViewViewModel<T>: NSObject, UITableViewDataSource, UITableViewDelegate {
@@ -212,6 +213,10 @@ private class BNDTableViewViewModel<T>: NSObject, UITableViewDataSource, UITable
   
   @objc func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
     proxyDataSource?.tableView?(tableView, moveRowAtIndexPath: sourceIndexPath, toIndexPath: destinationIndexPath)
+  }
+  
+  @objc func scrollViewDidScroll(scrollView: UIScrollView) {
+    proxyDelegate?.scrollViewDidScroll?(scrollView)
   }
 }
 
