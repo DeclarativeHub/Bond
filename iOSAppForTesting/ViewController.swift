@@ -19,7 +19,7 @@ class ViewController: UIViewController,BNDTableViewProxyDelegate {
   
     @IBOutlet weak var fireEvent: UIButton!
   
-  let dataSource = ObservableArray([ObservableArray(["Archer", "Kirk", "Picard"]), ObservableArray(["T'Pol", "Spock", "Riker"])])
+  let dataSource = ObservableArray([ObservableArray(["Archer", "Kirk", "Picard", "Picard","Picard","Picard","Picard","Picard"]), ObservableArray(["T'Pol", "Spock", "Riker","Picard","Picard","Picard","Picard","Picard","Picard"])])
   
   var viewModel = ViewModel()
   
@@ -75,6 +75,10 @@ class ViewController: UIViewController,BNDTableViewProxyDelegate {
 //  func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 //    return 30
 //  }
+  
+  func scrollViewDidScroll(scrollView: UIScrollView) {
+    print("table view scroll")
+  }
   
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     

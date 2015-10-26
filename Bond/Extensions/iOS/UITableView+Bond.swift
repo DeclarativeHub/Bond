@@ -45,6 +45,7 @@ import UIKit
   optional func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
   optional func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
   optional func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath)
+  optional func scrollViewDidScroll(scrollView: UIScrollView);
 }
 
 private class BNDTableViewViewModel<T>: NSObject, UITableViewDataSource, UITableViewDelegate {
@@ -184,6 +185,10 @@ private class BNDTableViewViewModel<T>: NSObject, UITableViewDataSource, UITable
     } else {
       fatalError("Dear Sir/Madam, your table view has asked for section for section index title \(title). Please provide a proxy data source object in bindTo() method that implements `tableView(tableView:sectionForSectionIndexTitle:atIndex:)` method!")
     }
+  }
+  
+  @objc func scrollViewDidScroll(scrollView: UIScrollView) {
+    proxyDelegate?.scrollViewDidScroll?(self.tableView)
   }
   
   @objc func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
