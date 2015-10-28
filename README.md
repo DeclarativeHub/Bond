@@ -86,7 +86,7 @@ Point here is not in the simplicity of value assignment to text property of a la
 Bond also supports two way bindings. Here is an example of how you could keep username text field and username property of your view model in sync (whenever any of them change, other one will be updated too):
 
 ```swift
-viewModel.username.bidirectionalBindTo(usernameTextField.bnd_text)
+viewModel.username.bidirectionalBindTo(usernameTextField.bnd_text.ignoreNil())
 ```
 
 Bond is also great for observing various different events and asynchronous tasks. For example, you could observe a notification just like this:
