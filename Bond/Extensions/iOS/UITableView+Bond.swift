@@ -47,6 +47,9 @@ import UIKit
   optional func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath)
   optional func scrollViewDidScroll(scrollView: UIScrollView);
   optional func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView);
+  optional func scrollViewDidEndDecelerating(scrollView: UIScrollView);
+  optional func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool);
+  
 }
 
 private class BNDTableViewViewModel<T>: NSObject, UITableViewDataSource, UITableViewDelegate {
@@ -189,11 +192,19 @@ private class BNDTableViewViewModel<T>: NSObject, UITableViewDataSource, UITable
   }
   
   @objc func scrollViewDidScroll(scrollView: UIScrollView) {
-    proxyDelegate?.scrollViewDidScroll?(self.tableView)
+    proxyDelegate?.scrollViewDidScroll?(scrollView)
   }
   
   @objc func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
-    proxyDelegate?.scrollViewDidEndScrollingAnimation?(self.tableView)
+    proxyDelegate?.scrollViewDidEndScrollingAnimation?(scrollView)
+  }
+  
+  @objc func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    proxyDelegate?.scrollViewDidEndDragging?(scrollView, willDecelerate: decelerate)
+  }
+  
+  @objc func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    proxyDelegate?.scrollViewDidEndDecelerating?(scrollView)
   }
   
   @objc func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
