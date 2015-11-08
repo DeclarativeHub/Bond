@@ -22,6 +22,7 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/SwiftBond/Bond.git", :tag => "v4.1.0" }
   s.source_files  = ["Bond", "Bond/Core", "Bond/Extensions/Shared", "Bond/Extensions/OSX", "Bond/Extensions/iOS"]
   s.ios.exclude_files = "Bond/Extensions/OSX"
+  s.tvos.exclude_files = "Bond/Extensions/OSX"
   s.osx.exclude_files = "Bond/Extensions/iOS"
   s.framework     = 'SystemConfiguration'
   s.exclude_files = "Classes/Exclude"
