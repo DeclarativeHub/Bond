@@ -15,6 +15,25 @@
 		03ACB5231AB6C840001B3E64 /* AssertEqualForOptionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ACB5221AB6C840001B3E64 /* AssertEqualForOptionals.swift */; };
 		1607C9FF1BEF3C25001B2E35 /* CALayer+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E51B77BB1D00837A36 /* CALayer+Bond.swift */; };
 		1607CA001BEF3C2F001B2E35 /* NSLayoutConstraint+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E61B77BB1D00837A36 /* NSLayoutConstraint+Bond.swift */; };
+		1607CA061BEF407F001B2E35 /* UIActivityIndicatorView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CB1B77BB1D00837A36 /* UIActivityIndicatorView+Bond.swift */; };
+		1607CA071BEF407F001B2E35 /* UISegmentedControl+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3228A91B9F5673002BE73A /* UISegmentedControl+Bond.swift */; };
+		1607CA081BEF407F001B2E35 /* UIRefreshControl+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2AE4A81B788F8B00296781 /* UIRefreshControl+Bond.swift */; };
+		1607CA091BEF407F001B2E35 /* UIBarItem+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CC1B77BB1D00837A36 /* UIBarItem+Bond.swift */; };
+		1607CA0A1BEF407F001B2E35 /* UIButton+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CD1B77BB1D00837A36 /* UIButton+Bond.swift */; };
+		1607CA0B1BEF407F001B2E35 /* UICollectionView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CE1B77BB1D00837A36 /* UICollectionView+Bond.swift */; };
+		1607CA0C1BEF407F001B2E35 /* UIControl+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CF1B77BB1D00837A36 /* UIControl+Bond.swift */; };
+		1607CA0D1BEF407F001B2E35 /* UIDatePicker+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D01B77BB1D00837A36 /* UIDatePicker+Bond.swift */; };
+		1607CA0E1BEF407F001B2E35 /* UIImageView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D11B77BB1D00837A36 /* UIImageView+Bond.swift */; };
+		1607CA0F1BEF407F001B2E35 /* UILabel+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D21B77BB1D00837A36 /* UILabel+Bond.swift */; };
+		1607CA101BEF407F001B2E35 /* UINavigationBar+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD25268F1BDA63E7003CEACA /* UINavigationBar+Bond.swift */; };
+		1607CA111BEF407F001B2E35 /* UINavigationItem+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D31B77BB1D00837A36 /* UINavigationItem+Bond.swift */; };
+		1607CA121BEF407F001B2E35 /* UIProgressView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D41B77BB1D00837A36 /* UIProgressView+Bond.swift */; };
+		1607CA131BEF407F001B2E35 /* UISlider+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D51B77BB1D00837A36 /* UISlider+Bond.swift */; };
+		1607CA141BEF407F001B2E35 /* UISwitch+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D61B77BB1D00837A36 /* UISwitch+Bond.swift */; };
+		1607CA151BEF407F001B2E35 /* UITableView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D71B77BB1D00837A36 /* UITableView+Bond.swift */; };
+		1607CA161BEF407F001B2E35 /* UITextField+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D81B77BB1D00837A36 /* UITextField+Bond.swift */; };
+		1607CA171BEF407F001B2E35 /* UITextView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D91B77BB1D00837A36 /* UITextView+Bond.swift */; };
+		1607CA181BEF407F001B2E35 /* UIView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68DA1B77BB1D00837A36 /* UIView+Bond.swift */; };
 		52CC7A1E1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CC7A1D1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift */; };
 		52CC7A201BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CC7A1F1BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift */; };
 		69491BB41A7C217100A13B6B /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = 69491BB31A7C217100A13B6B /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -46,20 +65,6 @@
 		B5616D801BD8A2230016CCB4 /* Reference.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C51B77BB1D00837A36 /* Reference.swift */; };
 		B5616D811BD8A2230016CCB4 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C11B77BB1D00837A36 /* Operators.swift */; };
 		B5616D821BD8A2230016CCB4 /* SimpleDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA7254F1BB983A0003A4ABA /* SimpleDiff.swift */; };
-		B5616D831BD8A22F0016CCB4 /* UIActivityIndicatorView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CB1B77BB1D00837A36 /* UIActivityIndicatorView+Bond.swift */; };
-		B5616D841BD8A22F0016CCB4 /* UISegmentedControl+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3228A91B9F5673002BE73A /* UISegmentedControl+Bond.swift */; };
-		B5616D861BD8A22F0016CCB4 /* UIBarItem+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CC1B77BB1D00837A36 /* UIBarItem+Bond.swift */; };
-		B5616D871BD8A22F0016CCB4 /* UIButton+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CD1B77BB1D00837A36 /* UIButton+Bond.swift */; };
-		B5616D881BD8A22F0016CCB4 /* UICollectionView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CE1B77BB1D00837A36 /* UICollectionView+Bond.swift */; };
-		B5616D891BD8A22F0016CCB4 /* UIControl+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68CF1B77BB1D00837A36 /* UIControl+Bond.swift */; };
-		B5616D8B1BD8A22F0016CCB4 /* UIImageView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D11B77BB1D00837A36 /* UIImageView+Bond.swift */; };
-		B5616D8C1BD8A22F0016CCB4 /* UILabel+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D21B77BB1D00837A36 /* UILabel+Bond.swift */; };
-		B5616D8D1BD8A22F0016CCB4 /* UINavigationItem+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D31B77BB1D00837A36 /* UINavigationItem+Bond.swift */; };
-		B5616D8E1BD8A22F0016CCB4 /* UIProgressView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D41B77BB1D00837A36 /* UIProgressView+Bond.swift */; };
-		B5616D911BD8A22F0016CCB4 /* UITableView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D71B77BB1D00837A36 /* UITableView+Bond.swift */; };
-		B5616D921BD8A22F0016CCB4 /* UITextField+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D81B77BB1D00837A36 /* UITextField+Bond.swift */; };
-		B5616D931BD8A22F0016CCB4 /* UITextView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D91B77BB1D00837A36 /* UITextView+Bond.swift */; };
-		B5616D941BD8A22F0016CCB4 /* UIView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68DA1B77BB1D00837A36 /* UIView+Bond.swift */; };
 		B5616D981BD8A2C00016CCB4 /* NSObject+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E91B77BB1D00837A36 /* NSObject+Bond.swift */; };
 		B5616D991BD8A2DF0016CCB4 /* NSLock+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E71B77BB1D00837A36 /* NSLock+Bond.swift */; };
 		B5616D9A1BD8A3110016CCB4 /* NSNotificationCenter+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E81B77BB1D00837A36 /* NSNotificationCenter+Bond.swift */; };
@@ -1018,39 +1023,44 @@
 			buildActionMask = 2147483647;
 			files = (
 				B5616D9B1BD8A3290016CCB4 /* NSIndexSet+Bond.swift in Sources */,
+				1607CA111BEF407F001B2E35 /* UINavigationItem+Bond.swift in Sources */,
+				1607CA0E1BEF407F001B2E35 /* UIImageView+Bond.swift in Sources */,
+				1607CA0B1BEF407F001B2E35 /* UICollectionView+Bond.swift in Sources */,
 				B5616D9A1BD8A3110016CCB4 /* NSNotificationCenter+Bond.swift in Sources */,
 				B5616D991BD8A2DF0016CCB4 /* NSLock+Bond.swift in Sources */,
 				B5616D981BD8A2C00016CCB4 /* NSObject+Bond.swift in Sources */,
-				B5616D831BD8A22F0016CCB4 /* UIActivityIndicatorView+Bond.swift in Sources */,
-				B5616D841BD8A22F0016CCB4 /* UISegmentedControl+Bond.swift in Sources */,
-				B5616D861BD8A22F0016CCB4 /* UIBarItem+Bond.swift in Sources */,
-				B5616D871BD8A22F0016CCB4 /* UIButton+Bond.swift in Sources */,
-				B5616D881BD8A22F0016CCB4 /* UICollectionView+Bond.swift in Sources */,
-				B5616D891BD8A22F0016CCB4 /* UIControl+Bond.swift in Sources */,
+				1607CA061BEF407F001B2E35 /* UIActivityIndicatorView+Bond.swift in Sources */,
 				1607CA001BEF3C2F001B2E35 /* NSLayoutConstraint+Bond.swift in Sources */,
-				B5616D8B1BD8A22F0016CCB4 /* UIImageView+Bond.swift in Sources */,
-				B5616D8C1BD8A22F0016CCB4 /* UILabel+Bond.swift in Sources */,
-				B5616D8D1BD8A22F0016CCB4 /* UINavigationItem+Bond.swift in Sources */,
-				B5616D8E1BD8A22F0016CCB4 /* UIProgressView+Bond.swift in Sources */,
-				B5616D911BD8A22F0016CCB4 /* UITableView+Bond.swift in Sources */,
-				B5616D921BD8A22F0016CCB4 /* UITextField+Bond.swift in Sources */,
-				B5616D931BD8A22F0016CCB4 /* UITextView+Bond.swift in Sources */,
-				B5616D941BD8A22F0016CCB4 /* UIView+Bond.swift in Sources */,
 				B5616D751BD8A2230016CCB4 /* EventProducerType.swift in Sources */,
+				1607CA091BEF407F001B2E35 /* UIBarItem+Bond.swift in Sources */,
 				B5616D761BD8A2230016CCB4 /* EventProducer.swift in Sources */,
+				1607CA0F1BEF407F001B2E35 /* UILabel+Bond.swift in Sources */,
 				1607C9FF1BEF3C25001B2E35 /* CALayer+Bond.swift in Sources */,
+				1607CA181BEF407F001B2E35 /* UIView+Bond.swift in Sources */,
 				B5616D771BD8A2230016CCB4 /* Observable.swift in Sources */,
 				B5616D781BD8A2230016CCB4 /* ObservableArray.swift in Sources */,
 				B5616D791BD8A2230016CCB4 /* ObservableArrayEvent.swift in Sources */,
 				B5616D7A1BD8A2230016CCB4 /* DisposableType.swift in Sources */,
+				1607CA0C1BEF407F001B2E35 /* UIControl+Bond.swift in Sources */,
 				B5616D7B1BD8A2230016CCB4 /* Disposable.swift in Sources */,
+				1607CA151BEF407F001B2E35 /* UITableView+Bond.swift in Sources */,
+				1607CA161BEF407F001B2E35 /* UITextField+Bond.swift in Sources */,
 				B5616D7C1BD8A2230016CCB4 /* BindableType.swift in Sources */,
 				B5616D7D1BD8A2230016CCB4 /* OptionalType.swift in Sources */,
 				B5616D7E1BD8A2230016CCB4 /* Buffer.swift in Sources */,
+				1607CA0A1BEF407F001B2E35 /* UIButton+Bond.swift in Sources */,
+				1607CA071BEF407F001B2E35 /* UISegmentedControl+Bond.swift in Sources */,
+				1607CA131BEF407F001B2E35 /* UISlider+Bond.swift in Sources */,
+				1607CA171BEF407F001B2E35 /* UITextView+Bond.swift in Sources */,
+				1607CA0D1BEF407F001B2E35 /* UIDatePicker+Bond.swift in Sources */,
+				1607CA081BEF407F001B2E35 /* UIRefreshControl+Bond.swift in Sources */,
 				B5616D7F1BD8A2230016CCB4 /* Queue.swift in Sources */,
 				B5616D801BD8A2230016CCB4 /* Reference.swift in Sources */,
+				1607CA101BEF407F001B2E35 /* UINavigationBar+Bond.swift in Sources */,
 				B5616D811BD8A2230016CCB4 /* Operators.swift in Sources */,
 				B5616D821BD8A2230016CCB4 /* SimpleDiff.swift in Sources */,
+				1607CA141BEF407F001B2E35 /* UISwitch+Bond.swift in Sources */,
+				1607CA121BEF407F001B2E35 /* UIProgressView+Bond.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

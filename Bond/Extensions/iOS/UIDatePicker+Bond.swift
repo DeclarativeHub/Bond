@@ -22,6 +22,8 @@
 //  THE SOFTWARE.
 //
 
+#if os(iOS)
+
 import UIKit
 
 extension UIDatePicker {
@@ -56,3 +58,5 @@ extension UIDatePicker {
     }
   }
 }
+
+#endif
