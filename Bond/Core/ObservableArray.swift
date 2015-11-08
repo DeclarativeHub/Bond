@@ -230,6 +230,32 @@ public struct ObservableArrayGenerator<ElementType>: GeneratorType {
   }
 }
 
+public extension ObservableArray where ElementType: Equatable, ElementType: Hashable  {
+  
+  /// Calculates a difference between the receiver array and the given collection and
+  /// then applies the difference as batch updates sending proper batch operation event.
+  public func diffInPlace<C: CollectionType where C.Generator.Element == ElementType>(collection: C) {
+    let diff = simpleDiff(Array(self), after: Array(collection))
+    
+    self.performBatchUpdates { array in
+      
+      var startIndex = 0
+      
+      for diffOperation in diff {
+        switch diffOperation {
+        case .Noop(let elements):
+          startIndex += elements.count
+        case .Insert(let elements):
+          array.insertContentsOf(elements, atIndex: startIndex)
+          startIndex += elements.count
+        case .Delete(let elements):
+          array.removeRange(startIndex ..< startIndex + elements.count)
+        }
+      }
+    }
+  }
+}
+
 public extension EventProducerType where EventType: ObservableArrayEventType {
   
   private typealias ElementType = EventType.ObservableArrayEventSequenceType.Generator.Element
