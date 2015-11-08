@@ -13,6 +13,8 @@
 		03ACB50A1AB555D6001B3E64 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03ACB5091AB555D6001B3E64 /* Images.xcassets */; };
 		03ACB50D1AB555D6001B3E64 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03ACB50B1AB555D6001B3E64 /* LaunchScreen.xib */; };
 		03ACB5231AB6C840001B3E64 /* AssertEqualForOptionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ACB5221AB6C840001B3E64 /* AssertEqualForOptionals.swift */; };
+		1607C9FF1BEF3C25001B2E35 /* CALayer+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E51B77BB1D00837A36 /* CALayer+Bond.swift */; };
+		1607CA001BEF3C2F001B2E35 /* NSLayoutConstraint+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68E61B77BB1D00837A36 /* NSLayoutConstraint+Bond.swift */; };
 		52CC7A1E1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CC7A1D1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift */; };
 		52CC7A201BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CC7A1F1BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift */; };
 		69491BB41A7C217100A13B6B /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = 69491BB31A7C217100A13B6B /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1025,6 +1027,7 @@
 				B5616D871BD8A22F0016CCB4 /* UIButton+Bond.swift in Sources */,
 				B5616D881BD8A22F0016CCB4 /* UICollectionView+Bond.swift in Sources */,
 				B5616D891BD8A22F0016CCB4 /* UIControl+Bond.swift in Sources */,
+				1607CA001BEF3C2F001B2E35 /* NSLayoutConstraint+Bond.swift in Sources */,
 				B5616D8B1BD8A22F0016CCB4 /* UIImageView+Bond.swift in Sources */,
 				B5616D8C1BD8A22F0016CCB4 /* UILabel+Bond.swift in Sources */,
 				B5616D8D1BD8A22F0016CCB4 /* UINavigationItem+Bond.swift in Sources */,
@@ -1035,6 +1038,7 @@
 				B5616D941BD8A22F0016CCB4 /* UIView+Bond.swift in Sources */,
 				B5616D751BD8A2230016CCB4 /* EventProducerType.swift in Sources */,
 				B5616D761BD8A2230016CCB4 /* EventProducer.swift in Sources */,
+				1607C9FF1BEF3C25001B2E35 /* CALayer+Bond.swift in Sources */,
 				B5616D771BD8A2230016CCB4 /* Observable.swift in Sources */,
 				B5616D781BD8A2230016CCB4 /* ObservableArray.swift in Sources */,
 				B5616D791BD8A2230016CCB4 /* ObservableArrayEvent.swift in Sources */,
