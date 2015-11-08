@@ -13,8 +13,8 @@
 		03ACB50A1AB555D6001B3E64 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03ACB5091AB555D6001B3E64 /* Images.xcassets */; };
 		03ACB50D1AB555D6001B3E64 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03ACB50B1AB555D6001B3E64 /* LaunchScreen.xib */; };
 		03ACB5231AB6C840001B3E64 /* AssertEqualForOptionals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03ACB5221AB6C840001B3E64 /* AssertEqualForOptionals.swift */; };
-		52CC7A1E1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CC7A1D1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		52CC7A201BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CC7A1F1BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift */; settings = {ASSET_TAGS = (); }; };
+		52CC7A1E1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CC7A1D1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift */; };
+		52CC7A201BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CC7A1F1BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift */; };
 		69491BB41A7C217100A13B6B /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = 69491BB31A7C217100A13B6B /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		69491BBA1A7C217100A13B6B /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69491BAE1A7C217100A13B6B /* Bond.framework */; };
 		790FD79C1B7F1C3800136394 /* NSTableView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790FD79B1B7F1C3800136394 /* NSTableView+Bond.swift */; };
@@ -66,8 +66,8 @@
 		B5616DC01BD8A39E0016CCB4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5616DBF1BD8A39E0016CCB4 /* ViewController.swift */; };
 		B5616DC31BD8A39E0016CCB4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5616DC11BD8A39E0016CCB4 /* Main.storyboard */; };
 		B5616DC51BD8A39E0016CCB4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5616DC41BD8A39E0016CCB4 /* Assets.xcassets */; };
-		CD2526901BDA63E7003CEACA /* UINavigationBar+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD25268F1BDA63E7003CEACA /* UINavigationBar+Bond.swift */; settings = {ASSET_TAGS = (); }; };
-		CD2526921BDA641E003CEACA /* UINavigationBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2526911BDA641E003CEACA /* UINavigationBarTests.swift */; settings = {ASSET_TAGS = (); }; };
+		CD2526901BDA63E7003CEACA /* UINavigationBar+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD25268F1BDA63E7003CEACA /* UINavigationBar+Bond.swift */; };
+		CD2526921BDA641E003CEACA /* UINavigationBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2526911BDA641E003CEACA /* UINavigationBarTests.swift */; };
 		DCA979741A83C3A200DD4A30 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCA979691A83C3A100DD4A30 /* Bond.framework */; };
 		EA3E36B81B41702100559641 /* NSLayoutConstraintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */; };
 		EAD8B2DD1B41AF4300995CE9 /* NSLayoutConstraintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */; };
@@ -1551,6 +1551,7 @@
 				B5616DC91BD8A39E0016CCB4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B56989C91BD8A00C00927A6B /* Build configuration list for PBXNativeTarget "BondtvOS" */ = {
 			isa = XCConfigurationList;
