@@ -42,10 +42,10 @@ public final class BlockDisposable: DisposableType {
     return handler == nil
   }
   
-  private var handler: (() -> ())?
+  private var handler: (() -> Void)?
   private let lock = NSRecursiveLock(name: "com.swift-bond.Bond.BlockDisposable")
   
-  public init(_ handler: () -> ()) {
+  public init(_ handler: () -> Void) {
     self.handler = handler
   }
   

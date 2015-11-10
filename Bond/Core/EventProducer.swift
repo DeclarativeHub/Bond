@@ -39,7 +39,7 @@ public class EventProducer<Event>: EventProducerType {
   internal private(set) var replayBuffer: Buffer<Event>? = nil
   
   /// Type of the sink used by the event producer.
-  public typealias Sink = Event -> ()
+  public typealias Sink = Event -> Void
   
   /// Number of events to replay to each new observer.
   public var replayLength: Int {
@@ -108,7 +108,7 @@ public class EventProducer<Event>: EventProducerType {
   }
   
   /// Registers the given observer and returns a disposable that can cancel observing.
-  public func observe(observer: Event -> ()) -> DisposableType {
+  public func observe(observer: Event -> Void) -> DisposableType {
     
     if lifecycle == .Managed {
       selfReference?.retain()
@@ -167,7 +167,7 @@ extension EventProducer: BindableType {
   
   /// Creates a new sink that can be used to update the receiver.
   /// Optionally accepts a disposable that will be disposed on receiver's deinit.
-  public func sink(disconnectDisposable: DisposableType?) -> Event -> () {
+  public func sink(disconnectDisposable: DisposableType?) -> Event -> Void {
     
     if let disconnectDisposable = disconnectDisposable {
       deinitDisposable += disconnectDisposable
