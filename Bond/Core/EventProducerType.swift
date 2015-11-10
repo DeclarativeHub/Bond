@@ -341,3 +341,10 @@ public func combineLatest<A: EventProducerType, B: EventProducerType, C: EventPr
 {
   return combineLatest(a, b, c, d, e, f, g, h, i, j).combineLatestWith(k).map { ($0.0, $0.1, $0.2, $0.3, $0.4, $0.5, $0.6, $0.7, $0.8, $0.9, $1) }
 }
+
+public func merge<A: EventProducerType>(eventProducers: [A]) -> EventProducer<A.EventType> {
+  return EventProducer<A>(replayLength: eventProducers.count) { sink in
+    eventProducers.forEach(sink)
+    return nil
+  }.merge()
+}
