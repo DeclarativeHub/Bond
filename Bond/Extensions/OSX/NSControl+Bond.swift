@@ -27,9 +27,9 @@ import Cocoa
 @objc class NSControlBondHelper: NSObject
 {
   weak var control: NSControl?
-  let sink: AnyObject? -> ()
+  let sink: AnyObject? -> Void
   
-  init(control: NSControl, sink: AnyObject? -> ()) {
+  init(control: NSControl, sink: AnyObject? -> Void) {
     self.control = control
     self.sink = sink
     super.init()
@@ -63,7 +63,7 @@ extension NSControl {
     if let bnd_controlEvent: AnyObject = objc_getAssociatedObject(self, &AssociatedKeys.ControlEventKey) {
       return bnd_controlEvent as! EventProducer<AnyObject?>
     } else {
-      var capturedSink: (AnyObject? -> ())! = nil
+      var capturedSink: (AnyObject? -> Void)! = nil
       
       let bnd_controlEvent = EventProducer<AnyObject?> { sink in
         capturedSink = sink

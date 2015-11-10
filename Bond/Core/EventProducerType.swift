@@ -41,7 +41,7 @@ public extension EventProducerType {
   
   /// Registers the observer that will receive only events generated after registering.
   /// A better performing verion of observable.skip(observable.replyLength).observe().
-  public func observeNew(observer: EventType -> ()) -> DisposableType {
+  public func observeNew(observer: EventType -> Void) -> DisposableType {
     var skip: Int = replayLength
     return observe { value in
       if skip > 0 {
@@ -154,7 +154,7 @@ public extension EventProducerType {
       var myEvent: EventType! = nil
       var itsEvent: U.EventType! = nil
       
-      let onBothNext = { () -> () in
+      let onBothNext = { () -> Void in
         if let myEvent = myEvent, let itsEvent = itsEvent {
           sink((myEvent, itsEvent))
         }

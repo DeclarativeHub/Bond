@@ -150,7 +150,7 @@ public extension NSObject {
     }
   }
   
-  public func bnd_associatedObservableForValueForKey<T>(key: String, initial: T? = nil, set: (T -> ())? = nil) -> Observable<T> {
+  public func bnd_associatedObservableForValueForKey<T>(key: String, initial: T? = nil, set: (T -> Void)? = nil) -> Observable<T> {
     if let observable: AnyObject = bnd_associatedObservables[key] {
       return observable as! Observable<T>
     } else {
@@ -174,7 +174,7 @@ public extension NSObject {
     }
   }
   
-  public func bnd_associatedObservableForValueForKey<T: OptionalType>(key: String, initial: T? = nil, set: (T -> ())? = nil) -> Observable<T> {
+  public func bnd_associatedObservableForValueForKey<T: OptionalType>(key: String, initial: T? = nil, set: (T -> Void)? = nil) -> Observable<T> {
     if let observable: AnyObject = bnd_associatedObservables[key] {
       return observable as! Observable<T>
     } else {

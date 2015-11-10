@@ -149,7 +149,7 @@ print(captain.value) // prints: Spock
 
 The property is both a getter that returns the observable’s value and a setter that updates the observable with a new value just like the method `next`.
 
-Now comes the interesting part. In order to make the observable useful it should be observed. Observing the observable means observing the events it generates, that is, in our case, the values that are being set. To observe the observable we register a closure of the type `EventType -> ()` to it with the method observe, where *EventType* is the event (value) type:
+Now comes the interesting part. In order to make the observable useful it should be observed. Observing the observable means observing the events it generates, that is, in our case, the values that are being set. To observe the observable we register a closure of the type `EventType -> Void` to it with the method observe, where *EventType* is the event (value) type:
 
 ```swift
 captain.observe { name in
@@ -178,7 +178,7 @@ captain.value = “Scotty” // prints: Now the captain is Scotty.
 Using the observable that acts as a variable or a property that can be observed is just a specific usage of the EventProducer. As was already said, the event producer represents an abstract event generator. To create such event generator you can use the following designated initializer on EventProducer:
 
 ```swift
-init(replayLength: Int, @noescape producer: (EventType -> ()) -> DisposableType?)
+init(replayLength: Int, @noescape producer: (EventType -> Void) -> DisposableType?)
 ```
 
 Parameter `replayLength` defines how many events should be replayed to each new observer. It represents the memory of the event producer. Event producers don't have to have memory so zero is a valid value for this parameter. Event producers without a memory are used to represent actions, something without a state, like button taps.
@@ -190,7 +190,7 @@ Parameter `producer` is a closure that actually generates events. The closure ac
 An event producer (and so observable) can be observed by any number of observers. A new observer is registered with the already mentioned `observe` method. Here is its signature:
 
 ```swift
-func observe(observer: EventType -> ()) -> DisposableType
+func observe(observer: EventType -> Void) -> DisposableType
 ```
 
 We've already talked about the closure parameter `observer`, but it is also important to understand what the method returns. An observer stays registered until it’s unregistered or until the event producer is destroyed. To unregistered the observer manually we use a disposable object returned by the method `observe`. Think of it as a subscription that can be cancelled. To cancel it simply use the method `dispose`.

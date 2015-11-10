@@ -74,7 +74,7 @@ public final class ObservableArray<ElementType>: EventProducer<ObservableArrayEv
   ///     numbers.append(2)
   ///     ...
   ///   }
-  public func performBatchUpdates(@noescape update: ObservableArray<ElementType> -> ()) {
+  public func performBatchUpdates(@noescape update: ObservableArray<ElementType> -> Void) {
     batchedOperations = []
     workingBatchArray = array
     update(self)
