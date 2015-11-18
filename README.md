@@ -133,13 +133,13 @@ At the core of the framework is the class `EventProducer`. It represents an abst
 The most common use of the event producer is through its subclass `Observable` that can mimic a variable or a property and enable observation of its change. The Observable is a generic type generalized over the wrapped value type. As the EventProducer is also a generic type, generalized over its event type, it is only natural to specialize such event producer to the type of the values it can encapsulate. To create the observable just initialize it with a value:
 
 ```swift
-let captain = Observable(“Jim”)
+let captain = Observable("Jim")
 ```
 
 Swift automatically infers the type of the observable from the passed value. In our example the type of the variable `captain` is `Observable<String>`. To change its value afterwards, you can use the method `next`:
 
 ```swift
-captain.next(“Spock”)
+captain.next("Spock")
 ```
 
 The value is accessible through the property `value`:
@@ -154,7 +154,7 @@ Now comes the interesting part. In order to make the observable useful it should
 
 ```swift
 captain.observe { name in
-  print(“Now the captain is \(name).”)
+  print("Now the captain is \(name).")
 }
 
 // prints: Now the captain is Spock.
@@ -165,13 +165,13 @@ The closure will be called at the time of the registration with the value curren
 Now, whenever the value is changed, the observer closure will be called and side effects performed:
 
 ```swift
-captain.next(“Scotty” ) // prints: Now the captain is Scotty.
+captain.next("Scotty") // prints: Now the captain is Scotty.
 ```
 
 which is same as:
 
 ```swift
-captain.value = “Scotty” // prints: Now the captain is Scotty.
+captain.value = "Scotty" // prints: Now the captain is Scotty.
 ```
 
 ### The Event Producer
@@ -312,7 +312,7 @@ captainName.observe { name in
 That will make the label text update whenever the captain changes.
 
 ```swift
-captainName.next(“Janeway”)
+captainName.next("Janeway")
 print(nameLabelText.value) // prints: Janeway
 ```
 
