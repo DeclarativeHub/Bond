@@ -1,6 +1,7 @@
 # Bond, Swift Bond
 
 [![CI Status](https://travis-ci.org/SwiftBond/Bond.svg?branch=master)](https://travis-ci.org/SwiftBond/Bond)
+[![codecov.io](https://codecov.io/github/SwiftBond/Bond/coverage.svg?branch=master)](https://codecov.io/github/SwiftBond/Bond?branch=master)
 
 Bond is a Swift binding framework that takes binding concept to a whole new level. It's simple, powerful, type-safe and multi-paradigm - just like Swift.
 
