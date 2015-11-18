@@ -3,7 +3,9 @@ xcode_project: Bond.xcodeproj
 xcode_scheme: Bond
 osx_image: xcode7
 
-script: xcodebuild -project Bond.xcodeproj -scheme Bond -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6,OS=9.0' test && xcodebuild -project Bond.xcodeproj -scheme BondOSX -sdk macosx test
+script: 
+  - xcodebuild -project Bond.xcodeproj -scheme Bond -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6,OS=9.0' test 
+  - xcodebuild -project Bond.xcodeproj -scheme BondOSX -sdk macosx test
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
