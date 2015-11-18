@@ -34,6 +34,10 @@
 		1607CA161BEF407F001B2E35 /* UITextField+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D81B77BB1D00837A36 /* UITextField+Bond.swift */; };
 		1607CA171BEF407F001B2E35 /* UITextView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68D91B77BB1D00837A36 /* UITextView+Bond.swift */; };
 		1607CA181BEF407F001B2E35 /* UIView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68DA1B77BB1D00837A36 /* UIView+Bond.swift */; };
+		160FA2DE1BFD1A5E00D09C00 /* MutableObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160FA2DD1BFD1A5E00D09C00 /* MutableObservable.swift */; };
+		160FA2DF1BFD1AAB00D09C00 /* MutableObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160FA2DD1BFD1A5E00D09C00 /* MutableObservable.swift */; };
+		160FA2E01BFD1AAC00D09C00 /* MutableObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160FA2DD1BFD1A5E00D09C00 /* MutableObservable.swift */; };
+		160FA2E21BFD1ABE00D09C00 /* MutableObservableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160FA2E11BFD1ABE00D09C00 /* MutableObservableTests.swift */; };
 		52CC7A1E1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CC7A1D1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift */; };
 		52CC7A201BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CC7A1F1BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift */; };
 		69491BB41A7C217100A13B6B /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = 69491BB31A7C217100A13B6B /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -216,6 +220,8 @@
 		03ACB5171AB555D6001B3E64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03ACB5181AB555D6001B3E64 /* iOSAppForTestingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSAppForTestingTests.swift; sourceTree = "<group>"; };
 		03ACB5221AB6C840001B3E64 /* AssertEqualForOptionals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssertEqualForOptionals.swift; sourceTree = "<group>"; };
+		160FA2DD1BFD1A5E00D09C00 /* MutableObservable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutableObservable.swift; sourceTree = "<group>"; };
+		160FA2E11BFD1ABE00D09C00 /* MutableObservableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutableObservableTests.swift; sourceTree = "<group>"; };
 		52CC7A1D1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAppearanceCustomization+Bond.swift"; sourceTree = "<group>"; };
 		52CC7A1F1BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSAppearanceCustomizationTests.swift; sourceTree = "<group>"; };
 		69491BAE1A7C217100A13B6B /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -530,6 +536,7 @@
 				ECAD68C01B77BB1D00837A36 /* EventProducerType.swift */,
 				EC0075B21B90D39500249C31 /* EventProducer.swift */,
 				ECAD68BF1B77BB1D00837A36 /* Observable.swift */,
+				160FA2DD1BFD1A5E00D09C00 /* MutableObservable.swift */,
 				ECAD68C71B77BB1D00837A36 /* ObservableArray.swift */,
 				ECAD68C81B77BB1D00837A36 /* ObservableArrayEvent.swift */,
 				ECAD68BC1B77BB1D00837A36 /* DisposableType.swift */,
@@ -642,6 +649,7 @@
 			children = (
 				ECAD69801B77D45600837A36 /* EventProducerTests.swift */,
 				ECAD69821B77D45600837A36 /* ObservableTests.swift */,
+				160FA2E11BFD1ABE00D09C00 /* MutableObservableTests.swift */,
 				ECAD69841B77D45600837A36 /* ObservableArrayTests.swift */,
 				ECAD69831B77D45600837A36 /* ObservableArrayEventTests.swift */,
 				ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */,
@@ -949,6 +957,7 @@
 				EC0075D31B90E5F400249C31 /* UICollectionView+Bond.swift in Sources */,
 				EC0075DE1B90E5F400249C31 /* UITextView+Bond.swift in Sources */,
 				EC0075D61B90E5F400249C31 /* UIImageView+Bond.swift in Sources */,
+				160FA2DE1BFD1A5E00D09C00 /* MutableObservable.swift in Sources */,
 				EC0075DB1B90E5F400249C31 /* UISwitch+Bond.swift in Sources */,
 				EC0075DA1B90E5F400249C31 /* UISlider+Bond.swift in Sources */,
 				ECAD68FB1B77BB1D00837A36 /* EventProducerType.swift in Sources */,
@@ -993,6 +1002,7 @@
 				ECAD697D1B77D43D00837A36 /* UITextViewTests.swift in Sources */,
 				ECAD697B1B77D43D00837A36 /* UITableViewTests.swift in Sources */,
 				ECAD69701B77D43D00837A36 /* UIButtonTests.swift in Sources */,
+				160FA2E21BFD1ABE00D09C00 /* MutableObservableTests.swift in Sources */,
 				ECAD696E1B77D43D00837A36 /* UIActivityIndicatorTests.swift in Sources */,
 				ECFFF4BB1B84B840001B5B0D /* NSObjectTests.swift in Sources */,
 				03ACB5231AB6C840001B3E64 /* AssertEqualForOptionals.swift in Sources */,
@@ -1039,6 +1049,7 @@
 				1607CA181BEF407F001B2E35 /* UIView+Bond.swift in Sources */,
 				B5616D771BD8A2230016CCB4 /* Observable.swift in Sources */,
 				B5616D781BD8A2230016CCB4 /* ObservableArray.swift in Sources */,
+				160FA2E01BFD1AAC00D09C00 /* MutableObservable.swift in Sources */,
 				B5616D791BD8A2230016CCB4 /* ObservableArrayEvent.swift in Sources */,
 				B5616D7A1BD8A2230016CCB4 /* DisposableType.swift in Sources */,
 				1607CA0C1BEF407F001B2E35 /* UIControl+Bond.swift in Sources */,
@@ -1068,6 +1079,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				160FA2DF1BFD1AAB00D09C00 /* MutableObservable.swift in Sources */,
 				ECA725511BB983A0003A4ABA /* SimpleDiff.swift in Sources */,
 				ECAD693C1B77BB1D00837A36 /* NSTextView+Bond.swift in Sources */,
 				790FD79C1B7F1C3800136394 /* NSTableView+Bond.swift in Sources */,

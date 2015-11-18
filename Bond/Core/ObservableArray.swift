@@ -167,8 +167,9 @@ public extension ObservableArray {
   
   /// Replaces elements in the given range with the given array.
   public func replaceRange(subRange: Range<Int>, with newElements: [ElementType]) {
-    applyOperation(ObservableArrayOperation.Remove(range: subRange))
-    applyOperation(ObservableArrayOperation.Insert(elements: newElements, fromIndex: subRange.startIndex))
+    let removeOperation = ObservableArrayOperation<ElementType>.Remove(range: subRange)
+    let insertOperation = ObservableArrayOperation<ElementType>.Insert(elements: newElements, fromIndex: subRange.startIndex)
+    applyOperation(ObservableArrayOperation.Batch([removeOperation, insertOperation]))
   }
 }
 
@@ -212,7 +213,12 @@ extension ObservableArray: CollectionType {
   }
   
   public subscript (subRange: Range<Int>) -> ArraySlice<ElementType> {
-    return array[subRange]
+    get {
+      return array[subRange]
+    }
+    set {
+      replaceRange(subRange, with: Array(newValue))
+    }
   }
 }
 
@@ -227,6 +233,30 @@ public struct ObservableArrayGenerator<ElementType>: GeneratorType {
   public mutating func next() -> ElementType? {
     index++
     return index < array.count ? array[index] : nil
+  }
+}
+
+
+extension ObservableArray : RangeReplaceableCollectionType {
+
+  public convenience init() {
+    self.init([] as [ElementType])
+  }
+
+  public func replaceRange<C: CollectionType where C.Generator.Element == ElementType>(subRange: Range<Int>, with newElements: C) {
+    replaceRange(subRange, with: Array(newElements))
+  }
+}
+
+extension ObservableArray : MutableSliceable {
+}
+
+extension ObservableArray : ArrayLiteralConvertible {
+
+  public typealias Element = ElementType
+
+  public convenience init(arrayLiteral elements: ElementType ...){
+    self.init(elements)
   }
 }
 
