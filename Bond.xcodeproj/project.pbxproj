@@ -76,6 +76,7 @@
 		CD2526901BDA63E7003CEACA /* UINavigationBar+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD25268F1BDA63E7003CEACA /* UINavigationBar+Bond.swift */; };
 		CD2526921BDA641E003CEACA /* UINavigationBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2526911BDA641E003CEACA /* UINavigationBarTests.swift */; };
 		DCA979741A83C3A200DD4A30 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCA979691A83C3A100DD4A30 /* Bond.framework */; };
+		DFCB7CE51BFDAE210047556A /* SimpleDiffTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFCB7CE41BFDAE210047556A /* SimpleDiffTests.swift */; };
 		EA3E36B81B41702100559641 /* NSLayoutConstraintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */; };
 		EAD8B2DD1B41AF4300995CE9 /* NSLayoutConstraintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */; };
 		EC0075B31B90D39500249C31 /* EventProducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0075B21B90D39500249C31 /* EventProducer.swift */; };
@@ -246,6 +247,7 @@
 		CD2526911BDA641E003CEACA /* UINavigationBarTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UINavigationBarTests.swift; sourceTree = "<group>"; };
 		DCA979691A83C3A100DD4A30 /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCA979731A83C3A200DD4A30 /* BondOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BondOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DFCB7CE41BFDAE210047556A /* SimpleDiffTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleDiffTests.swift; sourceTree = "<group>"; };
 		EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSLayoutConstraintTests.swift; sourceTree = "<group>"; };
 		EC0075B21B90D39500249C31 /* EventProducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventProducer.swift; sourceTree = "<group>"; };
 		EC2AE4A81B788F8B00296781 /* UIRefreshControl+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIRefreshControl+Bond.swift"; sourceTree = "<group>"; };
@@ -645,6 +647,7 @@
 				ECAD69841B77D45600837A36 /* ObservableArrayTests.swift */,
 				ECAD69831B77D45600837A36 /* ObservableArrayEventTests.swift */,
 				ECBF04DE1B808B20001F6BCA /* DisposableTests.swift */,
+				DFCB7CE41BFDAE210047556A /* SimpleDiffTests.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -990,6 +993,7 @@
 				EC3228AC1B9F5691002BE73A /* UISegmentedControlTests.swift in Sources */,
 				ECAD69711B77D43D00837A36 /* UICollectionViewTests.swift in Sources */,
 				ECA7254E1BB980E0003A4ABA /* ObservableArrayTests.swift in Sources */,
+				DFCB7CE51BFDAE210047556A /* SimpleDiffTests.swift in Sources */,
 				ECAD697D1B77D43D00837A36 /* UITextViewTests.swift in Sources */,
 				ECAD697B1B77D43D00837A36 /* UITableViewTests.swift in Sources */,
 				ECAD69701B77D43D00837A36 /* UIButtonTests.swift in Sources */,
