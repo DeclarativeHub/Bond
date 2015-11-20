@@ -38,6 +38,8 @@
 		160FA2DF1BFD1AAB00D09C00 /* MutableObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160FA2DD1BFD1A5E00D09C00 /* MutableObservable.swift */; };
 		160FA2E01BFD1AAC00D09C00 /* MutableObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160FA2DD1BFD1A5E00D09C00 /* MutableObservable.swift */; };
 		160FA2E21BFD1ABE00D09C00 /* MutableObservableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160FA2E11BFD1ABE00D09C00 /* MutableObservableTests.swift */; };
+		2C94114B1BFFB4CD0091D9CB /* UIBarButtonItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C94114A1BFFB4CD0091D9CB /* UIBarButtonItemTests.swift */; };
+		2C94114D1BFFB7F10091D9CB /* UIBarButtonItem+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C94114C1BFFB7F10091D9CB /* UIBarButtonItem+Bond.swift */; };
 		52CC7A1E1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CC7A1D1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift */; };
 		52CC7A201BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CC7A1F1BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift */; };
 		69491BB41A7C217100A13B6B /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = 69491BB31A7C217100A13B6B /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -222,6 +224,8 @@
 		03ACB5221AB6C840001B3E64 /* AssertEqualForOptionals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssertEqualForOptionals.swift; sourceTree = "<group>"; };
 		160FA2DD1BFD1A5E00D09C00 /* MutableObservable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutableObservable.swift; sourceTree = "<group>"; };
 		160FA2E11BFD1ABE00D09C00 /* MutableObservableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutableObservableTests.swift; sourceTree = "<group>"; };
+		2C94114A1BFFB4CD0091D9CB /* UIBarButtonItemTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBarButtonItemTests.swift; sourceTree = "<group>"; };
+		2C94114C1BFFB7F10091D9CB /* UIBarButtonItem+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+Bond.swift"; sourceTree = "<group>"; };
 		52CC7A1D1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAppearanceCustomization+Bond.swift"; sourceTree = "<group>"; };
 		52CC7A1F1BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSAppearanceCustomizationTests.swift; sourceTree = "<group>"; };
 		69491BAE1A7C217100A13B6B /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -584,6 +588,7 @@
 				ECAD68D81B77BB1D00837A36 /* UITextField+Bond.swift */,
 				ECAD68D91B77BB1D00837A36 /* UITextView+Bond.swift */,
 				ECAD68DA1B77BB1D00837A36 /* UIView+Bond.swift */,
+				2C94114C1BFFB7F10091D9CB /* UIBarButtonItem+Bond.swift */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -640,6 +645,7 @@
 				ECAD696B1B77D43D00837A36 /* UITextFieldTests.swift */,
 				ECAD696C1B77D43D00837A36 /* UITextViewTests.swift */,
 				ECAD696D1B77D43D00837A36 /* UIViewTests.swift */,
+				2C94114A1BFFB4CD0091D9CB /* UIBarButtonItemTests.swift */,
 			);
 			name = UIKit;
 			sourceTree = "<group>";
@@ -948,6 +954,7 @@
 				EC0075DC1B90E5F400249C31 /* UITableView+Bond.swift in Sources */,
 				ECA725501BB983A0003A4ABA /* SimpleDiff.swift in Sources */,
 				EC0075B31B90D39500249C31 /* EventProducer.swift in Sources */,
+				2C94114D1BFFB7F10091D9CB /* UIBarButtonItem+Bond.swift in Sources */,
 				EC3228AA1B9F5673002BE73A /* UISegmentedControl+Bond.swift in Sources */,
 				EC0075B91B90E4DC00249C31 /* NSObject+Bond.swift in Sources */,
 				ECAD68EB1B77BB1D00837A36 /* BindableType.swift in Sources */,
@@ -1001,6 +1008,7 @@
 				ECA7254E1BB980E0003A4ABA /* ObservableArrayTests.swift in Sources */,
 				ECAD697D1B77D43D00837A36 /* UITextViewTests.swift in Sources */,
 				ECAD697B1B77D43D00837A36 /* UITableViewTests.swift in Sources */,
+				2C94114B1BFFB4CD0091D9CB /* UIBarButtonItemTests.swift in Sources */,
 				ECAD69701B77D43D00837A36 /* UIButtonTests.swift in Sources */,
 				160FA2E21BFD1ABE00D09C00 /* MutableObservableTests.swift in Sources */,
 				ECAD696E1B77D43D00837A36 /* UIActivityIndicatorTests.swift in Sources */,
