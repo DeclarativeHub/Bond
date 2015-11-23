@@ -123,7 +123,7 @@ private class BNDTableViewViewModel<T>: NSObject, UITableViewDataSource, UITable
     case .Updates(let indices):
       tableView.reloadSections(NSIndexSet(set: indices), withRowAnimation: .Automatic)
     case .Deletes(let indices):
-      tableView.deleteSections(NSIndexSet(set: indices), withRowAnimation: .Automatic)
+      tableView.deleteSections(NSIndexSet(set: indices), withRowAnimation: .Left)
     }
   }
   
@@ -137,7 +137,7 @@ private class BNDTableViewViewModel<T>: NSObject, UITableViewDataSource, UITable
       tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
     case .Deletes(let indices):
       let indexPaths = indices.map { NSIndexPath(forItem: $0, inSection: sectionIndex) }
-      tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+      tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Left)
     }
   }
   
