@@ -60,6 +60,8 @@ class ViewController: UIViewController,BNDTableViewProxyDelegate {
     self.view.bringSubviewToFront(self.textView)
     self.view.bringSubviewToFront(self.fireEvent)
     
+    BNDTableViewViewModelConfig.setTableViewDeleteAnimation(.None)
+    
     self.dataSource.bindTo(self.tableView, proxyDataSource: nil, proxyDelegate: self) { (indexPath, dataSource, tableView) -> UITableViewCell in
       let cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "title")
       cell.textLabel?.text = self.dataSource[indexPath.section][indexPath.row] as String

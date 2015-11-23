@@ -54,9 +54,9 @@ private var _deleteRowAnimation = UITableViewRowAnimation.None
   
 }
 
-class BNDTableViewViewModelConfig {
+@objc public class BNDTableViewViewModelConfig:NSObject{
   
-  class func setTableViewDeleteAnimation(animation:UITableViewRowAnimation){
+  public class func setTableViewDeleteAnimation(animation:UITableViewRowAnimation){
       _deleteRowAnimation = animation
   }
 }
