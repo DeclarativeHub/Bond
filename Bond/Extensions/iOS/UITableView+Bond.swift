@@ -25,6 +25,8 @@
 import UIKit
 
 private var _deleteRowAnimation = UITableViewRowAnimation.None
+private var _insertRowAnimation = UITableViewRowAnimation.None
+private var _updateRowAnimation = UITableViewRowAnimation.None
 
 @objc public protocol BNDTableViewProxyDataSource {
   optional func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String?
@@ -58,6 +60,14 @@ private var _deleteRowAnimation = UITableViewRowAnimation.None
   
   public class func setTableViewDeleteAnimation(animation:UITableViewRowAnimation){
       _deleteRowAnimation = animation
+  }
+  
+  public class func setTableViewInsertAnimation(animation:UITableViewRowAnimation){
+    _insertRowAnimation = animation
+  }
+  
+  public class func setTableViewUpdateAnimation(animation:UITableViewRowAnimation){
+    _updateRowAnimation = animation
   }
 }
 
@@ -135,13 +145,33 @@ private class BNDTableViewViewModel<T>: NSObject, UITableViewDataSource, UITable
     }
   }
   
+  class var insertRowAnimation:UITableViewRowAnimation{
+    get{
+    return _insertRowAnimation
+    }
+    
+    set{
+      _insertRowAnimation = newValue
+    }
+  }
+  
+  class var updateRowAnimation:UITableViewRowAnimation{
+    get{
+    return _updateRowAnimation
+    }
+    
+    set{
+      _updateRowAnimation = newValue
+    }
+  }
+  
   private class func applySectionUnitChangeSet(changeSet: ObservableArrayEventChangeSet, tableView: UITableView) {
     print("applySectionUnitChangeSet:")
     switch changeSet {
     case .Inserts(let indices):
-      tableView.insertSections(NSIndexSet(set: indices), withRowAnimation: .Automatic)
+      tableView.insertSections(NSIndexSet(set: indices), withRowAnimation: self.insertRowAnimation)
     case .Updates(let indices):
-      tableView.reloadSections(NSIndexSet(set: indices), withRowAnimation: .Automatic)
+      tableView.reloadSections(NSIndexSet(set: indices), withRowAnimation: self.updateRowAnimation)
     case .Deletes(let indices):
       tableView.deleteSections(NSIndexSet(set: indices), withRowAnimation: self.deleteRowAnimation)
     }
@@ -152,10 +182,10 @@ private class BNDTableViewViewModel<T>: NSObject, UITableViewDataSource, UITable
     switch changeSet {
     case .Inserts(let indices):
       let indexPaths = indices.map { NSIndexPath(forItem: $0, inSection: sectionIndex) }
-      tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+      tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: self.insertRowAnimation)
     case .Updates(let indices):
       let indexPaths = indices.map { NSIndexPath(forItem: $0, inSection: sectionIndex) }
-      tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+      tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: self.updateRowAnimation)
     case .Deletes(let indices):
       let indexPaths = indices.map { NSIndexPath(forItem: $0, inSection: sectionIndex) }
       tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: self.deleteRowAnimation)
