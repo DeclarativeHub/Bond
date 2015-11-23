@@ -108,7 +108,7 @@ private class BNDTableViewViewModel<T>: NSObject, UITableViewDataSource, UITable
           }
           tableView.endUpdates()
         case .Reset:
-          tableView.reloadSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Automatic)
+          tableView.reloadSections(NSIndexSet(index: sectionIndex), withRowAnimation: .Left)
         default:
           BNDTableViewViewModel.applyRowUnitChangeSet(arrayEvent.operation.changeSet(), tableView: tableView, sectionIndex: sectionIndex)
         }
@@ -119,9 +119,9 @@ private class BNDTableViewViewModel<T>: NSObject, UITableViewDataSource, UITable
   private class func applySectionUnitChangeSet(changeSet: ObservableArrayEventChangeSet, tableView: UITableView) {
     switch changeSet {
     case .Inserts(let indices):
-      tableView.insertSections(NSIndexSet(set: indices), withRowAnimation: .Automatic)
+      tableView.insertSections(NSIndexSet(set: indices), withRowAnimation: .Left)
     case .Updates(let indices):
-      tableView.reloadSections(NSIndexSet(set: indices), withRowAnimation: .Automatic)
+      tableView.reloadSections(NSIndexSet(set: indices), withRowAnimation: .Left)
     case .Deletes(let indices):
       tableView.deleteSections(NSIndexSet(set: indices), withRowAnimation: .Left)
     }
@@ -131,10 +131,10 @@ private class BNDTableViewViewModel<T>: NSObject, UITableViewDataSource, UITable
     switch changeSet {
     case .Inserts(let indices):
       let indexPaths = indices.map { NSIndexPath(forItem: $0, inSection: sectionIndex) }
-      tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+      tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Left)
     case .Updates(let indices):
       let indexPaths = indices.map { NSIndexPath(forItem: $0, inSection: sectionIndex) }
-      tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+      tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .Left)
     case .Deletes(let indices):
       let indexPaths = indices.map { NSIndexPath(forItem: $0, inSection: sectionIndex) }
       tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Left)
