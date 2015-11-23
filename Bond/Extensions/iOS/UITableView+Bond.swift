@@ -117,8 +117,8 @@ private class BNDTableViewViewModel<T>: NSObject, UITableViewDataSource, UITable
   }
   
   private class func applySectionUnitChangeSet(changeSet: ObservableArrayEventChangeSet, tableView: UITableView) {
+    print("applySectionUnitChangeSet:")
     switch changeSet {
-      print("applySectionUnitChangeSet:")
     case .Inserts(let indices):
       tableView.insertSections(NSIndexSet(set: indices), withRowAnimation: .Left)
     case .Updates(let indices):
