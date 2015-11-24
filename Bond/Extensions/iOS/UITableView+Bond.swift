@@ -30,10 +30,8 @@ private var _updateRowAnimation = UITableViewRowAnimation.None
 
 @objc public protocol BNDTableViewProxyDataSource {
   optional func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String?
-  optional func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
   
   optional func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String?
-  optional func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView?
   
   optional func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool
   optional func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool
@@ -46,6 +44,8 @@ private var _updateRowAnimation = UITableViewRowAnimation.None
 @objc public protocol BNDTableViewProxyDelegate{
   optional func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
   optional func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
+  optional func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
+  optional func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView?
   optional func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
   optional func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
   optional func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath)
@@ -211,11 +211,11 @@ private class BNDTableViewViewModel<T>: NSObject, UITableViewDataSource, UITable
   }
   
   @objc func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    return proxyDataSource?.tableView?(tableView, viewForHeaderInSection: section)
+    return proxyDelegate?.tableView?(tableView, viewForHeaderInSection: section)
   }
   
   @objc func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    return proxyDataSource?.tableView?(tableView, viewForFooterInSection: section)
+    return proxyDelegate?.tableView?(tableView, viewForFooterInSection: section)
   }
   
   @objc func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
