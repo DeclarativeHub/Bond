@@ -3,16 +3,16 @@
 [![CI Status](https://travis-ci.org/SwiftBond/Bond.svg?branch=master)](https://travis-ci.org/SwiftBond/Bond)
 [![codecov.io](https://codecov.io/github/SwiftBond/Bond/coverage.svg?branch=master)](https://codecov.io/github/SwiftBond/Bond?branch=master)
 
-Bond is a Swift binding framework that takes binding concept to a whole new level. It's simple, powerful, type-safe and multi-paradigm - just like Swift.
+Bond is a Swift binding framework that takes binding concepts to a whole new level. It's simple, powerful, type-safe and multi-paradigm - just like Swift.
 
-Bond was created with two goals in mind: simple to use and simple to understand. One might argue whether the former implies the latter, but Bond will save you some thinking because both are true in this case. Its foundation are few simple classes - everything else are extensions and syntactic sugars.
+Bond was created with two goals in mind: simple to use and simple to understand. One might argue whether the former implies the latter, but Bond will save you some thinking because both are true in this case. Its foundation are a few simple classes - everything else is extensions and syntactic sugars.
 
 **Note: This document describes Bond v4. If you are using a previous version of the framework, check out the [Migration to Bond v4](#migration) section. Bond v4 is the only officially supported version for Swift 2.0.**
 
 
 ## What can it do?
 
-Say you'd like to act on a text change event of a UITextField. Well, you could setup 'target-action' mechanism between your object and go through all that target-action selector registration pain, or you could simply use Bond and do this:
+Let's say you'd like to act on a text change event of a `UITextField`. Well, you could setup 'target-action' mechanism between your object and go through all that target-action selector registration pain, or you could simply use Bond and do this:
 
 ```swift
 textField.bnd_text
@@ -21,7 +21,7 @@ textField.bnd_text
   }
 ```
 
-Now, instead of printing what user has typed, you could even _bind_ it to a UILabel:
+Now, instead of printing what the user has typed, you could even _bind_ it to a `UILabel`:
 
 ```swift
 textField.bnd_text
