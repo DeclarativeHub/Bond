@@ -95,7 +95,9 @@ private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
           tableView.endUpdates()
         case .Reset:
           let indices = Set([sectionIndex])
-          tableView.reloadSections(NSIndexSet(index: sectionIndex), withRowAnimation: self?.proxyDataSource?.tableView?(tableView, animationForRowInSections: indices) ?? .Automatic)
+          let rowAnimation = self?.proxyDataSource?.tableView?(tableView, animationForRowInSections: indices) ?? .Automatic
+          if rowAnimation == .None { tableView.reloadData(); break }
+          tableView.reloadSections(NSIndexSet(index: sectionIndex), withRowAnimation: rowAnimation)
         default:
           BNDTableViewDataSource.applyRowUnitChangeSet(arrayEvent.operation.changeSet(), tableView: tableView, sectionIndex: sectionIndex, dataSource: self?.proxyDataSource)
         }
@@ -106,11 +108,17 @@ private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
   private class func applySectionUnitChangeSet(changeSet: ObservableArrayEventChangeSet, tableView: UITableView, dataSource: BNDTableViewProxyDataSource?) {
     switch changeSet {
     case .Inserts(let indices):
-      tableView.insertSections(NSIndexSet(set: indices), withRowAnimation: dataSource?.tableView?(tableView, animationForRowInSections: indices) ?? .Automatic)
+      let rowAnimation = dataSource?.tableView?(tableView, animationForRowInSections: indices) ?? .Automatic
+      if rowAnimation == .None { tableView.reloadData(); break }
+      tableView.insertSections(NSIndexSet(set: indices), withRowAnimation: rowAnimation)
     case .Updates(let indices):
-      tableView.reloadSections(NSIndexSet(set: indices), withRowAnimation: dataSource?.tableView?(tableView, animationForRowInSections: indices) ?? .Automatic)
+      let rowAnimation = dataSource?.tableView?(tableView, animationForRowInSections: indices) ?? .Automatic
+      if rowAnimation == .None { tableView.reloadData(); break }
+      tableView.reloadSections(NSIndexSet(set: indices), withRowAnimation: rowAnimation)
     case .Deletes(let indices):
-      tableView.deleteSections(NSIndexSet(set: indices), withRowAnimation: dataSource?.tableView?(tableView, animationForRowInSections: indices) ?? .Automatic)
+      let rowAnimation = dataSource?.tableView?(tableView, animationForRowInSections: indices) ?? .Automatic
+      if rowAnimation == .None { tableView.reloadData(); break }
+      tableView.deleteSections(NSIndexSet(set: indices), withRowAnimation: rowAnimation)
     }
   }
   
@@ -118,13 +126,19 @@ private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
     switch changeSet {
     case .Inserts(let indices):
       let indexPaths = indices.map { NSIndexPath(forItem: $0, inSection: sectionIndex) }
-      tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: dataSource?.tableView?(tableView, animationForRowAtIndexPaths: indexPaths) ?? .Automatic)
+      let rowAnimation = dataSource?.tableView?(tableView, animationForRowAtIndexPaths: indexPaths) ?? .Automatic
+      if rowAnimation == .None { tableView.reloadData(); break }
+      tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: rowAnimation)
     case .Updates(let indices):
       let indexPaths = indices.map { NSIndexPath(forItem: $0, inSection: sectionIndex) }
-      tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: dataSource?.tableView?(tableView, animationForRowAtIndexPaths: indexPaths) ?? .Automatic)
+      let rowAnimation = dataSource?.tableView?(tableView, animationForRowAtIndexPaths: indexPaths) ?? .Automatic
+      if rowAnimation == .None { tableView.reloadData(); break }
+      tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: rowAnimation)
     case .Deletes(let indices):
       let indexPaths = indices.map { NSIndexPath(forItem: $0, inSection: sectionIndex) }
-      tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: dataSource?.tableView?(tableView, animationForRowAtIndexPaths: indexPaths) ?? .Automatic)
+      let rowAnimation = dataSource?.tableView?(tableView, animationForRowAtIndexPaths: indexPaths) ?? .Automatic
+      if rowAnimation == .None { tableView.reloadData(); break }
+      tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: rowAnimation)
     }
   }
   
