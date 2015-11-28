@@ -101,10 +101,7 @@ private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
           tableView.endUpdates()
         case .Reset:
           let indices = Set([sectionIndex])
-          if let animation = self?.proxyDataSource?.tableView?(tableView, shouldAnimationForRowInSections: indices) where animation == false {
-            tableView.reloadData()
-            break
-          }
+          if let animation = self?.proxyDataSource?.tableView?(tableView, shouldAnimationForRowInSections: indices) where animation == false { tableView.reloadData(); break }
           tableView.reloadSections(NSIndexSet(index: sectionIndex), withRowAnimation: self?.proxyDataSource?.tableView?(tableView, animationForRowInSections: indices) ?? .Automatic)
         default:
           BNDTableViewDataSource.applyRowUnitChangeSet(arrayEvent.operation.changeSet(), tableView: tableView, sectionIndex: sectionIndex, dataSource: self?.proxyDataSource)
