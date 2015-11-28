@@ -34,6 +34,12 @@ import UIKit
   optional func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath)
   optional func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath)
   
+  /// Override to specify commit row animation when row is being inserted, deleted or updated
+  optional func tableView(tableView: UITableView, shouldAnimationForRowAtIndexPaths indexPaths: [NSIndexPath]) -> Bool
+  
+  /// Override to specify commit row animation when section is being inserted, deleted or updated
+  optional func tableView(tableView: UITableView, shouldAnimationForRowInSections sections: Set<Int>) -> Bool
+  
   /// Override to specify custom row animation when row is being inserted, deleted or updated
   optional func tableView(tableView: UITableView, animationForRowAtIndexPaths indexPaths: [NSIndexPath]) -> UITableViewRowAnimation
   
@@ -95,6 +101,10 @@ private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
           tableView.endUpdates()
         case .Reset:
           let indices = Set([sectionIndex])
+          if let animation = self?.proxyDataSource?.tableView?(tableView, shouldAnimationForRowInSections: indices) where animation == false {
+            tableView.reloadData()
+            break
+          }
           tableView.reloadSections(NSIndexSet(index: sectionIndex), withRowAnimation: self?.proxyDataSource?.tableView?(tableView, animationForRowInSections: indices) ?? .Automatic)
         default:
           BNDTableViewDataSource.applyRowUnitChangeSet(arrayEvent.operation.changeSet(), tableView: tableView, sectionIndex: sectionIndex, dataSource: self?.proxyDataSource)
@@ -106,10 +116,13 @@ private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
   private class func applySectionUnitChangeSet(changeSet: ObservableArrayEventChangeSet, tableView: UITableView, dataSource: BNDTableViewProxyDataSource?) {
     switch changeSet {
     case .Inserts(let indices):
+      if let animation = dataSource?.tableView?(tableView, shouldAnimationForRowInSections: indices) where animation == false { tableView.reloadData(); break }
       tableView.insertSections(NSIndexSet(set: indices), withRowAnimation: dataSource?.tableView?(tableView, animationForRowInSections: indices) ?? .Automatic)
     case .Updates(let indices):
+      if let animation = dataSource?.tableView?(tableView, shouldAnimationForRowInSections: indices) where animation == false { tableView.reloadData(); break }
       tableView.reloadSections(NSIndexSet(set: indices), withRowAnimation: dataSource?.tableView?(tableView, animationForRowInSections: indices) ?? .Automatic)
     case .Deletes(let indices):
+      if let animation = dataSource?.tableView?(tableView, shouldAnimationForRowInSections: indices) where animation == false { tableView.reloadData(); break }
       tableView.deleteSections(NSIndexSet(set: indices), withRowAnimation: dataSource?.tableView?(tableView, animationForRowInSections: indices) ?? .Automatic)
     }
   }
@@ -118,12 +131,15 @@ private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
     switch changeSet {
     case .Inserts(let indices):
       let indexPaths = indices.map { NSIndexPath(forItem: $0, inSection: sectionIndex) }
+      if let animation = dataSource?.tableView?(tableView, shouldAnimationForRowAtIndexPaths: indexPaths) where animation == false { tableView.reloadData(); break }
       tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: dataSource?.tableView?(tableView, animationForRowAtIndexPaths: indexPaths) ?? .Automatic)
     case .Updates(let indices):
       let indexPaths = indices.map { NSIndexPath(forItem: $0, inSection: sectionIndex) }
+      if let animation = dataSource?.tableView?(tableView, shouldAnimationForRowAtIndexPaths: indexPaths) where animation == false { tableView.reloadData(); break }
       tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: dataSource?.tableView?(tableView, animationForRowAtIndexPaths: indexPaths) ?? .Automatic)
     case .Deletes(let indices):
       let indexPaths = indices.map { NSIndexPath(forItem: $0, inSection: sectionIndex) }
+      if let animation = dataSource?.tableView?(tableView, shouldAnimationForRowAtIndexPaths: indexPaths) where animation == false { tableView.reloadData(); break }
       tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: dataSource?.tableView?(tableView, animationForRowAtIndexPaths: indexPaths) ?? .Automatic)
     }
   }
