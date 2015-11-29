@@ -58,7 +58,7 @@ import UIKit
   
 }
 
-private class BNDTableViewViewModel<T>: NSObject, UITableViewDataSource, UITableViewDelegate {
+private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource, UITableViewDelegate {
   
   private let array: ObservableArray<ObservableArray<T>>
   private weak var tableView: UITableView!
@@ -265,7 +265,7 @@ public extension EventProducerType where
       array = self.map { $0.crystallize() }.crystallize()
     }
     
-    let dataSource = BNDTableViewViewModel(array: array, tableView: tableView, proxyDataSource: proxyDataSource, proxyDelegate: proxyDelegate, createCell:createCell)
+    let dataSource = BNDTableViewDataSource(array: array, tableView: tableView, proxyDataSource: proxyDataSource, proxyDelegate: proxyDelegate, createCell:createCell)
     objc_setAssociatedObject(tableView, &UITableView.AssociatedKeys.BondDataSourceKey, dataSource, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     
     return BlockDisposable { [weak tableView] in
