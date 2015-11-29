@@ -95,7 +95,7 @@ class ObservableValueTests: XCTestCase {
     weak var observableWeak: Observable<Int>! = observable
     let disposable = SimpleDisposable()
     
-    let sink: (Int -> ())? = observable.sink(disposable)
+    let sink: (Int -> Void)? = observable.sink(disposable)
     
     XCTAssert(sink != nil)
     XCTAssertNotNil(observableWeak)

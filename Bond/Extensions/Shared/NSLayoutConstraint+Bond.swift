@@ -22,11 +22,11 @@
 //  THE SOFTWARE.
 //
 
-#if os(iOS)
-  import UIKit
-#else
+#if os(OSX)
   import AppKit
-#endif
+#else
+  import UIKit
+#endif 
 
 extension NSLayoutConstraint {
 

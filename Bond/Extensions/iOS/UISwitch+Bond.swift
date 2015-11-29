@@ -22,6 +22,8 @@
 //  THE SOFTWARE.
 //
 
+#if os(iOS)
+
 import UIKit
 
 extension UISwitch {
@@ -56,3 +58,5 @@ extension UISwitch {
     }
   }
 }
+
+#endif

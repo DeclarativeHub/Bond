@@ -1,8 +1,9 @@
 # Bond, Swift Bond
 
 [![CI Status](https://travis-ci.org/SwiftBond/Bond.svg?branch=master)](https://travis-ci.org/SwiftBond/Bond)
+[![codecov.io](https://codecov.io/github/SwiftBond/Bond/coverage.svg?branch=master)](https://codecov.io/github/SwiftBond/Bond?branch=master)
 
-Bond is a Swift binding framework that takes binding concept to a whole new level. It's simple, powerful, type-safe and multi-paradigm - just like Swift. 
+Bond is a Swift binding framework that takes binding concept to a whole new level. It's simple, powerful, type-safe and multi-paradigm - just like Swift.
 
 Bond was created with two goals in mind: simple to use and simple to understand. One might argue whether the former implies the latter, but Bond will save you some thinking because both are true in this case. Its foundation are few simple classes - everything else are extensions and syntactic sugars.
 
@@ -107,11 +108,11 @@ So how do you proceed? Well, instead of implementing a data source object, obser
 repositories.bindTo(collectionView) { indexPath, array, collectionView in
   let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! RepositoryCell
   let repository = array[indexPath.section][indexPath.item]
-  
+
   repository.name
     .bindTo(cell.nameLabel.bnd_text)
     .disposeIn(cell.onReuseBag)
-    
+
   repository.photo
     .bindTo(cell.avatarImageView.bnd_image)
     .disposeIn(cell.onReuseBag)
@@ -132,13 +133,13 @@ At the core of the framework is the class `EventProducer`. It represents an abst
 The most common use of the event producer is through its subclass `Observable` that can mimic a variable or a property and enable observation of its change. The Observable is a generic type generalized over the wrapped value type. As the EventProducer is also a generic type, generalized over its event type, it is only natural to specialize such event producer to the type of the values it can encapsulate. To create the observable just initialize it with a value:
 
 ```swift
-let captain = Observable(“Jim”)
+let captain = Observable("Jim")
 ```
 
 Swift automatically infers the type of the observable from the passed value. In our example the type of the variable `captain` is `Observable<String>`. To change its value afterwards, you can use the method `next`:
 
 ```swift
-captain.next(“Spock”)
+captain.next("Spock")
 ```
 
 The value is accessible through the property `value`:
@@ -147,13 +148,13 @@ The value is accessible through the property `value`:
 print(captain.value) // prints: Spock
 ```
 
-The property is both a getter that returns the observable’s value and a setter that updates the observable with a new value just like the method `next`. 
+The property is both a getter that returns the observable’s value and a setter that updates the observable with a new value just like the method `next`.
 
-Now comes the interesting part. In order to make the observable useful it should be observed. Observing the observable means observing the events it generates, that is, in our case, the values that are being set. To observe the observable we register a closure of the type `EventType -> ()` to it with the method observe, where *EventType* is the event (value) type:
+Now comes the interesting part. In order to make the observable useful it should be observed. Observing the observable means observing the events it generates, that is, in our case, the values that are being set. To observe the observable we register a closure of the type `EventType -> Void` to it with the method observe, where *EventType* is the event (value) type:
 
 ```swift
 captain.observe { name in
-  print(“Now the captain is \(name).”)
+  print("Now the captain is \(name).")
 }
 
 // prints: Now the captain is Spock.
@@ -164,13 +165,13 @@ The closure will be called at the time of the registration with the value curren
 Now, whenever the value is changed, the observer closure will be called and side effects performed:
 
 ```swift
-captain.next(“Scotty” ) // prints: Now the captain is Scotty.
+captain.next("Scotty") // prints: Now the captain is Scotty.
 ```
 
 which is same as:
 
 ```swift
-captain.value = “Scotty” // prints: Now the captain is Scotty.
+captain.value = "Scotty" // prints: Now the captain is Scotty.
 ```
 
 ### The Event Producer
@@ -178,19 +179,19 @@ captain.value = “Scotty” // prints: Now the captain is Scotty.
 Using the observable that acts as a variable or a property that can be observed is just a specific usage of the EventProducer. As was already said, the event producer represents an abstract event generator. To create such event generator you can use the following designated initializer on EventProducer:
 
 ```swift
-init(replayLength: Int, @noescape producer: (EventType -> ()) -> DisposableType?)
+init(replayLength: Int, @noescape producer: (EventType -> Void) -> DisposableType?)
 ```
 
 Parameter `replayLength` defines how many events should be replayed to each new observer. It represents the memory of the event producer. Event producers don't have to have memory so zero is a valid value for this parameter. Event producers without a memory are used to represent actions, something without a state, like button taps.
 
-Parameter `producer` is a closure that actually generates events. The closure accepts a sink (another closure) through which it sends events and optionally returns a disposable that should be disposed when the created event producer is disposed. 
+Parameter `producer` is a closure that actually generates events. The closure accepts a sink (another closure) through which it sends events and optionally returns a disposable that should be disposed when the created event producer is disposed.
 
 ### About the Observation
 
 An event producer (and so observable) can be observed by any number of observers. A new observer is registered with the already mentioned `observe` method. Here is its signature:
 
 ```swift
-func observe(observer: EventType -> ()) -> DisposableType
+func observe(observer: EventType -> Void) -> DisposableType
 ```
 
 We've already talked about the closure parameter `observer`, but it is also important to understand what the method returns. An observer stays registered until it’s unregistered or until the event producer is destroyed. To unregistered the observer manually we use a disposable object returned by the method `observe`. Think of it as a subscription that can be cancelled. To cancel it simply use the method `dispose`.
@@ -221,7 +222,7 @@ Creates an event producer that transforms each event from the receiver by the gi
 func filter(includeEvent: EventType -> Bool) -> EventProducer<EventType>
 ```
 
-Creates an event producer that forwards only events from the receiver that pass the given `includeEvent` closure. 
+Creates an event producer that forwards only events from the receiver that pass the given `includeEvent` closure.
 
 #### DeliverOn
 
@@ -308,10 +309,10 @@ captainName.observe { name in
 }
 ```
 
-That will make the label text update whenever the captain changes. 
+That will make the label text update whenever the captain changes.
 
 ```swift
-captainName.next(“Janeway”)
+captainName.next("Janeway")
 print(nameLabelText.value) // prints: Janeway
 ```
 
@@ -350,10 +351,10 @@ For example, if your view model outlives the view controller that uses it you mu
 
 ```swift
 class MyViewController: UIViewController {
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+
     viewModel.name
       .observe { name in
         print(name)
@@ -361,19 +362,19 @@ class MyViewController: UIViewController {
       .disposeIn(bnd_bag)
   }
 }
-``` 
+```
 
 Note that it's not necessary to dispose bindings. When the binding target object is deallocated, the binding will be automatically disposed. That means that the following code is valid even if the view model outlives the view controller:
 
 ```swift
 class MyViewController: UIViewController {
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     viewModel.name.bindTo(nameLabel.bnd_text)
   }
 }
-``` 
+```
 
 
 #### Notification Center
@@ -416,7 +417,7 @@ Observation is done in the same way as the observation of the Observable or Even
 ```swift
 names.observe { event in
  print("Array is now: \(event.sequence)")
- 
+
  switch event.operation {
  case .Insert(let elements, let fromIndex):
    print("Inserted \(elements) from index \(fromIndex)")
@@ -452,7 +453,7 @@ $ Array is now: ["Jim", "Spock", "Scotty"]
 $ Inserted ["Scotty"] from index 2
 ```
 
-Updating first element 
+Updating first element
 
 ```swift
 names[0] = "Uhura"
@@ -537,7 +538,7 @@ captains.lift().bindTo(tableView) { indexPath, dataSource, tableView in
 }
 
 ```
- 
+
 ### Key-Value-Observing
 
 Using the Bond framework can simplify interaction with KVO properties. You can make an observable representation of them using the following constructor:
@@ -596,15 +597,15 @@ Just get *.swift* files from Bond/ Directory and add them to your project.
 ## Migration to Bond v4
 
 
-Bond v4 represents a major evolution of the framework. It's core has been rewritten from scratch and, while concepts are still pretty much the same, some things have changed from the outside to. In order to successfully upgrade your project to Bond v4, it is recommended to re-read this document. After that, you can proceed with the conversion: 
+Bond v4 represents a major evolution of the framework. It's core has been rewritten from scratch and, while concepts are still pretty much the same, some things have changed from the outside too. In order to successfully upgrade your project to Bond v4, it is recommended to re-read this document. After that, you can proceed with the conversion:
 
-### Dynamic become **Observable**
+### Dynamic becomes **Observable**
 
-Convert objects of `Dynamic` type to `Observable` type. Simple renaming should do the trick. 
+Convert objects of `Dynamic` type to `Observable` type. Simple renaming should do the trick.
 
 ### DynamicArray become **ObservableArray**
 
-Convert objects of `DynamicArray` type to `ObservableArray` type. Simple renaming should do the trick. 
+Convert objects of `DynamicArray` type to `ObservableArray` type. Simple renaming should do the trick.
 
 ### Bond and ArrayBond are deprecated
 
@@ -674,12 +675,12 @@ it would not be clear from that line of code where you were really binding the v
 ```swift
 canLogin.bindTo(loginButton.bnd_enabled)
 ```
- 
+
 Hope is that this will reduce any confusion and improve the code readability.
 
 ### Method `bindTo` is now preferred way to bind objects
 
-Talking about the code readability, another important decision has been made. In order to clearly express action behind a line of the code, method `bindTo` has become a preferred way to bind objects. Operators `->>` and `->><` are still available, but their usage is not recommended. 
+Talking about the code readability, another important decision has been made. In order to clearly express action behind a line of the code, method `bindTo` has become a preferred way to bind objects. Operators `->>` and `->><` are still available, but their usage is not recommended.
 
 
 ### _Bind only_ operator `->|` is gone
@@ -699,7 +700,7 @@ combineLatest(userLabel.bnd_text, passLabel.bnd_text).map { user, pass in
   // do something
 }
 ```
- 
+
 ## Release Notes
 
 https://github.com/SwiftBond/Bond/releases
@@ -728,4 +729,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-

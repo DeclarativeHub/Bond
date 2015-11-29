@@ -27,5 +27,5 @@ public protocol BindableType {
   
   /// Returns a sink that can be used to dispatch events to the receiver.
   /// Can accept a disposable that will be disposed on receiver's deinit.
-  func sink(disconnectDisposable: DisposableType?) -> (Element -> ())
+  func sink(disconnectDisposable: DisposableType?) -> (Element -> Void)
 }

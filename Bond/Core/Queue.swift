@@ -40,16 +40,16 @@ public struct Queue {
     self.queue = queue
   }
   
-  public func after(interval: NSTimeInterval, block: () -> ()) {
+  public func after(interval: NSTimeInterval, block: () -> Void) {
     let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(interval * NSTimeInterval(NSEC_PER_SEC)))
     dispatch_after(dispatchTime, queue, block)
   }
   
-  public func async(block: () -> ()) {
+  public func async(block: () -> Void) {
     dispatch_async(queue, block)
   }
 
-  public func sync(block: () -> ()) {
+  public func sync(block: () -> Void) {
     dispatch_sync(queue, block)
   }
 }

@@ -22,6 +22,8 @@
 //  THE SOFTWARE.
 //
 
+#if os(iOS)
+
 import UIKit
 
 extension UIRefreshControl {
@@ -36,3 +38,5 @@ extension UIRefreshControl {
     }
   }
 }
+
+#endif
