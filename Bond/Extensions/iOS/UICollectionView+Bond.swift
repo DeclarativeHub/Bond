@@ -28,6 +28,9 @@ import UIKit
   optional func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView
   optional func collectionView(collectionView: UICollectionView, canMoveItemAtIndexPath indexPath: NSIndexPath) -> Bool
   optional func collectionView(collectionView: UICollectionView, moveItemAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath)
+
+  /// Override to specify reload or update
+  optional func shouldReloadInsteadOfUpdateCollectionView(collectionView: UICollectionView) -> Bool
 }
 
 private class BNDCollectionViewDataSource<T>: NSObject, UICollectionViewDataSource {
@@ -51,30 +54,36 @@ private class BNDCollectionViewDataSource<T>: NSObject, UICollectionViewDataSour
     
     array.observeNew { [weak self] arrayEvent in
       guard let unwrappedSelf = self, let collectionView = unwrappedSelf.collectionView else { return }
-      
-      switch arrayEvent.operation {
-      case .Batch(let operations):
-        collectionView.performBatchUpdates({
-          for operation in changeSetsFromBatchOperations(operations) {
-            BNDCollectionViewDataSource.applySectionUnitChangeSet(operation, collectionView: collectionView)
-          }
-        }, completion: nil)
-      case .Reset:
+
+      if let reload = unwrappedSelf.proxyDataSource?.shouldReloadInsteadOfUpdateCollectionView?(collectionView) where reload {
         collectionView.reloadData()
-      default:
-        BNDCollectionViewDataSource.applySectionUnitChangeSet(arrayEvent.operation.changeSet(), collectionView: collectionView)
+      } else {
+        switch arrayEvent.operation {
+        case .Batch(let operations):
+          collectionView.performBatchUpdates({
+            for operation in changeSetsFromBatchOperations(operations) {
+              BNDCollectionViewDataSource.applySectionUnitChangeSet(operation, collectionView: collectionView)
+            }
+            }, completion: nil)
+        case .Reset:
+          collectionView.reloadData()
+        default:
+          BNDCollectionViewDataSource.applySectionUnitChangeSet(arrayEvent.operation.changeSet(), collectionView: collectionView)
+        }
       }
-      
+
       unwrappedSelf.setupPerSectionObservers()
-      }.disposeIn(bnd_bag)
+    }.disposeIn(bnd_bag)
   }
   
   private func setupPerSectionObservers() {
     sectionObservingDisposeBag.dispose()
     
     for (sectionIndex, sectionObservableArray) in array.enumerate() {
-      sectionObservableArray.observeNew { [weak collectionView] arrayEvent in
+      sectionObservableArray.observeNew { [weak collectionView, weak proxyDataSource] arrayEvent in
         guard let collectionView = collectionView else { return }
+        if let reload = proxyDataSource?.shouldReloadInsteadOfUpdateCollectionView?(collectionView) where reload { collectionView.reloadData(); return }
+
         switch arrayEvent.operation {
         case .Batch(let operations):
           collectionView.performBatchUpdates({
@@ -87,7 +96,7 @@ private class BNDCollectionViewDataSource<T>: NSObject, UICollectionViewDataSour
         default:
           BNDCollectionViewDataSource.applyRowUnitChangeSet(arrayEvent.operation.changeSet(), collectionView: collectionView, sectionIndex: sectionIndex)
         }
-        }.disposeIn(sectionObservingDisposeBag)
+      }.disposeIn(sectionObservingDisposeBag)
     }
   }
   

@@ -34,6 +34,9 @@ import UIKit
   optional func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath)
   optional func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath)
   
+  /// Override to specify reload or update
+  optional func shouldReloadInsteadOfUpdateTableView(tableView: UITableView) -> Bool
+  
   /// Override to specify custom row animation when row is being inserted, deleted or updated
   optional func tableView(tableView: UITableView, animationForRowAtIndexPaths indexPaths: [NSIndexPath]) -> UITableViewRowAnimation
   
@@ -62,18 +65,22 @@ private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
     
     array.observeNew { [weak self] arrayEvent in
       guard let unwrappedSelf = self, let tableView = unwrappedSelf.tableView else { return }
-      
-      switch arrayEvent.operation {
-      case .Batch(let operations):
-        tableView.beginUpdates()
-        for diff in changeSetsFromBatchOperations(operations) {
-          BNDTableViewDataSource.applySectionUnitChangeSet(diff, tableView: tableView, dataSource: unwrappedSelf.proxyDataSource)
-        }
-        tableView.endUpdates()
-      case .Reset:
+
+      if let reload = unwrappedSelf.proxyDataSource?.shouldReloadInsteadOfUpdateTableView?(tableView) where reload {
         tableView.reloadData()
-      default:
-        BNDTableViewDataSource.applySectionUnitChangeSet(arrayEvent.operation.changeSet(), tableView: tableView, dataSource: unwrappedSelf.proxyDataSource)
+      } else {
+        switch arrayEvent.operation {
+        case .Batch(let operations):
+          tableView.beginUpdates()
+          for diff in changeSetsFromBatchOperations(operations) {
+            BNDTableViewDataSource.applySectionUnitChangeSet(diff, tableView: tableView, dataSource: unwrappedSelf.proxyDataSource)
+          }
+          tableView.endUpdates()
+        case .Reset:
+          tableView.reloadData()
+        default:
+          BNDTableViewDataSource.applySectionUnitChangeSet(arrayEvent.operation.changeSet(), tableView: tableView, dataSource: unwrappedSelf.proxyDataSource)
+        }
       }
       
       unwrappedSelf.setupPerSectionObservers()
@@ -86,6 +93,8 @@ private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
     for (sectionIndex, sectionObservableArray) in array.enumerate() {
       sectionObservableArray.observeNew { [weak tableView, weak self] arrayEvent in
         guard let tableView = tableView else { return }
+        if let reload = self?.proxyDataSource?.shouldReloadInsteadOfUpdateTableView?(tableView) where reload { tableView.reloadData(); return }
+        
         switch arrayEvent.operation {
         case .Batch(let operations):
           tableView.beginUpdates()
