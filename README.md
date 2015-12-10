@@ -7,8 +7,7 @@ Bond is a Swift binding framework that takes binding concepts to a whole new lev
 
 Bond was created with two goals in mind: simple to use and simple to understand. One might argue whether the former implies the latter, but Bond will save you some thinking because both are true in this case. Its foundation are a few simple classes - everything else is extensions and syntactic sugars.
 
-**Note: This document describes Bond v4. If you are using a previous version of the framework, check out the [Migration to Bond v4](#migration) section. Bond v4 is the only officially supported version for Swift 2.0.**
-
+**Note: If you're looking into starting a new project with Bond, please check out [ReactiveKit](https://github.com/ReactiveKit/ReactiveKit) framework instead. ReactiveKit is Bond's successor that brings better performance, cleaner API and additional features in less lines of code.**
 
 ## What can it do?
 
