@@ -92,7 +92,9 @@ private class BNDCollectionViewDataSource<T>: NSObject, UICollectionViewDataSour
             }
           }, completion: nil)
         case .Reset:
-          collectionView.reloadSections(NSIndexSet(index: sectionIndex))
+          if collectionView.window != nil {
+            collectionView.reloadSections(NSIndexSet(index: sectionIndex))
+          }
         default:
           BNDCollectionViewDataSource.applyRowUnitChangeSet(arrayEvent.operation.changeSet(), collectionView: collectionView, sectionIndex: sectionIndex)
         }
