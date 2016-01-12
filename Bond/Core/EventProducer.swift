@@ -90,7 +90,7 @@ public class EventProducer<Event>: EventProducerType {
       deinitDisposable += disposable
     }
     
-    self.selfReference = tmpSelfReference
+    selfReference = tmpSelfReference
   }
   
   public init(replayLength: Int = 0, lifecycle: EventProducerLifecycle = .Normal) {
