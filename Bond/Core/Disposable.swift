@@ -109,7 +109,7 @@ public final class CompositeDisposable: DisposableType {
       disposable.dispose()
     } else {
       disposables.append(disposable)
-      self.disposables = disposables.filter { $0.isDisposed == false }
+      self.disposables = disposables.filter { !$0.isDisposed }
     }
     lock.unlock()
   }
