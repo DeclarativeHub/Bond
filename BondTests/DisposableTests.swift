@@ -93,6 +93,17 @@ class DisposableTests: XCTestCase {
     d.addDisposable(c2)
     XCTAssertTrue(c2.isDisposed, "Should have been immediately disposed.")
     XCTAssertEqual(c2.disposeCallCount, 2)
+    
+    d.addDisposables([c2, c2])
+    XCTAssertTrue(c2.isDisposed, "Should have been immediately disposed.")
+    XCTAssertEqual(c2.disposeCallCount, 4)
+    
+    let c3 = CountingDisposable()
+    let d2 = CompositeDisposable()
+    d2.addDisposables([c3, c3])
+    d2.dispose()
+    XCTAssertTrue(c3.isDisposed, "Should have been immediately disposed.")
+    XCTAssertEqual(c3.disposeCallCount, 2)
   }
   
   func testCompositeDisposableChainDoesNotDeadLock() {
