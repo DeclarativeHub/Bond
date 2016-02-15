@@ -50,6 +50,7 @@ private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
   private weak var tableView: UITableView!
   private let createCell: (NSIndexPath, ObservableArray<ObservableArray<T>>, UITableView) -> UITableViewCell
   private weak var proxyDataSource: BNDTableViewProxyDataSource?
+  private var isCellMoveInProgress: Bool = false
   private let sectionObservingDisposeBag = DisposeBag()
   
   private init(array: ObservableArray<ObservableArray<T>>, tableView: UITableView, proxyDataSource: BNDTableViewProxyDataSource?, createCell: (NSIndexPath, ObservableArray<ObservableArray<T>>, UITableView) -> UITableViewCell) {
@@ -93,7 +94,7 @@ private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
     for (sectionIndex, sectionObservableArray) in array.enumerate() {
       sectionObservableArray.observeNew { [weak tableView, weak self] arrayEvent in
         guard let tableView = tableView else { return }
-        if let reload = self?.proxyDataSource?.shouldReloadInsteadOfUpdateTableView?(tableView) where reload { tableView.reloadData(); return }
+        if let reload = self?.proxyDataSource?.shouldReloadInsteadOfUpdateTableView?(tableView), isCellMoveInProgress = self?.isCellMoveInProgress where reload || isCellMoveInProgress { tableView.reloadData(); return }
         
         switch arrayEvent.operation {
         case .Batch(let operations):
@@ -184,7 +185,9 @@ private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
   }
   
   @objc func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+    isCellMoveInProgress = true
     proxyDataSource?.tableView?(tableView, moveRowAtIndexPath: sourceIndexPath, toIndexPath: destinationIndexPath)
+    isCellMoveInProgress = false
   }
 }
 
