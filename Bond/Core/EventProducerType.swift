@@ -40,7 +40,7 @@ public protocol EventProducerType {
 public extension EventProducerType {
   
   /// Registers the observer that will receive only events generated after registering.
-  /// A better performing verion of observable.skip(observable.replyLength).observe().
+  /// A better performing version of observable.skip(observable.replyLength).observe().
   public func observeNew(observer: EventType -> Void) -> DisposableType {
     var skip: Int = replayLength
     return observe { value in
@@ -74,7 +74,7 @@ public extension EventProducerType {
     return disposable
   }
   
-  /// Transformes each event by the given `transform` function.
+  /// Transforms each event by the given `transform` function.
   public func map<T>(transform: EventType -> T) -> EventProducer<T> {
     return EventProducer(replayLength: replayLength) { sink in
       return observe { event in
