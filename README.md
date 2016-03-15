@@ -340,7 +340,7 @@ searchTextField.bnd_text.observeNew { text in
 
 To learn about available extensions just start typing `.bnd` on any UIKit or AppKit object or consult the [Extensions section](http://cocoadocs.org/docsets/Bond/4.0.0-alpha.2/Extensions.html) of the code reference. Extensions usually correspond to their respective UIKit or AppKit property names, just prefixed with `bnd_`, so it shouldn't be hard to find them.
 
-#### NSObject
+#### NSObject and Memory Management
 
 You rarely have to worry about disposing the observations, but when you do, Bond tries to be helpful. If you need to dispose an observation when your object (like view controller) is deallocated, you can use `bnd_bag` extension provided on NSObject (and thus on all its subclasses). It's a dispose bag, a collection of disposables, that will dispose all added disposables when your object is deallocated.
 
@@ -372,7 +372,16 @@ class MyViewController: UIViewController {
   }
 }
 ```
+It is however, important to note that if your binding contains a reference to self, that you should capture that reference either weakly or unowned. This will prevent leaking memory caused by a circular strong reference to self. For example:
 
+```swift
+override func viewDidLoad() {
+    super.viewDidLoad()
+
+    viewModel.data.observe { [unowned self] in
+        self.reloadData()
+    }
+}
 
 #### Notification Center
 
