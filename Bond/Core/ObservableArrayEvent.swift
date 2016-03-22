@@ -170,7 +170,7 @@ public extension ObservableArrayOperation {
       }
       
       if startIndex >= 0 {
-        let removedRange = Range(startIndex...endIndex)
+        let removedRange = Range(startIndex..<endIndex)
         pointers.removeRange(removedRange)
         return .Remove(range: removedRange)
       }

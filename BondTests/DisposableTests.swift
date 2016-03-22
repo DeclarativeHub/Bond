@@ -14,7 +14,7 @@ private class CountingDisposable: DisposableType {
   var disposeCallCount = 0
   
   func dispose() {
-    disposeCallCount++
+    disposeCallCount += 1
     isDisposed = true
   }
   
@@ -25,7 +25,7 @@ class DisposableTests: XCTestCase {
   
   func testBlockDisposableDisposesAndDisposesOnlyOnce() {
     var executedCount: Int = 0
-    let d = BlockDisposable { executedCount++ }
+    let d = BlockDisposable { executedCount += 1 }
     
     XCTAssertFalse(d.isDisposed)
     XCTAssertEqual(executedCount, 0)
