@@ -22,7 +22,7 @@ class MutableObservableTests: XCTestCase {
 
     let disposable = age.observe { value in
       observedValue = value
-      numberOfInitialReplays++
+      numberOfInitialReplays += 1
     }
 
     XCTAssertEqual(1, numberOfInitialReplays)

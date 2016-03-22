@@ -25,7 +25,7 @@
 import Cocoa
 
 public protocol BNDTableViewDelegate {
-  typealias Element
+  associatedtype Element
   func createCell(row: Int, array: ObservableArray<Element>, tableView: NSTableView) -> NSTableCellView
 }
 
