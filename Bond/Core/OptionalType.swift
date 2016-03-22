@@ -23,7 +23,7 @@
 //
 
 public protocol OptionalType {
-  typealias WrappedType
+  associatedtype WrappedType
   var isNil: Bool { get }
   var value: WrappedType? { get }
   init(optional: WrappedType?)
