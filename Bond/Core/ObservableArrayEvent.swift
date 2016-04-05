@@ -26,7 +26,7 @@
 /// ObservableArray event encapsulates current state of the array, as well
 /// as the operation that has triggered an event.
 public protocol ObservableArrayEventType {
-  typealias ObservableArrayEventSequenceType: SequenceType
+  associatedtype ObservableArrayEventSequenceType: SequenceType
   var sequence: ObservableArrayEventSequenceType { get }
   var operation: ObservableArrayOperation<ObservableArrayEventSequenceType.Generator.Element> { get }
 }
@@ -170,7 +170,7 @@ public extension ObservableArrayOperation {
       }
       
       if startIndex >= 0 {
-        let removedRange = Range(start: startIndex, end: endIndex)
+        let removedRange = Range(startIndex..<endIndex)
         pointers.removeRange(removedRange)
         return .Remove(range: removedRange)
       }

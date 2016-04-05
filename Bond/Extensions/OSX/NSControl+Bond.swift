@@ -34,7 +34,7 @@ import Cocoa
     self.sink = sink
     super.init()
     control.target = self
-    control.action = Selector("eventHandler:")
+    control.action = #selector(NSControlBondHelper.eventHandler(_:))
   }
   
   func eventHandler(sender: NSControl?) {

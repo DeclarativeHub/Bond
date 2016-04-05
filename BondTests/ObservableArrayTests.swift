@@ -174,7 +174,7 @@ class ObservableArrayTests: XCTestCase {
     
     let mapped = array
       .map { e -> Test in
-        callCount++
+        callCount += 1
         return Test(e)
       }
     
@@ -222,7 +222,7 @@ class ObservableArrayTests: XCTestCase {
     
     let mapped = array
       .map { e -> Test in
-        callCount++
+        callCount += 1
         return Test(e)
       }
       .crystallize()
