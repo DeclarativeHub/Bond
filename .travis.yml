@@ -5,7 +5,7 @@ install:
   - gem install xcpretty
 
 script:
-  - set -o pipefail && xcodebuild -project Bond.xcodeproj -scheme Bond -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6,OS=9.0' test && xcodebuild -project Bond.xcodeproj -scheme BondOSX -sdk macosx test | xcpretty
+  - xcodebuild -project Bond.xcodeproj -scheme Bond -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6,OS=9.0' test | xcpretty && xcodebuild -project Bond.xcodeproj -scheme BondOSX -sdk macosx test | xcpretty
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
