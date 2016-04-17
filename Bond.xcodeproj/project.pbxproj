@@ -55,6 +55,7 @@
 		900BFC161ADFCC00002B4B6E /* NSStatusBarButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC151ADFCC00002B4B6E /* NSStatusBarButtonTests.swift */; };
 		900BFC181ADFCCEE002B4B6E /* NSTextFieldTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC171ADFCCEE002B4B6E /* NSTextFieldTests.swift */; };
 		900BFC1A1ADFCD63002B4B6E /* NSTextViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC191ADFCD63002B4B6E /* NSTextViewTests.swift */; };
+		9D6F4AE01CC3165200FCE9CF /* EventProducerTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D6F4ADF1CC3165200FCE9CF /* EventProducerTypeTests.swift */; };
 		B5616D751BD8A2230016CCB4 /* EventProducerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68C01B77BB1D00837A36 /* EventProducerType.swift */; };
 		B5616D761BD8A2230016CCB4 /* EventProducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0075B21B90D39500249C31 /* EventProducer.swift */; };
 		B5616D771BD8A2230016CCB4 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAD68BF1B77BB1D00837A36 /* Observable.swift */; };
@@ -241,6 +242,7 @@
 		900BFC151ADFCC00002B4B6E /* NSStatusBarButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSStatusBarButtonTests.swift; sourceTree = "<group>"; };
 		900BFC171ADFCCEE002B4B6E /* NSTextFieldTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTextFieldTests.swift; sourceTree = "<group>"; };
 		900BFC191ADFCD63002B4B6E /* NSTextViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTextViewTests.swift; sourceTree = "<group>"; };
+		9D6F4ADF1CC3165200FCE9CF /* EventProducerTypeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventProducerTypeTests.swift; sourceTree = "<group>"; };
 		B5616DBB1BD8A39E0016CCB4 /* tvOSAppForTesting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tvOSAppForTesting.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5616DBD1BD8A39E0016CCB4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B5616DBF1BD8A39E0016CCB4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -647,6 +649,7 @@
 		ECAD697F1B77D44A00837A36 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				9D6F4ADF1CC3165200FCE9CF /* EventProducerTypeTests.swift */,
 				ECAD69801B77D45600837A36 /* EventProducerTests.swift */,
 				ECAD69821B77D45600837A36 /* ObservableTests.swift */,
 				160FA2E11BFD1ABE00D09C00 /* MutableObservableTests.swift */,
@@ -987,6 +990,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D6F4AE01CC3165200FCE9CF /* EventProducerTypeTests.swift in Sources */,
 				ECAD697E1B77D43D00837A36 /* UIViewTests.swift in Sources */,
 				ECAD69851B77D45600837A36 /* EventProducerTests.swift in Sources */,
 				ECAD69741B77D43D00837A36 /* UIImageViewTests.swift in Sources */,

@@ -140,9 +140,13 @@ public extension EventProducerType {
   
   /// Sends the given event and then forwards events from the receiver.
   public func startWith(event: EventType) -> EventProducer<EventType> {
-    return EventProducer(replayLength: replayLength) { sink in
-      sink(event)
+    var hasDispatch = false
+    return EventProducer(replayLength: replayLength + 1, lifecycle: EventProducerLifecycle.Managed) { sink in
       return observe { subsequentEvent in
+        if !hasDispatch {
+          hasDispatch = true
+          sink(event)
+        }
         sink(subsequentEvent)
       }
     }
