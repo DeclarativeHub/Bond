@@ -385,6 +385,7 @@
 		03ACB4FF1AB555D6001B3E64 /* iOSAppForTesting */ = {
 			isa = PBXGroup;
 			children = (
+				34187C0B1BC8C1C100C7E901 /* ViewModels */,
 				03ACB5021AB555D6001B3E64 /* AppDelegate.swift */,
 				03ACB5041AB555D6001B3E64 /* ViewController.swift */,
 				03ACB5061AB555D6001B3E64 /* Main.storyboard */,
@@ -418,6 +419,14 @@
 				03ACB5171AB555D6001B3E64 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		34187C0B1BC8C1C100C7E901 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				34187C0C1BC8C1CD00C7E901 /* ViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		69491BA41A7C217100A13B6B = {
@@ -932,6 +941,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				03ACB5051AB555D6001B3E64 /* ViewController.swift in Sources */,
+				34187C0D1BC8C1CD00C7E901 /* ViewModel.swift in Sources */,
 				03ACB5031AB555D6001B3E64 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -29,6 +29,7 @@ extension UITextField {
   private struct AssociatedKeys {
     static var TextKey = "bnd_TextKey"
     static var AttributedTextKey = "bnd_AttributedTextKey"
+    static var EditingKey = "bnd_editing"
   }
   
   public var bnd_text: Observable<String?> {
@@ -54,6 +55,25 @@ extension UITextField {
       }
       
       return bnd_text
+    }
+  }
+  
+  public var bnd_editing: Observable<Bool>{
+    if let bnd_editing: AnyObject = objc_getAssociatedObject(self, &AssociatedKeys.EditingKey){
+      return bnd_editing as! Observable<Bool>
+    }else{
+      let bnd_editing = Observable<Bool>(false)
+      objc_setAssociatedObject(self, &AssociatedKeys.EditingKey, bnd_editing, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+      
+      self.bnd_controlEvent.filter { $0 == UIControlEvents.EditingDidBegin }.observe { event in
+        bnd_editing.next(true)
+      }
+      
+      self.bnd_controlEvent.filter { $0 == UIControlEvents.EditingDidEnd }.observe {event in
+        bnd_editing.next(false)
+      }
+      
+      return bnd_editing
     }
   }
   

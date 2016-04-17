@@ -26,7 +26,9 @@ import UIKit
 
 @objc public protocol BNDTableViewProxyDataSource {
   optional func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String?
+  
   optional func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String?
+  
   optional func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool
   optional func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool
   optional func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]?
@@ -44,22 +46,40 @@ import UIKit
   optional func tableView(tableView: UITableView, animationForRowInSections sections: Set<Int>) -> UITableViewRowAnimation
 }
 
-private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
+@objc public protocol BNDTableViewProxyDelegate{
+  optional func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
+  optional func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
+  optional func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
+  optional func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView?
+  optional func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
+  optional func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
+  optional func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath)
+  optional func scrollViewDidScroll(scrollView: UIScrollView);
+  optional func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView);
+  optional func scrollViewDidEndDecelerating(scrollView: UIScrollView);
+  optional func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool);
+  
+}
+
+private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource, UITableViewDelegate {
   
   private let array: ObservableArray<ObservableArray<T>>
   private weak var tableView: UITableView!
   private let createCell: (NSIndexPath, ObservableArray<ObservableArray<T>>, UITableView) -> UITableViewCell
   private weak var proxyDataSource: BNDTableViewProxyDataSource?
+  private weak var proxyDelegate: BNDTableViewProxyDelegate?
   private let sectionObservingDisposeBag = DisposeBag()
   
-  private init(array: ObservableArray<ObservableArray<T>>, tableView: UITableView, proxyDataSource: BNDTableViewProxyDataSource?, createCell: (NSIndexPath, ObservableArray<ObservableArray<T>>, UITableView) -> UITableViewCell) {
+  private init(array: ObservableArray<ObservableArray<T>>, tableView: UITableView, proxyDataSource: BNDTableViewProxyDataSource?, proxyDelegate:BNDTableViewProxyDelegate?, createCell: (NSIndexPath, ObservableArray<ObservableArray<T>>, UITableView) -> UITableViewCell) {
     self.tableView = tableView
     self.createCell = createCell
     self.proxyDataSource = proxyDataSource
+    self.proxyDelegate = proxyDelegate
     self.array = array
     super.init()
     
     tableView.dataSource = self
+    tableView.delegate = self
     tableView.reloadData()
     setupPerSectionObservers()
     
@@ -155,6 +175,14 @@ private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
     return proxyDataSource?.tableView?(tableView, titleForHeaderInSection: section)
   }
   
+  @objc func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    return proxyDelegate?.tableView?(tableView, viewForHeaderInSection: section)
+  }
+  
+  @objc func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    return proxyDelegate?.tableView?(tableView, viewForFooterInSection: section)
+  }
+  
   @objc func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
       return proxyDataSource?.tableView?(tableView, titleForFooterInSection: section)
   }
@@ -179,6 +207,42 @@ private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
     }
   }
   
+  @objc func scrollViewDidScroll(scrollView: UIScrollView) {
+    proxyDelegate?.scrollViewDidScroll?(scrollView)
+  }
+  
+  @objc func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
+    proxyDelegate?.scrollViewDidEndScrollingAnimation?(scrollView)
+  }
+  
+  @objc func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    proxyDelegate?.scrollViewDidEndDragging?(scrollView, willDecelerate: decelerate)
+  }
+  
+  @objc func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    proxyDelegate?.scrollViewDidEndDecelerating?(scrollView)
+  }
+  
+  @objc func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    self.proxyDelegate?.tableView!(tableView, didSelectRowAtIndexPath: indexPath)
+  }
+  
+  @objc func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    return self.proxyDelegate?.tableView!(tableView, heightForRowAtIndexPath: indexPath) ?? 40.0
+  }
+  
+  @objc func tableView(tableView: UITableView, didEndDisplayingCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    self.proxyDelegate?.tableView?(tableView, didEndDisplayingCell: cell, forRowAtIndexPath: indexPath)
+  }
+  
+  @objc func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    return self.proxyDelegate?.tableView?(tableView, heightForHeaderInSection: section) ?? 0.0
+  }
+  
+  @objc func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    return self.proxyDelegate?.tableView?(tableView, heightForFooterInSection: section) ?? 0.0
+  }
+  
   @objc func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
     proxyDataSource?.tableView?(tableView, commitEditingStyle: editingStyle, forRowAtIndexPath: indexPath)
   }
@@ -201,7 +265,7 @@ public extension EventProducerType where
   
   private typealias ElementType = EventType.ObservableArrayEventSequenceType.Generator.Element.EventType.ObservableArrayEventSequenceType.Generator.Element
   
-  public func bindTo(tableView: UITableView, proxyDataSource: BNDTableViewProxyDataSource? = nil, createCell: (NSIndexPath, ObservableArray<ObservableArray<ElementType>>, UITableView) -> UITableViewCell) -> DisposableType {
+  public func bindTo(tableView: UITableView, proxyDataSource: BNDTableViewProxyDataSource? = nil, proxyDelegate:BNDTableViewProxyDelegate? = nil, createCell: (NSIndexPath, ObservableArray<ObservableArray<ElementType>>, UITableView) -> UITableViewCell) -> DisposableType {
     
     let array: ObservableArray<ObservableArray<ElementType>>
     if let downcastedObservableArray = self as? ObservableArray<ObservableArray<ElementType>> {
@@ -210,7 +274,7 @@ public extension EventProducerType where
       array = self.map { $0.crystallize() }.crystallize()
     }
     
-    let dataSource = BNDTableViewDataSource(array: array, tableView: tableView, proxyDataSource: proxyDataSource, createCell: createCell)
+    let dataSource = BNDTableViewDataSource(array: array, tableView: tableView, proxyDataSource: proxyDataSource, proxyDelegate: proxyDelegate, createCell:createCell)
     objc_setAssociatedObject(tableView, &UITableView.AssociatedKeys.BondDataSourceKey, dataSource, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     
     return BlockDisposable { [weak tableView] in
