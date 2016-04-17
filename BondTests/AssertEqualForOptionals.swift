@@ -9,12 +9,11 @@
 import Foundation
 import XCTest
 
-func XCTAssertEqual<T:Equatable>(actual: T?, expected: T?, _ message: String = "", file: String = __FILE__, line: UInt = __LINE__) {
+func XCTAssertEqual<T:Equatable>(actual: T?, expected: T?, _ message: String = "", file: StaticString = #file, line: UInt = #line) {
   switch (actual, expected) {
   case (nil, nil): break
   case (nil, _): XCTFail("(\"nil\") is not equal to (\"\(expected)\")", file: file, line: line)
   case (_, nil): XCTFail("(\"\(actual)\") is not equal to (\"nil\")", file: file, line: line)
-  default: XCTAssertEqual(actual!, expected!, message, file: file, line: line)
+  default: XCTAssertEqual(actual!, expected: expected!, message, file: file, line: line)
   }
 }
-

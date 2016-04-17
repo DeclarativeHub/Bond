@@ -27,7 +27,7 @@
 public protocol EventProducerType {
   
   /// Type of event objects or values that the observable generates.
-  typealias EventType
+  associatedtype EventType
   
   /// Maximum number of past events that will be sent to each new observer upon registering.
   /// Actual number of sent events may be less if not enough events were generated previously.
@@ -40,12 +40,12 @@ public protocol EventProducerType {
 public extension EventProducerType {
   
   /// Registers the observer that will receive only events generated after registering.
-  /// A better performing verion of observable.skip(observable.replyLength).observe().
+  /// A better performing version of observable.skip(observable.replyLength).observe().
   public func observeNew(observer: EventType -> Void) -> DisposableType {
     var skip: Int = replayLength
     return observe { value in
       if skip > 0 {
-        skip--
+        skip -= 1
       } else {
         observer(value)
       }
@@ -118,7 +118,7 @@ public extension EventProducerType {
     return disposable
   }
   
-  /// Transformes each event by the given `transform` function.
+  /// Transforms each event by the given `transform` function.
   public func map<T>(transform: EventType -> T) -> EventProducer<T> {
     return EventProducer(replayLength: replayLength) { sink in
       return observe { event in
@@ -169,11 +169,12 @@ public extension EventProducerType {
   }
   
   /// Ignores first `count` events and forwards any subsequent.
-  public func skip(var count: Int) -> EventProducer<EventType> {
-    return EventProducer(replayLength: max(replayLength - count, 0)) { sink in
+  public func skip(count: Int) -> EventProducer<EventType> {
+    var internalCount = count
+    return EventProducer(replayLength: max(replayLength - internalCount, 0)) { sink in
       return observe { event in
-        if count > 0 {
-          count--
+        if internalCount > 0 {
+          internalCount -= 1
         } else {
           sink(event)
         }

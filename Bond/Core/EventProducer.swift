@@ -75,8 +75,7 @@ public class EventProducer<Event>: EventProducerType {
   public init(replayLength: Int = 0, lifecycle: EventProducerLifecycle = .Managed, @noescape producer: Sink -> DisposableType?) {
     self.lifecycle = lifecycle
     
-    let tmpSelfReference = Reference(self)
-    tmpSelfReference.release()
+    let tmpSelfReference = Reference(weak: self)
     
     if replayLength > 0 {
       replayBuffer = Buffer(size: replayLength)
@@ -90,7 +89,7 @@ public class EventProducer<Event>: EventProducerType {
       deinitDisposable += disposable
     }
     
-    self.selfReference = tmpSelfReference
+    selfReference = tmpSelfReference
   }
   
   public init(replayLength: Int = 0, lifecycle: EventProducerLifecycle = .Normal) {
