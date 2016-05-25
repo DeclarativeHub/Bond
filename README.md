@@ -9,6 +9,48 @@ Bond was created with two goals in mind: simple to use and simple to understand.
 
 **Note: If you're looking into starting a new project with Bond, please check out [ReactiveKit](https://github.com/ReactiveKit/ReactiveKit) framework instead. ReactiveKit is Bond's successor that brings better performance, cleaner API and additional features in less lines of code.**
 
+---
+- [What can it do?](#what-can-it-do)
+- [The Event Producer](#the-event-producer)
+  - [The Observable](#the-observable)
+  - [The Event Producer](#the-event-producer-1)
+  - [About the Observation](#about-the-observation) 
+  - [Transforming the Event Producers](#transforming-the-event-producers)
+    - [Map](#map)
+    - [Filter](#filter)
+    - [DeliverOn](#deliveron)
+    - [Throttle](#throttle)
+    - [Skip](#skip)
+    - [StartWith](#startwith)
+    - [CombineLatestWith](#combinelatestwith)
+    - [SwitchToLatest](#switchtolatest)
+    - [Merge](#merge)
+    - [IgnoreNil](#ignorenil)
+    - [Distinct](#distinct)
+  - [Bindings](#bindings)
+  - [UIKit and AppKit](#uikit-and-appkit)
+    - [NSObject](#nsobject)
+    - [Notification Center](#notification-center)
+  - [Observable Array](#observable-array)
+    - [UITableView and UICollectionView](#uitableview-and-uicollectionview)
+  - [Key-Value-Observing](#key-value-observing)
+- [Installation](#installation)
+  - [Carthage](#carthage)
+  - [CocoaPods](#cocoapods)
+  - [Git Submodules](#git-submodules)
+  - [Standalone](#standalone)
+- [Migration to Bond v4](#migration-to-bond-v4)
+  - [Dynamic becomes **Observable**](#dynamic-becomes-observable)
+  - [DynamicArray become **ObservableArray**](#dynamicarray-become-observablearray)
+  - [Bond and ArrayBond are deprecated](#bond-and-arraybond-are-deprecated)
+  - [Extension are now prefixed with `bnd_`](#extension-are-now-prefixed-with-bnd_)
+  - [Designated Dynamics are gone](#designated-dynamics-are-gone)
+  - [Method `bindTo` is now preferred way to bind objects](#method-bindto-is-now-preferred-way-to-bind-objects)
+  - [_Bind only_ operator `->|` is gone](#bind-only-operator---is-gone)
+  - [Method `reduce` is deprecated](#method-reduce-is-deprecated)
+- [Release Notes](#release-notes)
+- [License](#license)
+
 ## What can it do?
 
 Let's say you'd like to act on a text change event of a `UITextField`. Well, you could setup 'target-action' mechanism between your object and go through all that target-action selector registration pain, or you could simply use Bond and do this:
