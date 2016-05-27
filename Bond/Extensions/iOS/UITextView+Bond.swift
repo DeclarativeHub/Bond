@@ -88,4 +88,8 @@ extension UITextView {
   public var bnd_textColor: Observable<UIColor?> {
     return bnd_associatedObservableForValueForKey("textColor")
   }
+  
+  public var bnd_editable: Observable<Bool> {
+    return bnd_associatedObservableForValueForKey("editable")
+  }
 }
