@@ -9,8 +9,13 @@ Bond was created with two goals in mind: simple to use and simple to understand.
 
 **Note: If you're looking into starting a new project with Bond, please check out [ReactiveKit](https://github.com/ReactiveKit/ReactiveKit) framework instead. ReactiveKit is Bond's successor that brings better performance, cleaner API and additional features in less lines of code.**
 
----
+## Table of contents
 - [What can it do?](#what-can-it-do)
+- [Installation](#installation)
+  - [Carthage](#carthage)
+  - [CocoaPods](#cocoapods)
+  - [Git Submodules](#git-submodules)
+  - [Standalone](#standalone)
 - [The Event Producer](#the-event-producer)
   - [The Observable](#the-observable)
   - [The Event Producer](#the-event-producer-1)
@@ -34,11 +39,6 @@ Bond was created with two goals in mind: simple to use and simple to understand.
   - [Observable Array](#observable-array)
     - [UITableView and UICollectionView](#uitableview-and-uicollectionview)
   - [Key-Value-Observing](#key-value-observing)
-- [Installation](#installation)
-  - [Carthage](#carthage)
-  - [CocoaPods](#cocoapods)
-  - [Git Submodules](#git-submodules)
-  - [Standalone](#standalone)
 - [Migration to Bond v4](#migration-to-bond-v4)
   - [Dynamic becomes **Observable**](#dynamic-becomes-observable)
   - [DynamicArray become **ObservableArray**](#dynamicarray-become-observablearray)
