@@ -123,7 +123,23 @@ public extension EventProducerType {
       }
     }
   }
-  
+
+  /// Throttles event dispatching for a given number of seconds after dispatches first event.
+  public func debounce(seconds: Queue.TimeInterval, queue: Queue) -> EventProducer<EventType> {
+    return EventProducer(replayLength: replayLength) { sink in
+      var firstEvent: EventType! = nil
+      return observe { event in
+        if firstEvent == nil {
+          firstEvent = event
+          sink(firstEvent)
+          queue.after(seconds) {
+            firstEvent = nil
+          }
+        }
+      }
+    }
+  }
+
   /// Ignores first `count` events and forwards any subsequent.
   public func skip(count: Int) -> EventProducer<EventType> {
     var internalCount = count

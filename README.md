@@ -239,6 +239,14 @@ func throttle(seconds: Queue.TimeInterval, queue: Queue) -> EventProducer<EventT
 
 Creates an event producer that forwards no more than one event in the given number of seconds.
 
+#### Debounce
+
+```swift
+func debounce(seconds: Queue.TimeInterval, queue: Queue) -> EventProducer<EventType>
+```
+
+Creates an event producer that ignores events which are followed by another event within the given number of seconds.
+
 #### Skip
 
 ```swift
