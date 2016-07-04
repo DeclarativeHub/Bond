@@ -46,7 +46,7 @@ extension NSTextView {
         }
       }
       
-      NSNotificationCenter.defaultCenter().bnd_notification(NSTextViewDidChangeTypingAttributesNotification, object: self).observe { [weak bnd_string] notification in
+      NSNotificationCenter.defaultCenter().bnd_notification(NSTextDidChangeNotification, object: self).observe { [weak bnd_string] notification in
         if let textView = notification.object as? NSTextView, bnd_string = bnd_string {
           updatingFromSelf = true
           bnd_string.next(textView.string ?? "")
