@@ -27,8 +27,6 @@ import UIKit
 @objc public protocol BNDTableViewProxyDataSource {
   optional func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String?
   optional func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String?
-  optional func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
-  optional func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView?
   optional func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool
   optional func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool
   optional func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]?
@@ -159,14 +157,6 @@ private class BNDTableViewDataSource<T>: NSObject, UITableViewDataSource {
   
   @objc func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
       return proxyDataSource?.tableView?(tableView, titleForFooterInSection: section)
-  }
-  
-  @objc func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    return proxyDataSource?.tableView?(tableView, viewForHeaderInSection: section)
-  }
-  
-  @objc func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    return proxyDataSource?.tableView?(tableView, viewForFooterInSection: section)
   }
   
   @objc func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
