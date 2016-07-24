@@ -38,6 +38,8 @@
 		160FA2DF1BFD1AAB00D09C00 /* MutableObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160FA2DD1BFD1A5E00D09C00 /* MutableObservable.swift */; };
 		160FA2E01BFD1AAC00D09C00 /* MutableObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160FA2DD1BFD1A5E00D09C00 /* MutableObservable.swift */; };
 		160FA2E21BFD1ABE00D09C00 /* MutableObservableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160FA2E11BFD1ABE00D09C00 /* MutableObservableTests.swift */; };
+		28C885901D446D7F0063755D /* NSViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C8858E1D446D3A0063755D /* NSViewTests.swift */; };
+		28C885911D446DBC0063755D /* NSView+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C8858C1D4468430063755D /* NSView+Bond.swift */; };
 		52CC7A1E1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CC7A1D1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift */; };
 		52CC7A201BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CC7A1F1BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift */; };
 		69491BB41A7C217100A13B6B /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = 69491BB31A7C217100A13B6B /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -222,6 +224,8 @@
 		03ACB5221AB6C840001B3E64 /* AssertEqualForOptionals.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssertEqualForOptionals.swift; sourceTree = "<group>"; };
 		160FA2DD1BFD1A5E00D09C00 /* MutableObservable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutableObservable.swift; sourceTree = "<group>"; };
 		160FA2E11BFD1ABE00D09C00 /* MutableObservableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutableObservableTests.swift; sourceTree = "<group>"; };
+		28C8858C1D4468430063755D /* NSView+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSView+Bond.swift"; sourceTree = "<group>"; };
+		28C8858E1D446D3A0063755D /* NSViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSViewTests.swift; sourceTree = "<group>"; };
 		52CC7A1D1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAppearanceCustomization+Bond.swift"; sourceTree = "<group>"; };
 		52CC7A1F1BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSAppearanceCustomizationTests.swift; sourceTree = "<group>"; };
 		69491BAE1A7C217100A13B6B /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -504,6 +508,7 @@
 				790FD79D1B7F1CF500136394 /* NSTableViewTests.swift */,
 				900BFC171ADFCCEE002B4B6E /* NSTextFieldTests.swift */,
 				900BFC191ADFCD63002B4B6E /* NSTextViewTests.swift */,
+				28C8858E1D446D3A0063755D /* NSViewTests.swift */,
 			);
 			name = AppKit;
 			sourceTree = "<group>";
@@ -601,6 +606,7 @@
 				790FD79B1B7F1C3800136394 /* NSTableView+Bond.swift */,
 				ECAD68E21B77BB1D00837A36 /* NSTextField+Bond.swift */,
 				ECAD68E31B77BB1D00837A36 /* NSTextView+Bond.swift */,
+				28C8858C1D4468430063755D /* NSView+Bond.swift */,
 			);
 			path = OSX;
 			sourceTree = "<group>";
@@ -1101,6 +1107,7 @@
 				ECAD68EE1B77BB1D00837A36 /* Buffer.swift in Sources */,
 				EC0075B41B90D39500249C31 /* EventProducer.swift in Sources */,
 				ECAD690C1B77BB1D00837A36 /* ObservableArrayEvent.swift in Sources */,
+				28C885911D446DBC0063755D /* NSView+Bond.swift in Sources */,
 				ECAD69061B77BB1D00837A36 /* Reference.swift in Sources */,
 				ECAD690A1B77BB1D00837A36 /* ObservableArray.swift in Sources */,
 				52CC7A1E1BC4C71F0010D41E /* NSAppearanceCustomization+Bond.swift in Sources */,
@@ -1131,6 +1138,7 @@
 				900BFC161ADFCC00002B4B6E /* NSStatusBarButtonTests.swift in Sources */,
 				52CC7A201BC4C7DC0010D41E /* NSAppearanceCustomizationTests.swift in Sources */,
 				900BFC121ADFCAC6002B4B6E /* NSImageViewTests.swift in Sources */,
+				28C885901D446D7F0063755D /* NSViewTests.swift in Sources */,
 				900BFC081ADFC5DC002B4B6E /* CALayerTests.swift in Sources */,
 				EAD8B2DD1B41AF4300995CE9 /* NSLayoutConstraintTests.swift in Sources */,
 			);
