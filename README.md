@@ -547,7 +547,7 @@ $ Operations [.Insert(elements: ["Jim"], fromIndex: 0), .Remove(range: 2..<3)] w
 
 #### UITableView and UICollectionView
 
-Observable arrays can bound to UITableViews and UICollectionViews, leveraging that mechanisms of fine-grained change events. To bind them to those views, use following methods:
+Observable arrays can be bound to UITableViews and UICollectionViews, leveraging that mechanisms of fine-grained change events. To bind them to those views, use following methods:
 
 ```swift
 public func bindTo(tableView: UITableView, proxyDataSource: BNDTableViewProxyDataSource? = nil, createCell: (NSIndexPath, ObservableArray<ObservableArray<ElementType>>, UITableView) -> UITableViewCell) -> DisposableType {
