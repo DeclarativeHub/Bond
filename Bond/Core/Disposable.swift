@@ -114,6 +114,17 @@ public final class CompositeDisposable: DisposableType {
     lock.unlock()
   }
   
+  public func addDisposables(disposables: [DisposableType]) {
+    lock.lock()
+    if isDisposed {
+      disposables.forEach { $0.dispose() }
+    } else {
+      self.disposables.appendContentsOf(disposables)
+      self.disposables = self.disposables.filter { !$0.isDisposed }
+    }
+    lock.unlock()
+  }
+  
   public func dispose() {
     lock.lock()
     isDisposed = true
