@@ -36,8 +36,8 @@ extension UIButton {
     return self.bnd_controlEvent.filter { $0 == UIControlEvents.TouchUpInside }.map { e in }
   }
   
-  public var bnd_selected: Observable<Bool> {
-    return bnd_associatedObservableForValueForKey("selected")
+  public var bnd_selected: EventProducer<Bool> {
+    return self.bnd_controlEvent.filter { $0 == UIControlEvents.TouchUpInside }.map { _ in self.selected }
   }
   
   public var bnd_highlighted: Observable<Bool> {
