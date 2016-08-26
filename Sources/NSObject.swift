@@ -71,13 +71,13 @@ extension NSObject: Deallocatable {
     }
   }
   
-  /// Bind `signal` to `bindable` and dispose in `rBag` of receiver.
-  func bind<O: SignalProtocol, B: BindableProtocol>(_ signal: O, to bindable: B) where O.Element == B.Element, O.Error == B.Error {
+  /// Bind `signal` to `bindable` and dispose in `bnd_bag` of receiver.
+  public func bind<O: SignalProtocol, B: BindableProtocol>(_ signal: O, to bindable: B) where O.Element == B.Element, O.Error == B.Error {
     signal.bind(to: bindable).disposeIn(bnd_bag)
   }
   
-  /// Bind `signal` to `bindable` and dispose in `rBag` of receiver.
-  func bind<O: SignalProtocol, B: BindableProtocol>(_ signal: O, to bindable: B) where B.Element: OptionalProtocol, O.Element == B.Element.Wrapped, O.Error == B.Error {
+  /// Bind `signal` to `bindable` and dispose in `bnd_bag` of receiver.
+  public func bind<O: SignalProtocol, B: BindableProtocol>(_ signal: O, to bindable: B) where B.Element: OptionalProtocol, O.Element == B.Element.Wrapped, O.Error == B.Error {
     signal.bind(to: bindable).disposeIn(bnd_bag)
   }
 }
