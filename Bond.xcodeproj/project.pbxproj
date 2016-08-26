@@ -21,6 +21,9 @@
 		1639C08A1D6DD39B0045959E /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1639C0891D6DD39B0045959E /* Observable.swift */; };
 		1639C08B1D6DD39B0045959E /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1639C0891D6DD39B0045959E /* Observable.swift */; };
 		1639C08C1D6DD39B0045959E /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1639C0891D6DD39B0045959E /* Observable.swift */; };
+		165217961D70593E00C9FAEE /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1652178B1D70591E00C9FAEE /* ReactiveKit.framework */; };
+		165217991D70594D00C9FAEE /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 165217911D70591E00C9FAEE /* ReactiveKit.framework */; };
+		1652179C1D70595600C9FAEE /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1652178D1D70591E00C9FAEE /* ReactiveKit.framework */; };
 		16559F831D64F4BC00EDD727 /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16559F821D64F4BC00EDD727 /* UITableView.swift */; };
 		16559F851D64F4F100EDD727 /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16559F841D64F4F100EDD727 /* DataSource.swift */; };
 		16D30EA81D6587B400C2435D /* UICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30EA71D6587B400C2435D /* UICollectionView.swift */; };
@@ -123,6 +126,62 @@
 			remoteGlobalIDString = 16210A3B1D3EC474004AEDF3;
 			remoteInfo = Bond;
 		};
+		1652178A1D70591E00C9FAEE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ECBCCDD01BEB6B9A00723476;
+			remoteInfo = "ReactiveKit-iOS";
+		};
+		1652178C1D70591E00C9FAEE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 16C33AF91BEFB72500A0DBE0;
+			remoteInfo = "ReactiveKit-tvOS";
+		};
+		1652178E1D70591E00C9FAEE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 16C33B161BEFB9CB00A0DBE0;
+			remoteInfo = "ReactiveKit-watchOS";
+		};
+		165217901D70591E00C9FAEE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 16C33B241BEFBA0100A0DBE0;
+			remoteInfo = "ReactiveKit-macOS";
+		};
+		165217921D70591E00C9FAEE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ECBCCDDA1BEB6B9B00723476;
+			remoteInfo = "ReactiveKit-Tests";
+		};
+		165217941D70593600C9FAEE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = ECBCCDCF1BEB6B9A00723476;
+			remoteInfo = "ReactiveKit-iOS";
+		};
+		165217971D70594900C9FAEE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 16C33B231BEFBA0100A0DBE0;
+			remoteInfo = "ReactiveKit-macOS";
+		};
+		1652179A1D70595300C9FAEE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 16C33AF81BEFB72500A0DBE0;
+			remoteInfo = "ReactiveKit-tvOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -135,6 +194,7 @@
 		1639C07E1D6DD3190045959E /* ObservableDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableDictionary.swift; sourceTree = "<group>"; };
 		1639C07F1D6DD3190045959E /* ObservableSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableSet.swift; sourceTree = "<group>"; };
 		1639C0891D6DD39B0045959E /* Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
+		165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveKit.xcodeproj; path = Carthage/Checkouts/ReactiveKit/ReactiveKit.xcodeproj; sourceTree = "<group>"; };
 		16559F821D64F4BC00EDD727 /* UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
 		16559F841D64F4F100EDD727 /* DataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
 		16D30EA71D6587B400C2435D /* UICollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UICollectionView.swift; sourceTree = "<group>"; };
@@ -192,6 +252,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				165217961D70593E00C9FAEE /* ReactiveKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,6 +268,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				165217991D70594D00C9FAEE /* ReactiveKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,6 +276,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1652179C1D70595600C9FAEE /* ReactiveKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,6 +292,7 @@
 				16210A3E1D3EC474004AEDF3 /* Sources */,
 				16210A491D3EC474004AEDF3 /* BondTests */,
 				16210A3D1D3EC474004AEDF3 /* Products */,
+				165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -276,6 +340,18 @@
 				16210A4C1D3EC474004AEDF3 /* Info.plist */,
 			);
 			path = BondTests;
+			sourceTree = "<group>";
+		};
+		165217831D70591D00C9FAEE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1652178B1D70591E00C9FAEE /* ReactiveKit.framework */,
+				1652178D1D70591E00C9FAEE /* ReactiveKit.framework */,
+				1652178F1D70591E00C9FAEE /* ReactiveKit.framework */,
+				165217911D70591E00C9FAEE /* ReactiveKit.framework */,
+				165217931D70591E00C9FAEE /* ReactiveKit-Tests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		16D30EBA1D65944500C2435D /* AppKit */ = {
@@ -373,6 +449,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				165217951D70593600C9FAEE /* PBXTargetDependency */,
 			);
 			name = "Bond-iOS";
 			productName = Bond;
@@ -409,6 +486,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				165217981D70594900C9FAEE /* PBXTargetDependency */,
 			);
 			name = "Bond-macOS";
 			productName = "Bond-macOS";
@@ -427,6 +505,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				1652179B1D70595300C9FAEE /* PBXTargetDependency */,
 			);
 			name = "Bond-tvOS";
 			productName = "Bond-tvOS";
@@ -474,6 +553,12 @@
 			mainGroup = 16210A321D3EC474004AEDF3;
 			productRefGroup = 16210A3D1D3EC474004AEDF3 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 165217831D70591D00C9FAEE /* Products */;
+					ProjectRef = 165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				16210A3B1D3EC474004AEDF3 /* Bond-iOS */,
@@ -483,6 +568,44 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		1652178B1D70591E00C9FAEE /* ReactiveKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveKit.framework;
+			remoteRef = 1652178A1D70591E00C9FAEE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1652178D1D70591E00C9FAEE /* ReactiveKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveKit.framework;
+			remoteRef = 1652178C1D70591E00C9FAEE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1652178F1D70591E00C9FAEE /* ReactiveKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveKit.framework;
+			remoteRef = 1652178E1D70591E00C9FAEE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		165217911D70591E00C9FAEE /* ReactiveKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ReactiveKit.framework;
+			remoteRef = 165217901D70591E00C9FAEE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		165217931D70591E00C9FAEE /* ReactiveKit-Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "ReactiveKit-Tests.xctest";
+			remoteRef = 165217921D70591E00C9FAEE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		16210A3A1D3EC474004AEDF3 /* Resources */ = {
@@ -650,6 +773,21 @@
 			isa = PBXTargetDependency;
 			target = 16210A3B1D3EC474004AEDF3 /* Bond-iOS */;
 			targetProxy = 16210A471D3EC474004AEDF3 /* PBXContainerItemProxy */;
+		};
+		165217951D70593600C9FAEE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ReactiveKit-iOS";
+			targetProxy = 165217941D70593600C9FAEE /* PBXContainerItemProxy */;
+		};
+		165217981D70594900C9FAEE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ReactiveKit-macOS";
+			targetProxy = 165217971D70594900C9FAEE /* PBXContainerItemProxy */;
+		};
+		1652179B1D70595300C9FAEE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ReactiveKit-tvOS";
+			targetProxy = 1652179A1D70595300C9FAEE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
