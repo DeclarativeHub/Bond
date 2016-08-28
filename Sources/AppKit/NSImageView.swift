@@ -27,8 +27,8 @@ import AppKit
 
 extension NSImageView {
 
-  public var bnd_image: AnyBond<NSImage?> {
-    return bnd_bond(forKey: "image")
+  public var bnd_image: Bond<NSImageView, NSImage?> {
+    return Bond(target: self) { $0.image = $1 }
   }
 }
 

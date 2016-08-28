@@ -48,5 +48,3 @@ public struct Bond<Target: Deallocatable, Element>: BindableProtocol {
     }
   }
 }
-
-public typealias AnyBond<Element> = Bond<NSObject, Element>

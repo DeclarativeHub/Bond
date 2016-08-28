@@ -27,15 +27,15 @@ import ReactiveKit
 
 public extension NSButton {
 
-  public var bnd_title: AnyBond<String> {
-    return bnd_bond(forKey: "title")
+  public var bnd_title: Bond<NSButton, String> {
+    return Bond(target: self) { $0.title = $1 }
   }
 
-  public var bnd_alternateTitle: AnyBond<String> {
-    return bnd_bond(forKey: "alternateTitle")
+  public var bnd_alternateTitle: Bond<NSButton, String> {
+    return Bond(target: self) { $0.alternateTitle = $1 }
   }
 
-  public var bnd_state: AnyBond<Int> {
-    return bnd_bond(forKey: "state")
+  public var bnd_state: Bond<NSButton, Int> {
+    return Bond(target: self) { $0.state = $1 }
   }
 }

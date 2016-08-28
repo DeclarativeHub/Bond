@@ -26,7 +26,7 @@ import UIKit
 
 public extension UINavigationItem {
 
-  public var bnd_title: AnyBond<String?> {
-    return bnd_bond(forKey: "title")
+  public var bnd_title: Bond<UINavigationItem, String?> {
+    return Bond(target: self) { $0.title = $1 }
   }
 }

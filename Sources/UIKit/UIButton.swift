@@ -35,11 +35,11 @@ public extension UIButton {
     return bnd_controlEvents(.touchUpInside)
   }
 
-  public var bnd_selected: AnyBond<Bool> {
-    return bnd_bond(forKey: "selected")
+  public var bnd_isSelected: Bond<UIButton, Bool> {
+    return Bond(target: self) { $0.isSelected = $1 }
   }
 
-  public var bnd_highlighted: AnyBond<Bool> {
-    return bnd_bond(forKey: "highlighted")
+  public var bnd_isHighlighted: Bond<UIButton, Bool> {
+    return Bond(target: self) { $0.isHighlighted = $1 }
   }
 }

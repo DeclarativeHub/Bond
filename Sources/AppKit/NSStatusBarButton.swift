@@ -27,7 +27,7 @@ import AppKit
 
 public extension NSStatusBarButton {
 
-  public var bnd_appearsDisabled: AnyBond<Bool> {
-    return bnd_bond(forKey: "appearsDisabled")
+  public var bnd_appearsDisabled: Bond<NSStatusBarButton, Bool> {
+    return Bond(target: self) { $0.appearsDisabled = $1 }
   }
 }

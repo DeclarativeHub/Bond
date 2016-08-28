@@ -26,7 +26,7 @@ import UIKit
 
 extension UIApplication {
 
-  public var bnd_networkActivityIndicatorVisible: AnyBond<Bool> {
-    return bnd_bond(forKey: "networkActivityIndicatorVisible")
+  public var bnd_isNetworkActivityIndicatorVisible: Bond<UIApplication, Bool> {
+    return Bond(target: self) { $0.isNetworkActivityIndicatorVisible = $1 }
   }
 }

@@ -27,11 +27,11 @@ import AppKit
 
 extension NSView {
 
-  public var bnd_alphaValue: AnyBond<CGFloat> {
-    return bnd_bond(forKey: "alphaValue")
+  public var bnd_alphaValue: Bond<NSView, CGFloat> {
+    return Bond(target: self) { $0.alphaValue = $1 }
   }
 
-  public var bnd_hidden: AnyBond<Bool> {
-    return bnd_bond(forKey: "hidden")
+  public var bnd_isHidden: Bond<NSView, Bool> {
+    return Bond(target: self) { $0.isHidden = $1 }
   }
 }

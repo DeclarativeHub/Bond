@@ -27,16 +27,16 @@ import ReactiveKit
 
 public extension UILabel {
 
-  public var bnd_text: AnyBond<String?> {
-    return bnd_bond(forKey: "text")
+  public var bnd_text: Bond<UILabel, String?> {
+    return Bond(target: self) { $0.text = $1 }
   }
 
-  public var bnd_attributedText: AnyBond<NSAttributedString?> {
-    return bnd_bond(forKey: "attributedText")
+  public var bnd_attributedText: Bond<UILabel, NSAttributedString?> {
+    return Bond(target: self) { $0.attributedText = $1 }
   }
 
-  public var bnd_textColor: AnyBond<UIColor?> {
-    return bnd_bond(forKey: "textColor")
+  public var bnd_textColor: Bond<UILabel, UIColor?> {
+    return Bond(target: self) { $0.textColor = $1 }
   }
 }
 

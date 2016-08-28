@@ -30,7 +30,7 @@
 		16D30EB61D65938200C2435D /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = EC7890ED1D44F1BF002848EB /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		16D30EBC1D65944500C2435D /* NSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30EBB1D65944500C2435D /* NSButton.swift */; };
 		16D30EBF1D65960B00C2435D /* Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7890F11D44F1D9002848EB /* Bond.swift */; };
-		16D30EC01D65960E00C2435D /* DynamicProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7890F31D44F1ED002848EB /* DynamicProperty.swift */; };
+		16D30EC01D65960E00C2435D /* DynamicSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7890F31D44F1ED002848EB /* DynamicSubject.swift */; };
 		16D30EC11D65961000C2435D /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16559F841D64F4F100EDD727 /* DataSource.swift */; };
 		16D30EC21D65961300C2435D /* NSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8822061D421EA2006142ED /* NSObject.swift */; };
 		16D30EC41D65988A00C2435D /* NSControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30EC31D65988A00C2435D /* NSControl.swift */; };
@@ -42,7 +42,7 @@
 		16D30ED01D659E0600C2435D /* NSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30ECF1D659E0600C2435D /* NSView.swift */; };
 		16D30EDE1D65D14400C2435D /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = EC7890ED1D44F1BF002848EB /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		16D30EDF1D65D14C00C2435D /* Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7890F11D44F1D9002848EB /* Bond.swift */; };
-		16D30EE01D65D14C00C2435D /* DynamicProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7890F31D44F1ED002848EB /* DynamicProperty.swift */; };
+		16D30EE01D65D14C00C2435D /* DynamicSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7890F31D44F1ED002848EB /* DynamicSubject.swift */; };
 		16D30EE11D65D14C00C2435D /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16559F841D64F4F100EDD727 /* DataSource.swift */; };
 		16D30EE21D65D14C00C2435D /* NSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8822061D421EA2006142ED /* NSObject.swift */; };
 		16D30EE31D65D16600C2435D /* UIActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD626E81D4DE8800040C7BF /* UIActivityIndicatorView.swift */; };
@@ -83,7 +83,7 @@
 		EC35401C1D462F4700901AA1 /* UIControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC35401B1D462F4700901AA1 /* UIControl.swift */; };
 		EC7890EF1D44F1BF002848EB /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = EC7890ED1D44F1BF002848EB /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EC7890F21D44F1D9002848EB /* Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7890F11D44F1D9002848EB /* Bond.swift */; };
-		EC7890F41D44F1ED002848EB /* DynamicProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7890F31D44F1ED002848EB /* DynamicProperty.swift */; };
+		EC7890F41D44F1ED002848EB /* DynamicSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7890F31D44F1ED002848EB /* DynamicSubject.swift */; };
 		EC8822071D421EA2006142ED /* NSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8822061D421EA2006142ED /* NSObject.swift */; };
 		EC97ED9F1D6C500B001C54C9 /* NSNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97ED9E1D6C500B001C54C9 /* NSNotificationCenter.swift */; };
 		EC97EDA01D6C500B001C54C9 /* NSNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97ED9E1D6C500B001C54C9 /* NSNotificationCenter.swift */; };
@@ -222,7 +222,7 @@
 		EC7890ED1D44F1BF002848EB /* Bond.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Bond.h; path = Bond/Bond.h; sourceTree = "<group>"; };
 		EC7890EE1D44F1BF002848EB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Bond/Info.plist; sourceTree = "<group>"; };
 		EC7890F11D44F1D9002848EB /* Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bond.swift; sourceTree = "<group>"; };
-		EC7890F31D44F1ED002848EB /* DynamicProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicProperty.swift; sourceTree = "<group>"; };
+		EC7890F31D44F1ED002848EB /* DynamicSubject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicSubject.swift; sourceTree = "<group>"; };
 		EC8822061D421EA2006142ED /* NSObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSObject.swift; path = Sources/NSObject.swift; sourceTree = SOURCE_ROOT; };
 		EC97ED9E1D6C500B001C54C9 /* NSNotificationCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSNotificationCenter.swift; sourceTree = "<group>"; };
 		EC97EDA21D6C50A5001C54C9 /* NSObject+KVO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+KVO.swift"; sourceTree = "<group>"; };
@@ -317,7 +317,7 @@
 				1639C07E1D6DD3190045959E /* ObservableDictionary.swift */,
 				1639C07F1D6DD3190045959E /* ObservableSet.swift */,
 				EC7890F11D44F1D9002848EB /* Bond.swift */,
-				EC7890F31D44F1ED002848EB /* DynamicProperty.swift */,
+				EC7890F31D44F1ED002848EB /* DynamicSubject.swift */,
 				EC97EDA61D6C51F0001C54C9 /* ProtocolProxy.swift */,
 				16559F841D64F4F100EDD727 /* DataSource.swift */,
 				EC8822061D421EA2006142ED /* NSObject.swift */,
@@ -652,7 +652,7 @@
 				ECD626EB1D4DE9460040C7BF /* UIBarItem.swift in Sources */,
 				1639C0861D6DD3190045959E /* ObservableSet.swift in Sources */,
 				EC7890F21D44F1D9002848EB /* Bond.swift in Sources */,
-				EC7890F41D44F1ED002848EB /* DynamicProperty.swift in Sources */,
+				EC7890F41D44F1ED002848EB /* DynamicSubject.swift in Sources */,
 				16559F851D64F4F100EDD727 /* DataSource.swift in Sources */,
 				ECD626F31D4DEFBC0040C7BF /* UIImageView.swift in Sources */,
 				16D30EF91D65D5FD00C2435D /* CALayer.swift in Sources */,
@@ -719,7 +719,7 @@
 				16D30F071D65D7F800C2435D /* NSColorWell.swift in Sources */,
 				1639C08B1D6DD39B0045959E /* Observable.swift in Sources */,
 				16D30EC11D65961000C2435D /* DataSource.swift in Sources */,
-				16D30EC01D65960E00C2435D /* DynamicProperty.swift in Sources */,
+				16D30EC01D65960E00C2435D /* DynamicSubject.swift in Sources */,
 				16D30EC81D659BDB00C2435D /* NSProgressIndicator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -751,7 +751,7 @@
 				1639C0821D6DD3190045959E /* ObservableArray.swift in Sources */,
 				16D30EE61D65D16600C2435D /* UIBarItem.swift in Sources */,
 				16D30EE51D65D16600C2435D /* UIBarButtonItem.swift in Sources */,
-				16D30EE01D65D14C00C2435D /* DynamicProperty.swift in Sources */,
+				16D30EE01D65D14C00C2435D /* DynamicSubject.swift in Sources */,
 				16D30EDF1D65D14C00C2435D /* Bond.swift in Sources */,
 				16D30EEC1D65D16600C2435D /* UINavigationBar.swift in Sources */,
 				16D30EEE1D65D16600C2435D /* UIProgressView.swift in Sources */,

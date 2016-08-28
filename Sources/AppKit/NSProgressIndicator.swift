@@ -27,14 +27,14 @@ import AppKit
 
 extension NSProgressIndicator {
 
-  public var bnd_progress: AnyBond<Float> {
-    return bnd_bond(forKey: "progress")
+  public var bnd_doubleValue: Bond<NSProgressIndicator, Double> {
+    return Bond(target: self) { $0.doubleValue = $1 }
   }
 }
 
 extension NSProgressIndicator: BindableProtocol {
 
-  public func bind(signal: Signal<Float, NoError>) -> Disposable {
-    return bnd_progress.bind(signal: signal)
+  public func bind(signal: Signal<Double, NoError>) -> Disposable {
+    return bnd_doubleValue.bind(signal: signal)
   }
 }

@@ -27,20 +27,16 @@ import AppKit
 
 extension NSSlider {
 
-  public var bnd_minValue: AnyBond<Double> {
-    return bnd_bond(forKey: "minValue")
+  public var bnd_minValue: Bond<NSSlider, Double> {
+    return Bond(target: self) { $0.minValue = $1 }
   }
 
-  public var bnd_maxValue: AnyBond<Double> {
-    return bnd_bond(forKey: "maxValue")
+  public var bnd_maxValue: Bond<NSSlider, Double> {
+    return Bond(target: self) { $0.maxValue = $1 }
   }
 
-  public var bnd_altIncrementValue: AnyBond<Double> {
-    return bnd_bond(forKey: "altIncrementValue")
-  }
-
-  public var bnd_knobThickness: AnyBond<CGFloat> {
-    return bnd_bond(forKey: "knobThickness")
+  public var bnd_altIncrementValue: Bond<NSSlider, Double> {
+    return Bond(target: self) { $0.altIncrementValue = $1 }
   }
 }
 

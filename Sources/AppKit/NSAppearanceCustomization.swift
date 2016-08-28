@@ -27,7 +27,7 @@ import AppKit
 
 public extension NSAppearanceCustomization where Self: NSObject {
 
-  public var bnd_appearance: AnyBond<NSAppearance?> {
-    return bnd_bond(forKey: "appearance")
+  public var bnd_appearance: Bond<Self, NSAppearance?> {
+    return Bond(target: self) { $0.appearance = $1 }
   }
 }

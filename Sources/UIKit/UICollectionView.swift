@@ -38,6 +38,7 @@ public extension UICollectionView {
 
 public extension SignalProtocol where Element: DataSourceEventProtocol, Error == NoError {
 
+  @discardableResult
   public func bind(to collectionView: UICollectionView, createCell: @escaping (DataSource, IndexPath, UICollectionView) -> UICollectionViewCell) -> Disposable {
 
     let dataSource = Property<DataSource?>(nil)
