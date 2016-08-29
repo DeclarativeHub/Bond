@@ -26,7 +26,9 @@ import UIKit
 
 extension UIApplication {
 
+  #if os(iOS)
   public var bnd_isNetworkActivityIndicatorVisible: Bond<UIApplication, Bool> {
     return Bond(target: self) { $0.isNetworkActivityIndicatorVisible = $1 }
   }
+  #endif
 }
