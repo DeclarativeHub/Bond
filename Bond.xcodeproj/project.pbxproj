@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		16210A461D3EC474004AEDF3 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16210A3C1D3EC474004AEDF3 /* Bond.framework */; };
-		16210A4B1D3EC474004AEDF3 /* BondTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16210A4A1D3EC474004AEDF3 /* BondTests.swift */; };
+		16210A4B1D3EC474004AEDF3 /* UIKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16210A4A1D3EC474004AEDF3 /* UIKitTests.swift */; };
 		1639C0801D6DD3190045959E /* ObservableArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1639C07D1D6DD3190045959E /* ObservableArray.swift */; };
 		1639C0811D6DD3190045959E /* ObservableArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1639C07D1D6DD3190045959E /* ObservableArray.swift */; };
 		1639C0821D6DD3190045959E /* ObservableArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1639C07D1D6DD3190045959E /* ObservableArray.swift */; };
@@ -26,6 +26,11 @@
 		1652179C1D70595600C9FAEE /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1652178D1D70591E00C9FAEE /* ReactiveKit.framework */; };
 		16559F831D64F4BC00EDD727 /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16559F821D64F4BC00EDD727 /* UITableView.swift */; };
 		16559F851D64F4F100EDD727 /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16559F841D64F4F100EDD727 /* DataSource.swift */; };
+		16887E2E1D7444C900EDA099 /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1652178B1D70591E00C9FAEE /* ReactiveKit.framework */; };
+		16887E301D74499A00EDA099 /* ProtocolProxyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16887E2F1D74499A00EDA099 /* ProtocolProxyTests.swift */; };
+		16887E321D744A1400EDA099 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16887E311D744A1400EDA099 /* Helpers.swift */; };
+		16887E3A1D744ABB00EDA099 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16887E391D744ABB00EDA099 /* AppDelegate.swift */; };
+		16887E441D744ABB00EDA099 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 16887E421D744ABB00EDA099 /* LaunchScreen.storyboard */; };
 		16D30EA81D6587B400C2435D /* UICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30EA71D6587B400C2435D /* UICollectionView.swift */; };
 		16D30EB61D65938200C2435D /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = EC7890ED1D44F1BF002848EB /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		16D30EBC1D65944500C2435D /* NSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30EBB1D65944500C2435D /* NSButton.swift */; };
@@ -182,13 +187,27 @@
 			remoteGlobalIDString = 16C33AF81BEFB72500A0DBE0;
 			remoteInfo = "ReactiveKit-tvOS";
 		};
+		16887E2A1D7444C500EDA099 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = ECBCCDCF1BEB6B9A00723476;
+			remoteInfo = "ReactiveKit-iOS";
+		};
+		16887E491D744B2900EDA099 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 16210A331D3EC474004AEDF3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 16887E361D744ABB00EDA099;
+			remoteInfo = "Bond-App";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		161D6D2D1D6F0D92004CA17D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		16210A3C1D3EC474004AEDF3 /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		16210A451D3EC474004AEDF3 /* BondTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BondTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		16210A4A1D3EC474004AEDF3 /* BondTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BondTests.swift; sourceTree = "<group>"; };
+		16210A4A1D3EC474004AEDF3 /* UIKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitTests.swift; sourceTree = "<group>"; };
 		16210A4C1D3EC474004AEDF3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1639C07D1D6DD3190045959E /* ObservableArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableArray.swift; sourceTree = "<group>"; };
 		1639C07E1D6DD3190045959E /* ObservableDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableDictionary.swift; sourceTree = "<group>"; };
@@ -197,6 +216,12 @@
 		165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveKit.xcodeproj; path = Carthage/Checkouts/ReactiveKit/ReactiveKit.xcodeproj; sourceTree = "<group>"; };
 		16559F821D64F4BC00EDD727 /* UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
 		16559F841D64F4F100EDD727 /* DataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSource.swift; sourceTree = "<group>"; };
+		16887E2F1D74499A00EDA099 /* ProtocolProxyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProtocolProxyTests.swift; sourceTree = "<group>"; };
+		16887E311D744A1400EDA099 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		16887E371D744ABB00EDA099 /* Bond-App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bond-App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		16887E391D744ABB00EDA099 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		16887E431D744ABB00EDA099 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		16887E451D744ABB00EDA099 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		16D30EA71D6587B400C2435D /* UICollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UICollectionView.swift; sourceTree = "<group>"; };
 		16D30EAE1D6591D300C2435D /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		16D30EBB1D65944500C2435D /* NSButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSButton.swift; sourceTree = "<group>"; };
@@ -260,7 +285,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				16887E2E1D7444C900EDA099 /* ReactiveKit.framework in Frameworks */,
 				16210A461D3EC474004AEDF3 /* Bond.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		16887E341D744ABB00EDA099 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,6 +324,7 @@
 				EC7890EE1D44F1BF002848EB /* Info.plist */,
 				16210A3E1D3EC474004AEDF3 /* Sources */,
 				16210A491D3EC474004AEDF3 /* BondTests */,
+				16887E381D744ABB00EDA099 /* Bond-App */,
 				16210A3D1D3EC474004AEDF3 /* Products */,
 				165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */,
 			);
@@ -305,6 +339,7 @@
 				16210A451D3EC474004AEDF3 /* BondTests.xctest */,
 				16D30EAE1D6591D300C2435D /* Bond.framework */,
 				16D30ED61D65D11900C2435D /* Bond.framework */,
+				16887E371D744ABB00EDA099 /* Bond-App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -336,7 +371,9 @@
 		16210A491D3EC474004AEDF3 /* BondTests */ = {
 			isa = PBXGroup;
 			children = (
-				16210A4A1D3EC474004AEDF3 /* BondTests.swift */,
+				16210A4A1D3EC474004AEDF3 /* UIKitTests.swift */,
+				16887E2F1D74499A00EDA099 /* ProtocolProxyTests.swift */,
+				16887E311D744A1400EDA099 /* Helpers.swift */,
 				16210A4C1D3EC474004AEDF3 /* Info.plist */,
 			);
 			path = BondTests;
@@ -352,6 +389,16 @@
 				165217931D70591E00C9FAEE /* ReactiveKit-Tests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		16887E381D744ABB00EDA099 /* Bond-App */ = {
+			isa = PBXGroup;
+			children = (
+				16887E391D744ABB00EDA099 /* AppDelegate.swift */,
+				16887E421D744ABB00EDA099 /* LaunchScreen.storyboard */,
+				16887E451D744ABB00EDA099 /* Info.plist */,
+			);
+			path = "Bond-App";
 			sourceTree = "<group>";
 		};
 		16D30EBA1D65944500C2435D /* AppKit */ = {
@@ -467,12 +514,31 @@
 			buildRules = (
 			);
 			dependencies = (
+				16887E2B1D7444C500EDA099 /* PBXTargetDependency */,
 				16210A481D3EC474004AEDF3 /* PBXTargetDependency */,
+				16887E4A1D744B2900EDA099 /* PBXTargetDependency */,
 			);
 			name = BondTests;
 			productName = BondTests;
 			productReference = 16210A451D3EC474004AEDF3 /* BondTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		16887E361D744ABB00EDA099 /* Bond-App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 16887E461D744ABB00EDA099 /* Build configuration list for PBXNativeTarget "Bond-App" */;
+			buildPhases = (
+				16887E331D744ABB00EDA099 /* Sources */,
+				16887E341D744ABB00EDA099 /* Frameworks */,
+				16887E351D744ABB00EDA099 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Bond-App";
+			productName = "Bond-App";
+			productReference = 16887E371D744ABB00EDA099 /* Bond-App.app */;
+			productType = "com.apple.product-type.application";
 		};
 		16D30EAD1D6591D300C2435D /* Bond-macOS */ = {
 			isa = PBXNativeTarget;
@@ -530,6 +596,11 @@
 					16210A441D3EC474004AEDF3 = {
 						CreatedOnToolsVersion = 8.0;
 						ProvisioningStyle = Automatic;
+						TestTargetID = 16887E361D744ABB00EDA099;
+					};
+					16887E361D744ABB00EDA099 = {
+						CreatedOnToolsVersion = 8.0;
+						ProvisioningStyle = Automatic;
 					};
 					16D30EAD1D6591D300C2435D = {
 						CreatedOnToolsVersion = 8.0;
@@ -549,6 +620,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 16210A321D3EC474004AEDF3;
 			productRefGroup = 16210A3D1D3EC474004AEDF3 /* Products */;
@@ -565,6 +637,7 @@
 				16D30EAD1D6591D300C2435D /* Bond-macOS */,
 				16D30ED51D65D11900C2435D /* Bond-tvOS */,
 				16210A441D3EC474004AEDF3 /* BondTests */,
+				16887E361D744ABB00EDA099 /* Bond-App */,
 			);
 		};
 /* End PBXProject section */
@@ -619,6 +692,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		16887E351D744ABB00EDA099 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				16887E441D744ABB00EDA099 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -685,7 +766,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				16210A4B1D3EC474004AEDF3 /* BondTests.swift in Sources */,
+				16887E301D74499A00EDA099 /* ProtocolProxyTests.swift in Sources */,
+				16887E321D744A1400EDA099 /* Helpers.swift in Sources */,
+				16210A4B1D3EC474004AEDF3 /* UIKitTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		16887E331D744ABB00EDA099 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				16887E3A1D744ABB00EDA099 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -789,7 +880,28 @@
 			name = "ReactiveKit-tvOS";
 			targetProxy = 1652179A1D70595300C9FAEE /* PBXContainerItemProxy */;
 		};
+		16887E2B1D7444C500EDA099 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ReactiveKit-iOS";
+			targetProxy = 16887E2A1D7444C500EDA099 /* PBXContainerItemProxy */;
+		};
+		16887E4A1D744B2900EDA099 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 16887E361D744ABB00EDA099 /* Bond-App */;
+			targetProxy = 16887E491D744B2900EDA099 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		16887E421D744ABB00EDA099 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				16887E431D744ABB00EDA099 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		16210A4E1D3EC474004AEDF3 /* Debug */ = {
@@ -938,6 +1050,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "Swift-Bond.BondTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Bond-App.app/Bond-App";
 			};
 			name = Debug;
 		};
@@ -947,6 +1060,35 @@
 				INFOPLIST_FILE = BondTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Swift-Bond.BondTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Bond-App.app/Bond-App";
+			};
+			name = Release;
+		};
+		16887E471D744ABB00EDA099 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = "Bond-App/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Bond.Bond-App";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		16887E481D744ABB00EDA099 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = "Bond-App/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "Bond.Bond-App";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -1081,6 +1223,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		16887E461D744ABB00EDA099 /* Build configuration list for PBXNativeTarget "Bond-App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				16887E471D744ABB00EDA099 /* Debug */,
+				16887E481D744ABB00EDA099 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		16D30EB31D6591D300C2435D /* Build configuration list for PBXNativeTarget "Bond-macOS" */ = {
 			isa = XCConfigurationList;
