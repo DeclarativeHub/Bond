@@ -413,14 +413,14 @@ then the row at index path 1 would be deleted and new rows would be inserted at 
 ### Carthage
 
 1. Add the following to your *Cartfile*:
-  <br> `github "SwiftBond/Bond" ~> 5.0-beta1`
+  <br> `github "SwiftBond/Bond" ~> 5.0`
 2. Run `carthage update`
 3. Add the framework as described in [Carthage Readme](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application)
 
 ### CocoaPods
 
 1. Add the following to your *Podfile*:
-  <br> `pod 'Bond', '~> 5.0-beta1'`
+  <br> `pod 'Bond', '~> 5.0-beta2'`
 2. Run `pod install`.
 
 ## <a name="migration"></a>Migration
