@@ -28,15 +28,15 @@ import ReactiveKit
 
 public extension CALayer {
 
-  public var bnd_opacity: AnyBond<Float> {
-    return bnd_bond(forKey: "opacity")
+  public var bnd_opacity: Bond<CALayer, Float> {
+    return Bond(target: self) { $0.opacity = $1 }
   }
 
-  public var bnd_backgroundColor: AnyBond<CGColor?> {
-    return bnd_bond(forKey: "backgroundColor")
+  public var bnd_backgroundColor: Bond<CALayer, CGColor?> {
+    return Bond(target: self) { $0.backgroundColor = $1 }
   }
 
-  public var bnd_contents: AnyBond<AnyObject?> {
-    return bnd_bond(forKey: "contents")
+  public var bnd_contents: Bond<CALayer, AnyObject?> {
+    return Bond(target: self) { $0.contents = $1 }
   }
 }

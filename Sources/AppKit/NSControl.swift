@@ -65,31 +65,31 @@ extension NSControl {
     }
   }
 
-  public var bnd_enabled: AnyBond<Bool> {
-    return bnd_bond(forKey: "enabled")
+  public var bnd_isEnabled: Bond<NSControl, Bool> {
+    return Bond(target: self) { $0.isEnabled = $1 }
   }
 
-  public var bnd_objectValue: AnyBond<AnyObject?> {
-    return bnd_bond(forKey: "objectValue")
+  public var bnd_objectValue: Bond<NSControl, AnyObject?> {
+    return Bond(target: self) { $0.objectValue = $1 }
   }
 
-  public var bnd_stringValue: AnyBond<String> {
-    return bnd_bond(forKey: "stringValue")
+  public var bnd_stringValue: Bond<NSControl, String> {
+    return Bond(target: self) { $0.stringValue = $1 }
   }
 
-  public var bnd_attributedStringleValue: AnyBond<NSAttributedString> {
-    return bnd_bond(forKey: "attributedStringValue")
+  public var bnd_attributedStringleValue: Bond<NSControl, NSAttributedString> {
+    return Bond(target: self) { $0.attributedStringValue = $1 }
   }
 
-  public var bnd_integerValue: AnyBond<Int> {
-    return bnd_bond(forKey: "integerValue")
+  public var bnd_integerValue: Bond<NSControl, Int> {
+    return Bond(target: self) { $0.integerValue = $1 }
   }
 
-  public var bnd_floatValue: AnyBond<Float> {
-    return bnd_bond(forKey: "floatValue")
+  public var bnd_floatValue: Bond<NSControl, Float> {
+    return Bond(target: self) { $0.floatValue = $1 }
   }
 
-  public var bnd_doubleValue: AnyBond<Double> {
-    return bnd_bond(forKey: "doubleValue")
+  public var bnd_doubleValue: Bond<NSControl, Double> {
+    return Bond(target: self) { $0.doubleValue = $1 }
   }
 }

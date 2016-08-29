@@ -27,12 +27,12 @@ import AppKit
 
 extension NSSegmentedControl {
 
-  public var bnd_segmentCount: AnyBond<Int> {
-    return bnd_bond(forKey: "segmentCount")
+  public var bnd_segmentCount: Bond<NSSegmentedControl, Int> {
+    return Bond(target: self) { $0.segmentCount = $1 }
   }
 
-  public var bnd_selectedSegment: AnyBond<Int> {
-    return bnd_bond(forKey: "selectedSegment")
+  public var bnd_selectedSegment: Bond<NSSegmentedControl, Int> {
+    return Bond(target: self) { $0.selectedSegment = $1 }
   }
 }
 

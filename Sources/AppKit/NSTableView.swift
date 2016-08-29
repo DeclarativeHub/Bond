@@ -24,6 +24,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
 
   public typealias DataSource = Element.DataSource
 
+  @discardableResult
   public func bind(to tableView: NSTableView, animated: Bool = true, createCell: @escaping (DataSource, Int, NSTableView) -> NSView) -> Disposable {
 
     let dataSource = Property<DataSource?>(nil)

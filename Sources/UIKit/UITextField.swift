@@ -45,8 +45,8 @@ public extension UITextField {
     )
   }
 
-  public var bnd_textColor: AnyBond<UIColor?> {
-    return bnd_bond(forKey: "textColor")
+  public var bnd_textColor: Bond<UITextField, UIColor?> {
+    return Bond(target: self) { $0.textColor = $1 }
   }
 }
 

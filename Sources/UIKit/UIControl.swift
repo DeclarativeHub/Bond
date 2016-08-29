@@ -43,8 +43,8 @@ public extension UIControl {
     }.take(until: bnd_deallocated)
   }
 
-  public var bnd_enabled: AnyBond<Bool> {
-    return bnd_bond(forKey: "enabled")
+  public var bnd_isEnabled: Bond<UIControl, Bool> {
+    return Bond(target: self) { $0.isEnabled = $1 }
   }
 }
 

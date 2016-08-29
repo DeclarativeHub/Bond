@@ -26,15 +26,15 @@ import UIKit
 
 public extension UIBarItem {
 
-  public var bnd_title: AnyBond<String?> {
-    return bnd_bond(forKey: "title")
+  public var bnd_title: Bond<UIBarItem, String?> {
+    return Bond(target: self) { $0.title = $1 }
   }
 
-  public var bnd_image: AnyBond<UIImage?> {
-    return bnd_bond(forKey: "image")
+  public var bnd_image: Bond<UIBarItem, UIImage?> {
+    return Bond(target: self) { $0.image = $1 }
   }
 
-  public var bnd_enabled: AnyBond<Bool> {
-    return bnd_bond(forKey: "enabled")
+  public var bnd_isEnabled: Bond<UIBarItem, Bool> {
+    return Bond(target: self) { $0.isEnabled = $1 }
   }
 }

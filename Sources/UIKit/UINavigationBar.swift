@@ -26,7 +26,7 @@ import UIKit
 
 public extension UINavigationBar {
 
-  public var bnd_barTintColor: AnyBond<UIColor?> {
-    return bnd_bond(forKey: "barTintColor")
+  public var bnd_barTintColor: Bond<UINavigationBar, UIColor?> {
+    return Bond(target: self) { $0.barTintColor = $1 }
   }
 }

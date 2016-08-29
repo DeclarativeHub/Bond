@@ -47,8 +47,8 @@ public extension UITextView {
     )
   }
 
-  public var bnd_textColor: AnyBond<UIColor?> {
-    return bnd_bond(forKey: "textColor")
+  public var bnd_textColor: Bond<UITextView, UIColor?> {
+    return Bond(target: self) { $0.textColor = $1 }
   }
 }
 

@@ -25,9 +25,9 @@
 import ReactiveKit
 import AppKit
 
-public extension NSMenuItem {
+public extension NSColorWell {
 
-  public var bnd_color: AnyBond<NSColor> {
-    return bnd_bond(forKey: "color")
+  public var bnd_color: Bond<NSColorWell, NSColor> {
+    return Bond(target: self) { $0.color = $1 }
   }
 }

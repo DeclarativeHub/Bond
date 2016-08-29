@@ -27,24 +27,24 @@ import AppKit
 
 extension NSTextField {
 
-  public var bnd_font: AnyBond<NSFont?> {
-    return bnd_bond(forKey: "font")
+  public var bnd_font: Bond<NSTextField, NSFont?> {
+    return Bond(target: self) { $0.font = $1 }
   }
 
-  public var bnd_textColor: AnyBond<NSColor?> {
-    return bnd_bond(forKey: "textColor")
+  public var bnd_textColor: Bond<NSTextField, NSColor?> {
+    return Bond(target: self) { $0.textColor = $1 }
   }
 
-  public var bnd_backgroundColor: AnyBond<NSColor?> {
-    return bnd_bond(forKey: "backgroundColor")
+  public var bnd_backgroundColor: Bond<NSTextField, NSColor?> {
+    return Bond(target: self) { $0.backgroundColor = $1 }
   }
 
-  public var bnd_placeholderString: AnyBond<String?> {
-    return bnd_bond(forKey: "placeholderString")
+  public var bnd_placeholderString: Bond<NSTextField, String?> {
+    return Bond(target: self) { $0.placeholderString = $1 }
   }
 
-  public var bnd_placeholderAttributedString: AnyBond<NSAttributedString?> {
-    return bnd_bond(forKey: "placeholderAttributedString")
+  public var bnd_placeholderAttributedString: Bond<NSTextField, NSAttributedString?> {
+    return Bond(target: self) { $0.placeholderAttributedString = $1 }
   }
 }
 

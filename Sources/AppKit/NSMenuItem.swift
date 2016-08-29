@@ -27,11 +27,11 @@ import AppKit
 
 public extension NSMenuItem {
 
-  public var bnd_state: AnyBond<Int> {
-    return bnd_bond(forKey: "state")
+  public var bnd_state: Bond<NSMenuItem, Int> {
+    return Bond(target: self) { $0.state = $1 }
   }
 
-  public var bnd_enabled: AnyBond<Bool> {
-    return bnd_bond(forKey: "enabled")
+  public var bnd_isEnabled: Bond<NSMenuItem, Bool> {
+    return Bond(target: self) { $0.isEnabled = $1 }
   }
 }

@@ -26,23 +26,23 @@ import UIKit
 
 extension UIView {
 
-  public var bnd_alpha: AnyBond<CGFloat> {
-    return bnd_bond(forKey: "alpha")
+  public var bnd_alpha: Bond<UIView, CGFloat> {
+    return Bond(target: self) { $0.alpha = $1 }
   }
 
-  public var bnd_backgroundColor: AnyBond<UIColor?> {
-    return bnd_bond(forKey: "backgroundColor")
+  public var bnd_backgroundColor: Bond<UIView, UIColor?> {
+    return Bond(target: self) { $0.backgroundColor = $1 }
   }
 
-  public var bnd_hidden: AnyBond<Bool> {
-    return bnd_bond(forKey: "hidden")
+  public var bnd_isHidden: Bond<UIView, Bool> {
+    return Bond(target: self) { $0.isHidden = $1 }
   }
 
-  public var bnd_userInteractionEnabled: AnyBond<Bool> {
-    return bnd_bond(forKey: "userInteractionEnabled")
+  public var bnd_isUserInteractionEnabled: Bond<UIView, Bool> {
+    return Bond(target: self) { $0.isUserInteractionEnabled = $1 }
   }
 
-  public var bnd_tintColor: AnyBond<UIColor?> {
-    return bnd_bond(forKey: "tintColor")
+  public var bnd_tintColor: Bond<UIView, UIColor?> {
+    return Bond(target: self) { $0.tintColor = $1 }
   }
 }

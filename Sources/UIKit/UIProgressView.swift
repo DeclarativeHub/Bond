@@ -27,8 +27,8 @@ import UIKit
 
 public extension UIProgressView {
 
-  public var bnd_progress: AnyBond<Float> {
-    return bnd_bond(forKey: "progress")
+  public var bnd_progress: Bond<UIProgressView, Float> {
+    return Bond(target: self) { $0.progress = $1 }
   }
 }
 

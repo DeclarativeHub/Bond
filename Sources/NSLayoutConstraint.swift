@@ -30,7 +30,7 @@
 
 public extension NSLayoutConstraint {
 
-  public var bnd_active: AnyBond<Bool> {
-    return bnd_bond(forKey: "active")
+  public var bnd_isActive: Bond<NSLayoutConstraint, Bool> {
+    return Bond(target: self) { $0.isActive = $1 }
   }
 }
