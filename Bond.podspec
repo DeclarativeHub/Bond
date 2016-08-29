@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = "10.10"
   s.tvos.deployment_target = '9.0'
   s.source       = { :git => "https://github.com/SwiftBond/Bond.git", :tag => "v5.0.0-beta1" }
-  s.source_files  = 'Sources/*.swift', 'Bond/*.{h,m,swift}'
+  s.source_files  = 'Sources/**/*.swift', 'Bond/*.{h,m,swift}'
   s.ios.exclude_files = "Sources/AppKit"
   s.tvos.exclude_files = "Sources/AppKit"
   s.osx.exclude_files = "Sources/UIKit"
