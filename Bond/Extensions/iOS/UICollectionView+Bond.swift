@@ -76,6 +76,10 @@ private class BNDCollectionViewDataSource<T>: NSObject, UICollectionViewDataSour
     }.disposeIn(bnd_bag)
   }
   
+  deinit {
+    collectionView.dataSource = nil
+  }
+  
   private func setupPerSectionObservers() {
     sectionObservingDisposeBag.dispose()
     
