@@ -1,3 +1,4 @@
+Bond/Core/EventProducerType.swift
 //
 //  The MIT License (MIT)
 //
