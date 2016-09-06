@@ -101,7 +101,7 @@ public class MutableObservableArray<Item>: ObservableArray<Item> {
   public func append(_ newElement: Item) {
     lock.atomic {
       array.append(newElement)
-      subject.next(ObservableArrayEvent(change: .inserts([array.count]), source: self))
+      subject.next(ObservableArrayEvent(change: .inserts([array.count-1]), source: self))
     }
   }
   
