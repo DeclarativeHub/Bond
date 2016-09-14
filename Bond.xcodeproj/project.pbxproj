@@ -1231,6 +1231,7 @@
 				16887E481D744ABB00EDA099 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		16D30EB31D6591D300C2435D /* Build configuration list for PBXNativeTarget "Bond-macOS" */ = {
 			isa = XCConfigurationList;

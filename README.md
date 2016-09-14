@@ -420,7 +420,7 @@ then the row at index path 1 would be deleted and new rows would be inserted at 
 ### CocoaPods
 
 1. Add the following to your *Podfile*:
-  <br> `pod 'Bond', '~> 5.0-beta2'`
+  <br> `pod 'Bond', '~> 5.0-beta3'`
 2. Run `pod install`.
 
 ## <a name="migration"></a>Migration
