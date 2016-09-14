@@ -58,7 +58,7 @@ fileprivate class RKKeyValueSignal<T>: NSObject, SignalProtocol {
   private var context = 0
   private var keyPath: String
   private var options: NSKeyValueObservingOptions
-  private let transform: @escaping (Any?) -> T?
+  private let transform: (Any?) -> T?
   private let subject: AnySubject<T, NoError>
   private var numberOfObservers: Int = 0
   
