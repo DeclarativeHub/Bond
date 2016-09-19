@@ -42,7 +42,7 @@ public class ObservableDictionary<Key: Hashable, Value>: Collection {
 
   fileprivate var dictionary: Dictionary<Key, Value>
   fileprivate let subject = PublishSubject<ObservableDictionaryEvent<Key, Value>, NoError>()
-  fileprivate let lock = NSLock(name: "CollectionProperty")
+  fileprivate let lock = NSRecursiveLock(name: "ObservableDictionary")
 
   public init(_ dictionary: Dictionary<Key, Value>) {
     self.dictionary = dictionary

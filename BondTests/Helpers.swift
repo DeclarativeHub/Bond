@@ -33,6 +33,8 @@ extension Event {
         return left == right
       } else if let left = left as? [String], let right = right as? [String] {
         return left == right
+      } else if let left = left as? ObservableArrayEvent<Int>, let right = right as? ObservableArrayEvent<Int> {
+        return left.change == right.change && left.source === right.source
       } else if left is Void, right is Void {
         return true
       } else {
@@ -71,6 +73,30 @@ extension SignalProtocol {
       if event.isTerminal {
         expectation?.fulfill()
       }
+    }
+  }
+}
+
+extension ObservableArrayChange: Equatable {
+  
+  public static func ==(lhs: ObservableArrayChange, rhs: ObservableArrayChange) -> Bool {
+    switch (lhs, rhs) {
+    case (.initial, .initial):
+      return true
+    case (.inserts(let lhs), .inserts(let rhs)):
+      return lhs == rhs
+    case (.deletes(let lhs), .deletes(let rhs)):
+      return lhs == rhs
+    case (.updates(let lhs), .updates(let rhs)):
+      return lhs == rhs
+    case (.move(let lhsFrom, let lhsTo), .move(let rhsFrom, let rhsTo)):
+      return lhsFrom == rhsFrom && lhsTo == rhsTo
+    case (.beginBatchEditing, .beginBatchEditing):
+      return true
+    case (.endBatchEditing, .endBatchEditing):
+      return true
+    default:
+      return false
     }
   }
 }

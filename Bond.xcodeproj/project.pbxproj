@@ -106,6 +106,8 @@
 		EC97EDB01D6C51F0001C54C9 /* BNDProtocolProxyBase.m in Sources */ = {isa = PBXBuildFile; fileRef = EC97EDA81D6C51F0001C54C9 /* BNDProtocolProxyBase.m */; };
 		EC97EDB11D6C51F0001C54C9 /* BNDProtocolProxyBase.m in Sources */ = {isa = PBXBuildFile; fileRef = EC97EDA81D6C51F0001C54C9 /* BNDProtocolProxyBase.m */; };
 		ECC4BE591D4A2E1600880DEC /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC4BE581D4A2E1600880DEC /* UIButton.swift */; };
+		ECCF8A521D8FFEF300575DA8 /* ObservableArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCF8A511D8FFEF300575DA8 /* ObservableArrayTests.swift */; };
+		ECCF8A581D9007AF00575DA8 /* BondTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCF8A571D9007AF00575DA8 /* BondTests.swift */; };
 		ECD626E91D4DE8800040C7BF /* UIActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD626E81D4DE8800040C7BF /* UIActivityIndicatorView.swift */; };
 		ECD626EB1D4DE9460040C7BF /* UIBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD626EA1D4DE9460040C7BF /* UIBarItem.swift */; };
 		ECD626ED1D4DE9BE0040C7BF /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD626EC1D4DE9BE0040C7BF /* UIBarButtonItem.swift */; };
@@ -255,6 +257,8 @@
 		EC97EDA71D6C51F0001C54C9 /* BNDProtocolProxyBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BNDProtocolProxyBase.h; path = Bond/BNDProtocolProxyBase.h; sourceTree = SOURCE_ROOT; };
 		EC97EDA81D6C51F0001C54C9 /* BNDProtocolProxyBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BNDProtocolProxyBase.m; path = Bond/BNDProtocolProxyBase.m; sourceTree = SOURCE_ROOT; };
 		ECC4BE581D4A2E1600880DEC /* UIButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
+		ECCF8A511D8FFEF300575DA8 /* ObservableArrayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableArrayTests.swift; sourceTree = "<group>"; };
+		ECCF8A571D9007AF00575DA8 /* BondTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BondTests.swift; sourceTree = "<group>"; };
 		ECD626E81D4DE8800040C7BF /* UIActivityIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIActivityIndicatorView.swift; sourceTree = "<group>"; };
 		ECD626EA1D4DE9460040C7BF /* UIBarItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBarItem.swift; sourceTree = "<group>"; };
 		ECD626EC1D4DE9BE0040C7BF /* UIBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
@@ -372,6 +376,8 @@
 			isa = PBXGroup;
 			children = (
 				16210A4A1D3EC474004AEDF3 /* UIKitTests.swift */,
+				ECCF8A571D9007AF00575DA8 /* BondTests.swift */,
+				ECCF8A511D8FFEF300575DA8 /* ObservableArrayTests.swift */,
 				16887E2F1D74499A00EDA099 /* ProtocolProxyTests.swift */,
 				16887E311D744A1400EDA099 /* Helpers.swift */,
 				16210A4C1D3EC474004AEDF3 /* Info.plist */,
@@ -766,7 +772,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECCF8A521D8FFEF300575DA8 /* ObservableArrayTests.swift in Sources */,
 				16887E301D74499A00EDA099 /* ProtocolProxyTests.swift in Sources */,
+				ECCF8A581D9007AF00575DA8 /* BondTests.swift in Sources */,
 				16887E321D744A1400EDA099 /* Helpers.swift in Sources */,
 				16210A4B1D3EC474004AEDF3 /* UIKitTests.swift in Sources */,
 			);

@@ -49,7 +49,7 @@ public class ObservableArray<Item>: Collection, SignalProtocol {
   
   fileprivate var array: [Item]
   fileprivate let subject = PublishSubject<ObservableArrayEvent<Item>, NoError>()
-  fileprivate let lock = NSLock(name: "CollectionProperty")
+  fileprivate let lock = NSRecursiveLock(name: "ObservableArray")
   
   public init(_ array: [Item]) {
     self.array = array
@@ -95,6 +95,13 @@ public class ObservableArray<Item>: Collection, SignalProtocol {
   }
 }
 
+extension ObservableArray where Item: Equatable {
+  
+  public static func ==(lhs: ObservableArray<Item>, rhs: ObservableArray<Item>) -> Bool {
+    return lhs.array == rhs.array
+  }
+}
+
 public class MutableObservableArray<Item>: ObservableArray<Item> {
   
   /// Append `newElement` to the array.
@@ -131,7 +138,7 @@ public class MutableObservableArray<Item>: ObservableArray<Item> {
   }
   
   /// Remove and return the element at index i.
-  public func removeAtIndex(index: Int) -> Item {
+  public func remove(at index: Int) -> Item {
     return lock.atomic {
       let element = array.remove(at: index)
       subject.next(ObservableArrayEvent(change: .deletes([index]), source: self))
