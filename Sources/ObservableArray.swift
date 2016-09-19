@@ -26,6 +26,7 @@ import ReactiveKit
 
 public enum ObservableArrayChange {
   case initial
+  case replace
   case inserts([Int])
   case deletes([Int])
   case updates([Int])
@@ -199,7 +200,7 @@ extension ObservableArrayEvent: DataSourceEventProtocol {
 
   public var kind: DataSourceEventKind {
     switch change {
-    case .initial:
+    case .initial, .replace:
       return .reload
     case .inserts(let indices):
       return .insertRows(indices.map { IndexPath(item: $0, section: 0) })
@@ -322,6 +323,9 @@ extension MutableObservableArray where Item: Equatable {
         subject.next(ObservableArrayEvent(change: .deletes(deletes), source: self))
         subject.next(ObservableArrayEvent(change: .inserts(inserts), source: self))
         subject.next(ObservableArrayEvent(change: .endBatchEditing, source: self))
+      } else {
+        self.array = array
+        subject.next(ObservableArrayEvent(change: .replace, source: self))
       }
     }
   }
