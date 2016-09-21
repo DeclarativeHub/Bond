@@ -89,7 +89,7 @@ public class ObservableArray<Item>: Collection, SignalProtocol {
       return array[index]
     }
   }
-
+  
   public func observe(with observer: @escaping (Event<ObservableArrayEvent<Item>, NoError>) -> Void) -> Disposable {
     observer(.next(ObservableArrayEvent(change: .initial, source: self)))
     return subject.observe(with: observer)
@@ -176,7 +176,7 @@ public class MutableObservableArray<Item>: ObservableArray<Item> {
       }
     }
   }
-
+  
   /// Perform batched updates on the array.
   public func batchUpdate(_ update: (MutableObservableArray<Item>) -> Void) {
     lock.atomic {
@@ -185,7 +185,7 @@ public class MutableObservableArray<Item>: ObservableArray<Item> {
       subject.next(ObservableArrayEvent(change: .endBatchEditing, source: self))
     }
   }
-
+  
   /// Change the underlying value withouth notifying the observers.
   public func silentUpdate(_ update: (inout [Item]) -> Void) {
     lock.atomic {
@@ -197,7 +197,7 @@ public class MutableObservableArray<Item>: ObservableArray<Item> {
 // MARK: DataSourceProtocol conformation
 
 extension ObservableArrayEvent: DataSourceEventProtocol {
-
+  
   public var kind: DataSourceEventKind {
     switch change {
     case .initial, .replace:
@@ -216,18 +216,18 @@ extension ObservableArrayEvent: DataSourceEventProtocol {
       return .endUpdates
     }
   }
-
+  
   public var dataSource: ObservableArray<Item> {
     return source
   }
 }
 
 extension ObservableArray: DataSourceProtocol {
-
+  
   public func numberOfSections() -> Int {
     return 1
   }
-
+  
   public func numberOfElements(inSection section: Int) -> Int {
     return count
   }
@@ -241,20 +241,20 @@ enum DiffStep<T> {
 }
 
 extension Array where Element: Equatable {
-
+  
   // Created by Dapeng Gao on 20/10/15.
   // The central idea of this algorithm is taken from https://github.com/jflinter/Dwifft
-
+  
   static func diff(_ x: [Element], _ y: [Element]) -> [DiffStep<Element>] {
-
+    
     if x.count == 0 {
       return zip(y, y.indices).map(DiffStep<Element>.insert)
     }
-
+    
     if y.count == 0 {
       return zip(x, x.indices).map(DiffStep<Element>.delete)
     }
-
+    
     // Use dynamic programming to generate a table such that `table[i][j]` represents
     // the length of the longest common substring (LCS) between `x[0..<i]` and `y[0..<j]`
     let xLen = x.count, yLen = y.count
@@ -268,7 +268,7 @@ extension Array where Element: Equatable {
         }
       }
     }
-
+    
     // Backtrack to find out the diff
     var backtrack: [DiffStep<Element>] = []
     var i = xLen
@@ -291,24 +291,35 @@ extension Array where Element: Equatable {
         j -= 1
       }
     }
-
+    
     // Reverse the result
     return backtrack.reversed()
   }
 }
 
-extension MutableObservableArray where Item: Equatable {
-
-  public func replace(with array: [Item], performDiff: Bool) {
+extension MutableObservableArray {
+  
+  func replace(with array: [Item]) {
     lock.atomic {
-      if performDiff {
-        let diff = Array.diff(self.array, array)
+      self.array = array
+      subject.next(ObservableArrayEvent(change: .replace, source: self))
+    }
+  }
+  
+}
 
+extension MutableObservableArray where Item: Equatable {
+  
+  public func replace(with array: [Item], performDiff: Bool) {
+    if performDiff {
+      lock.atomic {
+        let diff = Array.diff(self.array, array)
+        
         var deletes: [Int] = []
         var inserts: [Int] = []
         deletes.reserveCapacity(diff.count)
         inserts.reserveCapacity(diff.count)
-
+        
         for diffStep in diff {
           switch diffStep {
           case .insert(_, let index):
@@ -317,16 +328,15 @@ extension MutableObservableArray where Item: Equatable {
             deletes.append(index)
           }
         }
-
+        
         subject.next(ObservableArrayEvent(change: .beginBatchEditing, source: self))
         self.array = array
         subject.next(ObservableArrayEvent(change: .deletes(deletes), source: self))
         subject.next(ObservableArrayEvent(change: .inserts(inserts), source: self))
         subject.next(ObservableArrayEvent(change: .endBatchEditing, source: self))
-      } else {
-        self.array = array
-        subject.next(ObservableArrayEvent(change: .replace, source: self))
       }
+    } else {
+      replace(with: array)
     }
   }
 }
