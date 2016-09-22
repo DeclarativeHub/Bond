@@ -61,7 +61,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
       switch event.kind {
       case .reload:
         tableView.reloadData()
-      case .insertRows(let indexPaths):
+      case .insertItems(let indexPaths):
         if !updating && indexPaths.count > 1 {
           tableView.beginUpdates()
           defer { tableView.endUpdates() }
@@ -69,7 +69,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
         indexPaths.forEach { indexPath in
           tableView.insertRows(at: IndexSet(integer: indexPath.item), withAnimation: [])
         }
-      case .deleteRows(let indexPaths):
+      case .deleteItems(let indexPaths):
         if !updating && indexPaths.count > 1 {
           tableView.beginUpdates()
           defer { tableView.endUpdates() }
@@ -77,7 +77,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
         indexPaths.forEach { indexPath in
           tableView.insertRows(at: IndexSet(integer: indexPath.item), withAnimation: [])
         }
-      case .reloadRows(let indexPaths):
+      case .reloadItems(let indexPaths):
         if !updating && indexPaths.count > 1 {
           tableView.beginUpdates()
           defer { tableView.endUpdates() }
@@ -85,7 +85,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
         indexPaths.forEach { indexPath in
           tableView.insertRows(at: IndexSet(integer: indexPath.item), withAnimation: [])
         }
-      case .moveRow(let indexPath, let newIndexPath):
+      case .moveItem(let indexPath, let newIndexPath):
         tableView.moveRow(at: indexPath.item, to: newIndexPath.item)
       case .insertSections:
         fatalError("NSTableView binding does not support sections.")

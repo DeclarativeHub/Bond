@@ -25,11 +25,17 @@ extension Event {
     case (.next(let left), .next(let right)):
       if let left = left as? Int, let right = right as? Int {
         return left == right
+      } else if let left = left as? Bool, let right = right as? Bool {
+        return left == right
+      } else if let left = left as? Float, let right = right as? Float {
+        return left == right
       } else if let left = left as? [Int], let right = right as? [Int] {
         return left == right
       } else if let left = left as? (Int?, Int), let right = right as? (Int?, Int) {
         return left.0 == right.0 && left.1 == right.1
       } else if let left = left as? String, let right = right as? String {
+        return left == right
+      } else if let left = left as? Date, let right = right as? Date {
         return left == right
       } else if let left = left as? [String], let right = right as? [String] {
         return left == right
@@ -94,6 +100,38 @@ extension ObservableArrayChange: Equatable {
     case (.beginBatchEditing, .beginBatchEditing):
       return true
     case (.endBatchEditing, .endBatchEditing):
+      return true
+    default:
+      return false
+    }
+  }
+}
+
+extension DataSourceEventKind: Equatable {
+
+  public static func ==(lhs: DataSourceEventKind, rhs: DataSourceEventKind) -> Bool {
+    switch (lhs, rhs) {
+    case (.reload, .reload):
+      return true
+    case (.insertItems(let lhs), .insertItems(let rhs)):
+      return lhs == rhs
+    case (.deleteItems(let lhs), .deleteItems(let rhs)):
+      return lhs == rhs
+    case (.reloadItems(let lhs), .reloadItems(let rhs)):
+      return lhs == rhs
+    case (.moveItem(let lhsFrom, let lhsTo), .moveItem(let rhsFrom, let rhsTo)):
+      return lhsFrom == rhsFrom && lhsTo == rhsTo
+    case (.insertSections(let lhs), .insertSections(let rhs)):
+      return lhs == rhs
+    case (.deleteSections(let lhs), .deleteSections(let rhs)):
+      return lhs == rhs
+    case (.reloadSections(let lhs), .reloadSections(let rhs)):
+      return lhs == rhs
+    case (.moveSection(let lhsFrom, let lhsTo), .moveSection(let rhsFrom, let rhsTo)):
+      return lhsFrom == rhsFrom && lhsTo == rhsTo
+    case (.beginUpdates, .beginUpdates):
+      return true
+    case (.endUpdates, .endUpdates):
       return true
     default:
       return false

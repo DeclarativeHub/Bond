@@ -30,7 +30,7 @@ public extension UITextField {
   public var bnd_text: DynamicSubject<UITextField, String?> {
     return DynamicSubject(
       target: self,
-      signal: bnd_controlEvents(.editingChanged).eraseType(),
+      signal: bnd_controlEvents(.allEditingEvents).eraseType(),
       get: { $0.text },
       set: { $0.text = $1 }
     )

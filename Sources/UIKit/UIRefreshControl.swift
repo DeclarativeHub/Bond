@@ -23,6 +23,7 @@
 //
 
 import UIKit
+import ReactiveKit
 
 #if os(iOS)
 
@@ -35,6 +36,13 @@ extension UIRefreshControl {
       get: { $0.isRefreshing },
       set: { if $1 { $0.beginRefreshing() } else { $0.endRefreshing() } }
     )
+  }
+}
+  
+extension UIRefreshControl: BindableProtocol {
+
+  public func bind(signal: Signal<Bool, NoError>) -> Disposable {
+    return bnd_refreshing.bind(signal: signal)
   }
 }
 

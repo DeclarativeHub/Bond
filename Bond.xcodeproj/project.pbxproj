@@ -90,6 +90,8 @@
 		EC7890F21D44F1D9002848EB /* Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7890F11D44F1D9002848EB /* Bond.swift */; };
 		EC7890F41D44F1ED002848EB /* DynamicSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7890F31D44F1ED002848EB /* DynamicSubject.swift */; };
 		EC8822071D421EA2006142ED /* NSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8822061D421EA2006142ED /* NSObject.swift */; };
+		EC96935B1D943B15004EB5EE /* UITableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC96935A1D943B15004EB5EE /* UITableViewTests.swift */; };
+		EC96935F1D945CC6004EB5EE /* UICollectionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC96935E1D945CC6004EB5EE /* UICollectionViewTests.swift */; };
 		EC97ED9F1D6C500B001C54C9 /* NSNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97ED9E1D6C500B001C54C9 /* NSNotificationCenter.swift */; };
 		EC97EDA01D6C500B001C54C9 /* NSNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97ED9E1D6C500B001C54C9 /* NSNotificationCenter.swift */; };
 		EC97EDA11D6C500B001C54C9 /* NSNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97ED9E1D6C500B001C54C9 /* NSNotificationCenter.swift */; };
@@ -252,6 +254,8 @@
 		EC7890F11D44F1D9002848EB /* Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bond.swift; sourceTree = "<group>"; };
 		EC7890F31D44F1ED002848EB /* DynamicSubject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicSubject.swift; sourceTree = "<group>"; };
 		EC8822061D421EA2006142ED /* NSObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSObject.swift; path = Sources/NSObject.swift; sourceTree = SOURCE_ROOT; };
+		EC96935A1D943B15004EB5EE /* UITableViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewTests.swift; sourceTree = "<group>"; };
+		EC96935E1D945CC6004EB5EE /* UICollectionViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UICollectionViewTests.swift; sourceTree = "<group>"; };
 		EC97ED9E1D6C500B001C54C9 /* NSNotificationCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSNotificationCenter.swift; sourceTree = "<group>"; };
 		EC97EDA21D6C50A5001C54C9 /* NSObject+KVO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+KVO.swift"; sourceTree = "<group>"; };
 		EC97EDA61D6C51F0001C54C9 /* ProtocolProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProtocolProxy.swift; path = Bond/ProtocolProxy.swift; sourceTree = SOURCE_ROOT; };
@@ -386,6 +390,8 @@
 				ECCF8A511D8FFEF300575DA8 /* ObservableArrayTests.swift */,
 				16887E2F1D74499A00EDA099 /* ProtocolProxyTests.swift */,
 				16210A4A1D3EC474004AEDF3 /* UIKitTests.swift */,
+				EC96935A1D943B15004EB5EE /* UITableViewTests.swift */,
+				EC96935E1D945CC6004EB5EE /* UICollectionViewTests.swift */,
 				16887E311D744A1400EDA099 /* Helpers.swift */,
 				16210A4C1D3EC474004AEDF3 /* Info.plist */,
 			);
@@ -783,7 +789,9 @@
 				16887E301D74499A00EDA099 /* ProtocolProxyTests.swift in Sources */,
 				ECD5940A1D93EC9700C840C2 /* DynamicSubjectTests.swift in Sources */,
 				ECCF8A581D9007AF00575DA8 /* BondTests.swift in Sources */,
+				EC96935B1D943B15004EB5EE /* UITableViewTests.swift in Sources */,
 				16887E321D744A1400EDA099 /* Helpers.swift in Sources */,
+				EC96935F1D945CC6004EB5EE /* UICollectionViewTests.swift in Sources */,
 				16210A4B1D3EC474004AEDF3 /* UIKitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -33,10 +33,10 @@ public protocol DataSourceProtocol {
 public enum DataSourceEventKind {
   case reload
 
-  case insertRows([IndexPath])
-  case deleteRows([IndexPath])
-  case reloadRows([IndexPath])
-  case moveRow(IndexPath, IndexPath)
+  case insertItems([IndexPath])
+  case deleteItems([IndexPath])
+  case reloadItems([IndexPath])
+  case moveItem(IndexPath, IndexPath)
 
   case insertSections(IndexSet)
   case deleteSections(IndexSet)

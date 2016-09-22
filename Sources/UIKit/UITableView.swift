@@ -82,13 +82,13 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
       switch event.kind {
       case .reload:
         tableView.reloadData()
-      case .insertRows(let indexPaths):
+      case .insertItems(let indexPaths):
         tableView.insertRows(at: indexPaths, with: .automatic)
-      case .deleteRows(let indexPaths):
+      case .deleteItems(let indexPaths):
         tableView.deleteRows(at: indexPaths, with: .automatic)
-      case .reloadRows(let indexPaths):
+      case .reloadItems(let indexPaths):
         tableView.reloadRows(at: indexPaths, with: .automatic)
-      case .moveRow(let indexPath, let newIndexPath):
+      case .moveItem(let indexPath, let newIndexPath):
         tableView.moveRow(at: indexPath, to: newIndexPath)
       case .insertSections(let indexSet):
         tableView.insertSections(indexSet, with: .automatic)

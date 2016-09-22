@@ -63,6 +63,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
     )
 
     let serialDisposable = SerialDisposable(otherDisposable: nil)
+    var bufferedEvents: [DataSourceEventKind]? = nil
 
     serialDisposable.otherDisposable = observeIn(ImmediateOnMainExecutionContext).observeNext { [weak collectionView] event in
       guard let collectionView = collectionView else {
@@ -76,13 +77,13 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
         switch kind {
         case .reload:
           collectionView.reloadData()
-        case .insertRows(let indexPaths):
+        case .insertItems(let indexPaths):
           collectionView.insertItems(at: indexPaths)
-        case .deleteRows(let indexPaths):
+        case .deleteItems(let indexPaths):
           collectionView.deleteItems(at: indexPaths)
-        case .reloadRows(let indexPaths):
+        case .reloadItems(let indexPaths):
           collectionView.reloadItems(at: indexPaths)
-        case .moveRow(let indexPath, let newIndexPath):
+        case .moveItem(let indexPath, let newIndexPath):
           collectionView.moveItem(at: indexPath, to: newIndexPath)
         case .insertSections(let indexSet):
           collectionView.insertSections(indexSet)
@@ -98,8 +99,6 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
           fatalError()
         }
       }
-
-      var bufferedEvents: [DataSourceEventKind]? = nil
 
       switch event.kind {
       case .reload:

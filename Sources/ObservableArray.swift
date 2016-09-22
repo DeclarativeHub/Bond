@@ -203,13 +203,13 @@ extension ObservableArrayEvent: DataSourceEventProtocol {
     case .initial, .replace:
       return .reload
     case .inserts(let indices):
-      return .insertRows(indices.map { IndexPath(item: $0, section: 0) })
+      return .insertItems(indices.map { IndexPath(item: $0, section: 0) })
     case .deletes(let indices):
-      return .deleteRows(indices.map { IndexPath(item: $0, section: 0) })
+      return .deleteItems(indices.map { IndexPath(item: $0, section: 0) })
     case .updates(let indices):
-      return .reloadRows(indices.map { IndexPath(item: $0, section: 0) })
+      return .reloadItems(indices.map { IndexPath(item: $0, section: 0) })
     case .move(let from, let to):
-      return .moveRow(IndexPath(item: from, section: 0), IndexPath(item: to, section: 0))
+      return .moveItem(IndexPath(item: from, section: 0), IndexPath(item: to, section: 0))
     case .beginBatchEditing:
       return .beginUpdates
     case .endBatchEditing:
