@@ -27,7 +27,7 @@ import Foundation
 
 public struct DynamicSubject<Target: Deallocatable, Element>: SubjectProtocol, BindableProtocol {
 
-  private var target: Target?
+  private weak var target: Target?
   private var signal: Signal<Void, NoError>
   private let getter: (Target) -> Element
   private let setter: (Target, Element) -> Void
@@ -53,13 +53,13 @@ public struct DynamicSubject<Target: Deallocatable, Element>: SubjectProtocol, B
   public func observe(with observer: @escaping (Event<Element, NoError>) -> Void) -> Disposable {
     guard let target = target else { observer(.completed); return NonDisposable.instance }
     let getter = self.getter
-    return signal.merge(with: subject).map { [weak target] () -> Element? in
+    return signal.start(with: ()).merge(with: subject).map { [weak target] () -> Element? in
       if let target = target {
         return getter(target)
       } else {
         return nil
       }
-    }.ignoreNil().observe(with: observer)    
+    }.ignoreNil().take(until: target.bnd_deallocated).observe(with: observer)
   }
   
   public func bind(signal: Signal<Element, NoError>) -> Disposable {

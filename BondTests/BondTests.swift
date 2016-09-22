@@ -10,12 +10,13 @@ import XCTest
 import ReactiveKit
 @testable import Bond
 
-class DummyTarget: NSObject {
+private class DummyTarget: NSObject {
   var recordedElements: [Int] = []
 }
 
 class BondTypeTests: XCTestCase {
   
+  // Update closure is called on each next element
   func testExecutes() {
     let target = DummyTarget()
     let bond = Bond<DummyTarget, Int>(target: target) { target, element in
@@ -26,6 +27,8 @@ class BondTypeTests: XCTestCase {
     XCTAssert(target.recordedElements == [1, 2, 3])
   }
   
+  // Target is weakly referenced
+  // Disposable is disposed when target is deallocated
   func testDisposesOnTargetDeallocation() {
     var target: DummyTarget! = DummyTarget()
     weak var weakTarget = target
