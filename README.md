@@ -395,6 +395,88 @@ numbers.replace(with: [0, 1, 3, 4], performDiff: true)
 
 then the row at index path 1 would be deleted and new rows would be inserted at index paths 0 and 3. The view would automatically animate only the changes from the *merge*. Helpful, isn't it.
 
+### Observable2DArray / MutableObservable2DArray
+
+Array is often not enough. Usually our data is grouped into sections. To enable such use case, Bond provides two-dimensional arrays that can be observed and bound to table or collection views. 
+
+Let's explain this type by example. First we'll need some sections. A section represents a group of items. Those items, i.e. section can have a metadata associated with it. In iOS it's useful to display section header and footer titles to the user so let's define that as our metadata:
+
+```swift
+typealias SectionMetadata = (header: String, footer: String)
+```
+> If you need only, for example, header title, then you don't need to define separate type. Just use `String` instead of `SectionMetadata` in examples that follow.
+
+Now that we have defined our metadata type, we can create a section:
+
+```swift
+let cities = Observable2DArraySection<SectionMetadata, String>(
+  metadata: (header: "Cities", footer: "That's it"),
+  items: ["Paris", "Berlin"]
+)
+```
+
+Section is defined with `Observable2DArraySection` type. It's generic over its metadata type and type of the items it can contain. To create a section we passed section metadata and section items.
+
+We can now create an observable 2D array. Let's create mutable variant so we can later modify it.
+
+```swift
+let array = MutableObservable2DArray([cities])
+```
+
+You just pass it an array of sections. Such array can be bound to a table or collection view. You can bind it the same way as you would bind `ObservableArray`. However, if you want to display header and/or footer titles, you'll need to define `TableViewBond` object.
+
+```swift
+struct MyBond: TableViewBond {
+
+  func cellForRow(at indexPath: IndexPath, tableView: UITableView, dataSource: Observable2DArray<SectionMetadata, String>) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+    cell.textLabel?.text = array[indexPath]
+    return cell
+  }
+
+  func titleForHeader(in section: Int, dataSource: Observable2DArray<SectionMetadata, String>) -> String? {
+    return dataSource[section].metadata.header
+  }
+
+  func titleForFooter(in section: Int, dataSource: Observable2DArray<SectionMetadata, String>) -> String? {
+    return dataSource[section].metadata.footer
+  }
+}
+```
+
+Only the method `cellForRow:at:tableView:` is required. Other two are optional and are used when we want to show header and/or footer titles. 
+
+Method `cellForRow:at:tableView:` describes how cells are instantiated (dequeued) and filled with data. Method `titleForHeader/Footer` just reads section metadata from the data source object and returns it. 
+
+> If you don't need to display header and/or footer titles, you don't need to create `TableViewBond` type. Just bind `Observable2DArray` as you would bind `ObservableArray` as described in the previous section of this document.
+
+Now that we have a table view bond type, you can bind our array to the table view:
+
+```swift
+array.bind(to: tableView, using: MyBond())
+```
+
+We just pass it an instance of table view bond type.
+
+And that's it. If you run that code you'll see a table view with one section that has header and footer and two items.
+
+If you now modify the array like
+
+```swift
+array.appendItem("Copenhagen", toSection: 0)
+```
+
+the new item will automatically be inserted and animated into the table view.
+
+You can also, for example; add another section:
+
+```swift
+let countries = Observable2DArraySection<SectionMetadata, String>(metadata: ("Countries", "No more..."), items: ["France", "Croatia"])
+array.appendSection(countries)
+```
+
+There are many other methods. Just look at the code reference or source.
+
 ## Requirements
 
 * iOS 8.0+ / macOS 10.9+ / tvOS 9.0+

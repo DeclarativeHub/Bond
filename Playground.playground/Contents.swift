@@ -15,31 +15,32 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 
 typealias SectionMetadata = (header: String, footer: String)
 
-let sectionOne = Observable2DArraySection<SectionMetadata, Int>(metadata: ("First Header", "First Footer"), items: [1, 2])
+let sectionOne = Observable2DArraySection<SectionMetadata, String>(metadata: ("Cities", "That's it..."), items: ["Paris", "Berlin"])
 let array = MutableObservable2DArray([sectionOne])
 
 struct MyBond: TableViewBond {
 
-  func cellForRow(at indexPath: IndexPath, tableView: UITableView, dataSource: Observable2DArray<SectionMetadata, Int>) -> UITableViewCell {
+  func cellForRow(at indexPath: IndexPath, tableView: UITableView, dataSource: Observable2DArray<SectionMetadata, String>) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
     let item = array[indexPath]
-    cell.textLabel?.text = "\(item)"
+    cell.textLabel?.text = item
     return cell
   }
 
-  func titleForHeader(in section: Int, dataSource: Observable2DArray<SectionMetadata, Int>) -> String? {
+  func titleForHeader(in section: Int, dataSource: Observable2DArray<SectionMetadata, String>) -> String? {
     return dataSource[section].metadata.header
   }
 
-  func titleForFooter(in section: Int, dataSource: Observable2DArray<SectionMetadata, Int>) -> String? {
+  func titleForFooter(in section: Int, dataSource: Observable2DArray<SectionMetadata, String>) -> String? {
     return dataSource[section].metadata.footer
   }
 }
 
 array.bind(to: tableView, using: MyBond())
 
-array.appendItem(3, toSection: 0)
+array.appendItem("Copenhagen", toSection: 0)
 
 DispatchQueue.main.after(when: 1) {
-  array.appendSection(Observable2DArraySection(metadata: ("Second Header", "Second Footer"), items: [10, 11]))
+  let countries = Observable2DArraySection<SectionMetadata, String>(metadata: ("Countries", "No more..."), items: ["France", "Croatia"])
+  array.appendSection(countries)
 }
