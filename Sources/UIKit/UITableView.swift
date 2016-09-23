@@ -36,32 +36,87 @@ public extension UITableView {
   }
 }
 
+public protocol TableViewBond {
+
+  associatedtype DataSource: DataSourceProtocol
+
+  var animated: Bool { get }
+
+  func cellForRow(at indexPath: IndexPath, tableView: UITableView, dataSource: DataSource) -> UITableViewCell
+  func titleForHeader(in section: Int, dataSource: DataSource) -> String?
+  func titleForFooter(in section: Int, dataSource: DataSource) -> String?
+}
+
+extension TableViewBond {
+
+  public var animated: Bool {
+    return true
+  }
+
+  public func titleForHeader(in section: Int, dataSource: DataSource) -> String? {
+    return nil
+  }
+
+  public func titleForFooter(in section: Int, dataSource: DataSource) -> String? {
+    return nil
+  }
+}
+
+private struct SimpleTableViewBond<DataSource: DataSourceProtocol>: TableViewBond {
+
+  let createCell: (DataSource, IndexPath, UITableView) -> UITableViewCell
+
+  func cellForRow(at indexPath: IndexPath, tableView: UITableView, dataSource: DataSource) -> UITableViewCell {
+    return createCell(dataSource, indexPath, tableView)
+  }
+}
+
 public extension SignalProtocol where Element: DataSourceEventProtocol, Error == NoError {
 
   public typealias DataSource = Element.DataSource
 
   @discardableResult
   public func bind(to tableView: UITableView, animated: Bool = true, createCell: @escaping (DataSource, IndexPath, UITableView) -> UITableViewCell) -> Disposable {
+    return bind(to: tableView, using: SimpleTableViewBond<DataSource>(createCell: createCell))
+  }
 
+  @discardableResult
+  public func bind<B: TableViewBond>(to tableView: UITableView, using bond: B) -> Disposable where B.DataSource == DataSource {
     let dataSource = Property<DataSource?>(nil)
 
     tableView.bnd_dataSource.feed(
       property: dataSource,
       to: #selector(UITableViewDataSource.tableView(_:cellForRowAt:)),
       map: { (dataSource: DataSource?, tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell in
-        return createCell(dataSource!, indexPath as IndexPath, tableView)
+        return bond.cellForRow(at: indexPath as IndexPath, tableView: tableView, dataSource: dataSource!)
     })
 
     tableView.bnd_dataSource.feed(
       property: dataSource,
+      to: #selector(UITableViewDataSource.tableView(_:titleForHeaderInSection:)),
+      map: { (dataSource: DataSource?, tableView: UITableView, index: Int) -> NSString? in
+        return bond.titleForHeader(in: index, dataSource: dataSource!) as NSString?
+    })
+
+    tableView.bnd_dataSource.feed(
+      property: dataSource,
+      to: #selector(UITableViewDataSource.tableView(_:titleForFooterInSection:)),
+      map: { (dataSource: DataSource?, tableView: UITableView, index: Int) -> NSString? in
+        return bond.titleForFooter(in: index, dataSource: dataSource!) as NSString?
+    })
+
+
+    tableView.bnd_dataSource.feed(
+      property: dataSource,
       to: #selector(UITableViewDataSource.tableView(_:numberOfRowsInSection:)),
-      map: { (dataSource: DataSource?, _: UITableView, section: Int) -> Int in dataSource?.numberOfElements(inSection: section) ?? 0 }
-    )
+      map: { (dataSource: DataSource?, _: UITableView, section: Int) -> Int in
+        dataSource?.numberOfItems(inSection: section) ?? 0
+    })
 
     tableView.bnd_dataSource.feed(
       property: dataSource,
       to: #selector(UITableViewDataSource.numberOfSections(in:)),
-      map: { (dataSource: DataSource?, _: UITableView) -> Int in dataSource?.numberOfSections() ?? 0 }
+      map: { (dataSource: DataSource?, _: UITableView) -> Int in dataSource?.numberOfSections ?? 0 }
     )
 
     let serialDisposable = SerialDisposable(otherDisposable: nil)
@@ -74,7 +129,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
 
       dataSource.value = event.dataSource
 
-      guard animated else {
+      guard bond.animated else {
         tableView.reloadData()
         return
       }

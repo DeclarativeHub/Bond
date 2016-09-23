@@ -120,6 +120,7 @@ public class MutableObservableSet<Element: Hashable>: ObservableSet<Element> {
   }
 
   /// Remove item from the set.
+  @discardableResult
   public func remove(_ member: Element) -> Element? {
     return lock.atomic {
       if let index = set.index(of: member) {

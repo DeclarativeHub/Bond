@@ -25,6 +25,20 @@
 import UIKit
 import ReactiveKit
 
+public protocol CollectionViewBond {
+  associatedtype DataSource: DataSourceProtocol
+  func cellForRow(at indexPath: IndexPath, collectionView: UICollectionView, dataSource: DataSource) -> UICollectionViewCell
+}
+
+private struct SimpleCollectionViewBond<DataSource: DataSourceProtocol>: CollectionViewBond {
+
+  let createCell: (DataSource, IndexPath, UICollectionView) -> UICollectionViewCell
+
+  func cellForRow(at indexPath: IndexPath, collectionView: UICollectionView, dataSource: DataSource) -> UICollectionViewCell {
+    return createCell(dataSource, indexPath, collectionView)
+  }
+}
+
 public extension UICollectionView {
 
   public var bnd_delegate: ProtocolProxy {
@@ -40,6 +54,11 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
 
   @discardableResult
   public func bind(to collectionView: UICollectionView, createCell: @escaping (DataSource, IndexPath, UICollectionView) -> UICollectionViewCell) -> Disposable {
+    return bind(to: collectionView, using: SimpleCollectionViewBond<DataSource>(createCell: createCell))
+  }
+  
+  @discardableResult
+  public func bind<B: CollectionViewBond>(to collectionView: UICollectionView, using bond: B) -> Disposable where B.DataSource == DataSource {
 
     let dataSource = Property<DataSource?>(nil)
 
@@ -47,19 +66,19 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
       property: dataSource,
       to: #selector(UICollectionViewDataSource.collectionView(_:cellForItemAt:)),
       map: { (dataSource: DataSource?, collectionView: UICollectionView, indexPath: NSIndexPath) -> UICollectionViewCell in
-        return createCell(dataSource!, indexPath as IndexPath, collectionView)
+        return bond.cellForRow(at: indexPath as IndexPath, collectionView: collectionView, dataSource: dataSource!)
     })
 
     collectionView.bnd_dataSource.feed(
       property: dataSource,
       to: #selector(UICollectionViewDataSource.collectionView(_:numberOfItemsInSection:)),
-      map: { (dataSource: DataSource?, _: UICollectionView, section: Int) -> Int in dataSource?.numberOfElements(inSection: section) ?? 0 }
+      map: { (dataSource: DataSource?, _: UICollectionView, section: Int) -> Int in dataSource?.numberOfItems(inSection: section) ?? 0 }
     )
 
     collectionView.bnd_dataSource.feed(
       property: dataSource,
       to: #selector(UICollectionViewDataSource.numberOfSections(in:)),
-      map: { (dataSource: DataSource?, _: UICollectionView) -> Int in dataSource?.numberOfSections() ?? 0 }
+      map: { (dataSource: DataSource?, _: UICollectionView) -> Int in dataSource?.numberOfSections ?? 0 }
     )
 
     let serialDisposable = SerialDisposable(otherDisposable: nil)

@@ -87,7 +87,7 @@ extension ObservableArrayChange: Equatable {
   
   public static func ==(lhs: ObservableArrayChange, rhs: ObservableArrayChange) -> Bool {
     switch (lhs, rhs) {
-    case (.initial, .initial):
+    case (.reset, .reset):
       return true
     case (.inserts(let lhs), .inserts(let rhs)):
       return lhs == rhs

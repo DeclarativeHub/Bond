@@ -92,6 +92,11 @@
 		EC8822071D421EA2006142ED /* NSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8822061D421EA2006142ED /* NSObject.swift */; };
 		EC96935B1D943B15004EB5EE /* UITableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC96935A1D943B15004EB5EE /* UITableViewTests.swift */; };
 		EC96935F1D945CC6004EB5EE /* UICollectionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC96935E1D945CC6004EB5EE /* UICollectionViewTests.swift */; };
+		EC9693611D94613A004EB5EE /* Observable2DArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9693601D94613A004EB5EE /* Observable2DArray.swift */; };
+		EC9693621D94613A004EB5EE /* Observable2DArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9693601D94613A004EB5EE /* Observable2DArray.swift */; };
+		EC9693631D94613A004EB5EE /* Observable2DArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9693601D94613A004EB5EE /* Observable2DArray.swift */; };
+		EC9693661D947243004EB5EE /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16210A3C1D3EC474004AEDF3 /* Bond.framework */; };
+		EC9693671D94724C004EB5EE /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1652178B1D70591E00C9FAEE /* ReactiveKit.framework */; };
 		EC97ED9F1D6C500B001C54C9 /* NSNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97ED9E1D6C500B001C54C9 /* NSNotificationCenter.swift */; };
 		EC97EDA01D6C500B001C54C9 /* NSNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97ED9E1D6C500B001C54C9 /* NSNotificationCenter.swift */; };
 		EC97EDA11D6C500B001C54C9 /* NSNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97ED9E1D6C500B001C54C9 /* NSNotificationCenter.swift */; };
@@ -256,6 +261,7 @@
 		EC8822061D421EA2006142ED /* NSObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSObject.swift; path = Sources/NSObject.swift; sourceTree = SOURCE_ROOT; };
 		EC96935A1D943B15004EB5EE /* UITableViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewTests.swift; sourceTree = "<group>"; };
 		EC96935E1D945CC6004EB5EE /* UICollectionViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UICollectionViewTests.swift; sourceTree = "<group>"; };
+		EC9693601D94613A004EB5EE /* Observable2DArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable2DArray.swift; sourceTree = "<group>"; };
 		EC97ED9E1D6C500B001C54C9 /* NSNotificationCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSNotificationCenter.swift; sourceTree = "<group>"; };
 		EC97EDA21D6C50A5001C54C9 /* NSObject+KVO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+KVO.swift"; sourceTree = "<group>"; };
 		EC97EDA61D6C51F0001C54C9 /* ProtocolProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProtocolProxy.swift; path = Bond/ProtocolProxy.swift; sourceTree = SOURCE_ROOT; };
@@ -306,6 +312,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC9693671D94724C004EB5EE /* ReactiveKit.framework in Frameworks */,
+				EC9693661D947243004EB5EE /* Bond.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,6 +371,7 @@
 			children = (
 				1639C0891D6DD39B0045959E /* Observable.swift */,
 				1639C07D1D6DD3190045959E /* ObservableArray.swift */,
+				EC9693601D94613A004EB5EE /* Observable2DArray.swift */,
 				1639C07E1D6DD3190045959E /* ObservableDictionary.swift */,
 				1639C07F1D6DD3190045959E /* ObservableSet.swift */,
 				EC7890F11D44F1D9002848EB /* Bond.swift */,
@@ -766,6 +775,7 @@
 				1639C0801D6DD3190045959E /* ObservableArray.swift in Sources */,
 				EC2505B11D3F570500A6E14A /* UILabel.swift in Sources */,
 				ECD626ED1D4DE9BE0040C7BF /* UIBarButtonItem.swift in Sources */,
+				EC9693611D94613A004EB5EE /* Observable2DArray.swift in Sources */,
 				ECC4BE591D4A2E1600880DEC /* UIButton.swift in Sources */,
 				ECD626F51D4DF0E00040C7BF /* UINavigationBar.swift in Sources */,
 				ECD626F91D4DF1670040C7BF /* UIProgressView.swift in Sources */,
@@ -834,6 +844,7 @@
 				16D30F071D65D7F800C2435D /* NSColorWell.swift in Sources */,
 				1639C08B1D6DD39B0045959E /* Observable.swift in Sources */,
 				16D30EC11D65961000C2435D /* DataSource.swift in Sources */,
+				EC9693621D94613A004EB5EE /* Observable2DArray.swift in Sources */,
 				16D30EC01D65960E00C2435D /* DynamicSubject.swift in Sources */,
 				16D30EC81D659BDB00C2435D /* NSProgressIndicator.swift in Sources */,
 			);
@@ -866,6 +877,7 @@
 				1639C0821D6DD3190045959E /* ObservableArray.swift in Sources */,
 				16D30EE61D65D16600C2435D /* UIBarItem.swift in Sources */,
 				16D30EE51D65D16600C2435D /* UIBarButtonItem.swift in Sources */,
+				EC9693631D94613A004EB5EE /* Observable2DArray.swift in Sources */,
 				16D30EE01D65D14C00C2435D /* DynamicSubject.swift in Sources */,
 				16D30EDF1D65D14C00C2435D /* Bond.swift in Sources */,
 				16D30EEC1D65D16600C2435D /* UINavigationBar.swift in Sources */,

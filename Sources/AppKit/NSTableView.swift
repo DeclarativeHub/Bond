@@ -39,7 +39,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
     tableView.rDataSource.feed(
       property: dataSource,
       to: #selector(NSTableViewDataSource.numberOfRows(in:)),
-      map: { (dataSource: DataSource?, _: NSTableView) -> Int in dataSource?.numberOfElements(inSection: 0) ?? 0 }
+      map: { (dataSource: DataSource?, _: NSTableView) -> Int in dataSource?.numberOfItems(inSection: 0) ?? 0 }
     )
 
     let serialDisposable = SerialDisposable(otherDisposable: nil)

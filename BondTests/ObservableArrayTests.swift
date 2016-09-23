@@ -18,14 +18,9 @@ class ObservableArrayTests: XCTestCase {
     array = MutableObservableArray([1, 2, 3])
   }
   
-  override func tearDown() {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-    super.tearDown()
-  }
-  
   func testAppend() {
     array.expectNext([
-      ObservableArrayEvent(change: .initial, source: array),
+      ObservableArrayEvent(change: .reset, source: array),
       ObservableArrayEvent(change: .inserts([3]), source: array)
       ])
     
@@ -35,7 +30,7 @@ class ObservableArrayTests: XCTestCase {
   
   func testInsert() {
     array.expectNext([
-      ObservableArrayEvent(change: .initial, source: array),
+      ObservableArrayEvent(change: .reset, source: array),
       ObservableArrayEvent(change: .inserts([0]), source: array),
       ObservableArrayEvent(change: .inserts([2]), source: array)
       ])
@@ -48,7 +43,7 @@ class ObservableArrayTests: XCTestCase {
   
   func testInsertContentsOf() {
     array.expectNext([
-      ObservableArrayEvent(change: .initial, source: array),
+      ObservableArrayEvent(change: .reset, source: array),
       ObservableArrayEvent(change: .inserts([1, 2]), source: array),
       ])
     
@@ -58,7 +53,7 @@ class ObservableArrayTests: XCTestCase {
   
   func testMove() {
     array.expectNext([
-      ObservableArrayEvent(change: .initial, source: array),
+      ObservableArrayEvent(change: .reset, source: array),
       ObservableArrayEvent(change: .move(1, 2), source: array),
       ])
     
@@ -69,7 +64,7 @@ class ObservableArrayTests: XCTestCase {
   
   func testRemoveAtIndex() {
     array.expectNext([
-      ObservableArrayEvent(change: .initial, source: array),
+      ObservableArrayEvent(change: .reset, source: array),
       ObservableArrayEvent(change: .deletes([2]), source: array),
       ObservableArrayEvent(change: .deletes([0]), source: array)
       ])
@@ -85,7 +80,7 @@ class ObservableArrayTests: XCTestCase {
   
   func testRemoveLast() {
     array.expectNext([
-      ObservableArrayEvent(change: .initial, source: array),
+      ObservableArrayEvent(change: .reset, source: array),
       ObservableArrayEvent(change: .deletes([2]), source: array)
       ])
     
@@ -96,7 +91,7 @@ class ObservableArrayTests: XCTestCase {
   
   func testRemoveAll() {
     array.expectNext([
-      ObservableArrayEvent(change: .initial, source: array),
+      ObservableArrayEvent(change: .reset, source: array),
       ObservableArrayEvent(change: .deletes([0, 1, 2]), source: array)
       ])
     
@@ -106,7 +101,7 @@ class ObservableArrayTests: XCTestCase {
   
   func testUpdate() {
     array.expectNext([
-      ObservableArrayEvent(change: .initial, source: array),
+      ObservableArrayEvent(change: .reset, source: array),
       ObservableArrayEvent(change: .updates([1]), source: array)
       ])
     
@@ -116,7 +111,7 @@ class ObservableArrayTests: XCTestCase {
   
   func testBatchUpdate() {
     array.expectNext([
-      ObservableArrayEvent(change: .initial, source: array),
+      ObservableArrayEvent(change: .reset, source: array),
       ObservableArrayEvent(change: .beginBatchEditing, source: array),
       ObservableArrayEvent(change: .updates([1]), source: array),
       ObservableArrayEvent(change: .inserts([3]), source: array),
@@ -133,7 +128,7 @@ class ObservableArrayTests: XCTestCase {
   
   func testSilentUpdate() {
     array.expectNext([
-      ObservableArrayEvent(change: .initial, source: array),
+      ObservableArrayEvent(change: .reset, source: array),
       ])
     
     array.silentUpdate { array in

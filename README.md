@@ -298,7 +298,7 @@ where the data source is any object conforming to `DataSource` protocol
 ```swift
 public protocol DataSourceProtocol {
   func numberOfSections() -> Int
-  func numberOfElements(inSection section: Int) -> Int
+  func numberOfItems(inSection section: Int) -> Int
 }
 ```
 

@@ -26,8 +26,8 @@ import Foundation
 import ReactiveKit
 
 public protocol DataSourceProtocol {
-  func numberOfSections() -> Int
-  func numberOfElements(inSection section: Int) -> Int
+  var numberOfSections: Int { get }
+  func numberOfItems(inSection section: Int) -> Int
 }
 
 public enum DataSourceEventKind {
@@ -61,11 +61,11 @@ public struct DataSourceEvent<DataSource: DataSourceProtocol>: DataSourceEventPr
 
 extension Array: DataSourceProtocol {
 
-  public func numberOfSections() -> Int {
+  public var numberOfSections: Int {
     return 1
   }
 
-  public func numberOfElements(inSection section: Int) -> Int {
+  public func numberOfItems(inSection section: Int) -> Int {
     return count
   }
 }

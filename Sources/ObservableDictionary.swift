@@ -123,6 +123,7 @@ public class MutableObservableDictionary<Key: Hashable, Value>: ObservableDictio
   }
 
   /// Remove value from the dictionary.
+  @discardableResult
   public func removeValue(forKey key: Key) -> Value? {
     if let index = dictionary.index(forKey: key) {
       let (_, old) = dictionary.remove(at: index)

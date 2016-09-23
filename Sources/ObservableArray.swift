@@ -25,8 +25,7 @@
 import ReactiveKit
 
 public enum ObservableArrayChange {
-  case initial
-  case replace
+  case reset
   case inserts([Int])
   case deletes([Int])
   case updates([Int])
@@ -52,7 +51,7 @@ public class ObservableArray<Item>: Collection, SignalProtocol {
   fileprivate let subject = PublishSubject<ObservableArrayEvent<Item>, NoError>()
   fileprivate let lock = NSRecursiveLock(name: "ObservableArray")
   
-  public init(_ array: [Item]) {
+  public init(_ array: [Item] = []) {
     self.array = array
   }
   
@@ -91,7 +90,7 @@ public class ObservableArray<Item>: Collection, SignalProtocol {
   }
   
   public func observe(with observer: @escaping (Event<ObservableArrayEvent<Item>, NoError>) -> Void) -> Disposable {
-    observer(.next(ObservableArrayEvent(change: .initial, source: self)))
+    observer(.next(ObservableArrayEvent(change: .reset, source: self)))
     return subject.observe(with: observer)
   }
 }
@@ -139,6 +138,7 @@ public class MutableObservableArray<Item>: ObservableArray<Item> {
   }
   
   /// Remove and return the element at index i.
+  @discardableResult
   public func remove(at index: Int) -> Item {
     return lock.atomic {
       let element = array.remove(at: index)
@@ -148,6 +148,7 @@ public class MutableObservableArray<Item>: ObservableArray<Item> {
   }
   
   /// Remove an element from the end of the array in O(1).
+  @discardableResult
   public func removeLast() -> Item {
     return lock.atomic {
       let element = array.removeLast()
@@ -200,7 +201,7 @@ extension ObservableArrayEvent: DataSourceEventProtocol {
   
   public var kind: DataSourceEventKind {
     switch change {
-    case .initial, .replace:
+    case .reset:
       return .reload
     case .inserts(let indices):
       return .insertItems(indices.map { IndexPath(item: $0, section: 0) })
@@ -224,11 +225,11 @@ extension ObservableArrayEvent: DataSourceEventProtocol {
 
 extension ObservableArray: DataSourceProtocol {
   
-  public func numberOfSections() -> Int {
+  public var numberOfSections: Int {
     return 1
   }
   
-  public func numberOfElements(inSection section: Int) -> Int {
+  public func numberOfItems(inSection section: Int) -> Int {
     return count
   }
 }
@@ -302,10 +303,9 @@ extension MutableObservableArray {
   func replace(with array: [Item]) {
     lock.atomic {
       self.array = array
-      subject.next(ObservableArrayEvent(change: .replace, source: self))
+      subject.next(ObservableArrayEvent(change: .reset, source: self))
     }
   }
-  
 }
 
 extension MutableObservableArray where Item: Equatable {
