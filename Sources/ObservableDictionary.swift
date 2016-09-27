@@ -25,7 +25,7 @@
 import ReactiveKit
 
 public enum ObservableDictionaryEventKind<Key: Hashable, Value> {
-  case initial
+  case reset
   case inserts([DictionaryIndex<Key, Value>])
   case deletes([DictionaryIndex<Key, Value>])
   case updates([DictionaryIndex<Key, Value>])
@@ -35,7 +35,7 @@ public enum ObservableDictionaryEventKind<Key: Hashable, Value> {
 
 public struct ObservableDictionaryEvent<Key: Hashable, Value> {
   public let kind: ObservableDictionaryEventKind<Key, Value>
-  public let source: Dictionary<Key, Value>
+  public let source: ObservableDictionary<Key, Value>
 }
 
 public class ObservableDictionary<Key: Hashable, Value>: Collection, SignalProtocol {
@@ -89,7 +89,7 @@ public class ObservableDictionary<Key: Hashable, Value>: Collection, SignalProto
   }
 
   public func observe(with observer: @escaping (Event<ObservableDictionaryEvent<Key, Value>, NoError>) -> Void) -> Disposable {
-    observer(.next(ObservableDictionaryEvent(kind: .initial, source: dictionary)))
+    observer(.next(ObservableDictionaryEvent(kind: .reset, source: self)))
     return subject.observe(with: observer)
   }
 }
@@ -113,11 +113,11 @@ public class MutableObservableDictionary<Key: Hashable, Value>: ObservableDictio
   public func updateValue(_ value: Value, forKey key: Key) -> Value? {
     if let index = dictionary.index(forKey: key) {
       let old = dictionary.updateValue(value, forKey: key)
-      subject.next(ObservableDictionaryEvent(kind: .updates([index]), source: dictionary))
+      subject.next(ObservableDictionaryEvent(kind: .updates([index]), source: self))
       return old
     } else {
       _ = dictionary.updateValue(value, forKey: key)
-      subject.next(ObservableDictionaryEvent(kind: .inserts([dictionary.index(forKey: key)!]), source: dictionary))
+      subject.next(ObservableDictionaryEvent(kind: .inserts([dictionary.index(forKey: key)!]), source: self))
       return nil
     }
   }
@@ -127,19 +127,26 @@ public class MutableObservableDictionary<Key: Hashable, Value>: ObservableDictio
   public func removeValue(forKey key: Key) -> Value? {
     if let index = dictionary.index(forKey: key) {
       let (_, old) = dictionary.remove(at: index)
-      subject.next(ObservableDictionaryEvent(kind: .deletes([index]), source: dictionary))
+      subject.next(ObservableDictionaryEvent(kind: .deletes([index]), source: self))
       return old
     } else {
       return nil
     }
   }
 
+  func replace(with dictionary: Dictionary<Key, Value>) {
+    lock.atomic {
+      self.dictionary = dictionary
+      subject.next(ObservableDictionaryEvent(kind: .reset, source: self))
+    }
+  }
+
   /// Perform batched updates on the dictionary.
   public func batchUpdate(_ update: (MutableObservableDictionary<Key, Value>) -> Void) {
     lock.atomic {
-      subject.next(ObservableDictionaryEvent(kind: .beginBatchEditing, source: dictionary))
+      subject.next(ObservableDictionaryEvent(kind: .beginBatchEditing, source: self))
       update(self)
-      subject.next(ObservableDictionaryEvent(kind: .endBatchEditing, source: dictionary))
+      subject.next(ObservableDictionaryEvent(kind: .endBatchEditing, source: self))
     }
   }
 

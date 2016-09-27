@@ -25,7 +25,7 @@
 import ReactiveKit
 
 public enum ObservableSetEventKind<Element: Hashable> {
-  case initial
+  case reset
   case inserts([SetIndex<Element>])
   case deletes([SetIndex<Element>])
   case updates([SetIndex<Element>])
@@ -35,7 +35,7 @@ public enum ObservableSetEventKind<Element: Hashable> {
 
 public struct ObservableSetEvent<Element: Hashable> {
   public let kind: ObservableSetEventKind<Element>
-  public let source: Set<Element>
+  public let source: ObservableSet<Element>
 }
 
 public class ObservableSet<Element: Hashable>: Collection, SignalProtocol {
@@ -83,7 +83,7 @@ public class ObservableSet<Element: Hashable>: Collection, SignalProtocol {
   }
 
   public func observe(with observer: @escaping (Event<ObservableSetEvent<Element>, NoError>) -> Void) -> Disposable {
-    observer(.next(ObservableSetEvent(kind: .initial, source: set)))
+    observer(.next(ObservableSetEvent(kind: .reset, source: self)))
     return subject.observe(with: observer)
   }
 }
@@ -112,9 +112,9 @@ public class MutableObservableSet<Element: Hashable>: ObservableSet<Element> {
       let index = set.index(of: member)
       set.insert(member)
       if let index = index {
-        subject.next(ObservableSetEvent(kind: .updates([index]), source: set))
+        subject.next(ObservableSetEvent(kind: .updates([index]), source: self))
       } else {
-        subject.next(ObservableSetEvent(kind: .inserts([set.index(of: member)!]), source: set))
+        subject.next(ObservableSetEvent(kind: .inserts([set.index(of: member)!]), source: self))
       }
     }
   }
@@ -125,7 +125,7 @@ public class MutableObservableSet<Element: Hashable>: ObservableSet<Element> {
     return lock.atomic {
       if let index = set.index(of: member) {
         let element = set.remove(at: index)
-        subject.next(ObservableSetEvent(kind: .deletes([index]), source: set))
+        subject.next(ObservableSetEvent(kind: .deletes([index]), source: self))
         return element
       } else {
         return nil
@@ -133,12 +133,19 @@ public class MutableObservableSet<Element: Hashable>: ObservableSet<Element> {
     }
   }
 
+  func replace(with set: Set<Element>) {
+    lock.atomic {
+      self.set = set
+      subject.next(ObservableSetEvent(kind: .reset, source: self))
+    }
+  }
+
   /// Perform batched updates on the set.
   public func batchUpdate(_ update: (MutableObservableSet<Element>) -> Void) {
     lock.atomic {
-      subject.next(ObservableSetEvent(kind: .beginBatchEditing, source: set))
+      subject.next(ObservableSetEvent(kind: .beginBatchEditing, source: self))
       update(self)
-      subject.next(ObservableSetEvent(kind: .endBatchEditing, source: set))
+      subject.next(ObservableSetEvent(kind: .endBatchEditing, source: self))
     }
   }
 
