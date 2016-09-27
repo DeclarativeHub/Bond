@@ -27,7 +27,7 @@ import ReactiveKit
 
 extension UIBarButtonItem {
 
-  public func bnd_tap() -> Signal1<Void> {
+  public var bnd_tap: Signal1<Void> {
     let _self = self
     return Signal { [weak _self] observer in
       guard let _self = _self else {
