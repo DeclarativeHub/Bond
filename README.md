@@ -259,7 +259,7 @@ tableView.selectedRow.observeNext { row in
 }.disposeIn(bnd_bag)
 ```
 
-Protocol proxy takes up delegate slot of the object so if you also need to implement delegate methods manually, don't set `tableView.delegate = x`, rather set `tableView.rDelegate.forwardTo = x`.
+**Note:** Protocol proxy takes up delegate slot of the object so if you also need to implement delegate methods manually, don't set `tableView.delegate = x`, rather set `tableView.rDelegate.forwardTo = x`.
 
 Protocol methods that return values are usually used to query data. Such methods can be set up to be fed from a property type. For example:
 
