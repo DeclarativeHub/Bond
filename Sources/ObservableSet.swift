@@ -133,7 +133,7 @@ public class MutableObservableSet<Element: Hashable>: ObservableSet<Element> {
     }
   }
 
-  func replace(with set: Set<Element>) {
+  public func replace(with set: Set<Element>) {
     lock.atomic {
       self.set = set
       subject.next(ObservableSetEvent(kind: .reset, source: self))

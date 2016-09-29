@@ -134,7 +134,7 @@ public class MutableObservableDictionary<Key: Hashable, Value>: ObservableDictio
     }
   }
 
-  func replace(with dictionary: Dictionary<Key, Value>) {
+  public func replace(with dictionary: Dictionary<Key, Value>) {
     lock.atomic {
       self.dictionary = dictionary
       subject.next(ObservableDictionaryEvent(kind: .reset, source: self))
