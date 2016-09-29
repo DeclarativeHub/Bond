@@ -26,9 +26,12 @@ import Foundation
 import ObjectiveC
 import ReactiveKit
 
+public typealias ArgumentExtractor = (Int, UnsafeMutableRawPointer?) -> Void
+public typealias ReturnValueSetter = (UnsafeMutableRawPointer?) -> Void
+
 public class ProtocolProxy: RKProtocolProxyBase {
 
-  private var invokers: [Selector: ((Int, UnsafeMutableRawPointer) -> Void, ((UnsafeMutableRawPointer) -> Void)?) -> Void] = [:]
+  private var invokers: [Selector: (ArgumentExtractor, ReturnValueSetter?) -> Void] = [:]
   private var handlers: [Selector: AnyObject] = [:]
   private weak var object: NSObject?
   private let setter: Selector
@@ -53,7 +56,7 @@ public class ProtocolProxy: RKProtocolProxyBase {
     return invokers[selector] != nil
   }
 
-  public override func invoke(with selector: Selector, argumentExtractor: @escaping (Int, UnsafeMutableRawPointer?) -> Void, setReturnValue: ((UnsafeMutableRawPointer?) -> Void)?) {
+  public override func invoke(with selector: Selector, argumentExtractor: @escaping ArgumentExtractor, setReturnValue: ReturnValueSetter?) {
     guard let invoker = invokers[selector] else { return }
     invoker(argumentExtractor, setReturnValue)
   }
