@@ -131,6 +131,7 @@
 		ECD627011D4DF3DD0040C7BF /* UISwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD627001D4DF3DD0040C7BF /* UISwitch.swift */; };
 		ECD627031D4DF5D40040C7BF /* UITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD627021D4DF5D40040C7BF /* UITextView.swift */; };
 		ECD627051D4DF67E0040C7BF /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD627041D4DF67E0040C7BF /* UIView.swift */; };
+		F411F9F01D9CEC5200AEBAFC /* UIStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F411F9EF1D9CEC5200AEBAFC /* UIStepper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -288,6 +289,7 @@
 		ECD627001D4DF3DD0040C7BF /* UISwitch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UISwitch.swift; sourceTree = "<group>"; };
 		ECD627021D4DF5D40040C7BF /* UITextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextView.swift; sourceTree = "<group>"; };
 		ECD627041D4DF67E0040C7BF /* UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
+		F411F9EF1D9CEC5200AEBAFC /* UIStepper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStepper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -468,6 +470,7 @@
 				ECD626FA1D4DF1F50040C7BF /* UIRefreshControl.swift */,
 				ECD626FC1D4DF2D60040C7BF /* UISegmentedControl.swift */,
 				ECD626FE1D4DF34F0040C7BF /* UISlider.swift */,
+				F411F9EF1D9CEC5200AEBAFC /* UIStepper.swift */,
 				ECD627001D4DF3DD0040C7BF /* UISwitch.swift */,
 				EC2505B21D3F571500A6E14A /* UITextField.swift */,
 				ECD627021D4DF5D40040C7BF /* UITextView.swift */,
@@ -758,6 +761,7 @@
 				EC97EDA91D6C51F0001C54C9 /* ProtocolProxy.swift in Sources */,
 				ECD627011D4DF3DD0040C7BF /* UISwitch.swift in Sources */,
 				ECD627051D4DF67E0040C7BF /* UIView.swift in Sources */,
+				F411F9F01D9CEC5200AEBAFC /* UIStepper.swift in Sources */,
 				ECD626EB1D4DE9460040C7BF /* UIBarItem.swift in Sources */,
 				1639C0861D6DD3190045959E /* ObservableSet.swift in Sources */,
 				EC7890F21D44F1D9002848EB /* Bond.swift in Sources */,
