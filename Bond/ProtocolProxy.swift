@@ -29,6 +29,12 @@ import ReactiveKit
 public typealias ArgumentExtractor = (Int, UnsafeMutableRawPointer?) -> Void
 public typealias ReturnValueSetter = (UnsafeMutableRawPointer?) -> Void
 
+fileprivate func arg<T>(_ extractor: ArgumentExtractor, _ pos: Int) -> T {
+  let arg = UnsafeMutablePointer<T>.allocate(capacity: 1)
+  extractor(pos, arg)
+  return arg.pointee
+}
+
 public class ProtocolProxy: RKProtocolProxyBase {
 
   private var invokers: [Selector: (ArgumentExtractor, ReturnValueSetter?) -> Void] = [:]
@@ -62,7 +68,7 @@ public class ProtocolProxy: RKProtocolProxyBase {
   }
 
   private func registerInvoker<R>(for selector: Selector, block: @escaping () -> R) {
-    invokers[selector] = { extractor, setReturnValue in
+    invokers[selector] = { _, setReturnValue in
       var r = block()
       if let setReturnValue = setReturnValue { setReturnValue(&r) }
     }
@@ -71,9 +77,7 @@ public class ProtocolProxy: RKProtocolProxyBase {
 
   private func registerInvoker<T, R>(for selector: Selector, block: @escaping (T) -> R) {
     invokers[selector] = { extractor, setReturnValue in
-      let a1 = UnsafeMutablePointer<T>.allocate(capacity: 1)
-      extractor(2, a1)
-      var r = block(a1.pointee as T)
+      var r = block(arg(extractor, 2))
       if let setReturnValue = setReturnValue { setReturnValue(&r) }
     }
     registerDelegate()
@@ -81,11 +85,7 @@ public class ProtocolProxy: RKProtocolProxyBase {
 
   private func registerInvoker<T, U, R>(for selector: Selector, block: @escaping (T, U) -> R) {
     invokers[selector] = { extractor, setReturnValue in
-      let a1 = UnsafeMutablePointer<T>.allocate(capacity: 1)
-      extractor(2, a1)
-      let a2 = UnsafeMutablePointer<U>.allocate(capacity: 1)
-      extractor(3, a2)
-      var r = block(a1.pointee as T, a2.pointee as U)
+      var r = block(arg(extractor, 2), arg(extractor, 3))
       if let setReturnValue = setReturnValue { setReturnValue(&r) }
     }
     registerDelegate()
@@ -93,13 +93,7 @@ public class ProtocolProxy: RKProtocolProxyBase {
 
   private func registerInvoker<T, U, V, R>(for selector: Selector, block: @escaping (T, U, V) -> R) {
     invokers[selector] = { extractor, setReturnValue in
-      let a1 = UnsafeMutablePointer<T>.allocate(capacity: 1)
-      extractor(2, a1)
-      let a2 = UnsafeMutablePointer<U>.allocate(capacity: 1)
-      extractor(3, a2)
-      let a3 = UnsafeMutablePointer<V>.allocate(capacity: 1)
-      extractor(4, a3)
-      var r = block(a1.pointee as T, a2.pointee as U, a3.pointee as V)
+      var r = block(arg(extractor, 2), arg(extractor, 3), arg(extractor, 4))
       if let setReturnValue = setReturnValue { setReturnValue(&r) }
     }
     registerDelegate()
@@ -107,15 +101,7 @@ public class ProtocolProxy: RKProtocolProxyBase {
 
   private func registerInvoker<T, U, V, W, R>(for selector: Selector, block: @escaping (T, U, V, W) -> R) {
     invokers[selector] = { extractor, setReturnValue in
-      let a1 = UnsafeMutablePointer<T>.allocate(capacity: 1)
-      extractor(2, a1)
-      let a2 = UnsafeMutablePointer<U>.allocate(capacity: 1)
-      extractor(3, a2)
-      let a3 = UnsafeMutablePointer<V>.allocate(capacity: 1)
-      extractor(4, a3)
-      let a4 = UnsafeMutablePointer<W>.allocate(capacity: 1)
-      extractor(5, a4)
-      var r = block(a1.pointee as T, a2.pointee as U, a3.pointee as V, a4.pointee as W)
+      var r = block(arg(extractor, 2), arg(extractor, 3), arg(extractor, 4), arg(extractor, 5))
       if let setReturnValue = setReturnValue { setReturnValue(&r) }
     }
     registerDelegate()
@@ -123,17 +109,7 @@ public class ProtocolProxy: RKProtocolProxyBase {
 
   private func registerInvoker<T, U, V, W, X, R>(for selector: Selector, block: @escaping (T, U, V, W, X) -> R) {
     invokers[selector] = { extractor, setReturnValue in
-      let a1 = UnsafeMutablePointer<T>.allocate(capacity: 1)
-      extractor(2, a1)
-      let a2 = UnsafeMutablePointer<U>.allocate(capacity: 1)
-      extractor(3, a2)
-      let a3 = UnsafeMutablePointer<V>.allocate(capacity: 1)
-      extractor(4, a3)
-      let a4 = UnsafeMutablePointer<W>.allocate(capacity: 1)
-      extractor(5, a4)
-      let a5 = UnsafeMutablePointer<X>.allocate(capacity: 1)
-      extractor(6, a5)
-      var r = block(a1.pointee as T, a2.pointee as U, a3.pointee as V, a4.pointee as W, a5.pointee as X)
+      var r = block(arg(extractor, 2), arg(extractor, 3), arg(extractor, 4), arg(extractor, 5), arg(extractor, 6))
       if let setReturnValue = setReturnValue { setReturnValue(&r) }
     }
     registerDelegate()
