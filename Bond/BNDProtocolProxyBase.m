@@ -25,11 +25,11 @@
 #import "BNDProtocolProxyBase.h"
 #import <objc/runtime.h>
 
-@interface RKProtocolProxyBase ()
+@interface BNDProtocolProxyBase ()
 @property (nonatomic, readwrite, strong) Protocol *protocol;
 @end
 
-@implementation RKProtocolProxyBase
+@implementation BNDProtocolProxyBase
 
 - (instancetype)initWithProtocol:(Protocol *)protocol
 {
