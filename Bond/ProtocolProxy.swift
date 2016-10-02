@@ -135,6 +135,17 @@ public class ProtocolProxy: BNDProtocolProxyBase {
     }
     registerDelegate()
   }
+  
+  private func _signal<S>(for selector: Selector, registerInvoker: (PublishSubject1<S>) -> Void) -> Signal1<S>{
+    if let signal = handlers[selector] {
+      return (signal as! PublishSubject1<S>).toSignal()
+    } else {
+      let subject = PublishSubject1<S>()
+      handlers[selector] = subject
+      registerInvoker(subject)
+      return subject.toSignal()
+    }
+  }
 
   /// Maps the given protocol method to a signal. Whenever the method on the target object is called,
   /// the framework will call the provided `dispatch` closure that you can use to generate a signal.
@@ -142,15 +153,10 @@ public class ProtocolProxy: BNDProtocolProxyBase {
   /// - parameter selector: Selector of the method to map.
   /// - parameter dispatch: A closure that dispatches calls to the given PublishSubject.
   public func signal<S, R>(for selector: Selector, dispatch: @escaping (PublishSubject<S, NoError>) -> R) -> Signal1<S> {
-    if let signal = handlers[selector] {
-      return (signal as! PublishSubject<S, NoError>).toSignal()
-    } else {
-      let subject = PublishSubject<S, NoError>()
-      handlers[selector] = subject
+    return _signal(for: selector) { subject in
       registerInvoker(for: selector) { () -> R in
         return dispatch(subject)
       }
-      return subject.toSignal()
     }
   }
 
@@ -163,15 +169,10 @@ public class ProtocolProxy: BNDProtocolProxyBase {
   /// - important: This is ObjC API so you have to use ObjC types like NSString instead of String
   /// in place of generic parameter A and R!
   public func signal<A, S, R>(for selector: Selector, dispatch: @escaping (PublishSubject<S, NoError>, A) -> R) -> Signal1<S> {
-    if let signal = handlers[selector] {
-      return (signal as! PublishSubject<S, NoError>).toSignal()
-    } else {
-      let subject = PublishSubject<S, NoError>()
-      handlers[selector] = subject
+    return _signal(for: selector) { subject in
       registerInvoker(for: selector) { (a: A) -> R in
         return dispatch(subject, a)
       }
-      return subject.toSignal()
     }
   }
 
@@ -184,15 +185,10 @@ public class ProtocolProxy: BNDProtocolProxyBase {
   /// - important: This is ObjC API so you have to use ObjC types like NSString instead of String
   /// in place of generic parameters A, B and R!
   public func signal<A, B, S, R>(for selector: Selector, dispatch: @escaping (PublishSubject<S, NoError>, A, B) -> R) -> Signal1<S> {
-    if let signal = handlers[selector] {
-      return (signal as! PublishSubject<S, NoError>).toSignal()
-    } else {
-      let subject = PublishSubject<S, NoError>()
-      handlers[selector] = subject
+    return _signal(for: selector) { subject in
       registerInvoker(for: selector) { (a: A, b: B) -> R in
         return dispatch(subject, a, b)
       }
-      return subject.toSignal()
     }
   }
 
@@ -205,15 +201,10 @@ public class ProtocolProxy: BNDProtocolProxyBase {
   /// - important: This is ObjC API so you have to use ObjC types like NSString instead of String
   /// in place of generic parameters A, B, C and R!
   public func signal<A, B, C, S, R>(for selector: Selector, dispatch: @escaping (PublishSubject<S, NoError>, A, B, C) -> R) -> Signal1<S> {
-    if let signal = handlers[selector] {
-      return (signal as! PublishSubject<S, NoError>).toSignal()
-    } else {
-      let subject = PublishSubject<S, NoError>()
-      handlers[selector] = subject
+    return _signal(for: selector) { subject in
       registerInvoker(for: selector) { (a: A, b: B, c: C) -> R in
         return dispatch(subject, a, b, c)
       }
-      return subject.toSignal()
     }
   }
 
@@ -226,15 +217,10 @@ public class ProtocolProxy: BNDProtocolProxyBase {
   /// - important: This is ObjC API so you have to use ObjC types like NSString instead of String
   /// in place of generic parameters A, B, C, D and R!
   public func signal<A, B, C, D, S, R>(for selector: Selector, dispatch: @escaping (PublishSubject<S, NoError>, A, B, C, D) -> R) -> Signal1<S> {
-    if let signal = handlers[selector] {
-      return (signal as! PublishSubject<S, NoError>).toSignal()
-    } else {
-      let subject = PublishSubject<S, NoError>()
-      handlers[selector] = subject
+    return _signal(for: selector) { subject in
       registerInvoker(for: selector) { (a: A, b: B, c: C, d: D) -> R in
         return dispatch(subject, a, b, c, d)
       }
-      return subject.toSignal()
     }
   }
 
@@ -247,15 +233,10 @@ public class ProtocolProxy: BNDProtocolProxyBase {
   /// - important: This is ObjC API so you have to use ObjC types like NSString instead of String
   /// in place of generic parameters A, B, C, D, E and R!
   public func signal<A, B, C, D, E, S, R>(for selector: Selector, dispatch: @escaping (PublishSubject<S, NoError>, A, B, C, D, E) -> R) -> Signal1<S> {
-    if let signal = handlers[selector] {
-      return (signal as! PublishSubject<S, NoError>).toSignal()
-    } else {
-      let subject = PublishSubject<S, NoError>()
-      handlers[selector] = subject
+    return _signal(for: selector) { subject in
       registerInvoker(for: selector) { (a: A, b: B, c: C, d: D, e: E) -> R in
         return dispatch(subject, a, b, c, d, e)
       }
-      return subject.toSignal()
     }
   }
 
