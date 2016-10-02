@@ -331,8 +331,8 @@ extension ProtocolProxy {
   /// Provides a feed for specified protocol method.
   ///
   /// - important: This is ObjC API so you have to use ObjC types like NSString instead of String!
-  public func feed<A, T, R>(property: Property<A>, to selector: Selector, map: @escaping (A, T) -> R) {
-    let _ = signal(for: selector) { (_: PublishSubject<Void, NoError>, a1: T) -> R in
+  public func feed<S, A, R>(property: Property<S>, to selector: Selector, map: @escaping (S, A) -> R) {
+    let _ = signal(for: selector) { (_: PublishSubject<Void, NoError>, a1: A) -> R in
       return map(property.value, a1)
     }
   }
@@ -340,8 +340,8 @@ extension ProtocolProxy {
   /// Provides a feed for specified protocol method.
   ///
   /// - important: This is ObjC API so you have to use ObjC types like NSString instead of String!
-  public func feed<A, T, U, R>(property: Property<A>, to selector: Selector, map: @escaping (A, T, U) -> R) {
-    let _ = signal(for: selector) { (_: PublishSubject<Void, NoError>, a1: T, a2: U) -> R in
+  public func feed<S, A, B, R>(property: Property<S>, to selector: Selector, map: @escaping (S, A, B) -> R) {
+    let _ = signal(for: selector) { (_: PublishSubject<Void, NoError>, a1: A, a2: B) -> R in
       return map(property.value, a1, a2)
     }
   }
@@ -349,8 +349,8 @@ extension ProtocolProxy {
   /// Provides a feed for specified protocol method.
   ///
   /// - important: This is ObjC API so you have to use ObjC types like NSString instead of String!
-  public func feed<A, T, U, V, R>(property: Property<A>, to selector: Selector, map: @escaping (A, T, U, V) -> R) {
-    let _ = signal(for: selector) { (_: PublishSubject<Void, NoError>, a1: T, a2: U, a3: V) -> R in
+  public func feed<S, A, B, C, R>(property: Property<S>, to selector: Selector, map: @escaping (S, A, B, C) -> R) {
+    let _ = signal(for: selector) { (_: PublishSubject<Void, NoError>, a1: A, a2: B, a3: C) -> R in
       return map(property.value, a1, a2, a3)
     }
   }
@@ -358,8 +358,8 @@ extension ProtocolProxy {
   /// Provides a feed for specified protocol method.
   ///
   /// - important: This is ObjC API so you have to use ObjC types like NSString instead of String!
-  public func feed<A, T, U, V, W, R>(property: Property<A>, to selector: Selector, map: @escaping (A, T, U, V, W) -> R) {
-    let _ = signal(for: selector) { (_: PublishSubject<Void, NoError>, a1: T, a2: U, a3: V, a4: W) -> R in
+  public func feed<S, A, B, C, D, R>(property: Property<S>, to selector: Selector, map: @escaping (S, A, B, C, D) -> R) {
+    let _ = signal(for: selector) { (_: PublishSubject<Void, NoError>, a1: A, a2: B, a3: C, a4: D) -> R in
       return map(property.value, a1, a2, a3, a4)
     }
   }
@@ -367,8 +367,8 @@ extension ProtocolProxy {
   /// Provides a feed for specified protocol method.
   ///
   /// - important: This is ObjC API so you have to use ObjC types like NSString instead of String!
-  public func feed<A, T, U, V, W, X, R>(property: Property<A>, to selector: Selector, map: @escaping (A, T, U, V, W, X) -> R) {
-    let _ = signal(for: selector) { (_: PublishSubject<Void, NoError>, a1: T, a2: U, a3: V, a4: W, a5: X) -> R in
+  public func feed<S, A, B, C, D, E, R>(property: Property<S>, to selector: Selector, map: @escaping (S, A, B, C, D, E) -> R) {
+    let _ = signal(for: selector) { (_: PublishSubject<Void, NoError>, a1: A, a2: B, a3: C, a4: D, a5: E) -> R in
       return map(property.value, a1, a2, a3, a4, a5)
     }
   }
