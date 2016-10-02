@@ -24,7 +24,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface RKProtocolProxyBase : NSObject
+@interface BNDProtocolProxyBase : NSObject
 
 @property (nonatomic, readonly, nonnull, strong) Protocol *protocol;
 

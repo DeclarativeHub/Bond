@@ -26,7 +26,7 @@ import Foundation
 import ObjectiveC
 import ReactiveKit
 
-public class ProtocolProxy: RKProtocolProxyBase {
+public class ProtocolProxy: BNDProtocolProxyBase {
 
   private var invokers: [Selector: ((Int, UnsafeMutableRawPointer) -> Void, ((UnsafeMutableRawPointer) -> Void)?) -> Void] = [:]
   private var handlers: [Selector: AnyObject] = [:]
