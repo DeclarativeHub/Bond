@@ -44,3 +44,6 @@ DispatchQueue.main.after(when: 1) {
   let countries = Observable2DArraySection<SectionMetadata, String>(metadata: ("Countries", "No more..."), items: ["France", "Croatia"])
   array.appendSection(countries)
 }
+
+//: [Next](@next)
+

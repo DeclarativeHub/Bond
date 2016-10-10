@@ -26,97 +26,94 @@ import Foundation
 import ReactiveKit
 
 public extension NSObject {
-  
-  /// Create a signal that observes given key path using KVO.
-  public func valueFor<T>(keyPath: String, sendInitial: Bool = true, retainStrongly: Bool = true) -> Signal<T, NoError> {
-    return RKKeyValueSignal<T>(keyPath: keyPath, ofObject: self, sendInitial: sendInitial, retainStrongly: retainStrongly) { (object: Any?) -> T? in
-      return object as? T
-      }.toSignal()
+
+  public func dynamic<T>(keyPath: String, ofType: T.Type) -> DynamicSubject<NSObject, T> {
+    return DynamicSubject(
+      target: self,
+      signal: RKKeyValueSignal(keyPath: keyPath, for: self).toSignal(),
+      get: { $0.value(forKeyPath: keyPath) as! T },
+      set: { $0.setValue($1, forKeyPath: keyPath) }
+    )
   }
-  
-  /// Create a signal that observes given key path using KVO.
-  public func valueFor<T: OptionalProtocol>(keyPath: String, sendInitial: Bool = true, retainStrongly: Bool = true) -> Signal<T, NoError> {
-    return RKKeyValueSignal(keyPath: keyPath, ofObject: self, sendInitial: sendInitial, retainStrongly: retainStrongly) { (object: Any?) -> T? in
-      if object == nil {
-        return T(nilLiteral: ())
-      } else {
-        if let object = object as? T.Wrapped {
-          return T(object)
+
+  public func dynamic<T>(keyPath: String, ofType: T.Type) -> DynamicSubject<NSObject, T> where T: OptionalProtocol {
+    return DynamicSubject(
+      target: self,
+      signal: RKKeyValueSignal(keyPath: keyPath, for: self).toSignal(),
+      get: { ($0.value(forKeyPath: keyPath) as? T) ?? T(nilLiteral: ()) },
+      set: {
+        if let value = $1._unbox {
+          $0.setValue(value, forKeyPath: keyPath)
         } else {
-          return T(nilLiteral: ())
+          $0.setValue(nil, forKeyPath: keyPath)
         }
       }
-      }.toSignal()
+    )
   }
 }
 
-// MARK: - Implementations
+// MARK: - Implementation
 
-fileprivate class RKKeyValueSignal<T>: NSObject, SignalProtocol {
-  private var strongObject: NSObject? = nil
+private class RKKeyValueSignal: NSObject, SignalProtocol {
   private weak var object: NSObject? = nil
   private var context = 0
   private var keyPath: String
-  private var options: NSKeyValueObservingOptions
-  private let transform: (Any?) -> T?
-  private let subject: AnySubject<T, NoError>
+  private let subject: AnySubject<Void, NoError>
   private var numberOfObservers: Int = 0
+  private var observing = false
+  private let deallocationDisposable = SerialDisposable(otherDisposable: nil)
+  private let lock = NSRecursiveLock(name: "ReactiveKit.Bond.RKKeyValueSignal")
   
-  fileprivate init(keyPath: String, ofObject object: NSObject, sendInitial: Bool, retainStrongly: Bool, transform: @escaping (Any?) -> T?) {
+  fileprivate init(keyPath: String, for object: NSObject) {
     self.keyPath = keyPath
-    self.options = sendInitial ? NSKeyValueObservingOptions.new.union(.initial) : .new
-    self.transform = transform
-    
-    if sendInitial {
-      subject = AnySubject(base: ReplaySubject(bufferSize: 1))
-    } else {
-      subject = AnySubject(base: PublishSubject())
-    }
-    
-    super.init()
-    
+    self.subject = AnySubject(base: PublishSubject())
     self.object = object
-    if retainStrongly {
-      self.strongObject = object
+    super.init()
+    lock.atomic {
+      deallocationDisposable.otherDisposable = object._willDeallocate.observeNext { object in
+        if self.observing {
+          object.removeObserver(self, forKeyPath: self.keyPath, context: &self.context)
+        }
+      }
     }
   }
   
   deinit {
+    deallocationDisposable.dispose()
     subject.completed()
-    print("deinit")
   }
   
-  public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+  fileprivate override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
     if context == &self.context {
-      if let newValue = change?[NSKeyValueChangeKey.newKey] {
-        if let newValue = transform(newValue) {
-          subject.next(newValue)
-        } else {
-          fatalError("Value [\(newValue)] not convertible to \(T.self) type!")
-        }
-      } else {
-        // no new value - ignore
+      if let _ = change?[NSKeyValueChangeKey.newKey] {
+        subject.next()
       }
     } else {
       super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
     }
   }
-  
+
   private func increaseNumberOfObservers() {
-    numberOfObservers += 1
-    if numberOfObservers == 1 {
-      object?.addObserver(self, forKeyPath: keyPath, options: options, context: &self.context)
+    lock.atomic {
+      numberOfObservers += 1
+      if let object = object, numberOfObservers == 1 && !observing {
+        observing = true
+        object.addObserver(self, forKeyPath: keyPath, options: [.new], context: &self.context)
+      }
     }
   }
   
   private func decreaseNumberOfObservers() {
-    numberOfObservers -= 1
-    if numberOfObservers == 0 {
-      object?.removeObserver(self, forKeyPath: self.keyPath)
+    lock.atomic {
+      numberOfObservers -= 1
+      if let object = object, numberOfObservers == 0 && observing {
+        observing = false
+        object.removeObserver(self, forKeyPath: self.keyPath, context: &self.context)
+      }
     }
   }
   
-  public func observe(with observer: @escaping (Event<T, NoError>) -> Void) -> Disposable {
+  fileprivate func observe(with observer: @escaping (Event<Void, NoError>) -> Void) -> Disposable {
     increaseNumberOfObservers()
     let disposable = subject.observe(with: observer)
     let cleanupDisposabe = BlockDisposable {
@@ -124,5 +121,59 @@ fileprivate class RKKeyValueSignal<T>: NSObject, SignalProtocol {
       self.decreaseNumberOfObservers()
     }
     return DeinitDisposable(disposable: cleanupDisposabe)
+  }
+}
+
+extension NSObject {
+
+  private struct StaticVariables {
+    static var willDeallocateSubject = "WillDeallocateSubject"
+    static var swizzledTypes: Set<String> = []
+    static var lock = NSRecursiveLock(name: "ReactiveKit.Bond.NSObject")
+  }
+
+  private var _willDeallocateSubject: ReplayOneSubject<NSObject, NoError>? {
+    return objc_getAssociatedObject(self, &StaticVariables.willDeallocateSubject) as? ReplayOneSubject<NSObject, NoError>
+  }
+
+  fileprivate var _willDeallocate: Signal<NSObject, NoError> {
+    return StaticVariables.lock.atomic {
+      if let subject = _willDeallocateSubject {
+        return subject.toSignal()
+      } else {
+        let typeName: String = String(describing: type(of: self))
+
+        if !StaticVariables.swizzledTypes.contains(typeName) {
+          type(of: self)._swizzleDeinit()
+          StaticVariables.swizzledTypes.insert(typeName)
+        }
+
+        let subject = ReplayOneSubject<NSObject, NoError>()
+        objc_setAssociatedObject(self, &StaticVariables.willDeallocateSubject, subject, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+
+        return subject.toSignal()
+      }
+    }
+  }
+
+  private class func _swizzleDeinit() {
+    let originalSelector = sel_getUid("dealloc")
+    let swizzledSelector = NSSelectorFromString("_bnd_dealloc")
+
+    let originalMethod = class_getInstanceMethod(self, originalSelector)
+    let swizzledMethod = class_getInstanceMethod(self, swizzledSelector)
+
+    let didAddMethod = class_addMethod(self, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
+
+    if didAddMethod {
+      class_replaceMethod(self, swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod))
+    } else {
+      method_exchangeImplementations(originalMethod, swizzledMethod)
+    }
+  }
+
+  @objc fileprivate func _bnd_swift_dealloc() {
+    _willDeallocateSubject?.next(self)
+    _willDeallocateSubject?.completed()
   }
 }

@@ -85,6 +85,12 @@
 		16D30F0B1D65E8C700C2435D /* NSTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30F0A1D65E8C700C2435D /* NSTableView.swift */; };
 		EC2505B11D3F570500A6E14A /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2505B01D3F570500A6E14A /* UILabel.swift */; };
 		EC2505B31D3F571500A6E14A /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2505B21D3F571500A6E14A /* UITextField.swift */; };
+		EC2D4A0E1DA8F31700B03A6B /* NSObject+Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = EC2D4A0D1DA8F31700B03A6B /* NSObject+Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EC2D4A0F1DA8F31700B03A6B /* NSObject+Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = EC2D4A0D1DA8F31700B03A6B /* NSObject+Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EC2D4A101DA8F31700B03A6B /* NSObject+Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = EC2D4A0D1DA8F31700B03A6B /* NSObject+Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EC2D4A141DA8F36B00B03A6B /* NSObject+Bond.m in Sources */ = {isa = PBXBuildFile; fileRef = EC2D4A131DA8F36B00B03A6B /* NSObject+Bond.m */; };
+		EC2D4A151DA8F36B00B03A6B /* NSObject+Bond.m in Sources */ = {isa = PBXBuildFile; fileRef = EC2D4A131DA8F36B00B03A6B /* NSObject+Bond.m */; };
+		EC2D4A161DA8F36B00B03A6B /* NSObject+Bond.m in Sources */ = {isa = PBXBuildFile; fileRef = EC2D4A131DA8F36B00B03A6B /* NSObject+Bond.m */; };
 		EC35401C1D462F4700901AA1 /* UIControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC35401B1D462F4700901AA1 /* UIControl.swift */; };
 		EC7890EF1D44F1BF002848EB /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = EC7890ED1D44F1BF002848EB /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EC7890F21D44F1D9002848EB /* Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7890F11D44F1D9002848EB /* Bond.swift */; };
@@ -254,6 +260,8 @@
 		16D30F0A1D65E8C700C2435D /* NSTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTableView.swift; sourceTree = "<group>"; };
 		EC2505B01D3F570500A6E14A /* UILabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UILabel.swift; path = Sources/UIKit/UILabel.swift; sourceTree = SOURCE_ROOT; };
 		EC2505B21D3F571500A6E14A /* UITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UITextField.swift; path = Sources/UIKit/UITextField.swift; sourceTree = SOURCE_ROOT; };
+		EC2D4A0D1DA8F31700B03A6B /* NSObject+Bond.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+Bond.h"; path = "Bond/NSObject+Bond.h"; sourceTree = SOURCE_ROOT; };
+		EC2D4A131DA8F36B00B03A6B /* NSObject+Bond.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+Bond.m"; path = "Bond/NSObject+Bond.m"; sourceTree = SOURCE_ROOT; };
 		EC35401B1D462F4700901AA1 /* UIControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIControl.swift; sourceTree = "<group>"; };
 		EC7890ED1D44F1BF002848EB /* Bond.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Bond.h; path = Bond/Bond.h; sourceTree = "<group>"; };
 		EC7890EE1D44F1BF002848EB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Bond/Info.plist; sourceTree = "<group>"; };
@@ -387,6 +395,8 @@
 				EC97ED9E1D6C500B001C54C9 /* NSNotificationCenter.swift */,
 				EC97EDA71D6C51F0001C54C9 /* BNDProtocolProxyBase.h */,
 				EC97EDA81D6C51F0001C54C9 /* BNDProtocolProxyBase.m */,
+				EC2D4A0D1DA8F31700B03A6B /* NSObject+Bond.h */,
+				EC2D4A131DA8F36B00B03A6B /* NSObject+Bond.m */,
 				16D30EBA1D65944500C2435D /* AppKit */,
 				EC2505AF1D3F56D900A6E14A /* UIKit */,
 			);
@@ -491,6 +501,7 @@
 			files = (
 				EC7890EF1D44F1BF002848EB /* Bond.h in Headers */,
 				EC97EDAC1D6C51F0001C54C9 /* BNDProtocolProxyBase.h in Headers */,
+				EC2D4A0E1DA8F31700B03A6B /* NSObject+Bond.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -500,6 +511,7 @@
 			files = (
 				16D30EB61D65938200C2435D /* Bond.h in Headers */,
 				EC97EDAD1D6C51F0001C54C9 /* BNDProtocolProxyBase.h in Headers */,
+				EC2D4A0F1DA8F31700B03A6B /* NSObject+Bond.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -509,6 +521,7 @@
 			files = (
 				16D30EDE1D65D14400C2435D /* Bond.h in Headers */,
 				EC97EDAE1D6C51F0001C54C9 /* BNDProtocolProxyBase.h in Headers */,
+				EC2D4A101DA8F31700B03A6B /* NSObject+Bond.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -781,6 +794,7 @@
 				ECD626ED1D4DE9BE0040C7BF /* UIBarButtonItem.swift in Sources */,
 				EC9693611D94613A004EB5EE /* Observable2DArray.swift in Sources */,
 				ECC4BE591D4A2E1600880DEC /* UIButton.swift in Sources */,
+				EC2D4A141DA8F36B00B03A6B /* NSObject+Bond.m in Sources */,
 				ECD626F51D4DF0E00040C7BF /* UINavigationBar.swift in Sources */,
 				ECD626F91D4DF1670040C7BF /* UIProgressView.swift in Sources */,
 				16559F831D64F4BC00EDD727 /* UITableView.swift in Sources */,
@@ -832,6 +846,7 @@
 				16D30EFE1D65D64600C2435D /* NSLayoutConstraint.swift in Sources */,
 				EC97EDA41D6C50A5001C54C9 /* NSObject+KVO.swift in Sources */,
 				16D30EBC1D65944500C2435D /* NSButton.swift in Sources */,
+				EC2D4A151DA8F36B00B03A6B /* NSObject+Bond.m in Sources */,
 				1639C0841D6DD3190045959E /* ObservableDictionary.swift in Sources */,
 				16D30ECC1D659CA700C2435D /* NSSlider.swift in Sources */,
 				16D30ECA1D659C1200C2435D /* NSSegmentedControl.swift in Sources */,
@@ -892,6 +907,7 @@
 				16D30EE71D65D16600C2435D /* UIButton.swift in Sources */,
 				1639C08C1D6DD39B0045959E /* Observable.swift in Sources */,
 				EC97EDA11D6C500B001C54C9 /* NSNotificationCenter.swift in Sources */,
+				EC2D4A161DA8F36B00B03A6B /* NSObject+Bond.m in Sources */,
 				16D30EEF1D65D16600C2435D /* UIRefreshControl.swift in Sources */,
 				EC97EDA51D6C50A5001C54C9 /* NSObject+KVO.swift in Sources */,
 			);
