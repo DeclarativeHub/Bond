@@ -84,4 +84,13 @@ public struct DynamicSubject<Target: Deallocatable, Element>: SubjectProtocol, B
       return NonDisposable.instance
     }
   }
+
+  /// Current value if the target is alive, otherwise `nil`.
+  public var value: Element! {
+    if let target = target {
+      return getter(target)
+    } else {
+      return nil
+    }
+  }
 }

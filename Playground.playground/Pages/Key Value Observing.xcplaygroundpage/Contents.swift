@@ -18,7 +18,7 @@ test.dynamic(keyPath: "test", ofType: Optional<String>.self).observeNext { value
 
 test.test = "a"
 test.test = nil
-test.test = "a"
+test.test = "g"
 
 Signal1.just("c").bind(to: test.dynamic(keyPath: "test", ofType: Optional<String>.self))
 
