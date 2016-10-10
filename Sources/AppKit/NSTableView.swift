@@ -75,7 +75,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
           defer { tableView.endUpdates() }
         }
         indexPaths.forEach { indexPath in
-          tableView.insertRows(at: IndexSet(integer: indexPath.item), withAnimation: [])
+          tableView.removeRows(at: IndexSet(integer: indexPath.item), withAnimation: [])
         }
       case .reloadItems(let indexPaths):
         if !updating && indexPaths.count > 1 {
@@ -83,6 +83,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
           defer { tableView.endUpdates() }
         }
         indexPaths.forEach { indexPath in
+          tableView.removeRows(at: IndexSet(integer: indexPath.item), withAnimation: [])
           tableView.insertRows(at: IndexSet(integer: indexPath.item), withAnimation: [])
         }
       case .moveItem(let indexPath, let newIndexPath):
