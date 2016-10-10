@@ -502,7 +502,7 @@ There are many other methods. Just look at the code reference or source.
 ### CocoaPods
 
 1. Add the following to your *Podfile*:
-  <br> `pod 'Bond', '~> 5.0-beta8'`
+  <br> `pod 'Bond', '~> 5.0-beta9'`
 2. Run `pod install`.
 
 ## <a name="migration"></a>Migration
