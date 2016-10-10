@@ -522,7 +522,7 @@ What that means for you? Well, nothing has changed conceptually so your migratio
 * `ObservableArray` is reimplemented. Mapping and filtering it is not supported any more.
 * `ObservableArray` is now immutable. Use `MutableObservableArray` instead.
 * Table view and collection view binding closure now has the data source as first argument and the index path as second argument.
-* KVO can now be established using thr method `valueFor(keyPath:)` on any NSObject subclass.
+* KVO can now be established using the method `dynamic(keyPath:ofType:)` on any NSObject subclass.
 * `Queue` is removed. Use `DispatchQueue` instead.
 
 
