@@ -93,4 +93,19 @@ public struct DynamicSubject<Target: Deallocatable, Element>: SubjectProtocol, B
       return nil
     }
   }
+  
+  /// Transform the `getter` and `setter` by applying a `transform` on them.
+  public func bidirectionalMap<U>(to getTransform: @escaping (Element) -> U,
+                               from setTransform: @escaping (U) -> Element) -> DynamicSubject<Target, U>! {
+    guard let target = target else { return nil }
+    
+    return DynamicSubject<Target, U>(target: target,
+                                     signal: signal,
+                                     get: { [getter] (target) -> U in
+                                      return getTransform(getter(target))
+      },
+                                     set: { [setter] (target, element) in
+                                      setter(target, setTransform(element))
+      })
+  }
 }
