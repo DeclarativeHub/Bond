@@ -99,13 +99,15 @@ public struct DynamicSubject<Target: Deallocatable, Element>: SubjectProtocol, B
                                from setTransform: @escaping (U) -> Element) -> DynamicSubject<Target, U>! {
     guard let target = target else { return nil }
     
-    return DynamicSubject<Target, U>(target: target,
-                                     signal: signal,
-                                     get: { [getter] (target) -> U in
-                                      return getTransform(getter(target))
+    return DynamicSubject<Target, U>(
+      target: target,
+      signal: signal,
+      get: { [getter] (target) -> U in
+        return getTransform(getter(target))
       },
-                                     set: { [setter] (target, element) in
-                                      setter(target, setTransform(element))
-      })
+      set: { [setter] (target, element) in
+        setter(target, setTransform(element))
+      }
+    )
   }
 }
