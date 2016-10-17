@@ -35,6 +35,10 @@ public extension NSObject {
       set: { $0.setValue($1, forKeyPath: keyPath) }
     )
   }
+  
+  public func dynamic<T>(keyPath: String) -> DynamicSubject<NSObject, T> {
+    return dynamic(keyPath: keyPath, ofType: T.self)
+  }
 
   public func dynamic<T>(keyPath: String, ofType: T.Type) -> DynamicSubject<NSObject, T> where T: OptionalProtocol {
     return DynamicSubject(
@@ -50,6 +54,11 @@ public extension NSObject {
       }
     )
   }
+  
+  public func dynamic<T>(keyPath: String) -> DynamicSubject<NSObject, T> where T: OptionalProtocol {
+    return dynamic(keyPath: keyPath, ofType: T.self)
+  }
+  
 }
 
 // MARK: - Implementation
