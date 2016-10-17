@@ -516,7 +516,7 @@ Bindings have been improved and simplified. It gives them better performances an
 What that means for you? Well, nothing has changed conceptually so your migration should be easy. Following is a list of changes:
 
 * `EventProducer` is removed. Use Signal from ReactiveKit for reactive programming.
-* Operator `deliverOn` is renamed to `observeOn`.
+* Operator `deliverOn` is renamed to `observeIn`.
 * Method `bindTo` is renamed to `bind(to:)`.
 * Method `observe` is renamed to `observeNext`.
 * `ObservableArray` is reimplemented. Mapping and filtering it is not supported any more.
