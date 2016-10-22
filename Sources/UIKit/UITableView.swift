@@ -121,7 +121,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
 
     let serialDisposable = SerialDisposable(otherDisposable: nil)
 
-    serialDisposable.otherDisposable = observeIn(context: ImmediateOnMainExecutionContext).observeNext { [weak tableView] event in
+    serialDisposable.otherDisposable = observeIn(ImmediateOnMainExecutionContext).observeNext { [weak tableView] event in
       guard let tableView = tableView else {
         serialDisposable.dispose()
         return
