@@ -25,17 +25,17 @@
 import ReactiveKit
 import Foundation
 
-public struct DynamicSubject<Target: Deallocatable, Element>: SubjectProtocol, BindableProtocol {
+public struct DynamicSubject2<Target: Deallocatable, Element, Error: Swift.Error>: SubjectProtocol, BindableProtocol {
 
   private weak var target: Target?
-  private var signal: Signal<Void, NoError>
-  private let getter: (Target) -> Element
+  private var signal: Signal<Void, Error>
+  private let getter: (Target) -> Result<Element, Error>
   private let setter: (Target, Element) -> Void
-  private let subject = PublishSubject<Void, NoError>()
-  
+  private let subject = PublishSubject<Void, Error>()
+
   public init(target: Target,
-              signal: Signal<Void, NoError>,
-              get: @escaping (Target) -> Element,
+              signal: Signal<Void, Error>,
+              get: @escaping (Target) -> Result<Element, Error>,
               set: @escaping (Target, Element) -> Void) {
     self.target = target
     self.signal = signal
@@ -43,25 +43,40 @@ public struct DynamicSubject<Target: Deallocatable, Element>: SubjectProtocol, B
     self.setter = set
   }
 
-  public func on(_ event: Event<Element, NoError>) {
+  public init(target: Target,
+              signal: Signal<Void, Error>,
+              get: @escaping (Target) -> Element,
+              set: @escaping (Target, Element) -> Void) {
+    self.target = target
+    self.signal = signal
+    self.getter = { .success(get($0)) }
+    self.setter = set
+  }
+
+  public func on(_ event: Event<Element, Error>) {
     if case .next(let element) = event, let target = target {
       setter(target, element)
       subject.next()
     }
   }
 
-  public func observe(with observer: @escaping (Event<Element, NoError>) -> Void) -> Disposable {
+  public func observe(with observer: @escaping (Event<Element, Error>) -> Void) -> Disposable {
     guard let target = target else { observer(.completed); return NonDisposable.instance }
     let getter = self.getter
-    return signal.start(with: ()).merge(with: subject).map { [weak target] () -> Element? in
+    return signal.start(with: ()).merge(with: subject).tryMap { [weak target] () -> Result<Element?, Error> in
       if let target = target {
-        return getter(target)
+        switch getter(target) {
+        case .success(let element):
+          return .success(element)
+        case .failure(let error):
+          return .failure(error)
+        }
       } else {
-        return nil
+        return .success(nil)
       }
-    }.ignoreNil().take(until: target.bnd_deallocated).observe(with: observer)
+      }.ignoreNil().take(until: target.bnd_deallocated).observe(with: observer)
   }
-  
+
   public func bind(signal: Signal<Element, NoError>) -> Disposable {
     if let target = target {
       let setter = self.setter
@@ -73,10 +88,8 @@ public struct DynamicSubject<Target: Deallocatable, Element>: SubjectProtocol, B
             guard let target = target else { return }
             setter(target, element)
             subject.next()
-          case .failed(let error):
-            subject.failed(error)
-          case .completed:
-            subject.completed()
+          default:
+            break
           }
         }
       }
@@ -88,22 +101,32 @@ public struct DynamicSubject<Target: Deallocatable, Element>: SubjectProtocol, B
   /// Current value if the target is alive, otherwise `nil`.
   public var value: Element! {
     if let target = target {
-      return getter(target)
+      switch getter(target) {
+      case .success(let value):
+        return value
+      case .failure:
+        return nil
+      }
     } else {
       return nil
     }
   }
-  
+
   /// Transform the `getter` and `setter` by applying a `transform` on them.
   public func bidirectionalMap<U>(to getTransform: @escaping (Element) -> U,
-                               from setTransform: @escaping (U) -> Element) -> DynamicSubject<Target, U>! {
+                               from setTransform: @escaping (U) -> Element) -> DynamicSubject2<Target, U, Error>! {
     guard let target = target else { return nil }
-    
-    return DynamicSubject<Target, U>(
+
+    return DynamicSubject2<Target, U, Error>(
       target: target,
       signal: signal,
-      get: { [getter] (target) -> U in
-        return getTransform(getter(target))
+      get: { [getter] (target) -> Result<U, Error> in
+        switch getter(target) {
+        case .success(let value):
+          return .success(getTransform(value))
+        case .failure(let error):
+          return .failure(error)
+        }
       },
       set: { [setter] (target, element) in
         setter(target, setTransform(element))
@@ -111,3 +134,5 @@ public struct DynamicSubject<Target: Deallocatable, Element>: SubjectProtocol, B
     )
   }
 }
+
+public typealias DynamicSubject<Target: Deallocatable, Element> = DynamicSubject2<Target, Element, NoError>

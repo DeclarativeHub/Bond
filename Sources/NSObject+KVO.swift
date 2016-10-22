@@ -27,20 +27,100 @@ import ReactiveKit
 
 public extension NSObject {
 
+  public enum KVOError: Error {
+    case notConvertible(String)
+  }
+
+  /// Returns a ```DynamicSubject``` representing the given KVO path of the given type.
+  ///
+  /// E.g. ```user.dynamic(keyPath: "name", ofType: String.self)```
+  ///
   public func dynamic<T>(keyPath: String, ofType: T.Type) -> DynamicSubject<NSObject, T> {
     return DynamicSubject(
       target: self,
       signal: RKKeyValueSignal(keyPath: keyPath, for: self).toSignal(),
-      get: { $0.value(forKeyPath: keyPath) as! T },
+      get: { (target) -> T in
+        let maybeValue = target.value(forKeyPath: keyPath)
+        if let value = maybeValue as? T {
+          return value
+        } else {
+          fatalError("Could not convert \(maybeValue) to \(T.self). Maybe `dynamic(keyPath:ofExpectedType:)` method might be of help?)")
+        }
+      },
       set: { $0.setValue($1, forKeyPath: keyPath) }
     )
   }
 
+  /// Returns a ```DynamicSubject``` representing the given KVO path of the given type.
+  ///
+  /// E.g. ```user.dynamic(keyPath: "name", ofType: Optional<String>.self)```
+  ///
   public func dynamic<T>(keyPath: String, ofType: T.Type) -> DynamicSubject<NSObject, T> where T: OptionalProtocol {
     return DynamicSubject(
       target: self,
       signal: RKKeyValueSignal(keyPath: keyPath, for: self).toSignal(),
-      get: { ($0.value(forKeyPath: keyPath) as? T) ?? T(nilLiteral: ()) },
+      get: { (target) -> T in
+        let maybeValue = target.value(forKeyPath: keyPath)
+        if let value = maybeValue as? T {
+          return value
+        } else if maybeValue == nil {
+          return T(nilLiteral: ())
+        } else {
+          fatalError("Could not convert \(maybeValue) to \(T.self). Maybe `dynamic(keyPath:ofExpectedType:)` method might be of help?)")
+        }
+      },
+      set: {
+        if let value = $1._unbox {
+          $0.setValue(value, forKeyPath: keyPath)
+        } else {
+          $0.setValue(nil, forKeyPath: keyPath)
+        }
+      }
+    )
+  }
+
+  /// Returns a ```DynamicSubject``` representing the given KVO path of the given expected type.
+  ///
+  /// If the key path emits a value other than ```ofExpectedType```, the subject will fail with a ```KVOError```.
+  ///
+  /// E.g. ```user.dynamic(keyPath: "name", ofType: String.self)```
+  ///
+  public func dynamic<T>(keyPath: String, ofExpectedType: T.Type) -> DynamicSubject2<NSObject, T, KVOError> {
+    return DynamicSubject2(
+      target: self,
+      signal: RKKeyValueSignal(keyPath: keyPath, for: self).castError(),
+      get: { (target) -> Result<T, KVOError> in
+        let maybeValue = target.value(forKeyPath: keyPath)
+        if let value = maybeValue as? T {
+          return .success(value)
+        } else {
+          return .failure(.notConvertible("Could not convert \(maybeValue) to \(T.self)."))
+        }
+      },
+      set: { $0.setValue($1, forKeyPath: keyPath) }
+    )
+  }
+
+  /// Returns a ```DynamicSubject``` representing the given KVO path of the given expected type.
+  ///
+  /// If the key path emits a value other than ```ofExpectedType```, the subject will fail with a ```KVOError```.
+  ///
+  /// E.g. ```user.dynamic(keyPath: "name", ofType: Optional<String>.self)```
+  ///
+  public func dynamic<T>(keyPath: String, ofExpectedType: T.Type) -> DynamicSubject2<NSObject, T, KVOError> where T: OptionalProtocol {
+    return DynamicSubject2(
+      target: self,
+      signal: RKKeyValueSignal(keyPath: keyPath, for: self).castError(),
+      get: { (target) -> Result<T, KVOError> in
+        let maybeValue = target.value(forKeyPath: keyPath)
+        if let value = maybeValue as? T {
+          return .success(value)
+        } else if maybeValue == nil {
+          return .success(T(nilLiteral: ()))
+        } else {
+          return .failure(.notConvertible("Could not convert \(maybeValue) to \(T.self)."))
+        }
+      },
       set: {
         if let value = $1._unbox {
           $0.setValue(value, forKeyPath: keyPath)

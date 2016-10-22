@@ -84,7 +84,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
     let serialDisposable = SerialDisposable(otherDisposable: nil)
     var bufferedEvents: [DataSourceEventKind]? = nil
 
-    serialDisposable.otherDisposable = observeIn(ImmediateOnMainExecutionContext).observeNext { [weak collectionView] event in
+    serialDisposable.otherDisposable = observeIn(context: ImmediateOnMainExecutionContext).observeNext { [weak collectionView] event in
       guard let collectionView = collectionView else {
         serialDisposable.dispose()
         return

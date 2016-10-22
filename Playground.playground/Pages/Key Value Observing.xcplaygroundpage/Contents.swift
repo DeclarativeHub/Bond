@@ -6,14 +6,14 @@ import ReactiveKit
 import PlaygroundSupport
 
 class Test: NSObject {
-  dynamic var test: String? = "0"
+  dynamic var test: String! = "0"
 }
 
 var test: Test! = Test()
 weak var weakTest: Test? = test
 
-test.dynamic(keyPath: "test", ofType: Optional<String>.self).observeNext { value in
-  print(value)
+test.dynamic(keyPath: "test", ofType: Optional<String>.self).observe { event in
+  print(event)
 }
 
 test.test = "a"
