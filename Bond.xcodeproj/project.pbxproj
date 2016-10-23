@@ -83,6 +83,7 @@
 		16D30F071D65D7F800C2435D /* NSColorWell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30F061D65D7F800C2435D /* NSColorWell.swift */; };
 		16D30F091D65D82D00C2435D /* NSAppearanceCustomization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30F081D65D82C00C2435D /* NSAppearanceCustomization.swift */; };
 		16D30F0B1D65E8C700C2435D /* NSTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30F0A1D65E8C700C2435D /* NSTableView.swift */; };
+		EC06A8761DBCB147006AEA81 /* NSObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC06A8751DBCB147006AEA81 /* NSObjectTests.swift */; };
 		EC2505B11D3F570500A6E14A /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2505B01D3F570500A6E14A /* UILabel.swift */; };
 		EC2505B31D3F571500A6E14A /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2505B21D3F571500A6E14A /* UITextField.swift */; };
 		EC2D4A0E1DA8F31700B03A6B /* NSObject+Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = EC2D4A0D1DA8F31700B03A6B /* NSObject+Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -258,6 +259,7 @@
 		16D30F061D65D7F800C2435D /* NSColorWell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSColorWell.swift; sourceTree = "<group>"; };
 		16D30F081D65D82C00C2435D /* NSAppearanceCustomization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSAppearanceCustomization.swift; sourceTree = "<group>"; };
 		16D30F0A1D65E8C700C2435D /* NSTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTableView.swift; sourceTree = "<group>"; };
+		EC06A8751DBCB147006AEA81 /* NSObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSObjectTests.swift; sourceTree = "<group>"; };
 		EC2505B01D3F570500A6E14A /* UILabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UILabel.swift; path = Sources/UIKit/UILabel.swift; sourceTree = SOURCE_ROOT; };
 		EC2505B21D3F571500A6E14A /* UITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UITextField.swift; path = Sources/UIKit/UITextField.swift; sourceTree = SOURCE_ROOT; };
 		EC2D4A0D1DA8F31700B03A6B /* NSObject+Bond.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+Bond.h"; path = "Bond/NSObject+Bond.h"; sourceTree = SOURCE_ROOT; };
@@ -413,6 +415,7 @@
 				16210A4A1D3EC474004AEDF3 /* UIKitTests.swift */,
 				EC96935A1D943B15004EB5EE /* UITableViewTests.swift */,
 				EC96935E1D945CC6004EB5EE /* UICollectionViewTests.swift */,
+				EC06A8751DBCB147006AEA81 /* NSObjectTests.swift */,
 				16887E311D744A1400EDA099 /* Helpers.swift */,
 				16210A4C1D3EC474004AEDF3 /* Info.plist */,
 			);
@@ -816,6 +819,7 @@
 				ECCF8A521D8FFEF300575DA8 /* ObservableArrayTests.swift in Sources */,
 				16887E301D74499A00EDA099 /* ProtocolProxyTests.swift in Sources */,
 				ECD5940A1D93EC9700C840C2 /* DynamicSubjectTests.swift in Sources */,
+				EC06A8761DBCB147006AEA81 /* NSObjectTests.swift in Sources */,
 				ECCF8A581D9007AF00575DA8 /* BondTests.swift in Sources */,
 				EC96935B1D943B15004EB5EE /* UITableViewTests.swift in Sources */,
 				16887E321D744A1400EDA099 /* Helpers.swift in Sources */,

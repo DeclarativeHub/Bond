@@ -39,6 +39,8 @@ extension Event {
         return left == right
       } else if let left = left as? [String], let right = right as? [String] {
         return left == right
+      } else if let left = asOptional(left) as? Optional<String>, let right = asOptional(right) as? Optional<String> {
+        return left == right
       } else if let left = left as? ObservableArrayEvent<Int>, let right = right as? ObservableArrayEvent<Int> {
         return left.change == right.change && left.source === right.source
       } else if left is Void, right is Void {
@@ -49,6 +51,17 @@ extension Event {
     default:
       return false
     }
+  }
+}
+
+private func asOptional(_ object: Any) -> Any? {
+  let mirror = Mirror(reflecting: object)
+  if mirror.displayStyle != .optional {
+    return object
+  } else if mirror.children.count == 0 {
+    return nil
+  } else {
+    return mirror.children.first!.value
   }
 }
 

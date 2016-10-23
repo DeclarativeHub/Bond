@@ -47,7 +47,10 @@ public extension NSObject {
           fatalError("Could not convert \(maybeValue) to \(T.self). Maybe `dynamic(keyPath:ofExpectedType:)` method might be of help?)")
         }
       },
-      set: { $0.setValue($1, forKeyPath: keyPath) }
+      set: {
+        $0.setValue($1, forKeyPath: keyPath)
+      },
+      triggerEventOnSetting: false
     )
   }
 
@@ -75,7 +78,8 @@ public extension NSObject {
         } else {
           $0.setValue(nil, forKeyPath: keyPath)
         }
-      }
+      },
+      triggerEventOnSetting: false
     )
   }
 
@@ -97,7 +101,10 @@ public extension NSObject {
           return .failure(.notConvertible("Could not convert \(maybeValue) to \(T.self)."))
         }
       },
-      set: { $0.setValue($1, forKeyPath: keyPath) }
+      set: {
+        $0.setValue($1, forKeyPath: keyPath)
+      },
+      triggerEventOnSetting: false
     )
   }
 
@@ -127,7 +134,8 @@ public extension NSObject {
         } else {
           $0.setValue(nil, forKeyPath: keyPath)
         }
-      }
+      },
+      triggerEventOnSetting: false
     )
   }
 }

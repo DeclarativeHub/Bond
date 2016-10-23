@@ -32,31 +32,38 @@ public struct DynamicSubject2<Target: Deallocatable, Element, Error: Swift.Error
   private let getter: (Target) -> Result<Element, Error>
   private let setter: (Target, Element) -> Void
   private let subject = PublishSubject<Void, Error>()
+  private let triggerEventOnSetting: Bool
 
   public init(target: Target,
               signal: Signal<Void, Error>,
               get: @escaping (Target) -> Result<Element, Error>,
-              set: @escaping (Target, Element) -> Void) {
+              set: @escaping (Target, Element) -> Void,
+              triggerEventOnSetting: Bool = true) {
     self.target = target
     self.signal = signal
     self.getter = get
     self.setter = set
+    self.triggerEventOnSetting = triggerEventOnSetting
   }
 
   public init(target: Target,
               signal: Signal<Void, Error>,
               get: @escaping (Target) -> Element,
-              set: @escaping (Target, Element) -> Void) {
+              set: @escaping (Target, Element) -> Void,
+              triggerEventOnSetting: Bool = true) {
     self.target = target
     self.signal = signal
     self.getter = { .success(get($0)) }
     self.setter = set
+    self.triggerEventOnSetting = triggerEventOnSetting
   }
 
   public func on(_ event: Event<Element, Error>) {
     if case .next(let element) = event, let target = target {
       setter(target, element)
-      subject.next()
+      if triggerEventOnSetting {
+        subject.next()
+      }
     }
   }
 
@@ -81,13 +88,16 @@ public struct DynamicSubject2<Target: Deallocatable, Element, Error: Swift.Error
     if let target = target {
       let setter = self.setter
       let subject = self.subject
+      let triggerEventOnSetting = self.triggerEventOnSetting
       return signal.take(until: target.bnd_deallocated).observe { [weak target] event in
         ImmediateOnMainExecutionContext { [weak target] in
           switch event {
           case .next(let element):
             guard let target = target else { return }
             setter(target, element)
-            subject.next()
+            if triggerEventOnSetting {
+              subject.next()
+            }
           default:
             break
           }
