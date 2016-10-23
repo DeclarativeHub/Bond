@@ -42,7 +42,7 @@ public class ObservableSet<Element: Hashable>: Collection, SignalProtocol {
 
   fileprivate var set: Set<Element>
   fileprivate let subject = PublishSubject<ObservableSetEvent<Element>, NoError>()
-  fileprivate let lock = NSRecursiveLock(name: "ObservableSet")
+  fileprivate let lock = NSRecursiveLock(name: "com.reactivekit.bond.observableset")
 
   public init(_ set: Set<Element>) {
     self.set = set

@@ -150,7 +150,7 @@ private class RKKeyValueSignal: NSObject, SignalProtocol {
   private var numberOfObservers: Int = 0
   private var observing = false
   private let deallocationDisposable = SerialDisposable(otherDisposable: nil)
-  private let lock = NSRecursiveLock(name: "ReactiveKit.Bond.RKKeyValueSignal")
+  private let lock = NSRecursiveLock(name: "com.reactivekit.bond.rkkeyvaluesignal")
   
   fileprivate init(keyPath: String, for object: NSObject) {
     self.keyPath = keyPath
@@ -217,7 +217,7 @@ extension NSObject {
   private struct StaticVariables {
     static var willDeallocateSubject = "WillDeallocateSubject"
     static var swizzledTypes: Set<String> = []
-    static var lock = NSRecursiveLock(name: "ReactiveKit.Bond.NSObject")
+    static var lock = NSRecursiveLock(name: "com.reactivekit.bond.nsobject")
   }
 
   private var _willDeallocateSubject: ReplayOneSubject<NSObject, NoError>? {

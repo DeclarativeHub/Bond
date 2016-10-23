@@ -44,6 +44,7 @@ extension NSObject: Deallocatable {
     }
   }
 
+  /// A signal that fires completion event when the object is deallocated.
   public var bnd_deallocated: Signal<Void, NoError> {
     if let helper = objc_getAssociatedObject(self, &AssociatedKeys.DeallocationSignalHelper) as? BNDDeallocationSignalHelper {
       return helper.subject.toSignal()

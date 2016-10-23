@@ -13,6 +13,35 @@ import XCTest
 class NSObjectTests: XCTestCase {
 
   class TestObject: NSObject {
+  }
+
+  var object: TestObject!
+
+  override func setUp() {
+    super.setUp()
+    object = TestObject()
+  }
+
+  func testBndDeallocated() {
+    object.bnd_deallocated.expect([.completed], expectation: expectation(description: #function))
+    object = nil
+    waitForExpectations(timeout: 1)
+  }
+
+  func testBndBag() {
+    let d1 = SimpleDisposable()
+    let d2 = SimpleDisposable()
+    object.bnd_bag.add(disposable: d1)
+    d2.disposeIn(object.bnd_bag)
+    object = nil
+    XCTAssert(d1.isDisposed)
+    XCTAssert(d2.isDisposed)
+  }
+}
+
+class NSObjectKVOTests: XCTestCase {
+
+  class TestObject: NSObject {
     dynamic var property: Any! = "a"
   }
 
@@ -103,5 +132,14 @@ class NSObjectTests: XCTestCase {
     let subject = object.dynamic(keyPath: "property", ofExpectedType: Optional<String>.self)
     subject.expect([.next("a"), .failed(.notConvertible(""))])
     object.property = 5
+  }
+
+  func testDeallocation() {
+    let subject = object.dynamic(keyPath: "property", ofExpectedType: String.self)
+    subject.expect([.next("a"), .completed], expectation: expectation(description: #function))
+    weak var weakObject = object
+    object = nil
+    XCTAssert(weakObject == nil)
+    waitForExpectations(timeout: 1)
   }
 }
