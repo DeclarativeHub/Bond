@@ -106,92 +106,82 @@ public class MutableObservableArray<Item>: ObservableArray<Item> {
   
   /// Append `newElement` to the array.
   public func append(_ newElement: Item) {
-    lock.atomic {
-      array.append(newElement)
-      subject.next(ObservableArrayEvent(change: .inserts([array.count-1]), source: self))
-    }
+    lock.lock(); defer { lock.unlock() }
+    array.append(newElement)
+    subject.next(ObservableArrayEvent(change: .inserts([array.count-1]), source: self))
   }
   
   /// Insert `newElement` at index `i`.
   public func insert(_ newElement: Item, at index: Int)  {
-    lock.atomic {
-      array.insert(newElement, at: index)
-      subject.next(ObservableArrayEvent(change: .inserts([index]), source: self))
-    }
+    lock.lock(); defer { lock.unlock() }
+    array.insert(newElement, at: index)
+    subject.next(ObservableArrayEvent(change: .inserts([index]), source: self))
   }
   
   /// Insert elements `newElements` at index `i`.
   public func insert(contentsOf newElements: [Item], at index: Int) {
-    lock.atomic {
-      array.insert(contentsOf: newElements, at: index)
-      subject.next(ObservableArrayEvent(change: .inserts(Array(index..<index+newElements.count)), source: self))
-    }
+    lock.lock(); defer { lock.unlock() }
+    array.insert(contentsOf: newElements, at: index)
+    subject.next(ObservableArrayEvent(change: .inserts(Array(index..<index+newElements.count)), source: self))
   }
   
   /// Move the element at index `i` to index `toIndex`.
   public func moveItem(from fromIndex: Int, to toIndex: Int) {
-    lock.atomic {
-      let item = array.remove(at: fromIndex)
-      array.insert(item, at: toIndex)
-      subject.next(ObservableArrayEvent(change: .move(fromIndex, toIndex), source: self))
-    }
+    lock.lock(); defer { lock.unlock() }
+    let item = array.remove(at: fromIndex)
+    array.insert(item, at: toIndex)
+    subject.next(ObservableArrayEvent(change: .move(fromIndex, toIndex), source: self))
   }
-  
+
   /// Remove and return the element at index i.
   @discardableResult
   public func remove(at index: Int) -> Item {
-    return lock.atomic {
-      let element = array.remove(at: index)
-      subject.next(ObservableArrayEvent(change: .deletes([index]), source: self))
-      return element
-    }
+    lock.lock(); defer { lock.unlock() }
+    let element = array.remove(at: index)
+    subject.next(ObservableArrayEvent(change: .deletes([index]), source: self))
+    return element
   }
-  
+
   /// Remove an element from the end of the array in O(1).
   @discardableResult
   public func removeLast() -> Item {
-    return lock.atomic {
-      let element = array.removeLast()
-      subject.next(ObservableArrayEvent(change: .deletes([array.count]), source: self))
-      return element
-    }
+    lock.lock(); defer { lock.unlock() }
+    let element = array.removeLast()
+    subject.next(ObservableArrayEvent(change: .deletes([array.count]), source: self))
+    return element
   }
-  
+
   /// Remove all elements from the array.
   public func removeAll() {
-    lock.atomic {
-      let deletes = Array(0..<array.count)
-      array.removeAll()
-      subject.next(ObservableArrayEvent(change: .deletes(deletes), source: self))
-    }
+    lock.lock(); defer { lock.unlock() }
+    let deletes = Array(0..<array.count)
+    array.removeAll()
+    subject.next(ObservableArrayEvent(change: .deletes(deletes), source: self))
   }
-  
+
   public override subscript(index: Int) -> Item {
     get {
       return array[index]
     }
     set {
-      lock.atomic {
-        array[index] = newValue
-        subject.next(ObservableArrayEvent(change: .updates([index]), source: self))
-      }
+      lock.lock(); defer { lock.unlock() }
+      array[index] = newValue
+      subject.next(ObservableArrayEvent(change: .updates([index]), source: self))
     }
   }
   
   /// Perform batched updates on the array.
   public func batchUpdate(_ update: (MutableObservableArray<Item>) -> Void) {
-    lock.atomic {
-      subject.next(ObservableArrayEvent(change: .beginBatchEditing, source: self))
-      update(self)
-      subject.next(ObservableArrayEvent(change: .endBatchEditing, source: self))
-    }
+    lock.lock(); defer { lock.unlock() }
+    subject.next(ObservableArrayEvent(change: .beginBatchEditing, source: self))
+    update(self)
+    subject.next(ObservableArrayEvent(change: .endBatchEditing, source: self))
   }
-  
+
   /// Change the underlying value withouth notifying the observers.
   public func silentUpdate(_ update: (inout [Item]) -> Void) {
-    lock.atomic {
-      update(&array)
-    }
+    lock.lock(); defer { lock.unlock() }
+    update(&array)
   }
 }
 
@@ -301,10 +291,9 @@ extension Array where Element: Equatable {
 extension MutableObservableArray {
   
   public func replace(with array: [Item]) {
-    lock.atomic {
-      self.array = array
-      subject.next(ObservableArrayEvent(change: .reset, source: self))
-    }
+    lock.lock(); defer { lock.unlock() }
+    self.array = array
+    subject.next(ObservableArrayEvent(change: .reset, source: self))
   }
 }
 
@@ -312,29 +301,29 @@ extension MutableObservableArray where Item: Equatable {
   
   public func replace(with array: [Item], performDiff: Bool) {
     if performDiff {
-      lock.atomic {
-        let diff = Array.diff(self.array, array)
-        
-        var deletes: [Int] = []
-        var inserts: [Int] = []
-        deletes.reserveCapacity(diff.count)
-        inserts.reserveCapacity(diff.count)
-        
-        for diffStep in diff {
-          switch diffStep {
-          case .insert(_, let index):
-            inserts.append(index)
-          case .delete(_, let index):
-            deletes.append(index)
-          }
+      lock.lock()
+      let diff = Array.diff(self.array, array)
+
+      var deletes: [Int] = []
+      var inserts: [Int] = []
+      deletes.reserveCapacity(diff.count)
+      inserts.reserveCapacity(diff.count)
+
+      for diffStep in diff {
+        switch diffStep {
+        case .insert(_, let index):
+          inserts.append(index)
+        case .delete(_, let index):
+          deletes.append(index)
         }
-        
-        subject.next(ObservableArrayEvent(change: .beginBatchEditing, source: self))
-        self.array = array
-        subject.next(ObservableArrayEvent(change: .deletes(deletes), source: self))
-        subject.next(ObservableArrayEvent(change: .inserts(inserts), source: self))
-        subject.next(ObservableArrayEvent(change: .endBatchEditing, source: self))
       }
+
+      subject.next(ObservableArrayEvent(change: .beginBatchEditing, source: self))
+      self.array = array
+      subject.next(ObservableArrayEvent(change: .deletes(deletes), source: self))
+      subject.next(ObservableArrayEvent(change: .inserts(inserts), source: self))
+      subject.next(ObservableArrayEvent(change: .endBatchEditing, source: self))
+      lock.unlock()
     } else {
       replace(with: array)
     }

@@ -157,15 +157,16 @@ private class RKKeyValueSignal: NSObject, SignalProtocol {
     self.subject = AnySubject(base: PublishSubject())
     self.object = object
     super.init()
-    lock.atomic {
-      deallocationDisposable.otherDisposable = object._willDeallocate.observeNext { object in
-        if self.observing {
-          object.removeObserver(self, forKeyPath: self.keyPath, context: &self.context)
-        }
+
+    lock.lock()
+    deallocationDisposable.otherDisposable = object._willDeallocate.observeNext { object in
+      if self.observing {
+        object.removeObserver(self, forKeyPath: self.keyPath, context: &self.context)
       }
     }
+    lock.unlock()
   }
-  
+
   deinit {
     deallocationDisposable.dispose()
     subject.completed()
@@ -182,25 +183,23 @@ private class RKKeyValueSignal: NSObject, SignalProtocol {
   }
 
   private func increaseNumberOfObservers() {
-    lock.atomic {
-      numberOfObservers += 1
-      if let object = object, numberOfObservers == 1 && !observing {
-        observing = true
-        object.addObserver(self, forKeyPath: keyPath, options: [.new], context: &self.context)
-      }
+    lock.lock(); defer { lock.unlock() }
+    numberOfObservers += 1
+    if let object = object, numberOfObservers == 1 && !observing {
+      observing = true
+      object.addObserver(self, forKeyPath: keyPath, options: [.new], context: &self.context)
     }
   }
-  
+
   private func decreaseNumberOfObservers() {
-    lock.atomic {
-      numberOfObservers -= 1
-      if let object = object, numberOfObservers == 0 && observing {
-        observing = false
-        object.removeObserver(self, forKeyPath: self.keyPath, context: &self.context)
-      }
+    lock.lock(); defer { lock.unlock() }
+    numberOfObservers -= 1
+    if let object = object, numberOfObservers == 0 && observing {
+      observing = false
+      object.removeObserver(self, forKeyPath: self.keyPath, context: &self.context)
     }
   }
-  
+
   fileprivate func observe(with observer: @escaping (Event<Void, NoError>) -> Void) -> Disposable {
     increaseNumberOfObservers()
     let disposable = subject.observe(with: observer)
@@ -225,22 +224,21 @@ extension NSObject {
   }
 
   fileprivate var _willDeallocate: Signal<NSObject, NoError> {
-    return StaticVariables.lock.atomic {
-      if let subject = _willDeallocateSubject {
-        return subject.toSignal()
-      } else {
-        let typeName: String = String(describing: type(of: self))
+    StaticVariables.lock.lock(); defer { StaticVariables.lock.unlock() }
+    if let subject = _willDeallocateSubject {
+      return subject.toSignal()
+    } else {
+      let typeName: String = String(describing: type(of: self))
 
-        if !StaticVariables.swizzledTypes.contains(typeName) {
-          type(of: self)._swizzleDeinit()
-          StaticVariables.swizzledTypes.insert(typeName)
-        }
-
-        let subject = ReplayOneSubject<NSObject, NoError>()
-        objc_setAssociatedObject(self, &StaticVariables.willDeallocateSubject, subject, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-
-        return subject.toSignal()
+      if !StaticVariables.swizzledTypes.contains(typeName) {
+        type(of: self)._swizzleDeinit()
+        StaticVariables.swizzledTypes.insert(typeName)
       }
+
+      let subject = ReplayOneSubject<NSObject, NoError>()
+      objc_setAssociatedObject(self, &StaticVariables.willDeallocateSubject, subject, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+
+      return subject.toSignal()
     }
   }
 

@@ -108,51 +108,46 @@ public class MutableObservableSet<Element: Hashable>: ObservableSet<Element> {
 
   /// Insert item in the set.
   public func insert(_ member: Element) {
-    lock.atomic {
-      let index = set.index(of: member)
-      set.insert(member)
-      if let index = index {
-        subject.next(ObservableSetEvent(kind: .updates([index]), source: self))
-      } else {
-        subject.next(ObservableSetEvent(kind: .inserts([set.index(of: member)!]), source: self))
-      }
+    lock.lock(); defer { lock.unlock() }
+    let index = set.index(of: member)
+    set.insert(member)
+    if let index = index {
+      subject.next(ObservableSetEvent(kind: .updates([index]), source: self))
+    } else {
+      subject.next(ObservableSetEvent(kind: .inserts([set.index(of: member)!]), source: self))
     }
   }
 
   /// Remove item from the set.
   @discardableResult
   public func remove(_ member: Element) -> Element? {
-    return lock.atomic {
-      if let index = set.index(of: member) {
-        let element = set.remove(at: index)
-        subject.next(ObservableSetEvent(kind: .deletes([index]), source: self))
-        return element
-      } else {
-        return nil
-      }
+    lock.lock(); defer { lock.unlock() }
+    if let index = set.index(of: member) {
+      let element = set.remove(at: index)
+      subject.next(ObservableSetEvent(kind: .deletes([index]), source: self))
+      return element
+    } else {
+      return nil
     }
   }
 
   public func replace(with set: Set<Element>) {
-    lock.atomic {
-      self.set = set
-      subject.next(ObservableSetEvent(kind: .reset, source: self))
-    }
+    lock.lock(); defer { lock.unlock() }
+    self.set = set
+    subject.next(ObservableSetEvent(kind: .reset, source: self))
   }
 
   /// Perform batched updates on the set.
   public func batchUpdate(_ update: (MutableObservableSet<Element>) -> Void) {
-    lock.atomic {
-      subject.next(ObservableSetEvent(kind: .beginBatchEditing, source: self))
-      update(self)
-      subject.next(ObservableSetEvent(kind: .endBatchEditing, source: self))
-    }
+    lock.lock(); defer { lock.unlock() }
+    subject.next(ObservableSetEvent(kind: .beginBatchEditing, source: self))
+    update(self)
+    subject.next(ObservableSetEvent(kind: .endBatchEditing, source: self))
   }
 
   /// Change the underlying value withouth notifying the observers.
   public func silentUpdate(_ update: (inout Set<Element>) -> Void) {
-    lock.atomic {
-      update(&set)
-    }
+    lock.lock(); defer { lock.unlock() }
+    update(&set)
   }
 }
