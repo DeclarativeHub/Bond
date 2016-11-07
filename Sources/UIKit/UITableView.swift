@@ -64,6 +64,7 @@ extension TableViewBond {
 
 private struct SimpleTableViewBond<DataSource: DataSourceProtocol>: TableViewBond {
 
+  let animated: Bool
   let createCell: (DataSource, IndexPath, UITableView) -> UITableViewCell
 
   func cellForRow(at indexPath: IndexPath, tableView: UITableView, dataSource: DataSource) -> UITableViewCell {
@@ -77,7 +78,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
 
   @discardableResult
   public func bind(to tableView: UITableView, animated: Bool = true, createCell: @escaping (DataSource, IndexPath, UITableView) -> UITableViewCell) -> Disposable {
-    return bind(to: tableView, using: SimpleTableViewBond<DataSource>(createCell: createCell))
+    return bind(to: tableView, using: SimpleTableViewBond<DataSource>(animated: animated, createCell: createCell))
   }
 
   @discardableResult
