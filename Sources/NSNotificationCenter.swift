@@ -30,11 +30,11 @@ extension NotificationCenter {
   /// Observe notifications using a signal.
   public func bnd_notification(name: NSNotification.Name, object: AnyObject? = nil) -> Signal<Notification, NoError> {
     return Signal { observer in
-      let subscription = NotificationCenter.default.addObserver(forName: name, object: object, queue: nil, using: { notification in
+      let subscription = type(of: self).default.addObserver(forName: name, object: object, queue: nil, using: { notification in
         observer.next(notification)
       })
       return BlockDisposable {
-        NotificationCenter.default.removeObserver(subscription)
+        type(of: self).default.removeObserver(subscription)
       }
     }
   }
