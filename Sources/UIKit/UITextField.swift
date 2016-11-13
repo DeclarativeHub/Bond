@@ -39,7 +39,7 @@ public extension UITextField {
   public var bnd_attributedText: DynamicSubject<UITextField, NSAttributedString?> {
     return DynamicSubject(
       target: self,
-      signal: bnd_controlEvents(.editingChanged).eraseType(),
+      signal: bnd_controlEvents(.allEditingEvents).eraseType(),
       get: { $0.attributedText },
       set: { $0.attributedText = $1 }
     )
