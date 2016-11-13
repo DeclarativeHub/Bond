@@ -105,9 +105,9 @@
 		EC9693631D94613A004EB5EE /* Observable2DArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9693601D94613A004EB5EE /* Observable2DArray.swift */; };
 		EC9693661D947243004EB5EE /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16210A3C1D3EC474004AEDF3 /* Bond.framework */; };
 		EC9693671D94724C004EB5EE /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1652178B1D70591E00C9FAEE /* ReactiveKit.framework */; };
-		EC97ED9F1D6C500B001C54C9 /* NSNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97ED9E1D6C500B001C54C9 /* NSNotificationCenter.swift */; };
-		EC97EDA01D6C500B001C54C9 /* NSNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97ED9E1D6C500B001C54C9 /* NSNotificationCenter.swift */; };
-		EC97EDA11D6C500B001C54C9 /* NSNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97ED9E1D6C500B001C54C9 /* NSNotificationCenter.swift */; };
+		EC97ED9F1D6C500B001C54C9 /* NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97ED9E1D6C500B001C54C9 /* NotificationCenter.swift */; };
+		EC97EDA01D6C500B001C54C9 /* NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97ED9E1D6C500B001C54C9 /* NotificationCenter.swift */; };
+		EC97EDA11D6C500B001C54C9 /* NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97ED9E1D6C500B001C54C9 /* NotificationCenter.swift */; };
 		EC97EDA31D6C50A5001C54C9 /* NSObject+KVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97EDA21D6C50A5001C54C9 /* NSObject+KVO.swift */; };
 		EC97EDA41D6C50A5001C54C9 /* NSObject+KVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97EDA21D6C50A5001C54C9 /* NSObject+KVO.swift */; };
 		EC97EDA51D6C50A5001C54C9 /* NSObject+KVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97EDA21D6C50A5001C54C9 /* NSObject+KVO.swift */; };
@@ -275,7 +275,7 @@
 		EC96935A1D943B15004EB5EE /* UITableViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewTests.swift; sourceTree = "<group>"; };
 		EC96935E1D945CC6004EB5EE /* UICollectionViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UICollectionViewTests.swift; sourceTree = "<group>"; };
 		EC9693601D94613A004EB5EE /* Observable2DArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable2DArray.swift; sourceTree = "<group>"; };
-		EC97ED9E1D6C500B001C54C9 /* NSNotificationCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSNotificationCenter.swift; sourceTree = "<group>"; };
+		EC97ED9E1D6C500B001C54C9 /* NotificationCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCenter.swift; sourceTree = "<group>"; };
 		EC97EDA21D6C50A5001C54C9 /* NSObject+KVO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+KVO.swift"; sourceTree = "<group>"; };
 		EC97EDA61D6C51F0001C54C9 /* ProtocolProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProtocolProxy.swift; path = Bond/ProtocolProxy.swift; sourceTree = SOURCE_ROOT; };
 		EC97EDA71D6C51F0001C54C9 /* BNDProtocolProxyBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BNDProtocolProxyBase.h; path = Bond/BNDProtocolProxyBase.h; sourceTree = SOURCE_ROOT; };
@@ -396,7 +396,7 @@
 				EC97EDA21D6C50A5001C54C9 /* NSObject+KVO.swift */,
 				16D30EF81D65D5FD00C2435D /* CALayer.swift */,
 				16D30EFC1D65D64600C2435D /* NSLayoutConstraint.swift */,
-				EC97ED9E1D6C500B001C54C9 /* NSNotificationCenter.swift */,
+				EC97ED9E1D6C500B001C54C9 /* NotificationCenter.swift */,
 				EC97EDA71D6C51F0001C54C9 /* BNDProtocolProxyBase.h */,
 				EC97EDA81D6C51F0001C54C9 /* BNDProtocolProxyBase.m */,
 				EC2D4A0D1DA8F31700B03A6B /* NSObject+Bond.h */,
@@ -810,7 +810,7 @@
 				EC2505B31D3F571500A6E14A /* UITextField.swift in Sources */,
 				EC35401C1D462F4700901AA1 /* UIControl.swift in Sources */,
 				1639C08A1D6DD39B0045959E /* Observable.swift in Sources */,
-				EC97ED9F1D6C500B001C54C9 /* NSNotificationCenter.swift in Sources */,
+				EC97ED9F1D6C500B001C54C9 /* NotificationCenter.swift in Sources */,
 				ECD626FB1D4DF1F50040C7BF /* UIRefreshControl.swift in Sources */,
 				EC97EDA31D6C50A5001C54C9 /* NSObject+KVO.swift in Sources */,
 			);
@@ -861,7 +861,7 @@
 				16D30F051D65D7C000C2435D /* NSMenuItem.swift in Sources */,
 				16D30EC41D65988A00C2435D /* NSControl.swift in Sources */,
 				16D30F031D65D79600C2435D /* NSStatusBarButton.swift in Sources */,
-				EC97EDA01D6C500B001C54C9 /* NSNotificationCenter.swift in Sources */,
+				EC97EDA01D6C500B001C54C9 /* NotificationCenter.swift in Sources */,
 				16D30ED01D659E0600C2435D /* NSView.swift in Sources */,
 				1639C0871D6DD3190045959E /* ObservableSet.swift in Sources */,
 				16D30EC21D65961300C2435D /* NSObject.swift in Sources */,
@@ -914,7 +914,7 @@
 				16D30EE91D65D16600C2435D /* UIDatePicker.swift in Sources */,
 				16D30EE71D65D16600C2435D /* UIButton.swift in Sources */,
 				1639C08C1D6DD39B0045959E /* Observable.swift in Sources */,
-				EC97EDA11D6C500B001C54C9 /* NSNotificationCenter.swift in Sources */,
+				EC97EDA11D6C500B001C54C9 /* NotificationCenter.swift in Sources */,
 				EC2D4A161DA8F36B00B03A6B /* NSObject+Bond.m in Sources */,
 				16D30EEF1D65D16600C2435D /* UIRefreshControl.swift in Sources */,
 				EC97EDA51D6C50A5001C54C9 /* NSObject+KVO.swift in Sources */,
