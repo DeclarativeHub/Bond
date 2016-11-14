@@ -40,7 +40,7 @@ public struct ObservableDictionaryEvent<Key: Hashable, Value> {
 
 public class ObservableDictionary<Key: Hashable, Value>: Collection, SignalProtocol {
 
-  fileprivate var dictionary: Dictionary<Key, Value>
+  public fileprivate(set) var dictionary: Dictionary<Key, Value>
   fileprivate let subject = PublishSubject<ObservableDictionaryEvent<Key, Value>, NoError>()
   fileprivate let lock = NSRecursiveLock(name: "com.reactivekit.bond.observabledictionary")
 

@@ -40,7 +40,7 @@ public struct ObservableSetEvent<Element: Hashable> {
 
 public class ObservableSet<Element: Hashable>: Collection, SignalProtocol {
 
-  fileprivate var set: Set<Element>
+  public fileprivate(set) var set: Set<Element>
   fileprivate let subject = PublishSubject<ObservableSetEvent<Element>, NoError>()
   fileprivate let lock = NSRecursiveLock(name: "com.reactivekit.bond.observableset")
 

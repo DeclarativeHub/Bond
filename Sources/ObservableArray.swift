@@ -47,7 +47,7 @@ public struct ObservableArrayEvent<Item>: ObservableArrayEventProtocol {
 
 public class ObservableArray<Item>: Collection, SignalProtocol {
   
-  fileprivate var array: [Item]
+  public fileprivate(set) var array: [Item]
   fileprivate let subject = PublishSubject<ObservableArrayEvent<Item>, NoError>()
   fileprivate let lock = NSRecursiveLock(name: "com.reactivekit.bond.observablearray")
   

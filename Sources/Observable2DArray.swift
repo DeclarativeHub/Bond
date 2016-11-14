@@ -68,7 +68,7 @@ public struct Observable2DArraySection<Metadata, Item> {
 
 public class Observable2DArray<SectionMetadata, Item>: Collection, SignalProtocol {
 
-  fileprivate var sections: [Observable2DArraySection<SectionMetadata, Item>]
+  public fileprivate(set) var sections: [Observable2DArraySection<SectionMetadata, Item>]
   fileprivate let subject = PublishSubject<Observable2DArrayEvent<SectionMetadata, Item>, NoError>()
   fileprivate let lock = NSRecursiveLock(name: "com.reactivekit.bond.observable2darray")
 
