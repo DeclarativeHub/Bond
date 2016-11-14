@@ -60,6 +60,11 @@ class BondTests: XCTestCase {
     XCTAssertEqual(view.isEnabled, true)
     Signal1.just(false).bind(to: view.bnd_isEnabled)
     XCTAssertEqual(view.isEnabled, false)
+
+    view.bnd_tap.expectNext([(), ()])
+    view.bnd_tap.expectNext([(), ()]) // second observer
+    _ = view.target!.perform(view.action!)
+    _ = view.target!.perform(view.action!)
   }
 
   func testUIButton() {

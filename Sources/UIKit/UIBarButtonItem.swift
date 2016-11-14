@@ -27,47 +27,41 @@ import ReactiveKit
 
 extension UIBarButtonItem {
 
+  private struct AssociatedKeys {
+    static var BarButtonItemHelperKey = "bnd_BarButtonItemHelperKey"
+  }
+
   public var bnd_tap: Signal1<Void> {
-    let _self = self
-    return Signal { [weak _self] observer in
-      guard let _self = _self else {
-        observer.completed()
-        return NonDisposable.instance
-      }
-      let target = BNDBarButtonItemTarget(barButtonItem: _self) {
-        observer.next()
-      }
-      return BlockDisposable {
-        target.unregister()
-      }
-    }.take(until: bnd_deallocated)
+    if let target = objc_getAssociatedObject(self, &AssociatedKeys.BarButtonItemHelperKey) as AnyObject? {
+      return (target as! BNDBarButtonItemTarget).subject.toSignal()
+    } else {
+      let target = BNDBarButtonItemTarget(barButtonItem: self)
+      objc_setAssociatedObject(self, &AssociatedKeys.BarButtonItemHelperKey, target, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+      return target.subject.toSignal()
+    }
   }
 }
 
 @objc fileprivate class BNDBarButtonItemTarget: NSObject
 {
-  private weak var barButtonItem: UIBarButtonItem?
-  private let observer: () -> Void
+  weak var barButtonItem: UIBarButtonItem?
+  let subject = PublishSubject<Void, NoError>()
 
-  fileprivate init(barButtonItem: UIBarButtonItem, observer: @escaping () -> Void) {
+  init(barButtonItem: UIBarButtonItem) {
     self.barButtonItem = barButtonItem
-    self.observer = observer
-
     super.init()
 
     barButtonItem.target = self
-    barButtonItem.action = #selector(BNDBarButtonItemTarget.actionHandler)
+    barButtonItem.action = #selector(eventHandler)
   }
 
-  @objc private func actionHandler() {
-    observer()
-  }
-
-  fileprivate func unregister() {
-    barButtonItem?.target = nil
+  func eventHandler() {
+    subject.next()
   }
 
   deinit {
-    unregister()
+    barButtonItem?.target = nil
+    barButtonItem?.action = nil
+    subject.completed()
   }
 }
