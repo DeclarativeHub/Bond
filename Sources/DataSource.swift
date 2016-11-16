@@ -53,6 +53,17 @@ public protocol DataSourceEventProtocol {
   var dataSource: DataSource { get }
 }
 
+extension DataSourceEventProtocol {
+
+  public var _unbox: DataSourceEvent<DataSource> {
+    if let event = self as? DataSourceEvent<DataSource> {
+      return event
+    } else {
+      return DataSourceEvent(kind: self.kind, dataSource: self.dataSource)
+    }
+  }
+}
+
 public struct DataSourceEvent<DataSource: DataSourceProtocol>: DataSourceEventProtocol {
   public let kind: DataSourceEventKind
   public let dataSource: DataSource
@@ -67,6 +78,17 @@ extension Array: DataSourceProtocol {
 
   public func numberOfItems(inSection section: Int) -> Int {
     return count
+  }
+}
+
+extension Array: DataSourceEventProtocol {
+
+  public var kind: DataSourceEventKind {
+    return .reload
+  }
+
+  public var dataSource: Array<Element> {
+    return self
   }
 }
 
