@@ -147,6 +147,11 @@ public final class DisposeBag: DisposableType {
     disposables.append(disposable)
   }
   
+  /// Adds the given disposables to the bag.
+  public func put(array:[ DisposableType ]) {
+    disposables.appendContentsOf(array)
+  }
+  
   /// Disposes all disposables that are currenty in the bag.
   public func dispose() {
     for disposable in disposables {
