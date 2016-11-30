@@ -88,6 +88,13 @@ public class ObservableSet<Element: Hashable>: Collection, SignalProtocol {
   }
 }
 
+extension ObservableSet: Deallocatable {
+
+  public var bnd_deallocated: Signal<Void, NoError> {
+    return subject.disposeBag.deallocated
+  }
+}
+
 public class MutableObservableSet<Element: Hashable>: ObservableSet<Element> {
 
   /// Return `true`  if a member is the set.

@@ -94,6 +94,13 @@ public class ObservableDictionary<Key: Hashable, Value>: Collection, SignalProto
   }
 }
 
+extension ObservableDictionary: Deallocatable {
+
+  public var bnd_deallocated: Signal<Void, NoError> {
+    return subject.disposeBag.deallocated
+  }
+}
+
 public class MutableObservableDictionary<Key: Hashable, Value>: ObservableDictionary<Key, Value> {
 
   public override subscript (key: Key) -> Value? {
