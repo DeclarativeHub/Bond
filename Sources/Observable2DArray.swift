@@ -136,6 +136,13 @@ public class Observable2DArray<SectionMetadata, Item>: Collection, SignalProtoco
   }
 }
 
+extension Observable2DArray: Deallocatable {
+
+  public var bnd_deallocated: Signal<Void, NoError> {
+    return subject.disposeBag.deallocated
+  }
+}
+
 public class MutableObservable2DArray<SectionMetadata, Item>: Observable2DArray<SectionMetadata, Item> {
 
   /// Append new section at the end of the 2D array.

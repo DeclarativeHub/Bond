@@ -95,6 +95,13 @@ public class ObservableArray<Item>: Collection, SignalProtocol {
   }
 }
 
+extension ObservableArray: Deallocatable {
+
+  public var bnd_deallocated: Signal<Void, NoError> {
+    return subject.disposeBag.deallocated
+  }
+}
+
 extension ObservableArray where Item: Equatable {
   
   public static func ==(lhs: ObservableArray<Item>, rhs: ObservableArray<Item>) -> Bool {
