@@ -161,3 +161,16 @@ public class MutableObservableDictionary<Key: Hashable, Value>: ObservableDictio
     update(&dictionary)
   }
 }
+
+extension MutableObservableDictionary: BindableProtocol {
+
+  public func bind(signal: Signal<ObservableDictionaryEvent<Key, Value>, NoError>) -> Disposable {
+    return signal
+      .take(until: bnd_deallocated)
+      .observeNext { [weak self] event in
+        guard let s = self else { return }
+        s.dictionary = event.source.dictionary
+        s.subject.next(ObservableDictionaryEvent(kind: event.kind, source: s))
+    }
+  }
+}

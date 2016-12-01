@@ -192,6 +192,19 @@ public class MutableObservableArray<Item>: ObservableArray<Item> {
   }
 }
 
+extension MutableObservableArray: BindableProtocol {
+
+  public func bind(signal: Signal<ObservableArrayEvent<Item>, NoError>) -> Disposable {
+    return signal
+      .take(until: bnd_deallocated)
+      .observeNext { [weak self] event in
+        guard let s = self else { return }
+        s.array = event.source.array
+        s.subject.next(ObservableArrayEvent(change: event.change, source: s))
+      }
+  }
+}
+
 // MARK: DataSourceProtocol conformation
 
 extension ObservableArrayEvent: DataSourceEventProtocol {

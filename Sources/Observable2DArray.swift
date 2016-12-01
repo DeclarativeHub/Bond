@@ -284,6 +284,19 @@ public class MutableObservable2DArray<SectionMetadata, Item>: Observable2DArray<
   }
 }
 
+extension MutableObservable2DArray: BindableProtocol {
+
+  public func bind(signal: Signal<Observable2DArrayEvent<SectionMetadata, Item>, NoError>) -> Disposable {
+    return signal
+      .take(until: bnd_deallocated)
+      .observeNext { [weak self] event in
+        guard let s = self else { return }
+        s.sections = event.source.sections
+        s.subject.next(Observable2DArrayEvent(change: event.change, source: s))
+    }
+  }
+}
+
 // MARK: DataSourceProtocol conformation
 
 extension Observable2DArrayEvent: DataSourceEventProtocol {

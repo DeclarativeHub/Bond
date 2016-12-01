@@ -158,3 +158,16 @@ public class MutableObservableSet<Element: Hashable>: ObservableSet<Element> {
     update(&set)
   }
 }
+
+extension MutableObservableSet: BindableProtocol {
+
+  public func bind(signal: Signal<ObservableSetEvent<Element>, NoError>) -> Disposable {
+    return signal
+      .take(until: bnd_deallocated)
+      .observeNext { [weak self] event in
+        guard let s = self else { return }
+        s.set = event.source.set
+        s.subject.next(ObservableSetEvent(kind: event.kind, source: s))
+    }
+  }
+}
