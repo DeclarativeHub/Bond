@@ -138,4 +138,120 @@ class ObservableArrayTests: XCTestCase {
     
     XCTAssert(array == ObservableArray([1, 4, 3, 5]))
   }
+
+  func testArrayMapAppend() {
+    array.map { $0 * 2 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray),
+      ObservableArrayEvent(change: .inserts([3]), source: AnyObservableArray)
+      ])
+    array.append(4)
+  }
+
+  func testArrayMapInsert() {
+    array.map { $0 * 2 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray),
+      ObservableArrayEvent(change: .inserts([0]), source: AnyObservableArray)
+      ])
+    array.insert(10, at: 0)
+  }
+
+  func testArrayMapRemoveLast() {
+    array.map { $0 * 2 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray),
+      ObservableArrayEvent(change: .deletes([2]), source: AnyObservableArray)
+      ])
+    array.removeLast()
+  }
+
+  func testArrayMapRemoveAtindex() {
+    array.map { $0 * 2 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray),
+      ObservableArrayEvent(change: .deletes([1]), source: AnyObservableArray)
+      ])
+    array.remove(at: 1)
+  }
+
+  func testArrayMapUpdate() {
+    array.map { $0 * 2 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray),
+      ObservableArrayEvent(change: .updates([1]), source: AnyObservableArray)
+      ])
+    array[1] = 20
+  }
+
+  func testArrayFilterAppendNonPassing() {
+    array.filter { $0 % 2 != 0 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray)
+      ])
+    array.append(4)
+  }
+
+  func testArrayFilterAppendPassing() {
+    array.filter { $0 % 2 != 0 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray),
+      ObservableArrayEvent(change: .inserts([2]), source: AnyObservableArray)
+      ])
+    array.append(5)
+  }
+
+  func testArrayFilterInsertNonPassing() {
+    array.filter { $0 % 2 != 0 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray)
+      ])
+    array.insert(4, at: 1)
+  }
+
+  func testArrayFilterInsertPassing() {
+    array.filter { $0 % 2 != 0 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray),
+      ObservableArrayEvent(change: .inserts([1]), source: AnyObservableArray)
+      ])
+    array.insert(5, at: 1)
+  }
+
+  func testArrayFilterRemoveNonPassing() {
+    array.filter { $0 % 2 != 0 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray)
+      ])
+    array.remove(at: 1)
+  }
+
+  func testArrayFilterRemovePassing() {
+    array.filter { $0 % 2 != 0 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray),
+      ObservableArrayEvent(change: .deletes([1]), source: AnyObservableArray)
+      ])
+    array.removeLast()
+  }
+
+  func testArrayFilterUpdateNonPassingToNonPassing() {
+    array.filter { $0 % 2 != 0 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray)
+      ])
+    array[1] = 4
+  }
+
+  func testArrayFilterUpdateNonPassingToPassing() {
+    array.filter { $0 % 2 != 0 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray),
+      ObservableArrayEvent(change: .inserts([1]), source: AnyObservableArray)
+      ])
+    array[1] = 5
+  }
+
+  func testArrayFilterUpdatePassingToPassing() {
+    array.filter { $0 % 2 != 0 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray),
+      ObservableArrayEvent(change: .updates([1]), source: AnyObservableArray)
+      ])
+    array[2] = 5
+  }
+
+  func testArrayFilterUpdatePassingToNonPassing() {
+    array.filter { $0 % 2 != 0 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray),
+      ObservableArrayEvent(change: .deletes([1]), source: AnyObservableArray)
+      ])
+    array[2] = 4
+  }
 }

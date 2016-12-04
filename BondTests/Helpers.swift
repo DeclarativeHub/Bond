@@ -42,7 +42,7 @@ extension Event {
       } else if let left = asOptional(left) as? Optional<String>, let right = asOptional(right) as? Optional<String> {
         return left == right
       } else if let left = left as? ObservableArrayEvent<Int>, let right = right as? ObservableArrayEvent<Int> {
-        return left.change == right.change && left.source === right.source
+        return left.change == right.change && (left.source === right.source || right.source === AnyObservableArray)
       } else if left is Void, right is Void {
         return true
       } else {
@@ -95,6 +95,8 @@ extension SignalProtocol {
     }
   }
 }
+
+let AnyObservableArray = ObservableArray<Int>()
 
 extension ObservableArrayChange: Equatable {
   

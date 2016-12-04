@@ -349,3 +349,121 @@ extension MutableObservableArray where Item: Equatable {
     }
   }
 }
+
+public extension SignalProtocol where Element: ObservableArrayEventProtocol {
+
+  public typealias Item = Element.Item
+
+  /// Map underlying ObservableArray.
+  /// Complexity of mapping on each event is O(n).
+  public func map<U>(_ transform: @escaping (Item) -> U) -> Signal<ObservableArrayEvent<U>, Error> {
+    return map { (event: Element) -> ObservableArrayEvent<U> in
+      let mappedArray = ObservableArray(event.source.array.map(transform))
+      return ObservableArrayEvent<U>(change: event.change, source: mappedArray)
+    }
+  }
+
+  /// Laziliy map underlying ObservableArray.
+  /// Complexity of mapping on each event (change) is O(1).
+  public func lazyMap<U>(_ transform: @escaping (Item) -> U) -> Signal<ObservableArrayEvent<U>, Error> {
+    return map { (event: Element) -> ObservableArrayEvent<U> in
+      let mappedArray = ObservableArray(event.source.array.lazy.map(transform))
+      return ObservableArrayEvent<U>(change: event.change, source: mappedArray)
+    }
+  }
+
+  /// Filter underlying ObservableArrays.
+  /// Complexity of filtering on each event is O(n).
+  public func filter(_ isIncluded: @escaping (Item) -> Bool) -> Signal<ObservableArrayEvent<Item>, Error> {
+    var isBatching = false
+    var previousIndexMap: [Int: Int] = [:]
+    return map { (event: Element) -> [ObservableArrayEvent<Item>] in
+      let array = event.source.array
+      var filtered: [Item] = []
+      var indexMap: [Int: Int] = [:]
+
+      filtered.reserveCapacity(array.count)
+
+      var iterator = 0
+      for (index, element) in array.enumerated() {
+        if isIncluded(element) {
+          filtered.append(element)
+          indexMap[index] = iterator
+          iterator += 1
+        }
+      }
+
+      var changes: [ObservableArrayChange] = []
+      switch event.change {
+      case .inserts(let indices):
+        let newIndices = indices.flatMap { indexMap[$0] }
+        if newIndices.count > 0 {
+          changes = [.inserts(newIndices)]
+        }
+      case .deletes(let indices):
+        let newIndices = indices.flatMap { previousIndexMap[$0] }
+        if newIndices.count > 0 {
+          changes = [.deletes(newIndices)]
+        }
+      case .updates(let indices):
+        var (updates, inserts, deletes) = ([Int](), [Int](), [Int]())
+        for index in indices {
+          if let mappedIndex = indexMap[index] {
+            if let _ = previousIndexMap[index] {
+              updates.append(mappedIndex)
+            } else {
+              inserts.append(mappedIndex)
+            }
+          } else if let mappedIndex = previousIndexMap[index] {
+            deletes.append(mappedIndex)
+          }
+        }
+        if deletes.count > 0 { changes.append(.deletes(deletes)) }
+        if updates.count > 0 { changes.append(.updates(updates)) }
+        if inserts.count > 0 { changes.append(.inserts(inserts)) }
+      case .move(let previousIndex, let newIndex):
+        if let previous = indexMap[previousIndex], let new = indexMap[newIndex] {
+          changes = [.move(previous, new)]
+        }
+      case .reset:
+        isBatching = false
+        changes = [.reset]
+      case .beginBatchEditing:
+        isBatching = true
+        changes = [.beginBatchEditing]
+      case .endBatchEditing:
+        isBatching = false
+        changes = [.endBatchEditing]
+      }
+
+      previousIndexMap = indexMap
+
+      if changes.count > 1 && !isBatching {
+        changes.insert(.beginBatchEditing, at: 0)
+        changes.append(.endBatchEditing)
+      }
+
+      let source = ObservableArray(filtered)
+      return changes.map { ObservableArrayEvent(change: $0, source: source) }
+    }._unwrap()
+  }
+}
+
+fileprivate extension SignalProtocol where Element: Sequence {
+
+  /// Unwrap sequence elements into signal elements.
+  fileprivate func _unwrap() -> Signal<Element.Iterator.Element, Error> {
+    return Signal { observer in
+      return self.observe { event in
+        switch event {
+        case .next(let array):
+          array.forEach { observer.next($0) }
+        case .failed(let error):
+          observer.failed(error)
+        case .completed:
+          observer.completed()
+        }
+      }
+    }
+  }
+}
