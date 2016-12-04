@@ -369,7 +369,30 @@ names.removeLast()   // prints: array ["Steve", "Tim"], change: .deletes([2])
 names[1] = "Mark"    // prints: array ["Steve", "Mark"], change: .updates([1])
 ```
 
-That enables us to build powerful UI bindings. Observable array can be bound to `UITableView` or `UICollectionView`. Just provide a closure that creates cells to the `bind(to:)` method.
+Observable array can be mapped or filtered. For example, if we map our array
+
+```
+names.map { $0.characters.count }.observeNext { event in
+  print("array: \(e.source), change: \(e.change)")
+}
+```
+
+then modifying it
+
+```swift
+names.append("Tony") // prints: array [5, 3, 4], change: .inserts([2])
+```
+
+gives us fine-grained notification of mapped array changes.
+
+Mapping and filtering arrays operates on an array signal. To get the result back as an observable array, just bind it to an instance of ObservableArray.
+
+```swift
+let nameLengths = ObservableArray<Int>()
+names.map { $0.characters.count }.bind(to: nameLengths) 
+```
+
+Such features enable us to build powerful UI bindings. Observable array can be bound to `UITableView` or `UICollectionView`. Just provide a closure that creates cells to the `bind(to:)` method.
 
 ```swift
 let posts: ObservableArray <[Post]> = ...
@@ -499,14 +522,14 @@ There are many other methods. Just look at the code reference or source.
 ### Carthage
 
 1. Add the following to your *Cartfile*:
-  <br> `github "ReactiveKit/Bond" ~> 5.1`
+  <br> `github "ReactiveKit/Bond" ~> 5.2`
 2. Run `carthage update`
 3. Add the framework as described in [Carthage Readme](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application)
 
 ### CocoaPods
 
 1. Add the following to your *Podfile*:
-  <br> `pod 'Bond', '~> 5.1'`
+  <br> `pod 'Bond', '~> 5.2'`
 2. Run `pod install`.
 
 ## <a name="migration"></a>Migration
