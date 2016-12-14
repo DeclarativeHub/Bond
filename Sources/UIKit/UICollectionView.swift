@@ -39,14 +39,14 @@ private struct SimpleCollectionViewBond<DataSource: DataSourceProtocol>: Collect
   }
 }
 
-public extension UICollectionView {
+public extension ReactiveExtensions where Base: UICollectionView {
 
-  public var bnd_delegate: ProtocolProxy {
-    return protocolProxy(for: UICollectionViewDelegate.self, setter: NSSelectorFromString("setDelegate:"))
+  public var delegate: ProtocolProxy {
+    return base.protocolProxy(for: UICollectionViewDelegate.self, setter: NSSelectorFromString("setDelegate:"))
   }
 
-  public var bnd_dataSource: ProtocolProxy {
-    return protocolProxy(for: UICollectionViewDataSource.self, setter: NSSelectorFromString("setDataSource:"))
+  public var dataSource: ProtocolProxy {
+    return base.protocolProxy(for: UICollectionViewDataSource.self, setter: NSSelectorFromString("setDataSource:"))
   }
 }
 
@@ -62,20 +62,20 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
 
     let dataSource = Property<DataSource?>(nil)
 
-    collectionView.bnd_dataSource.feed(
+    collectionView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(UICollectionViewDataSource.collectionView(_:cellForItemAt:)),
       map: { (dataSource: DataSource?, collectionView: UICollectionView, indexPath: NSIndexPath) -> UICollectionViewCell in
         return bond.cellForRow(at: indexPath as IndexPath, collectionView: collectionView, dataSource: dataSource!)
     })
 
-    collectionView.bnd_dataSource.feed(
+    collectionView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(UICollectionViewDataSource.collectionView(_:numberOfItemsInSection:)),
       map: { (dataSource: DataSource?, _: UICollectionView, section: Int) -> Int in dataSource?.numberOfItems(inSection: section) ?? 0 }
     )
 
-    collectionView.bnd_dataSource.feed(
+    collectionView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(UICollectionViewDataSource.numberOfSections(in:)),
       map: { (dataSource: DataSource?, _: UICollectionView) -> Int in dataSource?.numberOfSections ?? 0 }

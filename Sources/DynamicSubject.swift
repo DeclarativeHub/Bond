@@ -81,7 +81,7 @@ public struct DynamicSubject2<Target: Deallocatable, Element, Error: Swift.Error
       } else {
         return .success(nil)
       }
-      }.ignoreNil().take(until: target.bnd_deallocated).observe(with: observer)
+      }.ignoreNil().take(until: target.deallocated).observe(with: observer)
   }
 
   public func bind(signal: Signal<Element, NoError>) -> Disposable {
@@ -89,7 +89,7 @@ public struct DynamicSubject2<Target: Deallocatable, Element, Error: Swift.Error
       let setter = self.setter
       let subject = self.subject
       let triggerEventOnSetting = self.triggerEventOnSetting
-      return signal.take(until: target.bnd_deallocated).observe { [weak target] event in
+      return signal.take(until: target.deallocated).observe { [weak target] event in
         ImmediateOnMainExecutionContext { [weak target] in
           switch event {
           case .next(let element):

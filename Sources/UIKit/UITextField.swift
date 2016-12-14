@@ -25,34 +25,34 @@
 import UIKit
 import ReactiveKit
 
-public extension UITextField {
+public extension ReactiveExtensions where Base: UITextField {
 
-  public var bnd_text: DynamicSubject<UITextField, String?> {
+  public var text: DynamicSubject<UITextField, String?> {
     return DynamicSubject(
-      target: self,
-      signal: bnd_controlEvents(.allEditingEvents).eraseType(),
+      target: base,
+      signal: controlEvents(.allEditingEvents).eraseType(),
       get: { $0.text },
       set: { $0.text = $1 }
     )
   }
 
-  public var bnd_attributedText: DynamicSubject<UITextField, NSAttributedString?> {
+  public var attributedText: DynamicSubject<UITextField, NSAttributedString?> {
     return DynamicSubject(
-      target: self,
-      signal: bnd_controlEvents(.allEditingEvents).eraseType(),
+      target: base,
+      signal: controlEvents(.allEditingEvents).eraseType(),
       get: { $0.attributedText },
       set: { $0.attributedText = $1 }
     )
   }
 
-  public var bnd_textColor: Bond<UITextField, UIColor?> {
-    return Bond(target: self) { $0.textColor = $1 }
+  public var textColor: Bond<UIColor?> {
+    return bond { $0.textColor = $1 }
   }
 }
 
 extension UITextField: BindableProtocol {
 
   public func bind(signal: Signal<String?, NoError>) -> Disposable {
-    return bnd_text.bind(signal: signal)
+    return reactive.text.bind(signal: signal)
   }
 }

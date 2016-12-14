@@ -22,13 +22,13 @@
 //  THE SOFTWARE.
 //
 
-import ReactiveKit
 import UIKit
+import ReactiveKit
 
-public extension UIActivityIndicatorView {
+public extension ReactiveExtensions where Base: UIActivityIndicatorView  {
 
-  public var bnd_animating: Bond<UIActivityIndicatorView, Bool> {
-    return Bond(target: self) {
+  public var animating: Bond<Bool> {
+    return bond {
       if $1 {
         $0.startAnimating()
       } else {
@@ -41,6 +41,6 @@ public extension UIActivityIndicatorView {
 extension UIActivityIndicatorView: BindableProtocol {
 
   public func bind(signal: Signal<Bool, NoError>) -> Disposable {
-    return bnd_animating.bind(signal: signal)
+    return reactive.animating.bind(signal: signal)
   }
 }

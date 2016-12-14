@@ -97,7 +97,7 @@ public class ObservableArray<Item>: Collection, SignalProtocol {
 
 extension ObservableArray: Deallocatable {
 
-  public var bnd_deallocated: Signal<Void, NoError> {
+  public var deallocated: Signal<Void, NoError> {
     return subject.disposeBag.deallocated
   }
 }

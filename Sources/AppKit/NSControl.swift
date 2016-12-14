@@ -22,74 +22,77 @@
 //  THE SOFTWARE.
 //
 
-import ReactiveKit
 import AppKit
+import ReactiveKit
 
-@objc class RKNSControlHelper: NSObject
-{
-  weak var control: NSControl?
-  let subject = PublishSubject<AnyObject?, NoError>()
+fileprivate extension NSControl {
 
-  init(control: NSControl) {
-    self.control = control
-    super.init()
-
-    control.target = self
-    control.action = #selector(eventHandler)
-  }
-
-  func eventHandler(_ sender: NSControl?) {
-    subject.next(sender!.objectValue as AnyObject?)
-  }
-
-  deinit {
-    control?.target = nil
-    control?.action = nil
-    subject.completed()
-  }
-}
-
-extension NSControl {
-
-  private struct AssociatedKeys {
+  struct AssociatedKeys {
     static var ControlHelperKey = "bnd_ControlHelperKey"
   }
 
-  public var rControlEvent: Signal1<AnyObject?> {
-    if let controlHelper = objc_getAssociatedObject(self, &AssociatedKeys.ControlHelperKey) as AnyObject? {
-      return (controlHelper as! RKNSControlHelper).subject.toSignal()
+  @objc class BondHelper: NSObject
+  {
+    weak var control: NSControl?
+    let subject = PublishSubject<AnyObject?, NoError>()
+
+    init(control: NSControl) {
+      self.control = control
+      super.init()
+
+      control.target = self
+      control.action = #selector(eventHandler)
+    }
+
+    func eventHandler(_ sender: NSControl?) {
+      subject.next(sender!.objectValue as AnyObject?)
+    }
+
+    deinit {
+      control?.target = nil
+      control?.action = nil
+      subject.completed()
+    }
+  }
+}
+
+public extension ReactiveExtensions where Base: NSControl {
+
+  public var controlEvent: SafeSignal<AnyObject?> {
+    if let controlHelper = objc_getAssociatedObject(base, &NSControl.AssociatedKeys.ControlHelperKey) as AnyObject? {
+      return (controlHelper as! NSControl.BondHelper).subject.toSignal()
     } else {
-      let controlHelper = RKNSControlHelper(control: self)
-      objc_setAssociatedObject(self, &AssociatedKeys.ControlHelperKey, controlHelper, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+      let controlHelper = NSControl.BondHelper(control: base)
+      objc_setAssociatedObject(self, &NSControl.AssociatedKeys.ControlHelperKey, controlHelper, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       return controlHelper.subject.toSignal()
     }
   }
 
-  public var bnd_isEnabled: Bond<NSControl, Bool> {
-    return Bond(target: self) { $0.isEnabled = $1 }
+  public var isEnabled: Bond<Bool> {
+    return bond { $0.isEnabled = $1 }
   }
 
-  public var bnd_objectValue: Bond<NSControl, AnyObject?> {
-    return Bond(target: self) { $0.objectValue = $1 }
+  public var objectValue: Bond<AnyObject?> {
+    return bond { $0.objectValue = $1 }
   }
 
-  public var bnd_stringValue: Bond<NSControl, String> {
-    return Bond(target: self) { $0.stringValue = $1 }
+  public var stringValue: Bond<String> {
+    return bond { $0.stringValue = $1 }
   }
 
-  public var bnd_attributedStringleValue: Bond<NSControl, NSAttributedString> {
-    return Bond(target: self) { $0.attributedStringValue = $1 }
+  public var attributedStringleValue: Bond<NSAttributedString> {
+    return bond { $0.attributedStringValue = $1 }
   }
 
-  public var bnd_integerValue: Bond<NSControl, Int> {
-    return Bond(target: self) { $0.integerValue = $1 }
+  public var integerValue: Bond<Int> {
+    return bond { $0.integerValue = $1 }
   }
 
-  public var bnd_floatValue: Bond<NSControl, Float> {
-    return Bond(target: self) { $0.floatValue = $1 }
+  public var floatValue: Bond<Float> {
+    return bond { $0.floatValue = $1 }
   }
 
-  public var bnd_doubleValue: Bond<NSControl, Double> {
-    return Bond(target: self) { $0.doubleValue = $1 }
+  public var doubleValue: Bond<Double> {
+    return bond { $0.doubleValue = $1 }
   }
 }

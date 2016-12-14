@@ -96,7 +96,7 @@ public class ObservableDictionary<Key: Hashable, Value>: Collection, SignalProto
 
 extension ObservableDictionary: Deallocatable {
 
-  public var bnd_deallocated: Signal<Void, NoError> {
+  public var deallocated: Signal<Void, NoError> {
     return subject.disposeBag.deallocated
   }
 }

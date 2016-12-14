@@ -25,36 +25,36 @@
 import UIKit
 import ReactiveKit
 
-public extension UITextView {
+public extension ReactiveExtensions where Base: UITextView {
 
-  public var bnd_text: DynamicSubject<UITextView, String?> {
+  public var text: DynamicSubject<UITextView, String?> {
     let notificationName = NSNotification.Name.UITextViewTextDidChange
     return DynamicSubject(
-      target: self,
-      signal: NotificationCenter.default.bnd_notification(name: notificationName, object: self).eraseType(),
+      target: base,
+      signal: NotificationCenter.default.reactive.notification(name: notificationName, object: base).eraseType(),
       get: { $0.text },
       set: { $0.text = $1 }
     )
   }
 
-  public var bnd_attributedText: DynamicSubject<UITextView, NSAttributedString?> {
+  public var attributedText: DynamicSubject<UITextView, NSAttributedString?> {
     let notificationName = NSNotification.Name.UITextViewTextDidChange
     return DynamicSubject(
-      target: self,
-      signal: NotificationCenter.default.bnd_notification(name: notificationName, object: self).eraseType(),
+      target: base,
+      signal: NotificationCenter.default.reactive.notification(name: notificationName, object: base).eraseType(),
       get: { $0.attributedText },
       set: { $0.attributedText = $1 }
     )
   }
 
-  public var bnd_textColor: Bond<UITextView, UIColor?> {
-    return Bond(target: self) { $0.textColor = $1 }
+  public var textColor: Bond<UIColor?> {
+    return bond { $0.textColor = $1 }
   }
 }
 
 extension UITextView: BindableProtocol {
 
   public func bind(signal: Signal<String?, NoError>) -> Disposable {
-    return bnd_text.bind(signal: signal)
+    return reactive.text.bind(signal: signal)
   }
 }

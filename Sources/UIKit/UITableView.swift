@@ -25,14 +25,14 @@
 import UIKit
 import ReactiveKit
 
-public extension UITableView {
+public extension ReactiveExtensions where Base: UITableView {
 
-  public var bnd_delegate: ProtocolProxy {
-    return protocolProxy(for: UITableViewDelegate.self, setter: NSSelectorFromString("setDelegate:"))
+  public var delegate: ProtocolProxy {
+    return base.protocolProxy(for: UITableViewDelegate.self, setter: NSSelectorFromString("setDelegate:"))
   }
 
-  public var bnd_dataSource: ProtocolProxy {
-    return protocolProxy(for: UITableViewDataSource.self, setter: NSSelectorFromString("setDataSource:"))
+  public var dataSource: ProtocolProxy {
+    return base.protocolProxy(for: UITableViewDataSource.self, setter: NSSelectorFromString("setDataSource:"))
   }
 }
 
@@ -123,21 +123,21 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
   public func bind<B: TableViewBond>(to tableView: UITableView, using bond: B) -> Disposable where B.DataSource == DataSource {
     let dataSource = Property<DataSource?>(nil)
 
-    tableView.bnd_dataSource.feed(
+    tableView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(UITableViewDataSource.tableView(_:cellForRowAt:)),
       map: { (dataSource: DataSource?, tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell in
         return bond.cellForRow(at: indexPath as IndexPath, tableView: tableView, dataSource: dataSource!)
     })
 
-    tableView.bnd_dataSource.feed(
+    tableView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(UITableViewDataSource.tableView(_:titleForHeaderInSection:)),
       map: { (dataSource: DataSource?, tableView: UITableView, index: Int) -> NSString? in
         return bond.titleForHeader(in: index, dataSource: dataSource!) as NSString?
     })
 
-    tableView.bnd_dataSource.feed(
+    tableView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(UITableViewDataSource.tableView(_:titleForFooterInSection:)),
       map: { (dataSource: DataSource?, tableView: UITableView, index: Int) -> NSString? in
@@ -145,14 +145,14 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
     })
 
 
-    tableView.bnd_dataSource.feed(
+    tableView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(UITableViewDataSource.tableView(_:numberOfRowsInSection:)),
       map: { (dataSource: DataSource?, _: UITableView, section: Int) -> Int in
         dataSource?.numberOfItems(inSection: section) ?? 0
     })
 
-    tableView.bnd_dataSource.feed(
+    tableView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(UITableViewDataSource.numberOfSections(in:)),
       map: { (dataSource: DataSource?, _: UITableView) -> Int in dataSource?.numberOfSections ?? 0 }

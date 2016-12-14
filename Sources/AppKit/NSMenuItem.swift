@@ -22,16 +22,16 @@
 //  THE SOFTWARE.
 //
 
-import ReactiveKit
 import AppKit
+import ReactiveKit
 
-public extension NSMenuItem {
+public extension ReactiveExtensions where Base: NSMenuItem {
 
-  public var bnd_state: Bond<NSMenuItem, Int> {
-    return Bond(target: self) { $0.state = $1 }
+  public var state: Bond<Int> {
+    return bond { $0.state = $1 }
   }
 
-  public var bnd_isEnabled: Bond<NSMenuItem, Bool> {
-    return Bond(target: self) { $0.isEnabled = $1 }
+  public var isEnabled: Bond<Bool> {
+    return bond { $0.isEnabled = $1 }
   }
 }

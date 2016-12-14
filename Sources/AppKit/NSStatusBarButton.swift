@@ -22,12 +22,12 @@
 //  THE SOFTWARE.
 //
 
-import ReactiveKit
 import AppKit
+import ReactiveKit
 
-public extension NSStatusBarButton {
+public extension ReactiveExtensions where Base: NSStatusBarButton {
 
-  public var bnd_appearsDisabled: Bond<NSStatusBarButton, Bool> {
-    return Bond(target: self) { $0.appearsDisabled = $1 }
+  public var appearsDisabled: Bond<Bool> {
+    return bond { $0.appearsDisabled = $1 }
   }
 }

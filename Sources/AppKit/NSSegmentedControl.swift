@@ -22,23 +22,23 @@
 //  THE SOFTWARE.
 //
 
-import ReactiveKit
 import AppKit
+import ReactiveKit
 
-extension NSSegmentedControl {
+public extension ReactiveExtensions where Base: NSSegmentedControl {
 
-  public var bnd_segmentCount: Bond<NSSegmentedControl, Int> {
-    return Bond(target: self) { $0.segmentCount = $1 }
+  public var segmentCount: Bond<Int> {
+    return bond { $0.segmentCount = $1 }
   }
 
-  public var bnd_selectedSegment: Bond<NSSegmentedControl, Int> {
-    return Bond(target: self) { $0.selectedSegment = $1 }
+  public var selectedSegment: Bond<Int> {
+    return bond { $0.selectedSegment = $1 }
   }
 }
 
-extension NSSegmentedControl {
+extension NSSegmentedControl: BindableProtocol {
   
   public func bind(signal: Signal<Int, NoError>) -> Disposable {
-    return bnd_selectedSegment.bind(signal: signal)
+    return reactive.selectedSegment.bind(signal: signal)
   }
 }

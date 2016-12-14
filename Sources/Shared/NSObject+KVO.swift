@@ -26,19 +26,21 @@ import Foundation
 import ReactiveKit
 
 public extension NSObject {
-
   public enum KVOError: Error {
     case notConvertible(String)
   }
+}
+
+public extension ReactiveExtensions where Base: NSObject {
 
   /// Returns a ```DynamicSubject``` representing the given KVO path of the given type.
   ///
   /// E.g. ```user.dynamic(keyPath: "name", ofType: String.self)```
   ///
-  public func dynamic<T>(keyPath: String, ofType: T.Type) -> DynamicSubject<NSObject, T> {
+  public func keyPath<T>(_ keyPath: String, ofType: T.Type) -> DynamicSubject<NSObject, T> {
     return DynamicSubject(
-      target: self,
-      signal: RKKeyValueSignal(keyPath: keyPath, for: self).toSignal(),
+      target: base,
+      signal: RKKeyValueSignal(keyPath: keyPath, for: base).toSignal(),
       get: { (target) -> T in
         let maybeValue = target.value(forKeyPath: keyPath)
         if let value = maybeValue as? T {
@@ -58,10 +60,10 @@ public extension NSObject {
   ///
   /// E.g. ```user.dynamic(keyPath: "name", ofType: Optional<String>.self)```
   ///
-  public func dynamic<T>(keyPath: String, ofType: T.Type) -> DynamicSubject<NSObject, T> where T: OptionalProtocol {
+  public func keyPath<T>(_ keyPath: String, ofType: T.Type) -> DynamicSubject<NSObject, T> where T: OptionalProtocol {
     return DynamicSubject(
-      target: self,
-      signal: RKKeyValueSignal(keyPath: keyPath, for: self).toSignal(),
+      target: base,
+      signal: RKKeyValueSignal(keyPath: keyPath, for: base).toSignal(),
       get: { (target) -> T in
         let maybeValue = target.value(forKeyPath: keyPath)
         if let value = maybeValue as? T {
@@ -89,11 +91,11 @@ public extension NSObject {
   ///
   /// E.g. ```user.dynamic(keyPath: "name", ofType: String.self)```
   ///
-  public func dynamic<T>(keyPath: String, ofExpectedType: T.Type) -> DynamicSubject2<NSObject, T, KVOError> {
+  public func keyPath<T>(_ keyPath: String, ofExpectedType: T.Type) -> DynamicSubject2<NSObject, T, NSObject.KVOError> {
     return DynamicSubject2(
-      target: self,
-      signal: RKKeyValueSignal(keyPath: keyPath, for: self).castError(),
-      get: { (target) -> Result<T, KVOError> in
+      target: base,
+      signal: RKKeyValueSignal(keyPath: keyPath, for: base).castError(),
+      get: { (target) -> Result<T, NSObject.KVOError> in
         let maybeValue = target.value(forKeyPath: keyPath)
         if let value = maybeValue as? T {
           return .success(value)
@@ -114,11 +116,11 @@ public extension NSObject {
   ///
   /// E.g. ```user.dynamic(keyPath: "name", ofType: Optional<String>.self)```
   ///
-  public func dynamic<T>(keyPath: String, ofExpectedType: T.Type) -> DynamicSubject2<NSObject, T, KVOError> where T: OptionalProtocol {
+  public func keyPath<T>(_ keyPath: String, ofExpectedType: T.Type) -> DynamicSubject2<NSObject, T, NSObject.KVOError> where T: OptionalProtocol {
     return DynamicSubject2(
-      target: self,
-      signal: RKKeyValueSignal(keyPath: keyPath, for: self).castError(),
-      get: { (target) -> Result<T, KVOError> in
+      target: base,
+      signal: RKKeyValueSignal(keyPath: keyPath, for: base).castError(),
+      get: { (target) -> Result<T, NSObject.KVOError> in
         let maybeValue = target.value(forKeyPath: keyPath)
         if let value = maybeValue as? T {
           return .success(value)

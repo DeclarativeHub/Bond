@@ -180,7 +180,7 @@ The producing side of bindings are signals that are defined in ReactiveKit frame
 The consuming side of bindings is represented by the `Bond` type. It's a simple struct that performs an action on a given target whenever the bound signal fires an event.
 
 ```swift
-public struct Bond<Target: Deallocatable, Element>: BindableProtocol {
+public struct Bond<Element>: BindableProtocol {
   public init(target: Target, setter: @escaping (Target, Element) -> Void)
 }
 ```
@@ -189,7 +189,7 @@ The only requirement is that the target must be "deallocatable", in other words 
 
 ```swift
 public protocol Deallocatable: class {
-  var bnd_deallocated: Signal<Void, NoError> { get }
+  deallocated: Signal<Void, NoError> { get }
 }
 ```
 
@@ -197,8 +197,8 @@ All NSObject subclasses conform to that protocol out of the box. Let's see how w
 
 ```swift
 extension UILabel {
-  var myTextBond: Bond<UILabel, String?> {
-    return Bond(target: self) { label, text in
+  var myTextBond: Bond<String?> {
+    return bond { label, text in
       label.text = text
     }
   }
@@ -233,7 +233,7 @@ First make an extension on your type, UITableView in the following example, that
 
 ```swift
 extension UITableView {
-  public var bnd_delegate: ProtocolProxy {
+  public delegate: ProtocolProxy {
     return protocolProxy(for: UITableViewDelegate.self, setter: NSSelectorFromString("setDelegate:"))
   }
 }
@@ -330,7 +330,7 @@ public enum DataSourceEventKind {
 If you have a signal that emits an array of elements, you can transform that signal into a signal that emits data source events using the operator `mapToDataSourceEvent` and bind it to a table view.
 
 ```swift
-let places = Signal1.just(["London", "Berlin", "Copenhagen"])
+let places = SafeSignal.just(["London", "Berlin", "Copenhagen"])
 
 places.mapToDataSourceEvent().bind(to: tableView) { places, indexPath, tableView in
   let cell = tableView.dequeueCell(withIdentifier: "Cell", for: indexPath) as! PlaceCell

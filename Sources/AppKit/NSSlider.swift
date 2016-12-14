@@ -22,27 +22,27 @@
 //  THE SOFTWARE.
 //
 
-import ReactiveKit
 import AppKit
+import ReactiveKit
 
-extension NSSlider {
+public extension ReactiveExtensions where Base: NSSlider {
 
-  public var bnd_minValue: Bond<NSSlider, Double> {
-    return Bond(target: self) { $0.minValue = $1 }
+  public var minValue: Bond<Double> {
+    return bond { $0.minValue = $1 }
   }
 
-  public var bnd_maxValue: Bond<NSSlider, Double> {
-    return Bond(target: self) { $0.maxValue = $1 }
+  public var maxValue: Bond<Double> {
+    return bond { $0.maxValue = $1 }
   }
 
-  public var bnd_altIncrementValue: Bond<NSSlider, Double> {
-    return Bond(target: self) { $0.altIncrementValue = $1 }
+  public var altIncrementValue: Bond<Double> {
+    return bond { $0.altIncrementValue = $1 }
   }
 }
 
 extension NSSlider: BindableProtocol {
 
   public func bind(signal: Signal<Double, NoError>) -> Disposable {
-    return bnd_doubleValue.bind(signal: signal)
+    return reactive.doubleValue.bind(signal: signal)
   }
 }

@@ -23,10 +23,11 @@
 //
 
 import UIKit
+import ReactiveKit
 
-public extension UINavigationItem {
+public extension ReactiveExtensions where Base: UINavigationItem {
 
-  public var bnd_title: Bond<UINavigationItem, String?> {
-    return Bond(target: self) { $0.title = $1 }
+  public var title: Bond<String?> {
+    return bond { $0.title = $1 }
   }
 }

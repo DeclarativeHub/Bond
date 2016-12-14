@@ -23,10 +23,11 @@
 //
 
 import UIKit
+import ReactiveKit
 
-public extension UINavigationBar {
+public extension ReactiveExtensions where Base: UINavigationBar {
 
-  public var bnd_barTintColor: Bond<UINavigationBar, UIColor?> {
-    return Bond(target: self) { $0.barTintColor = $1 }
+  public var barTintColor: Bond<UIColor?> {
+    return bond { $0.barTintColor = $1 }
   }
 }

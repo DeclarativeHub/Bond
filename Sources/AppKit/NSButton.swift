@@ -25,17 +25,17 @@
 import AppKit
 import ReactiveKit
 
-public extension NSButton {
+public extension ReactiveExtensions where Base: NSButton {
 
-  public var bnd_title: Bond<NSButton, String> {
-    return Bond(target: self) { $0.title = $1 }
+  public var title: Bond<String> {
+    return bond { $0.title = $1 }
   }
 
-  public var bnd_alternateTitle: Bond<NSButton, String> {
-    return Bond(target: self) { $0.alternateTitle = $1 }
+  public var alternateTitle: Bond<String> {
+    return bond { $0.alternateTitle = $1 }
   }
 
-  public var bnd_state: Bond<NSButton, Int> {
-    return Bond(target: self) { $0.state = $1 }
+  public var state: Bond<Int> {
+    return bond { $0.state = $1 }
   }
 }
