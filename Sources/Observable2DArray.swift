@@ -90,7 +90,7 @@ public class Observable2DArray<SectionMetadata, Item>: Collection, SignalProtoco
 
   public var endIndex: IndexPath {
     if numberOfSections == 0 {
-      return IndexPath(item: 1, section: 0)
+      return IndexPath(item: 0, section: 0)
     } else {
       let lastSection = sections[numberOfSections-1]
       return IndexPath(item: lastSection.items.count, section: numberOfSections - 1)
@@ -100,10 +100,14 @@ public class Observable2DArray<SectionMetadata, Item>: Collection, SignalProtoco
   public func index(after i: IndexPath) -> IndexPath {
     if i.section < sections.count {
       let section = sections[i.section]
-      if i.item + 1 >= section.items.count && i.section + 1 < sections.count {
-        return IndexPath(item: 0, section: i.section + 1)
-      } else {
+      if i.item + 1 < section.items.count {
         return IndexPath(item: i.item + 1, section: i.section)
+      } else {
+        if i.section + 1 < sections.count {
+          return IndexPath(item: 0, section: i.section + 1)
+        } else {
+          return endIndex
+        }
       }
     } else {
       return endIndex
