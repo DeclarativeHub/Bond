@@ -335,3 +335,58 @@ extension Observable2DArrayEvent: DataSourceEventProtocol {
 
 extension Observable2DArray: DataSourceProtocol {
 }
+
+extension MutableObservable2DArray {
+  
+  /// Replace section at given index with given section and notify observers to reload section completely
+  public func replaceSection(at index: Int, with section: Observable2DArraySection<SectionMetadata, Item>)  {
+    lock.lock(); defer { lock.unlock() }
+    sections[index] = section
+    subject.next(Observable2DArrayEvent(change: .updateSections([index]), source: self))
+  }
+}
+
+extension MutableObservable2DArray where Item: Equatable {
+  
+  /// Replace section at given index with given section performing diff if performDiff is true
+  /// on all items in section and notifying observers about delets and inserts
+  public func replaceSection(at index: Int, with section: Observable2DArraySection<SectionMetadata, Item>, performDiff: Bool) {
+    if performDiff {
+      lock.lock()
+      let diff = Array.diff(sections[index].items, section.items)
+      
+      var deletes: [Int] = []
+      var inserts: [Int] = []
+      deletes.reserveCapacity(diff.count)
+      inserts.reserveCapacity(diff.count)
+      
+      for diffStep in diff {
+        switch diffStep {
+        case .insert(_, let index):
+          inserts.append(index)
+        case .delete(_, let index):
+          deletes.append(index)
+        }
+      }
+      let deletesIndexPaths = deletes.map { IndexPath(item: $0, section: index) }
+      let insertsIndexPaths = inserts.map { IndexPath(item: $0, section: index) }
+      
+      subject.next(Observable2DArrayEvent(change: .beginBatchEditing, source: self))
+      sections[index].metadata = section.metadata
+      sections[index].items = section.items
+      subject.next(Observable2DArrayEvent(change: .deleteItems(deletesIndexPaths), source: self))
+      subject.next(Observable2DArrayEvent(change: .insertItems(insertsIndexPaths), source: self))
+      subject.next(Observable2DArrayEvent(change: .endBatchEditing, source: self))
+      lock.unlock()
+    } else {
+      replaceSection(at: index, with: section)
+    }
+  }
+  
+  /// Replace all items in section at given index with given items performing diff between
+  /// existing and new items if performDiff is true, otherwise reload section with new items
+  public func replaceSection(at index: Int, with items: [Item], performDiff: Bool) {
+    replaceSection(at: index, with: Observable2DArraySection<SectionMetadata, Item>(metadata: sections[index].metadata, items: items), performDiff: performDiff)
+  }
+}
+
