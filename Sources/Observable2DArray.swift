@@ -336,6 +336,16 @@ extension Observable2DArrayEvent: DataSourceEventProtocol {
 extension Observable2DArray: DataSourceProtocol {
 }
 
+extension MutableObservable2DArray {
+  
+  /// Replace section at given index with given section and notify observers to reload section completely
+  public func replaceSection(at index: Int, with section: Observable2DArraySection<SectionMetadata, Item>)  {
+    lock.lock(); defer { lock.unlock() }
+    sections[index] = section
+    subject.next(Observable2DArrayEvent(change: .updateSections([index]), source: self))
+  }
+}
+
 extension MutableObservable2DArray where Item: Equatable {
   
   /// Replace section at given index with given section performing diff if performDiff is true
