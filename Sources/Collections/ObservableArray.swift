@@ -43,6 +43,16 @@ public protocol ObservableArrayEventProtocol {
 public struct ObservableArrayEvent<Item>: ObservableArrayEventProtocol {
   public let change: ObservableArrayChange
   public let source: ObservableArray<Item>
+
+  public init(change: ObservableArrayChange, source: ObservableArray<Item>) {
+    self.change = change
+    self.source = source
+  }
+
+  public init(change: ObservableArrayChange, source: [Item]) {
+    self.change = change
+    self.source = ObservableArray(source)
+  }
 }
 
 public class ObservableArray<Item>: Collection, SignalProtocol {
