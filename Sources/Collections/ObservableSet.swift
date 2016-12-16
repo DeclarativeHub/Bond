@@ -163,7 +163,7 @@ extension MutableObservableSet: BindableProtocol {
 
   public func bind(signal: Signal<ObservableSetEvent<Element>, NoError>) -> Disposable {
     return signal
-      .take(until: bnd_deallocated)
+      .take(until: deallocated)
       .observeNext { [weak self] event in
         guard let s = self else { return }
         s.set = event.source.set
