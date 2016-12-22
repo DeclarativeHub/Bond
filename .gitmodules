@@ -1,3 +1,6 @@
 [submodule "Carthage/Checkouts/ReactiveKit"]
 	path = Carthage/Checkouts/ReactiveKit
 	url = https://github.com/ReactiveKit/ReactiveKit.git
+[submodule "Carthage/Checkouts/Diff.swift"]
+	path = Carthage/Checkouts/Diff.swift
+	url = https://github.com/wokalski/Diff.swift.git
