@@ -23,6 +23,7 @@
 //
 
 import ReactiveKit
+import Diff
 
 public enum Observable2DArrayChange {
   case reset
@@ -357,29 +358,32 @@ extension MutableObservable2DArray where Item: Equatable {
   public func replaceSection(at index: Int, with section: Observable2DArraySection<SectionMetadata, Item>, performDiff: Bool) {
     if performDiff {
       lock.lock()
-      let diff = Array.diff(sections[index].items, section.items)
-      
-      var deletes: [Int] = []
-      var inserts: [Int] = []
-      deletes.reserveCapacity(diff.count)
-      inserts.reserveCapacity(diff.count)
-      
-      for diffStep in diff {
-        switch diffStep {
-        case .insert(_, let index):
-          inserts.append(index)
-        case .delete(_, let index):
-          deletes.append(index)
-        }
-      }
-      let deletesIndexPaths = deletes.map { IndexPath(item: $0, section: index) }
-      let insertsIndexPaths = inserts.map { IndexPath(item: $0, section: index) }
-      
+      let diff = sections[index].items.extendedDiff(section.items)
+      let patch = diff.patch(from: sections[index].items, to: section.items)
+
       subject.next(Observable2DArrayEvent(change: .beginBatchEditing, source: self))
       sections[index].metadata = section.metadata
       sections[index].items = section.items
-      subject.next(Observable2DArrayEvent(change: .deleteItems(deletesIndexPaths), source: self))
-      subject.next(Observable2DArrayEvent(change: .insertItems(insertsIndexPaths), source: self))
+
+      for step in patch {
+        switch step {
+        case .insertion(let patchIndex, _):
+          let indexPath = IndexPath(item: patchIndex, section: index)
+          subject.next(Observable2DArrayEvent(change: .insertItems([indexPath]), source: self))
+
+        case .deletion(let patchIndex):
+          let indexPath = IndexPath(item: patchIndex, section: index)
+          subject.next(Observable2DArrayEvent(change: .deleteItems([indexPath]), source: self))
+
+        case .move(let from, let to):
+          let fromIndexPath = IndexPath(item: from, section: index)
+          let toIndexPath = IndexPath(item: to, section: index)
+
+          subject.next(Observable2DArrayEvent(change: .moveItem(fromIndexPath, toIndexPath), source: self))
+          
+        }
+      }
+
       subject.next(Observable2DArrayEvent(change: .endBatchEditing, source: self))
       lock.unlock()
     } else {
