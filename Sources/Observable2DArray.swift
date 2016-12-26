@@ -348,6 +348,14 @@ extension MutableObservable2DArray {
     sections[index] = section
     subject.next(Observable2DArrayEvent(change: .updateSections([index]), source: self))
   }
+  
+  /// Replace the entier 2d array with a new one forcing a reload
+  public func replace2D(with list: Observable2DArray<SectionMetadata, Item>)  {
+    lock.lock(); defer { lock.unlock() }
+    sections = list.sections
+    subject.next(Observable2DArrayEvent(change: .reset, source: self))
+  }
+  
 }
 
 extension MutableObservable2DArray where Item: Equatable {
@@ -393,4 +401,92 @@ extension MutableObservable2DArray where Item: Equatable {
     replaceSection(at: index, with: Observable2DArraySection<SectionMetadata, Item>(metadata: sections[index].metadata, items: items), performDiff: performDiff)
   }
 }
+
+extension MutableObservable2DArray where Item: Equatable, SectionMetadata: Equatable {
+  
+  // Replace the entire 2DArray performing diff [if given] on all sections and section's items
+  // resulting in a series of ordered events (deleteSection, deleteItems, insertSections, insertItems) that migrate the old 2DArray to the new 2DArray
+  // Note that both Item and SectionMetadata should be Equatable
+  public func replace2D(with list: Observable2DArray<SectionMetadata, Item>, performDiff: Bool) {
+    
+    if performDiff {
+      lock.lock()
+      
+      // gather old section's metada and new section's metadata
+      let oldSectionsMeta = sections.map({$0.metadata})
+      let newSectionsMeta = list.sections.map({$0.metadata})
+      
+      // perform diff on metadata to figure out inserted sections and deleted sections
+      let metaDiff = Array.diff(oldSectionsMeta, newSectionsMeta)
+      
+      var sectionDeletes: [Int] = []
+      var sectionInserts: [Int] = []
+      sectionDeletes.reserveCapacity(metaDiff.count)
+      sectionInserts.reserveCapacity(metaDiff.count)
+      
+      for diffStep in metaDiff {
+        switch diffStep {
+        case .insert(_, let index):
+          sectionInserts.append(index)
+        case .delete(_, let index):
+          sectionDeletes.append(index)
+        }
+      }
+      
+      // get sections that stayed a.k.a neither deleted nor inserted
+      var sectionsSame: [(new: Int, old: Int)] = []
+      for (i, entry) in newSectionsMeta.enumerated() {
+        if let oldIndex = oldSectionsMeta.index(of: entry) {
+          // TODO: make sure this section is not in sectionDeletes or sectionInserts
+          sectionsSame.append((new: i, old: oldIndex))
+          
+        }
+      }
+      
+      var deletesIndexPaths: [IndexPath] = []
+      var insertsIndexPaths: [IndexPath] = []
+      
+      // perform diff on sectionsSame to get indecies that where deleted and inserted inside those sections
+      for entry in sectionsSame {
+        
+        // the diff should happen between old section's items and new section's items on their corresponding indecies
+        let diff = Array.diff(sections[entry.old].items, list[entry.new].items)
+        
+        var deletes: [Int] = []
+        var inserts: [Int] = []
+        deletes.reserveCapacity(diff.count)
+        inserts.reserveCapacity(diff.count)
+        
+        for diffStep in diff {
+          switch diffStep {
+          case .insert(_, let index):
+            inserts.append(index)
+          case .delete(_, let index):
+            deletes.append(index)
+          }
+        }
+        
+        // deletes should always happen from the old section's place
+        deletesIndexPaths.append(contentsOf: deletes.map { IndexPath(item: $0, section: entry.old) })
+        
+        // insertions should alwyas happen to the new section's place
+        insertsIndexPaths.append(contentsOf: inserts.map { IndexPath(item: $0, section: entry.new) })
+      }
+      
+      
+      subject.next(Observable2DArrayEvent(change: .beginBatchEditing, source: self))
+      sections = list.sections
+      subject.next(Observable2DArrayEvent(change: .deleteSections(IndexSet(sectionDeletes)), source: self))
+      subject.next(Observable2DArrayEvent(change: .deleteItems(deletesIndexPaths), source: self))
+      subject.next(Observable2DArrayEvent(change: .insertSections(IndexSet(sectionInserts)), source: self))
+      subject.next(Observable2DArrayEvent(change: .insertItems(insertsIndexPaths), source: self))
+      subject.next(Observable2DArrayEvent(change: .endBatchEditing, source: self))
+      lock.unlock()
+    } else {
+      replace(with: list)
+    }
+  }
+  
+}
+
 
