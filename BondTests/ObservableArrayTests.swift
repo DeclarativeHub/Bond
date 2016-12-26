@@ -2,8 +2,8 @@
 //  ObservableArrayTests.swift
 //  Bond
 //
-//  Created by Srdan Rasic on 31/07/15.
-//  Copyright © 2015 Srdan Rasic. All rights reserved.
+//  Created by Srdan Rasic on 19/09/16.
+//  Copyright © 2016 Swift Bond. All rights reserved.
 //
 
 import XCTest
@@ -11,328 +11,247 @@ import XCTest
 
 class ObservableArrayTests: XCTestCase {
   
-  func testObservableArrayOperations() {
-    let array = ObservableArray<Int>([])
+  var array: MutableObservableArray<Int>!
+  
+  override func setUp() {
+    super.setUp()
+    array = MutableObservableArray([1, 2, 3])
+  }
+  
+  func testAppend() {
+    array.expectNext([
+      ObservableArrayEvent(change: .reset, source: array),
+      ObservableArrayEvent(change: .inserts([3]), source: array)
+      ])
     
-    XCTAssert(array.count == 0)
+    array.append(4)
+    XCTAssert(array == ObservableArray([1, 2, 3, 4]))
+  }
+  
+  func testInsert() {
+    array.expectNext([
+      ObservableArrayEvent(change: .reset, source: array),
+      ObservableArrayEvent(change: .inserts([0]), source: array),
+      ObservableArrayEvent(change: .inserts([2]), source: array)
+      ])
     
-    array.append(1)
-    XCTAssert(array.count == 1)
-    XCTAssert(array[0] == 1)
+    array.insert(4, at: 0)
+    XCTAssert(array == ObservableArray([4, 1, 2, 3]))
+    array.insert(5, at: 2)
+    XCTAssert(array == ObservableArray([4, 1, 5, 2, 3]))
+  }
+  
+  func testInsertContentsOf() {
+    array.expectNext([
+      ObservableArrayEvent(change: .reset, source: array),
+      ObservableArrayEvent(change: .inserts([1, 2]), source: array),
+      ])
     
-    array.append(2)
-    XCTAssert(array.count == 2)
-    XCTAssert(array.array == [1, 2])
+    array.insert(contentsOf: [4, 5], at: 1)
+    XCTAssert(array == ObservableArray([1, 4, 5, 2, 3]))
+  }
+  
+  func testMove() {
+    array.expectNext([
+      ObservableArrayEvent(change: .reset, source: array),
+      ObservableArrayEvent(change: .move(1, 2), source: array),
+      ])
     
-    array.insert(3, atIndex: 0)
-    XCTAssert(array.count == 3)
-    XCTAssert(array.array == [3, 1, 2])
+    array.moveItem(from: 1, to: 2)
+    XCTAssert(array == ObservableArray([1, 3, 2]))
+  }
+  
+  
+  func testRemoveAtIndex() {
+    array.expectNext([
+      ObservableArrayEvent(change: .reset, source: array),
+      ObservableArrayEvent(change: .deletes([2]), source: array),
+      ObservableArrayEvent(change: .deletes([0]), source: array)
+      ])
     
-    array.extend([4, 5])
-    XCTAssert(array.count == 5)
-    XCTAssert(array.array == [3, 1, 2, 4, 5])
+    let removed = array.remove(at: 2)
+    XCTAssert(array == ObservableArray([1, 2]))
+    XCTAssert(removed == 3)
     
-    let last = array.removeLast()
-    XCTAssert(array.count == 4)
-    XCTAssert(array.array == [3, 1, 2, 4])
-    XCTAssert(last == 5)
+    let removed2 = array.remove(at: 0)
+    XCTAssert(array == ObservableArray([2]))
+    XCTAssert(removed2 == 1)
+  }
+  
+  func testRemoveLast() {
+    array.expectNext([
+      ObservableArrayEvent(change: .reset, source: array),
+      ObservableArrayEvent(change: .deletes([2]), source: array)
+      ])
     
-    let element = array.removeAtIndex(1)
-    XCTAssert(array.count == 3)
-    XCTAssert(array.array == [3, 2, 4])
-    XCTAssert(element == 1)
-    
-    array.insertContentsOf([8, 9], atIndex: 1)
-    XCTAssert(array.count == 5)
-    XCTAssert(array.array == [3, 8, 9, 2, 4])
-    
-    array[0] = 0
-    XCTAssert(array.count == 5)
-    XCTAssert(array.array == [0, 8, 9, 2, 4])
+    let removed = array.removeLast()
+    XCTAssert(removed == 3)
+    XCTAssert(array == ObservableArray([1, 2]))
+  }
+  
+  func testRemoveAll() {
+    array.expectNext([
+      ObservableArrayEvent(change: .reset, source: array),
+      ObservableArrayEvent(change: .deletes([0, 1, 2]), source: array)
+      ])
     
     array.removeAll()
-    XCTAssert(array.count == 0)
-    XCTAssert(array.array == [])
+    XCTAssert(array == ObservableArray([]))
   }
   
-  func testObservableArrayFilter() {
-    let array = ObservableArray<Int>([1, 2, 3])
+  func testUpdate() {
+    array.expectNext([
+      ObservableArrayEvent(change: .reset, source: array),
+      ObservableArrayEvent(change: .updates([1]), source: array)
+      ])
     
-    let filtered = array
-      .filter { e in e % 2 == 0 }
-      .crystallize()
-    
-    XCTAssert(array.count == 3)
-    XCTAssert(filtered.count == 1)
-    
-    array.append(4) // 1, 2, 3, 4
-    XCTAssert(filtered.array == [2, 4])
-    
-    array.insert(6, atIndex: 0) // 6, 1, 2, 3, 4
-    XCTAssert(filtered.array == [6, 2, 4])
-    
-    array.insert(8, atIndex: 2) // 6, 1, 8, 2, 3, 4
-    XCTAssert(filtered.array == [6, 8, 2, 4])
-    
-    array.removeLast() // 6, 1, 8, 2, 3
-    XCTAssert(filtered.array == [6, 8, 2])
-    
-    array.removeAtIndex(1) // 6, 8, 2, 3
-    XCTAssert(filtered.array == [6, 8, 2])
-    
-    array.removeAtIndex(0) // 8, 2, 3
-    XCTAssert(filtered.array == [8, 2])
-    
-    array.removeRange(1...2) // 8
-    XCTAssert(filtered.array == [8])
-    
-    array.insertContentsOf([3, 4, 5], atIndex: 0) // 3, 4, 5, 8
-    XCTAssert(filtered.array == [4, 8])
-    
-    array.insert(6, atIndex: 2) // 3, 4, 6, 5, 8
-    XCTAssert(filtered.array == [4, 6, 8])
-    
-    array[0] = 1 // 1, 4, 6, 5, 8
-    XCTAssert(filtered.array == [4, 6, 8])
-    
-    array[0] = 2 // 2, 4, 6, 5, 8
-    XCTAssert(filtered.array == [2, 4, 6, 8])
-    
-    array.insert(6, atIndex: 0) // 6, 2, 4, 6, 5, 8
-    XCTAssert(filtered.array == [6, 2, 4, 6, 8])
-    
-    array[1] = 1 // 6, 1, 4, 6, 5, 8
-    XCTAssert(filtered.array == [6, 4, 6, 8])
-    
-    array.removeAtIndex(2) // 6, 1, 6, 5, 8
-    XCTAssert(filtered.array == [6, 6, 8])
-    
-    array[3] = 4 // 6, 1, 6, 4, 8
-    XCTAssert(filtered.array == [6, 6, 4, 8])
-    
-    array.removeRange(1..<array.count) // 6
-    XCTAssert(filtered.array == [6])
-    
-    array.append(1) // 6, 1
-    XCTAssert(filtered.array == [6])
-    
-    array.removeAll() // []
-    XCTAssert(filtered.array == [])
-    
-    array.extend([1, 2, 3, 4]) // 1, 2, 3, 4
-    XCTAssert(filtered.array == [2, 4])
-    
-    array.performBatchUpdates { array in
-      array.append(6) // 1, 2, 3, 4, 6
-      array[1] = 1 // 1, 1, 3, 4, 6
-    }
-    XCTAssert(filtered.array == [4, 6])
+    array[1] = 4
+    XCTAssert(array == ObservableArray([1, 4, 3]))
   }
   
-  func testObservableArrayMap() {
-    let array = ObservableArray<Int>([])
+  func testBatchUpdate() {
+    array.expectNext([
+      ObservableArrayEvent(change: .reset, source: array),
+      ObservableArrayEvent(change: .beginBatchEditing, source: array),
+      ObservableArrayEvent(change: .updates([1]), source: array),
+      ObservableArrayEvent(change: .inserts([3]), source: array),
+      ObservableArrayEvent(change: .endBatchEditing, source: array)
+      ])
     
-    let mapped = array
-      .map { e in e * 2 }
-      .crystallize()
-    
-    XCTAssert(array.count == 0)
-    XCTAssert(mapped.count == 0)
-    
-    array.append(1)
-    XCTAssert(mapped.array == [2])
-    
-    array.insert(2, atIndex: 0)
-    XCTAssert(mapped.array == [4, 2])
-    
-    array.insertContentsOf([3, 4], atIndex: 1)
-    XCTAssert(mapped.array == [4, 6, 8, 2])
-    
-    array.removeLast()
-    XCTAssert(mapped.array == [4, 6, 8])
-    
-    array.removeAtIndex(1)
-    XCTAssert(mapped.array == [4, 8])
-    
-    array.performBatchUpdates { array in
-      array.removeAll()
-      array.append(2)
-      array.insert(1, atIndex: 0)
+    array.batchUpdate { array in
       array[1] = 4
+      array.append(5)
     }
-    XCTAssert(mapped.array == [2, 8])
+    
+    XCTAssert(array == ObservableArray([1, 4, 3, 5]))
   }
   
-  func testArrayMapCallCount() {
-    class Test {
-      var value: Int
-      init(_ value: Int) { self.value = value }
+  func testSilentUpdate() {
+    array.expectNext([
+      ObservableArrayEvent(change: .reset, source: array),
+      ])
+    
+    array.silentUpdate { array in
+      array[1] = 4
+      array.append(5)
     }
     
-    var callCount: Int = 0
-    let array = ObservableArray<Int>([])
-    
-    let mapped = array
-      .map { e -> Test in
-        callCount += 1
-        return Test(e)
-      }
-    
-    XCTAssert(callCount == 0)
-    
-    array.append(1)
-    XCTAssert(callCount == 1)
-    
-    array.insert(2, atIndex: 0)
-    XCTAssert(callCount == 2)
-    
-    array.removeAtIndex(0)
-    XCTAssert(callCount == 2)
-    
-    array.removeLast()
-    XCTAssert(callCount == 2)
-    
-    array.insertContentsOf([1, 2, 3, 4], atIndex: 0)
-    XCTAssert(callCount == 6)
+    XCTAssert(array == ObservableArray([1, 4, 3, 5]))
+  }
 
-    array.removeAtIndex(1)
-    XCTAssert(callCount == 6)
-    
-    array.insert(2, atIndex: 1)
-    XCTAssert(callCount == 7)
-    
-    mapped.observe { arrayEvent in
-      arrayEvent.sequence.first // just access any element
-    }
-    
-    XCTAssert(callCount == 8)
-    
-    array.removeAll()
-    XCTAssert(callCount == 8)
+  func testArrayMapAppend() {
+    array.map { $0 * 2 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray),
+      ObservableArrayEvent(change: .inserts([3]), source: AnyObservableArray)
+      ])
+    array.append(4)
   }
-  
-  func testObservableArrayMapCrystallizeCorrectAndDoesNotAffectCallCount() {
-    class Test {
-      var value: Int
-      init(_ value: Int) { self.value = value }
-    }
-    
-    var callCount: Int = 0
-    let array = ObservableArray<Int>([])
-    
-    let mapped = array
-      .map { e -> Test in
-        callCount += 1
-        return Test(e)
-      }
-      .crystallize()
-    
-    XCTAssert(mapped.count == 0)
-    XCTAssert(callCount == 0)
-    
-    array.append(1)
-    XCTAssert(callCount == 1)
-    
-    XCTAssert(mapped[0].value == 1)
-    XCTAssert(callCount == 1)
-    
-    array.insert(2, atIndex: 0)
-    XCTAssert(callCount == 2)
-    
-    XCTAssert(mapped[1].value == 1)
-    XCTAssert(callCount == 2)
-    
-    XCTAssert(mapped[0].value == 2)
-    XCTAssert(callCount == 2)
-    
-    array.removeAtIndex(0)
-    XCTAssert(callCount == 2)
-    
-    XCTAssert(mapped[0].value == 1)
-    XCTAssert(callCount == 2)
+
+  func testArrayMapInsert() {
+    array.map { $0 * 2 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray),
+      ObservableArrayEvent(change: .inserts([0]), source: AnyObservableArray)
+      ])
+    array.insert(10, at: 0)
   }
-  
-  func testFilterMapChain() {
-    let array = ObservableArray<Int>([1, 10])
-    
-    let mapped = array
-      .filter { e in e > 2 }
-      .map { e in e * 2 }
-      .crystallize()
-    
-    XCTAssert(mapped.array == [20])
-    
-    array.removeAll() // []
-    XCTAssert(mapped.count == 0)
-    
-    array.append(1) // 1
-    XCTAssert(mapped.array == [])
-    
-    array.insert(3, atIndex: 0) // 3, 1
-    XCTAssert(mapped.array == [6])
-    
-    array.insertContentsOf([1, 4], atIndex: 1) // 3, 1, 4, 1
-    XCTAssert(mapped.array == [6, 8])
-    
-    array.removeLast() // 3, 1, 4
-    XCTAssert(mapped.array == [6, 8])
-    
-    array.removeAtIndex(2) // 3, 1
-    XCTAssert(mapped.array == [6])
-    
-    array.performBatchUpdates { array in
-      array.append(2) // 3, 1, 2
-      array.insertContentsOf([1, 5], atIndex: 0) // 1, 5, 3, 1, 2
-      array[4] = 4 // 1, 5, 3, 1, 4
-    }
-    XCTAssert(mapped.array == [10, 6, 8])
+
+  func testArrayMapRemoveLast() {
+    array.map { $0 * 2 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray),
+      ObservableArrayEvent(change: .deletes([2]), source: AnyObservableArray)
+      ])
+    array.removeLast()
   }
-  
-  func testCrystallize1D() {
-    let transform = { $0 * 2 }
-    let array = ObservableArray([1, 2])
-    
-    let mappedObservableArray = array
-      .map(transform)
-      .crystallize()
-    
-    XCTAssert(mappedObservableArray.array == array.array.map(transform))
-    
-    array.append(3)
-    XCTAssert(mappedObservableArray.array == array.array.map(transform))
-    
-    array.removeAll()
-    XCTAssert(mappedObservableArray.array == array.array.map(transform))
+
+  func testArrayMapRemoveAtindex() {
+    array.map { $0 * 2 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray),
+      ObservableArrayEvent(change: .deletes([1]), source: AnyObservableArray)
+      ])
+    array.remove(at: 1)
   }
-  
-  func testCrystallize2D() {
-    let transform = { $0 * 2 }
-    let array = ObservableArray([ObservableArray([1, 2]), ObservableArray([10, 20])])
-    
-    let mappedObservableArray = array
-      .map { array in
-        return array.map(transform).crystallize()
-      }
-      .crystallize()
-    
-    XCTAssert(mappedObservableArray.count == array.count)
-    XCTAssert(mappedObservableArray[0].array == array[0].array.map(transform))
-    XCTAssert(mappedObservableArray[1].array == array[1].array.map(transform))
-    
-    array[0].append(3)
-    XCTAssert(mappedObservableArray[0].array == array[0].array.map(transform))
-    
-    array.append(ObservableArray([100]))
-    XCTAssert(mappedObservableArray.count == array.count)
-    XCTAssert(mappedObservableArray[2].array == array[2].array.map(transform))
+
+  func testArrayMapUpdate() {
+    array.map { $0 * 2 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray),
+      ObservableArrayEvent(change: .updates([1]), source: AnyObservableArray)
+      ])
+    array[1] = 20
   }
-  
-  func testFilteredObservableArrayAlwaysReplayes() {
-    let array = ObservableArray<Int>([1, 2, 3])
-    array.insert(7, atIndex: 0) // 7, 1, 2, 3
-    XCTAssert(array.count == 4)
-    
-    let filtered = array.filter { e in e % 2 == 0 }.crystallize()
-    XCTAssert(filtered.array == [2])
+
+  func testArrayFilterAppendNonPassing() {
+    array.filter { $0 % 2 != 0 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray)
+      ])
+    array.append(4)
+  }
+
+  func testArrayFilterAppendPassing() {
+    array.filter { $0 % 2 != 0 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray),
+      ObservableArrayEvent(change: .inserts([2]), source: AnyObservableArray)
+      ])
+    array.append(5)
+  }
+
+  func testArrayFilterInsertNonPassing() {
+    array.filter { $0 % 2 != 0 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray)
+      ])
+    array.insert(4, at: 1)
+  }
+
+  func testArrayFilterInsertPassing() {
+    array.filter { $0 % 2 != 0 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray),
+      ObservableArrayEvent(change: .inserts([1]), source: AnyObservableArray)
+      ])
+    array.insert(5, at: 1)
+  }
+
+  func testArrayFilterRemoveNonPassing() {
+    array.filter { $0 % 2 != 0 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray)
+      ])
+    array.remove(at: 1)
+  }
+
+  func testArrayFilterRemovePassing() {
+    array.filter { $0 % 2 != 0 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray),
+      ObservableArrayEvent(change: .deletes([1]), source: AnyObservableArray)
+      ])
+    array.removeLast()
+  }
+
+  func testArrayFilterUpdateNonPassingToNonPassing() {
+    array.filter { $0 % 2 != 0 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray)
+      ])
+    array[1] = 4
+  }
+
+  func testArrayFilterUpdateNonPassingToPassing() {
+    array.filter { $0 % 2 != 0 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray),
+      ObservableArrayEvent(change: .inserts([1]), source: AnyObservableArray)
+      ])
+    array[1] = 5
+  }
+
+  func testArrayFilterUpdatePassingToPassing() {
+    array.filter { $0 % 2 != 0 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray),
+      ObservableArrayEvent(change: .updates([1]), source: AnyObservableArray)
+      ])
+    array[2] = 5
+  }
+
+  func testArrayFilterUpdatePassingToNonPassing() {
+    array.filter { $0 % 2 != 0 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray),
+      ObservableArrayEvent(change: .deletes([1]), source: AnyObservableArray)
+      ])
+    array[2] = 4
   }
 }

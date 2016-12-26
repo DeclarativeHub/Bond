@@ -26,3 +26,12 @@ DerivedData
 #
 # Pods/
 
+## Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+# Swift Package Manager
+.build/
+
+# Carthage
+Carthage/Build
