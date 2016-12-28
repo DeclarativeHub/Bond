@@ -28,7 +28,7 @@ Pod::Spec.new do |s|
   s.osx.exclude_files = "Sources/UIKit"
   s.requires_arc = true
 
-  s.dependency 'ReactiveKit', '~> 3.1'
+  s.dependency 'ReactiveKit', '~> 3.1.2'
   s.dependency 'Diff.swift', '~> 0.4'
 
 end

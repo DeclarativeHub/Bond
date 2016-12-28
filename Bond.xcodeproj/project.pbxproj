@@ -285,6 +285,7 @@
 		EC2D4A0D1DA8F31700B03A6B /* NSObject+Bond.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+Bond.h"; path = "Bond/NSObject+Bond.h"; sourceTree = SOURCE_ROOT; };
 		EC2D4A131DA8F36B00B03A6B /* NSObject+Bond.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+Bond.m"; path = "Bond/NSObject+Bond.m"; sourceTree = SOURCE_ROOT; };
 		EC35401B1D462F4700901AA1 /* UIControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIControl.swift; sourceTree = "<group>"; };
+		EC378E961E13FFD100E2197D /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		EC7890ED1D44F1BF002848EB /* Bond.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Bond.h; path = Bond/Bond.h; sourceTree = "<group>"; };
 		EC7890EE1D44F1BF002848EB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Bond/Info.plist; sourceTree = "<group>"; };
 		EC7890F11D44F1D9002848EB /* Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bond.swift; sourceTree = "<group>"; };
@@ -376,6 +377,7 @@
 			children = (
 				ECD5940B1D93F2E400C840C2 /* Cartfile */,
 				ECD5940C1D93F2ED00C840C2 /* Bond.podspec */,
+				EC378E961E13FFD100E2197D /* Package.swift */,
 				161D6D2D1D6F0D92004CA17D /* README.md */,
 				EC7890ED1D44F1BF002848EB /* Bond.h */,
 				EC7890EE1D44F1BF002848EB /* Info.plist */,
