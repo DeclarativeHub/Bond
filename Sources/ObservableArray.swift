@@ -22,6 +22,7 @@
 //  THE SOFTWARE.
 //
 
+import Diff
 import ReactiveKit
 
 public enum ObservableArrayChange {
@@ -244,70 +245,6 @@ extension ObservableArray: DataSourceProtocol {
   }
 }
 
-// Mark: Diff
-
-enum DiffStep<T> {
-  case insert(element: T, index: Int)
-  case delete(element: T, index: Int)
-}
-
-extension Array where Element: Equatable {
-  
-  // Created by Dapeng Gao on 20/10/15.
-  // The central idea of this algorithm is taken from https://github.com/jflinter/Dwifft
-  
-  static func diff(_ x: [Element], _ y: [Element]) -> [DiffStep<Element>] {
-    
-    if x.count == 0 {
-      return zip(y, y.indices).map(DiffStep<Element>.insert)
-    }
-    
-    if y.count == 0 {
-      return zip(x, x.indices).map(DiffStep<Element>.delete)
-    }
-    
-    // Use dynamic programming to generate a table such that `table[i][j]` represents
-    // the length of the longest common substring (LCS) between `x[0..<i]` and `y[0..<j]`
-    let xLen = x.count, yLen = y.count
-    var table = [[Int]](repeating: [Int](repeating: 0, count: yLen + 1), count: xLen + 1)
-    for i in 1...xLen {
-      for j in 1...yLen {
-        if x[i - 1] == y[j - 1] {
-          table[i][j] = table[i - 1][j - 1] + 1
-        } else {
-          table[i][j] = Swift.max(table[i - 1][j], table[i][j - 1])
-        }
-      }
-    }
-    
-    // Backtrack to find out the diff
-    var backtrack: [DiffStep<Element>] = []
-    var i = xLen
-    var j = yLen
-    while i > 0 || j > 0 {
-      if i == 0 {
-        j -= 1
-        backtrack.append(.insert(element: y[j], index: j))
-      } else if j == 0 {
-        i -= 1
-        backtrack.append(.delete(element: x[i], index: i))
-      } else if table[i][j] == table[i][j - 1] {
-        j -= 1
-        backtrack.append(.insert(element: y[j], index: j))
-      } else if table[i][j] == table[i - 1][j] {
-        i -= 1
-        backtrack.append(.delete(element: x[i], index: i))
-      } else {
-        i -= 1
-        j -= 1
-      }
-    }
-    
-    // Reverse the result
-    return backtrack.reversed()
-  }
-}
-
 extension MutableObservableArray {
   
   public func replace(with array: [Item]) {
@@ -322,26 +259,24 @@ extension MutableObservableArray where Item: Equatable {
   public func replace(with array: [Item], performDiff: Bool) {
     if performDiff {
       lock.lock()
-      let diff = Array.diff(self.array, array)
-
-      var deletes: [Int] = []
-      var inserts: [Int] = []
-      deletes.reserveCapacity(diff.count)
-      inserts.reserveCapacity(diff.count)
-
-      for diffStep in diff {
-        switch diffStep {
-        case .insert(_, let index):
-          inserts.append(index)
-        case .delete(_, let index):
-          deletes.append(index)
-        }
-      }
+      let diff = self.array.extendedDiff(array)
+      let patch = diff.patch(from: self.array, to: array)
 
       subject.next(ObservableArrayEvent(change: .beginBatchEditing, source: self))
       self.array = array
-      subject.next(ObservableArrayEvent(change: .deletes(deletes), source: self))
-      subject.next(ObservableArrayEvent(change: .inserts(inserts), source: self))
+      for step in patch {
+        switch step {
+        case .insertion(let index, _):
+          subject.next(ObservableArrayEvent(change: .inserts([index]), source: self))
+
+        case .deletion(let index):
+          subject.next(ObservableArrayEvent(change: .deletes([index]), source: self))
+
+        case .move(let from, let to):
+          subject.next(ObservableArrayEvent(change: .move(from, to), source: self))
+
+        }
+      }
       subject.next(ObservableArrayEvent(change: .endBatchEditing, source: self))
       lock.unlock()
     } else {

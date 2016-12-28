@@ -84,6 +84,9 @@
 		16D30F091D65D82D00C2435D /* NSAppearanceCustomization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30F081D65D82C00C2435D /* NSAppearanceCustomization.swift */; };
 		16D30F0B1D65E8C700C2435D /* NSTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30F0A1D65E8C700C2435D /* NSTableView.swift */; };
 		227DEF051DCB87BF00213852 /* UIGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227DEF041DCB87BF00213852 /* UIGestureRecognizer.swift */; };
+		90A3FACD1E0C8D9A0086A7F1 /* Diff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */; };
+		90A3FACE1E0C8D9F0086A7F1 /* Diff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */; };
+		90A3FACF1E0C8DA20086A7F1 /* Diff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */; };
 		EC06A8761DBCB147006AEA81 /* NSObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC06A8751DBCB147006AEA81 /* NSObjectTests.swift */; };
 		EC2505B11D3F570500A6E14A /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2505B01D3F570500A6E14A /* UILabel.swift */; };
 		EC2505B31D3F571500A6E14A /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2505B21D3F571500A6E14A /* UITextField.swift */; };
@@ -220,6 +223,20 @@
 			remoteGlobalIDString = 16887E361D744ABB00EDA099;
 			remoteInfo = "Bond-App";
 		};
+		90A3FAC71E0C8D8B0086A7F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C9EE87161CCFCA83006BD90E;
+			remoteInfo = Diff;
+		};
+		90A3FAC91E0C8D8B0086A7F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C9838FF11D29571000691BE8;
+			remoteInfo = DiffTests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -261,6 +278,7 @@
 		16D30F081D65D82C00C2435D /* NSAppearanceCustomization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSAppearanceCustomization.swift; sourceTree = "<group>"; };
 		16D30F0A1D65E8C700C2435D /* NSTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTableView.swift; sourceTree = "<group>"; };
 		227DEF041DCB87BF00213852 /* UIGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIGestureRecognizer.swift; sourceTree = "<group>"; };
+		90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Diff.xcodeproj; path = Carthage/Checkouts/Diff.swift/Diff.xcodeproj; sourceTree = "<group>"; };
 		EC06A8751DBCB147006AEA81 /* NSObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSObjectTests.swift; sourceTree = "<group>"; };
 		EC2505B01D3F570500A6E14A /* UILabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UILabel.swift; path = Sources/UIKit/UILabel.swift; sourceTree = SOURCE_ROOT; };
 		EC2505B21D3F571500A6E14A /* UITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UITextField.swift; path = Sources/UIKit/UITextField.swift; sourceTree = SOURCE_ROOT; };
@@ -309,6 +327,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90A3FACD1E0C8D9A0086A7F1 /* Diff.framework in Frameworks */,
 				165217961D70593E00C9FAEE /* ReactiveKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -335,6 +354,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90A3FACE1E0C8D9F0086A7F1 /* Diff.framework in Frameworks */,
 				165217991D70594D00C9FAEE /* ReactiveKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -343,6 +363,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90A3FACF1E0C8DA20086A7F1 /* Diff.framework in Frameworks */,
 				1652179C1D70595600C9FAEE /* ReactiveKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -362,6 +383,7 @@
 				16210A491D3EC474004AEDF3 /* BondTests */,
 				16887E381D744ABB00EDA099 /* Bond-App */,
 				16210A3D1D3EC474004AEDF3 /* Products */,
+				90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */,
 				165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */,
 			);
 			indentWidth = 2;
@@ -465,6 +487,15 @@
 				16D30F0A1D65E8C700C2435D /* NSTableView.swift */,
 			);
 			path = AppKit;
+			sourceTree = "<group>";
+		};
+		90A3FAC31E0C8D8B0086A7F1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */,
+				90A3FACA1E0C8D8B0086A7F1 /* DiffTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		EC2505AF1D3F56D900A6E14A /* UIKit */ = {
@@ -677,6 +708,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 90A3FAC31E0C8D8B0086A7F1 /* Products */;
+					ProjectRef = 90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */;
+				},
+				{
 					ProductGroup = 165217831D70591D00C9FAEE /* Products */;
 					ProjectRef = 165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */;
 				},
@@ -726,6 +761,20 @@
 			fileType = wrapper.cfbundle;
 			path = "ReactiveKit-Tests.xctest";
 			remoteRef = 165217921D70591E00C9FAEE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Diff.framework;
+			remoteRef = 90A3FAC71E0C8D8B0086A7F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		90A3FACA1E0C8D8B0086A7F1 /* DiffTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = DiffTests.xctest;
+			remoteRef = 90A3FAC91E0C8D8B0086A7F1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
