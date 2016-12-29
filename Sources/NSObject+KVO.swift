@@ -53,6 +53,10 @@ public extension NSObject {
       triggerEventOnSetting: false
     )
   }
+  
+  public func dynamic<T>(keyPath: String) -> DynamicSubject<NSObject, T> {
+    return dynamic(keyPath: keyPath, ofType: T.self)
+  }
 
   /// Returns a ```DynamicSubject``` representing the given KVO path of the given type.
   ///
@@ -138,6 +142,11 @@ public extension NSObject {
       triggerEventOnSetting: false
     )
   }
+  
+  public func dynamic<T>(keyPath: String) -> DynamicSubject<NSObject, T> where T: OptionalProtocol {
+    return dynamic(keyPath: keyPath, ofType: T.self)
+  }
+  
 }
 
 // MARK: - Implementation
