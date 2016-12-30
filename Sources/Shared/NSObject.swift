@@ -22,7 +22,6 @@
 //  THE SOFTWARE.
 //
 
-
 import Foundation
 import ReactiveKit
 
@@ -32,7 +31,7 @@ extension ReactiveExtensions where Base: NSObject {
 
   /// A signal that fires completion event when the object is deallocated.
   public var deallocated: SafeSignal<Void> {
-    return base.deallocated
+    return bag.deallocated
   }
 
   /// Use this bag to dispose disposables upon the deallocation of the receiver.
@@ -54,26 +53,12 @@ public protocol Deallocatable: class {
 extension NSObject: Deallocatable {
 
   fileprivate struct AssociatedKeys {
-    static var DeallocationSignalHelper = "bnd_DeallocationSignalHelper"
     static var DisposeBagKey = "bnd_DisposeBagKey"
-  }
-
-  fileprivate class BNDDeallocationSignalHelper {
-    let subject = ReplayOneSubject<Void, NoError>()
-    deinit {
-      subject.completed()
-    }
   }
 
   /// A signal that fires completion event when the object is deallocated.
   public var deallocated: Signal<Void, NoError> {
-    if let helper = objc_getAssociatedObject(self, &AssociatedKeys.DeallocationSignalHelper) as? BNDDeallocationSignalHelper {
-      return helper.subject.toSignal()
-    } else {
-      let helper = BNDDeallocationSignalHelper()
-      objc_setAssociatedObject(self, &AssociatedKeys.DeallocationSignalHelper, helper, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-      return helper.subject.toSignal()
-    }
+    return reactive.deallocated
   }
 
   /// Bind `signal` to `bindable` and dispose in `bnd_bag` of receiver.
