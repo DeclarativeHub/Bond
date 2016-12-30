@@ -29,9 +29,8 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: UIRefreshControl {
 
-  public var refreshing: DynamicSubject<UIRefreshControl, Bool> {
-    return DynamicSubject(
-      target: base,
+  public var refreshing: DynamicSubject<Bool> {
+    return dynamicSubject(
       signal: controlEvents(.valueChanged).eraseType(),
       get: { $0.isRefreshing },
       set: { if $1 { $0.beginRefreshing() } else { $0.endRefreshing() } }

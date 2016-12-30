@@ -27,20 +27,18 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: UITextView {
 
-  public var text: DynamicSubject<UITextView, String?> {
+  public var text: DynamicSubject<String?> {
     let notificationName = NSNotification.Name.UITextViewTextDidChange
-    return DynamicSubject(
-      target: base,
+    return dynamicSubject(
       signal: NotificationCenter.default.reactive.notification(name: notificationName, object: base).eraseType(),
       get: { $0.text },
       set: { $0.text = $1 }
     )
   }
 
-  public var attributedText: DynamicSubject<UITextView, NSAttributedString?> {
+  public var attributedText: DynamicSubject<NSAttributedString?> {
     let notificationName = NSNotification.Name.UITextViewTextDidChange
-    return DynamicSubject(
-      target: base,
+    return dynamicSubject(
       signal: NotificationCenter.default.reactive.notification(name: notificationName, object: base).eraseType(),
       get: { $0.attributedText },
       set: { $0.attributedText = $1 }

@@ -29,9 +29,8 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: UIDatePicker {
 
-  public var date: DynamicSubject<UIDatePicker, Date> {
-    return DynamicSubject(
-      target: base,
+  public var date: DynamicSubject<Date> {
+    return dynamicSubject(
       signal: controlEvents(.valueChanged).eraseType(),
       get: { $0.date },
       set: { $0.date = $1 }

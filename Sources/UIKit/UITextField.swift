@@ -27,18 +27,16 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: UITextField {
 
-  public var text: DynamicSubject<UITextField, String?> {
-    return DynamicSubject(
-      target: base,
+  public var text: DynamicSubject<String?> {
+    return dynamicSubject(
       signal: controlEvents(.allEditingEvents).eraseType(),
       get: { $0.text },
       set: { $0.text = $1 }
     )
   }
 
-  public var attributedText: DynamicSubject<UITextField, NSAttributedString?> {
-    return DynamicSubject(
-      target: base,
+  public var attributedText: DynamicSubject<NSAttributedString?> {
+    return dynamicSubject(
       signal: controlEvents(.allEditingEvents).eraseType(),
       get: { $0.attributedText },
       set: { $0.attributedText = $1 }

@@ -37,7 +37,7 @@ public extension ReactiveExtensions where Base: NSObject {
   ///
   /// E.g. ```user.dynamic(keyPath: "name", ofType: String.self)```
   ///
-  public func keyPath<T>(_ keyPath: String, ofType: T.Type) -> DynamicSubject<NSObject, T> {
+  public func keyPath<T>(_ keyPath: String, ofType: T.Type) -> DynamicSubject<T> {
     return DynamicSubject(
       target: base,
       signal: RKKeyValueSignal(keyPath: keyPath, for: base).toSignal(),
@@ -60,7 +60,7 @@ public extension ReactiveExtensions where Base: NSObject {
   ///
   /// E.g. ```user.dynamic(keyPath: "name", ofType: Optional<String>.self)```
   ///
-  public func keyPath<T>(_ keyPath: String, ofType: T.Type) -> DynamicSubject<NSObject, T> where T: OptionalProtocol {
+  public func keyPath<T>(_ keyPath: String, ofType: T.Type) -> DynamicSubject<T> where T: OptionalProtocol {
     return DynamicSubject(
       target: base,
       signal: RKKeyValueSignal(keyPath: keyPath, for: base).toSignal(),
@@ -91,7 +91,7 @@ public extension ReactiveExtensions where Base: NSObject {
   ///
   /// E.g. ```user.dynamic(keyPath: "name", ofType: String.self)```
   ///
-  public func keyPath<T>(_ keyPath: String, ofExpectedType: T.Type) -> DynamicSubject2<NSObject, T, NSObject.KVOError> {
+  public func keyPath<T>(_ keyPath: String, ofExpectedType: T.Type) -> DynamicSubject2<T, NSObject.KVOError> {
     return DynamicSubject2(
       target: base,
       signal: RKKeyValueSignal(keyPath: keyPath, for: base).castError(),
@@ -116,7 +116,7 @@ public extension ReactiveExtensions where Base: NSObject {
   ///
   /// E.g. ```user.dynamic(keyPath: "name", ofType: Optional<String>.self)```
   ///
-  public func keyPath<T>(_ keyPath: String, ofExpectedType: T.Type) -> DynamicSubject2<NSObject, T, NSObject.KVOError> where T: OptionalProtocol {
+  public func keyPath<T>(_ keyPath: String, ofExpectedType: T.Type) -> DynamicSubject2<T, NSObject.KVOError> where T: OptionalProtocol {
     return DynamicSubject2(
       target: base,
       signal: RKKeyValueSignal(keyPath: keyPath, for: base).castError(),
