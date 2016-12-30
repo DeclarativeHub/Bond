@@ -10,6 +10,8 @@ import ReactiveKit
 
 extension SignalProtocol {
 
+  #if os(iOS) || os(tvOS)
+
   /// Fires an event on start and every `interval` seconds as long as the app is in foreground.
   /// Pauses when the app goes to background. Restarts when the app is back in foreground.
   public static func heartbeat(interval seconds: Double) -> Signal<Void, NoError> {
@@ -19,4 +21,6 @@ extension SignalProtocol {
       return Signal<Int, NoError>.interval(seconds, queue: .global()).replace(with: ()).start(with: ()).take(until: didEnterBackgorund)
     }
   }
+
+  #endif
 }
