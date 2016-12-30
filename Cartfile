@@ -1,2 +1,2 @@
-github "ReactiveKit/ReactiveKit" ~> 3.1.2
+github "ReactiveKit/ReactiveKit" ~> 3.2
 github "wokalski/Diff.swift" ~> 0.4
