@@ -148,7 +148,7 @@ private class RKKeyValueSignal: NSObject, SignalProtocol {
   private weak var object: NSObject? = nil
   private var context = 0
   private var keyPath: String
-  private let subject: AnySubject<Void, NoError>
+  private let subject: Subject<Void, NoError>
   private var numberOfObservers: Int = 0
   private var observing = false
   private let deallocationDisposable = SerialDisposable(otherDisposable: nil)
@@ -156,7 +156,7 @@ private class RKKeyValueSignal: NSObject, SignalProtocol {
   
   fileprivate init(keyPath: String, for object: NSObject) {
     self.keyPath = keyPath
-    self.subject = AnySubject(base: PublishSubject())
+    self.subject = PublishSubject()
     self.object = object
     super.init()
 
