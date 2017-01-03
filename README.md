@@ -184,7 +184,7 @@ The only requirement is that the target must be "deallocatable", in other words 
 
 ```swift
 public protocol Deallocatable: class {
-  deallocated: Signal<Void, NoError> { get }
+  var deallocated: Signal<Void, NoError> { get }
 }
 ```
 
