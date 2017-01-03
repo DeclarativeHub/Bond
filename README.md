@@ -18,8 +18,8 @@ Let's say you would like to act on a text change event of a `UITextField`. Well,
 
 ```swift
 textField.reactive.text.observeNext { text in
-    print(text)
-  }
+  print(text)
+}
 ```
 
 Now, instead of printing what the user has typed, you can _bind_ it to a `UILabel`:
