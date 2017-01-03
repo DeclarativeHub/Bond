@@ -17,8 +17,7 @@ Bond is built on top of ReactiveKit and bridges the gap between the reactive and
 Let's say you would like to act on a text change event of a `UITextField`. Well, you could setup 'target-action' mechanism between your object and go through all that target-action selector registration pain, or you could simply use Bond and do this:
 
 ```swift
-textField.reactive.text
-  .observeNext { text in
+textField.reactive.text.observeNext { text in
     print(text)
   }
 ```
@@ -26,15 +25,13 @@ textField.reactive.text
 Now, instead of printing what the user has typed, you can _bind_ it to a `UILabel`:
 
 ```swift
-textField.reactive.text
-  .bind(to: label.reactive.text)
+textField.reactive.text.bind(to: label.reactive.text)
 ```
 
 Because binding to a label text property is so common, you can even do:
 
 ```swift
-textField.reactive.text
-  .bind(to: label)
+textField.reactive.text.bind(to: label)
 ```
 
 That one line establishes a binding between text field's text property and label's text property. In effect, whenever user makes a change to the text field, that change will be automatically propagated to the label.
