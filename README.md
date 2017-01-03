@@ -114,11 +114,11 @@ repositories.bind(to: collectionView) { array, indexPath, collectionView in
   let repository = array[indexPath.item]
 
   repository.name
-    .bindTo(cell.nameLabel)
+    .bind(to: cell.nameLabel)
     .dispose(in: cell.onReuseBag)
 
   repository.photo
-    .bindTo(cell.avatarImageView)
+    .bind(to: cell.avatarImageView)
     .dispose(in: cell.onReuseBag)
 
   return cell
