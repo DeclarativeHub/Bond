@@ -153,6 +153,15 @@ public class MutableObservableSet<Element: Hashable>: ObservableSet<Element> {
     }
   }
 
+  /// Remove item from the set by index.
+  @discardableResult
+  public func remove(at index: SetIndex<Element>) -> Element? {
+    lock.lock(); defer { lock.unlock() }
+    let element = set.remove(at: index)
+    subject.next(ObservableSetEvent(kind: .deletes([index]), source: self))
+    return element
+  }
+
   /// Removes all items from the set.
   public func removeAll() {
     lock.lock(); defer { lock.unlock() }
