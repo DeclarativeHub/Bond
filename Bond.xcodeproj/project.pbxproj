@@ -467,20 +467,20 @@
 		16D30EBA1D65944500C2435D /* AppKit */ = {
 			isa = PBXGroup;
 			children = (
+				16D30F081D65D82C00C2435D /* NSAppearanceCustomization.swift */,
 				16D30EBB1D65944500C2435D /* NSButton.swift */,
+				16D30F061D65D7F800C2435D /* NSColorWell.swift */,
 				16D30EC31D65988A00C2435D /* NSControl.swift */,
 				16D30EC51D659B8F00C2435D /* NSImageView.swift */,
+				16D30F041D65D7C000C2435D /* NSMenuItem.swift */,
 				16D30EC71D659BDB00C2435D /* NSProgressIndicator.swift */,
 				16D30EC91D659C1200C2435D /* NSSegmentedControl.swift */,
 				16D30ECB1D659CA700C2435D /* NSSlider.swift */,
-				16D30ECD1D659D4A00C2435D /* NSTextField.swift */,
-				16D30ECF1D659E0600C2435D /* NSView.swift */,
-				16D30F001D65D6AA00C2435D /* NSTextView.swift */,
 				16D30F021D65D79600C2435D /* NSStatusBarButton.swift */,
-				16D30F041D65D7C000C2435D /* NSMenuItem.swift */,
-				16D30F061D65D7F800C2435D /* NSColorWell.swift */,
-				16D30F081D65D82C00C2435D /* NSAppearanceCustomization.swift */,
 				16D30F0A1D65E8C700C2435D /* NSTableView.swift */,
+				16D30ECD1D659D4A00C2435D /* NSTextField.swift */,
+				16D30F001D65D6AA00C2435D /* NSTextView.swift */,
+				16D30ECF1D659E0600C2435D /* NSView.swift */,
 			);
 			path = AppKit;
 			sourceTree = "<group>";
