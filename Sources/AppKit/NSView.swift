@@ -34,4 +34,8 @@ public extension ReactiveExtensions where Base: NSView {
   public var isHidden: Bond<Bool> {
     return bond { $0.isHidden = $1 }
   }
+
+  public var toolTip: Bond<String?> {
+    return bond { $0.toolTip = $1 }
+  }
 }
