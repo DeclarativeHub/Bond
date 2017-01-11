@@ -421,27 +421,34 @@ extension MutableObservable2DArray where Item: Equatable, SectionMetadata: Equat
       let newSectionsMeta = list.sections.map({$0.metadata})
       
       // perform diff on metadata to figure out inserted sections and deleted sections
-      let metaDiff = Array.diff(oldSectionsMeta, newSectionsMeta)
+      let metaDiff = oldSectionsMeta.extendedDiff(newSectionsMeta)
+      let metaPatch = metaDiff.patch(from: newSectionsMeta, to: newSectionsMeta)
+      
+      //let metaDiff = Array.diff(oldSectionsMeta, newSectionsMeta)
       
       var sectionDeletes: [Int] = []
       var sectionInserts: [Int] = []
-      sectionDeletes.reserveCapacity(metaDiff.count)
-      sectionInserts.reserveCapacity(metaDiff.count)
+      var sectionMoves: [(from: Int, to: Int)] = []
+      sectionDeletes.reserveCapacity(metaPatch.count)
+      sectionInserts.reserveCapacity(metaPatch.count)
+      sectionMoves.reserveCapacity(metaPatch.count)
       
-      for diffStep in metaDiff {
+      for diffStep in metaPatch {
         switch diffStep {
-        case .insert(_, let index):
+        case .insertion(let index, _):
           sectionInserts.append(index)
-        case .delete(_, let index):
+        case .deletion(let index):
           sectionDeletes.append(index)
+        case .move(let from, let to):
+          sectionMoves.append((from,to))
+          //subject.next(ObservableArrayEvent(change: .move(from, to), source: self))
         }
       }
       
-      // get sections that stayed a.k.a neither deleted nor inserted
+      // get sections that stayed there a.k.a neither deleted nor inserted
       var sectionsSame: [(new: Int, old: Int)] = []
       for (i, entry) in newSectionsMeta.enumerated() {
         if let oldIndex = oldSectionsMeta.index(of: entry) {
-          // TODO: make sure this section is not in sectionDeletes or sectionInserts
           sectionsSame.append((new: i, old: oldIndex))
           
         }
@@ -449,24 +456,31 @@ extension MutableObservable2DArray where Item: Equatable, SectionMetadata: Equat
       
       var deletesIndexPaths: [IndexPath] = []
       var insertsIndexPaths: [IndexPath] = []
+      var movesIndexPaths: [(from: IndexPath, to: IndexPath)] = []
       
-      // perform diff on sectionsSame to get indecies that where deleted and inserted inside those sections
+      // perform diff on sectionsSame items to get indecies that where deleted, inserted and moved inside those sections
       for entry in sectionsSame {
         
         // the diff should happen between old section's items and new section's items on their corresponding indecies
-        let diff = Array.diff(sections[entry.old].items, list[entry.new].items)
+        let diff = sections[entry.old].items.extendedDiff(list[entry.new].items)
+        let patch = diff.patch(from: sections[entry.old].items, to: list[entry.new].items)
+
+        //let diff = Array.diff(sections[entry.old].items, list[entry.new].items)
         
         var deletes: [Int] = []
         var inserts: [Int] = []
         deletes.reserveCapacity(diff.count)
         inserts.reserveCapacity(diff.count)
+
         
-        for diffStep in diff {
+        for diffStep in patch {
           switch diffStep {
-          case .insert(_, let index):
+          case .insertion(let index, _):
             inserts.append(index)
-          case .delete(_, let index):
+          case .deletion(let index):
             deletes.append(index)
+          case .move(let from, let to):
+            movesIndexPaths.append((IndexPath(item: from, section: entry.new), IndexPath(item: to, section: entry.new)))
           }
         }
         
@@ -475,6 +489,7 @@ extension MutableObservable2DArray where Item: Equatable, SectionMetadata: Equat
         
         // insertions should alwyas happen to the new section's place
         insertsIndexPaths.append(contentsOf: inserts.map { IndexPath(item: $0, section: entry.new) })
+        
       }
       
       
@@ -482,12 +497,22 @@ extension MutableObservable2DArray where Item: Equatable, SectionMetadata: Equat
       sections = list.sections
       subject.next(Observable2DArrayEvent(change: .deleteSections(IndexSet(sectionDeletes)), source: self))
       subject.next(Observable2DArrayEvent(change: .deleteItems(deletesIndexPaths), source: self))
+      
+      for entry in sectionMoves {
+        subject.next(Observable2DArrayEvent(change: .moveSection(entry.from, entry.to), source: self))
+      }
+      
+      for entry in movesIndexPaths {
+        subject.next(Observable2DArrayEvent(change: .moveItem(entry.from, entry.to), source: self))
+      }
+      
+      
       subject.next(Observable2DArrayEvent(change: .insertSections(IndexSet(sectionInserts)), source: self))
       subject.next(Observable2DArrayEvent(change: .insertItems(insertsIndexPaths), source: self))
       subject.next(Observable2DArrayEvent(change: .endBatchEditing, source: self))
       lock.unlock()
     } else {
-      replace(with: list)
+      replace2D(with: list)
     }
   }
   
