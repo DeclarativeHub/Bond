@@ -224,12 +224,12 @@ then the image processing will be automatically cancelled when the image view ge
 
 Bond provides NSObject extensions that makes it easy to convert delegate pattern into signals.
 
-First make an extension on your type, UITableView in the following example, that provides a reactive delegate proxy:
+First make an extension on ReactiveExtensions (where `Base` is defined as your type - `UITableView` in the following example), that provides a reactive delegate proxy:
 
 ```swift
-extension UITableView {
-  public delegate: ProtocolProxy {
-    return protocolProxy(for: UITableViewDelegate.self, setter: NSSelectorFromString("setDelegate:"))
+extension ReactiveExtensions where Base: UITableView {
+  public var delegate: ProtocolProxy {
+    return base.protocolProxy(for: UITableViewDelegate.self, setter: NSSelectorFromString("setDelegate:"))
   }
 }
 ```
