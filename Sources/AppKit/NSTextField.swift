@@ -46,6 +46,66 @@ public extension ReactiveExtensions where Base: NSTextField {
   public var placeholderAttributedString: Bond<NSAttributedString?> {
     return bond { $0.placeholderAttributedString = $1 }
   }
+
+  public var editingString: DynamicSubject<String> {
+    return dynamicSubject(
+      signal: self.textDidChange.eraseType(),
+      get: { (textField: NSTextField) -> String in
+        return textField.formatter?.editingString(for: textField.stringValue) ?? textField.stringValue
+      },
+      set: { (textField: NSTextField, value: String) in
+        textField.stringValue = value
+      }
+    )
+  }
+
+  public var textDidChange: SafeSignal<NSTextField> {
+    return NotificationCenter.default
+      .reactive.notification(name: .NSControlTextDidChange, object: base)
+      .map { $0.object as? NSTextField }
+      .ignoreNil()
+  }
+
+  public var textDidBeginEditing: SafeSignal<NSTextField> {
+    return NotificationCenter.default
+      .reactive.notification(name: .NSControlTextDidBeginEditing, object: base)
+      .map { $0.object as? NSTextField }
+      .ignoreNil()
+  }
+
+  public var textDidEndEditing: SafeSignal<(NSTextField, Bool)> {
+    return NotificationCenter.default
+      .reactive.notification(name: .NSControlTextDidEndEditing, object: base)
+      .map { notification -> (NSTextField, Bool)? in
+        guard let textField = notification.object as? NSTextField else {
+          return nil
+        }
+
+        return (textField, Self.resignedFirstResponder(in: notification))
+      }
+      .ignoreNil()
+  }
+
+  /// Interrogates the passed notification for details of how the field ended editing, and if it resigned its first responder status as a result.
+  ///
+  /// - Parameter notification: Notification of type `NSControlTextDidEndEditing`
+  /// - Returns: true if the text field resigned first responder, false if it did not
+  private static func resignedFirstResponder(in notification: Notification) -> Bool {
+    guard
+      notification.name == .NSControlTextDidEndEditing,
+      let textField = notification.object as? NSTextField,
+      let textMovement = notification.userInfo?["NSTextMovement"] as? Int
+    else {
+      return false
+    }
+
+    let returnKeyPressed = (textMovement == NSReturnTextMovement)
+    let tabKeyPressed = (textMovement == NSTabTextMovement || textMovement == NSBacktabTextMovement)
+    let tabbedIntoTextField = tabKeyPressed && textField.nextKeyView == textField
+    let tabbedOutOfTextField = tabKeyPressed && textField.nextKeyView == nil
+
+    return (returnKeyPressed || tabbedIntoTextField || tabbedOutOfTextField)
+  }
 }
 
 extension NSTextField: BindableProtocol {
