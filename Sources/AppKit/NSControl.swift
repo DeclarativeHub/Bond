@@ -63,7 +63,7 @@ public extension ReactiveExtensions where Base: NSControl {
       return (controlHelper as! NSControl.BondHelper).subject.toSignal()
     } else {
       let controlHelper = NSControl.BondHelper(control: base)
-      objc_setAssociatedObject(self, &NSControl.AssociatedKeys.ControlHelperKey, controlHelper, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+      objc_setAssociatedObject(base, &NSControl.AssociatedKeys.ControlHelperKey, controlHelper, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
       return controlHelper.subject.toSignal()
     }
   }
