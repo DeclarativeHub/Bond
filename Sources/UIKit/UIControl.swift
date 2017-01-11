@@ -22,29 +22,29 @@
 //  THE SOFTWARE.
 //
 
-import ReactiveKit
 import UIKit
+import ReactiveKit
 
-public extension UIControl {
+public extension ReactiveExtensions where Base: UIControl {
 
-  public func bnd_controlEvents(_ events: UIControlEvents) -> Signal1<Void> {
-    let _self = self
-    return Signal { [weak _self] observer in
-      guard let _self = _self else {
+  public func controlEvents(_ events: UIControlEvents) -> SafeSignal<Void> {
+    let base = self.base
+    return Signal { [weak base] observer in
+      guard let base = base else {
         observer.completed()
         return NonDisposable.instance
       }
-      let target = BNDControlTarget(control: _self, events: events) {
+      let target = BNDControlTarget(control: base, events: events) {
         observer.next()
       }
       return BlockDisposable {
         target.unregister()
       }
-    }.take(until: bnd_deallocated)
+    }.take(until: base.deallocated)
   }
 
-  public var bnd_isEnabled: Bond<UIControl, Bool> {
-    return Bond(target: self) { $0.isEnabled = $1 }
+  public var isEnabled: Bond<Bool> {
+    return bond { $0.isEnabled = $1 }
   }
 }
 

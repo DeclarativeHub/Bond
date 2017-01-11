@@ -25,21 +25,21 @@
 import UIKit
 import ReactiveKit
 
-public extension UIButton {
+public extension ReactiveExtensions where Base: UIButton {
 
-  public var bnd_title: Bond<UIButton, String?> {
-    return Bond(target: self) { $0.setTitle($1, for: .normal) }
+  public var title: Bond<String?> {
+    return bond { $0.setTitle($1, for: .normal) }
   }
 
-  public var bnd_tap: Signal<Void, NoError> {
-    return bnd_controlEvents(.touchUpInside)
+  public var tap: SafeSignal<Void> {
+    return controlEvents(.touchUpInside)
   }
 
-  public var bnd_isSelected: Bond<UIButton, Bool> {
-    return Bond(target: self) { $0.isSelected = $1 }
+  public var isSelected: Bond<Bool> {
+    return bond { $0.isSelected = $1 }
   }
 
-  public var bnd_isHighlighted: Bond<UIButton, Bool> {
-    return Bond(target: self) { $0.isHighlighted = $1 }
+  public var isHighlighted: Bond<Bool> {
+    return bond { $0.isHighlighted = $1 }
   }
 }

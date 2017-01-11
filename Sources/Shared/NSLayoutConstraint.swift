@@ -22,21 +22,17 @@
 //  THE SOFTWARE.
 //
 
+#if os(OSX)
+  import AppKit
+#else
+  import UIKit
+#endif
 
-import QuartzCore
 import ReactiveKit
 
-public extension CALayer {
+public extension ReactiveExtensions where Base: NSLayoutConstraint {
 
-  public var bnd_opacity: Bond<CALayer, Float> {
-    return Bond(target: self) { $0.opacity = $1 }
-  }
-
-  public var bnd_backgroundColor: Bond<CALayer, CGColor?> {
-    return Bond(target: self) { $0.backgroundColor = $1 }
-  }
-
-  public var bnd_contents: Bond<CALayer, AnyObject?> {
-    return Bond(target: self) { $0.contents = $1 }
+  public var isActive: Bond<Bool> {
+    return bond { $0.isActive = $1 }
   }
 }

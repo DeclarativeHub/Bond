@@ -22,16 +22,15 @@
 //  THE SOFTWARE.
 //
 
-import ReactiveKit
 import AppKit
+import ReactiveKit
 
-public extension NSTextView {
+public extension ReactiveExtensions where Base: NSTextView {
 
-  public var bnd_string: DynamicSubject<NSTextView, String?> {
+  public var string: DynamicSubject<String?> {
     let notificationName = NSNotification.Name.NSTextDidChange
-    return DynamicSubject(
-      target: self,
-      signal: NotificationCenter.default.bnd_notification(name: notificationName, object: self).eraseType(),
+    return dynamicSubject(
+      signal: NotificationCenter.default.reactive.notification(name: notificationName, object: base).eraseType(),
       get: { $0.string },
       set: { $0.string = $1 }
     )

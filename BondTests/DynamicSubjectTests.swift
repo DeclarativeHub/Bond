@@ -39,7 +39,7 @@ class DynamicSubjectTests: XCTestCase {
     subject.on(.next(7))
     XCTAssert(target.value == 7)
     
-    Signal1.sequence([1, 2, 3]).bind(to: subject)
+    SafeSignal.sequence([1, 2, 3]).bind(to: subject)
     XCTAssert(target.recordedElements == [7, 1, 2, 3])
     XCTAssert(target.value == 3)
   }

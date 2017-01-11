@@ -25,9 +25,9 @@
 import UIKit
 import ReactiveKit
 
-public extension UIGestureRecognizer {
-  
-  public var bnd_enabled: Bond<UIGestureRecognizer, Bool> {
-    return Bond(target: self) { $0.isEnabled = $1 }
+public extension ReactiveExtensions where Base: UIGestureRecognizer {
+
+  public var isEnabled: Bond<Bool> {
+    return bond { $0.isEnabled = $1 }
   }
 }

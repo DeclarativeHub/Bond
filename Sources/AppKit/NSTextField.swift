@@ -22,35 +22,35 @@
 //  THE SOFTWARE.
 //
 
-import ReactiveKit
 import AppKit
+import ReactiveKit
 
-extension NSTextField {
+public extension ReactiveExtensions where Base: NSTextField {
 
-  public var bnd_font: Bond<NSTextField, NSFont?> {
-    return Bond(target: self) { $0.font = $1 }
+  public var font: Bond<NSFont?> {
+    return bond { $0.font = $1 }
   }
 
-  public var bnd_textColor: Bond<NSTextField, NSColor?> {
-    return Bond(target: self) { $0.textColor = $1 }
+  public var textColor: Bond<NSColor?> {
+    return bond { $0.textColor = $1 }
   }
 
-  public var bnd_backgroundColor: Bond<NSTextField, NSColor?> {
-    return Bond(target: self) { $0.backgroundColor = $1 }
+  public var backgroundColor: Bond<NSColor?> {
+    return bond { $0.backgroundColor = $1 }
   }
 
-  public var bnd_placeholderString: Bond<NSTextField, String?> {
-    return Bond(target: self) { $0.placeholderString = $1 }
+  public var placeholderString: Bond<String?> {
+    return bond { $0.placeholderString = $1 }
   }
 
-  public var bnd_placeholderAttributedString: Bond<NSTextField, NSAttributedString?> {
-    return Bond(target: self) { $0.placeholderAttributedString = $1 }
+  public var placeholderAttributedString: Bond<NSAttributedString?> {
+    return bond { $0.placeholderAttributedString = $1 }
   }
 }
 
 extension NSTextField: BindableProtocol {
 
   public func bind(signal: Signal<String, NoError>) -> Disposable {
-    return bnd_stringValue.bind(signal: signal)
+    return reactive.stringValue.bind(signal: signal)
   }
 }

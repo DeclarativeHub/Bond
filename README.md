@@ -7,11 +7,9 @@
 
 Bond is a Swift binding framework that takes binding concepts to a whole new level. It's simple, powerful, type-safe and multi-paradigm - just like Swift.
 
-Bond is also a framework that bridges the gap between the reactive and imperative paradigms. You can use it as a standalone framework to simplify your state changes with bindings and reactive data sources, but you can also use it with ReactiveKit to complement your reactive data flows with bindings and reactive delegates and data sources.
+Bond is built on top of ReactiveKit and bridges the gap between the reactive and imperative paradigms. You can use it as a standalone framework to simplify your state changes with bindings and reactive data sources, but you can also use it with ReactiveKit to complement your reactive data flows with bindings and reactive delegates and data sources.
 
-Bond 5 in built on top of ReactiveKit framework. There is no special configuration, it just works!
-
-**Note: This README describes Bond v5. For changes check out the [migration section](#migration)!**
+**Note: This document describes Bond v6. For changes check out the [migration section](#migration)!**
 
 
 ## What can it do?
@@ -19,24 +17,21 @@ Bond 5 in built on top of ReactiveKit framework. There is no special configurati
 Let's say you would like to act on a text change event of a `UITextField`. Well, you could setup 'target-action' mechanism between your object and go through all that target-action selector registration pain, or you could simply use Bond and do this:
 
 ```swift
-textField.bnd_text
-  .observeNext { text in
-    print(text)
-  }
+textField.reactive.text.observeNext { text in
+  print(text)
+}
 ```
 
 Now, instead of printing what the user has typed, you can _bind_ it to a `UILabel`:
 
 ```swift
-textField.bnd_text
-  .bind(to: label.bnd_text)
+textField.reactive.text.bind(to: label.reactive.text)
 ```
 
 Because binding to a label text property is so common, you can even do:
 
 ```swift
-textField.bnd_text
-  .bind(to: label)
+textField.reactive.text.bind(to: label)
 ```
 
 That one line establishes a binding between text field's text property and label's text property. In effect, whenever user makes a change to the text field, that change will be automatically propagated to the label.
@@ -44,19 +39,19 @@ That one line establishes a binding between text field's text property and label
 More often than not, direct binding is not enough. Usually you need to transform input is some way, like prepending a greeting to a name. As Bond is backed by ReactiveKit it has full confidence in functional paradigm.
 
 ```swift
-textField.bnd_text
+textField.reactive.text
   .map { "Hi " + $0 }
   .bind(to: label)
 ```
 
 Whenever a change occurs in the text field, new value will be transformed by the closure and propagated to the label.
 
-Notice how we've used `bnd_text` property of the UITextField. It's an observable representation of the `text` property provided by Bond framework. There are many other extensions like that one for various UIKit components. Just start typing _.bnd_ on any UIKit object and you'll get the list of available extensions.
+Notice how we've used `reactive.text` property of the UITextField. It's an observable representation of the `text` property provided by Bond framework. There are many other extensions like that one for various UIKit components. They are all placed within `.reactive` proxy. Just start typing `.reactive.` any UIKit object and you'll get the list of available extensions.
 
 For example, to observe button events do:
 
 ```swift
-button.bnd_controlEvents(.touchUpInside)
+button.reactive.controlEvents(.touchUpInside)
   .observeNext { e in
     print("Button tapped.")
   }
@@ -65,19 +60,19 @@ button.bnd_controlEvents(.touchUpInside)
 Handling `touchUpInside` event is used so frequently that Bond comes with the extension just for that event:
 
 ```swift
-button.bnd_tap
+button.reactive.tap
   .observe {
     print("Button tapped.")
   }  
 ```
 
-You can use any ReactiveKit operator to transform or combine signals. Following snippet depicts how values of two text fields can be reduced to a boolean value and applied to button's enabled property.
+You can use any ReactiveKit operators to transform or combine signals. Following snippet depicts how values of two text fields can be reduced to a boolean value and applied to button's enabled property.
 
 ```swift
-combineLatest(emailField.bnd_text, passField.bnd_text) { email, pass in
+combineLatest(emailField.reactive.text, passField.reactive.text) { email, pass in
     return email.length > 0 && pass.length > 0
   }
-  .bind(to: button.bnd_enabled)
+  .bind(to: button.reactive.enabled)
 ```
 
 Whenever user types something into any of these text fields, expression will be evaluated and button state updated.
@@ -96,17 +91,17 @@ Bond also supports two way bindings. Here is an example of how you could keep us
 
 ```swift
 viewModel.username
-  .bidirectionalBind(to: usernameTextField.bnd_text)
+  .bidirectionalBind(to: usernameTextField.reactive.text)
 ```
 
 Bond is also great for observing various different events and asynchronous tasks. For example, you could observe a notification just like this:
 
 ```swift
-NotificationCenter.default.bnd_notification("MyNotification")
+NotificationCenter.default.reactive.notification("MyNotification")
   .observeNext { notification in
     print("Got \(notification)")
   }
-  .disposeIn(bnd_bag)
+  .dispose(in: reactive.bag)
 ```
 
 Let me give you one last example. Say you have an array of repositories you would like to display in a collection view. For each repository you have a name and its owner's profile photo. Of course, photo is not immediately available as it has to be downloaded, but once you get it, you want it to appear in collection view's cell. Additionally, when user does 'pull down to refresh' and your array gets new repositories, you want those in collection view too.
@@ -119,12 +114,12 @@ repositories.bind(to: collectionView) { array, indexPath, collectionView in
   let repository = array[indexPath.item]
 
   repository.name
-    .bindTo(cell.nameLabel)
-    .disposeIn(cell.onReuseBag)
+    .bind(to: cell.nameLabel)
+    .dispose(in: cell.onReuseBag)
 
   repository.photo
-    .bindTo(cell.avatarImageView)
-    .disposeIn(cell.onReuseBag)
+    .bind(to: cell.avatarImageView)
+    .dispose(in: cell.onReuseBag)
 
   return cell
 }
@@ -173,15 +168,15 @@ name.bind(to: nameLabel)
 
 ## Bindings
 
-Binding is a connection between a Signal/Observable that produces events and a Bond that observers events and performs certain action (e.g. updates UI).
+Binding is a connection between a Signal/Observable that produces events and a Bond that observers events and performs certain actions (e.g. updates UI).
 
 The producing side of bindings are signals that are defined in ReactiveKit framework on top of which Bond is built. To learn more about signals, consult [ReactiveKit documentation](https://github.com/ReactiveKit/ReactiveKit).
 
 The consuming side of bindings is represented by the `Bond` type. It's a simple struct that performs an action on a given target whenever the bound signal fires an event.
 
 ```swift
-public struct Bond<Target: Deallocatable, Element>: BindableProtocol {
-  public init(target: Target, setter: @escaping (Target, Element) -> Void)
+public struct Bond<Element>: BindableProtocol {
+  public init<Target: Deallocatable>(target: Target, setter: @escaping (Target, Element) -> Void)
 }
 ```
 
@@ -189,16 +184,16 @@ The only requirement is that the target must be "deallocatable", in other words 
 
 ```swift
 public protocol Deallocatable: class {
-  var bnd_deallocated: Signal<Void, NoError> { get }
+  var deallocated: Signal<Void, NoError> { get }
 }
 ```
 
-All NSObject subclasses conform to that protocol out of the box. Let's see how we could implement a Bond for text property of a label.
+All NSObject subclasses conform to that protocol out of the box. Let's see how we could implement a Bond for text property of a label. It's recommended to implement reactive extensions on `ReactiveExtensions` proxy protocol. That way you encapsulate extensions within the `.reactive` property.
 
 ```swift
-extension UILabel {
-  var myTextBond: Bond<UILabel, String?> {
-    return Bond(target: self) { label, text in
+extension ReactiveExtensions where Base: UILabel {
+  var myTextBond: Bond<String?> {
+    return bond { label, text in
       label.text = text
     }
   }
@@ -209,7 +204,7 @@ That's it! To bind any string signal, just use `bind(to:)` method on that bond.
 
 ```swift
 let name: Signal<String, NoError> = ...
-name.bind(to: nameLabel.myTextBond)
+name.bind(to: nameLabel.reactive.myTextBond)
 ```
 
 > Bonds will automatically ensure that the target object is updated on the main thread (queue). That means that the signal can generate events on a background thread without you worrying how the UI will be updated - it will always happen on the main thread.
@@ -233,20 +228,20 @@ First make an extension on your type, UITableView in the following example, that
 
 ```swift
 extension UITableView {
-  public var bnd_delegate: ProtocolProxy {
+  public delegate: ProtocolProxy {
     return protocolProxy(for: UITableViewDelegate.self, setter: NSSelectorFromString("setDelegate:"))
   }
 }
 ```
 
-> Note: `bnd_delegate` is already provided by Bond. This is an example of the implementation.
+> Note: `reactive.delegate` is already provided by Bond. This is an example of the implementation.
 
 You can then convert methods of that protocol into signals:
 
 ```swift
 extension UITableView {
   var selectedRow: Signal<Int, NoError> {
-    return bnd_delegate.signal(for: #selector(UITableViewDelegate.tableView(_:didSelectRowAtIndexPath:))) { (subject: PublishSubject<Int, NoError>, _: UITableView, indexPath: NSIndexPath) in 
+    return reactive.delegate.signal(for: #selector(UITableViewDelegate.tableView(_:didSelectRowAtIndexPath:))) { (subject: PublishSubject<Int, NoError>, _: UITableView, indexPath: NSIndexPath) in 
       subject.next(indexPath.row)
     }
   }
@@ -260,17 +255,17 @@ Now you can do:
 ```swift
 tableView.selectedRow.observeNext { row in
   print("Tapped row at index \(row).")
-}.disposeIn(bnd_bag)
+}.dispose(in: reactive.bag)
 ```
 
-**Note:** Protocol proxy takes up delegate slot of the object so if you also need to implement delegate methods manually, don't set `tableView.delegate = x`, rather set `tableView.bnd_delegate.forwardTo = x`.
+**Note:** Protocol proxy takes up delegate slot of the object so if you also need to implement delegate methods manually, don't set `tableView.delegate = x`, rather set `tableView.reactive.delegate.forwardTo = x`.
 
 Protocol methods that return values are usually used to query data. Such methods can be set up to be fed from a property type. For example:
 
 ```swift
 let numberOfItems = Property(12)
 
-tableView.bnd_dataSource.feed(
+tableView.reactive.dataSource.feed(
   property: numberOfItems,
   to: #selector(UITableViewDataSource.tableView(_:numberOfRowsInSection:)),
   map: { (value: Int, _: UITableView, _: Int) -> Int in value }
@@ -288,7 +283,7 @@ Note that in the mapping closures of both `signal(for:)` and `feed` methods you 
 
 Bond provides a way to make reactive data sources and allows such sources to be easily bound to table or collection views.
 
-Any Signal that emits elements of the following type can be bound to a table or collection view
+Any signal that emits elements of the following type can be bound to a table or collection view
 
 ```swift
 public struct DataSourceEvent<DataSource: DataSourceProtocol>: DataSourceEventProtocol {
@@ -327,12 +322,12 @@ public enum DataSourceEventKind {
 }
 ```
 
-If you have a signal that emits an array of elements, you can transform that signal into a signal that emits data source events using the operator `mapToDataSourceEvent` and bind it to a table view.
+If you have a signal that emits an array of elements you can bind it to a table view.
 
 ```swift
-let places = Signal1.just(["London", "Berlin", "Copenhagen"])
+let places = SafeSignal.just(["London", "Berlin", "Copenhagen"])
 
-places.mapToDataSourceEvent().bind(to: tableView) { places, indexPath, tableView in
+places.bind(to: tableView) { places, indexPath, tableView in
   let cell = tableView.dequeueCell(withIdentifier: "Cell", for: indexPath) as! PlaceCell
   cell.place = places[indexPath.row]
   return cell
@@ -522,19 +517,26 @@ There are many other methods. Just look at the code reference or source.
 ### Carthage
 
 1. Add the following to your *Cartfile*:
-  <br> `github "ReactiveKit/Bond" ~> 5.3`
+  <br> `github "ReactiveKit/Bond" ~> 6.0`
 2. Run `carthage update`
 3. Add the framework as described in [Carthage Readme](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application)
 
 ### CocoaPods
 
 1. Add the following to your *Podfile*:
-  <br> `pod 'Bond', '~> 5.3'`
+  <br> `pod 'Bond', '~> 6.0-beta'`
 2. Run `pod install`.
 
 ## <a name="migration"></a>Migration
 
-### Migration from v4.x to v5.0
+### Migration from v5.x to v6.x
+
+* Extensions are moved into `reactive` proxy. Replace occurrences of `bnd_` with `reactive.`. For example `label.bnd_text` becomes `label.reactive.text`. The simplest way is to do _Search and Replace_ in Xcode across the project.
+* `Bond<Target, Element>` becomes `Bond<Element>`.
+* `DynamicSubject<Target, Element>` becomes `DynamicSubject<Element>`.
+* `disposeIn()` is deprecated in favour of `dispose(in:)`.
+
+### Migration from v4.x to v5.x
 
 There are some big changes in Bond v5! Bond is now backed by ReactiveKit framework. All reactive types have been moved down to ReactiveKit. Bond builds its infrastructure on top of ReactiveKit types, primarily on top of `Signal` that serves the purpose of `EventProducer`.
 
@@ -558,7 +560,7 @@ What that means for you? Well, nothing has changed conceptually so your migratio
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2016 Srdan Rasic (@srdanrasic)
+Copyright (c) 2015-2017 Srdan Rasic (@srdanrasic)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -22,12 +22,12 @@
 //  THE SOFTWARE.
 //
 
-import ReactiveKit
 import AppKit
+import ReactiveKit
 
-public extension NSAppearanceCustomization where Self: NSObject {
+public extension ReactiveExtensions where Base: NSObject, Base: NSAppearanceCustomization {
 
-  public var bnd_appearance: Bond<Self, NSAppearance?> {
-    return Bond(target: self) { $0.appearance = $1 }
+  public var appearance: Bond<NSAppearance?> {
+    return bond { $0.appearance = $1 }
   }
 }

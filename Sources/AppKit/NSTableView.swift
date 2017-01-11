@@ -9,14 +9,14 @@
 import AppKit
 import ReactiveKit
 
-public extension NSTableView {
+public extension ReactiveExtensions where Base: NSTableView {
 
-  public var rDelegate: ProtocolProxy {
-    return protocolProxy(for: NSTableViewDelegate.self, setter: NSSelectorFromString("setDelegate:"))
+  public var delegate: ProtocolProxy {
+    return base.protocolProxy(for: NSTableViewDelegate.self, setter: NSSelectorFromString("setDelegate:"))
   }
 
-  public var rDataSource: ProtocolProxy {
-    return protocolProxy(for: NSTableViewDataSource.self, setter: NSSelectorFromString("setDataSource:"))
+  public var dataSource: ProtocolProxy {
+    return base.protocolProxy(for: NSTableViewDataSource.self, setter: NSSelectorFromString("setDataSource:"))
   }
 }
 
@@ -29,14 +29,14 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
 
     let dataSource = Property<DataSource?>(nil)
 
-    tableView.rDelegate.feed(
+    tableView.reactive.delegate.feed(
       property: dataSource,
       to: #selector(NSTableViewDelegate.tableView(_:viewFor:row:)),
       map: { (dataSource: DataSource?, tableView: NSTableView, column: NSTableColumn, row: Int) -> NSView in
         return createCell(dataSource!, row, tableView)
     })
 
-    tableView.rDataSource.feed(
+    tableView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(NSTableViewDataSource.numberOfRows(in:)),
       map: { (dataSource: DataSource?, _: NSTableView) -> Int in dataSource?.numberOfItems(inSection: 0) ?? 0 }

@@ -25,14 +25,14 @@
 import UIKit
 import ReactiveKit
 
-public extension UITableView {
+public extension ReactiveExtensions where Base: UITableView {
 
-  public var bnd_delegate: ProtocolProxy {
-    return protocolProxy(for: UITableViewDelegate.self, setter: NSSelectorFromString("setDelegate:"))
+  public var delegate: ProtocolProxy {
+    return base.protocolProxy(for: UITableViewDelegate.self, setter: NSSelectorFromString("setDelegate:"))
   }
 
-  public var bnd_dataSource: ProtocolProxy {
-    return protocolProxy(for: UITableViewDataSource.self, setter: NSSelectorFromString("setDataSource:"))
+  public var dataSource: ProtocolProxy {
+    return base.protocolProxy(for: UITableViewDataSource.self, setter: NSSelectorFromString("setDataSource:"))
   }
 }
 
@@ -40,8 +40,7 @@ public protocol TableViewBond {
 
   associatedtype DataSource: DataSourceProtocol
 
-  var animated: Bool { get }
-
+  func apply(event: DataSourceEvent<DataSource>, to tableView: UITableView)
   func cellForRow(at indexPath: IndexPath, tableView: UITableView, dataSource: DataSource) -> UITableViewCell
   func titleForHeader(in section: Int, dataSource: DataSource) -> String?
   func titleForFooter(in section: Int, dataSource: DataSource) -> String?
@@ -49,8 +48,31 @@ public protocol TableViewBond {
 
 extension TableViewBond {
 
-  public var animated: Bool {
-    return true
+  public func apply(event: DataSourceEvent<DataSource>, to tableView: UITableView) {
+    switch event.kind {
+    case .reload:
+      tableView.reloadData()
+    case .insertItems(let indexPaths):
+      tableView.insertRows(at: indexPaths, with: .automatic)
+    case .deleteItems(let indexPaths):
+      tableView.deleteRows(at: indexPaths, with: .automatic)
+    case .reloadItems(let indexPaths):
+      tableView.reloadRows(at: indexPaths, with: .automatic)
+    case .moveItem(let indexPath, let newIndexPath):
+      tableView.moveRow(at: indexPath, to: newIndexPath)
+    case .insertSections(let indexSet):
+      tableView.insertSections(indexSet, with: .automatic)
+    case .deleteSections(let indexSet):
+      tableView.deleteSections(indexSet, with: .automatic)
+    case .reloadSections(let indexSet):
+      tableView.reloadSections(indexSet, with: .automatic)
+    case .moveSection(let index, let newIndex):
+      tableView.moveSection(index, toSection: newIndex)
+    case .beginUpdates:
+      tableView.beginUpdates()
+    case .endUpdates:
+      tableView.endUpdates()
+    }
   }
 
   public func titleForHeader(in section: Int, dataSource: DataSource) -> String? {
@@ -62,13 +84,25 @@ extension TableViewBond {
   }
 }
 
-private struct SimpleTableViewBond<DataSource: DataSourceProtocol>: TableViewBond {
+private struct DefaultTableViewBond<DataSource: DataSourceProtocol>: TableViewBond {
 
-  let animated: Bool
   let createCell: (DataSource, IndexPath, UITableView) -> UITableViewCell
 
   func cellForRow(at indexPath: IndexPath, tableView: UITableView, dataSource: DataSource) -> UITableViewCell {
     return createCell(dataSource, indexPath, tableView)
+  }
+}
+
+private struct ReloadingTableViewBond<DataSource: DataSourceProtocol>: TableViewBond {
+
+  let createCell: (DataSource, IndexPath, UITableView) -> UITableViewCell
+
+  func cellForRow(at indexPath: IndexPath, tableView: UITableView, dataSource: DataSource) -> UITableViewCell {
+    return createCell(dataSource, indexPath, tableView)
+  }
+
+  func apply(event: DataSourceEvent<DataSource>, to tableView: UITableView) {
+    tableView.reloadData()
   }
 }
 
@@ -78,28 +112,32 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
 
   @discardableResult
   public func bind(to tableView: UITableView, animated: Bool = true, createCell: @escaping (DataSource, IndexPath, UITableView) -> UITableViewCell) -> Disposable {
-    return bind(to: tableView, using: SimpleTableViewBond<DataSource>(animated: animated, createCell: createCell))
+    if animated {
+      return bind(to: tableView, using: DefaultTableViewBond<DataSource>(createCell: createCell))
+    } else {
+      return bind(to: tableView, using: ReloadingTableViewBond<DataSource>(createCell: createCell))
+    }
   }
 
   @discardableResult
   public func bind<B: TableViewBond>(to tableView: UITableView, using bond: B) -> Disposable where B.DataSource == DataSource {
     let dataSource = Property<DataSource?>(nil)
 
-    tableView.bnd_dataSource.feed(
+    tableView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(UITableViewDataSource.tableView(_:cellForRowAt:)),
       map: { (dataSource: DataSource?, tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell in
         return bond.cellForRow(at: indexPath as IndexPath, tableView: tableView, dataSource: dataSource!)
     })
 
-    tableView.bnd_dataSource.feed(
+    tableView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(UITableViewDataSource.tableView(_:titleForHeaderInSection:)),
       map: { (dataSource: DataSource?, tableView: UITableView, index: Int) -> NSString? in
         return bond.titleForHeader(in: index, dataSource: dataSource!) as NSString?
     })
 
-    tableView.bnd_dataSource.feed(
+    tableView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(UITableViewDataSource.tableView(_:titleForFooterInSection:)),
       map: { (dataSource: DataSource?, tableView: UITableView, index: Int) -> NSString? in
@@ -107,14 +145,14 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
     })
 
 
-    tableView.bnd_dataSource.feed(
+    tableView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(UITableViewDataSource.tableView(_:numberOfRowsInSection:)),
       map: { (dataSource: DataSource?, _: UITableView, section: Int) -> Int in
         dataSource?.numberOfItems(inSection: section) ?? 0
     })
 
-    tableView.bnd_dataSource.feed(
+    tableView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(UITableViewDataSource.numberOfSections(in:)),
       map: { (dataSource: DataSource?, _: UITableView) -> Int in dataSource?.numberOfSections ?? 0 }
@@ -128,37 +166,9 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
         return
       }
 
+      let event = event._unbox
       dataSource.value = event.dataSource
-
-      guard bond.animated else {
-        tableView.reloadData()
-        return
-      }
-
-      switch event.kind {
-      case .reload:
-        tableView.reloadData()
-      case .insertItems(let indexPaths):
-        tableView.insertRows(at: indexPaths, with: .automatic)
-      case .deleteItems(let indexPaths):
-        tableView.deleteRows(at: indexPaths, with: .automatic)
-      case .reloadItems(let indexPaths):
-        tableView.reloadRows(at: indexPaths, with: .automatic)
-      case .moveItem(let indexPath, let newIndexPath):
-        tableView.moveRow(at: indexPath, to: newIndexPath)
-      case .insertSections(let indexSet):
-        tableView.insertSections(indexSet, with: .automatic)
-      case .deleteSections(let indexSet):
-        tableView.deleteSections(indexSet, with: .automatic)
-      case .reloadSections(let indexSet):
-        tableView.reloadSections(indexSet, with: .automatic)
-      case .moveSection(let index, let newIndex):
-        tableView.moveSection(index, toSection: newIndex)
-      case .beginUpdates:
-        tableView.beginUpdates()
-      case .endUpdates:
-        tableView.endUpdates()
-      }
+      bond.apply(event: event, to: tableView)
     }
     
     return serialDisposable

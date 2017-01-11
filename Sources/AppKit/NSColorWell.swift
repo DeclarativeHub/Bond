@@ -22,12 +22,12 @@
 //  THE SOFTWARE.
 //
 
-import ReactiveKit
 import AppKit
+import ReactiveKit
 
-public extension NSColorWell {
+public extension ReactiveExtensions where Base: NSColorWell {
 
-  public var bnd_color: Bond<NSColorWell, NSColor> {
-    return Bond(target: self) { $0.color = $1 }
+  public var color: Bond<NSColor> {
+    return bond { $0.color = $1 }
   }
 }

@@ -22,19 +22,19 @@
 //  THE SOFTWARE.
 //
 
-import ReactiveKit
 import AppKit
+import ReactiveKit
 
-extension NSProgressIndicator {
+public extension ReactiveExtensions where Base: NSProgressIndicator {
 
-  public var bnd_doubleValue: Bond<NSProgressIndicator, Double> {
-    return Bond(target: self) { $0.doubleValue = $1 }
+  public var doubleValue: Bond<Double> {
+    return bond { $0.doubleValue = $1 }
   }
 }
 
 extension NSProgressIndicator: BindableProtocol {
 
   public func bind(signal: Signal<Double, NoError>) -> Disposable {
-    return bnd_doubleValue.bind(signal: signal)
+    return reactive.doubleValue.bind(signal: signal)
   }
 }

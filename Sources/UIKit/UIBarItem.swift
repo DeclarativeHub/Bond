@@ -23,18 +23,19 @@
 //
 
 import UIKit
+import ReactiveKit
 
-public extension UIBarItem {
+public extension ReactiveExtensions where Base: UIBarItem {
 
-  public var bnd_title: Bond<UIBarItem, String?> {
-    return Bond(target: self) { $0.title = $1 }
+  public var title: Bond<String?> {
+    return bond { $0.title = $1 }
   }
 
-  public var bnd_image: Bond<UIBarItem, UIImage?> {
-    return Bond(target: self) { $0.image = $1 }
+  public var image: Bond<UIImage?> {
+    return bond { $0.image = $1 }
   }
 
-  public var bnd_isEnabled: Bond<UIBarItem, Bool> {
-    return Bond(target: self) { $0.isEnabled = $1 }
+  public var isEnabled: Bond<Bool> {
+    return bond { $0.isEnabled = $1 }
   }
 }

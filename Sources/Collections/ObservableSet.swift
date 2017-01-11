@@ -90,7 +90,7 @@ public class ObservableSet<Element: Hashable>: Collection, SignalProtocol {
 
 extension ObservableSet: Deallocatable {
 
-  public var bnd_deallocated: Signal<Void, NoError> {
+  public var deallocated: Signal<Void, NoError> {
     return subject.disposeBag.deallocated
   }
 }
@@ -163,7 +163,7 @@ extension MutableObservableSet: BindableProtocol {
 
   public func bind(signal: Signal<ObservableSetEvent<Element>, NoError>) -> Disposable {
     return signal
-      .take(until: bnd_deallocated)
+      .take(until: deallocated)
       .observeNext { [weak self] event in
         guard let s = self else { return }
         s.set = event.source.set

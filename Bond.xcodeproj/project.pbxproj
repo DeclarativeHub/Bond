@@ -9,15 +9,6 @@
 /* Begin PBXBuildFile section */
 		16210A461D3EC474004AEDF3 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16210A3C1D3EC474004AEDF3 /* Bond.framework */; };
 		16210A4B1D3EC474004AEDF3 /* UIKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16210A4A1D3EC474004AEDF3 /* UIKitTests.swift */; };
-		1639C0801D6DD3190045959E /* ObservableArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1639C07D1D6DD3190045959E /* ObservableArray.swift */; };
-		1639C0811D6DD3190045959E /* ObservableArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1639C07D1D6DD3190045959E /* ObservableArray.swift */; };
-		1639C0821D6DD3190045959E /* ObservableArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1639C07D1D6DD3190045959E /* ObservableArray.swift */; };
-		1639C0831D6DD3190045959E /* ObservableDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1639C07E1D6DD3190045959E /* ObservableDictionary.swift */; };
-		1639C0841D6DD3190045959E /* ObservableDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1639C07E1D6DD3190045959E /* ObservableDictionary.swift */; };
-		1639C0851D6DD3190045959E /* ObservableDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1639C07E1D6DD3190045959E /* ObservableDictionary.swift */; };
-		1639C0861D6DD3190045959E /* ObservableSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1639C07F1D6DD3190045959E /* ObservableSet.swift */; };
-		1639C0871D6DD3190045959E /* ObservableSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1639C07F1D6DD3190045959E /* ObservableSet.swift */; };
-		1639C0881D6DD3190045959E /* ObservableSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1639C07F1D6DD3190045959E /* ObservableSet.swift */; };
 		1639C08A1D6DD39B0045959E /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1639C0891D6DD39B0045959E /* Observable.swift */; };
 		1639C08B1D6DD39B0045959E /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1639C0891D6DD39B0045959E /* Observable.swift */; };
 		1639C08C1D6DD39B0045959E /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1639C0891D6DD39B0045959E /* Observable.swift */; };
@@ -37,7 +28,6 @@
 		16D30EBF1D65960B00C2435D /* Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7890F11D44F1D9002848EB /* Bond.swift */; };
 		16D30EC01D65960E00C2435D /* DynamicSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7890F31D44F1ED002848EB /* DynamicSubject.swift */; };
 		16D30EC11D65961000C2435D /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16559F841D64F4F100EDD727 /* DataSource.swift */; };
-		16D30EC21D65961300C2435D /* NSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8822061D421EA2006142ED /* NSObject.swift */; };
 		16D30EC41D65988A00C2435D /* NSControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30EC31D65988A00C2435D /* NSControl.swift */; };
 		16D30EC61D659B8F00C2435D /* NSImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30EC51D659B8F00C2435D /* NSImageView.swift */; };
 		16D30EC81D659BDB00C2435D /* NSProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30EC71D659BDB00C2435D /* NSProgressIndicator.swift */; };
@@ -49,7 +39,6 @@
 		16D30EDF1D65D14C00C2435D /* Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7890F11D44F1D9002848EB /* Bond.swift */; };
 		16D30EE01D65D14C00C2435D /* DynamicSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7890F31D44F1ED002848EB /* DynamicSubject.swift */; };
 		16D30EE11D65D14C00C2435D /* DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16559F841D64F4F100EDD727 /* DataSource.swift */; };
-		16D30EE21D65D14C00C2435D /* NSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8822061D421EA2006142ED /* NSObject.swift */; };
 		16D30EE31D65D16600C2435D /* UIActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD626E81D4DE8800040C7BF /* UIActivityIndicatorView.swift */; };
 		16D30EE41D65D16600C2435D /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD626EE1D4DEAB20040C7BF /* UIApplication.swift */; };
 		16D30EE51D65D16600C2435D /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD626EC1D4DE9BE0040C7BF /* UIBarButtonItem.swift */; };
@@ -71,12 +60,6 @@
 		16D30EF51D65D16600C2435D /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD627041D4DF67E0040C7BF /* UIView.swift */; };
 		16D30EF61D65D16600C2435D /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16559F821D64F4BC00EDD727 /* UITableView.swift */; };
 		16D30EF71D65D16600C2435D /* UICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30EA71D6587B400C2435D /* UICollectionView.swift */; };
-		16D30EF91D65D5FD00C2435D /* CALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30EF81D65D5FD00C2435D /* CALayer.swift */; };
-		16D30EFA1D65D5FD00C2435D /* CALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30EF81D65D5FD00C2435D /* CALayer.swift */; };
-		16D30EFB1D65D5FD00C2435D /* CALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30EF81D65D5FD00C2435D /* CALayer.swift */; };
-		16D30EFD1D65D64600C2435D /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30EFC1D65D64600C2435D /* NSLayoutConstraint.swift */; };
-		16D30EFE1D65D64600C2435D /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30EFC1D65D64600C2435D /* NSLayoutConstraint.swift */; };
-		16D30EFF1D65D64600C2435D /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30EFC1D65D64600C2435D /* NSLayoutConstraint.swift */; };
 		16D30F011D65D6AA00C2435D /* NSTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30F001D65D6AA00C2435D /* NSTextView.swift */; };
 		16D30F031D65D79600C2435D /* NSStatusBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30F021D65D79600C2435D /* NSStatusBarButton.swift */; };
 		16D30F051D65D7C000C2435D /* NSMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30F041D65D7C000C2435D /* NSMenuItem.swift */; };
@@ -84,6 +67,9 @@
 		16D30F091D65D82D00C2435D /* NSAppearanceCustomization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30F081D65D82C00C2435D /* NSAppearanceCustomization.swift */; };
 		16D30F0B1D65E8C700C2435D /* NSTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30F0A1D65E8C700C2435D /* NSTableView.swift */; };
 		227DEF051DCB87BF00213852 /* UIGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227DEF041DCB87BF00213852 /* UIGestureRecognizer.swift */; };
+		90A3FACD1E0C8D9A0086A7F1 /* Diff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */; };
+		90A3FACE1E0C8D9F0086A7F1 /* Diff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */; };
+		90A3FACF1E0C8DA20086A7F1 /* Diff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */; };
 		EC06A8761DBCB147006AEA81 /* NSObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC06A8751DBCB147006AEA81 /* NSObjectTests.swift */; };
 		EC2505B11D3F570500A6E14A /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2505B01D3F570500A6E14A /* UILabel.swift */; };
 		EC2505B31D3F571500A6E14A /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2505B21D3F571500A6E14A /* UITextField.swift */; };
@@ -97,23 +83,43 @@
 		EC7890EF1D44F1BF002848EB /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = EC7890ED1D44F1BF002848EB /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EC7890F21D44F1D9002848EB /* Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7890F11D44F1D9002848EB /* Bond.swift */; };
 		EC7890F41D44F1ED002848EB /* DynamicSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7890F31D44F1ED002848EB /* DynamicSubject.swift */; };
-		EC8822071D421EA2006142ED /* NSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8822061D421EA2006142ED /* NSObject.swift */; };
+		EC877A921E01CE1200A23B51 /* CALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877A8C1E01CE1200A23B51 /* CALayer.swift */; };
+		EC877A931E01CE1200A23B51 /* CALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877A8C1E01CE1200A23B51 /* CALayer.swift */; };
+		EC877A941E01CE1200A23B51 /* CALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877A8C1E01CE1200A23B51 /* CALayer.swift */; };
+		EC877A951E01CE1200A23B51 /* NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877A8D1E01CE1200A23B51 /* NotificationCenter.swift */; };
+		EC877A961E01CE1200A23B51 /* NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877A8D1E01CE1200A23B51 /* NotificationCenter.swift */; };
+		EC877A971E01CE1200A23B51 /* NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877A8D1E01CE1200A23B51 /* NotificationCenter.swift */; };
+		EC877A981E01CE1200A23B51 /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877A8E1E01CE1200A23B51 /* NSLayoutConstraint.swift */; };
+		EC877A991E01CE1200A23B51 /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877A8E1E01CE1200A23B51 /* NSLayoutConstraint.swift */; };
+		EC877A9A1E01CE1200A23B51 /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877A8E1E01CE1200A23B51 /* NSLayoutConstraint.swift */; };
+		EC877A9B1E01CE1200A23B51 /* NSObject+KVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877A8F1E01CE1200A23B51 /* NSObject+KVO.swift */; };
+		EC877A9C1E01CE1200A23B51 /* NSObject+KVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877A8F1E01CE1200A23B51 /* NSObject+KVO.swift */; };
+		EC877A9D1E01CE1200A23B51 /* NSObject+KVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877A8F1E01CE1200A23B51 /* NSObject+KVO.swift */; };
+		EC877A9E1E01CE1200A23B51 /* NSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877A901E01CE1200A23B51 /* NSObject.swift */; };
+		EC877A9F1E01CE1200A23B51 /* NSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877A901E01CE1200A23B51 /* NSObject.swift */; };
+		EC877AA01E01CE1200A23B51 /* NSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877A901E01CE1200A23B51 /* NSObject.swift */; };
+		EC877AA11E01CE1200A23B51 /* SignalProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877A911E01CE1200A23B51 /* SignalProtocol.swift */; };
+		EC877AA21E01CE1200A23B51 /* SignalProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877A911E01CE1200A23B51 /* SignalProtocol.swift */; };
+		EC877AA31E01CE1200A23B51 /* SignalProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877A911E01CE1200A23B51 /* SignalProtocol.swift */; };
+		EC877AA61E01CE6100A23B51 /* ProtocolProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877AA51E01CE6100A23B51 /* ProtocolProxy.swift */; };
+		EC877AA71E01CE6100A23B51 /* ProtocolProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877AA51E01CE6100A23B51 /* ProtocolProxy.swift */; };
+		EC877AA81E01CE6100A23B51 /* ProtocolProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877AA51E01CE6100A23B51 /* ProtocolProxy.swift */; };
+		EC877AAF1E01CE9F00A23B51 /* Observable2DArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877AAB1E01CE9F00A23B51 /* Observable2DArray.swift */; };
+		EC877AB01E01CE9F00A23B51 /* Observable2DArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877AAB1E01CE9F00A23B51 /* Observable2DArray.swift */; };
+		EC877AB11E01CE9F00A23B51 /* Observable2DArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877AAB1E01CE9F00A23B51 /* Observable2DArray.swift */; };
+		EC877AB21E01CE9F00A23B51 /* ObservableArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877AAC1E01CE9F00A23B51 /* ObservableArray.swift */; };
+		EC877AB31E01CE9F00A23B51 /* ObservableArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877AAC1E01CE9F00A23B51 /* ObservableArray.swift */; };
+		EC877AB41E01CE9F00A23B51 /* ObservableArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877AAC1E01CE9F00A23B51 /* ObservableArray.swift */; };
+		EC877AB51E01CE9F00A23B51 /* ObservableDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877AAD1E01CE9F00A23B51 /* ObservableDictionary.swift */; };
+		EC877AB61E01CE9F00A23B51 /* ObservableDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877AAD1E01CE9F00A23B51 /* ObservableDictionary.swift */; };
+		EC877AB71E01CE9F00A23B51 /* ObservableDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877AAD1E01CE9F00A23B51 /* ObservableDictionary.swift */; };
+		EC877AB81E01CE9F00A23B51 /* ObservableSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877AAE1E01CE9F00A23B51 /* ObservableSet.swift */; };
+		EC877AB91E01CE9F00A23B51 /* ObservableSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877AAE1E01CE9F00A23B51 /* ObservableSet.swift */; };
+		EC877ABA1E01CE9F00A23B51 /* ObservableSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC877AAE1E01CE9F00A23B51 /* ObservableSet.swift */; };
 		EC96935B1D943B15004EB5EE /* UITableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC96935A1D943B15004EB5EE /* UITableViewTests.swift */; };
 		EC96935F1D945CC6004EB5EE /* UICollectionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC96935E1D945CC6004EB5EE /* UICollectionViewTests.swift */; };
-		EC9693611D94613A004EB5EE /* Observable2DArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9693601D94613A004EB5EE /* Observable2DArray.swift */; };
-		EC9693621D94613A004EB5EE /* Observable2DArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9693601D94613A004EB5EE /* Observable2DArray.swift */; };
-		EC9693631D94613A004EB5EE /* Observable2DArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9693601D94613A004EB5EE /* Observable2DArray.swift */; };
 		EC9693661D947243004EB5EE /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16210A3C1D3EC474004AEDF3 /* Bond.framework */; };
 		EC9693671D94724C004EB5EE /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1652178B1D70591E00C9FAEE /* ReactiveKit.framework */; };
-		EC97ED9F1D6C500B001C54C9 /* NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97ED9E1D6C500B001C54C9 /* NotificationCenter.swift */; };
-		EC97EDA01D6C500B001C54C9 /* NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97ED9E1D6C500B001C54C9 /* NotificationCenter.swift */; };
-		EC97EDA11D6C500B001C54C9 /* NotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97ED9E1D6C500B001C54C9 /* NotificationCenter.swift */; };
-		EC97EDA31D6C50A5001C54C9 /* NSObject+KVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97EDA21D6C50A5001C54C9 /* NSObject+KVO.swift */; };
-		EC97EDA41D6C50A5001C54C9 /* NSObject+KVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97EDA21D6C50A5001C54C9 /* NSObject+KVO.swift */; };
-		EC97EDA51D6C50A5001C54C9 /* NSObject+KVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97EDA21D6C50A5001C54C9 /* NSObject+KVO.swift */; };
-		EC97EDA91D6C51F0001C54C9 /* ProtocolProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97EDA61D6C51F0001C54C9 /* ProtocolProxy.swift */; };
-		EC97EDAA1D6C51F0001C54C9 /* ProtocolProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97EDA61D6C51F0001C54C9 /* ProtocolProxy.swift */; };
-		EC97EDAB1D6C51F0001C54C9 /* ProtocolProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC97EDA61D6C51F0001C54C9 /* ProtocolProxy.swift */; };
 		EC97EDAC1D6C51F0001C54C9 /* BNDProtocolProxyBase.h in Headers */ = {isa = PBXBuildFile; fileRef = EC97EDA71D6C51F0001C54C9 /* BNDProtocolProxyBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EC97EDAD1D6C51F0001C54C9 /* BNDProtocolProxyBase.h in Headers */ = {isa = PBXBuildFile; fileRef = EC97EDA71D6C51F0001C54C9 /* BNDProtocolProxyBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EC97EDAE1D6C51F0001C54C9 /* BNDProtocolProxyBase.h in Headers */ = {isa = PBXBuildFile; fileRef = EC97EDA71D6C51F0001C54C9 /* BNDProtocolProxyBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -220,6 +226,20 @@
 			remoteGlobalIDString = 16887E361D744ABB00EDA099;
 			remoteInfo = "Bond-App";
 		};
+		90A3FAC71E0C8D8B0086A7F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C9EE87161CCFCA83006BD90E;
+			remoteInfo = Diff;
+		};
+		90A3FAC91E0C8D8B0086A7F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C9838FF11D29571000691BE8;
+			remoteInfo = DiffTests;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -228,9 +248,6 @@
 		16210A451D3EC474004AEDF3 /* BondTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BondTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		16210A4A1D3EC474004AEDF3 /* UIKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitTests.swift; sourceTree = "<group>"; };
 		16210A4C1D3EC474004AEDF3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1639C07D1D6DD3190045959E /* ObservableArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableArray.swift; sourceTree = "<group>"; };
-		1639C07E1D6DD3190045959E /* ObservableDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableDictionary.swift; sourceTree = "<group>"; };
-		1639C07F1D6DD3190045959E /* ObservableSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableSet.swift; sourceTree = "<group>"; };
 		1639C0891D6DD39B0045959E /* Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveKit.xcodeproj; path = Carthage/Checkouts/ReactiveKit/ReactiveKit.xcodeproj; sourceTree = "<group>"; };
 		16559F821D64F4BC00EDD727 /* UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
@@ -252,8 +269,6 @@
 		16D30ECD1D659D4A00C2435D /* NSTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTextField.swift; sourceTree = "<group>"; };
 		16D30ECF1D659E0600C2435D /* NSView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSView.swift; sourceTree = "<group>"; };
 		16D30ED61D65D11900C2435D /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		16D30EF81D65D5FD00C2435D /* CALayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CALayer.swift; sourceTree = "<group>"; };
-		16D30EFC1D65D64600C2435D /* NSLayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSLayoutConstraint.swift; sourceTree = "<group>"; };
 		16D30F001D65D6AA00C2435D /* NSTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTextView.swift; sourceTree = "<group>"; };
 		16D30F021D65D79600C2435D /* NSStatusBarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSStatusBarButton.swift; sourceTree = "<group>"; };
 		16D30F041D65D7C000C2435D /* NSMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSMenuItem.swift; sourceTree = "<group>"; };
@@ -261,23 +276,31 @@
 		16D30F081D65D82C00C2435D /* NSAppearanceCustomization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSAppearanceCustomization.swift; sourceTree = "<group>"; };
 		16D30F0A1D65E8C700C2435D /* NSTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTableView.swift; sourceTree = "<group>"; };
 		227DEF041DCB87BF00213852 /* UIGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIGestureRecognizer.swift; sourceTree = "<group>"; };
+		90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Diff.xcodeproj; path = Carthage/Checkouts/Diff.swift/Diff.xcodeproj; sourceTree = "<group>"; };
 		EC06A8751DBCB147006AEA81 /* NSObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSObjectTests.swift; sourceTree = "<group>"; };
 		EC2505B01D3F570500A6E14A /* UILabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UILabel.swift; path = Sources/UIKit/UILabel.swift; sourceTree = SOURCE_ROOT; };
 		EC2505B21D3F571500A6E14A /* UITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UITextField.swift; path = Sources/UIKit/UITextField.swift; sourceTree = SOURCE_ROOT; };
 		EC2D4A0D1DA8F31700B03A6B /* NSObject+Bond.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+Bond.h"; path = "Bond/NSObject+Bond.h"; sourceTree = SOURCE_ROOT; };
 		EC2D4A131DA8F36B00B03A6B /* NSObject+Bond.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+Bond.m"; path = "Bond/NSObject+Bond.m"; sourceTree = SOURCE_ROOT; };
 		EC35401B1D462F4700901AA1 /* UIControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIControl.swift; sourceTree = "<group>"; };
+		EC378E961E13FFD100E2197D /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		EC7890ED1D44F1BF002848EB /* Bond.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Bond.h; path = Bond/Bond.h; sourceTree = "<group>"; };
 		EC7890EE1D44F1BF002848EB /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Bond/Info.plist; sourceTree = "<group>"; };
 		EC7890F11D44F1D9002848EB /* Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bond.swift; sourceTree = "<group>"; };
 		EC7890F31D44F1ED002848EB /* DynamicSubject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicSubject.swift; sourceTree = "<group>"; };
-		EC8822061D421EA2006142ED /* NSObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSObject.swift; path = Sources/NSObject.swift; sourceTree = SOURCE_ROOT; };
+		EC877A8C1E01CE1200A23B51 /* CALayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CALayer.swift; sourceTree = "<group>"; };
+		EC877A8D1E01CE1200A23B51 /* NotificationCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCenter.swift; sourceTree = "<group>"; };
+		EC877A8E1E01CE1200A23B51 /* NSLayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSLayoutConstraint.swift; sourceTree = "<group>"; };
+		EC877A8F1E01CE1200A23B51 /* NSObject+KVO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+KVO.swift"; sourceTree = "<group>"; };
+		EC877A901E01CE1200A23B51 /* NSObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSObject.swift; sourceTree = "<group>"; };
+		EC877A911E01CE1200A23B51 /* SignalProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignalProtocol.swift; sourceTree = "<group>"; };
+		EC877AA51E01CE6100A23B51 /* ProtocolProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProtocolProxy.swift; sourceTree = "<group>"; };
+		EC877AAB1E01CE9F00A23B51 /* Observable2DArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable2DArray.swift; sourceTree = "<group>"; };
+		EC877AAC1E01CE9F00A23B51 /* ObservableArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableArray.swift; sourceTree = "<group>"; };
+		EC877AAD1E01CE9F00A23B51 /* ObservableDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableDictionary.swift; sourceTree = "<group>"; };
+		EC877AAE1E01CE9F00A23B51 /* ObservableSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableSet.swift; sourceTree = "<group>"; };
 		EC96935A1D943B15004EB5EE /* UITableViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewTests.swift; sourceTree = "<group>"; };
 		EC96935E1D945CC6004EB5EE /* UICollectionViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UICollectionViewTests.swift; sourceTree = "<group>"; };
-		EC9693601D94613A004EB5EE /* Observable2DArray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable2DArray.swift; sourceTree = "<group>"; };
-		EC97ED9E1D6C500B001C54C9 /* NotificationCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCenter.swift; sourceTree = "<group>"; };
-		EC97EDA21D6C50A5001C54C9 /* NSObject+KVO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+KVO.swift"; sourceTree = "<group>"; };
-		EC97EDA61D6C51F0001C54C9 /* ProtocolProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProtocolProxy.swift; path = Bond/ProtocolProxy.swift; sourceTree = SOURCE_ROOT; };
 		EC97EDA71D6C51F0001C54C9 /* BNDProtocolProxyBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BNDProtocolProxyBase.h; path = Bond/BNDProtocolProxyBase.h; sourceTree = SOURCE_ROOT; };
 		EC97EDA81D6C51F0001C54C9 /* BNDProtocolProxyBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BNDProtocolProxyBase.m; path = Bond/BNDProtocolProxyBase.m; sourceTree = SOURCE_ROOT; };
 		ECC4BE581D4A2E1600880DEC /* UIButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
@@ -309,6 +332,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90A3FACD1E0C8D9A0086A7F1 /* Diff.framework in Frameworks */,
 				165217961D70593E00C9FAEE /* ReactiveKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -335,6 +359,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90A3FACE1E0C8D9F0086A7F1 /* Diff.framework in Frameworks */,
 				165217991D70594D00C9FAEE /* ReactiveKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -343,6 +368,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90A3FACF1E0C8DA20086A7F1 /* Diff.framework in Frameworks */,
 				1652179C1D70595600C9FAEE /* ReactiveKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -355,6 +381,7 @@
 			children = (
 				ECD5940B1D93F2E400C840C2 /* Cartfile */,
 				ECD5940C1D93F2ED00C840C2 /* Bond.podspec */,
+				EC378E961E13FFD100E2197D /* Package.swift */,
 				161D6D2D1D6F0D92004CA17D /* README.md */,
 				EC7890ED1D44F1BF002848EB /* Bond.h */,
 				EC7890EE1D44F1BF002848EB /* Info.plist */,
@@ -362,6 +389,7 @@
 				16210A491D3EC474004AEDF3 /* BondTests */,
 				16887E381D744ABB00EDA099 /* Bond-App */,
 				16210A3D1D3EC474004AEDF3 /* Products */,
+				90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */,
 				165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */,
 			);
 			indentWidth = 2;
@@ -384,23 +412,13 @@
 			isa = PBXGroup;
 			children = (
 				1639C0891D6DD39B0045959E /* Observable.swift */,
-				1639C07D1D6DD3190045959E /* ObservableArray.swift */,
-				EC9693601D94613A004EB5EE /* Observable2DArray.swift */,
-				1639C07E1D6DD3190045959E /* ObservableDictionary.swift */,
-				1639C07F1D6DD3190045959E /* ObservableSet.swift */,
 				EC7890F11D44F1D9002848EB /* Bond.swift */,
 				EC7890F31D44F1ED002848EB /* DynamicSubject.swift */,
-				EC97EDA61D6C51F0001C54C9 /* ProtocolProxy.swift */,
+				EC877AA51E01CE6100A23B51 /* ProtocolProxy.swift */,
 				16559F841D64F4F100EDD727 /* DataSource.swift */,
-				EC8822061D421EA2006142ED /* NSObject.swift */,
-				EC97EDA21D6C50A5001C54C9 /* NSObject+KVO.swift */,
-				16D30EF81D65D5FD00C2435D /* CALayer.swift */,
-				16D30EFC1D65D64600C2435D /* NSLayoutConstraint.swift */,
-				EC97ED9E1D6C500B001C54C9 /* NotificationCenter.swift */,
-				EC97EDA71D6C51F0001C54C9 /* BNDProtocolProxyBase.h */,
-				EC97EDA81D6C51F0001C54C9 /* BNDProtocolProxyBase.m */,
-				EC2D4A0D1DA8F31700B03A6B /* NSObject+Bond.h */,
-				EC2D4A131DA8F36B00B03A6B /* NSObject+Bond.m */,
+				EC877AAA1E01CE9F00A23B51 /* Collections */,
+				EC877AA41E01CE4900A23B51 /* ObjC */,
+				EC877A8B1E01CE1200A23B51 /* Shared */,
 				16D30EBA1D65944500C2435D /* AppKit */,
 				EC2505AF1D3F56D900A6E14A /* UIKit */,
 			);
@@ -467,6 +485,15 @@
 			path = AppKit;
 			sourceTree = "<group>";
 		};
+		90A3FAC31E0C8D8B0086A7F1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */,
+				90A3FACA1E0C8D8B0086A7F1 /* DiffTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		EC2505AF1D3F56D900A6E14A /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -496,6 +523,41 @@
 			);
 			name = UIKit;
 			path = ../Sources/UIKit;
+			sourceTree = "<group>";
+		};
+		EC877A8B1E01CE1200A23B51 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				EC877A8C1E01CE1200A23B51 /* CALayer.swift */,
+				EC877A8D1E01CE1200A23B51 /* NotificationCenter.swift */,
+				EC877A8E1E01CE1200A23B51 /* NSLayoutConstraint.swift */,
+				EC877A901E01CE1200A23B51 /* NSObject.swift */,
+				EC877A8F1E01CE1200A23B51 /* NSObject+KVO.swift */,
+				EC877A911E01CE1200A23B51 /* SignalProtocol.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		EC877AA41E01CE4900A23B51 /* ObjC */ = {
+			isa = PBXGroup;
+			children = (
+				EC97EDA71D6C51F0001C54C9 /* BNDProtocolProxyBase.h */,
+				EC97EDA81D6C51F0001C54C9 /* BNDProtocolProxyBase.m */,
+				EC2D4A0D1DA8F31700B03A6B /* NSObject+Bond.h */,
+				EC2D4A131DA8F36B00B03A6B /* NSObject+Bond.m */,
+			);
+			name = ObjC;
+			sourceTree = "<group>";
+		};
+		EC877AAA1E01CE9F00A23B51 /* Collections */ = {
+			isa = PBXGroup;
+			children = (
+				EC877AAB1E01CE9F00A23B51 /* Observable2DArray.swift */,
+				EC877AAC1E01CE9F00A23B51 /* ObservableArray.swift */,
+				EC877AAD1E01CE9F00A23B51 /* ObservableDictionary.swift */,
+				EC877AAE1E01CE9F00A23B51 /* ObservableSet.swift */,
+			);
+			path = Collections;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -677,6 +739,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 90A3FAC31E0C8D8B0086A7F1 /* Products */;
+					ProjectRef = 90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */;
+				},
+				{
 					ProductGroup = 165217831D70591D00C9FAEE /* Products */;
 					ProjectRef = 165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */;
 				},
@@ -728,6 +794,20 @@
 			remoteRef = 165217921D70591E00C9FAEE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Diff.framework;
+			remoteRef = 90A3FAC71E0C8D8B0086A7F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		90A3FACA1E0C8D8B0086A7F1 /* DiffTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = DiffTests.xctest;
+			remoteRef = 90A3FAC91E0C8D8B0086A7F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -774,45 +854,46 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1639C0831D6DD3190045959E /* ObservableDictionary.swift in Sources */,
+				EC877AAF1E01CE9F00A23B51 /* Observable2DArray.swift in Sources */,
 				16D30EA81D6587B400C2435D /* UICollectionView.swift in Sources */,
+				EC877AA61E01CE6100A23B51 /* ProtocolProxy.swift in Sources */,
 				ECD626F71D4DF1260040C7BF /* UINavigationItem.swift in Sources */,
 				227DEF051DCB87BF00213852 /* UIGestureRecognizer.swift in Sources */,
-				EC97EDA91D6C51F0001C54C9 /* ProtocolProxy.swift in Sources */,
+				EC877A921E01CE1200A23B51 /* CALayer.swift in Sources */,
 				ECD627011D4DF3DD0040C7BF /* UISwitch.swift in Sources */,
+				EC877A951E01CE1200A23B51 /* NotificationCenter.swift in Sources */,
 				ECD627051D4DF67E0040C7BF /* UIView.swift in Sources */,
 				F411F9F01D9CEC5200AEBAFC /* UIStepper.swift in Sources */,
 				ECD626EB1D4DE9460040C7BF /* UIBarItem.swift in Sources */,
-				1639C0861D6DD3190045959E /* ObservableSet.swift in Sources */,
 				EC7890F21D44F1D9002848EB /* Bond.swift in Sources */,
 				EC7890F41D44F1ED002848EB /* DynamicSubject.swift in Sources */,
 				16559F851D64F4F100EDD727 /* DataSource.swift in Sources */,
 				ECD626F31D4DEFBC0040C7BF /* UIImageView.swift in Sources */,
-				16D30EF91D65D5FD00C2435D /* CALayer.swift in Sources */,
 				ECD626F11D4DEB490040C7BF /* UIDatePicker.swift in Sources */,
 				ECD627031D4DF5D40040C7BF /* UITextView.swift in Sources */,
 				ECD626EF1D4DEAB20040C7BF /* UIApplication.swift in Sources */,
-				EC8822071D421EA2006142ED /* NSObject.swift in Sources */,
+				EC877AB51E01CE9F00A23B51 /* ObservableDictionary.swift in Sources */,
+				EC877A981E01CE1200A23B51 /* NSLayoutConstraint.swift in Sources */,
 				ECD626FD1D4DF2D60040C7BF /* UISegmentedControl.swift in Sources */,
+				EC877A9E1E01CE1200A23B51 /* NSObject.swift in Sources */,
 				ECD626E91D4DE8800040C7BF /* UIActivityIndicatorView.swift in Sources */,
 				EC97EDAF1D6C51F0001C54C9 /* BNDProtocolProxyBase.m in Sources */,
-				1639C0801D6DD3190045959E /* ObservableArray.swift in Sources */,
 				EC2505B11D3F570500A6E14A /* UILabel.swift in Sources */,
+				EC877AB21E01CE9F00A23B51 /* ObservableArray.swift in Sources */,
 				ECD626ED1D4DE9BE0040C7BF /* UIBarButtonItem.swift in Sources */,
-				EC9693611D94613A004EB5EE /* Observable2DArray.swift in Sources */,
 				ECC4BE591D4A2E1600880DEC /* UIButton.swift in Sources */,
+				EC877A9B1E01CE1200A23B51 /* NSObject+KVO.swift in Sources */,
 				EC2D4A141DA8F36B00B03A6B /* NSObject+Bond.m in Sources */,
+				EC877AA11E01CE1200A23B51 /* SignalProtocol.swift in Sources */,
+				EC877AB81E01CE9F00A23B51 /* ObservableSet.swift in Sources */,
 				ECD626F51D4DF0E00040C7BF /* UINavigationBar.swift in Sources */,
 				ECD626F91D4DF1670040C7BF /* UIProgressView.swift in Sources */,
 				16559F831D64F4BC00EDD727 /* UITableView.swift in Sources */,
-				16D30EFD1D65D64600C2435D /* NSLayoutConstraint.swift in Sources */,
 				ECD626FF1D4DF34F0040C7BF /* UISlider.swift in Sources */,
 				EC2505B31D3F571500A6E14A /* UITextField.swift in Sources */,
 				EC35401C1D462F4700901AA1 /* UIControl.swift in Sources */,
 				1639C08A1D6DD39B0045959E /* Observable.swift in Sources */,
-				EC97ED9F1D6C500B001C54C9 /* NotificationCenter.swift in Sources */,
 				ECD626FB1D4DF1F50040C7BF /* UIRefreshControl.swift in Sources */,
-				EC97EDA31D6C50A5001C54C9 /* NSObject+KVO.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -846,34 +927,35 @@
 			files = (
 				16D30ECE1D659D4A00C2435D /* NSTextField.swift in Sources */,
 				16D30EBF1D65960B00C2435D /* Bond.swift in Sources */,
-				EC97EDAA1D6C51F0001C54C9 /* ProtocolProxy.swift in Sources */,
+				EC877A991E01CE1200A23B51 /* NSLayoutConstraint.swift in Sources */,
 				16D30EC61D659B8F00C2435D /* NSImageView.swift in Sources */,
+				EC877AB01E01CE9F00A23B51 /* Observable2DArray.swift in Sources */,
+				EC877AA21E01CE1200A23B51 /* SignalProtocol.swift in Sources */,
 				EC97EDB01D6C51F0001C54C9 /* BNDProtocolProxyBase.m in Sources */,
 				16D30F091D65D82D00C2435D /* NSAppearanceCustomization.swift in Sources */,
 				16D30F0B1D65E8C700C2435D /* NSTableView.swift in Sources */,
-				16D30EFE1D65D64600C2435D /* NSLayoutConstraint.swift in Sources */,
-				EC97EDA41D6C50A5001C54C9 /* NSObject+KVO.swift in Sources */,
+				EC877AB31E01CE9F00A23B51 /* ObservableArray.swift in Sources */,
+				EC877A961E01CE1200A23B51 /* NotificationCenter.swift in Sources */,
 				16D30EBC1D65944500C2435D /* NSButton.swift in Sources */,
 				EC2D4A151DA8F36B00B03A6B /* NSObject+Bond.m in Sources */,
-				1639C0841D6DD3190045959E /* ObservableDictionary.swift in Sources */,
+				EC877A931E01CE1200A23B51 /* CALayer.swift in Sources */,
 				16D30ECC1D659CA700C2435D /* NSSlider.swift in Sources */,
 				16D30ECA1D659C1200C2435D /* NSSegmentedControl.swift in Sources */,
 				16D30F051D65D7C000C2435D /* NSMenuItem.swift in Sources */,
+				EC877AB91E01CE9F00A23B51 /* ObservableSet.swift in Sources */,
 				16D30EC41D65988A00C2435D /* NSControl.swift in Sources */,
 				16D30F031D65D79600C2435D /* NSStatusBarButton.swift in Sources */,
-				EC97EDA01D6C500B001C54C9 /* NotificationCenter.swift in Sources */,
 				16D30ED01D659E0600C2435D /* NSView.swift in Sources */,
-				1639C0871D6DD3190045959E /* ObservableSet.swift in Sources */,
-				16D30EC21D65961300C2435D /* NSObject.swift in Sources */,
-				16D30EFA1D65D5FD00C2435D /* CALayer.swift in Sources */,
-				1639C0811D6DD3190045959E /* ObservableArray.swift in Sources */,
 				16D30F011D65D6AA00C2435D /* NSTextView.swift in Sources */,
 				16D30F071D65D7F800C2435D /* NSColorWell.swift in Sources */,
+				EC877AA71E01CE6100A23B51 /* ProtocolProxy.swift in Sources */,
 				1639C08B1D6DD39B0045959E /* Observable.swift in Sources */,
+				EC877AB61E01CE9F00A23B51 /* ObservableDictionary.swift in Sources */,
 				16D30EC11D65961000C2435D /* DataSource.swift in Sources */,
-				EC9693621D94613A004EB5EE /* Observable2DArray.swift in Sources */,
 				16D30EC01D65960E00C2435D /* DynamicSubject.swift in Sources */,
+				EC877A9F1E01CE1200A23B51 /* NSObject.swift in Sources */,
 				16D30EC81D659BDB00C2435D /* NSProgressIndicator.swift in Sources */,
+				EC877A9C1E01CE1200A23B51 /* NSObject+KVO.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -881,43 +963,44 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1639C0851D6DD3190045959E /* ObservableDictionary.swift in Sources */,
 				16D30EF71D65D16600C2435D /* UICollectionView.swift in Sources */,
+				EC877AA01E01CE1200A23B51 /* NSObject.swift in Sources */,
 				16D30EED1D65D16600C2435D /* UINavigationItem.swift in Sources */,
-				EC97EDAB1D6C51F0001C54C9 /* ProtocolProxy.swift in Sources */,
+				EC877A971E01CE1200A23B51 /* NotificationCenter.swift in Sources */,
+				EC877AA31E01CE1200A23B51 /* SignalProtocol.swift in Sources */,
 				16D30EF21D65D16600C2435D /* UISwitch.swift in Sources */,
 				16D30EF31D65D16600C2435D /* UITextField.swift in Sources */,
 				16D30EF41D65D16600C2435D /* UITextView.swift in Sources */,
-				1639C0881D6DD3190045959E /* ObservableSet.swift in Sources */,
 				16D30EE41D65D16600C2435D /* UIApplication.swift in Sources */,
 				16D30EF61D65D16600C2435D /* UITableView.swift in Sources */,
+				EC877AB71E01CE9F00A23B51 /* ObservableDictionary.swift in Sources */,
 				16D30EEB1D65D16600C2435D /* UILabel.swift in Sources */,
+				EC877AB11E01CE9F00A23B51 /* Observable2DArray.swift in Sources */,
+				EC877AB41E01CE9F00A23B51 /* ObservableArray.swift in Sources */,
 				16D30EE81D65D16600C2435D /* UIControl.swift in Sources */,
-				16D30EFB1D65D5FD00C2435D /* CALayer.swift in Sources */,
 				16D30EF51D65D16600C2435D /* UIView.swift in Sources */,
 				16D30EE31D65D16600C2435D /* UIActivityIndicatorView.swift in Sources */,
 				16D30EE11D65D14C00C2435D /* DataSource.swift in Sources */,
 				16D30EEA1D65D16600C2435D /* UIImageView.swift in Sources */,
-				16D30EE21D65D14C00C2435D /* NSObject.swift in Sources */,
 				16D30EF01D65D16600C2435D /* UISegmentedControl.swift in Sources */,
 				EC97EDB11D6C51F0001C54C9 /* BNDProtocolProxyBase.m in Sources */,
-				1639C0821D6DD3190045959E /* ObservableArray.swift in Sources */,
 				16D30EE61D65D16600C2435D /* UIBarItem.swift in Sources */,
 				16D30EE51D65D16600C2435D /* UIBarButtonItem.swift in Sources */,
-				EC9693631D94613A004EB5EE /* Observable2DArray.swift in Sources */,
 				16D30EE01D65D14C00C2435D /* DynamicSubject.swift in Sources */,
+				EC877A9A1E01CE1200A23B51 /* NSLayoutConstraint.swift in Sources */,
 				16D30EDF1D65D14C00C2435D /* Bond.swift in Sources */,
 				16D30EEC1D65D16600C2435D /* UINavigationBar.swift in Sources */,
 				16D30EEE1D65D16600C2435D /* UIProgressView.swift in Sources */,
-				16D30EFF1D65D64600C2435D /* NSLayoutConstraint.swift in Sources */,
+				EC877A9D1E01CE1200A23B51 /* NSObject+KVO.swift in Sources */,
 				16D30EF11D65D16600C2435D /* UISlider.swift in Sources */,
 				16D30EE91D65D16600C2435D /* UIDatePicker.swift in Sources */,
+				EC877ABA1E01CE9F00A23B51 /* ObservableSet.swift in Sources */,
+				EC877AA81E01CE6100A23B51 /* ProtocolProxy.swift in Sources */,
 				16D30EE71D65D16600C2435D /* UIButton.swift in Sources */,
 				1639C08C1D6DD39B0045959E /* Observable.swift in Sources */,
-				EC97EDA11D6C500B001C54C9 /* NotificationCenter.swift in Sources */,
+				EC877A941E01CE1200A23B51 /* CALayer.swift in Sources */,
 				EC2D4A161DA8F36B00B03A6B /* NSObject+Bond.m in Sources */,
 				16D30EEF1D65D16600C2435D /* UIRefreshControl.swift in Sources */,
-				EC97EDA51D6C50A5001C54C9 /* NSObject+KVO.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

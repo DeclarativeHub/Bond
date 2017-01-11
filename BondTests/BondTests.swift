@@ -19,11 +19,11 @@ class BondTypeTests: XCTestCase {
   // Update closure is called on each next element
   func testExecutes() {
     let target = DummyTarget()
-    let bond = Bond<DummyTarget, Int>(target: target) { target, element in
+    let bond = Bond<Int>(target: target) { target, element in
       target.recordedElements.append(element)
     }
     
-    Signal1.sequence([1, 2, 3]).bind(to: bond)
+    SafeSignal.sequence([1, 2, 3]).bind(to: bond)
     XCTAssert(target.recordedElements == [1, 2, 3])
   }
   
@@ -33,7 +33,7 @@ class BondTypeTests: XCTestCase {
     var target: DummyTarget! = DummyTarget()
     weak var weakTarget = target
     
-    let bond = Bond<DummyTarget, Int>(target: target) { target, element in
+    let bond = Bond<Int>(target: target) { target, element in
       target.recordedElements.append(element)
     }
     

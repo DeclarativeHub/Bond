@@ -25,36 +25,38 @@
 import ReactiveKit
 import Foundation
 
-public struct DynamicSubject2<Target: Deallocatable, Element, Error: Swift.Error>: SubjectProtocol, BindableProtocol {
+public typealias DynamicSubject<Element> = DynamicSubject2<Element, NoError>
 
-  private weak var target: Target?
+public struct DynamicSubject2<Element, Error: Swift.Error>: SubjectProtocol, BindableProtocol {
+
+  private weak var target: AnyObject?
   private var signal: Signal<Void, Error>
-  private let getter: (Target) -> Result<Element, Error>
-  private let setter: (Target, Element) -> Void
+  private let getter: (AnyObject) -> Result<Element, Error>
+  private let setter: (AnyObject, Element) -> Void
   private let subject = PublishSubject<Void, Error>()
   private let triggerEventOnSetting: Bool
 
-  public init(target: Target,
+  public init<Target: Deallocatable>(target: Target,
               signal: Signal<Void, Error>,
               get: @escaping (Target) -> Result<Element, Error>,
               set: @escaping (Target, Element) -> Void,
               triggerEventOnSetting: Bool = true) {
     self.target = target
     self.signal = signal
-    self.getter = get
-    self.setter = set
+    self.getter = { get($0 as! Target) }
+    self.setter = { set($0 as! Target, $1) }
     self.triggerEventOnSetting = triggerEventOnSetting
   }
 
-  public init(target: Target,
+  public init<Target: Deallocatable>(target: Target,
               signal: Signal<Void, Error>,
               get: @escaping (Target) -> Element,
               set: @escaping (Target, Element) -> Void,
               triggerEventOnSetting: Bool = true) {
     self.target = target
     self.signal = signal
-    self.getter = { .success(get($0)) }
-    self.setter = set
+    self.getter = { .success(get($0 as! Target)) }
+    self.setter = { set($0 as! Target, $1) }
     self.triggerEventOnSetting = triggerEventOnSetting
   }
 
@@ -81,7 +83,7 @@ public struct DynamicSubject2<Target: Deallocatable, Element, Error: Swift.Error
       } else {
         return .success(nil)
       }
-      }.ignoreNil().take(until: target.bnd_deallocated).observe(with: observer)
+      }.ignoreNil().take(until: (target as! Deallocatable).deallocated).observe(with: observer)
   }
 
   public func bind(signal: Signal<Element, NoError>) -> Disposable {
@@ -89,7 +91,7 @@ public struct DynamicSubject2<Target: Deallocatable, Element, Error: Swift.Error
       let setter = self.setter
       let subject = self.subject
       let triggerEventOnSetting = self.triggerEventOnSetting
-      return signal.take(until: target.bnd_deallocated).observe { [weak target] event in
+      return signal.take(until: (target as! Deallocatable).deallocated).observe { [weak target] event in
         ImmediateOnMainExecutionContext { [weak target] in
           switch event {
           case .next(let element):
@@ -124,14 +126,16 @@ public struct DynamicSubject2<Target: Deallocatable, Element, Error: Swift.Error
 
   /// Transform the `getter` and `setter` by applying a `transform` on them.
   public func bidirectionalMap<U>(to getTransform: @escaping (Element) -> U,
-                               from setTransform: @escaping (U) -> Element) -> DynamicSubject2<Target, U, Error>! {
+                               from setTransform: @escaping (U) -> Element) -> DynamicSubject2<U, Error>! {
     guard let target = target else { return nil }
 
-    return DynamicSubject2<Target, U, Error>(
-      target: target,
+    let box = DynamicSubjectMapBox(target)
+
+    return DynamicSubject2<U, Error>(
+      target: box,
       signal: signal,
       get: { [getter] (target) -> Result<U, Error> in
-        switch getter(target) {
+        switch getter(target.object) {
         case .success(let value):
           return .success(getTransform(value))
         case .failure(let error):
@@ -139,10 +143,32 @@ public struct DynamicSubject2<Target: Deallocatable, Element, Error: Swift.Error
         }
       },
       set: { [setter] (target, element) in
-        setter(target, setTransform(element))
+        setter(target.object, setTransform(element))
       }
     )
   }
 }
 
-public typealias DynamicSubject<Target: Deallocatable, Element> = DynamicSubject2<Target, Element, NoError>
+fileprivate class DynamicSubjectMapBox: Deallocatable {
+
+  let object: AnyObject
+
+  init(_ object: AnyObject) {
+    self.object = object
+  }
+
+  var deallocated: Signal<Void, NoError> {
+    return (object as! Deallocatable).deallocated
+  }
+}
+
+extension ReactiveExtensions where Base: Deallocatable {
+
+  public func dynamicSubject<Element>(signal: Signal<Void, NoError>,
+                             triggerEventOnSetting: Bool = true,
+                             get: @escaping (Base) -> Element,
+                             set: @escaping (Base, Element) -> Void) -> DynamicSubject<Element> {
+    return DynamicSubject(target: base, signal: signal, get: get, set: set, triggerEventOnSetting: triggerEventOnSetting)
+  }
+}
+

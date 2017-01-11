@@ -27,12 +27,11 @@ import ReactiveKit
 
 #if os(iOS)
 
-extension UIRefreshControl {
+public extension ReactiveExtensions where Base: UIRefreshControl {
 
-  public var bnd_refreshing: DynamicSubject<UIRefreshControl, Bool> {
-    return DynamicSubject(
-      target: self,
-      signal: bnd_controlEvents(.valueChanged).eraseType(),
+  public var refreshing: DynamicSubject<Bool> {
+    return dynamicSubject(
+      signal: controlEvents(.valueChanged).eraseType(),
       get: { $0.isRefreshing },
       set: { if $1 { $0.beginRefreshing() } else { $0.endRefreshing() } }
     )
@@ -42,7 +41,7 @@ extension UIRefreshControl {
 extension UIRefreshControl: BindableProtocol {
 
   public func bind(signal: Signal<Bool, NoError>) -> Disposable {
-    return bnd_refreshing.bind(signal: signal)
+    return reactive.refreshing.bind(signal: signal)
   }
 }
 

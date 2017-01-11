@@ -27,12 +27,11 @@ import ReactiveKit
 
 #if os(iOS)
   
-  extension UIStepper {
+  public extension ReactiveExtensions where Base: UIStepper {
     
-    public var bnd_value: DynamicSubject<UIStepper, Double> {
-      return DynamicSubject(
-        target: self,
-        signal: bnd_controlEvents(.valueChanged).eraseType(),
+    public var value: DynamicSubject<Double> {
+      return dynamicSubject(
+        signal: controlEvents(.valueChanged).eraseType(),
         get: { $0.value },
         set: { $0.value = $1 }
       )
@@ -42,7 +41,7 @@ import ReactiveKit
   extension UIStepper: BindableProtocol {
     
     public func bind(signal: Signal<Double, NoError>) -> Disposable {
-      return bnd_value.bind(signal: signal)
+      return reactive.value.bind(signal: signal)
     }
   }
   

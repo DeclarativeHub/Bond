@@ -25,24 +25,24 @@
 import UIKit
 import ReactiveKit
 
-public extension UILabel {
+public extension ReactiveExtensions where Base: UILabel {
 
-  public var bnd_text: Bond<UILabel, String?> {
-    return Bond(target: self) { $0.text = $1 }
+  public var text: Bond<String?> {
+    return bond { $0.text = $1 }
   }
 
-  public var bnd_attributedText: Bond<UILabel, NSAttributedString?> {
-    return Bond(target: self) { $0.attributedText = $1 }
+  public var attributedText: Bond<NSAttributedString?> {
+    return bond { $0.attributedText = $1 }
   }
 
-  public var bnd_textColor: Bond<UILabel, UIColor?> {
-    return Bond(target: self) { $0.textColor = $1 }
+  public var textColor: Bond<UIColor?> {
+    return bond { $0.textColor = $1 }
   }
 }
 
 extension UILabel: BindableProtocol {
 
   public func bind(signal: Signal<String?, NoError>) -> Disposable {
-    return bnd_text.bind(signal: signal)
+    return reactive.text.bind(signal: signal)
   }
 }

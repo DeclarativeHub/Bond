@@ -22,16 +22,16 @@
 //  THE SOFTWARE.
 //
 
-import ReactiveKit
 import AppKit
+import ReactiveKit
 
-extension NSView {
+public extension ReactiveExtensions where Base: NSView {
 
-  public var bnd_alphaValue: Bond<NSView, CGFloat> {
-    return Bond(target: self) { $0.alphaValue = $1 }
+  public var alphaValue: Bond<CGFloat> {
+    return bond { $0.alphaValue = $1 }
   }
 
-  public var bnd_isHidden: Bond<NSView, Bool> {
-    return Bond(target: self) { $0.isHidden = $1 }
+  public var isHidden: Bond<Bool> {
+    return bond { $0.isHidden = $1 }
   }
 }

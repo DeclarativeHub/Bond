@@ -22,19 +22,19 @@
 //  THE SOFTWARE.
 //
 
-import ReactiveKit
 import AppKit
+import ReactiveKit
 
-extension NSImageView {
+public extension ReactiveExtensions where Base: NSImageView {
 
-  public var bnd_image: Bond<NSImageView, NSImage?> {
-    return Bond(target: self) { $0.image = $1 }
+  public var image: Bond<NSImage?> {
+    return bond { $0.image = $1 }
   }
 }
 
 extension NSImageView: BindableProtocol {
 
   public func bind(signal: Signal<NSImage?, NoError>) -> Disposable {
-    return bnd_image.bind(signal: signal)
+    return reactive.image.bind(signal: signal)
   }
 }

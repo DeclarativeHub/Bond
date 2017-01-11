@@ -15,19 +15,19 @@ class BondTests: XCTestCase {
   func testUIView() {
     let view = UIView()
 
-    Signal1.just(UIColor.red).bind(to: view.bnd_backgroundColor)
+    SafeSignal.just(UIColor.red).bind(to: view.reactive.backgroundColor)
     XCTAssertEqual(view.backgroundColor!, UIColor.red)
 
-    Signal1.just(0.3).bind(to: view.bnd_alpha)
+    SafeSignal.just(0.3).bind(to: view.reactive.alpha)
     XCTAssertEqual(view.alpha, 0.3)
 
-    Signal1.just(true).bind(to: view.bnd_isHidden)
+    SafeSignal.just(true).bind(to: view.reactive.isHidden)
     XCTAssertEqual(view.isHidden, true)
 
-    Signal1.just(true).bind(to: view.bnd_isUserInteractionEnabled)
+    SafeSignal.just(true).bind(to: view.reactive.isUserInteractionEnabled)
     XCTAssertEqual(view.isUserInteractionEnabled, true)
 
-    Signal1.just(UIColor.red).bind(to: view.bnd_tintColor)
+    SafeSignal.just(UIColor.red).bind(to: view.reactive.tintColor)
     XCTAssertEqual(view.tintColor, UIColor.red)
   }
 
@@ -35,7 +35,7 @@ class BondTests: XCTestCase {
     let subject = PublishSubject1<Bool>()
 
     let view = UIActivityIndicatorView()
-    subject.bind(to: view.bnd_animating)
+    subject.bind(to: view.reactive.animating)
 
     XCTAssertEqual(view.isAnimating, false)
 
@@ -49,20 +49,20 @@ class BondTests: XCTestCase {
   func testUIBarItem() {
     let view = UIBarButtonItem()
 
-    Signal1.just("test").bind(to: view.bnd_title)
+    SafeSignal.just("test").bind(to: view.reactive.title)
     XCTAssertEqual(view.title!, "test")
 
     let image = UIImage()
-    Signal1.just(image).bind(to: view.bnd_image)
+    SafeSignal.just(image).bind(to: view.reactive.image)
     XCTAssertEqual(view.image!, image)
 
-    Signal1.just(true).bind(to: view.bnd_isEnabled)
+    SafeSignal.just(true).bind(to: view.reactive.isEnabled)
     XCTAssertEqual(view.isEnabled, true)
-    Signal1.just(false).bind(to: view.bnd_isEnabled)
+    SafeSignal.just(false).bind(to: view.reactive.isEnabled)
     XCTAssertEqual(view.isEnabled, false)
 
-    view.bnd_tap.expectNext([(), ()])
-    view.bnd_tap.expectNext([(), ()]) // second observer
+    view.reactive.tap.expectNext([(), ()])
+    view.reactive.tap.expectNext([(), ()]) // second observer
     _ = view.target!.perform(view.action!)
     _ = view.target!.perform(view.action!)
   }
@@ -70,20 +70,20 @@ class BondTests: XCTestCase {
   func testUIButton() {
     let view = UIButton()
     
-    Signal1.just("test").bind(to: view.bnd_title)
+    SafeSignal.just("test").bind(to: view.reactive.title)
     XCTAssertEqual(view.titleLabel?.text, "test")
     
-    Signal1.just(true).bind(to: view.bnd_isSelected)
+    SafeSignal.just(true).bind(to: view.reactive.isSelected)
     XCTAssertEqual(view.isSelected, true)
-    Signal1.just(false).bind(to: view.bnd_isSelected)
+    SafeSignal.just(false).bind(to: view.reactive.isSelected)
     XCTAssertEqual(view.isSelected, false)
     
-    Signal1.just(true).bind(to: view.bnd_isHighlighted)
+    SafeSignal.just(true).bind(to: view.reactive.isHighlighted)
     XCTAssertEqual(view.isHighlighted, true)
-    Signal1.just(false).bind(to: view.bnd_isHighlighted)
+    SafeSignal.just(false).bind(to: view.reactive.isHighlighted)
     XCTAssertEqual(view.isHighlighted, false)
     
-    view.bnd_tap.expectNext([(), ()])
+    view.reactive.tap.expectNext([(), ()])
     view.sendActions(for: .touchUpInside)
     view.sendActions(for: .touchUpInside)
     view.sendActions(for: .touchUpOutside)
@@ -92,12 +92,12 @@ class BondTests: XCTestCase {
   func testUIControl() {
     let view = UIControl()
     
-    Signal1.just(true).bind(to: view.bnd_isEnabled)
+    SafeSignal.just(true).bind(to: view.reactive.isEnabled)
     XCTAssertEqual(view.isEnabled, true)
-    Signal1.just(false).bind(to: view.bnd_isEnabled)
+    SafeSignal.just(false).bind(to: view.reactive.isEnabled)
     XCTAssertEqual(view.isEnabled, false)
     
-    view.bnd_controlEvents(UIControlEvents.touchUpInside).expectNext([(), ()])
+    view.reactive.controlEvents(UIControlEvents.touchUpInside).expectNext([(), ()])
     view.sendActions(for: .touchUpInside)
     view.sendActions(for: .touchUpOutside)
     view.sendActions(for: .touchUpInside)
@@ -118,7 +118,7 @@ class BondTests: XCTestCase {
     subject.next(date2)
     XCTAssertEqual(view.date, date2)
     
-    view.bnd_date.expectNext([date2, date1])
+    view.reactive.date.expectNext([date2, date1])
     view.date = date1
     view.sendActions(for: .valueChanged)
   }
@@ -162,7 +162,7 @@ class BondTests: XCTestCase {
     let subject = PublishSubject1<UIColor?>()
     
     let view = UINavigationBar()
-    subject.bind(to: view.bnd_barTintColor)
+    subject.bind(to: view.reactive.barTintColor)
     
     subject.next(.red)
     XCTAssertEqual(view.barTintColor!, .red)
@@ -179,7 +179,7 @@ class BondTests: XCTestCase {
     let subject = PublishSubject1<String?>()
     
     let view = UINavigationItem()
-    subject.bind(to: view.bnd_title)
+    subject.bind(to: view.reactive.title)
     
     subject.next("a")
     XCTAssertEqual(view.title!, "a")
@@ -216,7 +216,7 @@ class BondTests: XCTestCase {
     subject.next(false)
     XCTAssertEqual(view.isRefreshing, false)
 
-    view.bnd_refreshing.expectNext([false, true])
+    view.reactive.refreshing.expectNext([false, true])
     view.beginRefreshing()
     view.sendActions(for: .valueChanged)
   }
@@ -233,7 +233,7 @@ class BondTests: XCTestCase {
     subject.next(0)
     XCTAssertEqual(view.selectedSegmentIndex, 0)
 
-    view.bnd_selectedSegmentIndex.expectNext([0, 1])
+    view.reactive.selectedSegmentIndex.expectNext([0, 1])
     view.selectedSegmentIndex = 1
     view.sendActions(for: .valueChanged)
   }
@@ -250,7 +250,7 @@ class BondTests: XCTestCase {
     subject.next(0.4)
     XCTAssertEqual(view.value, 0.4)
 
-    view.bnd_value.expectNext([0.4, 0.6])
+    view.reactive.value.expectNext([0.4, 0.6])
     view.value = 0.6
     view.sendActions(for: .valueChanged)
   }
@@ -267,7 +267,7 @@ class BondTests: XCTestCase {
     subject.next(true)
     XCTAssertEqual(view.isOn, true)
 
-    view.bnd_isOn.expectNext([true, false])
+    view.reactive.isOn.expectNext([true, false])
     view.isOn = false
     view.sendActions(for: .valueChanged)
   }
@@ -284,7 +284,7 @@ class BondTests: XCTestCase {
     subject.next("b")
     XCTAssertEqual(view.text!, "b")
 
-    view.bnd_text.expectNext(["b", "c"])
+    view.reactive.text.expectNext(["b", "c"])
     view.text = "c"
     view.sendActions(for: .allEditingEvents)
   }
@@ -301,7 +301,7 @@ class BondTests: XCTestCase {
     subject.next("b")
     XCTAssertEqual(view.text!, "b")
 
-    view.bnd_text.expectNext(["b", "c"])
+    view.reactive.text.expectNext(["b", "c"])
     view.text = "c"
     NotificationCenter.default.post(name: NSNotification.Name.UITextViewTextDidChange, object: view)
   }
