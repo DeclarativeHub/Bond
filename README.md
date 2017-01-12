@@ -231,13 +231,13 @@ let presentUserProfile: Signal<User, NoError> = ...
 and we would like to present a profile screen when a user is sent on the signal. Usually we would do something like:
 
 ```swift
-presentUserProfile.observeNext { [weak self] user in
+presentUserProfile.observeOn(.main).observeNext { [weak self] user in
   let profileViewController = ProfileViewController(user: user)
   self?.present(profileViewController, animated: true)
 }.dispose(in: reactive.bag)
 ```
 
-But that's ugly! We have to be cautious not to create retain cycle and ensure that the disposable we get from the observation is handled.
+But that's ugly! We have to dispatch everything to the main queue, be cautious not to create a retain cycle and ensure that the disposable we get from the observation is handled.
 
 Thankfully Bond provides a better way. We can create inline binding instead of the observation. Just do the following
 
@@ -248,7 +248,7 @@ presentUserProfile.bind(to: self) { me, user in
 }
 ```
 
-and stop worrying about cycles as bindings always reference the target weakly or about disposing because bindings take care of it automatically. Just bind a signal to the target responsible for performing side effects (in our example, to the object responsible for presenting a profile view controller). The closure you provide will be called whenever the signal emits an event with both the target and the sent element as arguments.
+and stop worrying about threading, retain cycles and disposing  because bindings take care of all that automatically. Just bind a signal to the target responsible for performing side effects (in our example, to the object responsible for presenting a profile view controller). The closure you provide will be called whenever the signal emits an event with both the target and the sent element as arguments.
 
 ## Reactive Delegates
 
