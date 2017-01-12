@@ -25,14 +25,14 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
   public typealias DataSource = Element.DataSource
 
   @discardableResult
-  public func bind(to tableView: NSTableView, animated: Bool = true, createCell: @escaping (DataSource, Int, NSTableView) -> NSView) -> Disposable {
+  public func bind(to tableView: NSTableView, animated: Bool = true, createCell: @escaping (DataSource, Int, NSTableView) -> NSView?) -> Disposable {
 
     let dataSource = Property<DataSource?>(nil)
 
     tableView.reactive.delegate.feed(
       property: dataSource,
       to: #selector(NSTableViewDelegate.tableView(_:viewFor:row:)),
-      map: { (dataSource: DataSource?, tableView: NSTableView, column: NSTableColumn, row: Int) -> NSView in
+      map: { (dataSource: DataSource?, tableView: NSTableView, column: NSTableColumn, row: Int) -> NSView? in
         return createCell(dataSource!, row, tableView)
     })
 
