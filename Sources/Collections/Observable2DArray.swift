@@ -52,6 +52,16 @@ public protocol Observable2DArrayEventProtocol {
 public struct Observable2DArrayEvent<SectionMetadata, Item> {
   public let change: Observable2DArrayChange
   public let source: Observable2DArray<SectionMetadata, Item>
+
+  public init(change: Observable2DArrayChange, source: Observable2DArray<SectionMetadata, Item>) {
+    self.change = change
+    self.source = source
+  }
+
+  public init(change: Observable2DArrayChange, source: [Observable2DArraySection<SectionMetadata, Item>]) {
+    self.change = change
+    self.source = Observable2DArray(source)
+  }
 }
 
 /// Represents a section in 2D array.
