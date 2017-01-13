@@ -18,6 +18,24 @@ public extension ReactiveExtensions where Base: NSTableView {
   public var dataSource: ProtocolProxy {
     return base.protocolProxy(for: NSTableViewDataSource.self, setter: NSSelectorFromString("setDataSource:"))
   }
+
+  public var selectedRowIndexes: DynamicSubject<IndexSet> {
+    let notificationName = NSNotification.Name.NSTableViewSelectionDidChange
+    return dynamicSubject(
+      signal: NotificationCenter.default.reactive.notification(name: notificationName, object: base).eraseType(),
+      get: { $0.selectedRowIndexes },
+      set: { $0.selectRowIndexes($1, byExtendingSelection: false) }
+    )
+  }
+
+  public var selectedColumnIndexes: DynamicSubject<IndexSet> {
+    let notificationName = NSNotification.Name.NSTableViewSelectionDidChange
+    return dynamicSubject(
+      signal: NotificationCenter.default.reactive.notification(name: notificationName, object: base).eraseType(),
+      get: { $0.selectedColumnIndexes },
+      set: { $0.selectColumnIndexes($1, byExtendingSelection: false) }
+    )
+  }
 }
 
 public extension SignalProtocol where Element: DataSourceEventProtocol, Error == NoError {
