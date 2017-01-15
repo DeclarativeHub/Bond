@@ -51,7 +51,20 @@ public struct Bond<Element>: BindableProtocol {
 
 extension ReactiveExtensions where Base: Deallocatable {
 
+  /// Creates a bond on the receiver.
   public func bond<Element>(setter: @escaping (Base, Element) -> Void) -> Bond<Element> {
     return Bond(target: base, setter: setter)
+  }
+}
+
+
+extension SignalProtocol where Error == NoError {
+
+  /// Bind signal to the target using the given setter closure.
+  /// Closure is called whenever the signal emits an event.
+  /// Binding will live until either signal completes or target is deallocated.
+  @discardableResult
+  public func bind<Target: Deallocatable>(to target: Target, setter: @escaping (Target, Element) -> Void) -> Disposable {
+    return bind(to: Bond(target: target, setter: setter))
   }
 }

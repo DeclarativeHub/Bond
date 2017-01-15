@@ -68,6 +68,7 @@
 		16D30F0B1D65E8C700C2435D /* NSTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30F0A1D65E8C700C2435D /* NSTableView.swift */; };
 		1F5F73AD1E267BC10001E3CC /* Observable2DArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5F73AC1E267BC10001E3CC /* Observable2DArrayTests.swift */; };
 		227DEF051DCB87BF00213852 /* UIGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227DEF041DCB87BF00213852 /* UIGestureRecognizer.swift */; };
+		90449ECA1E26F7DC00EE00DD /* NSPopUpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90449EC41E26F78C00EE00DD /* NSPopUpButton.swift */; };
 		90A3FACD1E0C8D9A0086A7F1 /* Diff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */; };
 		90A3FACE1E0C8D9F0086A7F1 /* Diff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */; };
 		90A3FACF1E0C8DA20086A7F1 /* Diff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */; };
@@ -278,6 +279,7 @@
 		16D30F0A1D65E8C700C2435D /* NSTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTableView.swift; sourceTree = "<group>"; };
 		1F5F73AC1E267BC10001E3CC /* Observable2DArrayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable2DArrayTests.swift; sourceTree = "<group>"; };
 		227DEF041DCB87BF00213852 /* UIGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIGestureRecognizer.swift; sourceTree = "<group>"; };
+		90449EC41E26F78C00EE00DD /* NSPopUpButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSPopUpButton.swift; sourceTree = "<group>"; };
 		90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Diff.xcodeproj; path = Carthage/Checkouts/Diff.swift/Diff.xcodeproj; sourceTree = "<group>"; };
 		EC06A8751DBCB147006AEA81 /* NSObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSObjectTests.swift; sourceTree = "<group>"; };
 		EC2505B01D3F570500A6E14A /* UILabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UILabel.swift; path = Sources/UIKit/UILabel.swift; sourceTree = SOURCE_ROOT; };
@@ -470,20 +472,21 @@
 		16D30EBA1D65944500C2435D /* AppKit */ = {
 			isa = PBXGroup;
 			children = (
+				16D30F081D65D82C00C2435D /* NSAppearanceCustomization.swift */,
 				16D30EBB1D65944500C2435D /* NSButton.swift */,
+				16D30F061D65D7F800C2435D /* NSColorWell.swift */,
 				16D30EC31D65988A00C2435D /* NSControl.swift */,
 				16D30EC51D659B8F00C2435D /* NSImageView.swift */,
+				16D30F041D65D7C000C2435D /* NSMenuItem.swift */,
+				90449EC41E26F78C00EE00DD /* NSPopUpButton.swift */,
 				16D30EC71D659BDB00C2435D /* NSProgressIndicator.swift */,
 				16D30EC91D659C1200C2435D /* NSSegmentedControl.swift */,
 				16D30ECB1D659CA700C2435D /* NSSlider.swift */,
-				16D30ECD1D659D4A00C2435D /* NSTextField.swift */,
-				16D30ECF1D659E0600C2435D /* NSView.swift */,
-				16D30F001D65D6AA00C2435D /* NSTextView.swift */,
 				16D30F021D65D79600C2435D /* NSStatusBarButton.swift */,
-				16D30F041D65D7C000C2435D /* NSMenuItem.swift */,
-				16D30F061D65D7F800C2435D /* NSColorWell.swift */,
-				16D30F081D65D82C00C2435D /* NSAppearanceCustomization.swift */,
 				16D30F0A1D65E8C700C2435D /* NSTableView.swift */,
+				16D30ECD1D659D4A00C2435D /* NSTextField.swift */,
+				16D30F001D65D6AA00C2435D /* NSTextView.swift */,
+				16D30ECF1D659E0600C2435D /* NSView.swift */,
 			);
 			path = AppKit;
 			sourceTree = "<group>";
@@ -960,6 +963,7 @@
 				EC877A9F1E01CE1200A23B51 /* NSObject.swift in Sources */,
 				16D30EC81D659BDB00C2435D /* NSProgressIndicator.swift in Sources */,
 				EC877A9C1E01CE1200A23B51 /* NSObject+KVO.swift in Sources */,
+				90449ECA1E26F7DC00EE00DD /* NSPopUpButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

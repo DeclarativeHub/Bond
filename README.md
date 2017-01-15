@@ -220,16 +220,46 @@ blurredImage().bind(to: imageView)
 
 then the image processing will be automatically cancelled when the image view gets deallocated. Isn't that cool!
 
+### Inline Bindings
+
+Most of the time you should be able to replace an observation with a binding. Consider the following example. Say we have a signal of users
+
+```swift
+let presentUserProfile: Signal<User, NoError> = ...
+```
+
+and we would like to present a profile screen when a user is sent on the signal. Usually we would do something like:
+
+```swift
+presentUserProfile.observeOn(.main).observeNext { [weak self] user in
+  let profileViewController = ProfileViewController(user: user)
+  self?.present(profileViewController, animated: true)
+}.dispose(in: reactive.bag)
+```
+
+But that's ugly! We have to dispatch everything to the main queue, be cautious not to create a retain cycle and ensure that the disposable we get from the observation is handled.
+
+Thankfully Bond provides a better way. We can create inline binding instead of the observation. Just do the following
+
+```swift
+presentUserProfile.bind(to: self) { me, user in
+  let profileViewController = ProfileViewController(user: user)
+  me.present(profileViewController, animated: true)
+}
+```
+
+and stop worrying about threading, retain cycles and disposing  because bindings take care of all that automatically. Just bind a signal to the target responsible for performing side effects (in our example, to the object responsible for presenting a profile view controller). The closure you provide will be called whenever the signal emits an event with both the target and the sent element as arguments.
+
 ## Reactive Delegates
 
 Bond provides NSObject extensions that makes it easy to convert delegate pattern into signals.
 
-First make an extension on your type, UITableView in the following example, that provides a reactive delegate proxy:
+First make an extension on ReactiveExtensions (where `Base` is defined as your type - `UITableView` in the following example), that provides a reactive delegate proxy:
 
 ```swift
-extension UITableView {
-  public delegate: ProtocolProxy {
-    return protocolProxy(for: UITableViewDelegate.self, setter: NSSelectorFromString("setDelegate:"))
+extension ReactiveExtensions where Base: UITableView {
+  public var delegate: ProtocolProxy {
+    return base.protocolProxy(for: UITableViewDelegate.self, setter: NSSelectorFromString("setDelegate:"))
   }
 }
 ```
