@@ -447,9 +447,11 @@ extension MutableObservable2DArray where Item: Equatable {
 
 extension MutableObservable2DArray where Item: Equatable, SectionMetadata: Equatable {
   
-  // Replace the entire 2DArray performing diff [if given] on all sections and section's items
-  // resulting in a series of ordered events (deleteSection, deleteItems, insertSections, insertItems) that migrate the old 2DArray to the new 2DArray
-  // Note that both Item and SectionMetadata should be Equatable
+  /// Replace the entire 2DArray performing nested diff (if preformDiff is true) on all
+  /// sections and section's items resulting in a series of ordered events (deleteSection,
+  /// deleteItems, insertSections, insertItems, moveSection, moveItem) that migrate the old
+  /// 2DArray to the new 2DArray
+  /// Note that both Item and SectionMetadata should be Equatable
   public func replace2D(with list: Observable2DArray<SectionMetadata, Item>, performDiff: Bool) {
     
     if performDiff {
