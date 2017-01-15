@@ -448,7 +448,7 @@ extension MutableObservable2DArray where Item: Equatable {
 extension MutableObservable2DArray where Item: Equatable, SectionMetadata: Equatable {
   
   /// Replace the entire 2DArray performing nested diff (if preformDiff is true) on all
-  /// sections and section's items resulting in a series of ordered events (deleteSection,
+  /// sections and section's items resulting in a series of events (deleteSection,
   /// deleteItems, insertSections, insertItems, moveSection, moveItem) that migrate the old
   /// 2DArray to the new 2DArray
   /// Note that both Item and SectionMetadata should be Equatable
