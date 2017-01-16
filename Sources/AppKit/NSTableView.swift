@@ -24,7 +24,7 @@ public extension ReactiveExtensions where Base: NSTableView {
   }
 
   public var selectionDidChange: SafeSignal<Void> {
-    return NotificationCenter.default.reactive.notification(name: .NSTableViewSelectionDidChange).eraseType()
+    return NotificationCenter.default.reactive.notification(name: .NSTableViewSelectionDidChange, object: base).eraseType()
   }
 
   public var selectedRowIndexes: Bond<IndexSet> {
