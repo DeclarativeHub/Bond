@@ -31,11 +31,11 @@ public extension ReactiveExtensions where Base: NSPopUpButton {
     return bond { $0.selectedItem = $1 }
   }
 
-  public var selectedItemAtIndex: Bond<Int?> {
+  public var selectedItemAtIndex: Bond<Int> {
     return bond { $0.selectItem(at: $1) }
   }
 
-  public var selectedItemWithTitle: Bond<String?> {
+  public var selectedItemWithTitle: Bond<String> {
     return bond { $0.selectItem(withTitle: $1) }
   }
 
