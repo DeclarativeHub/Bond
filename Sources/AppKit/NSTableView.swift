@@ -19,8 +19,8 @@ public extension ReactiveExtensions where Base: NSTableView {
     return base.protocolProxy(for: NSTableViewDataSource.self, setter: NSSelectorFromString("setDataSource:"))
   }
 
-  public var selectionWillChange: SafeSignal<Void> {
-    return NotificationCenter.default.reactive.notification(name: .NSTableViewSelectionWillChange).eraseType()
+  public var selectionIsChanging: SafeSignal<Void> {
+    return NotificationCenter.default.reactive.notification(name: .NSTableViewSelectionIsChanging, object: base).eraseType()
   }
 
   public var selectionDidChange: SafeSignal<Void> {
