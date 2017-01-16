@@ -27,6 +27,16 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: NSProgressIndicator {
 
+  public var isAnimating: Bond<Bool> {
+    return bond {
+      if $1 {
+        $0.startAnimation(nil)
+      } else {
+        $0.stopAnimation(nil)
+      }
+    }
+  }
+
   public var doubleValue: Bond<Double> {
     return bond { $0.doubleValue = $1 }
   }
