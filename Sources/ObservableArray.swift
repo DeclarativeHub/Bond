@@ -259,9 +259,11 @@ extension MutableObservableArray where Item: Equatable {
   public func replace(with array: [Item], performDiff: Bool) {
     if performDiff {
       lock.lock()
+
       let diff = self.array.extendedDiff(array)
       subject.next(ObservableArrayEvent(change: .beginBatchEditing, source: self))
       self.array = array
+
       for step in diff {
         switch step {
         case .insert(let index):
@@ -272,9 +274,9 @@ extension MutableObservableArray where Item: Equatable {
 
         case .move(let from, let to):
           subject.next(ObservableArrayEvent(change: .move(from, to), source: self))
-          
         }
       }
+      
       subject.next(ObservableArrayEvent(change: .endBatchEditing, source: self))
       lock.unlock()
     } else {
