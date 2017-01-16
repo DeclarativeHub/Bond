@@ -28,7 +28,7 @@ import ReactiveKit
 public extension ReactiveExtensions where Base: NSPopUpButton {
 
   public var selectedItem: Bond<NSMenuItem?> {
-    return bond { $0.selectedItem = $1 }
+    return bond { $0.select($1) }
   }
 
   public var selectedItemAtIndex: Bond<Int> {
