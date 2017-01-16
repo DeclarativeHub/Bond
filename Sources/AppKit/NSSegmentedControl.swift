@@ -34,6 +34,25 @@ public extension ReactiveExtensions where Base: NSSegmentedControl {
   public var selectedSegment: Bond<Int> {
     return bond { $0.selectedSegment = $1 }
   }
+
+  public var segmentStyle: Bond<NSSegmentStyle> {
+    return bond { $0.segmentStyle = $1 }
+  }
+
+  @available(macOS 10.10.3, *)
+  public var isSpringLoaded: Bond<Bool> {
+    return bond { $0.isSpringLoaded = $1 }
+  }
+
+  @available(macOS 10.10.3, *)
+  public var trackingMode: Bond<NSSegmentSwitchTracking> {
+    return bond { $0.trackingMode = $1 }
+  }
+
+  @available(macOS 10.12.2, *)
+  public var selectedSegmentBezelColor: Bond<NSColor?> {
+    return bond { $0.selectedSegmentBezelColor = $1 }
+  }
 }
 
 extension NSSegmentedControl: BindableProtocol {
