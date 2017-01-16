@@ -30,6 +30,30 @@ public extension ReactiveExtensions where Base: NSImageView {
   public var image: Bond<NSImage?> {
     return bond { $0.image = $1 }
   }
+
+  public var imageAlignment: Bond<NSImageAlignment> {
+    return bond { $0.imageAlignment = $1 }
+  }
+
+  public var imageScaling: Bond<NSImageScaling> {
+    return bond { $0.imageScaling = $1 }
+  }
+
+  public var imageFrameStyle: Bond<NSImageFrameStyle> {
+    return bond { $0.imageFrameStyle = $1 }
+  }
+
+  public var isEditable: Bond<Bool> {
+    return bond { $0.isEditable = $1 }
+  }
+
+  public var animates: Bond<Bool> {
+    return bond { $0.animates = $1 }
+  }
+
+  public var allowsCutCopyPaste: Bond<Bool> {
+    return bond { $0.allowsCutCopyPaste = $1 }
+  }
 }
 
 extension NSImageView: BindableProtocol {

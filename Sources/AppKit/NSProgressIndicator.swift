@@ -27,8 +27,46 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: NSProgressIndicator {
 
+  public var isAnimating: Bond<Bool> {
+    return bond {
+      if $1 {
+        $0.startAnimation(nil)
+      } else {
+        $0.stopAnimation(nil)
+      }
+    }
+  }
+
   public var doubleValue: Bond<Double> {
     return bond { $0.doubleValue = $1 }
+  }
+
+  public var isIndeterminate: Bond<Bool> {
+    return bond { $0.isIndeterminate = $1 }
+  }
+
+  public var minValue: Bond<Double> {
+    return bond { $0.minValue = $1 }
+  }
+
+  public var maxValue: Bond<Double> {
+    return bond { $0.maxValue = $1 }
+  }
+
+  public var controlTint: Bond<NSControlTint> {
+    return bond { $0.controlTint = $1 }
+  }
+
+  public var controlSize: Bond<NSControlSize> {
+    return bond { $0.controlSize = $1 }
+  }
+
+  public var style: Bond<NSProgressIndicatorStyle> {
+    return bond { $0.style = $1 }
+  }
+
+  public var isDisplayedWhenStopped: Bond<Bool> {
+    return bond { $0.isDisplayedWhenStopped = $1 }
   }
 }
 
