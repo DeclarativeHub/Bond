@@ -260,21 +260,19 @@ extension MutableObservableArray where Item: Equatable {
     if performDiff {
       lock.lock()
       let diff = self.array.extendedDiff(array)
-      let patch = diff.patch(from: self.array, to: array)
-
       subject.next(ObservableArrayEvent(change: .beginBatchEditing, source: self))
       self.array = array
-      for step in patch {
+      for step in diff {
         switch step {
-        case .insertion(let index, _):
+        case .insert(let index):
           subject.next(ObservableArrayEvent(change: .inserts([index]), source: self))
 
-        case .deletion(let index):
+        case .delete(let index):
           subject.next(ObservableArrayEvent(change: .deletes([index]), source: self))
 
         case .move(let from, let to):
           subject.next(ObservableArrayEvent(change: .move(from, to), source: self))
-
+          
         }
       }
       subject.next(ObservableArrayEvent(change: .endBatchEditing, source: self))
