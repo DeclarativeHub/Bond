@@ -107,6 +107,11 @@ public class MutableObservableSet<Element: Hashable>: ObservableSet<Element> {
     return set.index(of: member)
   }
 
+  /// Indices of the set.
+  public func indices() -> [SetIndex<Element>] {
+    return Array(set.indices)
+  }
+
   public override subscript (index: SetIndex<Element>) -> Element {
     get {
       return set[index]
@@ -118,6 +123,16 @@ public class MutableObservableSet<Element: Hashable>: ObservableSet<Element> {
     lock.lock(); defer { lock.unlock() }
     let index = set.index(of: member)
     set.insert(member)
+    if index == nil {
+      subject.next(ObservableSetEvent(kind: .inserts([set.index(of: member)!]), source: self))
+    }
+  }
+
+  /// Update an item in the set.
+  public func update(_ member: Element) {
+    lock.lock(); defer { lock.unlock() }
+    let index = set.index(of: member)
+    set.update(with: member)
     if let index = index {
       subject.next(ObservableSetEvent(kind: .updates([index]), source: self))
     } else {
@@ -136,6 +151,23 @@ public class MutableObservableSet<Element: Hashable>: ObservableSet<Element> {
     } else {
       return nil
     }
+  }
+
+  /// Remove item from the set by index.
+  @discardableResult
+  public func remove(at index: SetIndex<Element>) -> Element? {
+    lock.lock(); defer { lock.unlock() }
+    let element = set.remove(at: index)
+    subject.next(ObservableSetEvent(kind: .deletes([index]), source: self))
+    return element
+  }
+
+  /// Removes all items from the set.
+  public func removeAll() {
+    lock.lock(); defer { lock.unlock() }
+    let deletes = Array(set.indices)
+    set.removeAll()
+    subject.next(ObservableSetEvent(kind: .deletes(deletes), source: self))
   }
 
   public func replace(with set: Set<Element>) {

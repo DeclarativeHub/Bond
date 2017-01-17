@@ -69,6 +69,7 @@
 		1F5F73AD1E267BC10001E3CC /* Observable2DArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5F73AC1E267BC10001E3CC /* Observable2DArrayTests.swift */; };
 		227DEF051DCB87BF00213852 /* UIGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227DEF041DCB87BF00213852 /* UIGestureRecognizer.swift */; };
 		90449ECA1E26F7DC00EE00DD /* NSPopUpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90449EC41E26F78C00EE00DD /* NSPopUpButton.swift */; };
+		3B8EAA5C1E205B0F00C7D06F /* ObservableSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8EAA5B1E205B0F00C7D06F /* ObservableSetTests.swift */; };
 		90A3FACD1E0C8D9A0086A7F1 /* Diff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */; };
 		90A3FACE1E0C8D9F0086A7F1 /* Diff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */; };
 		90A3FACF1E0C8DA20086A7F1 /* Diff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */; };
@@ -276,10 +277,11 @@
 		16D30F041D65D7C000C2435D /* NSMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSMenuItem.swift; sourceTree = "<group>"; };
 		16D30F061D65D7F800C2435D /* NSColorWell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSColorWell.swift; sourceTree = "<group>"; };
 		16D30F081D65D82C00C2435D /* NSAppearanceCustomization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSAppearanceCustomization.swift; sourceTree = "<group>"; };
-		16D30F0A1D65E8C700C2435D /* NSTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTableView.swift; sourceTree = "<group>"; };
 		1F5F73AC1E267BC10001E3CC /* Observable2DArrayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable2DArrayTests.swift; sourceTree = "<group>"; };
-		227DEF041DCB87BF00213852 /* UIGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIGestureRecognizer.swift; sourceTree = "<group>"; };
+		16D30F0A1D65E8C700C2435D /* NSTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTableView.swift; sourceTree = "<group>"; };
 		90449EC41E26F78C00EE00DD /* NSPopUpButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSPopUpButton.swift; sourceTree = "<group>"; };
+		227DEF041DCB87BF00213852 /* UIGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIGestureRecognizer.swift; sourceTree = "<group>"; };
+		3B8EAA5B1E205B0F00C7D06F /* ObservableSetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableSetTests.swift; sourceTree = "<group>"; };
 		90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Diff.xcodeproj; path = Carthage/Checkouts/Diff.swift/Diff.xcodeproj; sourceTree = "<group>"; };
 		EC06A8751DBCB147006AEA81 /* NSObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSObjectTests.swift; sourceTree = "<group>"; };
 		EC2505B01D3F570500A6E14A /* UILabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UILabel.swift; path = Sources/UIKit/UILabel.swift; sourceTree = SOURCE_ROOT; };
@@ -436,6 +438,7 @@
 				ECD594091D93EC9700C840C2 /* DynamicSubjectTests.swift */,
 				ECCF8A511D8FFEF300575DA8 /* ObservableArrayTests.swift */,
 				1F5F73AC1E267BC10001E3CC /* Observable2DArrayTests.swift */,
+				3B8EAA5B1E205B0F00C7D06F /* ObservableSetTests.swift */,
 				16887E2F1D74499A00EDA099 /* ProtocolProxyTests.swift */,
 				16210A4A1D3EC474004AEDF3 /* UIKitTests.swift */,
 				EC96935A1D943B15004EB5EE /* UITableViewTests.swift */,
@@ -472,21 +475,21 @@
 		16D30EBA1D65944500C2435D /* AppKit */ = {
 			isa = PBXGroup;
 			children = (
-				16D30F081D65D82C00C2435D /* NSAppearanceCustomization.swift */,
 				16D30EBB1D65944500C2435D /* NSButton.swift */,
-				16D30F061D65D7F800C2435D /* NSColorWell.swift */,
 				16D30EC31D65988A00C2435D /* NSControl.swift */,
 				16D30EC51D659B8F00C2435D /* NSImageView.swift */,
-				16D30F041D65D7C000C2435D /* NSMenuItem.swift */,
-				90449EC41E26F78C00EE00DD /* NSPopUpButton.swift */,
 				16D30EC71D659BDB00C2435D /* NSProgressIndicator.swift */,
 				16D30EC91D659C1200C2435D /* NSSegmentedControl.swift */,
 				16D30ECB1D659CA700C2435D /* NSSlider.swift */,
-				16D30F021D65D79600C2435D /* NSStatusBarButton.swift */,
-				16D30F0A1D65E8C700C2435D /* NSTableView.swift */,
+				90449EC41E26F78C00EE00DD /* NSPopUpButton.swift */,
 				16D30ECD1D659D4A00C2435D /* NSTextField.swift */,
-				16D30F001D65D6AA00C2435D /* NSTextView.swift */,
 				16D30ECF1D659E0600C2435D /* NSView.swift */,
+				16D30F001D65D6AA00C2435D /* NSTextView.swift */,
+				16D30F021D65D79600C2435D /* NSStatusBarButton.swift */,
+				16D30F041D65D7C000C2435D /* NSMenuItem.swift */,
+				16D30F061D65D7F800C2435D /* NSColorWell.swift */,
+				16D30F081D65D82C00C2435D /* NSAppearanceCustomization.swift */,
+				16D30F0A1D65E8C700C2435D /* NSTableView.swift */,
 			);
 			path = AppKit;
 			sourceTree = "<group>";
@@ -732,7 +735,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 16210A361D3EC474004AEDF3 /* Build configuration list for PBXProject "Bond" */;
+			buildConfigurationList = 16210A361D3EC474004AEDF3 /* Build configuration list for PBXProject "Bond-iOS" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -908,10 +911,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				ECCF8A521D8FFEF300575DA8 /* ObservableArrayTests.swift in Sources */,
+				3B8EAA5C1E205B0F00C7D06F /* ObservableSetTests.swift in Sources */,
 				16887E301D74499A00EDA099 /* ProtocolProxyTests.swift in Sources */,
 				ECD5940A1D93EC9700C840C2 /* DynamicSubjectTests.swift in Sources */,
-				EC06A8761DBCB147006AEA81 /* NSObjectTests.swift in Sources */,
 				1F5F73AD1E267BC10001E3CC /* Observable2DArrayTests.swift in Sources */,
+				EC06A8761DBCB147006AEA81 /* NSObjectTests.swift in Sources */,
 				ECCF8A581D9007AF00575DA8 /* BondTests.swift in Sources */,
 				EC96935B1D943B15004EB5EE /* UITableViewTests.swift in Sources */,
 				16887E321D744A1400EDA099 /* Helpers.swift in Sources */,
@@ -1354,7 +1358,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		16210A361D3EC474004AEDF3 /* Build configuration list for PBXProject "Bond" */ = {
+		16210A361D3EC474004AEDF3 /* Build configuration list for PBXProject "Bond-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				16210A4E1D3EC474004AEDF3 /* Debug */,
