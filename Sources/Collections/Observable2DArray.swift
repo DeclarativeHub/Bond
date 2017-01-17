@@ -66,7 +66,7 @@ public struct Observable2DArrayEvent<SectionMetadata, Item> {
 
 /// Represents a section in 2D array.
 /// Section contains its metadata (e.g. header string) and items.
-public struct Observable2DArraySection<Metadata, Item> {
+public struct Observable2DArraySection<Metadata, Item>: Collection {
 
   public var metadata: Metadata
   public var items: [Item]
@@ -75,6 +75,33 @@ public struct Observable2DArraySection<Metadata, Item> {
     self.metadata = metadata
     self.items = items
   }
+
+  public var startIndex: Int {
+    return items.startIndex
+  }
+
+  public var endIndex: Int {
+    return items.endIndex
+  }
+
+  public var count: Int {
+    return items.count
+  }
+
+  public var isEmpty: Bool {
+    return items.isEmpty
+  }
+
+  public func index(after i: Int) -> Int {
+    return items.index(after: i)
+  }
+
+  public subscript(index: Int) -> Item {
+    get {
+      return items[index]
+    }
+  }
+  
 }
 
 public class Observable2DArray<SectionMetadata, Item>: Collection, SignalProtocol {
@@ -353,17 +380,25 @@ extension Observable2DArray: DataSourceProtocol {
 }
 
 extension MutableObservable2DArray {
-  
+
   /// Replace section at given index with given section and notify observers to reload section completely
   public func replaceSection(at index: Int, with section: Observable2DArraySection<SectionMetadata, Item>)  {
     lock.lock(); defer { lock.unlock() }
     sections[index] = section
     subject.next(Observable2DArrayEvent(change: .updateSections([index]), source: self))
   }
+
+  /// Replace the entier 2d array with a new one forcing a reload
+  public func replace(with array: Observable2DArray<SectionMetadata, Item>)  {
+    lock.lock(); defer { lock.unlock() }
+    sections = array.sections
+    subject.next(Observable2DArrayEvent(change: .reset, source: self))
+  }
+
 }
 
 extension MutableObservable2DArray where Item: Equatable {
-  
+
   /// Replace section at given index with given section performing diff if performDiff is true
   /// on all items in section and notifying observers about delets and inserts
   public func replaceSection(at index: Int, with section: Observable2DArraySection<SectionMetadata, Item>, performDiff: Bool) {
@@ -391,7 +426,7 @@ extension MutableObservable2DArray where Item: Equatable {
           let toIndexPath = IndexPath(item: to, section: index)
 
           subject.next(Observable2DArrayEvent(change: .moveItem(fromIndexPath, toIndexPath), source: self))
-          
+
         }
       }
 
@@ -401,7 +436,7 @@ extension MutableObservable2DArray where Item: Equatable {
       replaceSection(at: index, with: section)
     }
   }
-  
+
   /// Replace all items in section at given index with given items performing diff between
   /// existing and new items if performDiff is true, otherwise reload section with new items
   public func replaceSection(at index: Int, with items: [Item], performDiff: Bool) {
@@ -409,3 +444,98 @@ extension MutableObservable2DArray where Item: Equatable {
   }
 }
 
+extension MutableObservable2DArray where Item: Equatable, SectionMetadata: Equatable {
+
+  /// Replace the entire 2DArray performing nested diff (if preformDiff is true) on all
+  /// sections and section's items resulting in a series of events (deleteSection,
+  /// deleteItems, insertSections, insertItems, moveSection, moveItem) that migrate the old
+  /// 2DArray to the new 2DArray
+  /// Note that both Item and SectionMetadata should be Equatable
+  public func replace(with array: Observable2DArray<SectionMetadata, Item>, performDiff: Bool) {
+
+    if performDiff {
+
+      lock.lock()
+
+      // perform nested diff
+      let diff = sections.nestedExtendedDiff(to: array.sections, isEqualSection: {(oldSection, newSection) in
+        return oldSection.metadata == newSection.metadata
+      })
+
+      let update = NestedBatchUpdate(diff: diff)
+
+      subject.next(Observable2DArrayEvent(change: .beginBatchEditing, source: self))
+      sections = array.sections
+
+      // item deletion
+      subject.next(Observable2DArrayEvent(change: .deleteItems(update.itemDeletions), source: self))
+
+      // item insertions
+      subject.next(Observable2DArrayEvent(change: .insertItems(update.itemInsertions), source: self))
+
+      // item moves
+      update.itemMoves.forEach {
+        subject.next(Observable2DArrayEvent(change: .moveItem($0.from, $0.to) , source: self))
+      }
+
+      // section deletion
+      subject.next(Observable2DArrayEvent(change: .deleteSections(update.sectionDeletions), source: self))
+
+      // section insertions
+      subject.next(Observable2DArrayEvent(change: .insertSections(update.sectionInsertions), source: self))
+
+      // section moves
+      update.sectionMoves.forEach {
+        subject.next(Observable2DArrayEvent(change: .moveSection($0.from, $0.to), source: self))
+      }
+
+      subject.next(Observable2DArrayEvent(change: .endBatchEditing, source: self))
+      lock.unlock()
+    } else {
+      replace(with: array)
+    }
+  }
+}
+
+fileprivate struct NestedBatchUpdate {
+  let itemDeletions: [IndexPath]
+  let itemInsertions: [IndexPath]
+  let itemMoves: [(from: IndexPath, to: IndexPath)]
+  let sectionDeletions: IndexSet
+  let sectionInsertions: IndexSet
+  let sectionMoves: [(from: Int, to: Int)]
+
+  init(diff: NestedExtendedDiff) {
+
+    var itemDeletions: [IndexPath] = []
+    var itemInsertions: [IndexPath] = []
+    var itemMoves: [(IndexPath, IndexPath)] = []
+    var sectionDeletions: IndexSet = []
+    var sectionInsertions: IndexSet = []
+    var sectionMoves: [(from: Int, to: Int)] = []
+
+    diff.forEach { element in
+      switch element {
+      case let .deleteElement(at, section):
+        itemDeletions.append(IndexPath(item: at, section: section))
+      case let .insertElement(at, section):
+        itemInsertions.append(IndexPath(item: at, section: section))
+      case let .moveElement(from, to):
+        itemMoves.append((IndexPath(item: from.item, section: from.section), IndexPath(item: to.item, section: to.section)))
+      case let .deleteSection(at):
+        sectionDeletions.insert(at)
+      case let .insertSection(at):
+        sectionInsertions.insert(at)
+      case let .moveSection(move):
+        sectionMoves.append(move)
+      }
+    }
+
+    self.itemInsertions = itemInsertions
+    self.itemDeletions = itemDeletions
+    self.itemMoves = itemMoves
+    self.sectionMoves = sectionMoves
+    self.sectionInsertions = sectionInsertions
+    self.sectionDeletions = sectionDeletions
+  }
+}

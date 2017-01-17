@@ -66,6 +66,7 @@
 		16D30F071D65D7F800C2435D /* NSColorWell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30F061D65D7F800C2435D /* NSColorWell.swift */; };
 		16D30F091D65D82D00C2435D /* NSAppearanceCustomization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30F081D65D82C00C2435D /* NSAppearanceCustomization.swift */; };
 		16D30F0B1D65E8C700C2435D /* NSTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30F0A1D65E8C700C2435D /* NSTableView.swift */; };
+		1F5F73AD1E267BC10001E3CC /* Observable2DArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5F73AC1E267BC10001E3CC /* Observable2DArrayTests.swift */; };
 		227DEF051DCB87BF00213852 /* UIGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227DEF041DCB87BF00213852 /* UIGestureRecognizer.swift */; };
 		90449ECA1E26F7DC00EE00DD /* NSPopUpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90449EC41E26F78C00EE00DD /* NSPopUpButton.swift */; };
 		90A3FACD1E0C8D9A0086A7F1 /* Diff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */; };
@@ -276,6 +277,7 @@
 		16D30F061D65D7F800C2435D /* NSColorWell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSColorWell.swift; sourceTree = "<group>"; };
 		16D30F081D65D82C00C2435D /* NSAppearanceCustomization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSAppearanceCustomization.swift; sourceTree = "<group>"; };
 		16D30F0A1D65E8C700C2435D /* NSTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTableView.swift; sourceTree = "<group>"; };
+		1F5F73AC1E267BC10001E3CC /* Observable2DArrayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable2DArrayTests.swift; sourceTree = "<group>"; };
 		227DEF041DCB87BF00213852 /* UIGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIGestureRecognizer.swift; sourceTree = "<group>"; };
 		90449EC41E26F78C00EE00DD /* NSPopUpButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSPopUpButton.swift; sourceTree = "<group>"; };
 		90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Diff.xcodeproj; path = Carthage/Checkouts/Diff.swift/Diff.xcodeproj; sourceTree = "<group>"; };
@@ -433,6 +435,7 @@
 				ECCF8A571D9007AF00575DA8 /* BondTests.swift */,
 				ECD594091D93EC9700C840C2 /* DynamicSubjectTests.swift */,
 				ECCF8A511D8FFEF300575DA8 /* ObservableArrayTests.swift */,
+				1F5F73AC1E267BC10001E3CC /* Observable2DArrayTests.swift */,
 				16887E2F1D74499A00EDA099 /* ProtocolProxyTests.swift */,
 				16210A4A1D3EC474004AEDF3 /* UIKitTests.swift */,
 				EC96935A1D943B15004EB5EE /* UITableViewTests.swift */,
@@ -908,6 +911,7 @@
 				16887E301D74499A00EDA099 /* ProtocolProxyTests.swift in Sources */,
 				ECD5940A1D93EC9700C840C2 /* DynamicSubjectTests.swift in Sources */,
 				EC06A8761DBCB147006AEA81 /* NSObjectTests.swift in Sources */,
+				1F5F73AD1E267BC10001E3CC /* Observable2DArrayTests.swift in Sources */,
 				ECCF8A581D9007AF00575DA8 /* BondTests.swift in Sources */,
 				EC96935B1D943B15004EB5EE /* UITableViewTests.swift in Sources */,
 				16887E321D744A1400EDA099 /* Helpers.swift in Sources */,
