@@ -379,7 +379,6 @@ extension Observable2DArrayEvent: DataSourceEventProtocol {
 extension Observable2DArray: DataSourceProtocol {
 }
 
-
 extension MutableObservable2DArray {
 
   /// Replace section at given index with given section and notify observers to reload section completely
