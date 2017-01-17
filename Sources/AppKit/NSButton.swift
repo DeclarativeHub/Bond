@@ -27,6 +27,14 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: NSButton {
 
+  public var state: DynamicSubject<Int> {
+    return dynamicSubject(
+      signal: controlEvent.eraseType(),
+      get: { $0.state },
+      set: { $0.state = $1 }
+    )
+  }
+
   public var title: Bond<String> {
     return bond { $0.title = $1 }
   }
@@ -41,10 +49,6 @@ public extension ReactiveExtensions where Base: NSButton {
 
   public var alternateImage: Bond<NSImage?> {
       return bond { $0.alternateImage = $1 }
-  }
-
-  public var state: Bond<Int> {
-    return bond { $0.state = $1 }
   }
 
   public var imagePosition: Bond<NSCellImagePosition> {
