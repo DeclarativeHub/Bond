@@ -45,7 +45,7 @@ fileprivate extension NSControl {
     }
 
     func eventHandler(_ sender: NSControl?) {
-      subject.next(sender!.objectValue as AnyObject?)
+      subject.next(sender)
     }
 
     deinit {
@@ -58,13 +58,13 @@ fileprivate extension NSControl {
 
 public extension ReactiveExtensions where Base: NSControl {
 
-  public var controlEvent: SafeSignal<AnyObject?> {
+  public var controlEvent: SafeSignal<Base> {
     if let controlHelper = objc_getAssociatedObject(base, &NSControl.AssociatedKeys.ControlHelperKey) as AnyObject? {
-      return (controlHelper as! NSControl.BondHelper).subject.toSignal()
+      return (controlHelper as! NSControl.BondHelper).subject.map { $0 as! Base }.toSignal()
     } else {
       let controlHelper = NSControl.BondHelper(control: base)
       objc_setAssociatedObject(base, &NSControl.AssociatedKeys.ControlHelperKey, controlHelper, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-      return controlHelper.subject.toSignal()
+      return controlHelper.subject.map { $0 as! Base }.toSignal()
     }
   }
 
