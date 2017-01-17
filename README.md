@@ -547,7 +547,7 @@ There are many other methods. Just look at the code reference or source.
 ### Carthage
 
 1. Add the following to your *Cartfile*:
-  <br> `github "ReactiveKit/Bond" "master"
+  <br> `github "ReactiveKit/Bond" "master"`
 2. Run `carthage update`
 3. Add the framework as described in [Carthage Readme](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application)
 
