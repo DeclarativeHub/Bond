@@ -27,8 +27,13 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: NSColorWell {
 
-  public var color: Bond<NSColor> {
-    return bond { $0.color = $1 }
+  public var color: DynamicSubject<NSColor> {
+    return dynamicSubject(
+      signal: keyPath(#keyPath(NSColorWell.color), ofType: NSColor.self).eraseType(),
+      triggerEventOnSetting: false,
+      get: { $0.color },
+      set: { $0.color = $1 }
+    )
   }
 
   public var isBordered: Bond<Bool> {
