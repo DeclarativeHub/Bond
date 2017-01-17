@@ -83,16 +83,10 @@
         [invocation getArgument:buffer atIndex:index];
       } setReturnValue:nil];
     }
-
-    if ([self.forwardTo respondsToSelector:invocation.selector]) {
-      [invocation invokeWithTarget:self.forwardTo];
-    }
+  } else if ([self.forwardTo respondsToSelector:invocation.selector]) {
+    [invocation invokeWithTarget:self.forwardTo];
   } else {
-    if ([self.forwardTo respondsToSelector:invocation.selector]) {
-      [invocation invokeWithTarget:self.forwardTo];
-    } else {
-      [super forwardInvocation:invocation];
-    }
+    [super forwardInvocation:invocation];
   }
 }
 
