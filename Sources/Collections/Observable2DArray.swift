@@ -27,17 +27,17 @@ import Diff
 
 public enum Observable2DArrayChange {
   case reset
-  
+
   case insertItems([IndexPath])
   case deleteItems([IndexPath])
   case updateItems([IndexPath])
   case moveItem(IndexPath, IndexPath)
-  
+
   case insertSections(IndexSet)
   case deleteSections(IndexSet)
   case updateSections(IndexSet)
   case moveSection(Int, Int)
-  
+
   case beginBatchEditing
   case endBatchEditing
 }
@@ -67,36 +67,35 @@ public struct Observable2DArrayEvent<SectionMetadata, Item> {
 /// Represents a section in 2D array.
 /// Section contains its metadata (e.g. header string) and items.
 public struct Observable2DArraySection<Metadata, Item>: Collection {
-  
+
   public var metadata: Metadata
   public var items: [Item]
-  
+
   public init(metadata: Metadata, items: [Item] = []) {
     self.metadata = metadata
     self.items = items
   }
-  
-  
+
   public var startIndex: Int {
     return items.startIndex
   }
-  
-  
+
   public var endIndex: Int {
     return items.endIndex
   }
-  
+
   public var count: Int {
     return items.count
   }
-  
+
   public var isEmpty: Bool {
     return items.isEmpty
   }
-  
+
   public func index(after i: Int) -> Int {
     return items.index(after: i)
   }
+
   public subscript(index: Int) -> Item {
     get {
       return items[index]
@@ -106,28 +105,28 @@ public struct Observable2DArraySection<Metadata, Item>: Collection {
 }
 
 public class Observable2DArray<SectionMetadata, Item>: Collection, SignalProtocol {
-  
+
   public fileprivate(set) var sections: [Observable2DArraySection<SectionMetadata, Item>]
   fileprivate let subject = PublishSubject<Observable2DArrayEvent<SectionMetadata, Item>, NoError>()
   fileprivate let lock = NSRecursiveLock(name: "com.reactivekit.bond.observable2darray")
-  
+
   public init(_ sections:  [Observable2DArraySection<SectionMetadata, Item>] = []) {
     self.sections = sections
   }
-  
+
   public var numberOfSections: Int {
     return sections.count
   }
-  
+
   public func numberOfItems(inSection section: Int) -> Int {
     guard section < numberOfSections else { return 0 }
     return sections[section].items.count
   }
-  
+
   public var startIndex: IndexPath {
     return IndexPath(item: 0, section: 0)
   }
-  
+
   public var endIndex: IndexPath {
     if numberOfSections == 0 {
       return IndexPath(item: 0, section: 0)
@@ -136,7 +135,7 @@ public class Observable2DArray<SectionMetadata, Item>: Collection, SignalProtoco
       return IndexPath(item: lastSection.items.count, section: numberOfSections - 1)
     }
   }
-  
+
   public func index(after i: IndexPath) -> IndexPath {
     if i.section < sections.count {
       let section = sections[i.section]
@@ -153,27 +152,27 @@ public class Observable2DArray<SectionMetadata, Item>: Collection, SignalProtoco
       return endIndex
     }
   }
-  
+
   public var isEmpty: Bool {
     return sections.reduce(true) { $0 && $1.items.isEmpty }
   }
-  
+
   public var count: Int {
     return sections.reduce(0) { $0 + $1.items.count }
   }
-  
+
   public subscript(index: IndexPath) -> Item {
     get {
       return sections[index.section].items[index.item]
     }
   }
-  
+
   public subscript(index: Int) -> Observable2DArraySection<SectionMetadata, Item> {
     get {
       return sections[index]
     }
   }
-  
+
   public func observe(with observer: @escaping (Event<Observable2DArrayEvent<SectionMetadata, Item>, NoError>) -> Void) -> Disposable {
     observer(.next(Observable2DArrayEvent(change: .reset, source: self)))
     return subject.observe(with: observer)
@@ -181,14 +180,14 @@ public class Observable2DArray<SectionMetadata, Item>: Collection, SignalProtoco
 }
 
 extension Observable2DArray: Deallocatable {
-  
+
   public var deallocated: Signal<Void, NoError> {
     return subject.disposeBag.deallocated
   }
 }
 
 public class MutableObservable2DArray<SectionMetadata, Item>: Observable2DArray<SectionMetadata, Item> {
-  
+
   /// Append new section at the end of the 2D array.
   public func appendSection(_ section: Observable2DArraySection<SectionMetadata, Item>) {
     lock.lock(); defer { lock.unlock() }
@@ -205,7 +204,7 @@ public class MutableObservable2DArray<SectionMetadata, Item>: Observable2DArray<
       subject.next(Observable2DArrayEvent(change: .insertSections([sectionIndex]), source: self))
     }
   }
-  
+
   /// Append `item` to the section `section` of the array.
   public func appendItem(_ item: Item, toSection section: Int) {
     lock.lock(); defer { lock.unlock() }
@@ -213,7 +212,7 @@ public class MutableObservable2DArray<SectionMetadata, Item>: Observable2DArray<
     let indexPath = IndexPath(item: sections[section].items.count - 1, section: section)
     subject.next(Observable2DArrayEvent(change: .insertItems([indexPath]), source: self))
   }
-  
+
   /// Insert section at `index` with `items`.
   public func insert(section: Observable2DArraySection<SectionMetadata, Item>, at index: Int)  {
     lock.lock(); defer { lock.unlock() }
@@ -229,14 +228,14 @@ public class MutableObservable2DArray<SectionMetadata, Item>: Observable2DArray<
       subject.next(Observable2DArrayEvent(change: .insertSections([index]), source: self))
     }
   }
-  
+
   /// Insert `item` at `indexPath`.
   public func insert(item: Item, at indexPath: IndexPath)  {
     lock.lock(); defer { lock.unlock() }
     sections[indexPath.section].items.insert(item, at: indexPath.item)
     subject.next(Observable2DArrayEvent(change: .insertItems([indexPath]), source: self))
   }
-  
+
   /// Insert `items` at index path `indexPath`.
   public func insert(contentsOf items: [Item], at indexPath: IndexPath) {
     lock.lock(); defer { lock.unlock() }
@@ -245,7 +244,7 @@ public class MutableObservable2DArray<SectionMetadata, Item>: Observable2DArray<
     let indexPaths = indices.map { IndexPath(item: $0, section: indexPath.section) }
     subject.next(Observable2DArrayEvent(change: .insertItems(indexPaths), source: self))
   }
-  
+
   /// Move the section at index `fromIndex` to index `toIndex`.
   public func moveSection(from fromIndex: Int, to toIndex: Int) {
     lock.lock(); defer { lock.unlock() }
@@ -253,7 +252,7 @@ public class MutableObservable2DArray<SectionMetadata, Item>: Observable2DArray<
     sections.insert(section, at: toIndex)
     subject.next(Observable2DArrayEvent(change: .moveSection(fromIndex, toIndex), source: self))
   }
-  
+
   /// Move the item at `fromIndexPath` to `toIndexPath`.
   public func moveItem(from fromIndexPath: IndexPath, to toIndexPath: IndexPath) {
     lock.lock(); defer { lock.unlock() }
@@ -261,7 +260,7 @@ public class MutableObservable2DArray<SectionMetadata, Item>: Observable2DArray<
     sections[toIndexPath.section].items.insert(item, at: toIndexPath.item)
     subject.next(Observable2DArrayEvent(change: .moveItem(fromIndexPath, toIndexPath), source: self))
   }
-  
+
   /// Remove and return the section at `index`.
   @discardableResult
   public func removeSection(at index: Int) -> Observable2DArraySection<SectionMetadata, Item> {
@@ -270,7 +269,7 @@ public class MutableObservable2DArray<SectionMetadata, Item>: Observable2DArray<
     subject.next(Observable2DArrayEvent(change: .deleteSections([index]), source: self))
     return element
   }
-  
+
   /// Remove and return the item at `indexPath`.
   @discardableResult
   public func removeItem(at indexPath: IndexPath) -> Item {
@@ -279,21 +278,21 @@ public class MutableObservable2DArray<SectionMetadata, Item>: Observable2DArray<
     subject.next(Observable2DArrayEvent(change: .deleteItems([indexPath]), source: self))
     return element
   }
-  
+
   /// Remove all items from the array. Keep empty sections.
   public func removeAllItems() {
     lock.lock(); defer { lock.unlock() }
     let indexPaths = sections.enumerated().reduce([]) { (indexPaths, section) -> [IndexPath] in
       indexPaths + section.element.items.indices.map { IndexPath(item: $0, section: section.offset) }
     }
-    
+
     for index in sections.indices {
       sections[index].items.removeAll()
     }
-    
+
     subject.next(Observable2DArrayEvent(change: .deleteItems(indexPaths), source: self))
   }
-  
+
   /// Remove all items and sections from the array.
   public func removeAllItemsAndSections() {
     lock.lock(); defer { lock.unlock() }
@@ -301,7 +300,7 @@ public class MutableObservable2DArray<SectionMetadata, Item>: Observable2DArray<
     sections.removeAll()
     subject.next(Observable2DArrayEvent(change: .deleteSections(IndexSet(integersIn: indices)), source: self))
   }
-  
+
   public override subscript(index: IndexPath) -> Item {
     get {
       return sections[index.section].items[index.item]
@@ -312,7 +311,7 @@ public class MutableObservable2DArray<SectionMetadata, Item>: Observable2DArray<
       subject.next(Observable2DArrayEvent(change: .updateItems([index]), source: self))
     }
   }
-  
+
   /// Perform batched updates on the array.
   public func batchUpdate(_ update: (MutableObservable2DArray<SectionMetadata, Item>) -> Void) {
     lock.lock(); defer { lock.unlock() }
@@ -320,7 +319,7 @@ public class MutableObservable2DArray<SectionMetadata, Item>: Observable2DArray<
     update(self)
     subject.next(Observable2DArrayEvent(change: .endBatchEditing, source: self))
   }
-  
+
   /// Change the underlying value withouth notifying the observers.
   public func silentUpdate(_ update: (inout [Observable2DArraySection<SectionMetadata, Item>]) -> Void) {
     lock.lock(); defer { lock.unlock() }
@@ -329,7 +328,7 @@ public class MutableObservable2DArray<SectionMetadata, Item>: Observable2DArray<
 }
 
 extension MutableObservable2DArray: BindableProtocol {
-  
+
   public func bind(signal: Signal<Observable2DArrayEvent<SectionMetadata, Item>, NoError>) -> Disposable {
     return signal
       .take(until: deallocated)
@@ -344,7 +343,7 @@ extension MutableObservable2DArray: BindableProtocol {
 // MARK: DataSourceProtocol conformation
 
 extension Observable2DArrayEvent: DataSourceEventProtocol {
-  
+
   public var kind: DataSourceEventKind {
     switch change {
     case .reset:
@@ -371,7 +370,7 @@ extension Observable2DArrayEvent: DataSourceEventProtocol {
       return .endUpdates
     }
   }
-  
+
   public var dataSource: Observable2DArray<SectionMetadata, Item> {
     return source
   }
@@ -382,25 +381,25 @@ extension Observable2DArray: DataSourceProtocol {
 
 
 extension MutableObservable2DArray {
-  
+
   /// Replace section at given index with given section and notify observers to reload section completely
   public func replaceSection(at index: Int, with section: Observable2DArraySection<SectionMetadata, Item>)  {
     lock.lock(); defer { lock.unlock() }
     sections[index] = section
     subject.next(Observable2DArrayEvent(change: .updateSections([index]), source: self))
   }
-  
+
   /// Replace the entier 2d array with a new one forcing a reload
-  public func replace2D(with list: Observable2DArray<SectionMetadata, Item>)  {
+  public func replace(with array: Observable2DArray<SectionMetadata, Item>)  {
     lock.lock(); defer { lock.unlock() }
-    sections = list.sections
+    sections = array.sections
     subject.next(Observable2DArrayEvent(change: .reset, source: self))
   }
-  
+
 }
 
 extension MutableObservable2DArray where Item: Equatable {
-  
+
   /// Replace section at given index with given section performing diff if performDiff is true
   /// on all items in section and notifying observers about delets and inserts
   public func replaceSection(at index: Int, with section: Observable2DArraySection<SectionMetadata, Item>, performDiff: Bool) {
@@ -408,37 +407,37 @@ extension MutableObservable2DArray where Item: Equatable {
       lock.lock()
       let diff = sections[index].items.extendedDiff(section.items)
       let patch = diff.patch(from: sections[index].items, to: section.items)
-      
+
       subject.next(Observable2DArrayEvent(change: .beginBatchEditing, source: self))
       sections[index].metadata = section.metadata
       sections[index].items = section.items
-      
+
       for step in patch {
         switch step {
         case .insertion(let patchIndex, _):
           let indexPath = IndexPath(item: patchIndex, section: index)
           subject.next(Observable2DArrayEvent(change: .insertItems([indexPath]), source: self))
-          
+
         case .deletion(let patchIndex):
           let indexPath = IndexPath(item: patchIndex, section: index)
           subject.next(Observable2DArrayEvent(change: .deleteItems([indexPath]), source: self))
-          
+
         case .move(let from, let to):
           let fromIndexPath = IndexPath(item: from, section: index)
           let toIndexPath = IndexPath(item: to, section: index)
-          
+
           subject.next(Observable2DArrayEvent(change: .moveItem(fromIndexPath, toIndexPath), source: self))
-          
+
         }
       }
-      
+
       subject.next(Observable2DArrayEvent(change: .endBatchEditing, source: self))
       lock.unlock()
     } else {
       replaceSection(at: index, with: section)
     }
   }
-  
+
   /// Replace all items in section at given index with given items performing diff between
   /// existing and new items if performDiff is true, otherwise reload section with new items
   public func replaceSection(at index: Int, with items: [Item], performDiff: Bool) {
@@ -447,75 +446,75 @@ extension MutableObservable2DArray where Item: Equatable {
 }
 
 extension MutableObservable2DArray where Item: Equatable, SectionMetadata: Equatable {
-  
+
   /// Replace the entire 2DArray performing nested diff (if preformDiff is true) on all
   /// sections and section's items resulting in a series of events (deleteSection,
   /// deleteItems, insertSections, insertItems, moveSection, moveItem) that migrate the old
   /// 2DArray to the new 2DArray
   /// Note that both Item and SectionMetadata should be Equatable
-  public func replace2D(with list: Observable2DArray<SectionMetadata, Item>, performDiff: Bool) {
-    
+  public func replace(with array: Observable2DArray<SectionMetadata, Item>, performDiff: Bool) {
+
     if performDiff {
-      
+
       lock.lock()
-      
+
       // perform nested diff
-      let diff = sections.nestedExtendedDiff(to: list.sections, isEqualSection: {(oldSection, newSection) in
+      let diff = sections.nestedExtendedDiff(to: array.sections, isEqualSection: {(oldSection, newSection) in
         return oldSection.metadata == newSection.metadata
       })
-      
+
       let update = NestedBatchUpdate(diff: diff)
-      
+
       subject.next(Observable2DArrayEvent(change: .beginBatchEditing, source: self))
-      sections = list.sections
-      
+      sections = array.sections
+
       // item deletion
       subject.next(Observable2DArrayEvent(change: .deleteItems(update.itemDeletions), source: self))
-      
+
       // item insertions
       subject.next(Observable2DArrayEvent(change: .insertItems(update.itemInsertions), source: self))
-      
+
       // item moves
       update.itemMoves.forEach {
         subject.next(Observable2DArrayEvent(change: .moveItem($0.from, $0.to) , source: self))
       }
-      
+
       // section deletion
       subject.next(Observable2DArrayEvent(change: .deleteSections(update.sectionDeletions), source: self))
-      
+
       // section insertions
       subject.next(Observable2DArrayEvent(change: .insertSections(update.sectionInsertions), source: self))
-      
+
       // section moves
       update.sectionMoves.forEach {
         subject.next(Observable2DArrayEvent(change: .moveSection($0.from, $0.to), source: self))
       }
-      
+
       subject.next(Observable2DArrayEvent(change: .endBatchEditing, source: self))
       lock.unlock()
     } else {
-      replace2D(with: list)
+      replace(with: array)
     }
   }
 }
 
-struct NestedBatchUpdate {
+fileprivate struct NestedBatchUpdate {
   let itemDeletions: [IndexPath]
   let itemInsertions: [IndexPath]
   let itemMoves: [(from: IndexPath, to: IndexPath)]
   let sectionDeletions: IndexSet
   let sectionInsertions: IndexSet
   let sectionMoves: [(from: Int, to: Int)]
-  
+
   init(diff: NestedExtendedDiff) {
-    
+
     var itemDeletions: [IndexPath] = []
     var itemInsertions: [IndexPath] = []
     var itemMoves: [(IndexPath, IndexPath)] = []
     var sectionDeletions: IndexSet = []
     var sectionInsertions: IndexSet = []
     var sectionMoves: [(from: Int, to: Int)] = []
-    
+
     diff.forEach { element in
       switch element {
       case let .deleteElement(at, section):
@@ -532,7 +531,7 @@ struct NestedBatchUpdate {
         sectionMoves.append(move)
       }
     }
-    
+
     self.itemInsertions = itemInsertions
     self.itemDeletions = itemDeletions
     self.itemMoves = itemMoves
