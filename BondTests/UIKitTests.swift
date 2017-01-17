@@ -35,7 +35,7 @@ class BondTests: XCTestCase {
     let subject = PublishSubject1<Bool>()
 
     let view = UIActivityIndicatorView()
-    subject.bind(to: view.reactive.animating)
+    subject.bind(to: view.reactive.isAnimating)
 
     XCTAssertEqual(view.isAnimating, false)
 
