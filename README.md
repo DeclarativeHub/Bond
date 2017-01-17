@@ -271,7 +271,7 @@ You can then convert methods of that protocol into signals:
 ```swift
 extension UITableView {
   var selectedRow: Signal<Int, NoError> {
-    return reactive.delegate.signal(for: #selector(UITableViewDelegate.tableView(_:didSelectRowAtIndexPath:))) { (subject: PublishSubject<Int, NoError>, _: UITableView, indexPath: NSIndexPath) in 
+    return reactive.delegate.signal(for: #selector(UITableViewDelegate.tableView(_:didSelectRowAtIndexPath:))) { (subject: PublishSubject<Int, NoError>, _: UITableView, indexPath: NSIndexPath) in
       subject.next(indexPath.row)
     }
   }
@@ -414,7 +414,7 @@ Mapping and filtering arrays operates on an array signal. To get the result back
 
 ```swift
 let nameLengths = ObservableArray<Int>()
-names.map { $0.characters.count }.bind(to: nameLengths) 
+names.map { $0.characters.count }.bind(to: nameLengths)
 ```
 
 Such features enable us to build powerful UI bindings. Observable array can be bound to `UITableView` or `UICollectionView`. Just provide a closure that creates cells to the `bind(to:)` method.
@@ -547,7 +547,7 @@ There are many other methods. Just look at the code reference or source.
 ### Carthage
 
 1. Add the following to your *Cartfile*:
-  <br> `github "ReactiveKit/Bond" ~> 6.0`
+  <br> `github "ReactiveKit/Bond" "master"`
 2. Run `carthage update`
 3. Add the framework as described in [Carthage Readme](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application)
 

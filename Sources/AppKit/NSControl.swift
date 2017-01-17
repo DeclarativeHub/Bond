@@ -72,6 +72,10 @@ public extension ReactiveExtensions where Base: NSControl {
     return bond { $0.isEnabled = $1 }
   }
 
+  public var isHighlighted: Bond<Bool> {
+    return bond { $0.isHighlighted = $1 }
+  }
+
   public var objectValue: Bond<AnyObject?> {
     return bond { $0.objectValue = $1 }
   }

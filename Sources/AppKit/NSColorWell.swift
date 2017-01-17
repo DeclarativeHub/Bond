@@ -30,4 +30,8 @@ public extension ReactiveExtensions where Base: NSColorWell {
   public var color: Bond<NSColor> {
     return bond { $0.color = $1 }
   }
+
+  public var isBordered: Bond<Bool> {
+    return bond { $0.isBordered = $1 }
+  }
 }

@@ -38,6 +38,28 @@ public extension ReactiveExtensions where Base: NSSlider {
   public var altIncrementValue: Bond<Double> {
     return bond { $0.altIncrementValue = $1 }
   }
+
+  @available(macOS 10.12, *)
+  public var isVertical: Bond<Bool> {
+    return bond { $0.isVertical = $1 }
+  }
+
+  @available(macOS 10.12.2, *)
+  public var trackFillColor: Bond<NSColor?> {
+    return bond { $0.trackFillColor = $1 }
+  }
+
+  public var numberOfTickMarks: Bond<Int> {
+    return bond { $0.numberOfTickMarks = $1 }
+  }
+
+  public var tickMarkPosition: Bond<NSTickMarkPosition> {
+    return bond { $0.tickMarkPosition = $1 }
+  }
+
+  public var allowsTickMarkValuesOnly: Bond<Bool> {
+    return bond { $0.allowsTickMarkValuesOnly = $1 }
+  }
 }
 
 extension NSSlider: BindableProtocol {

@@ -134,14 +134,16 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
       property: dataSource,
       to: #selector(UITableViewDataSource.tableView(_:titleForHeaderInSection:)),
       map: { (dataSource: DataSource?, tableView: UITableView, index: Int) -> NSString? in
-        return bond.titleForHeader(in: index, dataSource: dataSource!) as NSString?
+        guard let dataSource = dataSource else { return nil }
+        return bond.titleForHeader(in: index, dataSource: dataSource) as NSString?
     })
 
     tableView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(UITableViewDataSource.tableView(_:titleForFooterInSection:)),
       map: { (dataSource: DataSource?, tableView: UITableView, index: Int) -> NSString? in
-        return bond.titleForFooter(in: index, dataSource: dataSource!) as NSString?
+        guard let dataSource = dataSource else { return nil }
+        return bond.titleForFooter(in: index, dataSource: dataSource) as NSString?
     })
 
 
