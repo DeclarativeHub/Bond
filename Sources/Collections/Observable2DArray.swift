@@ -92,6 +92,7 @@ public class Observable2DArray<SectionMetadata, Item>: Collection, SignalProtoco
   }
 
   public func numberOfItems(inSection section: Int) -> Int {
+    guard section < numberOfSections else { return 0 }
     return sections[section].items.count
   }
 
