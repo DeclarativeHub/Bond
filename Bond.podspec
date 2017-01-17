@@ -29,6 +29,6 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.dependency 'ReactiveKit', '~> 3.2'
-  s.dependency 'Diff.swift', '~> 0.4'
+  s.dependency 'Diff', '~> 0.4'
 
 end
