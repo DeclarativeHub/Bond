@@ -68,6 +68,10 @@ public extension ReactiveExtensions where Base: NSControl {
     }
   }
 
+  public func controlEvent<T>(_ read: @escaping (Base) -> T) -> SafeSignal<T> {
+    return controlEvent.map(read)
+  }
+
   public var isEnabled: Bond<Bool> {
     return bond { $0.isEnabled = $1 }
   }
