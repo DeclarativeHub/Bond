@@ -43,6 +43,8 @@ extension Event {
         return left == right
       } else if let left = left as? ObservableArrayEvent<Int>, let right = right as? ObservableArrayEvent<Int> {
         return left.change == right.change && (left.source === right.source || right.source === AnyObservableArray)
+      } else if let left = left as? Observable2DArrayEvent<String, Int>, let right = right as? Observable2DArrayEvent<String, Int> {
+        return left.change == right.change && (left.source === right.source || right.source === AnyObservable2DArray)
       } else if left is Void, right is Void {
         return true
       } else {
@@ -121,6 +123,41 @@ extension ObservableArrayChange: Equatable {
     }
   }
 }
+
+let AnyObservable2DArray = Observable2DArray<String,Int>()
+
+extension Observable2DArrayChange: Equatable {
+  
+  public static func ==(lhs: Observable2DArrayChange, rhs: Observable2DArrayChange) -> Bool {
+    switch (lhs, rhs) {
+    case (.reset, .reset):
+      return true
+    case (.insertItems(let lhs), .insertItems(let rhs)):
+      return lhs == rhs
+    case (.deleteItems(let lhs), .deleteItems(let rhs)):
+      return lhs == rhs
+    case (.updateItems(let lhs), .updateItems(let rhs)):
+      return lhs == rhs
+    case (.moveItem(let lhsFrom, let lhsTo), .moveItem(let rhsFrom, let rhsTo)):
+      return lhsFrom == rhsFrom && lhsTo == rhsTo
+    case (.insertSections(let lhs), .insertSections(let rhs)):
+      return lhs == rhs
+    case (.deleteSections(let lhs), .deleteSections(let rhs)):
+      return lhs == rhs
+    case (.updateSections(let lhs), .updateSections(let rhs)):
+        return lhs == rhs
+    case (.moveSection(let lhsFrom, let lhsTo), .moveSection(let rhsFrom, let rhsTo)):
+      return lhsFrom == rhsFrom && lhsTo == rhsTo
+    case (.beginBatchEditing, .beginBatchEditing):
+      return true
+    case (.endBatchEditing, .endBatchEditing):
+      return true
+    default:
+      return false
+    }
+  }
+}
+
 
 extension DataSourceEventKind: Equatable {
 
