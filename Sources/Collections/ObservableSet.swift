@@ -108,7 +108,7 @@ public class MutableObservableSet<Element: Hashable>: ObservableSet<Element> {
   }
 
   /// Indices of the set.
-  public func indices() -> [SetIndex<Element>] {
+  public var indices: [SetIndex<Element>] {
     return Array(set.indices)
   }
 
