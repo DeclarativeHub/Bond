@@ -48,14 +48,25 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
     tableView.reactive.delegate.feed(
       property: dataSource,
       to: #selector(NSTableViewDelegate.tableView(_:viewFor:row:)),
-      map: { (dataSource: DataSource?, tableView: NSTableView, column: NSTableColumn, row: Int) -> NSView? in
+      map: { (dataSource: DataSource?, tableView: NSTableView, _: NSTableColumn, row: Int) -> NSView? in
         return createCell(dataSource!, row, tableView)
-    })
+      }
+    )
 
     tableView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(NSTableViewDataSource.numberOfRows(in:)),
-      map: { (dataSource: DataSource?, _: NSTableView) -> Int in dataSource?.numberOfItems(inSection: 0) ?? 0 }
+      map: { (dataSource: DataSource?, _: NSTableView) -> Int in
+        return dataSource?.numberOfItems(inSection: 0) ?? 0
+      }
+    )
+
+    tableView.reactive.dataSource.feed(
+      property: dataSource,
+      to: #selector(NSTableViewDataSource.tableView(_:objectValueFor:row:)),
+      map: { (dataSource: DataSource?, _: NSTableView, _: NSTableColumn, row: Int) -> AnyObject? in
+        return dataSource?.item(at: row)
+      }
     )
 
     let serialDisposable = SerialDisposable(otherDisposable: nil)

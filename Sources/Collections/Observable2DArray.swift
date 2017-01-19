@@ -377,6 +377,10 @@ extension Observable2DArrayEvent: DataSourceEventProtocol {
 }
 
 extension Observable2DArray: DataSourceProtocol {
+
+  public func item<Item>(at index: Int) -> Item {
+    return self[index] as! Item
+  }
 }
 
 extension MutableObservable2DArray {

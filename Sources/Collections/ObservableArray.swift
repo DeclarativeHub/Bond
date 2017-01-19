@@ -253,6 +253,10 @@ extension ObservableArray: DataSourceProtocol {
   public func numberOfItems(inSection section: Int) -> Int {
     return count
   }
+
+  public func item<Item>(at index: Int) -> Item {
+    return self[index] as! Item
+  }
 }
 
 extension MutableObservableArray {
