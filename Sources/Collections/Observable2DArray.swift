@@ -376,10 +376,12 @@ extension Observable2DArrayEvent: DataSourceEventProtocol {
   }
 }
 
-extension Observable2DArray: DataSourceProtocol {
+extension Observable2DArray: DataSourceProtocol {}
 
-  public func item<Item>(at index: Int) -> Item {
-    return self[index] as! Item
+extension Observable2DArray: QueryableDataSourceProtocol {
+
+  public func item(at index: IndexPath) -> Item {
+    return self[index]
   }
 }
 
