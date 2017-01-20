@@ -255,6 +255,13 @@ extension ObservableArray: DataSourceProtocol {
   }
 }
 
+extension ObservableArray: QueryableDataSourceProtocol {
+
+  public func item(at index: Int) -> Item {
+    return self[index]
+  }
+}
+
 extension MutableObservableArray {
   
   public func replace(with array: [Item]) {

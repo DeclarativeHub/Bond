@@ -69,7 +69,6 @@ public struct DataSourceEvent<DataSource: DataSourceProtocol>: DataSourceEventPr
   public let dataSource: DataSource
 }
 
-
 extension Array: DataSourceProtocol {
 
   public var numberOfSections: Int {

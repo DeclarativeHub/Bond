@@ -73,6 +73,9 @@
 		90A3FACD1E0C8D9A0086A7F1 /* Diff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */; };
 		90A3FACE1E0C8D9F0086A7F1 /* Diff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */; };
 		90A3FACF1E0C8DA20086A7F1 /* Diff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */; };
+		90FF5FA91E316F1E005BA8FF /* QueryableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90FF5FA81E316F1E005BA8FF /* QueryableDataSource.swift */; };
+		90FF5FAA1E316F1E005BA8FF /* QueryableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90FF5FA81E316F1E005BA8FF /* QueryableDataSource.swift */; };
+		90FF5FAB1E316F1E005BA8FF /* QueryableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90FF5FA81E316F1E005BA8FF /* QueryableDataSource.swift */; };
 		EC06A8761DBCB147006AEA81 /* NSObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC06A8751DBCB147006AEA81 /* NSObjectTests.swift */; };
 		EC2505B11D3F570500A6E14A /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2505B01D3F570500A6E14A /* UILabel.swift */; };
 		EC2505B31D3F571500A6E14A /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC2505B21D3F571500A6E14A /* UITextField.swift */; };
@@ -283,6 +286,7 @@
 		227DEF041DCB87BF00213852 /* UIGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIGestureRecognizer.swift; sourceTree = "<group>"; };
 		3B8EAA5B1E205B0F00C7D06F /* ObservableSetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableSetTests.swift; sourceTree = "<group>"; };
 		90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Diff.xcodeproj; path = Carthage/Checkouts/Diff.swift/Diff.xcodeproj; sourceTree = "<group>"; };
+		90FF5FA81E316F1E005BA8FF /* QueryableDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryableDataSource.swift; sourceTree = "<group>"; };
 		EC06A8751DBCB147006AEA81 /* NSObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSObjectTests.swift; sourceTree = "<group>"; };
 		EC2505B01D3F570500A6E14A /* UILabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UILabel.swift; path = Sources/UIKit/UILabel.swift; sourceTree = SOURCE_ROOT; };
 		EC2505B21D3F571500A6E14A /* UITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UITextField.swift; path = Sources/UIKit/UITextField.swift; sourceTree = SOURCE_ROOT; };
@@ -424,6 +428,7 @@
 				16559F841D64F4F100EDD727 /* DataSource.swift */,
 				EC877AAA1E01CE9F00A23B51 /* Collections */,
 				EC877AA41E01CE4900A23B51 /* ObjC */,
+				90FF5FA81E316F1E005BA8FF /* QueryableDataSource.swift */,
 				EC877A8B1E01CE1200A23B51 /* Shared */,
 				16D30EBA1D65944500C2435D /* AppKit */,
 				EC2505AF1D3F56D900A6E14A /* UIKit */,
@@ -894,6 +899,7 @@
 				EC877A9B1E01CE1200A23B51 /* NSObject+KVO.swift in Sources */,
 				EC2D4A141DA8F36B00B03A6B /* NSObject+Bond.m in Sources */,
 				EC877AA11E01CE1200A23B51 /* SignalProtocol.swift in Sources */,
+				90FF5FA91E316F1E005BA8FF /* QueryableDataSource.swift in Sources */,
 				EC877AB81E01CE9F00A23B51 /* ObservableSet.swift in Sources */,
 				ECD626F51D4DF0E00040C7BF /* UINavigationBar.swift in Sources */,
 				ECD626F91D4DF1670040C7BF /* UIProgressView.swift in Sources */,
@@ -961,6 +967,7 @@
 				16D30F071D65D7F800C2435D /* NSColorWell.swift in Sources */,
 				EC877AA71E01CE6100A23B51 /* ProtocolProxy.swift in Sources */,
 				1639C08B1D6DD39B0045959E /* Observable.swift in Sources */,
+				90FF5FAA1E316F1E005BA8FF /* QueryableDataSource.swift in Sources */,
 				EC877AB61E01CE9F00A23B51 /* ObservableDictionary.swift in Sources */,
 				16D30EC11D65961000C2435D /* DataSource.swift in Sources */,
 				16D30EC01D65960E00C2435D /* DynamicSubject.swift in Sources */,
@@ -994,6 +1001,7 @@
 				16D30EE31D65D16600C2435D /* UIActivityIndicatorView.swift in Sources */,
 				16D30EE11D65D14C00C2435D /* DataSource.swift in Sources */,
 				16D30EEA1D65D16600C2435D /* UIImageView.swift in Sources */,
+				90FF5FAB1E316F1E005BA8FF /* QueryableDataSource.swift in Sources */,
 				16D30EF01D65D16600C2435D /* UISegmentedControl.swift in Sources */,
 				EC97EDB11D6C51F0001C54C9 /* BNDProtocolProxyBase.m in Sources */,
 				16D30EE61D65D16600C2435D /* UIBarItem.swift in Sources */,
