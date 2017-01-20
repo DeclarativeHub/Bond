@@ -64,7 +64,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Element.
     tableView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(NSTableViewDataSource.tableView(_:objectValueFor:row:)),
-      map: { (dataSource: DataSource?, _: NSTableView, _: NSTableColumn, row: Int) -> AnyObject? in
+      map: { (dataSource: DataSource?, _: NSTableView, _: NSTableColumn, row: Int) -> Any? in
         return dataSource?.item(at: row)
       }
     )
