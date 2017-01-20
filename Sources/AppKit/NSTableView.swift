@@ -36,7 +36,7 @@ public extension ReactiveExtensions where Base: NSTableView {
   }
 }
 
-public extension SignalProtocol where Element: DataSourceEventProtocol, Element.DataSource: QueryableDataSourceProtocol, Element.DataSource.Item: AnyObject, Element.DataSource.Index == Int, Error == NoError {
+public extension SignalProtocol where Element: DataSourceEventProtocol, Element.DataSource: QueryableDataSourceProtocol, Element.DataSource.Item: Any, Element.DataSource.Index == Int, Error == NoError {
 
   public typealias DataSource = Element.DataSource
 
