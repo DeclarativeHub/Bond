@@ -36,7 +36,7 @@ public extension ReactiveExtensions where Base: NSTableView {
   }
 }
 
-public extension SignalProtocol where Element: DataSourceEventProtocol, Element.DataSource: QueryableDataSourceProtocol, Element.DataSource.Item: AnyObject, Element.DataSource.Index == Int, Error == NoError {
+public extension SignalProtocol where Element: DataSourceEventProtocol, Element.DataSource: QueryableDataSourceProtocol, Element.DataSource.Item: Any, Element.DataSource.Index == Int, Error == NoError {
 
   public typealias DataSource = Element.DataSource
 
@@ -64,7 +64,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Element.
     tableView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(NSTableViewDataSource.tableView(_:objectValueFor:row:)),
-      map: { (dataSource: DataSource?, _: NSTableView, _: NSTableColumn, row: Int) -> AnyObject? in
+      map: { (dataSource: DataSource?, _: NSTableView, _: NSTableColumn, row: Int) -> Any? in
         return dataSource?.item(at: row)
       }
     )
