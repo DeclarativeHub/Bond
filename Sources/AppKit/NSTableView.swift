@@ -9,6 +9,14 @@
 import AppKit
 import ReactiveKit
 
+public protocol TableViewConfigurationProtocol {
+	var animated: Bool { get }
+	var insertAnimation: NSTableViewAnimationOptions { get }
+	var deleteAnimation: NSTableViewAnimationOptions { get }
+	var measureCell: ((Any, Int, NSTableView) -> CGFloat)? { get }
+	var createCell: (Any, Int, NSTableView) -> NSView? { get }
+}
+
 public extension ReactiveExtensions where Base: NSTableView {
 
   public var delegate: ProtocolProxy {
@@ -36,16 +44,37 @@ public extension ReactiveExtensions where Base: NSTableView {
   }
 }
 
+private final class DefaultTableViewConfiguration: TableViewConfigurationProtocol {
+	init(animated: Bool, createCell: @escaping (Any, Int, NSTableView) -> NSView?) {
+		self.animated = animated
+		self.createCell = createCell
+	}
+	
+	let animated: Bool
+	let insertAnimation: NSTableViewAnimationOptions = []
+	let deleteAnimation: NSTableViewAnimationOptions = []
+	let measureCell: ((Any, Int, NSTableView) -> CGFloat)? = nil
+	let createCell: (Any, Int, NSTableView) -> NSView?
+}
+
 public extension SignalProtocol where Element: DataSourceEventProtocol, Element.DataSource: QueryableDataSourceProtocol, Element.DataSource.Item: Any, Element.DataSource.Index == Int, Error == NoError {
 
   public typealias DataSource = Element.DataSource
-
+	
+	@discardableResult
+	public func bind(to tableView: NSTableView, animated: Bool = true, createCell: @escaping (DataSource, Int, NSTableView) -> NSView?) -> Disposable {
+		let configurator = DefaultTableViewConfiguration(animated: animated) { (source, index, tableView) -> NSView? in
+			return createCell(source as! DataSource, index, tableView)
+		}
+		return bind(to: tableView, configurator: configurator)
+	}
+	
   @discardableResult
-  public func bind(to tableView: NSTableView, animated: Bool = true, measureCell: ((DataSource, Int, NSTableView) -> CGFloat)? = nil, createCell: @escaping (DataSource, Int, NSTableView) -> NSView?) -> Disposable {
-
+	public func bind(to tableView: NSTableView, configurator: TableViewConfigurationProtocol) -> Disposable {
+		
     let dataSource = Property<DataSource?>(nil)
 
-		if let measureCell = measureCell {
+		if let measureCell = configurator.measureCell {
       tableView.reactive.delegate.feed(
 				property: dataSource,
 				to: #selector(NSTableViewDelegate.tableView(_:heightOfRow:)),
@@ -57,7 +86,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Element.
       property: dataSource,
       to: #selector(NSTableViewDelegate.tableView(_:viewFor:row:)),
       map: { (dataSource: DataSource?, tableView: NSTableView, _: NSTableColumn, row: Int) -> NSView? in
-        return createCell(dataSource!, row, tableView)
+        return configurator.createCell(dataSource!, row, tableView)
       }
     )
 
@@ -88,7 +117,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Element.
 
       dataSource.value = event.dataSource
 
-      guard animated else {
+      guard configurator.animated else {
         tableView.reloadData()
         return
       }
@@ -102,7 +131,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Element.
           defer { tableView.endUpdates() }
         }
         indexPaths.forEach { indexPath in
-          tableView.insertRows(at: IndexSet(integer: indexPath.item), withAnimation: [.effectFade, .slideUp])
+          tableView.insertRows(at: IndexSet(integer: indexPath.item), withAnimation: configurator.insertAnimation)
         }
       case .deleteItems(let indexPaths):
         if !updating && indexPaths.count > 1 {
@@ -110,7 +139,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Element.
           defer { tableView.endUpdates() }
         }
         indexPaths.forEach { indexPath in
-          tableView.removeRows(at: IndexSet(integer: indexPath.item), withAnimation: [.effectFade, .slideUp])
+          tableView.removeRows(at: IndexSet(integer: indexPath.item), withAnimation: configurator.deleteAnimation)
         }
       case .reloadItems(let indexPaths):
         if !updating && indexPaths.count > 1 {
@@ -118,8 +147,8 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Element.
           defer { tableView.endUpdates() }
         }
         indexPaths.forEach { indexPath in
-          tableView.removeRows(at: IndexSet(integer: indexPath.item), withAnimation: [.effectFade, .slideUp])
-          tableView.insertRows(at: IndexSet(integer: indexPath.item), withAnimation: [.effectFade, .slideUp])
+          tableView.removeRows(at: IndexSet(integer: indexPath.item), withAnimation: configurator.deleteAnimation)
+          tableView.insertRows(at: IndexSet(integer: indexPath.item), withAnimation: configurator.insertAnimation)
         }
       case .moveItem(let indexPath, let newIndexPath):
         tableView.moveRow(at: indexPath.item, to: newIndexPath.item)
