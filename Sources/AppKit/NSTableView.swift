@@ -41,10 +41,18 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Element.
   public typealias DataSource = Element.DataSource
 
   @discardableResult
-  public func bind(to tableView: NSTableView, animated: Bool = true, createCell: @escaping (DataSource, Int, NSTableView) -> NSView?) -> Disposable {
+  public func bind(to tableView: NSTableView, animated: Bool = true, measureCell: ((DataSource, Int, NSTableView) -> CGFloat)? = nil, createCell: @escaping (DataSource, Int, NSTableView) -> NSView?) -> Disposable {
 
     let dataSource = Property<DataSource?>(nil)
 
+		if let measureCell = measureCell {
+      tableView.reactive.delegate.feed(
+				property: dataSource,
+				to: #selector(NSTableViewDelegate.tableView(_:heightOfRow:)),
+				map: { (dataSource: DataSource?, tableView: NSTableView, row: Int) -> CGFloat in measureCell(dataSource!, row, tableView) }
+      )
+		}
+		
     tableView.reactive.delegate.feed(
       property: dataSource,
       to: #selector(NSTableViewDelegate.tableView(_:viewFor:row:)),
