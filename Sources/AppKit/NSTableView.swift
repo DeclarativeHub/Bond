@@ -102,7 +102,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Element.
           defer { tableView.endUpdates() }
         }
         indexPaths.forEach { indexPath in
-          tableView.insertRows(at: IndexSet(integer: indexPath.item), withAnimation: [])
+          tableView.insertRows(at: IndexSet(integer: indexPath.item), withAnimation: [.effectFade, .slideUp])
         }
       case .deleteItems(let indexPaths):
         if !updating && indexPaths.count > 1 {
@@ -110,7 +110,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Element.
           defer { tableView.endUpdates() }
         }
         indexPaths.forEach { indexPath in
-          tableView.removeRows(at: IndexSet(integer: indexPath.item), withAnimation: [])
+          tableView.removeRows(at: IndexSet(integer: indexPath.item), withAnimation: [.effectFade, .slideUp])
         }
       case .reloadItems(let indexPaths):
         if !updating && indexPaths.count > 1 {
@@ -118,8 +118,8 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Element.
           defer { tableView.endUpdates() }
         }
         indexPaths.forEach { indexPath in
-          tableView.removeRows(at: IndexSet(integer: indexPath.item), withAnimation: [])
-          tableView.insertRows(at: IndexSet(integer: indexPath.item), withAnimation: [])
+          tableView.removeRows(at: IndexSet(integer: indexPath.item), withAnimation: [.effectFade, .slideUp])
+          tableView.insertRows(at: IndexSet(integer: indexPath.item), withAnimation: [.effectFade, .slideUp])
         }
       case .moveItem(let indexPath, let newIndexPath):
         tableView.moveRow(at: indexPath.item, to: newIndexPath.item)
