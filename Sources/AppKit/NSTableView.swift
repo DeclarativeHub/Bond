@@ -37,12 +37,32 @@ public extension ReactiveExtensions where Base: NSTableView {
   }
 }
 
-public protocol TableViewBond {
+// MARK: - Table view integration
+
+extension NSTableView {
 	
-	associatedtype DataSource: DataSourceProtocol
-	
+	fileprivate var updating: Bool {
+		get {
+			return objc_getAssociatedObject(self, &NSTableViewUpdatingKey) as? Bool ?? false
+		}
+		set {
+			objc_setAssociatedObject(self, &NSTableViewUpdatingKey, newValue, .OBJC_ASSOCIATION_RETAIN)
+		}
+	}
+}
+
+private var NSTableViewUpdatingKey: UInt8 = 0
+
+// MARK: - Bond declaration
+
+public protocol TableViewBondOptionable {
 	var insertAnimation: NSTableViewAnimationOptions? { get }
 	var deleteAnimation: NSTableViewAnimationOptions? { get }
+}
+
+public protocol TableViewBond: TableViewBondOptionable {
+	
+	associatedtype DataSource: DataSourceProtocol
 	
 	func apply(event: DataSourceEvent<DataSource>, to tableView: NSTableView)
 	func heightForRow(at index: Int, tableView: NSTableView, dataSource: DataSource) -> CGFloat?
@@ -51,11 +71,11 @@ public protocol TableViewBond {
 
 extension TableViewBond {
 	
-	var insertAnimation: NSTableViewAnimationOptions? {
+	public var insertAnimation: NSTableViewAnimationOptions? {
 		return nil
 	}
 	
-	var deleteAnimation: NSTableViewAnimationOptions? {
+	public var deleteAnimation: NSTableViewAnimationOptions? {
 		return nil
 	}
 	
@@ -64,6 +84,11 @@ extension TableViewBond {
 	}
 	
 	public func apply(event: DataSourceEvent<DataSource>, to tableView: NSTableView) {
+		if insertAnimation == nil && deleteAnimation == nil {
+			tableView.reloadData()
+			return
+		}
+		
 		switch event.kind {
 		case .reload:
 			tableView.reloadData()
@@ -112,23 +137,21 @@ extension TableViewBond {
 	}
 }
 
-extension NSTableView {
-	
-	fileprivate var updating: Bool {
-		get {
-			return objc_getAssociatedObject(self, &NSTableViewUpdatingKey) as? Bool ?? false
-		}
-		set {
-			objc_setAssociatedObject(self, &NSTableViewUpdatingKey, newValue, .OBJC_ASSOCIATION_RETAIN)
-		}
-	}
-}
-
-private var NSTableViewUpdatingKey: UInt8 = 0
+// MARK: - Builtin bonds
 
 private struct DefaultTableViewBond<DataSource: DataSourceProtocol>: TableViewBond {
 	
 	let createCell: (DataSource, Int, NSTableView) -> NSView?
+	
+	var animations: NSTableViewAnimationOptions
+	
+	var insertAnimation: NSTableViewAnimationOptions? {
+		return animations
+	}
+	
+	var deleteAnimation: NSTableViewAnimationOptions? {
+		return animations
+	}
 	
 	func cellForRow(at index: Int, tableView: NSTableView, dataSource: DataSource) -> NSView? {
 		return createCell(dataSource, index, tableView)
@@ -148,6 +171,8 @@ private struct ReloadingTableViewBond<DataSource: DataSourceProtocol>: TableView
 	}
 }
 
+// MARK: - Bond implementation
+
 public extension SignalProtocol where Element: DataSourceEventProtocol, Element.DataSource: QueryableDataSourceProtocol, Element.DataSource.Item: Any, Element.DataSource.Index == Int, Error == NoError {
 
   public typealias DataSource = Element.DataSource
@@ -155,7 +180,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Element.
 	@discardableResult
 	public func bind(to tableView: NSTableView, animated: Bool = true, createCell: @escaping (DataSource, Int, NSTableView) -> NSView?) -> Disposable {
 		if animated {
-			return bind(to: tableView, using: DefaultTableViewBond<DataSource>(createCell: createCell))
+			return bind(to: tableView, using: DefaultTableViewBond<DataSource>(createCell: createCell, animations: [.effectFade, .slideUp]))
 		} else {
 			return bind(to: tableView, using: ReloadingTableViewBond<DataSource>(createCell: createCell))
 		}
