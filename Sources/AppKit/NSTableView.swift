@@ -72,11 +72,11 @@ public protocol TableViewBond: TableViewBondOptionable {
 extension TableViewBond {
 	
 	public var insertAnimation: NSTableViewAnimationOptions? {
-		return nil
+		return [.effectFade, .slideUp]
 	}
 	
 	public var deleteAnimation: NSTableViewAnimationOptions? {
-		return nil
+		return [.effectFade, .slideUp]
 	}
 	
 	public func heightForRow(at index: Int, tableView: NSTableView, dataSource: DataSource) -> CGFloat? {
@@ -143,16 +143,6 @@ private struct DefaultTableViewBond<DataSource: DataSourceProtocol>: TableViewBo
 	
 	let createCell: (DataSource, Int, NSTableView) -> NSView?
 	
-	var animations: NSTableViewAnimationOptions
-	
-	var insertAnimation: NSTableViewAnimationOptions? {
-		return animations
-	}
-	
-	var deleteAnimation: NSTableViewAnimationOptions? {
-		return animations
-	}
-	
 	func cellForRow(at index: Int, tableView: NSTableView, dataSource: DataSource) -> NSView? {
 		return createCell(dataSource, index, tableView)
 	}
@@ -180,7 +170,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Element.
 	@discardableResult
 	public func bind(to tableView: NSTableView, animated: Bool = true, createCell: @escaping (DataSource, Int, NSTableView) -> NSView?) -> Disposable {
 		if animated {
-			return bind(to: tableView, using: DefaultTableViewBond<DataSource>(createCell: createCell, animations: [.effectFade, .slideUp]))
+			return bind(to: tableView, using: DefaultTableViewBond<DataSource>(createCell: createCell))
 		} else {
 			return bind(to: tableView, using: ReloadingTableViewBond<DataSource>(createCell: createCell))
 		}
