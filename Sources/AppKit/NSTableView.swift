@@ -6,7 +6,6 @@
 //  Copyright © 2016 Swift Bond. All rights reserved.
 //
 
-import ObjectiveC
 import AppKit
 import ReactiveKit
 
@@ -37,30 +36,9 @@ public extension ReactiveExtensions where Base: NSTableView {
   }
 }
 
-// MARK: - Table view integration
-
-extension NSTableView {
-	
-	fileprivate var updating: Bool {
-		get {
-			return objc_getAssociatedObject(self, &NSTableViewUpdatingKey) as? Bool ?? false
-		}
-		set {
-			objc_setAssociatedObject(self, &NSTableViewUpdatingKey, newValue, .OBJC_ASSOCIATION_RETAIN)
-		}
-	}
-}
-
-private var NSTableViewUpdatingKey: UInt8 = 0
-
 // MARK: - Bond declaration
 
-public protocol TableViewBondOptionable {
-	var insertAnimation: NSTableViewAnimationOptions? { get }
-	var deleteAnimation: NSTableViewAnimationOptions? { get }
-}
-
-public protocol TableViewBond: TableViewBondOptionable {
+public protocol TableViewBond {
 	
 	associatedtype DataSource: DataSourceProtocol
 	
@@ -71,19 +49,47 @@ public protocol TableViewBond: TableViewBondOptionable {
 
 extension TableViewBond {
 	
-	public var insertAnimation: NSTableViewAnimationOptions? {
-		return [.effectFade, .slideUp]
-	}
-	
-	public var deleteAnimation: NSTableViewAnimationOptions? {
-		return [.effectFade, .slideUp]
-	}
-	
 	public func heightForRow(at index: Int, tableView: NSTableView, dataSource: DataSource) -> CGFloat? {
 		return nil
 	}
-	
+
 	public func apply(event: DataSourceEvent<DataSource>, to tableView: NSTableView) {
+		tableView.reloadData()
+	}
+}
+
+// MARK: - Builtin bonds
+
+open class DefaultTableViewBond<DataSource: DataSourceProtocol>: TableViewBond {
+	
+	private var updating: Bool = false
+	
+	public var insertAnimation: NSTableViewAnimationOptions? = [.effectFade, .slideUp]
+	public var deleteAnimation: NSTableViewAnimationOptions? = [.effectFade, .slideUp]
+	
+	let measureCell: ((DataSource, Int, NSTableView) -> CGFloat?)?
+	let createCell: ((DataSource, Int, NSTableView) -> NSView?)?
+	
+	public init() {
+		// This initializer allows subclassing without having to declare default initializer in subclass.
+		measureCell = nil
+		createCell = nil
+	}
+	
+	public init(measureCell: ((DataSource, Int, NSTableView) -> CGFloat?)? = nil, createCell: ((DataSource, Int, NSTableView) -> NSView?)? = nil) {
+		self.measureCell = measureCell
+		self.createCell = createCell
+	}
+	
+	open func heightForRow(at index: Int, tableView: NSTableView, dataSource: DataSource) -> CGFloat? {
+		return measureCell?(dataSource, index, tableView) ?? tableView.rowHeight
+	}
+	
+	open func cellForRow(at index: Int, tableView: NSTableView, dataSource: DataSource) -> NSView? {
+		return createCell?(dataSource, index, tableView) ?? nil
+	}
+	
+	open func apply(event: DataSourceEvent<DataSource>, to tableView: NSTableView) {
 		if insertAnimation == nil && deleteAnimation == nil {
 			tableView.reloadData()
 			return
@@ -93,7 +99,7 @@ extension TableViewBond {
 		case .reload:
 			tableView.reloadData()
 		case .insertItems(let indexPaths):
-			if !tableView.updating && indexPaths.count > 1 {
+			if !updating && indexPaths.count > 1 {
 				tableView.beginUpdates()
 				defer { tableView.endUpdates() }
 			}
@@ -101,7 +107,7 @@ extension TableViewBond {
 				tableView.insertRows(at: IndexSet(integer: indexPath.item), withAnimation: insertAnimation ?? [])
 			}
 		case .deleteItems(let indexPaths):
-			if !tableView.updating && indexPaths.count > 1 {
+			if !updating && indexPaths.count > 1 {
 				tableView.beginUpdates()
 				defer { tableView.endUpdates() }
 			}
@@ -109,7 +115,7 @@ extension TableViewBond {
 				tableView.removeRows(at: IndexSet(integer: indexPath.item), withAnimation: deleteAnimation ?? [])
 			}
 		case .reloadItems(let indexPaths):
-			if !tableView.updating && indexPaths.count > 1 {
+			if !updating && indexPaths.count > 1 {
 				tableView.beginUpdates()
 				defer { tableView.endUpdates() }
 			}
@@ -129,22 +135,11 @@ extension TableViewBond {
 			fatalError("NSTableView binding does not support sections.")
 		case .beginUpdates:
 			tableView.beginUpdates()
-			tableView.updating = true
+			updating = true
 		case .endUpdates:
-			tableView.updating = false
+			updating = false
 			tableView.endUpdates()
 		}
-	}
-}
-
-// MARK: - Builtin bonds
-
-private struct DefaultTableViewBond<DataSource: DataSourceProtocol>: TableViewBond {
-	
-	let createCell: (DataSource, Int, NSTableView) -> NSView?
-	
-	func cellForRow(at index: Int, tableView: NSTableView, dataSource: DataSource) -> NSView? {
-		return createCell(dataSource, index, tableView)
 	}
 }
 
@@ -154,10 +149,6 @@ private struct ReloadingTableViewBond<DataSource: DataSourceProtocol>: TableView
 	
 	func cellForRow(at index: Int, tableView: NSTableView, dataSource: DataSource) -> NSView? {
 		return createCell(dataSource, index, tableView)
-	}
-	
-	func apply(event: DataSourceEvent<DataSource>, to tableView: NSTableView) {
-		tableView.reloadData()
 	}
 }
 
