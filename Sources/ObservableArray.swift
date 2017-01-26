@@ -262,7 +262,6 @@ extension MutableObservableArray where Item: Equatable {
 
       let diff = self.array.extendedDiff(array)
       subject.next(ObservableArrayEvent(change: .beginBatchEditing, source: self))
-      self.array = array
 
       for step in diff {
         switch step {
@@ -277,6 +276,7 @@ extension MutableObservableArray where Item: Equatable {
         }
       }
       
+      self.array = array
       subject.next(ObservableArrayEvent(change: .endBatchEditing, source: self))
       lock.unlock()
     } else {

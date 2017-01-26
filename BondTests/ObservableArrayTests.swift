@@ -254,4 +254,20 @@ class ObservableArrayTests: XCTestCase {
       ])
     array[2] = 4
   }
+
+  func testArrayFilterDiffUpdate() {
+    array.filter { $0 % 2 != 0 }.expectNext([
+      ObservableArrayEvent(change: .reset, source: AnyObservableArray),
+      ObservableArrayEvent(change: .beginBatchEditing, source: AnyObservableArray),
+      ObservableArrayEvent(change: .deletes([0]), source: AnyObservableArray),
+      ObservableArrayEvent(change: .deletes([1]), source: AnyObservableArray),
+      ObservableArrayEvent(change: .inserts([0]), source: AnyObservableArray),
+      ObservableArrayEvent(change: .inserts([1]), source: AnyObservableArray),
+      ObservableArrayEvent(change: .endBatchEditing, source: AnyObservableArray)
+      ])
+
+    array.replace(with: [4, 5, 6], performDiff: true)
+
+    XCTAssert(array == ObservableArray([4, 5, 6]))
+  }
 }
