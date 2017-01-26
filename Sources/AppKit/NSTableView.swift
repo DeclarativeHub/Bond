@@ -36,20 +36,156 @@ public extension ReactiveExtensions where Base: NSTableView {
   }
 }
 
+// MARK: - Bond declaration
+
+public protocol TableViewBond {
+	
+	associatedtype DataSource: DataSourceProtocol
+	
+	func apply(event: DataSourceEvent<DataSource>, to tableView: NSTableView)
+	func heightForRow(at index: Int, tableView: NSTableView, dataSource: DataSource) -> CGFloat?
+	func cellForRow(at index: Int, tableView: NSTableView, dataSource: DataSource) -> NSView?
+}
+
+extension TableViewBond {
+	
+	public func heightForRow(at index: Int, tableView: NSTableView, dataSource: DataSource) -> CGFloat? {
+		return nil
+	}
+
+	public func apply(event: DataSourceEvent<DataSource>, to tableView: NSTableView) {
+		tableView.reloadData()
+	}
+}
+
+// MARK: - Builtin bonds
+
+open class DefaultTableViewBond<DataSource: DataSourceProtocol>: TableViewBond {
+	
+	private var updating: Bool = false
+	
+	public var insertAnimation: NSTableViewAnimationOptions? = [.effectFade, .slideUp]
+	public var deleteAnimation: NSTableViewAnimationOptions? = [.effectFade, .slideUp]
+	
+	let measureCell: ((DataSource, Int, NSTableView) -> CGFloat?)?
+	let createCell: ((DataSource, Int, NSTableView) -> NSView?)?
+	
+	public init() {
+		// This initializer allows subclassing without having to declare default initializer in subclass.
+		measureCell = nil
+		createCell = nil
+	}
+	
+	public init(measureCell: ((DataSource, Int, NSTableView) -> CGFloat?)? = nil, createCell: ((DataSource, Int, NSTableView) -> NSView?)? = nil) {
+		self.measureCell = measureCell
+		self.createCell = createCell
+	}
+	
+	open func heightForRow(at index: Int, tableView: NSTableView, dataSource: DataSource) -> CGFloat? {
+		return measureCell?(dataSource, index, tableView) ?? tableView.rowHeight
+	}
+	
+	open func cellForRow(at index: Int, tableView: NSTableView, dataSource: DataSource) -> NSView? {
+		return createCell?(dataSource, index, tableView) ?? nil
+	}
+	
+	open func apply(event: DataSourceEvent<DataSource>, to tableView: NSTableView) {
+		if insertAnimation == nil && deleteAnimation == nil {
+			tableView.reloadData()
+			return
+		}
+		
+		switch event.kind {
+		case .reload:
+			tableView.reloadData()
+		case .insertItems(let indexPaths):
+			if !updating && indexPaths.count > 1 {
+				tableView.beginUpdates()
+				defer { tableView.endUpdates() }
+			}
+			indexPaths.forEach { indexPath in
+				tableView.insertRows(at: IndexSet(integer: indexPath.item), withAnimation: insertAnimation ?? [])
+			}
+		case .deleteItems(let indexPaths):
+			if !updating && indexPaths.count > 1 {
+				tableView.beginUpdates()
+				defer { tableView.endUpdates() }
+			}
+			indexPaths.forEach { indexPath in
+				tableView.removeRows(at: IndexSet(integer: indexPath.item), withAnimation: deleteAnimation ?? [])
+			}
+		case .reloadItems(let indexPaths):
+			if !updating && indexPaths.count > 1 {
+				tableView.beginUpdates()
+				defer { tableView.endUpdates() }
+			}
+			indexPaths.forEach { indexPath in
+				tableView.removeRows(at: IndexSet(integer: indexPath.item), withAnimation: deleteAnimation ?? [])
+				tableView.insertRows(at: IndexSet(integer: indexPath.item), withAnimation: insertAnimation ?? [])
+			}
+		case .moveItem(let indexPath, let newIndexPath):
+			tableView.moveRow(at: indexPath.item, to: newIndexPath.item)
+		case .insertSections:
+			fatalError("NSTableView binding does not support sections.")
+		case .deleteSections:
+			fatalError("NSTableView binding does not support sections.")
+		case .reloadSections:
+			fatalError("NSTableView binding does not support sections.")
+		case .moveSection:
+			fatalError("NSTableView binding does not support sections.")
+		case .beginUpdates:
+			tableView.beginUpdates()
+			updating = true
+		case .endUpdates:
+			updating = false
+			tableView.endUpdates()
+		}
+	}
+}
+
+private struct ReloadingTableViewBond<DataSource: DataSourceProtocol>: TableViewBond {
+	
+	let createCell: (DataSource, Int, NSTableView) -> NSView?
+	
+	func cellForRow(at index: Int, tableView: NSTableView, dataSource: DataSource) -> NSView? {
+		return createCell(dataSource, index, tableView)
+	}
+}
+
+// MARK: - Bond implementation
+
 public extension SignalProtocol where Element: DataSourceEventProtocol, Element.DataSource: QueryableDataSourceProtocol, Element.DataSource.Item: Any, Element.DataSource.Index == Int, Error == NoError {
 
   public typealias DataSource = Element.DataSource
-
-  @discardableResult
-  public func bind(to tableView: NSTableView, animated: Bool = true, createCell: @escaping (DataSource, Int, NSTableView) -> NSView?) -> Disposable {
-
+	
+	@discardableResult
+	public func bind(to tableView: NSTableView, animated: Bool = true, createCell: @escaping (DataSource, Int, NSTableView) -> NSView?) -> Disposable {
+		if animated {
+			return bind(to: tableView, using: DefaultTableViewBond<DataSource>(createCell: createCell))
+		} else {
+			return bind(to: tableView, using: ReloadingTableViewBond<DataSource>(createCell: createCell))
+		}
+	}
+	
+	@discardableResult
+	public func bind<B: TableViewBond>(to tableView: NSTableView, using bond: B) -> Disposable where B.DataSource == DataSource {
+	
     let dataSource = Property<DataSource?>(nil)
 
+		tableView.reactive.delegate.feed(
+			property: dataSource,
+			to: #selector(NSTableViewDelegate.tableView(_:heightOfRow:)),
+			map: { (dataSource: DataSource?, tableView: NSTableView, row: Int) -> CGFloat in
+				guard let dataSource = dataSource else { return tableView.rowHeight }
+				return bond.heightForRow(at: row, tableView: tableView, dataSource: dataSource) ?? tableView.rowHeight
+		})
+	
     tableView.reactive.delegate.feed(
       property: dataSource,
       to: #selector(NSTableViewDelegate.tableView(_:viewFor:row:)),
       map: { (dataSource: DataSource?, tableView: NSTableView, _: NSTableColumn, row: Int) -> NSView? in
-        return createCell(dataSource!, row, tableView)
+				guard let dataSource = dataSource else { return nil }
+        return bond.cellForRow(at: row, tableView: tableView, dataSource: dataSource)
       }
     )
 
@@ -70,7 +206,6 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Element.
     )
 
     let serialDisposable = SerialDisposable(otherDisposable: nil)
-    var updating = false
 
     serialDisposable.otherDisposable = observeIn(ImmediateOnMainExecutionContext).observeNext { [weak tableView] event in
       guard let tableView = tableView else {
@@ -78,60 +213,11 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Element.
         return
       }
 
+			let event = event._unbox
       dataSource.value = event.dataSource
-
-      guard animated else {
-        tableView.reloadData()
-        return
-      }
-
-      switch event.kind {
-      case .reload:
-        tableView.reloadData()
-      case .insertItems(let indexPaths):
-        if !updating && indexPaths.count > 1 {
-          tableView.beginUpdates()
-          defer { tableView.endUpdates() }
-        }
-        indexPaths.forEach { indexPath in
-          tableView.insertRows(at: IndexSet(integer: indexPath.item), withAnimation: [])
-        }
-      case .deleteItems(let indexPaths):
-        if !updating && indexPaths.count > 1 {
-          tableView.beginUpdates()
-          defer { tableView.endUpdates() }
-        }
-        indexPaths.forEach { indexPath in
-          tableView.removeRows(at: IndexSet(integer: indexPath.item), withAnimation: [])
-        }
-      case .reloadItems(let indexPaths):
-        if !updating && indexPaths.count > 1 {
-          tableView.beginUpdates()
-          defer { tableView.endUpdates() }
-        }
-        indexPaths.forEach { indexPath in
-          tableView.removeRows(at: IndexSet(integer: indexPath.item), withAnimation: [])
-          tableView.insertRows(at: IndexSet(integer: indexPath.item), withAnimation: [])
-        }
-      case .moveItem(let indexPath, let newIndexPath):
-        tableView.moveRow(at: indexPath.item, to: newIndexPath.item)
-      case .insertSections:
-        fatalError("NSTableView binding does not support sections.")
-      case .deleteSections:
-        fatalError("NSTableView binding does not support sections.")
-      case .reloadSections:
-        fatalError("NSTableView binding does not support sections.")
-      case .moveSection:
-        fatalError("NSTableView binding does not support sections.")
-      case .beginUpdates:
-        tableView.beginUpdates()
-        updating = true
-      case .endUpdates:
-        updating = false
-        tableView.endUpdates()
-      }
-    }
-    
+			bond.apply(event: event, to: tableView)
+		}
+		
     return serialDisposable
   }
 }
