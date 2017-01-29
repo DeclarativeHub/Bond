@@ -98,30 +98,6 @@ extension SignalProtocol {
 
 let AnyObservableArray = ObservableArray<Int>()
 
-extension ObservableArrayChange: Equatable {
-  
-  public static func ==(lhs: ObservableArrayChange, rhs: ObservableArrayChange) -> Bool {
-    switch (lhs, rhs) {
-    case (.reset, .reset):
-      return true
-    case (.inserts(let lhs), .inserts(let rhs)):
-      return lhs == rhs
-    case (.deletes(let lhs), .deletes(let rhs)):
-      return lhs == rhs
-    case (.updates(let lhs), .updates(let rhs)):
-      return lhs == rhs
-    case (.move(let lhsFrom, let lhsTo), .move(let rhsFrom, let rhsTo)):
-      return lhsFrom == rhsFrom && lhsTo == rhsTo
-    case (.beginBatchEditing, .beginBatchEditing):
-      return true
-    case (.endBatchEditing, .endBatchEditing):
-      return true
-    default:
-      return false
-    }
-  }
-}
-
 extension DataSourceEventKind: Equatable {
 
   public static func ==(lhs: DataSourceEventKind, rhs: DataSourceEventKind) -> Bool {

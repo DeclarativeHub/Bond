@@ -181,9 +181,31 @@ public class MutableObservableArray<Item>: ObservableArray<Item> {
   /// Perform batched updates on the array.
   public func batchUpdate(_ update: (MutableObservableArray<Item>) -> Void) {
     lock.lock(); defer { lock.unlock() }
-    subject.next(ObservableArrayEvent(change: .beginBatchEditing, source: self))
-    update(self)
-    subject.next(ObservableArrayEvent(change: .endBatchEditing, source: self))
+
+    // use proxy to collect changes
+    let proxy = MutableObservableArray(array)
+    var patch: [ObservableArrayChange] = []
+    let disposable = proxy.skip(first: 1).observeNext { event in
+      patch.append(event.change)
+    }
+    update(proxy)
+    disposable.dispose()
+
+    // generate diff from changes
+    let diff = generateDiff(from: patch)
+
+    // if only reset, do not batch:
+    if diff == [.reset] {
+      subject.next(ObservableArrayEvent(change: .reset, source: self))
+    } else if diff.count > 0 {
+      // ...otherwise batch:
+      subject.next(ObservableArrayEvent(change: .beginBatchEditing, source: self))
+      array = proxy.array
+      diff.forEach { change in
+        subject.next(ObservableArrayEvent(change: change, source: self))
+      }
+      subject.next(ObservableArrayEvent(change: .endBatchEditing, source: self))
+    }
   }
 
   /// Change the underlying value withouth notifying the observers.
@@ -262,6 +284,7 @@ extension MutableObservableArray where Item: Equatable {
 
       let diff = self.array.extendedDiff(array)
       subject.next(ObservableArrayEvent(change: .beginBatchEditing, source: self))
+      self.array = array
 
       for step in diff {
         switch step {
@@ -276,7 +299,6 @@ extension MutableObservableArray where Item: Equatable {
         }
       }
       
-      self.array = array
       subject.next(ObservableArrayEvent(change: .endBatchEditing, source: self))
       lock.unlock()
     } else {
@@ -371,7 +393,9 @@ public extension SignalProtocol where Element: ObservableArrayEventProtocol {
         changes = [.endBatchEditing]
       }
 
-      previousIndexMap = indexMap
+      if !isBatching {
+        previousIndexMap = indexMap
+      }
 
       if changes.count > 1 && !isBatching {
         changes.insert(.beginBatchEditing, at: 0)
@@ -399,6 +423,205 @@ fileprivate extension SignalProtocol where Element: Sequence {
           observer.completed()
         }
       }
+    }
+  }
+}
+
+func generateDiff(from sequenceOfChanges: [ObservableArrayChange]) -> [ObservableArrayChange] {
+  var diff = sequenceOfChanges.flatMap { $0.unwrap }
+
+  for i in 0..<diff.count {
+    for j in 0..<i {
+      switch (diff[i], diff[j]) {
+
+      // (deletes, *)
+      case let (.deletes(l), .deletes(r)):
+        guard let pivot = l.first else { break }
+        guard let index = r.first else { break }
+        if pivot >= index {
+          diff[i] = .deletes([pivot+1])
+        }
+      case let (.deletes(l), .inserts(r)):
+        guard let pivot = l.first else { break }
+        guard let index = r.first else { break }
+        if pivot < index {
+          diff[j] = .inserts([index-1])
+        } else if pivot == index {
+          diff[j] = .inserts([])
+          diff[i] = .deletes([])
+        } else if pivot > index {
+          diff[i] = .deletes([pivot-1])
+        }
+      case let (.deletes(l), .updates(r)):
+        guard let pivot = l.first else { break }
+        guard let index = r.first else { break }
+        if pivot == index {
+          diff[j] = .updates([])
+        }
+      case (let .deletes(l), let .move(from, to)):
+        guard let pivot = l.first else { break }
+        guard from != -1 else { break }
+        var newTo = to
+        if pivot == to {
+          diff[j] = .inserts([])
+          diff[i] = .deletes([from])
+          break
+        } else if pivot < to {
+          newTo = to-1
+          diff[j] = .move(from, newTo)
+        }
+        if pivot >= from && pivot < to {
+          diff[i] = .deletes([pivot+1])
+        }
+
+      // (inserts, *)
+      case (.inserts, .deletes):
+        break
+      case let (.inserts(l), .inserts(r)):
+        guard let pivot = l.first else { break }
+        guard let index = r.first else { break }
+        if pivot <= index {
+          diff[j] = .inserts([index+1])
+        }
+      case (.inserts, .updates):
+        break
+      case (let .inserts(l), let .move(from, to)):
+        guard let pivot = l.first else { break }
+        guard from != -1 else { break }
+        if pivot <= to {
+          diff[j] = .move(from, to+1)
+        }
+
+      // (updates, *)
+      case let (.updates(l), .deletes(r)):
+        guard let pivot = l.first else { break }
+        guard let index = r.first else { break }
+        if pivot >= index {
+          diff[i] = .updates([pivot+1])
+        }
+      case let (.updates(l), .inserts(r)):
+        guard let pivot = l.first else { break }
+        guard let index = r.first else { break }
+        if pivot == index {
+          diff[i] = .updates([])
+        }
+      case let (.updates(l), .updates(r)):
+        guard let pivot = l.first else { break }
+        guard let index = r.first else { break }
+        if pivot == index {
+          diff[i] = .updates([])
+        }
+      case (let .updates(l), let .move(from, to)):
+        guard var pivot = l.first else { break }
+        guard from != -1 else { break }
+        if pivot == from {
+          // Updating item at moved indices not supported. Fallback to reset.
+          return [.reset]
+        }
+        if pivot >= from {
+          pivot += 1
+        }
+        if pivot >= to {
+          pivot -= 1
+        }
+        if pivot == to {
+          // Updating item at moved indices not supported. Fallback to reset.
+          return [.reset]
+        }
+
+        diff[i] = .updates([pivot])
+
+      case (.move, _):
+        // Move operations in batchUpdate must be performed first. Fallback to reset.
+        return [.reset]
+
+      default:
+        break
+      }
+    }
+  }
+
+  return diff.filter { change -> Bool in
+    switch change {
+    case .deletes(let indices):
+      return !indices.isEmpty
+    case .inserts(let indices):
+      return !indices.isEmpty
+    case .updates(let indices):
+      return !indices.isEmpty
+    case .move(let from, let to):
+      return from != -1 && to != -1
+    default:
+      return true
+    }
+  }
+}
+
+fileprivate extension ObservableArrayChange {
+
+  fileprivate var unwrap: [ObservableArrayChange] {
+
+    func deletionsPatch(_ indices: [Int]) -> [Int] {
+      var indices = indices
+      for i in 0..<indices.count {
+        let pivot = indices[i]
+        for j in (i+1)..<indices.count {
+          let index = indices[j]
+          if index > pivot {
+            indices[j] = index - 1
+          }
+        }
+      }
+      return indices
+    }
+
+    func insertionsPatch(_ indices: [Int]) -> [Int] {
+      var indices = indices
+      for i in 0..<indices.count {
+        let pivot = indices[i]
+        for j in 0..<i {
+          let index = indices[j]
+          if index > pivot {
+            indices[j] = index - 1
+          }
+        }
+      }
+      return indices
+    }
+
+    switch self {
+    case .inserts(let indices):
+      return insertionsPatch(indices).map { .inserts([$0]) }
+    case .deletes(let indices):
+      return deletionsPatch(indices).map { .deletes([$0]) }
+    case .updates(let indices):
+      return indices.map { .updates([$0]) }
+    default:
+      return [self]
+    }
+  }
+}
+
+extension ObservableArrayChange: Equatable {
+
+  public static func ==(lhs: ObservableArrayChange, rhs: ObservableArrayChange) -> Bool {
+    switch (lhs, rhs) {
+    case (.reset, .reset):
+      return true
+    case (.inserts(let lhs), .inserts(let rhs)):
+      return lhs == rhs
+    case (.deletes(let lhs), .deletes(let rhs)):
+      return lhs == rhs
+    case (.updates(let lhs), .updates(let rhs)):
+      return lhs == rhs
+    case (.move(let lhsFrom, let lhsTo), .move(let rhsFrom, let rhsTo)):
+      return lhsFrom == rhsFrom && lhsTo == rhsTo
+    case (.beginBatchEditing, .beginBatchEditing):
+      return true
+    case (.endBatchEditing, .endBatchEditing):
+      return true
+    default:
+      return false
     }
   }
 }
