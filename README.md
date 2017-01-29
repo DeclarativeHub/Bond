@@ -547,14 +547,14 @@ There are many other methods. Just look at the code reference or source.
 ### Carthage
 
 1. Add the following to your *Cartfile*:
-  <br> `github "ReactiveKit/Bond" "master"`
+  <br> `github "ReactiveKit/Bond"`
 2. Run `carthage update`
 3. Add the framework as described in [Carthage Readme](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application)
 
 ### CocoaPods
 
 1. Add the following to your *Podfile*:
-  <br> `pod 'Bond', '~> 6.0-beta'`
+  <br> `pod 'Bond', '~> 6.0'`
 2. Run `pod install`.
 
 ## <a name="migration"></a>Migration
