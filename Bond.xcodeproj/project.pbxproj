@@ -68,8 +68,8 @@
 		16D30F0B1D65E8C700C2435D /* NSTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D30F0A1D65E8C700C2435D /* NSTableView.swift */; };
 		1F5F73AD1E267BC10001E3CC /* Observable2DArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5F73AC1E267BC10001E3CC /* Observable2DArrayTests.swift */; };
 		227DEF051DCB87BF00213852 /* UIGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227DEF041DCB87BF00213852 /* UIGestureRecognizer.swift */; };
-		90449ECA1E26F7DC00EE00DD /* NSPopUpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90449EC41E26F78C00EE00DD /* NSPopUpButton.swift */; };
 		3B8EAA5C1E205B0F00C7D06F /* ObservableSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8EAA5B1E205B0F00C7D06F /* ObservableSetTests.swift */; };
+		90449ECA1E26F7DC00EE00DD /* NSPopUpButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90449EC41E26F78C00EE00DD /* NSPopUpButton.swift */; };
 		90A3FACD1E0C8D9A0086A7F1 /* Diff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */; };
 		90A3FACE1E0C8D9F0086A7F1 /* Diff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */; };
 		90A3FACF1E0C8DA20086A7F1 /* Diff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */; };
@@ -280,11 +280,11 @@
 		16D30F041D65D7C000C2435D /* NSMenuItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSMenuItem.swift; sourceTree = "<group>"; };
 		16D30F061D65D7F800C2435D /* NSColorWell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSColorWell.swift; sourceTree = "<group>"; };
 		16D30F081D65D82C00C2435D /* NSAppearanceCustomization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSAppearanceCustomization.swift; sourceTree = "<group>"; };
-		1F5F73AC1E267BC10001E3CC /* Observable2DArrayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable2DArrayTests.swift; sourceTree = "<group>"; };
 		16D30F0A1D65E8C700C2435D /* NSTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTableView.swift; sourceTree = "<group>"; };
-		90449EC41E26F78C00EE00DD /* NSPopUpButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSPopUpButton.swift; sourceTree = "<group>"; };
+		1F5F73AC1E267BC10001E3CC /* Observable2DArrayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable2DArrayTests.swift; sourceTree = "<group>"; };
 		227DEF041DCB87BF00213852 /* UIGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIGestureRecognizer.swift; sourceTree = "<group>"; };
 		3B8EAA5B1E205B0F00C7D06F /* ObservableSetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableSetTests.swift; sourceTree = "<group>"; };
+		90449EC41E26F78C00EE00DD /* NSPopUpButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSPopUpButton.swift; sourceTree = "<group>"; };
 		90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Diff.xcodeproj; path = Carthage/Checkouts/Diff.swift/Diff.xcodeproj; sourceTree = "<group>"; };
 		90FF5FA81E316F1E005BA8FF /* QueryableDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryableDataSource.swift; sourceTree = "<group>"; };
 		EC06A8751DBCB147006AEA81 /* NSObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSObjectTests.swift; sourceTree = "<group>"; };
@@ -426,9 +426,9 @@
 				EC7890F31D44F1ED002848EB /* DynamicSubject.swift */,
 				EC877AA51E01CE6100A23B51 /* ProtocolProxy.swift */,
 				16559F841D64F4F100EDD727 /* DataSource.swift */,
+				90FF5FA81E316F1E005BA8FF /* QueryableDataSource.swift */,
 				EC877AAA1E01CE9F00A23B51 /* Collections */,
 				EC877AA41E01CE4900A23B51 /* ObjC */,
-				90FF5FA81E316F1E005BA8FF /* QueryableDataSource.swift */,
 				EC877A8B1E01CE1200A23B51 /* Shared */,
 				16D30EBA1D65944500C2435D /* AppKit */,
 				EC2505AF1D3F56D900A6E14A /* UIKit */,
@@ -740,7 +740,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 16210A361D3EC474004AEDF3 /* Build configuration list for PBXProject "Bond-iOS" */;
+			buildConfigurationList = 16210A361D3EC474004AEDF3 /* Build configuration list for PBXProject "Bond" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1366,7 +1366,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		16210A361D3EC474004AEDF3 /* Build configuration list for PBXProject "Bond-iOS" */ = {
+		16210A361D3EC474004AEDF3 /* Build configuration list for PBXProject "Bond" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				16210A4E1D3EC474004AEDF3 /* Debug */,
