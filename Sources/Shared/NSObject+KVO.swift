@@ -46,7 +46,7 @@ public extension ReactiveExtensions where Base: NSObject {
         if let value = maybeValue as? T {
           return value
         } else {
-          fatalError("Could not convert \(maybeValue) to \(T.self). Maybe `dynamic(keyPath:ofExpectedType:)` method might be of help?)")
+          fatalError("Could not convert \(String(describing: maybeValue)) to \(T.self). Maybe `dynamic(keyPath:ofExpectedType:)` method might be of help?)")
         }
       },
       set: {
@@ -71,7 +71,7 @@ public extension ReactiveExtensions where Base: NSObject {
         } else if maybeValue == nil {
           return T(nilLiteral: ())
         } else {
-          fatalError("Could not convert \(maybeValue) to \(T.self). Maybe `dynamic(keyPath:ofExpectedType:)` method might be of help?)")
+          fatalError("Could not convert \(String(describing: maybeValue)) to \(T.self). Maybe `dynamic(keyPath:ofExpectedType:)` method might be of help?)")
         }
       },
       set: {
@@ -100,7 +100,7 @@ public extension ReactiveExtensions where Base: NSObject {
         if let value = maybeValue as? T {
           return .success(value)
         } else {
-          return .failure(.notConvertible("Could not convert \(maybeValue) to \(T.self)."))
+          return .failure(.notConvertible("Could not convert \(String(describing: maybeValue)) to \(T.self)."))
         }
       },
       set: {
@@ -127,7 +127,7 @@ public extension ReactiveExtensions where Base: NSObject {
         } else if maybeValue == nil {
           return .success(T(nilLiteral: ()))
         } else {
-          return .failure(.notConvertible("Could not convert \(maybeValue) to \(T.self)."))
+          return .failure(.notConvertible("Could not convert \(String(describing: maybeValue)) to \(T.self)."))
         }
       },
       set: {
