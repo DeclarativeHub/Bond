@@ -161,9 +161,9 @@ private class RKKeyValueSignal: NSObject, SignalProtocol {
     super.init()
 
     lock.lock()
-    deallocationDisposable.otherDisposable = object._willDeallocate.observeNext { object in
+    deallocationDisposable.otherDisposable = object._willDeallocate.reduce(nil, {$1}).observeNext { object in
       if self.observing {
-        object.removeObserver(self, forKeyPath: self.keyPath, context: &self.context)
+        object?.unbox.removeObserver(self, forKeyPath: self.keyPath, context: &self.context)
       }
     }
     lock.unlock()
@@ -221,47 +221,53 @@ extension NSObject {
     static var lock = NSRecursiveLock(name: "com.reactivekit.bond.nsobject")
   }
 
-  private var _willDeallocateSubject: ReplayOneSubject<NSObject, NoError>? {
-    return objc_getAssociatedObject(self, &StaticVariables.willDeallocateSubject) as? ReplayOneSubject<NSObject, NoError>
-  }
-
-  fileprivate var _willDeallocate: Signal<NSObject, NoError> {
+  fileprivate var _willDeallocate: Signal<UnownedUnsafe<NSObject>, NoError> {
     StaticVariables.lock.lock(); defer { StaticVariables.lock.unlock() }
-    if let subject = _willDeallocateSubject {
+    if let subject = objc_getAssociatedObject(self, &StaticVariables.willDeallocateSubject) as? ReplayOneSubject<UnownedUnsafe<NSObject>, NoError> {
       return subject.toSignal()
     } else {
-      let typeName: String = String(describing: type(of: self))
+      let subject = ReplayOneSubject<UnownedUnsafe<NSObject>, NoError>()
+      subject.next(UnownedUnsafe(self))
+      let typeName = String(describing: type(of: self))
 
       if !StaticVariables.swizzledTypes.contains(typeName) {
-        type(of: self)._swizzleDeinit()
         StaticVariables.swizzledTypes.insert(typeName)
+        type(of: self)._swizzleDeinit { me in
+          if let subject = objc_getAssociatedObject(me, &StaticVariables.willDeallocateSubject) as? ReplayOneSubject<UnownedUnsafe<NSObject>, NoError> {
+            subject.completed()
+          }
+        }
       }
 
-      let subject = ReplayOneSubject<NSObject, NoError>()
       objc_setAssociatedObject(self, &StaticVariables.willDeallocateSubject, subject, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-
       return subject.toSignal()
     }
   }
 
-  private class func _swizzleDeinit() {
-    let originalSelector = sel_getUid("dealloc")
-    let swizzledSelector = NSSelectorFromString("_bnd_dealloc")
+  private class func _swizzleDeinit(onDeinit: @escaping (NSObject) -> Void) {
+    let selector = sel_registerName("dealloc")!
+    var originalImplementation: IMP? = nil
 
-    let originalMethod = class_getInstanceMethod(self, originalSelector)
-    let swizzledMethod = class_getInstanceMethod(self, swizzledSelector)
+    let swizzledImplementationBlock: @convention(block) (UnsafeRawPointer) -> Void = { me in
+      onDeinit(unsafeBitCast(me, to: NSObject.self))
+      let superImplementation = class_getMethodImplementation(class_getSuperclass(self), selector)
+      if let imp = originalImplementation ?? superImplementation {
+        typealias _IMP = @convention(c) (UnsafeRawPointer, Selector) -> Void
+        unsafeBitCast(imp, to: _IMP.self)(me, selector)
+      }
+    }
 
-    let didAddMethod = class_addMethod(self, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
+    let swizzledImplementation = imp_implementationWithBlock(swizzledImplementationBlock)
 
-    if didAddMethod {
-      class_replaceMethod(self, swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod))
-    } else {
-      method_exchangeImplementations(originalMethod, swizzledMethod)
+    if !class_addMethod(self, selector, swizzledImplementation, "v@:") {
+      let method = class_getInstanceMethod(self, selector)
+      originalImplementation = method_getImplementation(method)
+      originalImplementation = method_setImplementation(method, swizzledImplementation)
     }
   }
+}
 
-  @objc fileprivate func _bnd_swift_dealloc() {
-    _willDeallocateSubject?.next(self)
-    _willDeallocateSubject?.completed()
-  }
+fileprivate struct UnownedUnsafe<T: AnyObject> {
+  unowned(unsafe) let unbox: T
+  init(_ value: T) { unbox = value }
 }
