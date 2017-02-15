@@ -625,7 +625,6 @@
 				16210A371D3EC474004AEDF3 /* Sources */,
 				16210A381D3EC474004AEDF3 /* Frameworks */,
 				16210A391D3EC474004AEDF3 /* Headers */,
-				16210A3A1D3EC474004AEDF3 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -682,7 +681,6 @@
 				16D30EA91D6591D300C2435D /* Sources */,
 				16D30EAA1D6591D300C2435D /* Frameworks */,
 				16D30EAB1D6591D300C2435D /* Headers */,
-				16D30EAC1D6591D300C2435D /* Resources */,
 			);
 			buildRules = (
 			);
@@ -702,7 +700,6 @@
 				16D30ED11D65D11900C2435D /* Sources */,
 				16D30ED21D65D11900C2435D /* Frameworks */,
 				16D30ED31D65D11900C2435D /* Headers */,
-				16D30ED41D65D11900C2435D /* Resources */,
 			);
 			buildRules = (
 			);
@@ -837,13 +834,6 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
-		16210A3A1D3EC474004AEDF3 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		16210A431D3EC474004AEDF3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -856,20 +846,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				16887E441D744ABB00EDA099 /* LaunchScreen.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		16D30EAC1D6591D300C2435D /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		16D30ED41D65D11900C2435D /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
