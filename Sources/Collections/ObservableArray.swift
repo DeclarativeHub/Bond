@@ -425,6 +425,35 @@ public extension SignalProtocol where Element: ObservableArrayEventProtocol {
   }
 }
 
+extension SignalProtocol where Element: Collection, Element.Iterator.Element: Equatable {
+
+  // Diff each emitted collection with the previously emitted one.
+  // Returns a signal of ObservableArrayEvents that can be bound to a table or collection view.
+  public func diff() -> Signal<ObservableArrayEvent<Element.Iterator.Element>, Error> {
+    return Signal { observer in
+      var previous: MutableObservableArray<Element.Iterator.Element>? = nil
+      return self.observe { event in
+        switch event {
+        case .next(let element):
+          let array = Array(element)
+          if let previous = previous {
+            let disposable = previous.skip(first: 1).observeNext { event in observer.next(event) }
+            previous.replace(with: array, performDiff: true)
+            disposable.dispose()
+          } else {
+            observer.next(ObservableArrayEvent(change: .reset, source: array))
+          }
+          previous = MutableObservableArray(array)
+        case .failed(let error):
+          observer.failed(error)
+        case .completed:
+          observer.completed()
+        }
+      }
+    }
+  }
+}
+
 fileprivate extension SignalProtocol where Element: Sequence {
 
   /// Unwrap sequence elements into signal elements.
