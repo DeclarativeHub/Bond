@@ -226,6 +226,27 @@
 			remoteGlobalIDString = 16887E361D744ABB00EDA099;
 			remoteInfo = "Bond-App";
 		};
+		9077A6751E54931D004FABE8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C9EE87151CCFCA83006BD90E;
+			remoteInfo = Diff;
+		};
+		9077A67B1E549321004FABE8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C9EE87151CCFCA83006BD90E;
+			remoteInfo = Diff;
+		};
+		9077A67D1E549324004FABE8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C9EE87151CCFCA83006BD90E;
+			remoteInfo = Diff;
+		};
 		90A3FAC71E0C8D8B0086A7F1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */;
@@ -609,6 +630,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				9077A6761E54931D004FABE8 /* PBXTargetDependency */,
 				165217951D70593600C9FAEE /* PBXTargetDependency */,
 			);
 			name = "Bond-iOS";
@@ -665,6 +687,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				9077A67C1E549321004FABE8 /* PBXTargetDependency */,
 				165217981D70594900C9FAEE /* PBXTargetDependency */,
 			);
 			name = "Bond-macOS";
@@ -684,6 +707,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				9077A67E1E549324004FABE8 /* PBXTargetDependency */,
 				1652179B1D70595300C9FAEE /* PBXTargetDependency */,
 			);
 			name = "Bond-tvOS";
@@ -1041,6 +1065,21 @@
 			isa = PBXTargetDependency;
 			target = 16887E361D744ABB00EDA099 /* Bond-App */;
 			targetProxy = 16887E491D744B2900EDA099 /* PBXContainerItemProxy */;
+		};
+		9077A6761E54931D004FABE8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Diff;
+			targetProxy = 9077A6751E54931D004FABE8 /* PBXContainerItemProxy */;
+		};
+		9077A67C1E549321004FABE8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Diff;
+			targetProxy = 9077A67B1E549321004FABE8 /* PBXContainerItemProxy */;
+		};
+		9077A67E1E549324004FABE8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Diff;
+			targetProxy = 9077A67D1E549324004FABE8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
