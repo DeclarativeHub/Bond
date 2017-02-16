@@ -99,30 +99,15 @@ open class DefaultTableViewBond<DataSource: DataSourceProtocol>: TableViewBond {
 		case .reload:
 			tableView.reloadData()
 		case .insertItems(let indexPaths):
-			if !updating && indexPaths.count > 1 {
-				tableView.beginUpdates()
-				defer { tableView.endUpdates() }
-			}
-			indexPaths.forEach { indexPath in
-				tableView.insertRows(at: IndexSet(integer: indexPath.item), withAnimation: insertAnimation ?? [])
-			}
+			let rowIndexes = IndexSet(indexPaths.map { $0.item })
+			tableView.insertRows(at: rowIndexes, withAnimation: insertAnimation ?? [])
 		case .deleteItems(let indexPaths):
-			if !updating && indexPaths.count > 1 {
-				tableView.beginUpdates()
-				defer { tableView.endUpdates() }
-			}
-			indexPaths.forEach { indexPath in
-				tableView.removeRows(at: IndexSet(integer: indexPath.item), withAnimation: deleteAnimation ?? [])
-			}
+			let rowIndexes = IndexSet(indexPaths.map { $0.item })
+			tableView.removeRows(at: rowIndexes, withAnimation: deleteAnimation ?? [])
 		case .reloadItems(let indexPaths):
-			if !updating && indexPaths.count > 1 {
-				tableView.beginUpdates()
-				defer { tableView.endUpdates() }
-			}
-			indexPaths.forEach { indexPath in
-				tableView.removeRows(at: IndexSet(integer: indexPath.item), withAnimation: deleteAnimation ?? [])
-				tableView.insertRows(at: IndexSet(integer: indexPath.item), withAnimation: insertAnimation ?? [])
-			}
+			let rowIndexes = IndexSet(indexPaths.map { $0.item })
+			let columnIndexes = IndexSet(tableView.tableColumns.enumerated().map { $0.0 })
+			tableView.reloadData(forRowIndexes: rowIndexes, columnIndexes: columnIndexes)
 		case .moveItem(let indexPath, let newIndexPath):
 			tableView.moveRow(at: indexPath.item, to: newIndexPath.item)
 		case .insertSections:
