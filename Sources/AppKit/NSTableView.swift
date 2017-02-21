@@ -190,19 +190,10 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Element.
       }
     )
 
-    let serialDisposable = SerialDisposable(otherDisposable: nil)
-
-    serialDisposable.otherDisposable = observeIn(ImmediateOnMainExecutionContext).observeNext { [weak tableView] event in
-      guard let tableView = tableView else {
-        serialDisposable.dispose()
-        return
-      }
-
-			let event = event._unbox
+    return bind(to: tableView) { tableView, event in
+      let event = event._unbox
       dataSource.value = event.dataSource
-			bond.apply(event: event, to: tableView)
-		}
-		
-    return serialDisposable
+      bond.apply(event: event, to: tableView)
+    }
   }
 }

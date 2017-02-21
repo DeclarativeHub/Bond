@@ -81,15 +81,9 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
       map: { (dataSource: DataSource?, _: UICollectionView) -> Int in dataSource?.numberOfSections ?? 0 }
     )
 
-    let serialDisposable = SerialDisposable(otherDisposable: nil)
     var bufferedEvents: [DataSourceEventKind]? = nil
 
-    serialDisposable.otherDisposable = observeIn(ImmediateOnMainExecutionContext).observeNext { [weak collectionView] event in
-      guard let collectionView = collectionView else {
-        serialDisposable.dispose()
-        return
-      }
-
+    return bind(to: collectionView) { collectionView, event in
       dataSource.value = event.dataSource
 
       let applyEventOfKind: (DataSourceEventKind) -> () = { kind in
@@ -139,7 +133,5 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
         }
       }
     }
-    
-    return serialDisposable
   }
 }

@@ -160,19 +160,10 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
       map: { (dataSource: DataSource?, _: UITableView) -> Int in dataSource?.numberOfSections ?? 0 }
     )
 
-    let serialDisposable = SerialDisposable(otherDisposable: nil)
-
-    serialDisposable.otherDisposable = observeIn(ImmediateOnMainExecutionContext).observeNext { [weak tableView] event in
-      guard let tableView = tableView else {
-        serialDisposable.dispose()
-        return
-      }
-
+    return bind(to: tableView) { (tableView, event) in
       let event = event._unbox
       dataSource.value = event.dataSource
       bond.apply(event: event, to: tableView)
     }
-    
-    return serialDisposable
   }
 }
