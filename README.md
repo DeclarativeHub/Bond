@@ -413,7 +413,7 @@ gives us fine-grained notification of mapped array changes.
 Mapping and filtering arrays operates on an array signal. To get the result back as an observable array, just bind it to an instance of ObservableArray.
 
 ```swift
-let nameLengths = ObservableArray<Int>()
+let nameLengths = MutableObservableArray<Int>()
 names.map { $0.characters.count }.bind(to: nameLengths)
 ```
 
