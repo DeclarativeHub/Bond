@@ -1,6 +1,6 @@
 [submodule "Carthage/Checkouts/ReactiveKit"]
 	path = Carthage/Checkouts/ReactiveKit
-	url = ssh://git@github.com/ReactiveKit/ReactiveKit.git
+	url = https://github.com/ReactiveKit/ReactiveKit.git
 [submodule "Carthage/Checkouts/Diff.swift"]
 	path = Carthage/Checkouts/Diff.swift
-	url = ssh://git@github.com/wokalski/Diff.swift.git
+	url = https://github.com/wokalski/Diff.swift.git
