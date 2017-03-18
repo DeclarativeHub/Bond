@@ -101,7 +101,7 @@ NotificationCenter.default.reactive.notification("MyNotification")
   .observeNext { notification in
     print("Got \(notification)")
   }
-  .dispose(in: reactive.bag)
+  .dispose(in: bag)
 ```
 
 Let me give you one last example. Say you have an array of repositories you would like to display in a collection view. For each repository you have a name and its owner's profile photo. Of course, photo is not immediately available as it has to be downloaded, but once you get it, you want it to appear in collection view's cell. Additionally, when user does 'pull down to refresh' and your array gets new repositories, you want those in collection view too.
@@ -234,7 +234,7 @@ and we would like to present a profile screen when a user is sent on the signal.
 presentUserProfile.observeOn(.main).observeNext { [weak self] user in
   let profileViewController = ProfileViewController(user: user)
   self?.present(profileViewController, animated: true)
-}.dispose(in: reactive.bag)
+}.dispose(in: bag)
 ```
 
 But that's ugly! We have to dispatch everything to the main queue, be cautious not to create a retain cycle and ensure that the disposable we get from the observation is handled.
@@ -285,7 +285,7 @@ Now you can do:
 ```swift
 tableView.selectedRow.observeNext { row in
   print("Tapped row at index \(row).")
-}.dispose(in: reactive.bag)
+}.dispose(in: bag)
 ```
 
 **Note:** Protocol proxy takes up delegate slot of the object so if you also need to implement delegate methods manually, don't set `tableView.delegate = x`, rather set `tableView.reactive.delegate.forwardTo = x`.
