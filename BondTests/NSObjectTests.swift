@@ -31,8 +31,8 @@ class NSObjectTests: XCTestCase {
   func testBndBag() {
     let d1 = SimpleDisposable()
     let d2 = SimpleDisposable()
-    object.reactive.bag.add(disposable: d1)
-    d2.dispose(in: object.reactive.bag)
+    object.bag.add(disposable: d1)
+    d2.dispose(in: object.bag)
     object = nil
     XCTAssert(d1.isDisposed)
     XCTAssert(d2.isDisposed)
