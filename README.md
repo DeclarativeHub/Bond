@@ -9,8 +9,6 @@ Bond is a Swift binding framework that takes binding concepts to a whole new lev
 
 Bond is built on top of ReactiveKit and bridges the gap between the reactive and imperative paradigms. You can use it as a standalone framework to simplify your state changes with bindings and reactive data sources, but you can also use it with ReactiveKit to complement your reactive data flows with bindings and reactive delegates and data sources.
 
-**Note: This document describes Bond v6. For changes check out the [migration section](#migration)!**
-
 
 ## What can it do?
 
@@ -168,7 +166,7 @@ name.bind(to: nameLabel)
 
 ## Bindings
 
-Binding is a connection between a Signal/Observable that produces events and a Bond that observers events and performs certain actions (e.g. updates UI).
+Binding is a connection between a signal or observable that produces events and a bond that observers events and performs certain actions (e.g. updates UI).
 
 The producing side of bindings are signals that are defined in ReactiveKit framework on top of which Bond is built. To learn more about signals, consult [ReactiveKit documentation](https://github.com/ReactiveKit/ReactiveKit).
 
@@ -176,11 +174,11 @@ The consuming side of bindings is represented by the `Bond` type. It's a simple 
 
 ```swift
 public struct Bond<Element>: BindableProtocol {
-  public init<Target: Deallocatable>(target: Target, setter: @escaping (Target, Element) -> Void)
+  public init<Target: Deallocatable>(target: Target, context: ExecutionContext, setter: @escaping (Target, Element) -> Void)
 }
 ```
 
-The only requirement is that the target must be "deallocatable", in other words that it provides a Signal of its own deallocation.
+The only requirement is that the target must be "deallocatable", in other words that it provides a signal of its own deallocation.
 
 ```swift
 public protocol Deallocatable: class {

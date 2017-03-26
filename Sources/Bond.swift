@@ -36,6 +36,12 @@ public struct Bond<Element>: BindableProtocol {
     self.setter =  { setter($0 as! Target, $1) }
   }
 
+  public init<Target: Deallocatable>(target: Target, setter: @escaping (Target, Element) -> Void) where Target: BindingExecutionContextProvider {
+    self.target = target
+    self.context = target.bindingExecutionContext
+    self.setter =  { setter($0 as! Target, $1) }
+  }
+
   public func bind(signal: Signal<Element, NoError>) -> Disposable {
     if let target = target {
       return signal.take(until: target.deallocated).observeNext { element in
@@ -63,6 +69,6 @@ extension ReactiveExtensions where Base: Deallocatable, Base: BindingExecutionCo
 
   /// Creates a bond on the receiver.
   public func bond<Element>(setter: @escaping (Base, Element) -> Void) -> Bond<Element> {
-    return bond(context: base.bindingExecutionContext, setter: setter)
+    return Bond(target: base, setter: setter)
   }
 }
