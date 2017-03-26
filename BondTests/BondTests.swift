@@ -19,7 +19,7 @@ class BondTypeTests: XCTestCase {
   // Update closure is called on each next element
   func testExecutes() {
     let target = DummyTarget()
-    let bond = Bond<Int>(target: target) { target, element in
+    let bond = Bond<Int>(target: target, context: .immediate) { target, element in
       target.recordedElements.append(element)
     }
     
@@ -33,7 +33,7 @@ class BondTypeTests: XCTestCase {
     var target: DummyTarget! = DummyTarget()
     weak var weakTarget = target
     
-    let bond = Bond<Int>(target: target) { target, element in
+    let bond = Bond<Int>(target: target, context: .immediate) { target, element in
       target.recordedElements.append(element)
     }
     

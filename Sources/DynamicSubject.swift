@@ -31,6 +31,7 @@ public struct DynamicSubject2<Element, Error: Swift.Error>: SubjectProtocol, Bin
 
   private weak var target: AnyObject?
   private var signal: Signal<Void, Error>
+  private let context: ExecutionContext
   private let getter: (AnyObject) -> Result<Element, Error>
   private let setter: (AnyObject, Element) -> Void
   private let subject = PublishSubject<Void, Error>()
@@ -38,11 +39,13 @@ public struct DynamicSubject2<Element, Error: Swift.Error>: SubjectProtocol, Bin
 
   public init<Target: Deallocatable>(target: Target,
               signal: Signal<Void, Error>,
+              context: ExecutionContext,
               get: @escaping (Target) -> Result<Element, Error>,
               set: @escaping (Target, Element) -> Void,
               triggerEventOnSetting: Bool = true) {
     self.target = target
     self.signal = signal
+    self.context = context
     self.getter = { get($0 as! Target) }
     self.setter = { set($0 as! Target, $1) }
     self.triggerEventOnSetting = triggerEventOnSetting
@@ -50,11 +53,13 @@ public struct DynamicSubject2<Element, Error: Swift.Error>: SubjectProtocol, Bin
 
   public init<Target: Deallocatable>(target: Target,
               signal: Signal<Void, Error>,
+              context: ExecutionContext,
               get: @escaping (Target) -> Element,
               set: @escaping (Target, Element) -> Void,
               triggerEventOnSetting: Bool = true) {
     self.target = target
     self.signal = signal
+    self.context = context
     self.getter = { .success(get($0 as! Target)) }
     self.setter = { set($0 as! Target, $1) }
     self.triggerEventOnSetting = triggerEventOnSetting
@@ -90,9 +95,10 @@ public struct DynamicSubject2<Element, Error: Swift.Error>: SubjectProtocol, Bin
     if let target = target {
       let setter = self.setter
       let subject = self.subject
+      let context = self.context
       let triggerEventOnSetting = self.triggerEventOnSetting
       return signal.take(until: (target as! Deallocatable).deallocated).observe { [weak target] event in
-        ImmediateOnMainExecutionContext { [weak target] in
+        context.execute { [weak target] in
           switch event {
           case .next(let element):
             guard let target = target else { return }
@@ -134,6 +140,7 @@ public struct DynamicSubject2<Element, Error: Swift.Error>: SubjectProtocol, Bin
     return DynamicSubject2<U, Error>(
       target: box,
       signal: signal,
+      context: context,
       get: { [getter] (target) -> Result<U, Error> in
         switch getter(target.object) {
         case .success(let value):
@@ -165,10 +172,20 @@ fileprivate class DynamicSubjectMapBox: Deallocatable {
 extension ReactiveExtensions where Base: Deallocatable {
 
   public func dynamicSubject<Element>(signal: Signal<Void, NoError>,
+                             context: ExecutionContext,
                              triggerEventOnSetting: Bool = true,
                              get: @escaping (Base) -> Element,
                              set: @escaping (Base, Element) -> Void) -> DynamicSubject<Element> {
-    return DynamicSubject(target: base, signal: signal, get: get, set: set, triggerEventOnSetting: triggerEventOnSetting)
+    return DynamicSubject(target: base, signal: signal, context: context, get: get, set: set, triggerEventOnSetting: triggerEventOnSetting)
   }
 }
 
+extension ReactiveExtensions where Base: Deallocatable, Base: BindingExecutionContextProvider {
+
+  public func dynamicSubject<Element>(signal: Signal<Void, NoError>,
+                             triggerEventOnSetting: Bool = true,
+                             get: @escaping (Base) -> Element,
+                             set: @escaping (Base, Element) -> Void) -> DynamicSubject<Element> {
+    return dynamicSubject(signal: signal, context: base.bindingExecutionContext, triggerEventOnSetting: triggerEventOnSetting, get: get, set: set)
+  }
+}

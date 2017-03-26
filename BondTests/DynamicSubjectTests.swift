@@ -27,6 +27,7 @@ class DynamicSubjectTests: XCTestCase {
     let subject = DynamicSubject(
       target: target,
       signal: target.changes.toSignal(),
+      context: .immediate,
       get: { (target) -> Int in target.value },
       set: { (target, new) in target.value = new; target.recordedElements.append(new) }
     )
@@ -54,6 +55,7 @@ class DynamicSubjectTests: XCTestCase {
     let subject = DynamicSubject(
       target: target,
       signal: target.changes.toSignal(),
+      context: .immediate,
       get: { (target) -> Int in target.value },
       set: { (target, new) in target.value = new; target.recordedElements.append(new) }
     )
