@@ -28,6 +28,6 @@ import ReactiveKit
 public extension ReactiveExtensions where Base: NSObject, Base: NSAppearanceCustomization {
 
   public var appearance: Bond<NSAppearance?> {
-    return bond { $0.appearance = $1 }
+    return bond(context: .immediateOnMain) { $0.appearance = $1 }
   }
 }

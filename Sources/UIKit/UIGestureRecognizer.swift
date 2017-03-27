@@ -25,6 +25,10 @@
 import UIKit
 import ReactiveKit
 
+extension UIGestureRecognizer: BindingExecutionContextProvider {
+  public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
+}
+
 public extension ReactiveExtensions where Base: UIGestureRecognizer {
 
   public var isEnabled: Bond<Bool> {

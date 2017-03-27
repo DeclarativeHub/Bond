@@ -35,7 +35,7 @@ public extension NSObject {
   }
 }
 
-public extension ReactiveExtensions where Base: NSObject, Base: BindingExecutionContextProvider {
+public extension ReactiveExtensions where Base: NSObject {
 
   /// Creates a `DynamicSubject` representing the given KVO path of the given type.
   ///
@@ -44,12 +44,12 @@ public extension ReactiveExtensions where Base: NSObject, Base: BindingExecution
   /// - Parameters:
   ///   - keyPath: Key path of the property to wrap.
   ///   - ofType: Type of the propery to wrap, e.g. `Int.self`.
-  ///   - context: Execution context in which to update the property. If nil, uses object's `bindingExecutionContext` provided by `BindingExecutionContextProvider`.
-  public func keyPath<T>(_ keyPath: String, ofType: T.Type, context: ExecutionContext? = nil) -> DynamicSubject<T> {
+  ///   - context: Execution context in which to update the property. Use `.immediateOnMain` to update the object from main queue.
+  public func keyPath<T>(_ keyPath: String, ofType: T.Type, context: ExecutionContext) -> DynamicSubject<T> {
     return DynamicSubject(
       target: base,
       signal: RKKeyValueSignal(keyPath: keyPath, for: base).toSignal(),
-      context: context ?? base.bindingExecutionContext,
+      context: context,
       get: { (target) -> T in
         let maybeValue = target.value(forKeyPath: keyPath)
         if let value = maybeValue as? T {
@@ -72,12 +72,12 @@ public extension ReactiveExtensions where Base: NSObject, Base: BindingExecution
   /// - Parameters:
   ///   - keyPath: Key path of the property to wrap.
   ///   - ofType: Type of the propery to wrap, e.g. `Optional<Int>.self`.
-  ///   - context: Execution context in which to update the property. If nil, uses object's `bindingExecutionContext` provided by `BindingExecutionContextProvider`.
-  public func keyPath<T>(_ keyPath: String, ofType: T.Type, context: ExecutionContext? = nil) -> DynamicSubject<T> where T: OptionalProtocol {
+  ///   - context: Execution context in which to update the property. Use `.immediateOnMain` to update the object from main queue.
+  public func keyPath<T>(_ keyPath: String, ofType: T.Type, context: ExecutionContext) -> DynamicSubject<T> where T: OptionalProtocol {
     return DynamicSubject(
       target: base,
       signal: RKKeyValueSignal(keyPath: keyPath, for: base).toSignal(),
-      context: context ?? base.bindingExecutionContext,
+      context: context,
       get: { (target) -> T in
         let maybeValue = target.value(forKeyPath: keyPath)
         if let value = maybeValue as? T {
@@ -108,12 +108,12 @@ public extension ReactiveExtensions where Base: NSObject, Base: BindingExecution
   /// - Parameters:
   ///   - keyPath: Key path of the property to wrap.
   ///   - ofExpectedType: Type of the propery to wrap, e.g. `Int.self`.
-  ///   - context: Execution context in which to update the property. If nil, uses object's `bindingExecutionContext` provided by `BindingExecutionContextProvider`.
-  public func keyPath<T>(_ keyPath: String, ofExpectedType: T.Type, context: ExecutionContext? = nil) -> DynamicSubject2<T, NSObject.KVOError> {
+  ///   - context: Execution context in which to update the property. Use `.immediateOnMain` to update the object from main queue.
+  public func keyPath<T>(_ keyPath: String, ofExpectedType: T.Type, context: ExecutionContext) -> DynamicSubject2<T, NSObject.KVOError> {
     return DynamicSubject2(
       target: base,
       signal: RKKeyValueSignal(keyPath: keyPath, for: base).castError(),
-      context: context ?? base.bindingExecutionContext,
+      context: context,
       get: { (target) -> Result<T, NSObject.KVOError> in
         let maybeValue = target.value(forKeyPath: keyPath)
         if let value = maybeValue as? T {
@@ -138,12 +138,12 @@ public extension ReactiveExtensions where Base: NSObject, Base: BindingExecution
   /// - Parameters:
   ///   - keyPath: Key path of the property to wrap.
   ///   - ofExpectedType: Type of the propery to wrap, e.g. `Optional<Int>.self`.
-  ///   - context: Execution context in which to update the property. If nil, uses object's `bindingExecutionContext` provided by `BindingExecutionContextProvider`.
-  public func keyPath<T>(_ keyPath: String, ofExpectedType: T.Type, context: ExecutionContext? = nil) -> DynamicSubject2<T, NSObject.KVOError> where T: OptionalProtocol {
+  ///   - context: Execution context in which to update the property. Use `.immediateOnMain` to update the object from main queue.
+  public func keyPath<T>(_ keyPath: String, ofExpectedType: T.Type, context: ExecutionContext) -> DynamicSubject2<T, NSObject.KVOError> where T: OptionalProtocol {
     return DynamicSubject2(
       target: base,
       signal: RKKeyValueSignal(keyPath: keyPath, for: base).castError(),
-      context: context ?? base.bindingExecutionContext,
+      context: context,
       get: { (target) -> Result<T, NSObject.KVOError> in
         let maybeValue = target.value(forKeyPath: keyPath)
         if let value = maybeValue as? T {
@@ -163,6 +163,57 @@ public extension ReactiveExtensions where Base: NSObject, Base: BindingExecution
       },
       triggerEventOnSetting: false
     )
+  }
+}
+
+public extension ReactiveExtensions where Base: NSObject, Base: BindingExecutionContextProvider {
+
+  /// Creates a `DynamicSubject` representing the given KVO path of the given type.
+  ///
+  ///     user.dynamic(keyPath: "name", ofType: String.self)
+  ///
+  /// - Parameters:
+  ///   - keyPath: Key path of the property to wrap.
+  ///   - ofType: Type of the propery to wrap, e.g. `Int.self`.
+  public func keyPath<T>(_ keyPath: String, ofType: T.Type) -> DynamicSubject<T> {
+    return self.keyPath(keyPath, ofType: ofType, context: base.bindingExecutionContext)
+  }
+
+  /// Creates a `DynamicSubject` representing the given KVO path of the given type.
+  ///
+  ///     user.dynamic(keyPath: "name", ofType: Optional<String>.self)
+  ///
+  /// - Parameters:
+  ///   - keyPath: Key path of the property to wrap.
+  ///   - ofType: Type of the propery to wrap, e.g. `Optional<Int>.self`.
+  public func keyPath<T>(_ keyPath: String, ofType: T.Type) -> DynamicSubject<T> where T: OptionalProtocol {
+    return self.keyPath(keyPath, ofType: ofType, context: base.bindingExecutionContext)
+  }
+
+  /// Creates a `DynamicSubject` representing the given KVO path of the given expected type.
+  ///
+  /// If the key path emits a value of type other than `ofExpectedType`, the subject will fail with a `KVOError`.
+  ///
+  ///     user.dynamic(keyPath: "name", ofExpectedType: String.self)
+  ///
+  /// - Parameters:
+  ///   - keyPath: Key path of the property to wrap.
+  ///   - ofExpectedType: Type of the propery to wrap, e.g. `Int.self`.
+  public func keyPath<T>(_ keyPath: String, ofExpectedType: T.Type) -> DynamicSubject2<T, NSObject.KVOError> {
+    return self.keyPath(keyPath, ofExpectedType: ofExpectedType, context: base.bindingExecutionContext)
+  }
+
+  /// Creates a `DynamicSubject` representing the given KVO path of the given expected type.
+  ///
+  /// If the key path emits a value of type other than `ofExpectedType`, the subject will fail with a `KVOError`.
+  ///
+  ///     user.dynamic(keyPath: "name", ofExpectedType: Optional<String>.self)
+  ///
+  /// - Parameters:
+  ///   - keyPath: Key path of the property to wrap.
+  ///   - ofExpectedType: Type of the propery to wrap, e.g. `Optional<Int>.self`.
+  public func keyPath<T>(_ keyPath: String, ofExpectedType: T.Type) -> DynamicSubject2<T, NSObject.KVOError> where T: OptionalProtocol {
+    return self.keyPath(keyPath, ofExpectedType: ofExpectedType, context: base.bindingExecutionContext)
   }
 }
 

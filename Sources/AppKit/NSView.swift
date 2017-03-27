@@ -25,6 +25,10 @@
 import AppKit
 import ReactiveKit
 
+extension NSResponder: BindingExecutionContextProvider {
+  public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
+}
+
 public extension ReactiveExtensions where Base: NSView {
 
   public var alphaValue: Bond<CGFloat> {

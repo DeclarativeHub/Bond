@@ -30,6 +30,10 @@
 
 import ReactiveKit
 
+extension NSLayoutConstraint: BindingExecutionContextProvider {
+  public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
+}
+
 public extension ReactiveExtensions where Base: NSLayoutConstraint {
 
   public var isActive: Bond<Bool> {

@@ -25,6 +25,10 @@
 import QuartzCore
 import ReactiveKit
 
+extension CALayer: BindingExecutionContextProvider {
+  public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
+}
+
 public extension ReactiveExtensions where Base: CALayer {
 
   public var opacity: Bond<Float> {
