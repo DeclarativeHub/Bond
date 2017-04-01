@@ -652,7 +652,7 @@
 				90C04D3A1E8F0B1D000077C8 /* ObservableDictionary.swift */,
 				90C04D3B1E8F0B1D000077C8 /* ObservableSet.swift */,
 			);
-			name = Collections;
+			path = Collections;
 			sourceTree = "<group>";
 		};
 		90C04D571E8F0B4A000077C8 /* UIKit */ = {
@@ -682,7 +682,7 @@
 				90C04D541E8F0B1D000077C8 /* UITextView.swift */,
 				90C04D551E8F0B1D000077C8 /* UIView.swift */,
 			);
-			name = UIKit;
+			path = UIKit;
 			sourceTree = "<group>";
 		};
 		90C04D581E8F0B5E000077C8 /* AppKit */ = {
@@ -704,7 +704,7 @@
 				90C04D351E8F0B1D000077C8 /* NSTextView.swift */,
 				90C04D361E8F0B1D000077C8 /* NSView.swift */,
 			);
-			name = AppKit;
+			path = AppKit;
 			sourceTree = "<group>";
 		};
 		90C04D591E8F0B75000077C8 /* Shared */ = {
@@ -717,7 +717,7 @@
 				90C04D2C1E8F0B1D000077C8 /* NSObject+KVO.swift */,
 				90C04D3E1E8F0B1D000077C8 /* SignalProtocol.swift */,
 			);
-			name = Shared;
+			path = Shared;
 			sourceTree = "<group>";
 		};
 		90C04DC51E8F0BA7000077C8 /* Tests */ = {
