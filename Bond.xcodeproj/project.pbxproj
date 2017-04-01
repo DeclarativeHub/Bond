@@ -76,7 +76,7 @@
 		90A4434D1E9057C200D611FE /* libBNDProtocolProxyBase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A4433F1E90578800D611FE /* libBNDProtocolProxyBase.a */; };
 		90A443501E9057C800D611FE /* libBNDProtocolProxyBase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A4433F1E90578800D611FE /* libBNDProtocolProxyBase.a */; };
 		90A4435D1E90594000D611FE /* Diff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */; };
-		90A443641E905A7000D611FE /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = 90A443631E905A5B00D611FE /* module.modulemap */; };
+		90A443721E905C2D00D611FE /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = 90A443711E905C2400D611FE /* module.modulemap */; };
 		90C04D081E8F0AD4000077C8 /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = 90C04D031E8F0A97000077C8 /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		90C04D091E8F0AD5000077C8 /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = 90C04D031E8F0A97000077C8 /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		90C04D0A1E8F0AD5000077C8 /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = 90C04D031E8F0A97000077C8 /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -349,7 +349,7 @@
 			dstSubfolderSpec = 16;
 			files = (
 				90A443491E9057A900D611FE /* BNDProtocolProxyBase.h in CopyFiles */,
-				90A443641E905A7000D611FE /* module.modulemap in CopyFiles */,
+				90A443721E905C2D00D611FE /* module.modulemap in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -371,7 +371,7 @@
 		90A4435A1E90586600D611FE /* Workspace-Universal-Framework-Target.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Workspace-Universal-Framework-Target.xcconfig"; sourceTree = "<group>"; };
 		90A4435B1E90586600D611FE /* Workspace-Universal-Target-Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Workspace-Universal-Target-Base.xcconfig"; sourceTree = "<group>"; };
 		90A4435C1E90586600D611FE /* Workspace-Universal-Test-Target.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Workspace-Universal-Test-Target.xcconfig"; sourceTree = "<group>"; };
-		90A443631E905A5B00D611FE /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+		90A443711E905C2400D611FE /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		90C04D021E8F0A97000077C8 /* Bond-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Bond-Info.plist"; sourceTree = "<group>"; };
 		90C04D031E8F0A97000077C8 /* Bond.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bond.h; sourceTree = "<group>"; };
 		90C04D041E8F0A97000077C8 /* BondTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BondTests-Info.plist"; sourceTree = "<group>"; };
@@ -582,13 +582,30 @@
 			path = Configuration;
 			sourceTree = "<group>";
 		};
+		90A4436F1E905C2400D611FE /* ModuleMaps */ = {
+			isa = PBXGroup;
+			children = (
+				90A443701E905C2400D611FE /* BNDProtocolProxyBase */,
+			);
+			path = ModuleMaps;
+			sourceTree = "<group>";
+		};
+		90A443701E905C2400D611FE /* BNDProtocolProxyBase */ = {
+			isa = PBXGroup;
+			children = (
+				90A443711E905C2400D611FE /* module.modulemap */,
+			);
+			path = BNDProtocolProxyBase;
+			sourceTree = "<group>";
+		};
 		90C04D011E8F0A97000077C8 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				90A443591E90586600D611FE /* Configuration */,
 				90C04D021E8F0A97000077C8 /* Bond-Info.plist */,
 				90C04D031E8F0A97000077C8 /* Bond.h */,
 				90C04D041E8F0A97000077C8 /* BondTests-Info.plist */,
+				90A443591E90586600D611FE /* Configuration */,
+				90A4436F1E905C2400D611FE /* ModuleMaps */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -606,7 +623,6 @@
 			isa = PBXGroup;
 			children = (
 				90C04D181E8F0B12000077C8 /* BNDProtocolProxyBase.h */,
-				90A443631E905A5B00D611FE /* module.modulemap */,
 			);
 			path = include;
 			sourceTree = "<group>";
@@ -1622,6 +1638,7 @@
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEFINES_MODULE = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1634,6 +1651,7 @@
 			buildSettings = {
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEFINES_MODULE = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
