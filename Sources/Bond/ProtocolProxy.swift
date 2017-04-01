@@ -25,6 +25,7 @@
 import Foundation
 import ObjectiveC
 import ReactiveKit
+import BNDProtocolProxyBase
 
 public typealias ArgumentExtractor = (Int, UnsafeMutableRawPointer?) -> Void
 public typealias ReturnValueSetter = (UnsafeMutableRawPointer?) -> Void

@@ -70,12 +70,16 @@
 		90A443381E9055D800D611FE /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D531E8F0B1D000077C8 /* UITextField.swift */; };
 		90A443391E9055D800D611FE /* UITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D541E8F0B1D000077C8 /* UITextView.swift */; };
 		90A4433A1E9055D800D611FE /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D551E8F0B1D000077C8 /* UIView.swift */; };
+		90A443481E9057A200D611FE /* BNDProtocolProxyBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D161E8F0B12000077C8 /* BNDProtocolProxyBase.m */; };
+		90A443491E9057A900D611FE /* BNDProtocolProxyBase.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 90C04D181E8F0B12000077C8 /* BNDProtocolProxyBase.h */; };
+		90A4434C1E9057BD00D611FE /* libBNDProtocolProxyBase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A4433F1E90578800D611FE /* libBNDProtocolProxyBase.a */; };
+		90A4434D1E9057C200D611FE /* libBNDProtocolProxyBase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A4433F1E90578800D611FE /* libBNDProtocolProxyBase.a */; };
+		90A443501E9057C800D611FE /* libBNDProtocolProxyBase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A4433F1E90578800D611FE /* libBNDProtocolProxyBase.a */; };
+		90A4435D1E90594000D611FE /* Diff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */; };
+		90A443641E905A7000D611FE /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = 90A443631E905A5B00D611FE /* module.modulemap */; };
 		90C04D081E8F0AD4000077C8 /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = 90C04D031E8F0A97000077C8 /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		90C04D091E8F0AD5000077C8 /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = 90C04D031E8F0A97000077C8 /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		90C04D0A1E8F0AD5000077C8 /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = 90C04D031E8F0A97000077C8 /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		90C04D191E8F0B12000077C8 /* BNDProtocolProxyBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D161E8F0B12000077C8 /* BNDProtocolProxyBase.m */; };
-		90C04D1A1E8F0B12000077C8 /* BNDProtocolProxyBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D161E8F0B12000077C8 /* BNDProtocolProxyBase.m */; };
-		90C04D1B1E8F0B12000077C8 /* BNDProtocolProxyBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D161E8F0B12000077C8 /* BNDProtocolProxyBase.m */; };
 		90C04D1C1E8F0B12000077C8 /* BNDProtocolProxyBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 90C04D181E8F0B12000077C8 /* BNDProtocolProxyBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		90C04D1D1E8F0B12000077C8 /* BNDProtocolProxyBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 90C04D181E8F0B12000077C8 /* BNDProtocolProxyBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		90C04D1E1E8F0B12000077C8 /* BNDProtocolProxyBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 90C04D181E8F0B12000077C8 /* BNDProtocolProxyBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -314,7 +318,42 @@
 			remoteGlobalIDString = C9838FF11D29571000691BE8;
 			remoteInfo = DiffTests;
 		};
+		90A4434A1E9057B800D611FE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 16210A331D3EC474004AEDF3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 90A4433E1E90578800D611FE;
+			remoteInfo = BNDProtocolProxyBase;
+		};
+		90A4434E1E9057C400D611FE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 16210A331D3EC474004AEDF3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 90A4433E1E90578800D611FE;
+			remoteInfo = BNDProtocolProxyBase;
+		};
+		90A443511E9057CA00D611FE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 16210A331D3EC474004AEDF3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 90A4433E1E90578800D611FE;
+			remoteInfo = BNDProtocolProxyBase;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		90A4433D1E90578800D611FE /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				90A443491E9057A900D611FE /* BNDProtocolProxyBase.h in CopyFiles */,
+				90A443641E905A7000D611FE /* module.modulemap in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		161D6D2D1D6F0D92004CA17D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -328,6 +367,11 @@
 		16D30EAE1D6591D300C2435D /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		16D30ED61D65D11900C2435D /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Diff.xcodeproj; path = Carthage/Checkouts/Diff.swift/Diff.xcodeproj; sourceTree = "<group>"; };
+		90A4433F1E90578800D611FE /* libBNDProtocolProxyBase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBNDProtocolProxyBase.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		90A4435A1E90586600D611FE /* Workspace-Universal-Framework-Target.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Workspace-Universal-Framework-Target.xcconfig"; sourceTree = "<group>"; };
+		90A4435B1E90586600D611FE /* Workspace-Universal-Target-Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Workspace-Universal-Target-Base.xcconfig"; sourceTree = "<group>"; };
+		90A4435C1E90586600D611FE /* Workspace-Universal-Test-Target.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Workspace-Universal-Test-Target.xcconfig"; sourceTree = "<group>"; };
+		90A443631E905A5B00D611FE /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		90C04D021E8F0A97000077C8 /* Bond-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Bond-Info.plist"; sourceTree = "<group>"; };
 		90C04D031E8F0A97000077C8 /* Bond.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bond.h; sourceTree = "<group>"; };
 		90C04D041E8F0A97000077C8 /* BondTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BondTests-Info.plist"; sourceTree = "<group>"; };
@@ -408,6 +452,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90A4434C1E9057BD00D611FE /* libBNDProtocolProxyBase.a in Frameworks */,
 				90A3FACD1E0C8D9A0086A7F1 /* Diff.framework in Frameworks */,
 				165217961D70593E00C9FAEE /* ReactiveKit.framework in Frameworks */,
 			);
@@ -417,6 +462,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90A4435D1E90594000D611FE /* Diff.framework in Frameworks */,
 				16887E2E1D7444C900EDA099 /* ReactiveKit.framework in Frameworks */,
 				16210A461D3EC474004AEDF3 /* Bond.framework in Frameworks */,
 			);
@@ -435,6 +481,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90A4434D1E9057C200D611FE /* libBNDProtocolProxyBase.a in Frameworks */,
 				90A3FACE1E0C8D9F0086A7F1 /* Diff.framework in Frameworks */,
 				165217991D70594D00C9FAEE /* ReactiveKit.framework in Frameworks */,
 			);
@@ -444,6 +491,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90A443501E9057C800D611FE /* libBNDProtocolProxyBase.a in Frameworks */,
 				90A3FACF1E0C8DA20086A7F1 /* Diff.framework in Frameworks */,
 				1652179C1D70595600C9FAEE /* ReactiveKit.framework in Frameworks */,
 			);
@@ -479,6 +527,7 @@
 				16D30EAE1D6591D300C2435D /* Bond.framework */,
 				16D30ED61D65D11900C2435D /* Bond.framework */,
 				16887E371D744ABB00EDA099 /* Bond-App.app */,
+				90A4433F1E90578800D611FE /* libBNDProtocolProxyBase.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -523,9 +572,20 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		90A443591E90586600D611FE /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				90A4435A1E90586600D611FE /* Workspace-Universal-Framework-Target.xcconfig */,
+				90A4435B1E90586600D611FE /* Workspace-Universal-Target-Base.xcconfig */,
+				90A4435C1E90586600D611FE /* Workspace-Universal-Test-Target.xcconfig */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
 		90C04D011E8F0A97000077C8 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				90A443591E90586600D611FE /* Configuration */,
 				90C04D021E8F0A97000077C8 /* Bond-Info.plist */,
 				90C04D031E8F0A97000077C8 /* Bond.h */,
 				90C04D041E8F0A97000077C8 /* BondTests-Info.plist */,
@@ -546,6 +606,7 @@
 			isa = PBXGroup;
 			children = (
 				90C04D181E8F0B12000077C8 /* BNDProtocolProxyBase.h */,
+				90A443631E905A5B00D611FE /* module.modulemap */,
 			);
 			path = include;
 			sourceTree = "<group>";
@@ -713,6 +774,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				90A4434B1E9057B800D611FE /* PBXTargetDependency */,
 				9077A6761E54931D004FABE8 /* PBXTargetDependency */,
 				165217951D70593600C9FAEE /* PBXTargetDependency */,
 			);
@@ -769,6 +831,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				90A4434F1E9057C400D611FE /* PBXTargetDependency */,
 				9077A67C1E549321004FABE8 /* PBXTargetDependency */,
 				165217981D70594900C9FAEE /* PBXTargetDependency */,
 			);
@@ -788,6 +851,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				90A443521E9057CA00D611FE /* PBXTargetDependency */,
 				9077A67E1E549324004FABE8 /* PBXTargetDependency */,
 				1652179B1D70595300C9FAEE /* PBXTargetDependency */,
 			);
@@ -795,6 +859,22 @@
 			productName = "Bond-tvOS";
 			productReference = 16D30ED61D65D11900C2435D /* Bond.framework */;
 			productType = "com.apple.product-type.framework";
+		};
+		90A4433E1E90578800D611FE /* BNDProtocolProxyBase */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 90A443451E90578800D611FE /* Build configuration list for PBXNativeTarget "BNDProtocolProxyBase" */;
+			buildPhases = (
+				90A4433B1E90578800D611FE /* Sources */,
+				90A4433D1E90578800D611FE /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BNDProtocolProxyBase;
+			productName = BNDProtocolProxyBase;
+			productReference = 90A4433F1E90578800D611FE /* libBNDProtocolProxyBase.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -831,6 +911,10 @@
 						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 					};
+					90A4433E1E90578800D611FE = {
+						CreatedOnToolsVersion = 8.3;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 16210A361D3EC474004AEDF3 /* Build configuration list for PBXProject "Bond" */;
@@ -859,6 +943,7 @@
 				16210A3B1D3EC474004AEDF3 /* Bond-iOS */,
 				16D30EAD1D6591D300C2435D /* Bond-macOS */,
 				16D30ED51D65D11900C2435D /* Bond-tvOS */,
+				90A4433E1E90578800D611FE /* BNDProtocolProxyBase */,
 				16210A441D3EC474004AEDF3 /* BondTests */,
 				16887E361D744ABB00EDA099 /* Bond-App */,
 			);
@@ -989,7 +1074,6 @@
 				90C04D751E8F0B89000077C8 /* QueryableDataSource.swift in Sources */,
 				90C04D771E8F0B89000077C8 /* NotificationCenter.swift in Sources */,
 				90C04D781E8F0B89000077C8 /* NSObject+KVO.swift in Sources */,
-				90C04D191E8F0B12000077C8 /* BNDProtocolProxyBase.m in Sources */,
 				90A443081E9055D100D611FE /* NSColorWell.swift in Sources */,
 				90C04DBB1E8F0B97000077C8 /* UIProgressView.swift in Sources */,
 				90C04DB31E8F0B97000077C8 /* UICollectionView.swift in Sources */,
@@ -1075,7 +1159,6 @@
 				90A443251E9055D800D611FE /* UIApplication.swift in Sources */,
 				90C04D6D1E8F0B89000077C8 /* NSObject+KVO.swift in Sources */,
 				90C04D8F1E8F0B91000077C8 /* Observable2DArray.swift in Sources */,
-				90C04D1A1E8F0B12000077C8 /* BNDProtocolProxyBase.m in Sources */,
 				90A443241E9055D800D611FE /* UIActivityIndicatorView.swift in Sources */,
 				90C04D921E8F0B91000077C8 /* ObservableSet.swift in Sources */,
 				90A443281E9055D800D611FE /* UIButton.swift in Sources */,
@@ -1138,11 +1221,18 @@
 				90C04D5F1E8F0B88000077C8 /* QueryableDataSource.swift in Sources */,
 				90C04D611E8F0B88000077C8 /* NotificationCenter.swift in Sources */,
 				90C04D621E8F0B88000077C8 /* NSObject+KVO.swift in Sources */,
-				90C04D1B1E8F0B12000077C8 /* BNDProtocolProxyBase.m in Sources */,
 				90A443171E9055D200D611FE /* NSColorWell.swift in Sources */,
 				90C04DA41E8F0B96000077C8 /* UIProgressView.swift in Sources */,
 				90C04D9C1E8F0B96000077C8 /* UICollectionView.swift in Sources */,
 				90C04D8E1E8F0B91000077C8 /* ObservableSet.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		90A4433B1E90578800D611FE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				90A443481E9057A200D611FE /* BNDProtocolProxyBase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1193,6 +1283,21 @@
 			isa = PBXTargetDependency;
 			name = Diff;
 			targetProxy = 9077A67D1E549324004FABE8 /* PBXContainerItemProxy */;
+		};
+		90A4434B1E9057B800D611FE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 90A4433E1E90578800D611FE /* BNDProtocolProxyBase */;
+			targetProxy = 90A4434A1E9057B800D611FE /* PBXContainerItemProxy */;
+		};
+		90A4434F1E9057C400D611FE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 90A4433E1E90578800D611FE /* BNDProtocolProxyBase */;
+			targetProxy = 90A4434E1E9057C400D611FE /* PBXContainerItemProxy */;
+		};
+		90A443521E9057CA00D611FE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 90A4433E1E90578800D611FE /* BNDProtocolProxyBase */;
+			targetProxy = 90A443511E9057CA00D611FE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1249,6 +1354,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1295,6 +1401,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -1424,7 +1531,6 @@
 				INFOPLIST_FILE = "Supporting Files/$(PRODUCT_NAME)-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = ReactiveKit.Bond;
 				PRODUCT_NAME = Bond;
 				SDKROOT = macosx;
@@ -1451,7 +1557,6 @@
 				INFOPLIST_FILE = "Supporting Files/$(PRODUCT_NAME)-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = ReactiveKit.Bond;
 				PRODUCT_NAME = Bond;
 				SDKROOT = macosx;
@@ -1511,6 +1616,30 @@
 			};
 			name = Release;
 		};
+		90A443461E90578800D611FE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 90A4435B1E90586600D611FE /* Workspace-Universal-Target-Base.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		90A443471E90578800D611FE /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 90A4435B1E90586600D611FE /* Workspace-Universal-Target-Base.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1564,6 +1693,15 @@
 			buildConfigurations = (
 				16D30EDC1D65D11900C2435D /* Debug */,
 				16D30EDD1D65D11900C2435D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		90A443451E90578800D611FE /* Build configuration list for PBXNativeTarget "BNDProtocolProxyBase" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				90A443461E90578800D611FE /* Debug */,
+				90A443471E90578800D611FE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

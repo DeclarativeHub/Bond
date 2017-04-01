@@ -1,0 +1,4 @@
+module BNDProtocolProxyBase {
+  umbrella header "BNDProtocolProxyBase.h"
+  export *
+}
