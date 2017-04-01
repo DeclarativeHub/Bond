@@ -1,0 +1,18 @@
+{
+  "autoPin": true,
+  "pins": [
+    {
+      "package": "Diff",
+      "reason": null,
+      "repositoryURL": "https://github.com/wokalski/Diff.swift.git",
+      "version": "0.5.3"
+    },
+    {
+      "package": "ReactiveKit",
+      "reason": null,
+      "repositoryURL": "https://github.com/ReactiveKit/ReactiveKit.git",
+      "version": "3.5.1"
+    }
+  ],
+  "version": 1
+}
