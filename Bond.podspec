@@ -23,9 +23,9 @@ Pod::Spec.new do |s|
   s.tvos.deployment_target = '9.0'
   s.source       = { :git => "https://github.com/SwiftBond/Bond.git", :tag => "6.2.2" }
   s.source_files  = 'Sources/**/*.swift', 'Bond/*.{h,m,swift}'
-  s.ios.exclude_files = "Sources/AppKit"
-  s.tvos.exclude_files = "Sources/AppKit"
-  s.osx.exclude_files = "Sources/UIKit"
+  s.ios.exclude_files = "Sources/Bond/AppKit"
+  s.tvos.exclude_files = "Sources/Bond/AppKit"
+  s.osx.exclude_files = "Sources/Bond/UIKit"
   s.requires_arc = true
 
   s.dependency 'ReactiveKit', '~> 3.5.1'
