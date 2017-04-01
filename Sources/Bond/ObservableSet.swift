@@ -22,6 +22,7 @@
 //  THE SOFTWARE.
 //
 
+import Foundation
 import ReactiveKit
 
 public enum ObservableSetEventKind<Element: Hashable> {
