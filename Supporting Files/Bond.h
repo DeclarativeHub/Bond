@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Bond/BNDProtocolProxyBase.h>
 
 //! Project version number for Bond.
 FOUNDATION_EXPORT double BondVersionNumber;
@@ -15,5 +16,4 @@ FOUNDATION_EXPORT double BondVersionNumber;
 FOUNDATION_EXPORT const unsigned char BondVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <Bond/PublicHeader.h>
-
 
