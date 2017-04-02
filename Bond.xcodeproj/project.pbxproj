@@ -198,6 +198,8 @@
 		90C04DDA1E8F0BAF000077C8 /* UICollectionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04DCF1E8F0BA7000077C8 /* UICollectionViewTests.swift */; };
 		90C04DDB1E8F0BAF000077C8 /* UIKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04DD01E8F0BA7000077C8 /* UIKitTests.swift */; };
 		90C04DDC1E8F0BAF000077C8 /* UITableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04DD11E8F0BA7000077C8 /* UITableViewTests.swift */; };
+		EC86E9AF1E9145CC008563B2 /* UIAccessibilityIdentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC86E9AE1E9145CC008563B2 /* UIAccessibilityIdentification.swift */; };
+		EC86E9B01E9145CC008563B2 /* UIAccessibilityIdentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC86E9AE1E9145CC008563B2 /* UIAccessibilityIdentification.swift */; };
 		EC9693661D947243004EB5EE /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16210A3C1D3EC474004AEDF3 /* Bond.framework */; };
 		EC9693671D94724C004EB5EE /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1652178B1D70591E00C9FAEE /* ReactiveKit.framework */; };
 /* End PBXBuildFile section */
@@ -400,6 +402,7 @@
 		90C04DD01E8F0BA7000077C8 /* UIKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitTests.swift; sourceTree = "<group>"; };
 		90C04DD11E8F0BA7000077C8 /* UITableViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewTests.swift; sourceTree = "<group>"; };
 		EC378E961E13FFD100E2197D /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		EC86E9AE1E9145CC008563B2 /* UIAccessibilityIdentification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAccessibilityIdentification.swift; sourceTree = "<group>"; };
 		ECD5940B1D93F2E400C840C2 /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		ECD5940C1D93F2ED00C840C2 /* Bond.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Bond.podspec; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -594,6 +597,7 @@
 				90C04D471E8F0B1D000077C8 /* UIGestureRecognizer.swift */,
 				90C04D481E8F0B1D000077C8 /* UIImageView.swift */,
 				90C04D491E8F0B1D000077C8 /* UILabel.swift */,
+				EC86E9AE1E9145CC008563B2 /* UIAccessibilityIdentification.swift */,
 				90C04D4A1E8F0B1D000077C8 /* UINavigationBar.swift */,
 				90C04D4B1E8F0B1D000077C8 /* UINavigationItem.swift */,
 				90C04D4C1E8F0B1D000077C8 /* UIProgressView.swift */,
@@ -960,6 +964,7 @@
 				90C04DAE1E8F0B97000077C8 /* UIActivityIndicatorView.swift in Sources */,
 				90C04DB11E8F0B97000077C8 /* UIBarItem.swift in Sources */,
 				90C04DC41E8F0B97000077C8 /* UIView.swift in Sources */,
+				EC86E9AF1E9145CC008563B2 /* UIAccessibilityIdentification.swift in Sources */,
 				90A4430D1E9055D100D611FE /* NSProgressIndicator.swift in Sources */,
 				90C04DB91E8F0B97000077C8 /* UINavigationBar.swift in Sources */,
 				90C04DBE1E8F0B97000077C8 /* UISlider.swift in Sources */,
@@ -1109,6 +1114,7 @@
 				90C04D971E8F0B96000077C8 /* UIActivityIndicatorView.swift in Sources */,
 				90C04D9A1E8F0B96000077C8 /* UIBarItem.swift in Sources */,
 				90C04DAD1E8F0B96000077C8 /* UIView.swift in Sources */,
+				EC86E9B01E9145CC008563B2 /* UIAccessibilityIdentification.swift in Sources */,
 				90A4431C1E9055D200D611FE /* NSProgressIndicator.swift in Sources */,
 				90C04DA21E8F0B96000077C8 /* UINavigationBar.swift in Sources */,
 				90C04DA71E8F0B96000077C8 /* UISlider.swift in Sources */,
