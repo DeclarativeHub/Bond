@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <Bond/BNDProtocolProxyBase.h>
 
 //! Project version number for Bond.
 FOUNDATION_EXPORT double BondVersionNumber;
