@@ -44,7 +44,7 @@ public extension NSObject {
         if let value = maybeValue as? T {
           return value
         } else {
-          fatalError("Could not convert \(maybeValue) to \(T.self). Maybe `dynamic(keyPath:ofExpectedType:)` method might be of help?)")
+          fatalError("Could not convert \(String(describing: maybeValue)) to \(T.self). Maybe `dynamic(keyPath:ofExpectedType:)` method might be of help?)")
         }
       },
       set: {
@@ -69,7 +69,7 @@ public extension NSObject {
         } else if maybeValue == nil {
           return T(nilLiteral: ())
         } else {
-          fatalError("Could not convert \(maybeValue) to \(T.self). Maybe `dynamic(keyPath:ofExpectedType:)` method might be of help?)")
+          fatalError("Could not convert \(String(describing: maybeValue)) to \(T.self). Maybe `dynamic(keyPath:ofExpectedType:)` method might be of help?)")
         }
       },
       set: {
@@ -98,7 +98,7 @@ public extension NSObject {
         if let value = maybeValue as? T {
           return .success(value)
         } else {
-          return .failure(.notConvertible("Could not convert \(maybeValue) to \(T.self)."))
+          return .failure(.notConvertible("Could not convert \(String(describing: maybeValue)) to \(T.self)."))
         }
       },
       set: {
@@ -125,7 +125,7 @@ public extension NSObject {
         } else if maybeValue == nil {
           return .success(T(nilLiteral: ()))
         } else {
-          return .failure(.notConvertible("Could not convert \(maybeValue) to \(T.self)."))
+          return .failure(.notConvertible("Could not convert \(String(describing: maybeValue)) to \(T.self)."))
         }
       },
       set: {
@@ -146,7 +146,7 @@ private class RKKeyValueSignal: NSObject, SignalProtocol {
   private weak var object: NSObject? = nil
   private var context = 0
   private var keyPath: String
-  private let subject: AnySubject<Void, NoError>
+  private let subject: Subject<Void, NoError>
   private var numberOfObservers: Int = 0
   private var observing = false
   private let deallocationDisposable = SerialDisposable(otherDisposable: nil)
@@ -154,7 +154,7 @@ private class RKKeyValueSignal: NSObject, SignalProtocol {
   
   fileprivate init(keyPath: String, for object: NSObject) {
     self.keyPath = keyPath
-    self.subject = AnySubject(base: PublishSubject())
+    self.subject = PublishSubject()
     self.object = object
     super.init()
 

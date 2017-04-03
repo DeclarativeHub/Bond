@@ -90,7 +90,7 @@ public struct DynamicSubject2<Target: Deallocatable, Element, Error: Swift.Error
       let subject = self.subject
       let triggerEventOnSetting = self.triggerEventOnSetting
       return signal.take(until: target.bnd_deallocated).observe { [weak target] event in
-        ImmediateOnMainExecutionContext { [weak target] in
+        ExecutionContext.immediateOnMain.execute { [weak target] in
           switch event {
           case .next(let element):
             guard let target = target else { return }

@@ -37,7 +37,7 @@ public struct Bond<Target: Deallocatable, Element>: BindableProtocol {
   public func bind(signal: Signal<Element, NoError>) -> Disposable {
     if let target = target {
       return signal.take(until: target.bnd_deallocated).observeNext { element in
-        ImmediateOnMainExecutionContext {
+        ExecutionContext.immediateOnMain.execute {
           if let target = self.target {
             self.setter(target, element)
           }

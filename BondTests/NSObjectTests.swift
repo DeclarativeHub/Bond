@@ -32,7 +32,7 @@ class NSObjectTests: XCTestCase {
     let d1 = SimpleDisposable()
     let d2 = SimpleDisposable()
     object.bnd_bag.add(disposable: d1)
-    d2.disposeIn(object.bnd_bag)
+    d2.dispose(in: object.bnd_bag)
     object = nil
     XCTAssert(d1.isDisposed)
     XCTAssert(d2.isDisposed)
