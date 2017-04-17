@@ -63,21 +63,22 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
   public func bind<B: CollectionViewBond>(to collectionView: UICollectionView, using bond: B) -> Disposable where B.DataSource == DataSource {
 
     let dataSource = Property<DataSource?>(nil)
+    let disposable = CompositeDisposable()
 
-    collectionView.reactive.dataSource.feed(
+    disposable += collectionView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(UICollectionViewDataSource.collectionView(_:cellForItemAt:)),
       map: { (dataSource: DataSource?, collectionView: UICollectionView, indexPath: NSIndexPath) -> UICollectionViewCell in
         return bond.cellForRow(at: indexPath as IndexPath, collectionView: collectionView, dataSource: dataSource!)
     })
 
-    collectionView.reactive.dataSource.feed(
+    disposable += collectionView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(UICollectionViewDataSource.collectionView(_:numberOfItemsInSection:)),
       map: { (dataSource: DataSource?, _: UICollectionView, section: Int) -> Int in dataSource?.numberOfItems(inSection: section) ?? 0 }
     )
 
-    collectionView.reactive.dataSource.feed(
+    disposable += collectionView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(UICollectionViewDataSource.numberOfSections(in:)),
       map: { (dataSource: DataSource?, _: UICollectionView) -> Int in dataSource?.numberOfSections ?? 0 }
@@ -85,7 +86,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
 
     var bufferedEvents: [DataSourceEventKind]? = nil
 
-    return bind(to: collectionView) { collectionView, event in
+    disposable += bind(to: collectionView) { collectionView, event in
       dataSource.value = event.dataSource
 
       let applyEventOfKind: (DataSourceEventKind) -> () = { kind in
@@ -135,6 +136,8 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
         }
       }
     }
+
+    return disposable
   }
 }
 

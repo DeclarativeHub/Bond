@@ -158,8 +158,9 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Element.
 	public func bind<B: TableViewBond>(to tableView: NSTableView, using bond: B) -> Disposable where B.DataSource == DataSource {
 	
     let dataSource = Property<DataSource?>(nil)
+    let disposable = CompositeDisposable()
 
-		tableView.reactive.delegate.feed(
+		disposable += tableView.reactive.delegate.feed(
 			property: dataSource,
 			to: #selector(NSTableViewDelegate.tableView(_:heightOfRow:)),
 			map: { (dataSource: DataSource?, tableView: NSTableView, row: Int) -> CGFloat in
@@ -167,7 +168,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Element.
 				return bond.heightForRow(at: row, tableView: tableView, dataSource: dataSource) ?? tableView.rowHeight
 		})
 	
-    tableView.reactive.delegate.feed(
+    disposable += tableView.reactive.delegate.feed(
       property: dataSource,
       to: #selector(NSTableViewDelegate.tableView(_:viewFor:row:)),
       map: { (dataSource: DataSource?, tableView: NSTableView, _: NSTableColumn, row: Int) -> NSView? in
@@ -176,7 +177,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Element.
       }
     )
 
-    tableView.reactive.dataSource.feed(
+    disposable += tableView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(NSTableViewDataSource.numberOfRows(in:)),
       map: { (dataSource: DataSource?, _: NSTableView) -> Int in
@@ -184,7 +185,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Element.
       }
     )
 
-    tableView.reactive.dataSource.feed(
+    disposable += tableView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(NSTableViewDataSource.tableView(_:objectValueFor:row:)),
       map: { (dataSource: DataSource?, _: NSTableView, _: NSTableColumn, row: Int) -> Any? in
@@ -192,11 +193,13 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Element.
       }
     )
 
-    return bind(to: tableView) { tableView, event in
+    disposable += bind(to: tableView) { tableView, event in
       let event = event._unbox
       dataSource.value = event.dataSource
       bond.apply(event: event, to: tableView)
     }
+
+    return disposable
   }
 }
 

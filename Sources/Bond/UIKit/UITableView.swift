@@ -124,15 +124,16 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
   @discardableResult
   public func bind<B: TableViewBond>(to tableView: UITableView, using bond: B) -> Disposable where B.DataSource == DataSource {
     let dataSource = Property<DataSource?>(nil)
+    let disposable = CompositeDisposable()
 
-    tableView.reactive.dataSource.feed(
+    disposable += tableView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(UITableViewDataSource.tableView(_:cellForRowAt:)),
       map: { (dataSource: DataSource?, tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell in
         return bond.cellForRow(at: indexPath as IndexPath, tableView: tableView, dataSource: dataSource!)
     })
 
-    tableView.reactive.dataSource.feed(
+    disposable += tableView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(UITableViewDataSource.tableView(_:titleForHeaderInSection:)),
       map: { (dataSource: DataSource?, tableView: UITableView, index: Int) -> NSString? in
@@ -140,7 +141,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
         return bond.titleForHeader(in: index, dataSource: dataSource) as NSString?
     })
 
-    tableView.reactive.dataSource.feed(
+    disposable += tableView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(UITableViewDataSource.tableView(_:titleForFooterInSection:)),
       map: { (dataSource: DataSource?, tableView: UITableView, index: Int) -> NSString? in
@@ -149,24 +150,26 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Error ==
     })
 
 
-    tableView.reactive.dataSource.feed(
+    disposable += tableView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(UITableViewDataSource.tableView(_:numberOfRowsInSection:)),
       map: { (dataSource: DataSource?, _: UITableView, section: Int) -> Int in
         dataSource?.numberOfItems(inSection: section) ?? 0
     })
 
-    tableView.reactive.dataSource.feed(
+    disposable += tableView.reactive.dataSource.feed(
       property: dataSource,
       to: #selector(UITableViewDataSource.numberOfSections(in:)),
       map: { (dataSource: DataSource?, _: UITableView) -> Int in dataSource?.numberOfSections ?? 0 }
     )
 
-    return bind(to: tableView) { (tableView, event) in
+    disposable += bind(to: tableView) { (tableView, event) in
       let event = event._unbox
       dataSource.value = event.dataSource
       bond.apply(event: event, to: tableView)
     }
+
+    return disposable
   }
 }
 

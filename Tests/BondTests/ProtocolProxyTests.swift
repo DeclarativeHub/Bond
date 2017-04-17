@@ -10,7 +10,7 @@ import XCTest
 import ReactiveKit
 @testable import Bond
 
-@objc protocol TestDelegate {
+@objc protocol TestDelegate: NSObjectProtocol {
   func methodA()
   func methodB(_ object: TestObject)
   func methodC(_ object: TestObject, value: Int)
@@ -51,6 +51,27 @@ class ProtocolProxyTests: XCTestCase {
 
   override func setUp() {
     object = TestObject()
+  }
+
+  func testDisposing() {
+    var callCount = 0
+    let stream = delegate.signal(for: #selector(TestDelegate.methodA)) { (stream: PublishSubject1<Int>) in
+      callCount += 1
+    }
+
+    let disposable = stream.observe { _ in }
+
+    if object.delegate.responds(to: #selector(TestDelegate.methodA)) {
+      object.callMethodA()
+    }
+
+    disposable.dispose()
+
+    if object.delegate.responds(to: #selector(TestDelegate.methodA)) {
+      object.callMethodA()
+    }
+    
+    XCTAssertEqual(callCount, 1)
   }
 
   func testCallbackA() {
