@@ -50,7 +50,7 @@ public extension ReactiveExtensions where Base: UIButton {
   }
   
   public var image: Bond<UIImage> {
-    return bond { $0.setimage($1, for: .normal) }
+    return bond { $0.setImage($1, for: .normal) }
   }
 }
 
