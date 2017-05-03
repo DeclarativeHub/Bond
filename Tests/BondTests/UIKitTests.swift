@@ -85,6 +85,15 @@ class BondTests: XCTestCase {
     SafeSignal.just(false).bind(to: view.reactive.isHighlighted)
     XCTAssertEqual(view.isHighlighted, false)
     
+    let image = UIImage()
+    let image2 = UIImage()
+    
+    SafeSignal.just(image).bind(to: view.reactive.backgroungImage)
+    XCTAssertEqual(view.backgroundImage(for: .normal), image)
+    
+    SafeSignal.just(image2).bind(to: view.reactive.image)
+    XCTAssertEqual(view.image(for: .normal), image2)
+    
     view.reactive.tap.expectNext([(), ()])
     view.sendActions(for: .touchUpInside)
     view.sendActions(for: .touchUpInside)

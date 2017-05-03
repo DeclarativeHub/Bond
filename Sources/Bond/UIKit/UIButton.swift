@@ -44,6 +44,14 @@ public extension ReactiveExtensions where Base: UIButton {
   public var isHighlighted: Bond<Bool> {
     return bond { $0.isHighlighted = $1 }
   }
+  
+  public var backgroungImage: Bond<UIImage> {
+    return bond { $0.setBackgroundImage($1, for: .normal) }
+  }
+  
+  public var image: Bond<UIImage> {
+    return bond { $0.setImage($1, for: .normal) }
+  }
 }
 
 #endif
