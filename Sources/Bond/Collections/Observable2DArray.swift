@@ -105,7 +105,7 @@ public struct Observable2DArraySection<Metadata, Item>: Collection {
   
 }
 
-public class Observable2DArray<SectionMetadata, Item>: Collection, SignalProtocol {
+public class Observable2DArray<SectionMetadata, Item>: SignalProtocol {
 
   public fileprivate(set) var sections: [Observable2DArraySection<SectionMetadata, Item>]
   fileprivate let subject = PublishSubject<Observable2DArrayEvent<SectionMetadata, Item>, NoError>()

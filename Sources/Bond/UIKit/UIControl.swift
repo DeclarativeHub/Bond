@@ -27,7 +27,7 @@
 import UIKit
 import ReactiveKit
 
-public extension ReactiveExtensions where Base: UIControl, Base: Deallocatable {
+public extension ReactiveExtensions where Base: UIControl {
 
   public func controlEvents(_ events: UIControlEvents) -> SafeSignal<Void> {
     let base = self.base

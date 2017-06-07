@@ -39,7 +39,7 @@ public struct ObservableSetEvent<Element: Hashable> {
   public let source: ObservableSet<Element>
 }
 
-public class ObservableSet<Element: Hashable>: Collection, SignalProtocol {
+public class ObservableSet<Element: Hashable>: SignalProtocol {
 
   public fileprivate(set) var set: Set<Element>
   fileprivate let subject = PublishSubject<ObservableSetEvent<Element>, NoError>()
