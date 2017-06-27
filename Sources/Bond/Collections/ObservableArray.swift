@@ -207,6 +207,7 @@ public class MutableObservableArray<Item>: ObservableArray<Item> {
 
     // if only reset, do not batch:
     if diff == [.reset] {
+      array = proxy.array
       subject.next(ObservableArrayEvent(change: .reset, source: self))
     } else if diff.count > 0 {
       // ...otherwise batch:
