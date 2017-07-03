@@ -333,30 +333,30 @@ extension MutableObservableArray {
 }
 
 extension MutableObservableArray where Item: Equatable {
-  
-  public func replace(with array: [Item], performDiff: Bool) {
-    if performDiff {
-      lock.lock()
 
+  public func replace(with array: [Item], performDiff: Bool) {
+    lock.lock(); defer { lock.unlock() }
+
+    if performDiff {
       let diff = self.array.extendedDiff(array)
+      let patch = diff.patch(from: self.array, to: array)
       subject.next(ObservableArrayEvent(change: .beginBatchEditing, source: self))
       self.array = array
 
-      for step in diff {
+      for step in patch {
         switch step {
-        case .insert(let index):
+        case .insertion(let index, _):
           subject.next(ObservableArrayEvent(change: .inserts([index]), source: self))
 
-        case .delete(let index):
+        case .deletion(let index):
           subject.next(ObservableArrayEvent(change: .deletes([index]), source: self))
 
         case .move(let from, let to):
           subject.next(ObservableArrayEvent(change: .move(from, to), source: self))
         }
       }
-      
+
       subject.next(ObservableArrayEvent(change: .endBatchEditing, source: self))
-      lock.unlock()
     } else {
       replace(with: array)
     }
