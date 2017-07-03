@@ -42,7 +42,7 @@ public protocol TableViewBond {
 
   associatedtype DataSource: DataSourceProtocol
 
-  func apply(event: DataSourceEvent<DataSource>, to tableView: UITableView)
+  func apply(event: DataSourceEvent<DataSource, BatchKindDiff>, to tableView: UITableView)
   func cellForRow(at indexPath: IndexPath, tableView: UITableView, dataSource: DataSource) -> UITableViewCell
   func titleForHeader(in section: Int, dataSource: DataSource) -> String?
   func titleForFooter(in section: Int, dataSource: DataSource) -> String?
@@ -50,7 +50,7 @@ public protocol TableViewBond {
 
 extension TableViewBond {
 
-  public func apply(event: DataSourceEvent<DataSource>, to tableView: UITableView) {
+  public func apply(event: DataSourceEvent<DataSource, BatchKindDiff>, to tableView: UITableView) {
     switch event.kind {
     case .reload:
       tableView.reloadData()
@@ -103,12 +103,12 @@ private struct ReloadingTableViewBond<DataSource: DataSourceProtocol>: TableView
     return createCell(dataSource, indexPath, tableView)
   }
 
-  func apply(event: DataSourceEvent<DataSource>, to tableView: UITableView) {
+  func apply(event: DataSourceEvent<DataSource, BatchKindDiff>, to tableView: UITableView) {
     tableView.reloadData()
   }
 }
 
-public extension SignalProtocol where Element: DataSourceEventProtocol, Error == NoError {
+public extension SignalProtocol where Element: DataSourceEventProtocol, Element.BatchKind == BatchKindDiff, Error == NoError {
 
   public typealias DataSource = Element.DataSource
 

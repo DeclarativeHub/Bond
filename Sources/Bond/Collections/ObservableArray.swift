@@ -57,6 +57,21 @@ public struct ObservableArrayEvent<Item>: ObservableArrayEventProtocol {
   }
 }
 
+public struct ObservableArrayPatchEvent<Item>: ObservableArrayEventProtocol {
+  public let change: ObservableArrayChange
+  public let source: ObservableArray<Item>
+
+  public init(change: ObservableArrayChange, source: ObservableArray<Item>) {
+    self.change = change
+    self.source = source
+  }
+
+  public init(change: ObservableArrayChange, source: [Item]) {
+    self.change = change
+    self.source = ObservableArray(source)
+  }
+}
+
 public class ObservableArray<Item>: SignalProtocol {
   
   public fileprivate(set) var array: [Item]
@@ -104,6 +119,13 @@ public class ObservableArray<Item>: SignalProtocol {
   public func observe(with observer: @escaping (Event<ObservableArrayEvent<Item>, NoError>) -> Void) -> Disposable {
     observer(.next(ObservableArrayEvent(change: .reset, source: self)))
     return subject.observe(with: observer)
+  }
+}
+
+extension ObservableArray: CustomDebugStringConvertible {
+
+  public var debugDescription: String {
+    return array.debugDescription
   }
 }
 
@@ -241,10 +263,10 @@ extension MutableObservableArray: BindableProtocol {
 
 // MARK: DataSourceProtocol conformation
 
-extension ObservableArrayEvent: DataSourceEventProtocol {
-  
-  public var kind: DataSourceEventKind {
-    switch change {
+extension ObservableArrayChange {
+
+  public var asDataSourceEventKind: DataSourceEventKind {
+    switch self {
     case .reset:
       return .reload
     case .inserts(let indices):
@@ -261,13 +283,35 @@ extension ObservableArrayEvent: DataSourceEventProtocol {
       return .endUpdates
     }
   }
+}
+
+extension ObservableArrayEvent: DataSourceEventProtocol {
+
+  public typealias BatchKind = BatchKindDiff
+  
+  public var kind: DataSourceEventKind {
+    return change.asDataSourceEventKind
+  }
   
   public var dataSource: ObservableArray<Item> {
     return source
   }
 }
 
-extension ObservableArray: DataSourceProtocol {
+extension ObservableArrayPatchEvent: DataSourceEventProtocol {
+
+  public typealias BatchKind = BatchKindPatch
+
+  public var kind: DataSourceEventKind {
+    return change.asDataSourceEventKind
+  }
+
+  public var dataSource: ObservableArray<Item> {
+    return source
+  }
+}
+
+extension ObservableArray: QueryableDataSourceProtocol {
   
   public var numberOfSections: Int {
     return 1
@@ -275,13 +319,6 @@ extension ObservableArray: DataSourceProtocol {
   
   public func numberOfItems(inSection section: Int) -> Int {
     return count
-  }
-}
-
-extension ObservableArray: QueryableDataSourceProtocol {
-
-  public func item(at index: Int) -> Item {
-    return self[index]
   }
 }
 
@@ -669,6 +706,96 @@ extension ObservableArrayChange: Equatable {
       return true
     default:
       return false
+    }
+  }
+}
+
+public extension SignalProtocol where Element: ObservableArrayEventProtocol {
+
+  /// Converts diff events into patch events by transforming batch updates into resets (i.e. disabling batch updates).
+  /// - If you wish to keep batch updated, make your array element type conforming to Equatable protocol and use
+  ///             `patchingBatch` method instead.
+  public func toPatchesByResettingBatch() -> Signal<ObservableArrayPatchEvent<Item>, Error> {
+
+    var isBatching = false
+
+    return Signal { observer in
+      return self.observe { event in
+        switch event {
+        case .next(let observableArrayEvent):
+
+          let source = observableArrayEvent.source
+          switch observableArrayEvent.change {
+          case .beginBatchEditing:
+            isBatching = true
+          case .endBatchEditing:
+            isBatching = false
+            observer.next(.init(change: .reset, source: source))
+          default:
+            if !isBatching {
+              observer.next(.init(change: observableArrayEvent.change, source: source))
+            }
+          }
+
+        case .failed(let error):
+          observer.failed(error)
+
+        case .completed:
+          observer.completed()
+        }
+      }
+    }
+  }
+}
+
+public extension SignalProtocol where Element: ObservableArrayEventProtocol, Element.Item: Equatable {
+
+  /// Converts diff events into patch events.
+  public func toPatches() -> Signal<ObservableArrayPatchEvent<Item>, Error> {
+
+    var isBatching = false
+    var originalArray: [Item] = []
+
+    return Signal { observer in
+      return self.observe { event in
+        switch event {
+        case .next(let observableArrayEvent):
+
+          let source = observableArrayEvent.source
+          switch observableArrayEvent.change {
+          case .beginBatchEditing:
+            isBatching = true
+            originalArray = source.array
+            observer.next(.init(change: .beginBatchEditing, source: source))
+          case .endBatchEditing:
+            isBatching = false
+            let array = observableArrayEvent.source.array
+            let diff = originalArray.extendedDiff(array)
+            let patch = diff.patch(from: originalArray, to: array)
+            for step in patch {
+              switch step {
+              case .insertion(let index, _):
+                observer.next(.init(change: .inserts([index]), source: source))
+              case .deletion(let index):
+                observer.next(.init(change: .deletes([index]), source: source))
+              case .move(let from, let to):
+                observer.next(.init(change: .move(from, to), source: source))
+              }
+            }
+            observer.next(.init(change: .endBatchEditing, source: source))
+          default:
+            if !isBatching {
+              observer.next(.init(change: observableArrayEvent.change, source: source))
+            }
+          }
+
+        case .failed(let error):
+          observer.failed(error)
+
+        case .completed:
+          observer.completed()
+        }
+      }
     }
   }
 }

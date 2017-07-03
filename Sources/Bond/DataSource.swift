@@ -47,16 +47,23 @@ public enum DataSourceEventKind {
   case endUpdates
 }
 
+public protocol DataSourceBatchKind {}
+
+public enum BatchKindDiff: DataSourceBatchKind {}
+public enum BatchKindPatch: DataSourceBatchKind {}
+
 public protocol DataSourceEventProtocol {
   associatedtype DataSource: DataSourceProtocol
+  associatedtype BatchKind: DataSourceBatchKind
+
   var kind: DataSourceEventKind { get }
   var dataSource: DataSource { get }
 }
 
 extension DataSourceEventProtocol {
 
-  public var _unbox: DataSourceEvent<DataSource> {
-    if let event = self as? DataSourceEvent<DataSource> {
+  public var _unbox: DataSourceEvent<DataSource, BatchKind> {
+    if let event = self as? DataSourceEvent<DataSource, BatchKind> {
       return event
     } else {
       return DataSourceEvent(kind: self.kind, dataSource: self.dataSource)
@@ -64,7 +71,9 @@ extension DataSourceEventProtocol {
   }
 }
 
-public struct DataSourceEvent<DataSource: DataSourceProtocol>: DataSourceEventProtocol {
+public struct DataSourceEvent<DataSource: DataSourceProtocol, _BatchKind: DataSourceBatchKind>: DataSourceEventProtocol {
+  public typealias BatchKind = _BatchKind
+
   public let kind: DataSourceEventKind
   public let dataSource: DataSource
 }
@@ -80,7 +89,9 @@ extension Array: DataSourceProtocol {
   }
 }
 
-extension Array: DataSourceEventProtocol {
+extension Array: DataSourceEventProtocol, ObservableArrayEventProtocol {
+
+  public typealias BatchKind = BatchKindDiff
 
   public var kind: DataSourceEventKind {
     return .reload
@@ -89,11 +100,19 @@ extension Array: DataSourceEventProtocol {
   public var dataSource: Array<Element> {
     return self
   }
+
+  public var change: ObservableArrayChange {
+    return .reset
+  }
+
+  public var source: ObservableArray<Iterator.Element> {
+    return ObservableArray(self)
+  }
 }
 
 extension SignalProtocol where Element: DataSourceProtocol, Error == NoError {
 
-  public func mapToDataSourceEvent() -> SafeSignal<DataSourceEvent<Element>> {
+  public func mapToDataSourceEvent() -> SafeSignal<DataSourceEvent<Element, BatchKindDiff>> {
     return map { collection in DataSourceEvent(kind: .reload, dataSource: collection) }
   }
 }
