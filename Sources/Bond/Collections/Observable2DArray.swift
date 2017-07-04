@@ -406,7 +406,12 @@ extension Observable2DArrayPatchEvent: DataSourceEventProtocol {
   }
 }
 
-extension Observable2DArray: QueryableDataSourceProtocol {}
+extension Observable2DArray: QueryableDataSourceProtocol {
+
+  public func item(at index: IndexPath) -> Item {
+    return self[index]
+  }
+}
 
 extension MutableObservable2DArray {
 

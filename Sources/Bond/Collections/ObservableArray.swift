@@ -313,6 +313,10 @@ extension ObservableArrayPatchEvent: DataSourceEventProtocol {
 }
 
 extension ObservableArray: QueryableDataSourceProtocol {
+
+  public func item(at index: Int) -> Item {
+    return self[index]
+  }
   
   public var numberOfSections: Int {
     return 1
