@@ -13,6 +13,7 @@ install:
 
 script:
   - set -o pipefail && travis_retry xcodebuild -project Bond.xcodeproj -scheme Bond-iOS -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 7,OS=10.3.1' test | xcpretty
+  - rm Package.pins
   - swift test --parallel
 
 after_success:
