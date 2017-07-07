@@ -27,6 +27,7 @@ public protocol QueryableDataSourceProtocol: DataSourceProtocol {
   associatedtype Index
   subscript(_ index: Index) -> Item { get }
 
+  // need this to satisfy compiler in some conformances
   func item(at index: Index) -> Item
 }
 
