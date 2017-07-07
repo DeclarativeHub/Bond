@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		070FE2741F0138180031B7BD /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D2A1E8F0B1D000077C8 /* NSLayoutConstraint.swift */; };
+		070FE2781F0138190031B7BD /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D2A1E8F0B1D000077C8 /* NSLayoutConstraint.swift */; };
 		16210A461D3EC474004AEDF3 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16210A3C1D3EC474004AEDF3 /* Bond.framework */; };
 		165217961D70593E00C9FAEE /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1652178B1D70591E00C9FAEE /* ReactiveKit.framework */; };
 		165217991D70594D00C9FAEE /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 165217911D70591E00C9FAEE /* ReactiveKit.framework */; };
@@ -977,6 +979,7 @@
 				90C04DC31E8F0B97000077C8 /* UITextView.swift in Sources */,
 				90A443131E9055D200D611FE /* NSTextView.swift in Sources */,
 				90C04DB21E8F0B97000077C8 /* UIButton.swift in Sources */,
+				070FE2741F0138180031B7BD /* NSLayoutConstraint.swift in Sources */,
 				90C04DB61E8F0B97000077C8 /* UIGestureRecognizer.swift in Sources */,
 				90A4430B1E9055D100D611FE /* NSMenuItem.swift in Sources */,
 				90C04DB01E8F0B97000077C8 /* UIBarButtonItem.swift in Sources */,
@@ -1127,6 +1130,7 @@
 				90C04DAC1E8F0B96000077C8 /* UITextView.swift in Sources */,
 				90A443221E9055D200D611FE /* NSTextView.swift in Sources */,
 				90C04D9B1E8F0B96000077C8 /* UIButton.swift in Sources */,
+				070FE2781F0138190031B7BD /* NSLayoutConstraint.swift in Sources */,
 				90C04D9F1E8F0B96000077C8 /* UIGestureRecognizer.swift in Sources */,
 				90A4431A1E9055D200D611FE /* NSMenuItem.swift in Sources */,
 				90C04D991E8F0B96000077C8 /* UIBarButtonItem.swift in Sources */,

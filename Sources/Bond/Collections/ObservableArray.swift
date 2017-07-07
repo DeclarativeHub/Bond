@@ -73,49 +73,49 @@ public struct ObservableArrayPatchEvent<Item>: ObservableArrayEventProtocol {
 }
 
 public class ObservableArray<Item>: SignalProtocol {
-  
+
   public fileprivate(set) var array: [Item]
   fileprivate let subject = PublishSubject<ObservableArrayEvent<Item>, NoError>()
   fileprivate let lock = NSRecursiveLock(name: "com.reactivekit.bond.observablearray")
-  
+
   public init(_ array: [Item] = []) {
     self.array = array
   }
-  
+
   public func makeIterator() -> Array<Item>.Iterator {
     return array.makeIterator()
   }
-  
+
   public var underestimatedCount: Int {
     return array.underestimatedCount
   }
-  
+
   public var startIndex: Int {
     return array.startIndex
   }
-  
+
   public var endIndex: Int {
     return array.endIndex
   }
-  
+
   public func index(after i: Int) -> Int {
     return array.index(after: i)
   }
-  
+
   public var isEmpty: Bool {
     return array.isEmpty
   }
-  
+
   public var count: Int {
     return array.count
   }
-  
+
   public subscript(index: Int) -> Item {
     get {
       return array[index]
     }
   }
-  
+
   public func observe(with observer: @escaping (Event<ObservableArrayEvent<Item>, NoError>) -> Void) -> Disposable {
     observer(.next(ObservableArrayEvent(change: .reset, source: self)))
     return subject.observe(with: observer)
@@ -137,35 +137,35 @@ extension ObservableArray: Deallocatable {
 }
 
 extension ObservableArray where Item: Equatable {
-  
+
   public static func ==(lhs: ObservableArray<Item>, rhs: ObservableArray<Item>) -> Bool {
     return lhs.array == rhs.array
   }
 }
 
 public class MutableObservableArray<Item>: ObservableArray<Item> {
-  
+
   /// Append `newElement` to the array.
   public func append(_ newElement: Item) {
     lock.lock(); defer { lock.unlock() }
     array.append(newElement)
     subject.next(ObservableArrayEvent(change: .inserts([array.count-1]), source: self))
   }
-  
+
   /// Insert `newElement` at index `i`.
   public func insert(_ newElement: Item, at index: Int)  {
     lock.lock(); defer { lock.unlock() }
     array.insert(newElement, at: index)
     subject.next(ObservableArrayEvent(change: .inserts([index]), source: self))
   }
-  
+
   /// Insert elements `newElements` at index `i`.
   public func insert(contentsOf newElements: [Item], at index: Int) {
     lock.lock(); defer { lock.unlock() }
     array.insert(contentsOf: newElements, at: index)
     subject.next(ObservableArrayEvent(change: .inserts(Array(index..<index+newElements.count)), source: self))
   }
-  
+
   /// Move the element at index `i` to index `toIndex`.
   public func moveItem(from fromIndex: Int, to toIndex: Int) {
     lock.lock(); defer { lock.unlock() }
@@ -210,7 +210,7 @@ public class MutableObservableArray<Item>: ObservableArray<Item> {
       subject.next(ObservableArrayEvent(change: .updates([index]), source: self))
     }
   }
-  
+
   /// Perform batched updates on the array.
   public func batchUpdate(_ update: (MutableObservableArray<Item>) -> Void) {
     lock.lock(); defer { lock.unlock() }
@@ -289,11 +289,11 @@ extension ObservableArrayChange {
 extension ObservableArrayEvent: DataSourceEventProtocol {
 
   public typealias BatchKind = BatchKindDiff
-  
+
   public var kind: DataSourceEventKind {
     return change.asDataSourceEventKind
   }
-  
+
   public var dataSource: ObservableArray<Item> {
     return source
   }
@@ -317,18 +317,18 @@ extension ObservableArray: QueryableDataSourceProtocol {
   public func item(at index: Int) -> Item {
     return self[index]
   }
-  
+
   public var numberOfSections: Int {
     return 1
   }
-  
+
   public func numberOfItems(inSection section: Int) -> Int {
     return count
   }
 }
 
 extension MutableObservableArray {
-  
+
   public func replace(with array: [Item]) {
     lock.lock(); defer { lock.unlock() }
     self.array = array
@@ -337,7 +337,7 @@ extension MutableObservableArray {
 }
 
 extension MutableObservableArray where Item: Equatable {
-  
+
   public func replace(with array: [Item], performDiff: Bool) {
     if performDiff {
       lock.lock()
@@ -358,7 +358,7 @@ extension MutableObservableArray where Item: Equatable {
           subject.next(ObservableArrayEvent(change: .move(from, to), source: self))
         }
       }
-      
+
       subject.next(ObservableArrayEvent(change: .endBatchEditing, source: self))
       lock.unlock()
     } else {

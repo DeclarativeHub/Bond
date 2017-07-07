@@ -117,7 +117,7 @@ public struct Observable2DArraySection<Metadata, Item>: Collection {
       return items[index]
     }
   }
-  
+
 }
 
 public class Observable2DArray<SectionMetadata, Item>: SignalProtocol {
