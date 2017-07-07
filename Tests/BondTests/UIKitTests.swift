@@ -88,7 +88,7 @@ class BondTests: XCTestCase {
     let image = UIImage()
     let image2 = UIImage()
     
-    SafeSignal.just(image).bind(to: view.reactive.backgroungImage)
+    SafeSignal.just(image).bind(to: view.reactive.backgroundImage)
     XCTAssertEqual(view.backgroundImage(for: .normal), image)
     
     SafeSignal.just(image2).bind(to: view.reactive.image)
