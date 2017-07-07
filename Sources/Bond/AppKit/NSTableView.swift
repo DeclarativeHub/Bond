@@ -44,7 +44,7 @@ public protocol TableViewBond {
 	
 	associatedtype DataSource: DataSourceProtocol
 	
-	func apply(event: DataSourceEvent<DataSource>, to tableView: NSTableView)
+	func apply(event: DataSourceEvent<DataSource, BatchKindPatch>, to tableView: NSTableView)
 	func heightForRow(at index: Int, tableView: NSTableView, dataSource: DataSource) -> CGFloat?
 	func cellForRow(at index: Int, tableView: NSTableView, dataSource: DataSource) -> NSView?
 }
@@ -55,7 +55,7 @@ extension TableViewBond {
 		return nil
 	}
 
-	public func apply(event: DataSourceEvent<DataSource>, to tableView: NSTableView) {
+	public func apply(event: DataSourceEvent<DataSource, BatchKindPatch>, to tableView: NSTableView) {
 		tableView.reloadData()
 	}
 }
@@ -91,7 +91,7 @@ open class DefaultTableViewBond<DataSource: DataSourceProtocol>: TableViewBond {
 		return createCell?(dataSource, index, tableView) ?? nil
 	}
 	
-	open func apply(event: DataSourceEvent<DataSource>, to tableView: NSTableView) {
+	open func apply(event: DataSourceEvent<DataSource, BatchKindPatch>, to tableView: NSTableView) {
 		if insertAnimation == nil && deleteAnimation == nil {
 			tableView.reloadData()
 			return
@@ -141,7 +141,9 @@ private struct ReloadingTableViewBond<DataSource: DataSourceProtocol>: TableView
 
 // MARK: - Bond implementation
 
-public extension SignalProtocol where Element: DataSourceEventProtocol, Element.DataSource: QueryableDataSourceProtocol, Element.DataSource.Item: Any, Element.DataSource.Index == Int, Error == NoError {
+public extension SignalProtocol where
+    Element: DataSourceEventProtocol, Element.BatchKind == BatchKindPatch,
+    Element.DataSource: QueryableDataSourceProtocol, Element.DataSource.Index == Int, Error == NoError {
 
   public typealias DataSource = Element.DataSource
 	
@@ -153,9 +155,14 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Element.
 			return bind(to: tableView, using: ReloadingTableViewBond<DataSource>(createCell: createCell))
 		}
 	}
-	
+
+  @discardableResult
+  public func bind<B: TableViewBond>(to tableView: NSTableView, using bond: B) -> Disposable where B.DataSource == DataSource {
+    return _bind(to: tableView, using: bond)
+  }
+
 	@discardableResult
-	public func bind<B: TableViewBond>(to tableView: NSTableView, using bond: B) -> Disposable where B.DataSource == DataSource {
+	fileprivate func _bind<B: TableViewBond>(to tableView: NSTableView, using bond: B) -> Disposable where B.DataSource == DataSource {
 	
     let dataSource = Property<DataSource?>(nil)
     let disposable = CompositeDisposable()
@@ -200,6 +207,40 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Element.
     }
 
     return disposable
+  }
+}
+
+public extension SignalProtocol where Element: ObservableArrayEventProtocol, Error == NoError {
+
+  @discardableResult
+  public func bind(to tableView: NSTableView, animated: Bool = true, createCell: @escaping (ObservableArray<Element.Item>, Int, NSTableView) -> NSView?) -> Disposable {
+    if animated {
+      return toPatchesByResettingBatch()._bind(to: tableView, using: DefaultTableViewBond<ObservableArray<Element.Item>>(createCell: createCell))
+    } else {
+      return toPatchesByResettingBatch()._bind(to: tableView, using: ReloadingTableViewBond<ObservableArray<Element.Item>>(createCell: createCell))
+    }
+  }
+
+  @discardableResult
+  public func bind<B: TableViewBond>(to tableView: NSTableView, using bond: B) -> Disposable where B.DataSource == ObservableArray<Element.Item> {
+    return toPatchesByResettingBatch()._bind(to: tableView, using: bond)
+  }
+}
+
+public extension SignalProtocol where Element: ObservableArrayEventProtocol, Element.Item: Equatable, Error == NoError {
+
+  @discardableResult
+  public func bind(to tableView: NSTableView, animated: Bool = true, createCell: @escaping (ObservableArray<Element.Item>, Int, NSTableView) -> NSView?) -> Disposable {
+    if animated {
+      return toPatches()._bind(to: tableView, using: DefaultTableViewBond<ObservableArray<Element.Item>>(createCell: createCell))
+    } else {
+      return toPatches()._bind(to: tableView, using: ReloadingTableViewBond<ObservableArray<Element.Item>>(createCell: createCell))
+    }
+  }
+
+  @discardableResult
+  public func bind<B: TableViewBond>(to tableView: NSTableView, using bond: B) -> Disposable where B.DataSource == ObservableArray<Element.Item> {
+    return toPatches()._bind(to: tableView, using: bond)
   }
 }
 
