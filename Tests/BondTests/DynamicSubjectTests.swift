@@ -34,7 +34,7 @@ class DynamicSubjectTests: XCTestCase {
 
     subject.expectNext([5, 6, 7, 1, 2, 3])
     target.value = 6
-    target.changes.next()
+    target.changes.next(())
     XCTAssert(target.value == 6)
 
     subject.on(.next(7))

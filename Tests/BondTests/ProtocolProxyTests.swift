@@ -18,7 +18,7 @@ import ReactiveKit
 }
 
 class TestObject: NSObject {
-  weak var delegate: TestDelegate! = nil
+  @objc dynamic weak var delegate: TestDelegate! = nil
 
   override init() {
     super.init()
