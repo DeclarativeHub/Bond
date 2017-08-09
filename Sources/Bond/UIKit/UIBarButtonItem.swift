@@ -46,8 +46,8 @@ extension UIBarButtonItem {
       barButtonItem.action = #selector(eventHandler)
     }
 
-    func eventHandler() {
-      subject.next()
+    @objc func eventHandler() {
+      subject.next(())
     }
 
     deinit {

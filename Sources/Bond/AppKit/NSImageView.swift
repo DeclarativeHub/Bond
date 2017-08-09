@@ -41,7 +41,7 @@ public extension ReactiveExtensions where Base: NSImageView {
     return bond { $0.imageScaling = $1 }
   }
 
-  public var imageFrameStyle: Bond<NSImageFrameStyle> {
+  public var imageFrameStyle: Bond<NSImageView.FrameStyle> {
     return bond { $0.imageFrameStyle = $1 }
   }
 

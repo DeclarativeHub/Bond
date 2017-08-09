@@ -43,7 +43,7 @@ class NSObjectKVOTests: XCTestCase {
 
   class TestObject: NSObject, BindingExecutionContextProvider {
 
-    dynamic var property: Any! = "a"
+    @objc dynamic var property: Any! = "a"
 
     var bindingExecutionContext: ExecutionContext {
       return .immediate

@@ -46,7 +46,7 @@ fileprivate extension NSControl {
       control.action = #selector(eventHandler)
     }
 
-    func eventHandler(_ sender: NSControl?) {
+    @objc func eventHandler(_ sender: NSControl?) {
       subject.next(sender)
     }
 

@@ -530,7 +530,7 @@ There are many other methods. Just look at the code reference or source.
 ## Requirements
 
 * iOS 8.0+ / macOS 10.9+ / tvOS 9.0+
-* Xcode 8
+* Xcode 9
 
 ## Communication
 

@@ -59,11 +59,11 @@ public extension ReactiveExtensions where Base: NSProgressIndicator {
     return bond { $0.controlTint = $1 }
   }
 
-  public var controlSize: Bond<NSControlSize> {
+  public var controlSize: Bond<NSControl.ControlSize> {
     return bond { $0.controlSize = $1 }
   }
 
-  public var style: Bond<NSProgressIndicatorStyle> {
+  public var style: Bond<NSProgressIndicator.Style> {
     return bond { $0.style = $1 }
   }
 

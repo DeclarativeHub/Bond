@@ -37,7 +37,7 @@ public extension ReactiveExtensions where Base: NSSegmentedControl {
     return bond { $0.selectedSegment = $1 }
   }
 
-  public var segmentStyle: Bond<NSSegmentStyle> {
+  public var segmentStyle: Bond<NSSegmentedControl.Style> {
     return bond { $0.segmentStyle = $1 }
   }
 
@@ -47,7 +47,7 @@ public extension ReactiveExtensions where Base: NSSegmentedControl {
   }
 
   @available(macOS 10.10.3, *)
-  public var trackingMode: Bond<NSSegmentSwitchTracking> {
+  public var trackingMode: Bond<NSSegmentedControl.SwitchTracking> {
     return bond { $0.trackingMode = $1 }
   }
 
