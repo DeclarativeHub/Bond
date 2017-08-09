@@ -252,7 +252,7 @@ private class RKKeyValueSignal: NSObject, SignalProtocol {
   fileprivate override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
     if context == &self.context {
       if let _ = change?[NSKeyValueChangeKey.newKey] {
-        subject.next()
+        subject.next(())
       }
     } else {
       super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
@@ -320,7 +320,7 @@ extension NSObject {
   }
 
   private class func _swizzleDeinit(onDeinit: @escaping (NSObject) -> Void) {
-    let selector = sel_registerName("dealloc")!
+    let selector = sel_registerName("dealloc")
     var originalImplementation: IMP? = nil
 
     let swizzledImplementationBlock: @convention(block) (UnsafeRawPointer) -> Void = { me in
@@ -334,8 +334,7 @@ extension NSObject {
 
     let swizzledImplementation = imp_implementationWithBlock(swizzledImplementationBlock)
 
-    if !class_addMethod(self, selector, swizzledImplementation, "v@:") {
-      let method = class_getInstanceMethod(self, selector)
+    if !class_addMethod(self, selector, swizzledImplementation, "v@:"), let method = class_getInstanceMethod(self, selector) {
       originalImplementation = method_getImplementation(method)
       originalImplementation = method_setImplementation(method, swizzledImplementation)
     }

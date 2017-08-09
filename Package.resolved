@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Diff",
+        "repositoryURL": "https://github.com/wokalski/Diff.swift.git",
+        "state": {
+          "branch": "swift-4.0",
+          "revision": "be48a80f445a82bfc7b998d92faeacd3ea50336b",
+          "version": null
+        }
+      },
+      {
+        "package": "ReactiveKit",
+        "repositoryURL": "https://github.com/ReactiveKit/ReactiveKit.git",
+        "state": {
+          "branch": "swift-4",
+          "revision": "b5bd5eb0dbc8029dd188a7a3e3a5bf305e2f7ca1",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}

@@ -63,21 +63,21 @@ public extension ReactiveExtensions where Base: NSTextField {
 
   public var textDidChange: SafeSignal<NSTextField> {
     return NotificationCenter.default
-      .reactive.notification(name: .NSControlTextDidChange, object: base)
+      .reactive.notification(name: NSControl.textDidChangeNotification, object: base)
       .map { $0.object as? NSTextField }
       .ignoreNil()
   }
 
   public var textDidBeginEditing: SafeSignal<NSTextField> {
     return NotificationCenter.default
-      .reactive.notification(name: .NSControlTextDidBeginEditing, object: base)
+      .reactive.notification(name: NSControl.textDidBeginEditingNotification, object: base)
       .map { $0.object as? NSTextField }
       .ignoreNil()
   }
 
   public var textDidEndEditing: SafeSignal<(NSTextField, Bool)> {
     return NotificationCenter.default
-      .reactive.notification(name: .NSControlTextDidEndEditing, object: base)
+      .reactive.notification(name: NSControl.textDidEndEditingNotification, object: base)
       .map { notification -> (NSTextField, Bool)? in
         guard let textField = notification.object as? NSTextField else {
           return nil
@@ -94,7 +94,7 @@ public extension ReactiveExtensions where Base: NSTextField {
   /// - Returns: true if the text field resigned first responder, false if it did not
   private static func resignedFirstResponder(in notification: Notification) -> Bool {
     guard
-      notification.name == .NSControlTextDidEndEditing,
+      notification.name == NSControl.textDidEndEditingNotification,
       let textField = notification.object as? NSTextField,
       let textMovement = notification.userInfo?["NSTextMovement"] as? Int
     else {

@@ -37,7 +37,7 @@ public extension ReactiveExtensions where Base: UIControl {
         return NonDisposable.instance
       }
       let target = BNDControlTarget(control: base, events: events) {
-        observer.next()
+        observer.next(())
       }
       return BlockDisposable {
         target.unregister()
