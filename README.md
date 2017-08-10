@@ -59,7 +59,7 @@ Handling `touchUpInside` event is used so frequently that Bond comes with the ex
 
 ```swift
 button.reactive.tap
-  .observe {
+  .observeNext {
     print("Button tapped.")
   }  
 ```
