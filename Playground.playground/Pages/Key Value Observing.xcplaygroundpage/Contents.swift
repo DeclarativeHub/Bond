@@ -20,7 +20,7 @@ test.test = "a"
 test.test = nil
 test.test = "g"
 
-Signal1.just("c").bind(to: test("test", ofType: Optional<String>.self))
+Signal1.just("c").bind(to: test.keyPath("test", ofType: Optional<String>.self))
 
 test = nil
 weakTest
