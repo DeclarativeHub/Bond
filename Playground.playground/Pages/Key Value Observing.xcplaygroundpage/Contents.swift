@@ -12,7 +12,7 @@ class Test: NSObject {
 var test: Test! = Test()
 weak var weakTest: Test? = test
 
-test.dynamic(keyPath: "test", ofType: Optional<String>.self).observe { event in
+test.keyPath("test", ofType: Optional<String>.self).observe { event in
   print(event)
 }
 
@@ -20,7 +20,7 @@ test.test = "a"
 test.test = nil
 test.test = "g"
 
-Signal1.just("c").bind(to: test.dynamic(keyPath: "test", ofType: Optional<String>.self))
+Signal1.just("c").bind(to: test.keyPath("test", ofType: Optional<String>.self))
 
 test = nil
 weakTest
