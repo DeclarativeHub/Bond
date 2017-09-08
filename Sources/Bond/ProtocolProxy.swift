@@ -36,7 +36,9 @@ public typealias ReturnValueSetter = (UnsafeMutableRawPointer?) -> Void
 fileprivate func arg<T>(_ extractor: ArgumentExtractor, _ pos: Int) -> T {
   let arg = UnsafeMutablePointer<T>.allocate(capacity: 1)
   extractor(pos, arg)
-  return arg.pointee
+  let result = arg.pointee
+  arg.deallocate(capacity: 1)
+  return result
 }
 
 public class ProtocolProxy: BNDProtocolProxyBase {

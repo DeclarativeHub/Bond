@@ -7,13 +7,10 @@ import PlaygroundSupport
 
 // Turn on the Assistant Editor to see the table view!
 
-let me = UIView()
+let p = Property<Int>(2)
 
-extension UIView {
-
-  open override var bindingExecutionContext: ExecutionContext {
-    return .immediate
-  }
+_ = p.observeNext { (value) in
+    print(value)
 }
 
 //: [Next](@next)
