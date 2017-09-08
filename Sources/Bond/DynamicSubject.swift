@@ -65,6 +65,20 @@ public struct DynamicSubject2<Element, Error: Swift.Error>: SubjectProtocol, Bin
     self.triggerEventOnSetting = triggerEventOnSetting
   }
 
+  private init(_target: AnyObject,
+              signal: Signal<Void, Error>,
+              context: ExecutionContext,
+              get: @escaping (AnyObject) -> Result<Element, Error>,
+              set: @escaping (AnyObject, Element) -> Void,
+              triggerEventOnSetting: Bool = true) {
+    self.target = _target
+    self.signal = signal
+    self.context = context
+    self.getter = { get($0) }
+    self.setter = { set($0, $1) }
+    self.triggerEventOnSetting = triggerEventOnSetting
+  }
+
   public func on(_ event: Event<Element, Error>) {
     if case .next(let element) = event, let target = target {
       setter(target, element)
@@ -135,14 +149,12 @@ public struct DynamicSubject2<Element, Error: Swift.Error>: SubjectProtocol, Bin
                                from setTransform: @escaping (U) -> Element) -> DynamicSubject2<U, Error>! {
     guard let target = target else { return nil }
 
-    let box = DynamicSubjectMapBox(target)
-
     return DynamicSubject2<U, Error>(
-      target: box,
+      _target: target,
       signal: signal,
       context: context,
       get: { [getter] (target) -> Result<U, Error> in
-        switch getter(target.object) {
+        switch getter(target) {
         case .success(let value):
           return .success(getTransform(value))
         case .failure(let error):
@@ -150,22 +162,9 @@ public struct DynamicSubject2<Element, Error: Swift.Error>: SubjectProtocol, Bin
         }
       },
       set: { [setter] (target, element) in
-        setter(target.object, setTransform(element))
+        setter(target, setTransform(element))
       }
     )
-  }
-}
-
-fileprivate class DynamicSubjectMapBox: Deallocatable {
-
-  let object: AnyObject
-
-  init(_ object: AnyObject) {
-    self.object = object
-  }
-
-  var deallocated: Signal<Void, NoError> {
-    return (object as! Deallocatable).deallocated
   }
 }
 
