@@ -9,6 +9,24 @@ Bond is a Swift binding framework that takes binding concepts to a whole new lev
 
 Bond is built on top of ReactiveKit and bridges the gap between the reactive and imperative paradigms. You can use it as a standalone framework to simplify your state changes with bindings and reactive data sources, but you can also use it with ReactiveKit to complement your reactive data flows with bindings and reactive delegates and data sources.
 
+### Note: Xcode 9 support
+
+Version 6.3.0 introduces Xcode 9 support. One of the required changes to support Xcode 9, i.e. Swift 3.2 or 4, was to drop `Collection` conformance from `ObservableArray`, `Observable2DArray`, `ObservableSet` and `ObservableDictionary` types. This is unfortunate, but not problematic as the types expose underlaying collection.
+
+For example, if you were doing
+
+```swift
+for element in observableArray { .. }
+```
+
+now you need to do
+
+```swift
+for element in observableArray.array { .. }
+```
+
+Respective underlaying collections for other types are `Observable2DArray.sections`, `ObservableSet.set` and `ObservableDictionary.dictionary`.
+
 
 ## What can it do?
 
