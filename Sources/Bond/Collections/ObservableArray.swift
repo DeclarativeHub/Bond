@@ -72,7 +72,7 @@ public struct ObservableArrayPatchEvent<Item>: ObservableArrayEventProtocol {
   }
 }
 
-public class ObservableArray<Item>: Collection, SignalProtocol {
+public class ObservableArray<Item>: SignalProtocol {
   
   public fileprivate(set) var array: [Item]
   fileprivate let subject = PublishSubject<ObservableArrayEvent<Item>, NoError>()
@@ -320,6 +320,10 @@ extension ObservableArray: QueryableDataSourceProtocol {
   
   public func numberOfItems(inSection section: Int) -> Int {
     return count
+  }
+
+  public func item(at index: Int) -> Item {
+    return self[index]
   }
 }
 

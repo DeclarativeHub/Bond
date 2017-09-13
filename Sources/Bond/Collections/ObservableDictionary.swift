@@ -39,7 +39,7 @@ public struct ObservableDictionaryEvent<Key: Hashable, Value> {
   public let source: ObservableDictionary<Key, Value>
 }
 
-public class ObservableDictionary<Key: Hashable, Value>: Collection, SignalProtocol {
+public class ObservableDictionary<Key: Hashable, Value>: SignalProtocol {
 
   public fileprivate(set) var dictionary: Dictionary<Key, Value>
   fileprivate let subject = PublishSubject<ObservableDictionaryEvent<Key, Value>, NoError>()

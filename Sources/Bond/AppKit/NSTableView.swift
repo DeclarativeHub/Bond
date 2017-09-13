@@ -196,7 +196,7 @@ public extension SignalProtocol where
       property: dataSource,
       to: #selector(NSTableViewDataSource.tableView(_:objectValueFor:row:)),
       map: { (dataSource: DataSource?, _: NSTableView, _: NSTableColumn, row: Int) -> Any? in
-        return dataSource?[row]
+        return dataSource?.item(at: row)
       }
     )
 
