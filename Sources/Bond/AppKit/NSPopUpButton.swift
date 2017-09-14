@@ -62,7 +62,7 @@ public extension ReactiveExtensions where Base: NSPopUpButton {
   }
 }
 
-extension NSPopUpButton: BindableProtocol {
+extension NSPopUpButton {
 
   public func bind(signal: Signal<NSMenuItem?, NoError>) -> Disposable {
     return reactive.selectedItem.bind(signal: signal)
