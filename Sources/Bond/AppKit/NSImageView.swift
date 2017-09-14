@@ -58,7 +58,7 @@ public extension ReactiveExtensions where Base: NSImageView {
   }
 }
 
-extension NSImageView: BindableProtocol {
+extension NSImageView {
 
   public func bind(signal: Signal<NSImage?, NoError>) -> Disposable {
     return reactive.image.bind(signal: signal)
