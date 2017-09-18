@@ -11,6 +11,24 @@
         }
       },
       {
+        "package": "Differ",
+        "repositoryURL": "https://github.com/tonyarnold/Differ.git",
+        "state": {
+          "branch": null,
+          "revision": "7991dcf48a48e6e3991bed28ecb96dc6bd814a7f",
+          "version": "1.0.0"
+        }
+      },
+      {
+        "package": "Dwifft",
+        "repositoryURL": "https://github.com/jflinter/Dwifft.git",
+        "state": {
+          "branch": null,
+          "revision": "aaa28dd45562b8bf4cfdfc76d963527136c90c3e",
+          "version": "0.6.3"
+        }
+      },
+      {
         "package": "ReactiveKit",
         "repositoryURL": "https://github.com/ReactiveKit/ReactiveKit.git",
         "state": {

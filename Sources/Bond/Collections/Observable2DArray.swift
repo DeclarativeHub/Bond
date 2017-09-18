@@ -24,7 +24,7 @@
 
 import Foundation
 import ReactiveKit
-import Diff
+import Differ
 
 public enum Observable2DArrayChange {
   case reset
