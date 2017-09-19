@@ -64,7 +64,7 @@ public extension ReactiveExtensions where Base: NSSlider {
   }
 }
 
-extension NSSlider: BindableProtocol {
+extension NSSlider {
 
   public func bind(signal: Signal<Double, NoError>) -> Disposable {
     return reactive.doubleValue.bind(signal: signal)

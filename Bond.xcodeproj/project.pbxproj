@@ -16,9 +16,12 @@
 		16887E2E1D7444C900EDA099 /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1652178B1D70591E00C9FAEE /* ReactiveKit.framework */; };
 		16887E3A1D744ABB00EDA099 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16887E391D744ABB00EDA099 /* AppDelegate.swift */; };
 		16887E441D744ABB00EDA099 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 16887E421D744ABB00EDA099 /* LaunchScreen.storyboard */; };
-		90A3FACD1E0C8D9A0086A7F1 /* Diff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */; };
-		90A3FACE1E0C8D9F0086A7F1 /* Diff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */; };
-		90A3FACF1E0C8DA20086A7F1 /* Diff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */; };
+		904B87B91F6FFCE700FE0A24 /* Differ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 904B87B11F6FFCD300FE0A24 /* Differ.framework */; };
+		904B87BC1F6FFCEB00FE0A24 /* Differ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 904B87B11F6FFCD300FE0A24 /* Differ.framework */; };
+		904B87BD1F6FFCEE00FE0A24 /* Differ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 904B87B11F6FFCD300FE0A24 /* Differ.framework */; };
+		904B87D11F6FFDEE00FE0A24 /* Differ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 904B87B11F6FFCD300FE0A24 /* Differ.framework */; };
+		904B87D51F6FFE0300FE0A24 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16210A3C1D3EC474004AEDF3 /* Bond.framework */; };
+		904B87D61F6FFE0300FE0A24 /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1652178B1D70591E00C9FAEE /* ReactiveKit.framework */; };
 		90A443061E9055D100D611FE /* NSAppearanceCustomization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D251E8F0B1D000077C8 /* NSAppearanceCustomization.swift */; };
 		90A443071E9055D100D611FE /* NSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D261E8F0B1D000077C8 /* NSButton.swift */; };
 		90A443081E9055D100D611FE /* NSColorWell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D271E8F0B1D000077C8 /* NSColorWell.swift */; };
@@ -72,7 +75,6 @@
 		90A443381E9055D800D611FE /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D531E8F0B1D000077C8 /* UITextField.swift */; };
 		90A443391E9055D800D611FE /* UITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D541E8F0B1D000077C8 /* UITextView.swift */; };
 		90A4433A1E9055D800D611FE /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D551E8F0B1D000077C8 /* UIView.swift */; };
-		90A4435D1E90594000D611FE /* Diff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */; };
 		90A4437A1E91390000D611FE /* BNDProtocolProxyBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D161E8F0B12000077C8 /* BNDProtocolProxyBase.m */; };
 		90A4437D1E91391B00D611FE /* BNDProtocolProxyBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D161E8F0B12000077C8 /* BNDProtocolProxyBase.m */; };
 		90A4437E1E91391D00D611FE /* BNDProtocolProxyBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D161E8F0B12000077C8 /* BNDProtocolProxyBase.m */; };
@@ -202,8 +204,6 @@
 		EC893EC41F07A164007981EC /* BNDProtocolProxyBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 90C04D181E8F0B12000077C8 /* BNDProtocolProxyBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EC893EC51F07A164007981EC /* BNDProtocolProxyBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 90C04D181E8F0B12000077C8 /* BNDProtocolProxyBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EC893EC61F07A164007981EC /* BNDProtocolProxyBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 90C04D181E8F0B12000077C8 /* BNDProtocolProxyBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EC9693661D947243004EB5EE /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16210A3C1D3EC474004AEDF3 /* Bond.framework */; };
-		EC9693671D94724C004EB5EE /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1652178B1D70591E00C9FAEE /* ReactiveKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -284,40 +284,19 @@
 			remoteGlobalIDString = 16887E361D744ABB00EDA099;
 			remoteInfo = "Bond-App";
 		};
-		9077A6751E54931D004FABE8 /* PBXContainerItemProxy */ = {
+		904B87B01F6FFCD300FE0A24 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C9EE87151CCFCA83006BD90E;
-			remoteInfo = Diff;
-		};
-		9077A67B1E549321004FABE8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C9EE87151CCFCA83006BD90E;
-			remoteInfo = Diff;
-		};
-		9077A67D1E549324004FABE8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C9EE87151CCFCA83006BD90E;
-			remoteInfo = Diff;
-		};
-		90A3FAC71E0C8D8B0086A7F1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */;
+			containerPortal = 90A3FAC21E0C8D8B0086A7F1 /* Differ.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = C9EE87161CCFCA83006BD90E;
-			remoteInfo = Diff;
+			remoteInfo = Differ;
 		};
-		90A3FAC91E0C8D8B0086A7F1 /* PBXContainerItemProxy */ = {
+		904B87B21F6FFCD300FE0A24 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */;
+			containerPortal = 90A3FAC21E0C8D8B0086A7F1 /* Differ.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = C9838FF11D29571000691BE8;
-			remoteInfo = DiffTests;
+			remoteInfo = DifferTests;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -332,7 +311,7 @@
 		16887E451D744ABB00EDA099 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		16D30EAE1D6591D300C2435D /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		16D30ED61D65D11900C2435D /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Diff.xcodeproj; path = Carthage/Checkouts/Diff.swift/Diff.xcodeproj; sourceTree = "<group>"; };
+		90A3FAC21E0C8D8B0086A7F1 /* Differ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Differ.xcodeproj; path = Carthage/Checkouts/Differ/Differ.xcodeproj; sourceTree = "<group>"; };
 		90C04D021E8F0A97000077C8 /* Bond-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Bond-Info.plist"; sourceTree = "<group>"; };
 		90C04D031E8F0A97000077C8 /* Bond.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bond.h; sourceTree = "<group>"; };
 		90C04D041E8F0A97000077C8 /* BondTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BondTests-Info.plist"; sourceTree = "<group>"; };
@@ -414,7 +393,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				90A3FACD1E0C8D9A0086A7F1 /* Diff.framework in Frameworks */,
+				904B87B91F6FFCE700FE0A24 /* Differ.framework in Frameworks */,
 				165217961D70593E00C9FAEE /* ReactiveKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -423,7 +402,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				90A4435D1E90594000D611FE /* Diff.framework in Frameworks */,
 				16887E2E1D7444C900EDA099 /* ReactiveKit.framework in Frameworks */,
 				16210A461D3EC474004AEDF3 /* Bond.framework in Frameworks */,
 			);
@@ -433,8 +411,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EC9693671D94724C004EB5EE /* ReactiveKit.framework in Frameworks */,
-				EC9693661D947243004EB5EE /* Bond.framework in Frameworks */,
+				904B87D51F6FFE0300FE0A24 /* Bond.framework in Frameworks */,
+				904B87D61F6FFE0300FE0A24 /* ReactiveKit.framework in Frameworks */,
+				904B87D11F6FFDEE00FE0A24 /* Differ.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -442,7 +421,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				90A3FACE1E0C8D9F0086A7F1 /* Diff.framework in Frameworks */,
+				904B87BC1F6FFCEB00FE0A24 /* Differ.framework in Frameworks */,
 				165217991D70594D00C9FAEE /* ReactiveKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -451,7 +430,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				90A3FACF1E0C8DA20086A7F1 /* Diff.framework in Frameworks */,
+				904B87BD1F6FFCEE00FE0A24 /* Differ.framework in Frameworks */,
 				1652179C1D70595600C9FAEE /* ReactiveKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -471,8 +450,9 @@
 				90C04DC51E8F0BA7000077C8 /* Tests */,
 				16887E381D744ABB00EDA099 /* Bond-App */,
 				16210A3D1D3EC474004AEDF3 /* Products */,
-				90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */,
+				90A3FAC21E0C8D8B0086A7F1 /* Differ.xcodeproj */,
 				165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */,
+				904B87B61F6FFCE700FE0A24 /* Frameworks */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -521,13 +501,20 @@
 			path = "Bond-App";
 			sourceTree = "<group>";
 		};
-		90A3FAC31E0C8D8B0086A7F1 /* Products */ = {
+		904B87AC1F6FFCD300FE0A24 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */,
-				90A3FACA1E0C8D8B0086A7F1 /* DiffTests.xctest */,
+				904B87B11F6FFCD300FE0A24 /* Differ.framework */,
+				904B87B31F6FFCD300FE0A24 /* DifferTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		904B87B61F6FFCE700FE0A24 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		90C04D011E8F0A97000077C8 /* Supporting Files */ = {
@@ -721,7 +708,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				9077A6761E54931D004FABE8 /* PBXTargetDependency */,
 				165217951D70593600C9FAEE /* PBXTargetDependency */,
 			);
 			name = "Bond-iOS";
@@ -777,7 +763,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				9077A67C1E549321004FABE8 /* PBXTargetDependency */,
 				165217981D70594900C9FAEE /* PBXTargetDependency */,
 			);
 			name = "Bond-macOS";
@@ -796,7 +781,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				9077A67E1E549324004FABE8 /* PBXTargetDependency */,
 				1652179B1D70595300C9FAEE /* PBXTargetDependency */,
 			);
 			name = "Bond-tvOS";
@@ -855,8 +839,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 90A3FAC31E0C8D8B0086A7F1 /* Products */;
-					ProjectRef = 90A3FAC21E0C8D8B0086A7F1 /* Diff.xcodeproj */;
+					ProductGroup = 904B87AC1F6FFCD300FE0A24 /* Products */;
+					ProjectRef = 90A3FAC21E0C8D8B0086A7F1 /* Differ.xcodeproj */;
 				},
 				{
 					ProductGroup = 165217831D70591D00C9FAEE /* Products */;
@@ -910,18 +894,18 @@
 			remoteRef = 165217921D70591E00C9FAEE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		90A3FAC81E0C8D8B0086A7F1 /* Diff.framework */ = {
+		904B87B11F6FFCD300FE0A24 /* Differ.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = Diff.framework;
-			remoteRef = 90A3FAC71E0C8D8B0086A7F1 /* PBXContainerItemProxy */;
+			path = Differ.framework;
+			remoteRef = 904B87B01F6FFCD300FE0A24 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		90A3FACA1E0C8D8B0086A7F1 /* DiffTests.xctest */ = {
+		904B87B31F6FFCD300FE0A24 /* DifferTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = DiffTests.xctest;
-			remoteRef = 90A3FAC91E0C8D8B0086A7F1 /* PBXContainerItemProxy */;
+			path = DifferTests.xctest;
+			remoteRef = 904B87B21F6FFCD300FE0A24 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1192,21 +1176,6 @@
 			target = 16887E361D744ABB00EDA099 /* Bond-App */;
 			targetProxy = 16887E491D744B2900EDA099 /* PBXContainerItemProxy */;
 		};
-		9077A6761E54931D004FABE8 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Diff;
-			targetProxy = 9077A6751E54931D004FABE8 /* PBXContainerItemProxy */;
-		};
-		9077A67C1E549321004FABE8 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Diff;
-			targetProxy = 9077A67B1E549321004FABE8 /* PBXContainerItemProxy */;
-		};
-		9077A67E1E549324004FABE8 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Diff;
-			targetProxy = 9077A67D1E549324004FABE8 /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -1418,7 +1387,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				INFOPLIST_FILE = "Bond-App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Bond.Bond-App";
@@ -1434,7 +1404,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				INFOPLIST_FILE = "Bond-App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Bond.Bond-App";

@@ -74,36 +74,88 @@ public extension ReactiveExtensions where Base: NSControl {
     return controlEvent.map(read)
   }
 
-  public var isEnabled: Bond<Bool> {
-    return bond { $0.isEnabled = $1 }
+  public var isEnabled: DynamicSubject<Bool> {
+    return dynamicSubject(
+      signal: controlEvent.eraseType(),
+      triggerEventOnSetting: false,
+      get: { $0.isEnabled },
+      set: { $0.isEnabled = $1 }
+    )
   }
 
-  public var isHighlighted: Bond<Bool> {
-    return bond { $0.isHighlighted = $1 }
+  public var isHighlighted: DynamicSubject<Bool> {
+    return dynamicSubject(
+      signal: controlEvent.eraseType(),
+      triggerEventOnSetting: false,
+      get: { $0.isHighlighted },
+      set: { $0.isHighlighted = $1 }
+    )
   }
 
-  public var objectValue: Bond<AnyObject?> {
-    return bond { $0.objectValue = $1 }
+  public var objectValue: DynamicSubject<Any?> {
+    return dynamicSubject(
+      signal: controlEvent.eraseType(),
+      triggerEventOnSetting: false,
+      get: { $0.objectValue },
+      set: { $0.objectValue = $1 }
+    )
   }
 
-  public var stringValue: Bond<String> {
-    return bond { $0.stringValue = $1 }
+  public var stringValue: DynamicSubject<String> {
+    return dynamicSubject(
+      signal: controlEvent.eraseType(),
+      triggerEventOnSetting: false,
+      get: { $0.stringValue },
+      set: { $0.stringValue = $1 }
+    )
   }
 
-  public var attributedStringleValue: Bond<NSAttributedString> {
-    return bond { $0.attributedStringValue = $1 }
+  public var attributedStringValue: DynamicSubject<NSAttributedString> {
+    return dynamicSubject(
+      signal: controlEvent.eraseType(),
+      triggerEventOnSetting: false,
+      get: { $0.attributedStringValue },
+      set: { $0.attributedStringValue = $1 }
+    )
   }
 
-  public var integerValue: Bond<Int> {
-    return bond { $0.integerValue = $1 }
+  public var integerValue: DynamicSubject<Int> {
+    return dynamicSubject(
+      signal: controlEvent.eraseType(),
+      triggerEventOnSetting: false,
+      get: { $0.integerValue },
+      set: { $0.integerValue = $1 }
+    )
   }
 
-  public var floatValue: Bond<Float> {
-    return bond { $0.floatValue = $1 }
+  public var floatValue: DynamicSubject<Float> {
+    return dynamicSubject(
+      signal: controlEvent.eraseType(),
+      triggerEventOnSetting: false,
+      get: { $0.floatValue },
+      set: { $0.floatValue = $1 }
+    )
   }
 
-  public var doubleValue: Bond<Double> {
-    return bond { $0.doubleValue = $1 }
+  public var doubleValue: DynamicSubject<Double> {
+    return dynamicSubject(
+      signal: controlEvent.eraseType(),
+      triggerEventOnSetting: false,
+      get: { $0.doubleValue },
+      set: { $0.doubleValue = $1 }
+    )
+  }
+
+  @available(*, deprecated, message: "Use attributedStringValue instead.")
+  public var attributedStringleValue: DynamicSubject<NSAttributedString> {
+    return attributedStringValue
+  }
+}
+
+extension NSControl: BindableProtocol {
+
+  public func bind(signal: Signal<Any?, NoError>) -> Disposable {
+    return reactive.objectValue.bind(signal: signal)
   }
 }
 

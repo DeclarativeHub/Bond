@@ -23,7 +23,7 @@
 //
 
 import Foundation
-import Diff
+import Differ
 import ReactiveKit
 
 public enum ObservableArrayChange {

@@ -57,7 +57,7 @@ public extension ReactiveExtensions where Base: NSSegmentedControl {
   }
 }
 
-extension NSSegmentedControl: BindableProtocol {
+extension NSSegmentedControl {
   
   public func bind(signal: Signal<Int, NoError>) -> Disposable {
     return reactive.selectedSegment.bind(signal: signal)
