@@ -76,7 +76,7 @@ public extension ReactiveExtensions where Base: NSControl {
 
   public var isEnabled: DynamicSubject<Bool> {
     return dynamicSubject(
-      signal: controlEvent.eraseType(),
+      signal: keyPath(#keyPath(NSControl.isEnabled), ofType: Bool.self).eraseType(),
       triggerEventOnSetting: false,
       get: { $0.isEnabled },
       set: { $0.isEnabled = $1 }
@@ -85,7 +85,7 @@ public extension ReactiveExtensions where Base: NSControl {
 
   public var isHighlighted: DynamicSubject<Bool> {
     return dynamicSubject(
-      signal: controlEvent.eraseType(),
+      signal: keyPath(#keyPath(NSControl.isHighlighted), ofType: Bool.self).eraseType(),
       triggerEventOnSetting: false,
       get: { $0.isHighlighted },
       set: { $0.isHighlighted = $1 }
@@ -94,7 +94,7 @@ public extension ReactiveExtensions where Base: NSControl {
 
   public var objectValue: DynamicSubject<Any?> {
     return dynamicSubject(
-      signal: controlEvent.eraseType(),
+      signal: keyPath(#keyPath(NSControl.objectValue), ofType: Optional<Any>.self).eraseType(),
       triggerEventOnSetting: false,
       get: { $0.objectValue },
       set: { $0.objectValue = $1 }
@@ -103,7 +103,7 @@ public extension ReactiveExtensions where Base: NSControl {
 
   public var stringValue: DynamicSubject<String> {
     return dynamicSubject(
-      signal: controlEvent.eraseType(),
+      signal: keyPath(#keyPath(NSControl.stringValue), ofType: String.self).eraseType(),
       triggerEventOnSetting: false,
       get: { $0.stringValue },
       set: { $0.stringValue = $1 }
@@ -112,7 +112,7 @@ public extension ReactiveExtensions where Base: NSControl {
 
   public var attributedStringValue: DynamicSubject<NSAttributedString> {
     return dynamicSubject(
-      signal: controlEvent.eraseType(),
+      signal: keyPath(#keyPath(NSControl.attributedStringValue), ofType: NSAttributedString.self).eraseType(),
       triggerEventOnSetting: false,
       get: { $0.attributedStringValue },
       set: { $0.attributedStringValue = $1 }
@@ -121,7 +121,7 @@ public extension ReactiveExtensions where Base: NSControl {
 
   public var integerValue: DynamicSubject<Int> {
     return dynamicSubject(
-      signal: controlEvent.eraseType(),
+      signal: keyPath(#keyPath(NSControl.integerValue), ofType: Int.self).eraseType(),
       triggerEventOnSetting: false,
       get: { $0.integerValue },
       set: { $0.integerValue = $1 }
@@ -130,7 +130,7 @@ public extension ReactiveExtensions where Base: NSControl {
 
   public var floatValue: DynamicSubject<Float> {
     return dynamicSubject(
-      signal: controlEvent.eraseType(),
+      signal: keyPath(#keyPath(NSControl.floatValue), ofType: Float.self).eraseType(),
       triggerEventOnSetting: false,
       get: { $0.floatValue },
       set: { $0.floatValue = $1 }
@@ -139,7 +139,7 @@ public extension ReactiveExtensions where Base: NSControl {
 
   public var doubleValue: DynamicSubject<Double> {
     return dynamicSubject(
-      signal: controlEvent.eraseType(),
+      signal: keyPath(#keyPath(NSControl.doubleValue), ofType: Double.self).eraseType(),
       triggerEventOnSetting: false,
       get: { $0.doubleValue },
       set: { $0.doubleValue = $1 }
