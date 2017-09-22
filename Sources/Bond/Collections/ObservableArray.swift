@@ -321,6 +321,10 @@ extension ObservableArray: QueryableDataSourceProtocol {
   public func numberOfItems(inSection section: Int) -> Int {
     return count
   }
+
+  public func item(at index: Int) -> Item {
+    return self[index]
+  }
 }
 
 extension MutableObservableArray {
