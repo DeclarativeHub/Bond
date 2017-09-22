@@ -29,7 +29,7 @@ Pod::Spec.new do |s|
   s.pod_target_xcconfig = { "OTHER_SWIFT_FLAGS" => "-DBUILDING_WITH_XCODE $(inherited)" }
   s.requires_arc = true
 
-  s.dependency "ReactiveKit", "~> 3.6.0"
+  s.dependency "ReactiveKit", "~> 3.7.0"
   s.dependency "Differ", "~> 1.0.0"
 
 end
