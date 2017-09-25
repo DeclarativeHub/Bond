@@ -415,7 +415,7 @@ names[1] = "Mark"    // prints: array ["Steve", "Mark"], change: .updates([1])
 Observable array can be mapped or filtered. For example, if we map our array
 
 ```
-names.map { $0.characters.count }.observeNext { event in
+names.map { $0.characters.count }.observeNext { e in
   print("array: \(e.source), change: \(e.change)")
 }
 ```
