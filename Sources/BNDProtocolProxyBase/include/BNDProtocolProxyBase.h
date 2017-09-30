@@ -24,6 +24,64 @@
 
 #import <Foundation/Foundation.h>
 
+enum BNDNSObjCValueType {
+  NSObjCNoType = 0,
+  NSObjCVoidType = 'v',
+  NSObjCCharType = 'c',
+  NSObjCShortType = 's',
+  NSObjCLongType = 'l',
+  NSObjCLonglongType = 'q',
+  NSObjCFloatType = 'f',
+  NSObjCDoubleType = 'd',
+  NSObjCBoolType = 'B',
+  NSObjCSelectorType = ':',
+  NSObjCObjectType = '@',
+  NSObjCStructType = '{',
+  NSObjCPointerType = '^',
+  NSObjCStringType = '*',
+  NSObjCArrayType = '[',
+  NSObjCUnionType = '(',
+  NSObjCBitfield = 'b'
+};
+
+@interface BNDMethodSignature: NSObject
+
+@property (readonly) NSUInteger numberOfArguments;
+- (enum BNDNSObjCValueType)getArgumentTypeAtIndex:(NSUInteger)idx;
+- (NSUInteger)getArgumentAlignmentAtIndex:(NSUInteger)idx;
+- (NSUInteger)getArgumentSizeAtIndex:(NSUInteger)idx;
+
+@property (readonly) NSUInteger frameLength;
+
+- (BOOL)isOneway;
+
+@property (readonly) const char * _Nonnull methodReturnType;
+@property (readonly) NSUInteger methodReturnLength;
+
+- (enum BNDNSObjCValueType)getReturnArgumentType;
+- (NSUInteger)getReturnArgumentSize;
+- (NSUInteger)getReturnArgumentAlignment;
+
+@end
+
+@interface BNDInvocation: NSObject
+
+@property (readonly, nonnull) BNDMethodSignature * methodSignature;
+
+- (void)retainArguments;
+
+@property (readonly) BOOL argumentsRetained;
+
+@property (nonnull, readonly) SEL selector;
+
+- (void)getReturnValue:(void * _Nonnull)retLoc;
+- (void)setReturnValue:(void * _Nonnull)retLoc;
+
+- (void)getArgument:(void * _Nonnull)argumentLocation atIndex:(NSInteger)idx;
+- (void)setArgument:(void * _Nonnull)argumentLocation atIndex:(NSInteger)idx;
+
+@end
+
 @interface BNDProtocolProxyBase : NSObject
 
 @property (nonatomic, readonly, nonnull, strong) Protocol *protocol;
@@ -33,6 +91,5 @@
 
 - (nonnull instancetype)initWithProtocol:(nonnull Protocol *)protocol;
 - (BOOL)hasHandlerForSelector:(nonnull SEL)selector;
-- (void)invokeWithSelector:(nonnull SEL)selector argumentExtractor:(void (^_Nonnull)(NSInteger index, void * _Nullable buffer))argumentExtractor setReturnValue:(void (^_Nullable)(void * _Nullable buffer))setReturnValue;
-
+- (void)handleInvocation:(nonnull BNDInvocation *)invocation;
 @end

@@ -30,20 +30,84 @@ import ReactiveKit
 import BNDProtocolProxyBase
 #endif
 
-public typealias ArgumentExtractor = (Int, UnsafeMutableRawPointer?) -> Void
-public typealias ReturnValueSetter = (UnsafeMutableRawPointer?) -> Void
+private extension BNDInvocation {
 
-fileprivate func arg<T>(_ extractor: ArgumentExtractor, _ pos: Int) -> T {
-  let arg = UnsafeMutablePointer<T>.allocate(capacity: 1)
-  extractor(pos, arg)
-  let result = arg.pointee
-  arg.deallocate(capacity: 1)
-  return result
+ func readArgument<T>(_ index: Int) -> T {
+    let size = Int(methodSignature.getArgumentSize(at: UInt(index)))
+    let alignment = Int(methodSignature.getArgumentAlignment(at: UInt(index)))
+
+    let pointer = UnsafeMutableRawPointer.allocate(bytes: size, alignedTo: alignment)
+    getArgument(pointer, at: index)
+
+    let type = methodSignature.getArgumentType(at: UInt(index))
+    switch type {
+    case NSObjCCharType:
+      return NSNumber(value: pointer.assumingMemoryBound(to: CChar.self).pointee) as! T
+    case NSObjCShortType:
+      return NSNumber(value: pointer.assumingMemoryBound(to: CShort.self).pointee) as! T
+    case NSObjCLongType:
+      return NSNumber(value: pointer.assumingMemoryBound(to: CLong.self).pointee) as! T
+    case NSObjCLonglongType:
+      return NSNumber(value: pointer.assumingMemoryBound(to: CLongLong.self).pointee) as! T
+    case NSObjCFloatType:
+     return NSNumber(value: pointer.assumingMemoryBound(to: CFloat.self).pointee) as! T
+    case NSObjCDoubleType:
+     return NSNumber(value: pointer.assumingMemoryBound(to: CDouble.self).pointee) as! T
+    case NSObjCBoolType:
+      return NSNumber(value: pointer.assumingMemoryBound(to: CBool.self).pointee) as! T
+    case NSObjCSelectorType:
+      return pointer.assumingMemoryBound(to: Optional<Selector>.self).pointee as! T
+    case NSObjCObjectType:
+      return pointer.assumingMemoryBound(to: Optional<AnyObject>.self).pointee as! T
+    default:
+      fatalError("Bridging ObjC type `\(type)` is not supported.")
+    }
+
+    pointer.deallocate(bytes: size, alignedTo: alignment)
+  }
+
+ func writeReturnValue<T>(_ value: T) {
+    guard methodSignature.methodReturnLength > 0 else { return }
+
+    let size = methodSignature.getReturnArgumentSize()
+    let alignment = methodSignature.getReturnArgumentAlignment()
+    let type = methodSignature.getReturnArgumentType()
+
+    func writeAs<U>(_ type: U.Type) {
+      let pointer = UnsafeMutablePointer<U>.allocate(capacity: 1)
+      pointer.pointee = value as! U
+      setReturnValue(pointer)
+      pointer.deallocate(capacity: 1)
+    }
+
+    switch type {
+    case NSObjCCharType:
+      writeAs(CChar.self)
+    case NSObjCShortType:
+      writeAs(CShort.self)
+    case NSObjCLongType:
+      writeAs(CLong.self)
+    case NSObjCLonglongType:
+      writeAs(CLongLong.self)
+    case NSObjCFloatType:
+      writeAs(CFloat.self)
+    case NSObjCDoubleType:
+      writeAs(CDouble.self)
+    case NSObjCBoolType:
+      writeAs(CBool.self)
+    case NSObjCSelectorType:
+      writeAs(Optional<Selector>.self)
+    case NSObjCObjectType:
+      writeAs(Optional<AnyObject>.self)
+    default:
+      fatalError("Bridging ObjC type `\(type)` is not supported.")
+    }
+  }
 }
 
 public class ProtocolProxy: BNDProtocolProxyBase {
 
-  private var invokers: [Selector: (ArgumentExtractor, ReturnValueSetter?) -> Void] = [:]
+  private var invokers: [Selector: (BNDInvocation) -> Void] = [:]
   private var handlers: [Selector: Any] = [:]
   private weak var object: NSObject?
   private let setter: Selector
@@ -68,15 +132,15 @@ public class ProtocolProxy: BNDProtocolProxyBase {
     return invokers[selector] != nil
   }
 
-  public override func invoke(with selector: Selector, argumentExtractor: @escaping ArgumentExtractor, setReturnValue: ReturnValueSetter?) {
-    guard let invoker = invokers[selector] else { return }
-    invoker(argumentExtractor, setReturnValue)
+  public override func handle(_ invocation: BNDInvocation) {
+    guard let invoker = invokers[invocation.selector] else { return }
+    invoker(invocation)
   }
 
   private func registerInvoker0<R>(for selector: Selector, block: @escaping () -> R) -> Disposable {
-    invokers[selector] = { _, setReturnValue in
-      var r = block()
-      if let setReturnValue = setReturnValue { setReturnValue(&r) }
+    invokers[selector] = { invocation in
+      let result = block()
+      invocation.writeReturnValue(result)
     }
     registerDelegate()
     return BlockDisposable { [weak self] in
@@ -86,9 +150,9 @@ public class ProtocolProxy: BNDProtocolProxyBase {
   }
 
   private func registerInvoker1<T, R>(for selector: Selector, block: @escaping (T) -> R) -> Disposable {
-    invokers[selector] = { extractor, setReturnValue in
-      var r = block(arg(extractor, 2))
-      if let setReturnValue = setReturnValue { setReturnValue(&r) }
+    invokers[selector] = { invocation in
+      let result = block(invocation.readArgument(2))
+      invocation.writeReturnValue(result)
     }
     registerDelegate()
     return BlockDisposable { [weak self] in
@@ -98,9 +162,9 @@ public class ProtocolProxy: BNDProtocolProxyBase {
   }
 
   private func registerInvoker2<T, U, R>(for selector: Selector, block: @escaping (T, U) -> R) -> Disposable {
-    invokers[selector] = { extractor, setReturnValue in
-      var r = block(arg(extractor, 2), arg(extractor, 3))
-      if let setReturnValue = setReturnValue { setReturnValue(&r) }
+    invokers[selector] = { invocation in
+      let result = block(invocation.readArgument(2), invocation.readArgument(3))
+      invocation.writeReturnValue(result)
     }
     registerDelegate()
     return BlockDisposable { [weak self] in
@@ -110,9 +174,9 @@ public class ProtocolProxy: BNDProtocolProxyBase {
   }
 
   private func registerInvoker3<T, U, V, R>(for selector: Selector, block: @escaping (T, U, V) -> R) -> Disposable {
-    invokers[selector] = { extractor, setReturnValue in
-      var r = block(arg(extractor, 2), arg(extractor, 3), arg(extractor, 4))
-      if let setReturnValue = setReturnValue { setReturnValue(&r) }
+    invokers[selector] = { invocation in
+      let result = block(invocation.readArgument(2), invocation.readArgument(3), invocation.readArgument(4))
+      invocation.writeReturnValue(result)
     }
     registerDelegate()
     return BlockDisposable { [weak self] in
@@ -122,9 +186,9 @@ public class ProtocolProxy: BNDProtocolProxyBase {
   }
 
   private func registerInvoker4<T, U, V, W, R>(for selector: Selector, block: @escaping (T, U, V, W) -> R) -> Disposable {
-    invokers[selector] = { extractor, setReturnValue in
-      var r = block(arg(extractor, 2), arg(extractor, 3), arg(extractor, 4), arg(extractor, 5))
-      if let setReturnValue = setReturnValue { setReturnValue(&r) }
+    invokers[selector] = { invocation in
+      let result = block(invocation.readArgument(2), invocation.readArgument(3), invocation.readArgument(4), invocation.readArgument(5))
+      invocation.writeReturnValue(result)
     }
     registerDelegate()
     return BlockDisposable { [weak self] in
@@ -134,9 +198,9 @@ public class ProtocolProxy: BNDProtocolProxyBase {
   }
 
   private func registerInvoker5<T, U, V, W, X, R>(for selector: Selector, block: @escaping (T, U, V, W, X) -> R) -> Disposable {
-    invokers[selector] = { extractor, setReturnValue in
-      var r = block(arg(extractor, 2), arg(extractor, 3), arg(extractor, 4), arg(extractor, 5), arg(extractor, 6))
-      if let setReturnValue = setReturnValue { setReturnValue(&r) }
+    invokers[selector] = { invocation in
+      let result = block(invocation.readArgument(2), invocation.readArgument(3), invocation.readArgument(4), invocation.readArgument(5), invocation.readArgument(6))
+      invocation.writeReturnValue(result)
     }
     registerDelegate()
     return BlockDisposable { [weak self] in

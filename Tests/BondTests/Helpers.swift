@@ -37,6 +37,8 @@ extension Event {
         return left == right
       } else if let left = left as? Date, let right = right as? Date {
         return left == right
+      } else if let left = left as? IndexPath, let right = right as? IndexPath {
+        return left == right
       } else if let left = left as? [String], let right = right as? [String] {
         return left == right
       } else if let left = asOptional(left) as? Optional<String>, let right = asOptional(right) as? Optional<String> {

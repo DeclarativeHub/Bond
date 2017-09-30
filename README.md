@@ -289,7 +289,7 @@ You can then convert methods of that protocol into signals:
 ```swift
 extension UITableView {
   var selectedRow: Signal<Int, NoError> {
-    return reactive.delegate.signal(for: #selector(UITableViewDelegate.tableView(_:didSelectRowAtIndexPath:))) { (subject: PublishSubject<Int, NoError>, _: UITableView, indexPath: NSIndexPath) in
+    return reactive.delegate.signal(for: #selector(UITableViewDelegate.tableView(_:didSelectRowAtIndexPath:))) { (subject: SafePublishSubject<Int>, _: UITableView, indexPath: IndexPath) in
       subject.next(indexPath.row)
     }
   }
@@ -324,8 +324,7 @@ Method `feed` takes three parameters: a property to feed from, a selector, and a
 
 You should not set more that one feed property per selector.
 
-Note that in the mapping closures of both `signal(for:)` and `feed` methods you must be explicit about argument and return types. Also, **you must use ObjC types as this is ObjC API**. For example, use `NSString` instead of `String`.
-
+Note that in the mapping closures of both `signal(for:)` and `feed` methods you must be explicit about argument and return types.
 
 ## Reactive Data Sources
 

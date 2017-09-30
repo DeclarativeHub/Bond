@@ -15,6 +15,7 @@ import ReactiveKit
   func methodB(_ object: TestObject)
   func methodC(_ object: TestObject, value: Int)
   func methodD(_ object: TestObject, value: Int) -> NSString
+  func methodE(_ object: TestObject, value: NSIndexPath)
 }
 
 class TestObject: NSObject {
@@ -39,6 +40,10 @@ class TestObject: NSObject {
   func callMethodD(_ value: Int) -> NSString {
     return delegate.methodD(self, value: value)
   }
+
+  func callMethodE(_ value: NSIndexPath) {
+    return delegate.methodE(self, value: value)
+  }
 }
 
 class ProtocolProxyTests: XCTestCase {
@@ -55,11 +60,11 @@ class ProtocolProxyTests: XCTestCase {
 
   func testDisposing() {
     var callCount = 0
-    let stream = protocolProxy.signal(for: #selector(TestDelegate.methodA)) { (stream: PublishSubject1<Int>) in
+    let signal = protocolProxy.signal(for: #selector(TestDelegate.methodA)) { (signal: SafePublishSubject<Int>) in
       callCount += 1
     }
 
-    let disposable = stream.observe { _ in }
+    let disposable = signal.observe { _ in }
 
     if object.delegate.responds(to: #selector(TestDelegate.methodA)) {
       object.callMethodA()
@@ -73,7 +78,7 @@ class ProtocolProxyTests: XCTestCase {
 
     XCTAssertEqual(callCount, 1)
 
-    let newDisposable = stream.observe { _ in }
+    let newDisposable = signal.observe { _ in }
 
     XCTAssert(object.delegate.responds(to: #selector(TestDelegate.methodA)))
 
@@ -88,43 +93,53 @@ class ProtocolProxyTests: XCTestCase {
   }
 
   func testCallbackA() {
-    let stream = protocolProxy.signal(for: #selector(TestDelegate.methodA)) { (stream: PublishSubject1<Int>) in
-      stream.next(0)
+    let signal = protocolProxy.signal(for: #selector(TestDelegate.methodA)) { (subject: SafePublishSubject<Int>) in
+      subject.next(0)
     }
 
-    stream.expectNext([0, 0])
+    signal.expectNext([0, 0])
     object.callMethodA()
     object.callMethodA()
   }
 
   func testCallbackB() {
-    let stream = protocolProxy.signal(for: #selector(TestDelegate.methodB(_:))) { (stream: PublishSubject1<Int>, _: TestObject) in
-      stream.next(0)
+    let signal = protocolProxy.signal(for: #selector(TestDelegate.methodB(_:))) { (subject: SafePublishSubject<Int>, _: TestObject) in
+      subject.next(0)
     }
 
-    stream.expectNext([0, 0])
+    signal.expectNext([0, 0])
     object.callMethodB()
     object.callMethodB()
   }
 
   func testCallbackC() {
-    let stream = protocolProxy.signal(for: #selector(TestDelegate.methodC(_:value:))) { (stream: PublishSubject1<Int>, _: TestObject, value: Int) in
-      stream.next(value)
+    let signal = protocolProxy.signal(for: #selector(TestDelegate.methodC(_:value:))) { (subject: SafePublishSubject<Int>, _: TestObject, value: Int) in
+      subject.next(value)
     }
 
-    stream.expectNext([10, 20])
+    signal.expectNext([10, 20])
     object.callMethodC(10)
     object.callMethodC(20)
   }
 
   func testCallbackD() {
-    let stream = protocolProxy.signal(for: #selector(TestDelegate.methodD(_:value:))) { (stream: PublishSubject1<Int>, _: TestObject, value: Int) -> NSString in
-      stream.next(value)
-      return "\(value)" as NSString
+    let signal = protocolProxy.signal(for: #selector(TestDelegate.methodD(_:value:))) { (subject: SafePublishSubject<Int>, _: TestObject, value: Int) -> String in
+      subject.next(value)
+      return "\(value)"
     }
 
-    stream.expectNext([10, 20])
+    signal.expectNext([10, 20])
     XCTAssertEqual(object.callMethodD(10), "10")
     XCTAssertEqual(object.callMethodD(20), "20")
+  }
+
+  func testCallbackE() {
+    let signal = protocolProxy.signal(for: #selector(TestDelegate.methodE(_:value:))) { (subject: SafePublishSubject<IndexPath>, _: TestObject, value: IndexPath) in
+      subject.next(value)
+    }
+
+    signal.expectNext([IndexPath(row: 2, section: 2), IndexPath(row: 3, section: 3)])
+    object.callMethodE(NSIndexPath(row: 2, section: 2))
+    object.callMethodE(NSIndexPath(row: 3, section: 3))
   }
 }
