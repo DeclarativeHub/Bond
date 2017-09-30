@@ -73,7 +73,7 @@ private extension BNDInvocation {
     let alignment = methodSignature.getReturnArgumentAlignment()
     let type = methodSignature.getReturnArgumentType()
 
-    func writeAs<U>(_ type: U.Type) {
+  func write<U, V>(_ value: V, as type: U.Type) {
       let pointer = UnsafeMutablePointer<U>.allocate(capacity: 1)
       pointer.pointee = value as! U
       setReturnValue(pointer)
@@ -82,23 +82,23 @@ private extension BNDInvocation {
 
     switch type {
     case NSObjCCharType:
-      writeAs(CChar.self)
+      write(value as! NSNumber, as: CChar.self)
     case NSObjCShortType:
-      writeAs(CShort.self)
+      write(value as! NSNumber, as: CShort.self)
     case NSObjCLongType:
-      writeAs(CLong.self)
+      write(value as! NSNumber, as: CLong.self)
     case NSObjCLonglongType:
-      writeAs(CLongLong.self)
+      write(value as! NSNumber, as: CLongLong.self)
     case NSObjCFloatType:
-      writeAs(CFloat.self)
+      write(value as! NSNumber, as: CFloat.self)
     case NSObjCDoubleType:
-      writeAs(CDouble.self)
+      write(value as! NSNumber, as: CDouble.self)
     case NSObjCBoolType:
-      writeAs(CBool.self)
+      write(value as! NSNumber, as: CBool.self)
     case NSObjCSelectorType:
-      writeAs(Optional<Selector>.self)
+      write(value, as: Optional<Selector>.self)
     case NSObjCObjectType:
-      writeAs(Optional<AnyObject>.self)
+      write(value, as: Optional<AnyObject>.self)
     default:
       fatalError("Bridging ObjC type `\(type)` is not supported.")
     }
