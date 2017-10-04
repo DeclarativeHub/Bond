@@ -14,9 +14,9 @@
         "package": "ReactiveKit",
         "repositoryURL": "https://github.com/ReactiveKit/ReactiveKit.git",
         "state": {
-          "branch": "swift-4",
-          "revision": "b5bd5eb0dbc8029dd188a7a3e3a5bf305e2f7ca1",
-          "version": null
+          "branch": null,
+          "revision": "851ca35cf41bc9a6030b7bb1e7bcdbf9b0e764e3",
+          "version": "3.7.1"
         }
       }
     ]
