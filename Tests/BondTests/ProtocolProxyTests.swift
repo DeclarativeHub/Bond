@@ -6,6 +6,12 @@
 //  Copyright © 2016 Swift Bond. All rights reserved.
 //
 
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
+
 import XCTest
 import ReactiveKit
 @testable import Bond
@@ -143,7 +149,7 @@ class ProtocolProxyTests: XCTestCase {
       subject.next(value)
     }
 
-    signal.expectNext([IndexPath(row: 2, section: 2), IndexPath(row: 3, section: 3)])
+    signal.expectNext([IndexPath(indexes: [2, 2]), IndexPath(indexes: [3, 3])])
     object.callMethodE(NSIndexPath(row: 2, section: 2))
     object.callMethodE(NSIndexPath(row: 3, section: 3))
   }
@@ -154,8 +160,18 @@ class ProtocolProxyTests: XCTestCase {
       return 5
     }
 
-    signal.expectNext([IndexPath(row: 2, section: 2), IndexPath(row: 3, section: 3)])
+    signal.expectNext([IndexPath(indexes: [2, 2]), IndexPath(indexes: [3, 3])])
     object.callMethodF(NSIndexPath(row: 2, section: 2))
     object.callMethodF(NSIndexPath(row: 3, section: 3))
   }
 }
+
+#if os(macOS)
+  private extension NSIndexPath {
+    // AppKit lacks the following convenience - on mac OS 10.11 and later, it is `init(forRow: Int, inSection: Int)`
+    convenience init(row: Int, section: Int) {
+      self.init(index: section)
+      adding(row)
+    }
+  }
+#endif
