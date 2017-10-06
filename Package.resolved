@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/ReactiveKit/ReactiveKit.git",
         "state": {
           "branch": null,
-          "revision": "851ca35cf41bc9a6030b7bb1e7bcdbf9b0e764e3",
-          "version": "3.7.1"
+          "revision": "0fb1cce63f28a79e1d80def394191513f8baf724",
+          "version": "3.7.2"
         }
       }
     ]
