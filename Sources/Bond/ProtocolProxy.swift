@@ -75,7 +75,7 @@ private extension BNDInvocation {
 
   func write<U, V>(_ value: V, as type: U.Type) {
       let pointer = UnsafeMutablePointer<U>.allocate(capacity: 1)
-      pointer.pointee = value as! U
+      pointer.initialize(to: value as! U, count: 1)
       setReturnValue(pointer)
       pointer.deallocate(capacity: 1)
     }
