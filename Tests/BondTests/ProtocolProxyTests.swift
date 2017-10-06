@@ -150,8 +150,8 @@ class ProtocolProxyTests: XCTestCase {
     }
 
     signal.expectNext([IndexPath(indexes: [2, 2]), IndexPath(indexes: [3, 3])])
-    object.callMethodE(NSIndexPath(row: 2, section: 2))
-    object.callMethodE(NSIndexPath(row: 3, section: 3))
+    object.callMethodE(NSIndexPath(indexes: [2, 2], length: 2))
+    object.callMethodE(NSIndexPath(indexes: [3, 3], length: 2))
   }
 
   func testCallbackF() {
@@ -161,17 +161,7 @@ class ProtocolProxyTests: XCTestCase {
     }
 
     signal.expectNext([IndexPath(indexes: [2, 2]), IndexPath(indexes: [3, 3])])
-    object.callMethodF(NSIndexPath(row: 2, section: 2))
-    object.callMethodF(NSIndexPath(row: 3, section: 3))
+    _ = object.callMethodF(NSIndexPath(indexes: [2, 2], length: 2))
+    _ = object.callMethodF(NSIndexPath(indexes: [3, 3], length: 2))
   }
 }
-
-#if os(macOS)
-  private extension NSIndexPath {
-    // AppKit lacks the following convenience - on mac OS 10.11 and later, it is `init(forRow: Int, inSection: Int)`
-    convenience init(row: Int, section: Int) {
-      self.init(index: section)
-      adding(row)
-    }
-  }
-#endif
