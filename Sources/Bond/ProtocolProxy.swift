@@ -45,10 +45,22 @@ private extension BNDInvocation {
       return NSNumber(value: pointer.assumingMemoryBound(to: CChar.self).pointee) as! T
     case NSObjCShortType:
       return NSNumber(value: pointer.assumingMemoryBound(to: CShort.self).pointee) as! T
+    case NSObjCIntType:
+      return NSNumber(value: pointer.assumingMemoryBound(to: CInt.self).pointee) as! T
     case NSObjCLongType:
       return NSNumber(value: pointer.assumingMemoryBound(to: CLong.self).pointee) as! T
     case NSObjCLonglongType:
       return NSNumber(value: pointer.assumingMemoryBound(to: CLongLong.self).pointee) as! T
+    case NSObjCUCharType:
+      return NSNumber(value: pointer.assumingMemoryBound(to: CUnsignedChar.self).pointee) as! T
+    case NSObjCUShortType:
+      return NSNumber(value: pointer.assumingMemoryBound(to: CUnsignedShort.self).pointee) as! T
+    case NSObjCUIntType:
+      return NSNumber(value: pointer.assumingMemoryBound(to: CUnsignedInt.self).pointee) as! T
+    case NSObjCULongType:
+      return NSNumber(value: pointer.assumingMemoryBound(to: CUnsignedLong.self).pointee) as! T
+    case NSObjCULonglongType:
+      return NSNumber(value: pointer.assumingMemoryBound(to: CUnsignedLongLong.self).pointee) as! T
     case NSObjCFloatType:
      return NSNumber(value: pointer.assumingMemoryBound(to: CFloat.self).pointee) as! T
     case NSObjCDoubleType:
@@ -85,10 +97,22 @@ private extension BNDInvocation {
       write(value as! NSNumber, as: CChar.self)
     case NSObjCShortType:
       write(value as! NSNumber, as: CShort.self)
+    case NSObjCIntType:
+      write(value as! NSNumber, as: CInt.self)
     case NSObjCLongType:
       write(value as! NSNumber, as: CLong.self)
     case NSObjCLonglongType:
       write(value as! NSNumber, as: CLongLong.self)
+    case NSObjCUCharType:
+      write(value as! NSNumber, as: CUnsignedChar.self)
+    case NSObjCUShortType:
+      write(value as! NSNumber, as: CUnsignedShort.self)
+    case NSObjCUIntType:
+      write(value as! NSNumber, as: CUnsignedInt.self)
+    case NSObjCULongType:
+      write(value as! NSNumber, as: CUnsignedLong.self)
+    case NSObjCULonglongType:
+      write(value as! NSNumber, as: CUnsignedLongLong.self)
     case NSObjCFloatType:
       write(value as! NSNumber, as: CFloat.self)
     case NSObjCDoubleType:
