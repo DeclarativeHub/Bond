@@ -39,6 +39,10 @@ public extension ReactiveExtensions where Base: UIGestureRecognizer {
   }
 }
 
+#endif
+
+#if os(iOS)
+  
 public extension ReactiveExtensions where Base: UIView {
     
     public func addGestureRecognizer<T: UIGestureRecognizer>(_ gestureRecognizer: T) -> SafeSignal<T> {
