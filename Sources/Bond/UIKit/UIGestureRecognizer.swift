@@ -27,7 +27,6 @@
 
 import UIKit
 import ReactiveKit
-import Bond
 
 extension UIGestureRecognizer: BindingExecutionContextProvider {
   public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
@@ -42,14 +41,14 @@ public extension ReactiveExtensions where Base: UIGestureRecognizer {
 
 public extension ReactiveExtensions where Base: UIView {
     
-    public func addGesture<T: UIGestureRecognizer>(_ gesture: T) -> SafeSignal<T> {
+    public func addGestureRecognizer<T: UIGestureRecognizer>(_ gestureRecognizer: T) -> SafeSignal<T> {
         let base = self.base
         return Signal { [weak base] observer in
             guard let base = base else {
                 observer.completed()
                 return NonDisposable.instance
             }
-            let target = BNDGestureTarget(view: base, gesture: gesture) { recog in
+            let target = BNDGestureTarget(view: base, gestureRecognizer: gestureRecognizer) { recog in
                 observer.next(recog as! T)
             }
             return BlockDisposable {
@@ -63,14 +62,14 @@ public extension ReactiveExtensions where Base: UIView {
         gesture.numberOfTapsRequired = numberOfTaps
         gesture.numberOfTouchesRequired = numberOfTouches
 
-        return self.addGesture(gesture)
+        return addGestureRecognizer(gesture)
     }
 
     public func panGesture(numberOfTouches: Int = 1) -> SafeSignal<UIPanGestureRecognizer> {
         let gesture = UIPanGestureRecognizer()
         gesture.minimumNumberOfTouches = numberOfTouches
 
-        return self.addGesture(gesture)
+        return addGestureRecognizer(gesture)
     }
 
     public func swipeGesture(numberOfTouches: Int, direction: UISwipeGestureRecognizerDirection) -> SafeSignal<UISwipeGestureRecognizer> {
@@ -78,11 +77,11 @@ public extension ReactiveExtensions where Base: UIView {
         gesture.numberOfTouchesRequired = numberOfTouches
         gesture.direction = direction
 
-        return self.addGesture(gesture)
+        return addGestureRecognizer(gesture)
     }
 
-    public func pinchGestureRecognizer() -> SafeSignal<UIPinchGestureRecognizer> {
-        return self.addGesture(UIPinchGestureRecognizer())
+    public func pinchGesture() -> SafeSignal<UIPinchGestureRecognizer> {
+        return addGestureRecognizer(UIPinchGestureRecognizer())
     }
 
     public func longPressGesture(numberOfTaps: Int = 0, numberOfTouches: Int = 1,  minimumPressDuration: CFTimeInterval = 0.3, allowableMovement: CGFloat = 10) -> SafeSignal<UILongPressGestureRecognizer> {
@@ -92,11 +91,11 @@ public extension ReactiveExtensions where Base: UIView {
         gesture.minimumPressDuration = minimumPressDuration
         gesture.allowableMovement = allowableMovement
 
-        return self.addGesture(gesture)
+        return addGestureRecognizer(gesture)
     }
 
     public func rotationGesture() -> SafeSignal<UIRotationGestureRecognizer> {
-        return self.addGesture(UIRotationGestureRecognizer())
+        return addGestureRecognizer(UIRotationGestureRecognizer())
     }
 }
 
@@ -104,17 +103,17 @@ public extension ReactiveExtensions where Base: UIView {
     
     private weak var view: UIView?
     private let observer: (UIGestureRecognizer) -> Void
-    private let gesture: UIGestureRecognizer
+    private let gestureRecognizer: UIGestureRecognizer
 
-    fileprivate init(view: UIView, gesture: UIGestureRecognizer, observer: @escaping (UIGestureRecognizer) -> Void) {
+    fileprivate init(view: UIView, gestureRecognizer: UIGestureRecognizer, observer: @escaping (UIGestureRecognizer) -> Void) {
         self.view = view
-        self.gesture = gesture
+        self.gestureRecognizer = gestureRecognizer
         self.observer = observer
 
         super.init()
 
-        gesture.addTarget(self, action: #selector(actionHandler(recogniser:)))
-        view.addGestureRecognizer(gesture)
+        gestureRecognizer.addTarget(self, action: #selector(actionHandler(recogniser:)))
+        view.addGestureRecognizer(gestureRecognizer)
     }
 
     @objc private func actionHandler(recogniser: UIGestureRecognizer) {
@@ -122,7 +121,7 @@ public extension ReactiveExtensions where Base: UIView {
     }
 
     fileprivate func unregister() {
-        view?.removeGestureRecognizer(gesture)
+        view?.removeGestureRecognizer(gestureRecognizer)
     }
 
     deinit {
