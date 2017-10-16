@@ -125,6 +125,8 @@ private extension BNDInvocation {
       write(value, as: Optional<Selector>.self)
     case NSObjCObjectType:
       write(value, as: Optional<AnyObject>.self)
+    case NSObjCStructType:
+      write(value, as: T.self)
     default:
       fatalError("Bridging ObjC type `\(type)` is not supported.")
     }
