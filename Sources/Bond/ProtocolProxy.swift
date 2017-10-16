@@ -39,6 +39,10 @@ private extension BNDInvocation {
     let pointer = UnsafeMutableRawPointer.allocate(bytes: size, alignedTo: alignment)
     getArgument(pointer, at: index)
 
+    defer {
+      pointer.deallocate(bytes: size, alignedTo: alignment)
+    }
+
     let type = methodSignature.getArgumentType(at: UInt(index))
     switch type {
     case NSObjCCharType:
@@ -71,13 +75,9 @@ private extension BNDInvocation {
       return pointer.assumingMemoryBound(to: Optional<Selector>.self).pointee as! T
     case NSObjCObjectType:
       return pointer.assumingMemoryBound(to: Optional<AnyObject>.self).pointee as! T
-    case NSObjCStructType:
+   default:
       return pointer.assumingMemoryBound(to: T.self).pointee
-    default:
-      fatalError("Bridging ObjC type `\(type)` is not supported.")
     }
-
-    pointer.deallocate(bytes: size, alignedTo: alignment)
   }
 
  func writeReturnValue<T>(_ value: T) {
@@ -125,10 +125,8 @@ private extension BNDInvocation {
       write(value, as: Optional<Selector>.self)
     case NSObjCObjectType:
       write(value, as: Optional<AnyObject>.self)
-    case NSObjCStructType:
-      write(value, as: T.self)
     default:
-      fatalError("Bridging ObjC type `\(type)` is not supported.")
+      write(value, as: T.self)
     }
   }
 }
