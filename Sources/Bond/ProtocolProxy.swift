@@ -71,6 +71,8 @@ private extension BNDInvocation {
       return pointer.assumingMemoryBound(to: Optional<Selector>.self).pointee as! T
     case NSObjCObjectType:
       return pointer.assumingMemoryBound(to: Optional<AnyObject>.self).pointee as! T
+    case NSObjCStructType:
+      return pointer.assumingMemoryBound(to: T.self).pointee
     default:
       fatalError("Bridging ObjC type `\(type)` is not supported.")
     }
