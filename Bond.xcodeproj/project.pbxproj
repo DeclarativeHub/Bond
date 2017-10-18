@@ -16,6 +16,9 @@
 		16887E2E1D7444C900EDA099 /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1652178B1D70591E00C9FAEE /* ReactiveKit.framework */; };
 		16887E3A1D744ABB00EDA099 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16887E391D744ABB00EDA099 /* AppDelegate.swift */; };
 		16887E441D744ABB00EDA099 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 16887E421D744ABB00EDA099 /* LaunchScreen.storyboard */; };
+		9025DCAB1F981693007B7689 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0220091F8BE898002F8380 /* Property.swift */; };
+		9025DCB01F981694007B7689 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0220091F8BE898002F8380 /* Property.swift */; };
+		9025DCB11F9816A7007B7689 /* UIAccessibilityIdentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC86E9AE1E9145CC008563B2 /* UIAccessibilityIdentification.swift */; };
 		904B87B91F6FFCE700FE0A24 /* Differ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 904B87B11F6FFCD300FE0A24 /* Differ.framework */; };
 		904B87BC1F6FFCEB00FE0A24 /* Differ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 904B87B11F6FFCD300FE0A24 /* Differ.framework */; };
 		904B87BD1F6FFCEE00FE0A24 /* Differ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 904B87B11F6FFCD300FE0A24 /* Differ.framework */; };
@@ -1040,6 +1043,7 @@
 				90C04D8A1E8F0B8D000077C8 /* NSView.swift in Sources */,
 				90C04D6B1E8F0B89000077C8 /* CALayer.swift in Sources */,
 				90A443311E9055D800D611FE /* UIProgressView.swift in Sources */,
+				9025DCAB1F981693007B7689 /* Property.swift in Sources */,
 				90A4432E1E9055D800D611FE /* UILabel.swift in Sources */,
 				90C04D681E8F0B89000077C8 /* Observable.swift in Sources */,
 				90A443331E9055D800D611FE /* UISegmentedControl.swift in Sources */,
@@ -1080,6 +1084,7 @@
 				90A443281E9055D800D611FE /* UIButton.swift in Sources */,
 				90A443371E9055D800D611FE /* UITableView.swift in Sources */,
 				90A443341E9055D800D611FE /* UISlider.swift in Sources */,
+				9025DCB11F9816A7007B7689 /* UIAccessibilityIdentification.swift in Sources */,
 				90A4432B1E9055D800D611FE /* UIDatePicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1109,6 +1114,7 @@
 				EC86E9B01E9145CC008563B2 /* UIAccessibilityIdentification.swift in Sources */,
 				90A4431C1E9055D200D611FE /* NSProgressIndicator.swift in Sources */,
 				90C04DA21E8F0B96000077C8 /* UINavigationBar.swift in Sources */,
+				9025DCB01F981694007B7689 /* Property.swift in Sources */,
 				90C04DA71E8F0B96000077C8 /* UISlider.swift in Sources */,
 				90C04DA51E8F0B96000077C8 /* UIRefreshControl.swift in Sources */,
 				90C04D5B1E8F0B88000077C8 /* DataSource.swift in Sources */,
