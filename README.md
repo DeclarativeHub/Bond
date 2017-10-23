@@ -288,11 +288,11 @@ You can then convert methods of that protocol into signals:
 
 ```swift
 extension UITableView {
-  var selectedRow: Signal<Int, NoError> {
-    return reactive.delegate.signal(for: #selector(UITableViewDelegate.tableView(_:didSelectRowAtIndexPath:))) { (subject: SafePublishSubject<Int>, _: UITableView, indexPath: IndexPath) in
-      subject.next(indexPath.row)
+    var selectedRow: Signal<Int, NoError> {
+        return reactive.delegate.signal(for: #selector(UITableViewDelegate.tableView(_:didSelectRowAt:))) { (subject: SafePublishSubject<Int>, _: UITableView, indexPath: IndexPath) in
+            subject.next(indexPath.row)
+        }
     }
-  }
 }
 ```
 
