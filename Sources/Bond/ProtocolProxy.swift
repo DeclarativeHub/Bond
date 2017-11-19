@@ -161,6 +161,7 @@ public class ProtocolProxy: BNDProtocolProxyBase {
 
   public override func handle(_ invocation: BNDInvocation) {
     guard let invoker = invokers[invocation.selector] else { return }
+    invocation.retainArguments()
     invoker(invocation)
   }
 
