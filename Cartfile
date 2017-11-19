@@ -1,2 +1,2 @@
-github "ReactiveKit/ReactiveKit" ~> 3.7.4
-github "tonyarnold/Differ" ~> 1.0.0
+github "ReactiveKit/ReactiveKit" ~> 3.8
+github "tonyarnold/Differ" ~> 1.0
