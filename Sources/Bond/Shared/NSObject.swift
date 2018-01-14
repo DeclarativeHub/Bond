@@ -26,72 +26,72 @@ import Foundation
 import ReactiveKit
 
 extension NSObject {
-
-  /// Bind `signal` to `bindable` and dispose in `bnd_bag` of receiver.
-  public func bind<O: SignalProtocol, B: BindableProtocol>(_ signal: O, to bindable: B) where O.Element == B.Element, O.Error == NoError {
-    signal.bind(to: bindable).dispose(in: bag)
-  }
-  
-  /// Bind `signal` to `bindable` and dispose in `bnd_bag` of receiver.
-  public func bind<O: SignalProtocol, B: BindableProtocol>(_ signal: O, to bindable: B) where B.Element: OptionalProtocol, O.Element == B.Element.Wrapped, O.Error == NoError {
-    signal.bind(to: bindable).dispose(in: bag)
-  }
+    
+    /// Bind `signal` to `bindable` and dispose in `bnd_bag` of receiver.
+    public func bind<O: SignalProtocol, B: BindableProtocol>(_ signal: O, to bindable: B) where O.Element == B.Element, O.Error == NoError {
+        signal.bind(to: bindable).dispose(in: bag)
+    }
+    
+    /// Bind `signal` to `bindable` and dispose in `bnd_bag` of receiver.
+    public func bind<O: SignalProtocol, B: BindableProtocol>(_ signal: O, to bindable: B) where B.Element: OptionalProtocol, O.Element == B.Element.Wrapped, O.Error == NoError {
+        signal.bind(to: bindable).dispose(in: bag)
+    }
 }
 
 internal struct UnownedUnsafe<T: AnyObject> {
-  unowned(unsafe) let unbox: T
-  init(_ value: T) { unbox = value }
+    unowned(unsafe) let unbox: T
+    init(_ value: T) { unbox = value }
 }
 
 extension NSObject {
-
-  private struct StaticVariables {
-    static var willDeallocateSubject = "WillDeallocateSubject"
-    static var swizzledTypes: Set<String> = []
-    static var lock = NSRecursiveLock(name: "com.reactivekit.bond.nsobject")
-  }
-
-  internal var _willDeallocate: Signal<UnownedUnsafe<NSObject>, NoError> {
-    StaticVariables.lock.lock(); defer { StaticVariables.lock.unlock() }
-    if let subject = objc_getAssociatedObject(self, &StaticVariables.willDeallocateSubject) as? ReplayOneSubject<UnownedUnsafe<NSObject>, NoError> {
-      return subject.toSignal()
-    } else {
-      let subject = ReplayOneSubject<UnownedUnsafe<NSObject>, NoError>()
-      subject.next(UnownedUnsafe(self))
-      let typeName = String(describing: type(of: self))
-
-      if !StaticVariables.swizzledTypes.contains(typeName) {
-        StaticVariables.swizzledTypes.insert(typeName)
-        type(of: self)._swizzleDeinit { me in
-          if let subject = objc_getAssociatedObject(me, &StaticVariables.willDeallocateSubject) as? ReplayOneSubject<UnownedUnsafe<NSObject>, NoError> {
-            subject.completed()
-          }
+    
+    private struct StaticVariables {
+        static var willDeallocateSubject = "WillDeallocateSubject"
+        static var swizzledTypes: Set<String> = []
+        static var lock = NSRecursiveLock(name: "com.reactivekit.bond.nsobject")
+    }
+    
+    internal var _willDeallocate: Signal<UnownedUnsafe<NSObject>, NoError> {
+        StaticVariables.lock.lock(); defer { StaticVariables.lock.unlock() }
+        if let subject = objc_getAssociatedObject(self, &StaticVariables.willDeallocateSubject) as? ReplayOneSubject<UnownedUnsafe<NSObject>, NoError> {
+            return subject.toSignal()
+        } else {
+            let subject = ReplayOneSubject<UnownedUnsafe<NSObject>, NoError>()
+            subject.next(UnownedUnsafe(self))
+            let typeName = String(describing: type(of: self))
+            
+            if !StaticVariables.swizzledTypes.contains(typeName) {
+                StaticVariables.swizzledTypes.insert(typeName)
+                type(of: self)._swizzleDeinit { me in
+                    if let subject = objc_getAssociatedObject(me, &StaticVariables.willDeallocateSubject) as? ReplayOneSubject<UnownedUnsafe<NSObject>, NoError> {
+                        subject.completed()
+                    }
+                }
+            }
+            
+            objc_setAssociatedObject(self, &StaticVariables.willDeallocateSubject, subject, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            return subject.toSignal()
         }
-      }
-
-      objc_setAssociatedObject(self, &StaticVariables.willDeallocateSubject, subject, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-      return subject.toSignal()
     }
-  }
-
-  private class func _swizzleDeinit(onDeinit: @escaping (NSObject) -> Void) {
-    let selector = sel_registerName("dealloc")
-    var originalImplementation: IMP? = nil
-
-    let swizzledImplementationBlock: @convention(block) (UnsafeRawPointer) -> Void = { me in
-      onDeinit(unsafeBitCast(me, to: NSObject.self))
-      let superImplementation = class_getMethodImplementation(class_getSuperclass(self), selector)
-      if let imp = originalImplementation ?? superImplementation {
-        typealias _IMP = @convention(c) (UnsafeRawPointer, Selector) -> Void
-        unsafeBitCast(imp, to: _IMP.self)(me, selector)
-      }
+    
+    private class func _swizzleDeinit(onDeinit: @escaping (NSObject) -> Void) {
+        let selector = sel_registerName("dealloc")
+        var originalImplementation: IMP? = nil
+        
+        let swizzledImplementationBlock: @convention(block) (UnsafeRawPointer) -> Void = { me in
+            onDeinit(unsafeBitCast(me, to: NSObject.self))
+            let superImplementation = class_getMethodImplementation(class_getSuperclass(self), selector)
+            if let imp = originalImplementation ?? superImplementation {
+                typealias _IMP = @convention(c) (UnsafeRawPointer, Selector) -> Void
+                unsafeBitCast(imp, to: _IMP.self)(me, selector)
+            }
+        }
+        
+        let swizzledImplementation = imp_implementationWithBlock(swizzledImplementationBlock)
+        
+        if !class_addMethod(self, selector, swizzledImplementation, "v@:"), let method = class_getInstanceMethod(self, selector) {
+            originalImplementation = method_getImplementation(method)
+            originalImplementation = method_setImplementation(method, swizzledImplementation)
+        }
     }
-
-    let swizzledImplementation = imp_implementationWithBlock(swizzledImplementationBlock)
-
-    if !class_addMethod(self, selector, swizzledImplementation, "v@:"), let method = class_getInstanceMethod(self, selector) {
-      originalImplementation = method_getImplementation(method)
-      originalImplementation = method_setImplementation(method, swizzledImplementation)
-    }
-  }
 }

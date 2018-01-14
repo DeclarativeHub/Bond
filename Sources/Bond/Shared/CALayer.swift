@@ -26,20 +26,20 @@ import QuartzCore
 import ReactiveKit
 
 extension CALayer: BindingExecutionContextProvider {
-  public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
+    public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
 }
 
 public extension ReactiveExtensions where Base: CALayer {
 
-  public var opacity: Bond<Float> {
-    return bond { $0.opacity = $1 }
-  }
+    public var opacity: Bond<Float> {
+        return bond { $0.opacity = $1 }
+    }
 
-  public var backgroundColor: Bond<CGColor?> {
-    return bond { $0.backgroundColor = $1 }
-  }
+    public var backgroundColor: Bond<CGColor?> {
+        return bond { $0.backgroundColor = $1 }
+    }
 
-  public var contents: Bond<AnyObject?> {
-    return bond { $0.contents = $1 }
-  }
+    public var contents: Bond<AnyObject?> {
+        return bond { $0.contents = $1 }
+    }
 }

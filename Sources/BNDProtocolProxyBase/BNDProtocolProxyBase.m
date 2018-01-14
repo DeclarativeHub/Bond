@@ -44,51 +44,51 @@
 
 - (instancetype)initWithProtocol:(Protocol *)protocol
 {
-  self = [super init];
-  if (self) {
-    _protocol = protocol;
-  }
-  return self;
+    self = [super init];
+    if (self) {
+        _protocol = protocol;
+    }
+    return self;
 }
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)selector
 {
-  NSMethodSignature *signature = [super methodSignatureForSelector:selector];
+    NSMethodSignature *signature = [super methodSignatureForSelector:selector];
 
-  if (!signature && [self hasHandlerForSelector:selector]) {
-    struct objc_method_description description = protocol_getMethodDescription(self.protocol, selector, NO, YES);
-    if (description.types == NULL) {
-      description = protocol_getMethodDescription(self.protocol, selector, YES, YES);
+    if (!signature && [self hasHandlerForSelector:selector]) {
+        struct objc_method_description description = protocol_getMethodDescription(self.protocol, selector, NO, YES);
+        if (description.types == NULL) {
+            description = protocol_getMethodDescription(self.protocol, selector, YES, YES);
+        }
+        signature = [NSMethodSignature signatureWithObjCTypes:description.types];
     }
-    signature = [NSMethodSignature signatureWithObjCTypes:description.types];
-  }
 
-  if (!signature) {
-    signature = [self.forwardTo methodSignatureForSelector:selector];
-  }
+    if (!signature) {
+        signature = [self.forwardTo methodSignatureForSelector:selector];
+    }
 
-  return signature;
+    return signature;
 }
 
 - (BOOL)hasHandlerForSelector:(SEL)selector
 {
-  return NO;
+    return NO;
 }
 
 - (void)handleInvocation:(BNDInvocation *)invocation
 {
-  // Overridden in Swift subclass
+    // Overridden in Swift subclass
 }
 
 - (void)forwardInvocation:(NSInvocation *)invocation
 {
-  if ([self hasHandlerForSelector:invocation.selector]) {
-    [self handleInvocation:[[BNDInvocation alloc] initWithInvocation:invocation]];
-  } else if ([self.forwardTo respondsToSelector:invocation.selector]) {
-    [invocation invokeWithTarget:self.forwardTo];
-  } else {
-    [super forwardInvocation:invocation];
-  }
+    if ([self hasHandlerForSelector:invocation.selector]) {
+        [self handleInvocation:[[BNDInvocation alloc] initWithInvocation:invocation]];
+    } else if ([self.forwardTo respondsToSelector:invocation.selector]) {
+        [invocation invokeWithTarget:self.forwardTo];
+    } else {
+        [super forwardInvocation:invocation];
+    }
 }
 
 @end
@@ -97,47 +97,47 @@
 
 - (instancetype)initWithMethodSignature:(NSMethodSignature *)methodSignature
 {
-  self = [super init];
-  if (self) {
-    _signature = methodSignature;
-  }
-  return self;
+    self = [super init];
+    if (self) {
+        _signature = methodSignature;
+    }
+    return self;
 }
 
 - (NSUInteger)numberOfArguments {
-  return self.signature.numberOfArguments;
+    return self.signature.numberOfArguments;
 }
 
 - (enum BNDNSObjCValueType)getArgumentTypeAtIndex:(NSUInteger)idx {
-  return [self.signature getArgumentTypeAtIndex:idx][0];
+    return [self.signature getArgumentTypeAtIndex:idx][0];
 }
 
 - (NSUInteger)getArgumentSizeAtIndex:(NSUInteger)idx {
-  NSUInteger size;
-  NSGetSizeAndAlignment([self.signature getArgumentTypeAtIndex:idx], &size, NULL);
-  return size;
+    NSUInteger size;
+    NSGetSizeAndAlignment([self.signature getArgumentTypeAtIndex:idx], &size, NULL);
+    return size;
 }
 
 - (NSUInteger)getArgumentAlignmentAtIndex:(NSUInteger)idx {
-  NSUInteger alignment;
-  NSGetSizeAndAlignment([self.signature getArgumentTypeAtIndex:idx], NULL, &alignment);
-  return alignment;
+    NSUInteger alignment;
+    NSGetSizeAndAlignment([self.signature getArgumentTypeAtIndex:idx], NULL, &alignment);
+    return alignment;
 }
 
 - (NSUInteger)frameLength {
-  return self.signature.frameLength;
+    return self.signature.frameLength;
 }
 
 - (BOOL)isOneway {
-  return [self.signature isOneway];
+    return [self.signature isOneway];
 }
 
 - (const char *)methodReturnType {
-  return [self.signature methodReturnType];
+    return [self.signature methodReturnType];
 }
 
 - (NSUInteger)methodReturnLength {
-  return self.signature.methodReturnLength;
+    return self.signature.methodReturnLength;
 }
 
 - (enum BNDNSObjCValueType)getReturnArgumentType {
@@ -145,15 +145,15 @@
 }
 
 - (NSUInteger)getReturnArgumentSize {
-  NSUInteger size;
-  NSGetSizeAndAlignment(self.methodReturnType, &size, NULL);
-  return size;
+    NSUInteger size;
+    NSGetSizeAndAlignment(self.methodReturnType, &size, NULL);
+    return size;
 }
 
 - (NSUInteger)getReturnArgumentAlignment {
-  NSUInteger alignment;
-  NSGetSizeAndAlignment(self.methodReturnType, NULL, &alignment);
-  return alignment;
+    NSUInteger alignment;
+    NSGetSizeAndAlignment(self.methodReturnType, NULL, &alignment);
+    return alignment;
 }
 
 @end
@@ -162,44 +162,44 @@
 
 - (instancetype)initWithInvocation:(NSInvocation *)invocation
 {
-  self = [super init];
-  if (self) {
-    _invocation = invocation;
-    _signature = [[BNDMethodSignature alloc] initWithMethodSignature:[invocation methodSignature]];
-  }
-  return self;
+    self = [super init];
+    if (self) {
+        _invocation = invocation;
+        _signature = [[BNDMethodSignature alloc] initWithMethodSignature:[invocation methodSignature]];
+    }
+    return self;
 }
 
 - (BNDMethodSignature *)methodSignature {
-  return self.signature;
+    return self.signature;
 }
 
 - (void)retainArguments {
-  [self.invocation retainArguments];
+    [self.invocation retainArguments];
 }
 
 - (BOOL)argumentsRetained {
-  return [self.invocation argumentsRetained];
+    return [self.invocation argumentsRetained];
 }
 
 - (SEL)selector {
-  return [self.invocation selector];
+    return [self.invocation selector];
 }
 
 - (void)getReturnValue:(void *)retLoc {
-  [self.invocation getReturnValue:retLoc];
+    [self.invocation getReturnValue:retLoc];
 }
 
 - (void)setReturnValue:(void *)retLoc {
-  [self.invocation setReturnValue:retLoc];
+    [self.invocation setReturnValue:retLoc];
 }
 
 - (void)getArgument:(void *)argumentLocation atIndex:(NSInteger)idx {
-  [self.invocation getArgument:argumentLocation atIndex:idx];
+    [self.invocation getArgument:argumentLocation atIndex:idx];
 }
 
 - (void)setArgument:(void *)argumentLocation atIndex:(NSInteger)idx {
-  [self.invocation setArgument:argumentLocation atIndex:idx];
+    [self.invocation setArgument:argumentLocation atIndex:idx];
 }
 
 @end

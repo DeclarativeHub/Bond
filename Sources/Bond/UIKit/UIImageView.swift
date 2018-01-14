@@ -29,16 +29,16 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: UIImageView {
 
-  public var image: Bond<UIImage?> {
-    return bond { $0.image = $1 }
-  }
+    public var image: Bond<UIImage?> {
+        return bond { $0.image = $1 }
+    }
 }
 
 extension UIImageView: BindableProtocol {
 
-  public func bind(signal: Signal<UIImage?, NoError>) -> Disposable {
-    return reactive.image.bind(signal: signal)
-  }
+    public func bind(signal: Signal<UIImage?, NoError>) -> Disposable {
+        return reactive.image.bind(signal: signal)
+    }
 }
 
 #endif

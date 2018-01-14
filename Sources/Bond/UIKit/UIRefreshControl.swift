@@ -29,20 +29,20 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: UIRefreshControl {
 
-  public var refreshing: DynamicSubject<Bool> {
-    return dynamicSubject(
-      signal: controlEvents(.valueChanged).eraseType(),
-      get: { $0.isRefreshing },
-      set: { if $1 { $0.beginRefreshing() } else { $0.endRefreshing() } }
-    )
-  }
+    public var refreshing: DynamicSubject<Bool> {
+        return dynamicSubject(
+            signal: controlEvents(.valueChanged).eraseType(),
+            get: { $0.isRefreshing },
+            set: { if $1 { $0.beginRefreshing() } else { $0.endRefreshing() } }
+        )
+    }
 }
-  
+
 extension UIRefreshControl: BindableProtocol {
 
-  public func bind(signal: Signal<Bool, NoError>) -> Disposable {
-    return reactive.refreshing.bind(signal: signal)
-  }
+    public func bind(signal: Signal<Bool, NoError>) -> Disposable {
+        return reactive.refreshing.bind(signal: signal)
+    }
 }
 
 #endif

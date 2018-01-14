@@ -2,17 +2,17 @@
 import PackageDescription
 
 let package = Package(
-  name: "Bond",
-  products: [
-    .library(name: "Bond", targets: ["Bond"])
-  ],
-  dependencies: [
-    .package(url: "https://github.com/ReactiveKit/ReactiveKit.git", .upToNextMajor(from: "3.7.4")),
-    .package(url: "https://github.com/tonyarnold/Differ.git", .upToNextMajor(from: "1.0.0"))
-  ],
-  targets: [
-    .target(name: "BNDProtocolProxyBase"),
-    .target(name: "Bond", dependencies: ["BNDProtocolProxyBase", "ReactiveKit", "Differ"]),
-    .testTarget(name: "BondTests", dependencies: ["Bond"])
-  ]
+    name: "Bond",
+    products: [
+        .library(name: "Bond", targets: ["Bond"])
+    ],
+    dependencies: [
+        .package(url: "https://github.com/ReactiveKit/ReactiveKit.git", .upToNextMajor(from: "3.7.4")),
+        .package(url: "https://github.com/tonyarnold/Differ.git", .upToNextMajor(from: "1.0.0"))
+    ],
+    targets: [
+        .target(name: "BNDProtocolProxyBase"),
+        .target(name: "Bond", dependencies: ["BNDProtocolProxyBase", "ReactiveKit", "Differ"]),
+        .testTarget(name: "BondTests", dependencies: ["Bond"])
+    ]
 )

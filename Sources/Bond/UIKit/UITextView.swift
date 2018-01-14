@@ -29,34 +29,34 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: UITextView {
 
-  public var text: DynamicSubject<String?> {
-    let notificationName = NSNotification.Name.UITextViewTextDidChange
-    return dynamicSubject(
-      signal: NotificationCenter.default.reactive.notification(name: notificationName, object: base).eraseType(),
-      get: { $0.text },
-      set: { $0.text = $1 }
-    )
-  }
+    public var text: DynamicSubject<String?> {
+        let notificationName = NSNotification.Name.UITextViewTextDidChange
+        return dynamicSubject(
+            signal: NotificationCenter.default.reactive.notification(name: notificationName, object: base).eraseType(),
+            get: { $0.text },
+            set: { $0.text = $1 }
+        )
+    }
 
-  public var attributedText: DynamicSubject<NSAttributedString?> {
-    let notificationName = NSNotification.Name.UITextViewTextDidChange
-    return dynamicSubject(
-      signal: NotificationCenter.default.reactive.notification(name: notificationName, object: base).eraseType(),
-      get: { $0.attributedText },
-      set: { $0.attributedText = $1 }
-    )
-  }
+    public var attributedText: DynamicSubject<NSAttributedString?> {
+        let notificationName = NSNotification.Name.UITextViewTextDidChange
+        return dynamicSubject(
+            signal: NotificationCenter.default.reactive.notification(name: notificationName, object: base).eraseType(),
+            get: { $0.attributedText },
+            set: { $0.attributedText = $1 }
+        )
+    }
 
-  public var textColor: Bond<UIColor?> {
-    return bond { $0.textColor = $1 }
-  }
+    public var textColor: Bond<UIColor?> {
+        return bond { $0.textColor = $1 }
+    }
 }
 
 extension UITextView: BindableProtocol {
 
-  public func bind(signal: Signal<String?, NoError>) -> Disposable {
-    return reactive.text.bind(signal: signal)
-  }
+    public func bind(signal: Signal<String?, NoError>) -> Disposable {
+        return reactive.text.bind(signal: signal)
+    }
 }
 
 #endif

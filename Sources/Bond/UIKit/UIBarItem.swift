@@ -28,22 +28,22 @@ import UIKit
 import ReactiveKit
 
 extension UIBarItem: BindingExecutionContextProvider {
-  public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
+    public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
 }
 
 public extension ReactiveExtensions where Base: UIBarItem {
 
-  public var title: Bond<String?> {
-    return bond { $0.title = $1 }
-  }
+    public var title: Bond<String?> {
+        return bond { $0.title = $1 }
+    }
 
-  public var image: Bond<UIImage?> {
-    return bond { $0.image = $1 }
-  }
+    public var image: Bond<UIImage?> {
+        return bond { $0.image = $1 }
+    }
 
-  public var isEnabled: Bond<Bool> {
-    return bond { $0.isEnabled = $1 }
-  }
+    public var isEnabled: Bond<Bool> {
+        return bond { $0.isEnabled = $1 }
+    }
 }
 
 #endif

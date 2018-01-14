@@ -27,19 +27,19 @@ import Foundation
 
 extension Property {
 
-  /// Transform the `getter` and `setter` by applying a `transform` on them.
-  public func bidirectionalMap<U>(to getTransform: @escaping (Element) -> U,
-                                  from setTransform: @escaping (U) -> Element) -> DynamicSubject<U> {
-    return DynamicSubject<U>(
-      target: self,
-      signal: eraseType(),
-      context: .immediate,
-      get: { (property) -> U in
-        return getTransform(property.value)
-    },
-      set: { (propery, value) in
-        propery.value = setTransform(value)
+    /// Transform the `getter` and `setter` by applying a `transform` on them.
+    public func bidirectionalMap<U>(to getTransform: @escaping (Element) -> U,
+                                    from setTransform: @escaping (U) -> Element) -> DynamicSubject<U> {
+        return DynamicSubject<U>(
+            target: self,
+            signal: eraseType(),
+            context: .immediate,
+            get: { (property) -> U in
+                return getTransform(property.value)
+            },
+            set: { (propery, value) in
+                propery.value = setTransform(value)
+            }
+        )
     }
-    )
-  }
 }

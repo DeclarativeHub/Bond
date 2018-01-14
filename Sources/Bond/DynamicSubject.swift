@@ -29,162 +29,162 @@ public typealias DynamicSubject<Element> = DynamicSubject2<Element, NoError>
 
 public struct DynamicSubject2<Element, Error: Swift.Error>: SubjectProtocol, BindableProtocol {
 
-  private weak var target: AnyObject?
-  private var signal: Signal<Void, Error>
-  private let context: ExecutionContext
-  private let getter: (AnyObject) -> Result<Element, Error>
-  private let setter: (AnyObject, Element) -> Void
-  private let subject = PublishSubject<Void, Error>()
-  private let triggerEventOnSetting: Bool
+    private weak var target: AnyObject?
+    private var signal: Signal<Void, Error>
+    private let context: ExecutionContext
+    private let getter: (AnyObject) -> Result<Element, Error>
+    private let setter: (AnyObject, Element) -> Void
+    private let subject = PublishSubject<Void, Error>()
+    private let triggerEventOnSetting: Bool
 
-  public init<Target: Deallocatable>(target: Target,
-              signal: Signal<Void, Error>,
-              context: ExecutionContext,
-              get: @escaping (Target) -> Result<Element, Error>,
-              set: @escaping (Target, Element) -> Void,
-              triggerEventOnSetting: Bool = true) {
-    self.target = target
-    self.signal = signal
-    self.context = context
-    self.getter = { get($0 as! Target) }
-    self.setter = { set($0 as! Target, $1) }
-    self.triggerEventOnSetting = triggerEventOnSetting
-  }
-
-  public init<Target: Deallocatable>(target: Target,
-              signal: Signal<Void, Error>,
-              context: ExecutionContext,
-              get: @escaping (Target) -> Element,
-              set: @escaping (Target, Element) -> Void,
-              triggerEventOnSetting: Bool = true) {
-    self.target = target
-    self.signal = signal
-    self.context = context
-    self.getter = { .success(get($0 as! Target)) }
-    self.setter = { set($0 as! Target, $1) }
-    self.triggerEventOnSetting = triggerEventOnSetting
-  }
-
-  private init(_target: AnyObject,
-              signal: Signal<Void, Error>,
-              context: ExecutionContext,
-              get: @escaping (AnyObject) -> Result<Element, Error>,
-              set: @escaping (AnyObject, Element) -> Void,
-              triggerEventOnSetting: Bool = true) {
-    self.target = _target
-    self.signal = signal
-    self.context = context
-    self.getter = { get($0) }
-    self.setter = { set($0, $1) }
-    self.triggerEventOnSetting = triggerEventOnSetting
-  }
-
-  public func on(_ event: Event<Element, Error>) {
-    if case .next(let element) = event, let target = target {
-      setter(target, element)
-      if triggerEventOnSetting {
-        subject.next(())
-      }
+    public init<Target: Deallocatable>(target: Target,
+                                       signal: Signal<Void, Error>,
+                                       context: ExecutionContext,
+                                       get: @escaping (Target) -> Result<Element, Error>,
+                                       set: @escaping (Target, Element) -> Void,
+                                       triggerEventOnSetting: Bool = true) {
+        self.target = target
+        self.signal = signal
+        self.context = context
+        self.getter = { get($0 as! Target) }
+        self.setter = { set($0 as! Target, $1) }
+        self.triggerEventOnSetting = triggerEventOnSetting
     }
-  }
 
-  public func observe(with observer: @escaping (Event<Element, Error>) -> Void) -> Disposable {
-    guard let target = target else { observer(.completed); return NonDisposable.instance }
-    let getter = self.getter
-    return signal.start(with: ()).merge(with: subject).tryMap { [weak target] () -> Result<Element?, Error> in
-      if let target = target {
-        switch getter(target) {
-        case .success(let element):
-          return .success(element)
-        case .failure(let error):
-          return .failure(error)
-        }
-      } else {
-        return .success(nil)
-      }
-      }.ignoreNil().take(until: (target as! Deallocatable).deallocated).observe(with: observer)
-  }
+    public init<Target: Deallocatable>(target: Target,
+                                       signal: Signal<Void, Error>,
+                                       context: ExecutionContext,
+                                       get: @escaping (Target) -> Element,
+                                       set: @escaping (Target, Element) -> Void,
+                                       triggerEventOnSetting: Bool = true) {
+        self.target = target
+        self.signal = signal
+        self.context = context
+        self.getter = { .success(get($0 as! Target)) }
+        self.setter = { set($0 as! Target, $1) }
+        self.triggerEventOnSetting = triggerEventOnSetting
+    }
 
-  public func bind(signal: Signal<Element, NoError>) -> Disposable {
-    if let target = target {
-      let setter = self.setter
-      let subject = self.subject
-      let context = self.context
-      let triggerEventOnSetting = self.triggerEventOnSetting
-      return signal.take(until: (target as! Deallocatable).deallocated).observe { [weak target] event in
-        context.execute { [weak target] in
-          switch event {
-          case .next(let element):
-            guard let target = target else { return }
+    private init(_target: AnyObject,
+                 signal: Signal<Void, Error>,
+                 context: ExecutionContext,
+                 get: @escaping (AnyObject) -> Result<Element, Error>,
+                 set: @escaping (AnyObject, Element) -> Void,
+                 triggerEventOnSetting: Bool = true) {
+        self.target = _target
+        self.signal = signal
+        self.context = context
+        self.getter = { get($0) }
+        self.setter = { set($0, $1) }
+        self.triggerEventOnSetting = triggerEventOnSetting
+    }
+
+    public func on(_ event: Event<Element, Error>) {
+        if case .next(let element) = event, let target = target {
             setter(target, element)
             if triggerEventOnSetting {
-              subject.next(())
+                subject.next(())
             }
-          default:
-            break
-          }
         }
-      }
-    } else {
-      return NonDisposable.instance
     }
-  }
 
-  /// Current value if the target is alive, otherwise `nil`.
-  public var value: Element! {
-    if let target = target {
-      switch getter(target) {
-      case .success(let value):
-        return value
-      case .failure:
-        return nil
-      }
-    } else {
-      return nil
+    public func observe(with observer: @escaping (Event<Element, Error>) -> Void) -> Disposable {
+        guard let target = target else { observer(.completed); return NonDisposable.instance }
+        let getter = self.getter
+        return signal.start(with: ()).merge(with: subject).tryMap { [weak target] () -> Result<Element?, Error> in
+            if let target = target {
+                switch getter(target) {
+                case .success(let element):
+                    return .success(element)
+                case .failure(let error):
+                    return .failure(error)
+                }
+            } else {
+                return .success(nil)
+            }
+        }.ignoreNil().take(until: (target as! Deallocatable).deallocated).observe(with: observer)
     }
-  }
 
-  /// Transform the `getter` and `setter` by applying a `transform` on them.
-  public func bidirectionalMap<U>(to getTransform: @escaping (Element) -> U,
-                               from setTransform: @escaping (U) -> Element) -> DynamicSubject2<U, Error>! {
-    guard let target = target else { return nil }
-
-    return DynamicSubject2<U, Error>(
-      _target: target,
-      signal: signal,
-      context: context,
-      get: { [getter] (target) -> Result<U, Error> in
-        switch getter(target) {
-        case .success(let value):
-          return .success(getTransform(value))
-        case .failure(let error):
-          return .failure(error)
+    public func bind(signal: Signal<Element, NoError>) -> Disposable {
+        if let target = target {
+            let setter = self.setter
+            let subject = self.subject
+            let context = self.context
+            let triggerEventOnSetting = self.triggerEventOnSetting
+            return signal.take(until: (target as! Deallocatable).deallocated).observe { [weak target] event in
+                context.execute { [weak target] in
+                    switch event {
+                    case .next(let element):
+                        guard let target = target else { return }
+                        setter(target, element)
+                        if triggerEventOnSetting {
+                            subject.next(())
+                        }
+                    default:
+                        break
+                    }
+                }
+            }
+        } else {
+            return NonDisposable.instance
         }
-      },
-      set: { [setter] (target, element) in
-        setter(target, setTransform(element))
-      }
-    )
-  }
+    }
+
+    /// Current value if the target is alive, otherwise `nil`.
+    public var value: Element! {
+        if let target = target {
+            switch getter(target) {
+            case .success(let value):
+                return value
+            case .failure:
+                return nil
+            }
+        } else {
+            return nil
+        }
+    }
+
+    /// Transform the `getter` and `setter` by applying a `transform` on them.
+    public func bidirectionalMap<U>(to getTransform: @escaping (Element) -> U,
+                                    from setTransform: @escaping (U) -> Element) -> DynamicSubject2<U, Error>! {
+        guard let target = target else { return nil }
+
+        return DynamicSubject2<U, Error>(
+            _target: target,
+            signal: signal,
+            context: context,
+            get: { [getter] (target) -> Result<U, Error> in
+                switch getter(target) {
+                case .success(let value):
+                    return .success(getTransform(value))
+                case .failure(let error):
+                    return .failure(error)
+                }
+            },
+            set: { [setter] (target, element) in
+                setter(target, setTransform(element))
+            }
+        )
+    }
 }
 
 extension ReactiveExtensions where Base: Deallocatable {
 
-  public func dynamicSubject<Element>(signal: Signal<Void, NoError>,
-                             context: ExecutionContext,
-                             triggerEventOnSetting: Bool = true,
-                             get: @escaping (Base) -> Element,
-                             set: @escaping (Base, Element) -> Void) -> DynamicSubject<Element> {
-    return DynamicSubject(target: base, signal: signal, context: context, get: get, set: set, triggerEventOnSetting: triggerEventOnSetting)
-  }
+    public func dynamicSubject<Element>(signal: Signal<Void, NoError>,
+                                        context: ExecutionContext,
+                                        triggerEventOnSetting: Bool = true,
+                                        get: @escaping (Base) -> Element,
+                                        set: @escaping (Base, Element) -> Void) -> DynamicSubject<Element> {
+        return DynamicSubject(target: base, signal: signal, context: context, get: get, set: set, triggerEventOnSetting: triggerEventOnSetting)
+    }
 }
 
 extension ReactiveExtensions where Base: Deallocatable, Base: BindingExecutionContextProvider {
 
-  public func dynamicSubject<Element>(signal: Signal<Void, NoError>,
-                             triggerEventOnSetting: Bool = true,
-                             get: @escaping (Base) -> Element,
-                             set: @escaping (Base, Element) -> Void) -> DynamicSubject<Element> {
-    return dynamicSubject(signal: signal, context: base.bindingExecutionContext, triggerEventOnSetting: triggerEventOnSetting, get: get, set: set)
-  }
+    public func dynamicSubject<Element>(signal: Signal<Void, NoError>,
+                                        triggerEventOnSetting: Bool = true,
+                                        get: @escaping (Base) -> Element,
+                                        set: @escaping (Base, Element) -> Void) -> DynamicSubject<Element> {
+        return dynamicSubject(signal: signal, context: base.bindingExecutionContext, triggerEventOnSetting: triggerEventOnSetting, get: get, set: set)
+    }
 }

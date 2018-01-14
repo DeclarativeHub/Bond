@@ -28,18 +28,18 @@ import AppKit
 import ReactiveKit
 
 extension NSMenuItem: BindingExecutionContextProvider {
-  public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
+    public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
 }
 
 public extension ReactiveExtensions where Base: NSMenuItem {
 
-  public var state: Bond<NSControl.StateValue> {
-    return bond { $0.state = $1 }
-  }
+    public var state: Bond<NSControl.StateValue> {
+        return bond { $0.state = $1 }
+    }
 
-  public var isEnabled: Bond<Bool> {
-    return bond { $0.isEnabled = $1 }
-  }
+    public var isEnabled: Bond<Bool> {
+        return bond { $0.isEnabled = $1 }
+    }
 }
 
 #endif

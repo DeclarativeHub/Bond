@@ -467,9 +467,9 @@
 				165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */,
 				904B87B61F6FFCE700FE0A24 /* Frameworks */,
 			);
-			indentWidth = 2;
+			indentWidth = 4;
 			sourceTree = "<group>";
-			tabWidth = 2;
+			tabWidth = 4;
 		};
 		16210A3D1D3EC474004AEDF3 /* Products */ = {
 			isa = PBXGroup;

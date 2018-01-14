@@ -29,11 +29,11 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: UIApplication {
 
-  #if os(iOS)
-  public var isNetworkActivityIndicatorVisible: Bond<Bool> {
-    return bond { $0.isNetworkActivityIndicatorVisible = $1 }
-  }
-  #endif
+    #if os(iOS)
+    public var isNetworkActivityIndicatorVisible: Bond<Bool> {
+        return bond { $0.isNetworkActivityIndicatorVisible = $1 }
+    }
+    #endif
 }
 
 #endif

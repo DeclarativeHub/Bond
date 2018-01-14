@@ -29,34 +29,34 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: UIButton {
 
-  public var title: Bond<String?> {
-    return bond { $0.setTitle($1, for: .normal) }
-  }
+    public var title: Bond<String?> {
+        return bond { $0.setTitle($1, for: .normal) }
+    }
 
-  public var tap: SafeSignal<Void> {
-    return controlEvents(.touchUpInside)
-  }
+    public var tap: SafeSignal<Void> {
+        return controlEvents(.touchUpInside)
+    }
 
-  public var isSelected: Bond<Bool> {
-    return bond { $0.isSelected = $1 }
-  }
+    public var isSelected: Bond<Bool> {
+        return bond { $0.isSelected = $1 }
+    }
 
-  public var isHighlighted: Bond<Bool> {
-    return bond { $0.isHighlighted = $1 }
-  }
+    public var isHighlighted: Bond<Bool> {
+        return bond { $0.isHighlighted = $1 }
+    }
 
-  @available(*, deprecated, renamed: "backgroundImage")
-  public var backgroungImage: Bond<UIImage> {
-    return backgroundImage
-  }
+    @available(*, deprecated, renamed: "backgroundImage")
+    public var backgroungImage: Bond<UIImage> {
+        return backgroundImage
+    }
 
-  public var backgroundImage: Bond<UIImage> {
-    return bond { $0.setBackgroundImage($1, for: .normal) }
-  }
-  
-  public var image: Bond<UIImage> {
-    return bond { $0.setImage($1, for: .normal) }
-  }
+    public var backgroundImage: Bond<UIImage> {
+        return bond { $0.setBackgroundImage($1, for: .normal) }
+    }
+
+    public var image: Bond<UIImage> {
+        return bond { $0.setImage($1, for: .normal) }
+    }
 }
 
 #endif

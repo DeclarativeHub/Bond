@@ -28,22 +28,22 @@ import AppKit
 import ReactiveKit
 
 extension NSResponder: BindingExecutionContextProvider {
-  public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
+    public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
 }
 
 public extension ReactiveExtensions where Base: NSView {
 
-  public var alphaValue: Bond<CGFloat> {
-    return bond { $0.alphaValue = $1 }
-  }
+    public var alphaValue: Bond<CGFloat> {
+        return bond { $0.alphaValue = $1 }
+    }
 
-  public var isHidden: Bond<Bool> {
-    return bond { $0.isHidden = $1 }
-  }
+    public var isHidden: Bond<Bool> {
+        return bond { $0.isHidden = $1 }
+    }
 
-  public var toolTip: Bond<String?> {
-    return bond { $0.toolTip = $1 }
-  }
+    public var toolTip: Bond<String?> {
+        return bond { $0.toolTip = $1 }
+    }
 }
 
 #endif

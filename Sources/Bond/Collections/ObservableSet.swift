@@ -26,181 +26,181 @@ import Foundation
 import ReactiveKit
 
 public enum ObservableSetEventKind<Element: Hashable> {
-  case reset
-  case inserts([SetIndex<Element>])
-  case deletes([SetIndex<Element>])
-  case updates([SetIndex<Element>])
-  case beginBatchEditing
-  case endBatchEditing
+    case reset
+    case inserts([SetIndex<Element>])
+    case deletes([SetIndex<Element>])
+    case updates([SetIndex<Element>])
+    case beginBatchEditing
+    case endBatchEditing
 }
 
 public struct ObservableSetEvent<Element: Hashable> {
-  public let kind: ObservableSetEventKind<Element>
-  public let source: ObservableSet<Element>
+    public let kind: ObservableSetEventKind<Element>
+    public let source: ObservableSet<Element>
 }
 
 public class ObservableSet<Element: Hashable>: SignalProtocol {
 
-  public fileprivate(set) var set: Set<Element>
-  fileprivate let subject = PublishSubject<ObservableSetEvent<Element>, NoError>()
-  fileprivate let lock = NSRecursiveLock(name: "com.reactivekit.bond.observableset")
+    public fileprivate(set) var set: Set<Element>
+    fileprivate let subject = PublishSubject<ObservableSetEvent<Element>, NoError>()
+    fileprivate let lock = NSRecursiveLock(name: "com.reactivekit.bond.observableset")
 
-  public init(_ set: Set<Element> = []) {
-    self.set = set
-  }
-
-  public func makeIterator() -> Set<Element>.Iterator {
-    return set.makeIterator()
-  }
-
-  public var underestimatedCount: Int {
-    return set.underestimatedCount
-  }
-
-  public var startIndex: SetIndex<Element> {
-    return set.startIndex
-  }
-
-  public var endIndex: SetIndex<Element> {
-    return set.endIndex
-  }
-
-  public func index(after i: SetIndex<Element>) -> SetIndex<Element> {
-    return set.index(after: i)
-  }
-
-  public var isEmpty: Bool {
-    return set.isEmpty
-  }
-
-  public var count: Int {
-    return set.count
-  }
-
-  public subscript(index: SetIndex<Element>) -> Element {
-    get {
-      return set[index]
+    public init(_ set: Set<Element> = []) {
+        self.set = set
     }
-  }
 
-  public func observe(with observer: @escaping (Event<ObservableSetEvent<Element>, NoError>) -> Void) -> Disposable {
-    observer(.next(ObservableSetEvent(kind: .reset, source: self)))
-    return subject.observe(with: observer)
-  }
+    public func makeIterator() -> Set<Element>.Iterator {
+        return set.makeIterator()
+    }
+
+    public var underestimatedCount: Int {
+        return set.underestimatedCount
+    }
+
+    public var startIndex: SetIndex<Element> {
+        return set.startIndex
+    }
+
+    public var endIndex: SetIndex<Element> {
+        return set.endIndex
+    }
+
+    public func index(after i: SetIndex<Element>) -> SetIndex<Element> {
+        return set.index(after: i)
+    }
+
+    public var isEmpty: Bool {
+        return set.isEmpty
+    }
+
+    public var count: Int {
+        return set.count
+    }
+
+    public subscript(index: SetIndex<Element>) -> Element {
+        get {
+            return set[index]
+        }
+    }
+
+    public func observe(with observer: @escaping (Event<ObservableSetEvent<Element>, NoError>) -> Void) -> Disposable {
+        observer(.next(ObservableSetEvent(kind: .reset, source: self)))
+        return subject.observe(with: observer)
+    }
 }
 
 extension ObservableSet: Deallocatable {
 
-  public var deallocated: Signal<Void, NoError> {
-    return subject.disposeBag.deallocated
-  }
+    public var deallocated: Signal<Void, NoError> {
+        return subject.disposeBag.deallocated
+    }
 }
 
 public class MutableObservableSet<Element: Hashable>: ObservableSet<Element> {
 
-  /// Return `true`  if a member is the set.
-  public func contains(_ member: Element) -> Bool {
-    return set.contains(member)
-  }
-
-  /// Index of a member of the set.
-  public func index(of member: Element) -> SetIndex<Element>? {
-    return set.index(of: member)
-  }
-
-  /// Indices of the set.
-  public var indices: [SetIndex<Element>] {
-    return Array(set.indices)
-  }
-
-  public override subscript (index: SetIndex<Element>) -> Element {
-    get {
-      return set[index]
+    /// Return `true`  if a member is the set.
+    public func contains(_ member: Element) -> Bool {
+        return set.contains(member)
     }
-  }
 
-  /// Insert item in the set.
-  public func insert(_ member: Element) {
-    lock.lock(); defer { lock.unlock() }
-    let index = set.index(of: member)
-    set.insert(member)
-    if index == nil {
-      subject.next(ObservableSetEvent(kind: .inserts([set.index(of: member)!]), source: self))
+    /// Index of a member of the set.
+    public func index(of member: Element) -> SetIndex<Element>? {
+        return set.index(of: member)
     }
-  }
 
-  /// Update an item in the set.
-  public func update(_ member: Element) {
-    lock.lock(); defer { lock.unlock() }
-    let index = set.index(of: member)
-    set.update(with: member)
-    if let index = index {
-      subject.next(ObservableSetEvent(kind: .updates([index]), source: self))
-    } else {
-      subject.next(ObservableSetEvent(kind: .inserts([set.index(of: member)!]), source: self))
+    /// Indices of the set.
+    public var indices: [SetIndex<Element>] {
+        return Array(set.indices)
     }
-  }
 
-  /// Remove item from the set.
-  @discardableResult
-  public func remove(_ member: Element) -> Element? {
-    lock.lock(); defer { lock.unlock() }
-    if let index = set.index(of: member) {
-      let element = set.remove(at: index)
-      subject.next(ObservableSetEvent(kind: .deletes([index]), source: self))
-      return element
-    } else {
-      return nil
+    public override subscript (index: SetIndex<Element>) -> Element {
+        get {
+            return set[index]
+        }
     }
-  }
 
-  /// Remove item from the set by index.
-  @discardableResult
-  public func remove(at index: SetIndex<Element>) -> Element? {
-    lock.lock(); defer { lock.unlock() }
-    let element = set.remove(at: index)
-    subject.next(ObservableSetEvent(kind: .deletes([index]), source: self))
-    return element
-  }
+    /// Insert item in the set.
+    public func insert(_ member: Element) {
+        lock.lock(); defer { lock.unlock() }
+        let index = set.index(of: member)
+        set.insert(member)
+        if index == nil {
+            subject.next(ObservableSetEvent(kind: .inserts([set.index(of: member)!]), source: self))
+        }
+    }
 
-  /// Removes all items from the set.
-  public func removeAll() {
-    lock.lock(); defer { lock.unlock() }
-    let deletes = Array(set.indices)
-    set.removeAll()
-    subject.next(ObservableSetEvent(kind: .deletes(deletes), source: self))
-  }
+    /// Update an item in the set.
+    public func update(_ member: Element) {
+        lock.lock(); defer { lock.unlock() }
+        let index = set.index(of: member)
+        set.update(with: member)
+        if let index = index {
+            subject.next(ObservableSetEvent(kind: .updates([index]), source: self))
+        } else {
+            subject.next(ObservableSetEvent(kind: .inserts([set.index(of: member)!]), source: self))
+        }
+    }
 
-  public func replace(with set: Set<Element>) {
-    lock.lock(); defer { lock.unlock() }
-    self.set = set
-    subject.next(ObservableSetEvent(kind: .reset, source: self))
-  }
+    /// Remove item from the set.
+    @discardableResult
+    public func remove(_ member: Element) -> Element? {
+        lock.lock(); defer { lock.unlock() }
+        if let index = set.index(of: member) {
+            let element = set.remove(at: index)
+            subject.next(ObservableSetEvent(kind: .deletes([index]), source: self))
+            return element
+        } else {
+            return nil
+        }
+    }
 
-  /// Perform batched updates on the set.
-  public func batchUpdate(_ update: (MutableObservableSet<Element>) -> Void) {
-    lock.lock(); defer { lock.unlock() }
-    subject.next(ObservableSetEvent(kind: .beginBatchEditing, source: self))
-    update(self)
-    subject.next(ObservableSetEvent(kind: .endBatchEditing, source: self))
-  }
+    /// Remove item from the set by index.
+    @discardableResult
+    public func remove(at index: SetIndex<Element>) -> Element? {
+        lock.lock(); defer { lock.unlock() }
+        let element = set.remove(at: index)
+        subject.next(ObservableSetEvent(kind: .deletes([index]), source: self))
+        return element
+    }
 
-  /// Change the underlying value withouth notifying the observers.
-  public func silentUpdate(_ update: (inout Set<Element>) -> Void) {
-    lock.lock(); defer { lock.unlock() }
-    update(&set)
-  }
+    /// Removes all items from the set.
+    public func removeAll() {
+        lock.lock(); defer { lock.unlock() }
+        let deletes = Array(set.indices)
+        set.removeAll()
+        subject.next(ObservableSetEvent(kind: .deletes(deletes), source: self))
+    }
+
+    public func replace(with set: Set<Element>) {
+        lock.lock(); defer { lock.unlock() }
+        self.set = set
+        subject.next(ObservableSetEvent(kind: .reset, source: self))
+    }
+
+    /// Perform batched updates on the set.
+    public func batchUpdate(_ update: (MutableObservableSet<Element>) -> Void) {
+        lock.lock(); defer { lock.unlock() }
+        subject.next(ObservableSetEvent(kind: .beginBatchEditing, source: self))
+        update(self)
+        subject.next(ObservableSetEvent(kind: .endBatchEditing, source: self))
+    }
+
+    /// Change the underlying value withouth notifying the observers.
+    public func silentUpdate(_ update: (inout Set<Element>) -> Void) {
+        lock.lock(); defer { lock.unlock() }
+        update(&set)
+    }
 }
 
 extension MutableObservableSet: BindableProtocol {
 
-  public func bind(signal: Signal<ObservableSetEvent<Element>, NoError>) -> Disposable {
-    return signal
-      .take(until: deallocated)
-      .observeNext { [weak self] event in
-        guard let s = self else { return }
-        s.set = event.source.set
-        s.subject.next(ObservableSetEvent(kind: event.kind, source: s))
+    public func bind(signal: Signal<ObservableSetEvent<Element>, NoError>) -> Disposable {
+        return signal
+            .take(until: deallocated)
+            .observeNext { [weak self] event in
+                guard let s = self else { return }
+                s.set = event.source.set
+                s.subject.next(ObservableSetEvent(kind: event.kind, source: s))
+            }
     }
-  }
 }

@@ -29,20 +29,20 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: UISegmentedControl {
 
-  public var selectedSegmentIndex: DynamicSubject<Int> {
-    return dynamicSubject(
-      signal: controlEvents(.valueChanged).eraseType(),
-      get: { $0.selectedSegmentIndex },
-      set: { $0.selectedSegmentIndex = $1 }
-    )
-  }
+    public var selectedSegmentIndex: DynamicSubject<Int> {
+        return dynamicSubject(
+            signal: controlEvents(.valueChanged).eraseType(),
+            get: { $0.selectedSegmentIndex },
+            set: { $0.selectedSegmentIndex = $1 }
+        )
+    }
 }
 
 extension UISegmentedControl: BindableProtocol {
 
-  public func bind(signal: Signal<Int, NoError>) -> Disposable {
-    return reactive.selectedSegmentIndex.bind(signal: signal)
-  }
+    public func bind(signal: Signal<Int, NoError>) -> Disposable {
+        return reactive.selectedSegmentIndex.bind(signal: signal)
+    }
 }
 
 #endif

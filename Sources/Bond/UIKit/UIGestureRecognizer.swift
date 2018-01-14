@@ -29,20 +29,20 @@ import UIKit
 import ReactiveKit
 
 extension UIGestureRecognizer: BindingExecutionContextProvider {
-  public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
+    public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
 }
 
 public extension ReactiveExtensions where Base: UIGestureRecognizer {
 
-  public var isEnabled: Bond<Bool> {
-    return bond { $0.isEnabled = $1 }
-  }
+    public var isEnabled: Bond<Bool> {
+        return bond { $0.isEnabled = $1 }
+    }
 }
 
 #endif
 
 #if os(iOS)
-  
+
 public extension ReactiveExtensions where Base: UIView {
     
     public func addGestureRecognizer<T: UIGestureRecognizer>(_ gestureRecognizer: T) -> SafeSignal<T> {
@@ -58,7 +58,7 @@ public extension ReactiveExtensions where Base: UIView {
             return BlockDisposable {
                 target.unregister()
             }
-        }.take(until: base.deallocated)
+            }.take(until: base.deallocated)
     }
 
     public func tapGesture(numberOfTaps: Int = 1, numberOfTouches: Int = 1) -> SafeSignal<UITapGestureRecognizer> {

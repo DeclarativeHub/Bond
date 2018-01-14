@@ -26,25 +26,25 @@ import Foundation
 import ReactiveKit
 
 public protocol DataSourceProtocol {
-  var numberOfSections: Int { get }
-  func numberOfItems(inSection section: Int) -> Int
+    var numberOfSections: Int { get }
+    func numberOfItems(inSection section: Int) -> Int
 }
 
 public enum DataSourceEventKind {
-  case reload
+    case reload
 
-  case insertItems([IndexPath])
-  case deleteItems([IndexPath])
-  case reloadItems([IndexPath])
-  case moveItem(IndexPath, IndexPath)
+    case insertItems([IndexPath])
+    case deleteItems([IndexPath])
+    case reloadItems([IndexPath])
+    case moveItem(IndexPath, IndexPath)
 
-  case insertSections(IndexSet)
-  case deleteSections(IndexSet)
-  case reloadSections(IndexSet)
-  case moveSection(Int, Int)
+    case insertSections(IndexSet)
+    case deleteSections(IndexSet)
+    case reloadSections(IndexSet)
+    case moveSection(Int, Int)
 
-  case beginUpdates
-  case endUpdates
+    case beginUpdates
+    case endUpdates
 }
 
 public protocol DataSourceBatchKind {}
@@ -53,67 +53,67 @@ public enum BatchKindDiff: DataSourceBatchKind {}
 public enum BatchKindPatch: DataSourceBatchKind {}
 
 public protocol DataSourceEventProtocol {
-  associatedtype DataSource: DataSourceProtocol
-  associatedtype BatchKind: DataSourceBatchKind
+    associatedtype DataSource: DataSourceProtocol
+    associatedtype BatchKind: DataSourceBatchKind
 
-  var kind: DataSourceEventKind { get }
-  var dataSource: DataSource { get }
+    var kind: DataSourceEventKind { get }
+    var dataSource: DataSource { get }
 }
 
 extension DataSourceEventProtocol {
 
-  public var _unbox: DataSourceEvent<DataSource, BatchKind> {
-    if let event = self as? DataSourceEvent<DataSource, BatchKind> {
-      return event
-    } else {
-      return DataSourceEvent(kind: self.kind, dataSource: self.dataSource)
+    public var _unbox: DataSourceEvent<DataSource, BatchKind> {
+        if let event = self as? DataSourceEvent<DataSource, BatchKind> {
+            return event
+        } else {
+            return DataSourceEvent(kind: self.kind, dataSource: self.dataSource)
+        }
     }
-  }
 }
 
 public struct DataSourceEvent<DataSource: DataSourceProtocol, _BatchKind: DataSourceBatchKind>: DataSourceEventProtocol {
-  public typealias BatchKind = _BatchKind
+    public typealias BatchKind = _BatchKind
 
-  public let kind: DataSourceEventKind
-  public let dataSource: DataSource
+    public let kind: DataSourceEventKind
+    public let dataSource: DataSource
 }
 
 extension Array: DataSourceProtocol {
 
-  public var numberOfSections: Int {
-    return 1
-  }
+    public var numberOfSections: Int {
+        return 1
+    }
 
-  public func numberOfItems(inSection section: Int) -> Int {
-    return count
-  }
+    public func numberOfItems(inSection section: Int) -> Int {
+        return count
+    }
 }
 
 extension Array: DataSourceEventProtocol, ObservableArrayEventProtocol {
 
-  public typealias BatchKind = BatchKindDiff
+    public typealias BatchKind = BatchKindDiff
 
-  public var kind: DataSourceEventKind {
-    return .reload
-  }
+    public var kind: DataSourceEventKind {
+        return .reload
+    }
 
-  public var dataSource: Array<Element> {
-    return self
-  }
+    public var dataSource: Array<Element> {
+        return self
+    }
 
-  public var change: ObservableArrayChange {
-    return .reset
-  }
+    public var change: ObservableArrayChange {
+        return .reset
+    }
 
-  public var source: ObservableArray<Iterator.Element> {
-    return ObservableArray(self)
-  }
+    public var source: ObservableArray<Iterator.Element> {
+        return ObservableArray(self)
+    }
 }
 
 extension SignalProtocol where Element: DataSourceProtocol, Error == NoError {
 
-  public func mapToDataSourceEvent() -> SafeSignal<DataSourceEvent<Element, BatchKindDiff>> {
-    return map { collection in DataSourceEvent(kind: .reload, dataSource: collection) }
-  }
+    public func mapToDataSourceEvent() -> SafeSignal<DataSourceEvent<Element, BatchKindDiff>> {
+        return map { collection in DataSourceEvent(kind: .reload, dataSource: collection) }
+    }
 }
 

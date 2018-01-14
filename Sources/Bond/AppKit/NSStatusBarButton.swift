@@ -29,9 +29,9 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: NSStatusBarButton {
 
-  public var appearsDisabled: Bond<Bool> {
-    return bond { $0.appearsDisabled = $1 }
-  }
+    public var appearsDisabled: Bond<Bool> {
+        return bond { $0.appearsDisabled = $1 }
+    }
 }
 
 #endif
