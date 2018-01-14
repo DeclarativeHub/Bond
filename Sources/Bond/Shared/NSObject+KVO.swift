@@ -37,6 +37,48 @@ public extension NSObject {
 
 public extension ReactiveExtensions where Base: NSObject {
 
+  /// Creates a signal that represents values of the given KVO-compatible key path.
+  ///
+  ///     class User: NSObject {
+  ///         @objc dynamic var name: String
+  ///         ...
+  ///     }
+  ///
+  ///     ...
+  ///
+  ///     user.keyPath(\.name).bind(to: nameLabel)
+  ///
+  /// - Parameters:
+  ///   - keyPath: Key path of the KVO-compatible property whose values should be represented as a signal.
+  ///   - startWithCurrentValue: When set to true (default), the signal will start with the current value on the key path.
+  ///
+  /// - Warning: The disposable returned by observing the key path signal has to be retained as long
+  ///            as the observaton is alive. Releasing the disposable will dispose the observation automatically.
+  ///            The rule should be ignored if using bindings instead of observations.
+  public func keyPath<T>(_ keyPath: ReferenceWritableKeyPath<Base, T>, startWithCurrentValue: Bool = true) -> SafeSignal<T> {
+    return Signal { [weak base] observer in
+      guard let base = base else { return NonDisposable.instance }
+
+      let options: NSKeyValueObservingOptions = startWithCurrentValue ? [.initial] : []
+
+      let subscription = base.observe(keyPath, options: options) { base, change in
+        observer.next(base[keyPath: keyPath])
+      }
+
+      let disposable = base._willDeallocate.observeCompleted {
+        subscription.invalidate()
+      }
+
+      return DeinitDisposable(disposable: BlockDisposable {
+        subscription.invalidate()
+        disposable.dispose()
+      })
+    }
+  }
+}
+
+public extension ReactiveExtensions where Base: NSObject {
+
   /// Creates a `DynamicSubject` representing the given KVO path of the given type.
   ///
   /// If the key path emits a value of type other than `ofType`, program execution will stop with `fatalError`.
@@ -290,62 +332,4 @@ private class RKKeyValueSignal: NSObject, SignalProtocol {
     }
     return DeinitDisposable(disposable: cleanupDisposabe)
   }
-}
-
-extension NSObject {
-
-  private struct StaticVariables {
-    static var willDeallocateSubject = "WillDeallocateSubject"
-    static var swizzledTypes: Set<String> = []
-    static var lock = NSRecursiveLock(name: "com.reactivekit.bond.nsobject")
-  }
-
-  fileprivate var _willDeallocate: Signal<UnownedUnsafe<NSObject>, NoError> {
-    StaticVariables.lock.lock(); defer { StaticVariables.lock.unlock() }
-    if let subject = objc_getAssociatedObject(self, &StaticVariables.willDeallocateSubject) as? ReplayOneSubject<UnownedUnsafe<NSObject>, NoError> {
-      return subject.toSignal()
-    } else {
-      let subject = ReplayOneSubject<UnownedUnsafe<NSObject>, NoError>()
-      subject.next(UnownedUnsafe(self))
-      let typeName = String(describing: type(of: self))
-
-      if !StaticVariables.swizzledTypes.contains(typeName) {
-        StaticVariables.swizzledTypes.insert(typeName)
-        type(of: self)._swizzleDeinit { me in
-          if let subject = objc_getAssociatedObject(me, &StaticVariables.willDeallocateSubject) as? ReplayOneSubject<UnownedUnsafe<NSObject>, NoError> {
-            subject.completed()
-          }
-        }
-      }
-
-      objc_setAssociatedObject(self, &StaticVariables.willDeallocateSubject, subject, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-      return subject.toSignal()
-    }
-  }
-
-  private class func _swizzleDeinit(onDeinit: @escaping (NSObject) -> Void) {
-    let selector = sel_registerName("dealloc")
-    var originalImplementation: IMP? = nil
-
-    let swizzledImplementationBlock: @convention(block) (UnsafeRawPointer) -> Void = { me in
-      onDeinit(unsafeBitCast(me, to: NSObject.self))
-      let superImplementation = class_getMethodImplementation(class_getSuperclass(self), selector)
-      if let imp = originalImplementation ?? superImplementation {
-        typealias _IMP = @convention(c) (UnsafeRawPointer, Selector) -> Void
-        unsafeBitCast(imp, to: _IMP.self)(me, selector)
-      }
-    }
-
-    let swizzledImplementation = imp_implementationWithBlock(swizzledImplementationBlock)
-
-    if !class_addMethod(self, selector, swizzledImplementation, "v@:"), let method = class_getInstanceMethod(self, selector) {
-      originalImplementation = method_getImplementation(method)
-      originalImplementation = method_setImplementation(method, swizzledImplementation)
-    }
-  }
-}
-
-fileprivate struct UnownedUnsafe<T: AnyObject> {
-  unowned(unsafe) let unbox: T
-  init(_ value: T) { unbox = value }
 }

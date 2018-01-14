@@ -44,6 +44,7 @@ class NSObjectKVOTests: XCTestCase {
   class TestObject: NSObject, BindingExecutionContextProvider {
 
     @objc dynamic var property: Any! = "a"
+    @objc dynamic var propertyString: String = "a"
 
     var bindingExecutionContext: ExecutionContext {
       return .immediate
@@ -146,5 +147,12 @@ class NSObjectKVOTests: XCTestCase {
     object = nil
     XCTAssert(weakObject == nil)
     waitForExpectations(timeout: 1)
+  }
+
+  func testSwift4Observation() {
+    object.reactive.keyPath(\.propertyString).expectNext(["a", "b", "c"])
+    object.propertyString = "b"
+    SafeSignal.just("c").bind(to: object, keyPath: \.propertyString)
+    XCTAssert(object.propertyString == "c")
   }
 }
