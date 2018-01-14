@@ -276,8 +276,9 @@ First make an extension on ReactiveExtensions (where `Base` is defined as your t
 
 ```swift
 extension ReactiveExtensions where Base: UITableView {
+
   public var delegate: ProtocolProxy {
-    return base.protocolProxy(for: UITableViewDelegate.self, setter: NSSelectorFromString("setDelegate:"))
+    return protocolProxy(for: UITableViewDelegate.self, keyPath: \.delegate)
   }
 }
 ```
@@ -287,9 +288,10 @@ extension ReactiveExtensions where Base: UITableView {
 You can then convert methods of that protocol into signals:
 
 ```swift
-extension UITableView {
+extension ReactiveExtensions where Base: UITableView {
+
     var selectedRow: Signal<Int, NoError> {
-        return reactive.delegate.signal(for: #selector(UITableViewDelegate.tableView(_:didSelectRowAt:))) { (subject: SafePublishSubject<Int>, _: UITableView, indexPath: IndexPath) in
+        return delegate.signal(for: #selector(UITableViewDelegate.tableView(_:didSelectRowAt:))) { (subject: SafePublishSubject<Int>, _: UITableView, indexPath: IndexPath) in
             subject.next(indexPath.row)
         }
     }
@@ -301,7 +303,7 @@ Method `signal(for:)` takes two parameters: a selector to convert to a signal an
 Now you can do:
 
 ```swift
-tableView.selectedRow.observeNext { row in
+tableView.reactive.selectedRow.observeNext { row in
   print("Tapped row at index \(row).")
 }.dispose(in: bag)
 ```
