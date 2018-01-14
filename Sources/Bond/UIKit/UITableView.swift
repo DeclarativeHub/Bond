@@ -30,11 +30,11 @@ import ReactiveKit
 public extension ReactiveExtensions where Base: UITableView {
 
   public var delegate: ProtocolProxy {
-    return base.protocolProxy(for: UITableViewDelegate.self, setter: NSSelectorFromString("setDelegate:"))
+    return protocolProxy(for: UITableViewDelegate.self, keyPath: \.delegate)
   }
 
   public var dataSource: ProtocolProxy {
-    return base.protocolProxy(for: UITableViewDataSource.self, setter: NSSelectorFromString("setDataSource:"))
+    return protocolProxy(for: UITableViewDataSource.self, keyPath: \.dataSource)
   }
 }
 

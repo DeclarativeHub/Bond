@@ -14,11 +14,11 @@ import ReactiveKit
 public extension ReactiveExtensions where Base: NSTableView {
 
   public var delegate: ProtocolProxy {
-    return base.protocolProxy(for: NSTableViewDelegate.self, setter: NSSelectorFromString("setDelegate:"))
+    return protocolProxy(for: NSTableViewDelegate.self, keyPath: \.delegate)
   }
 
   public var dataSource: ProtocolProxy {
-    return base.protocolProxy(for: NSTableViewDataSource.self, setter: NSSelectorFromString("setDataSource:"))
+    return protocolProxy(for: NSTableViewDataSource.self, keyPath: \.dataSource)
   }
 
   public var selectionIsChanging: SafeSignal<Void> {

@@ -44,11 +44,11 @@ private struct SimpleCollectionViewBond<DataSource: DataSourceProtocol>: Collect
 public extension ReactiveExtensions where Base: UICollectionView {
 
   public var delegate: ProtocolProxy {
-    return base.protocolProxy(for: UICollectionViewDelegate.self, setter: NSSelectorFromString("setDelegate:"))
+    return protocolProxy(for: UICollectionViewDelegate.self, keyPath: \.delegate)
   }
 
   public var dataSource: ProtocolProxy {
-    return base.protocolProxy(for: UICollectionViewDataSource.self, setter: NSSelectorFromString("setDataSource:"))
+    return protocolProxy(for: UICollectionViewDataSource.self, keyPath: \.dataSource)
   }
 }
 

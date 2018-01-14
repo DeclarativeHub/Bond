@@ -30,118 +30,19 @@ import ReactiveKit
 import BNDProtocolProxyBase
 #endif
 
-private extension BNDInvocation {
-
- func readArgument<T>(_ index: Int) -> T {
-    let size = Int(methodSignature.getArgumentSize(at: UInt(index)))
-    let alignment = Int(methodSignature.getArgumentAlignment(at: UInt(index)))
-
-    let pointer = UnsafeMutableRawPointer.allocate(bytes: size, alignedTo: alignment)
-    getArgument(pointer, at: index)
-
-    defer {
-      pointer.deallocate(bytes: size, alignedTo: alignment)
-    }
-
-    let type = methodSignature.getArgumentType(at: UInt(index))
-    switch type {
-    case NSObjCCharType:
-      return NSNumber(value: pointer.assumingMemoryBound(to: CChar.self).pointee) as! T
-    case NSObjCShortType:
-      return NSNumber(value: pointer.assumingMemoryBound(to: CShort.self).pointee) as! T
-    case NSObjCIntType:
-      return NSNumber(value: pointer.assumingMemoryBound(to: CInt.self).pointee) as! T
-    case NSObjCLongType:
-      return NSNumber(value: pointer.assumingMemoryBound(to: CLong.self).pointee) as! T
-    case NSObjCLonglongType:
-      return NSNumber(value: pointer.assumingMemoryBound(to: CLongLong.self).pointee) as! T
-    case NSObjCUCharType:
-      return NSNumber(value: pointer.assumingMemoryBound(to: CUnsignedChar.self).pointee) as! T
-    case NSObjCUShortType:
-      return NSNumber(value: pointer.assumingMemoryBound(to: CUnsignedShort.self).pointee) as! T
-    case NSObjCUIntType:
-      return NSNumber(value: pointer.assumingMemoryBound(to: CUnsignedInt.self).pointee) as! T
-    case NSObjCULongType:
-      return NSNumber(value: pointer.assumingMemoryBound(to: CUnsignedLong.self).pointee) as! T
-    case NSObjCULonglongType:
-      return NSNumber(value: pointer.assumingMemoryBound(to: CUnsignedLongLong.self).pointee) as! T
-    case NSObjCFloatType:
-     return NSNumber(value: pointer.assumingMemoryBound(to: CFloat.self).pointee) as! T
-    case NSObjCDoubleType:
-     return NSNumber(value: pointer.assumingMemoryBound(to: CDouble.self).pointee) as! T
-    case NSObjCBoolType:
-      return NSNumber(value: pointer.assumingMemoryBound(to: CBool.self).pointee) as! T
-    case NSObjCSelectorType:
-      return pointer.assumingMemoryBound(to: Optional<Selector>.self).pointee as! T
-    case NSObjCObjectType:
-      return pointer.assumingMemoryBound(to: Optional<AnyObject>.self).pointee as! T
-   default:
-      return pointer.assumingMemoryBound(to: T.self).pointee
-    }
-  }
-
- func writeReturnValue<T>(_ value: T) {
-    guard methodSignature.methodReturnLength > 0 else { return }
-
-    let size = methodSignature.getReturnArgumentSize()
-    let alignment = methodSignature.getReturnArgumentAlignment()
-    let type = methodSignature.getReturnArgumentType()
-
-  func write<U, V>(_ value: V, as type: U.Type) {
-      let pointer = UnsafeMutablePointer<U>.allocate(capacity: 1)
-      pointer.initialize(to: value as! U, count: 1)
-      setReturnValue(pointer)
-      pointer.deinitialize()
-      pointer.deallocate(capacity: 1)
-    }
-
-    switch type {
-    case NSObjCCharType:
-      write(value as! NSNumber, as: CChar.self)
-    case NSObjCShortType:
-      write(value as! NSNumber, as: CShort.self)
-    case NSObjCIntType:
-      write(value as! NSNumber, as: CInt.self)
-    case NSObjCLongType:
-      write(value as! NSNumber, as: CLong.self)
-    case NSObjCLonglongType:
-      write(value as! NSNumber, as: CLongLong.self)
-    case NSObjCUCharType:
-      write(value as! NSNumber, as: CUnsignedChar.self)
-    case NSObjCUShortType:
-      write(value as! NSNumber, as: CUnsignedShort.self)
-    case NSObjCUIntType:
-      write(value as! NSNumber, as: CUnsignedInt.self)
-    case NSObjCULongType:
-      write(value as! NSNumber, as: CUnsignedLong.self)
-    case NSObjCULonglongType:
-      write(value as! NSNumber, as: CUnsignedLongLong.self)
-    case NSObjCFloatType:
-      write(value as! NSNumber, as: CFloat.self)
-    case NSObjCDoubleType:
-      write(value as! NSNumber, as: CDouble.self)
-    case NSObjCBoolType:
-      write(value as! NSNumber, as: CBool.self)
-    case NSObjCSelectorType:
-      write(value, as: Optional<Selector>.self)
-    case NSObjCObjectType:
-      write(value, as: Optional<AnyObject>.self)
-    default:
-      write(value, as: T.self)
-    }
-  }
-}
-
 public class ProtocolProxy: BNDProtocolProxyBase {
 
   private var invokers: [Selector: (BNDInvocation) -> Void] = [:]
   private var handlers: [Selector: Any] = [:]
-  private weak var object: NSObject?
-  private let setter: Selector
+  private let propertyController: ProtocolProxyPropertyController
 
   public init(object: NSObject, `protocol`: Protocol, setter: Selector) {
-    self.object = object
-    self.setter = setter
+    self.propertyController = SelectorProtocolProxyPropertyController(object: object, selector: setter)
+    super.init(with: `protocol`)
+  }
+
+  public init(protocol: Protocol, propertyController: ProtocolProxyPropertyController) {
+    self.propertyController = propertyController
     super.init(with: `protocol`)
   }
 
@@ -372,51 +273,15 @@ public class ProtocolProxy: BNDProtocolProxyBase {
   }
 
   private func registerDelegate() {
-    _ = object?.perform(setter, with: nil)
-    _ = object?.perform(setter, with: self)
+    if let previous = propertyController.delegate, previous !== self, forwardTo == nil {
+      super.forwardTo = previous
+    }
+    propertyController.delegate = nil
+    propertyController.delegate = self
   }
 
   deinit {
-    _ = object?.perform(setter, with: nil)
-  }
-}
-
-extension NSObject {
-
-  private struct AssociatedKeys {
-    static var ProtocolProxies = "ProtocolProxies"
-  }
-
-  private var protocolProxies: [String: ProtocolProxy] {
-    get {
-      if let proxies = objc_getAssociatedObject(self, &AssociatedKeys.ProtocolProxies) as? [String: ProtocolProxy] {
-        return proxies
-      } else {
-        let proxies = [String: ProtocolProxy]()
-        objc_setAssociatedObject(self, &AssociatedKeys.ProtocolProxies, proxies as NSDictionary, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        return proxies
-      }
-    }
-    set {
-      objc_setAssociatedObject(self, &AssociatedKeys.ProtocolProxies, newValue as NSDictionary, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-    }
-  }
-
-  /// Registers and returns an object that will act as a delegate (or data source) for given protocol and setter method.
-  ///
-  /// For example, to register a table view delegate do: `tableView.protocolProxyFor(UITableViewDelegate.self, setter: NSSelectorFromString("setDelegate:"))`.
-  ///
-  /// Note that if the protocol has any required methods, you have to handle them by providing a signal, a feed or implement them in a class
-  /// whose instance you'll set to `forwardTo` property.
-  public func protocolProxy(for `protocol`: Protocol, setter: Selector) -> ProtocolProxy {
-    let key = String(cString: protocol_getName(`protocol`))
-    if let proxy = protocolProxies[key] {
-      return proxy
-    } else {
-      let proxy = ProtocolProxy(object: self, protocol: `protocol`, setter: setter)
-      protocolProxies[key] = proxy
-      return proxy
-    }
+    propertyController.delegate = nil
   }
 }
 
@@ -465,5 +330,86 @@ extension ProtocolProxy {
     return signal(for: selector) { (_: PublishSubject<Void, NoError>, a1: A, a2: B, a3: C, a4: D, a5: E) -> R in
       return map(property.value, a1, a2, a3, a4, a5)
     }.observe { _ in }
+  }
+}
+
+extension NSObject {
+
+  private struct AssociatedKeys {
+    static var ProtocolProxies = "ProtocolProxies"
+  }
+
+  fileprivate var protocolProxies: [ProtocolProxyPropertyController: ProtocolProxy] {
+    get {
+      if let proxies = objc_getAssociatedObject(self, &AssociatedKeys.ProtocolProxies) as? [ProtocolProxyPropertyController: ProtocolProxy] {
+        return proxies
+      } else {
+        let proxies = [ProtocolProxyPropertyController: ProtocolProxy]()
+        objc_setAssociatedObject(self, &AssociatedKeys.ProtocolProxies, proxies as NSDictionary, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        return proxies
+      }
+    }
+    set {
+      objc_setAssociatedObject(self, &AssociatedKeys.ProtocolProxies, newValue as NSDictionary, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+    }
+  }
+
+  /// Creates a proxy object that conforms to a given protocol and injects itself as a delegate for a given selector.
+  /// The object can then be used to intercept various delegate callbacks as signals.
+  ///
+  /// - warning: If the protocol has any required methods, you have to handle them by providing a signal, a feed or implement
+  /// them in a class whose instance you set to `forwardTo` property of the returned proxy object.
+  @available(*, deprecated, message: "User object.reactive.protocolProxy(for:keyPath:) instead.")
+  public func protocolProxy(for `protocol`: Protocol, setter: Selector) -> ProtocolProxy {
+    return self.reactive.protocolProxy(for: `protocol`, selector: setter)
+  }
+}
+
+extension ReactiveExtensions where Base: NSObject {
+
+  /// Creates a proxy object that conforms to a given protocol and injects itself as a delegate for a given selector.
+  /// The object can then be used to intercept various delegate callbacks as signals.
+  ///
+  /// - warning: If the protocol has any required methods, you have to handle them by providing a signal, a feed or implement
+  /// them in a class whose instance you set to `forwardTo` property of the returned proxy object.
+  public func protocolProxy(for `protocol`: Protocol, selector: Selector) -> ProtocolProxy {
+    let controller = SelectorProtocolProxyPropertyController(object: base, selector: selector)
+    return protocolProxy(protocol: `protocol`, controller: controller)
+  }
+
+  /// Creates a proxy object that conforms to a given protocol and injects itself as a delegate for a given key path.
+  /// The object can then be used to intercept various delegate callbacks as signals.
+  ///
+  /// Original delegate will be saved into a `forwardTo` property of the proxy object and any calls to methods not implemented by the proxy
+  /// will be forwarded to the original delegate.
+  ///
+  /// - warning: If the protocol has any required methods, you have to handle them by providing a signal, a feed,
+  /// implement them in the original delegate or implement them in a class whose instance you set to `forwardTo` property of the returned proxy object.
+  public func protocolProxy<P>(for `protocol`: Protocol, keyPath: ReferenceWritableKeyPath<Base, P>) -> ProtocolProxy {
+    let controller = KeyPathProtocolProxyPropertyController(object: base, keyPath: keyPath)
+    return protocolProxy(protocol: `protocol`, controller: controller)
+  }
+
+  /// Creates a proxy object that conforms to a given protocol and injects itself as a delegate for a given key path.
+  /// The object can then be used to intercept various delegate callbacks as signals.
+  ///
+  /// Original delegate will be saved into a `forwardTo` property of the proxy object and any calls to methods not implemented by the proxy
+  /// will be forwarded to the original delegate.
+  ///
+  /// - warning: If the protocol has any required methods, you have to handle them by providing a signal, a feed,
+  /// implement them in the original delegate or implement them in a class whose instance you set to `forwardTo` property of the returned proxy object.
+  public func protocolProxy<P>(for `protocol`: Protocol, keyPath: ReferenceWritableKeyPath<Base, P?>) -> ProtocolProxy {
+    let controller = OptionalKeyPathProtocolProxyPropertyController(object: base, keyPath: keyPath)
+    return protocolProxy(protocol: `protocol`, controller: controller)
+  }
+
+  private func protocolProxy(protocol: Protocol, controller: ProtocolProxyPropertyController) -> ProtocolProxy {
+    if let proxy = base.protocolProxies[controller] {
+      return proxy
+    } else {
+      let proxy = ProtocolProxy(protocol: `protocol`, propertyController: controller)
+      base.protocolProxies[controller] = proxy
+      return proxy
+    }
   }
 }

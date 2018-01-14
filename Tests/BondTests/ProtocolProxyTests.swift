@@ -62,7 +62,7 @@ class ProtocolProxyTests: XCTestCase {
   var object: TestObject! = nil
 
   var protocolProxy: ProtocolProxy {
-    return object.protocolProxy(for: TestDelegate.self, setter: NSSelectorFromString("setDelegate:"))
+    return object.reactive.protocolProxy(for: TestDelegate.self, keyPath: \.delegate)
   }
 
   override func setUp() {
