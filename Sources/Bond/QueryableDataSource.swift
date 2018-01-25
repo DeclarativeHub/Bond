@@ -23,9 +23,9 @@
 //
 
 public protocol QueryableDataSourceProtocol: DataSourceProtocol {
-    associatedtype Item
+    associatedtype _Item
     associatedtype Index
-    func item(at index: Index) -> Item
+    func item(at index: Index) -> _Item
 }
 
 extension Array: QueryableDataSourceProtocol {
