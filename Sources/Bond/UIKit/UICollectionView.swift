@@ -118,8 +118,6 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Element.
             }
 
             switch event.kind {
-            case .reload:
-                collectionView.reloadData()
             case .beginUpdates:
                 bufferedEvents = []
             case .endUpdates:
@@ -136,6 +134,7 @@ public extension SignalProtocol where Element: DataSourceEventProtocol, Element.
                     applyEventOfKind(event.kind)
                 }
             }
+            _ = collectionView.numberOfSections // Hack to immediately apply changes
         }
 
         return disposable

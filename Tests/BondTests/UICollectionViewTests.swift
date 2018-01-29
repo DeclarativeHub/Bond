@@ -17,46 +17,55 @@ class TestCollectionView: UICollectionView {
     var observedEvents: [DataSourceEventKind] = []
 
     open override func reloadData() {
+        super.reloadData()
         observedEvents.append(.reload)
     }
 
     override func performBatchUpdates(_ updates: (() -> Void)?, completion: ((Bool) -> Void)? = nil) {
         observedEvents.append(.beginUpdates)
-        updates?()
+        super.performBatchUpdates(updates)
         observedEvents.append(.endUpdates)
 
     }
 
     override func insertSections(_ sections: IndexSet) {
+        super.insertSections(sections)
         observedEvents.append(.insertSections(sections))
     }
 
     override func deleteSections(_ sections: IndexSet) {
+        super.deleteSections(sections)
         observedEvents.append(.deleteSections(sections))
     }
 
     override func reloadSections(_ sections: IndexSet) {
+        super.reloadSections(sections)
         observedEvents.append(.reloadSections(sections))
 
     }
 
     override func moveSection(_ section: Int, toSection newSection: Int) {
+        super.moveSection(section, toSection: newSection)
         observedEvents.append(.moveSection(section, newSection))
     }
 
     override func insertItems(at indexPaths: [IndexPath]) {
+        super.insertItems(at: indexPaths)
         observedEvents.append(.insertItems(indexPaths))
     }
 
     override func deleteItems(at indexPaths: [IndexPath]) {
+        super.deleteItems(at: indexPaths)
         observedEvents.append(.deleteItems(indexPaths))
     }
 
     override func reloadItems(at indexPaths: [IndexPath]) {
+        super.reloadItems(at: indexPaths)
         observedEvents.append(.reloadItems(indexPaths))
     }
 
     override func moveItem(at indexPath: IndexPath, to newIndexPath: IndexPath) {
+        super.moveItem(at: indexPath, to: newIndexPath)
         observedEvents.append(.moveItem(indexPath, newIndexPath))
     }
 }
@@ -113,13 +122,13 @@ class UICollectionViewTests: XCTestCase {
 
     func testBatchUpdates() {
         array.batchUpdate { (array) in
-            array.moveItem(from: 1, to: 2)
+            array.insert(0, at: 1)
         }
 
         XCTAssert(collectionView.observedEvents == [
             .reload,
             .beginUpdates,
-            .moveItem(IndexPath(row: 1, section: 0), IndexPath(row: 2, section: 0)),
+            .insertItems([IndexPath(row: 1, section: 0)]),
             .endUpdates
             ]
         )
