@@ -22,7 +22,7 @@
 //  THE SOFTWARE.
 //
 
-import ReactiveKit
+@_exported import ReactiveKit
 
 public struct Bond<Element>: BindableProtocol {
 
