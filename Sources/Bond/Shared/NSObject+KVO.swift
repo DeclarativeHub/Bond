@@ -55,7 +55,7 @@ public extension ReactiveExtensions where Base: NSObject {
     /// - Warning: The disposable returned by observing the key path signal has to be retained as long
     ///            as the observaton is alive. Releasing the disposable will dispose the observation automatically.
     ///            The rule should be ignored if using bindings instead of observations.
-    public func keyPath<T>(_ keyPath: ReferenceWritableKeyPath<Base, T>, startWithCurrentValue: Bool = true) -> SafeSignal<T> {
+    public func keyPath<T>(_ keyPath: KeyPath<Base, T>, startWithCurrentValue: Bool = true) -> SafeSignal<T> {
         return Signal { [weak base] observer in
             guard let base = base else { return NonDisposable.instance }
 
