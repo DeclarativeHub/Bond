@@ -5,29 +5,14 @@
 [![Join Us on Gitter](https://img.shields.io/badge/GITTER-join%20chat-blue.svg)](https://gitter.im/ReactiveKit/General)
 [![Twitter](https://img.shields.io/badge/twitter-@srdanrasic-red.svg?style=flat)](https://twitter.com/srdanrasic)
 
+<img src="Assets/logo@2x.png" align="right" width="200px" hspace="60px" vspace="20px">
+
+<br>
 Bond is a Swift binding framework that takes binding concepts to a whole new level. It's simple, powerful, type-safe and multi-paradigm - just like Swift.
 
-Bond is built on top of ReactiveKit and bridges the gap between the reactive and imperative paradigms. You can use it as a standalone framework to simplify your state changes with bindings and reactive data sources, but you can also use it with ReactiveKit to complement your reactive data flows with bindings and reactive delegates and data sources.
+Bond is built on top of ReactiveKit and bridges the gap between the reactive and imperative paradigms. You can use it as a standalone framework to simplify your state changes with bindings and reactive data sources, but you can also use it with ReactiveKit to complement your reactive data flows with bindings, reactive delegates and reactive data sources.
 
-### Note: Xcode 9 support
-
-Version 6.3 introduces Xcode 9 support. One of the required changes to support Xcode 9, i.e. Swift 3.2 or 4, was to drop `Collection` conformance from `ObservableArray`, `Observable2DArray`, `ObservableSet` and `ObservableDictionary` types. This is unfortunate, but not problematic as the types expose underlaying collection.
-
-For example, if you were doing
-
-```swift
-for element in observableArray { .. }
-```
-
-now you need to do
-
-```swift
-for element in observableArray.array { .. }
-```
-
-Respective underlaying collections for other types are `Observable2DArray.sections`, `ObservableSet.set` and `ObservableDictionary.dictionary`.
-
-Note: Since version 6.4, ReactiveKit is using Swift 4 syntax that compiles under Xcode 9. If you are still using Xcode 8, please do not update to v6.4 and stay on the latest v6.3.x version!
+Bond is a backbone of the [Binder Architecture](https://github.com/DeclarativeHub/TheBinderArchitecture) - a preferred architecture to be used with the framework.
 
 
 ## What can it do?
@@ -64,7 +49,7 @@ textField.reactive.text
 
 Whenever a change occurs in the text field, new value will be transformed by the closure and propagated to the label.
 
-Notice how we've used `reactive.text` property of the UITextField. It's an observable representation of the `text` property provided by Bond framework. There are many other extensions like that one for various UIKit components. They are all placed within `.reactive` proxy. Just start typing `.reactive.` any UIKit object and you'll get the list of available extensions.
+Notice how we've used `reactive.text` property of the UITextField. It's an observable representation of the `text` property provided by Bond framework. There are many other extensions like that one for various UIKit components. They are all placed within `.reactive` proxy. Just start typing `.reactive.` on any UIKit object and you'll get the list of available extensions.
 
 For example, to observe button events do:
 
@@ -95,7 +80,7 @@ combineLatest(emailField.reactive.text, passField.reactive.text) { email, pass i
 
 Whenever user types something into any of these text fields, expression will be evaluated and button state updated.
 
-Bond's power is not, however, in coupling various UI components, but in the binding of a Model (or a ViewModel) to a View and vice-versa. It's great for MVVM paradigm. Here is how one could bind user's number of followers property of the model to the label.
+Bond's power is not, however, in coupling various UI components, but in the binding of the business logic layer (i.e. Service or View Model) to the View layer and vice-versa. Here is how one could bind user's number of followers property of the model to the label.
 
 ```swift
 viewModel.numberOfFollowers
@@ -105,7 +90,7 @@ viewModel.numberOfFollowers
 
 Point here is not in the simplicity of a value assignment to the text property of a label, but in the creation of a binding which automatically updates label text property whenever number of followers change.
 
-Bond also supports two way bindings. Here is an example of how you could keep username text field and username property of your view model in sync (whenever any of them change, other one will be updated too):
+Bond also supports two way bindings. Here is an example of how you could keep username text field and username property of your View Model in sync (whenever any of them change, other one will be updated too):
 
 ```swift
 viewModel.username
@@ -145,7 +130,6 @@ repositories.bind(to: collectionView) { array, indexPath, collectionView in
 
 Yes, that's right!
 
-
 ## Observable
 
 Observable wraps mutable state into an object that enables observation of that state. Whenever the state changes, an observer can be notified.
@@ -182,15 +166,15 @@ Observables, like signals, can be bound to views:
 name.bind(to: nameLabel)
 ```
 
-> Observable is just a typealias for ReactiveKit `Property` type. You can use that name if it suits you better.
+Observable is just a typealias for ReactiveKit `Property` type. You can use that name if it suits you better.
 
 ## Bindings
 
-Binding is a connection between a signal or observable that produces events and a bond that observers events and performs certain actions (e.g. updates UI).
+Binding is a connection between a signal or observable that produces events and a *bond* that observers events and performs certain actions (e.g. updates UI).
 
 The producing side of bindings are signals that are defined in ReactiveKit framework on top of which Bond is built. To learn more about signals, consult [ReactiveKit documentation](https://github.com/ReactiveKit/ReactiveKit).
 
-The consuming side of bindings is represented by the `Bond` type. It's a simple struct that performs an action on a given target whenever the bound signal fires an event.
+The consuming side of bindings is represented by the `Bond` type. It is a simple struct that performs an action on a given target whenever the bound signal fires an event.
 
 ```swift
 public struct Bond<Element>: BindableProtocol {
@@ -609,7 +593,7 @@ What that means for you? Well, nothing has changed conceptually so your migratio
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2017 Srdan Rasic (@srdanrasic)
+Copyright (c) 2015-2018 Srdan Rasic (@srdanrasic)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
