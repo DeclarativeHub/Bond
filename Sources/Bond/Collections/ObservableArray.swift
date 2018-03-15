@@ -169,8 +169,9 @@ public class MutableObservableArray<Item>: ObservableArray<Item> {
     /// Move the element at index `i` to index `toIndex`.
     public func moveItem(from fromIndex: Int, to toIndex: Int) {
         lock.lock(); defer { lock.unlock() }
+        let adjustedToIndex = (fromIndex <= toIndex) ? toIndex - 1 : toIndex
         let item = array.remove(at: fromIndex)
-        array.insert(item, at: toIndex)
+        array.insert(item, at: adjustedToIndex)
         subject.next(ObservableArrayEvent(change: .move(fromIndex, toIndex), source: self))
     }
 
