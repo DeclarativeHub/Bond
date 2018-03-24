@@ -58,7 +58,7 @@
     }
 
     /// A type used by the table view bindings that provides binding options and actions.
-    /// Subclass `TableViewBinder` to configure peculiarities of the bindings like animations or header/footer titles.
+    /// Subclass `TableViewBinder` to configure peculiarities of the bindings like animations.
     open class TableViewBinder<DataSource: DataSourceProtocol> {
 
         open var rowAnimation: UITableViewRowAnimation = .automatic
@@ -105,16 +105,6 @@
             case .endUpdates:
                 tableView.endUpdates()
             }
-        }
-
-        /// - Returns: Header title for the given section. Default implementation returns `nil`.
-        open func titleForHeader(in section: Int, dataSource: DataSource) -> String? {
-            return nil
-        }
-
-        /// - Returns: Footer title for the given section. Default implementation returns `nil`.
-        open func titleForFooter(in section: Int, dataSource: DataSource) -> String? {
-            return nil
         }
     }
 
@@ -171,24 +161,26 @@
                 }
             )
 
-            disposable += tableView.reactive.dataSource.feed(
-                property: dataSource,
-                to: #selector(UITableViewDataSource.tableView(_:titleForHeaderInSection:)),
-                map: { (dataSource: DataSource?, tableView: UITableView, index: Int) -> NSString? in
-                    guard let dataSource = dataSource else { return nil }
-                    return binder.titleForHeader(in: index, dataSource: dataSource) as NSString?
-                }
-            )
+            // TODO: Remove when TableViewBond is removed
+            if let bondBinder = binder as? AnyTableViewBondBinder<DataSource> {
+                disposable += tableView.reactive.dataSource.feed(
+                    property: dataSource,
+                    to: #selector(UITableViewDataSource.tableView(_:titleForHeaderInSection:)),
+                    map: { (dataSource: DataSource?, tableView: UITableView, index: Int) -> NSString? in
+                        guard let dataSource = dataSource else { return nil }
+                        return bondBinder.titleForHeader(in: index, dataSource: dataSource) as NSString?
+                    }
+                )
 
-            disposable += tableView.reactive.dataSource.feed(
-                property: dataSource,
-                to: #selector(UITableViewDataSource.tableView(_:titleForFooterInSection:)),
-                map: { (dataSource: DataSource?, tableView: UITableView, index: Int) -> NSString? in
-                    guard let dataSource = dataSource else { return nil }
-                    return binder.titleForFooter(in: index, dataSource: dataSource) as NSString?
-                }
-            )
-
+                disposable += tableView.reactive.dataSource.feed(
+                    property: dataSource,
+                    to: #selector(UITableViewDataSource.tableView(_:titleForFooterInSection:)),
+                    map: { (dataSource: DataSource?, tableView: UITableView, index: Int) -> NSString? in
+                        guard let dataSource = dataSource else { return nil }
+                        return bondBinder.titleForFooter(in: index, dataSource: dataSource) as NSString?
+                    }
+                )
+            }
 
             disposable += tableView.reactive.dataSource.feed(
                 property: dataSource,
@@ -340,8 +332,19 @@
         }
     }
 
+    private class AnyTableViewBondBinder<DataSource: DataSourceProtocol>: TableViewBinder<DataSource> {
+
+        func titleForHeader(in section: Int, dataSource: DataSource) -> String? {
+            return nil
+        }
+
+        func titleForFooter(in section: Int, dataSource: DataSource) -> String? {
+            return nil
+        }
+    }
+
     @available(*, deprecated)
-    private class TableViewBondBinder<Bond: TableViewBond>: TableViewBinder<Bond.DataSource> {
+    private class TableViewBondBinder<Bond: TableViewBond>: AnyTableViewBondBinder<Bond.DataSource> {
 
         let bond: Bond
 
