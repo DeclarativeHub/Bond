@@ -5,8 +5,6 @@
 [![Join Us on Gitter](https://img.shields.io/badge/GITTER-join%20chat-blue.svg)](https://gitter.im/ReactiveKit/General)
 [![Twitter](https://img.shields.io/badge/twitter-@srdanrasic-red.svg?style=flat)](https://twitter.com/srdanrasic)
 
-<img src="Assets/logo@2x.png" align="right" width="200px" hspace="60px" vspace="20px">
-
 <br>
 Bond is a Swift binding framework that takes binding concepts to a whole new level. It's simple, powerful, type-safe and multi-paradigm - just like Swift.
 
