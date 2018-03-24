@@ -29,7 +29,7 @@
 
     public extension ReactiveExtensions where Base: UITableView {
 
-        /// A `ProtocolProxy` for table view delegate.
+        /// A `ProtocolProxy` for the table view delegate.
         ///
         /// - Note: Accessing this property for the first time will replace table view's current delegate
         /// with a protocol proxy object (an object that is stored in this property).
@@ -38,7 +38,7 @@
             return protocolProxy(for: UITableViewDelegate.self, keyPath: \.delegate)
         }
 
-        /// A `ProtocolProxy` for table view data source.
+        /// A `ProtocolProxy` for the table view data source.
         ///
         /// - Note: Accessing this property for the first time will replace table view's current data source
         /// with a protocol proxy object (an object that is stored in this property).

@@ -24,121 +24,204 @@
 
 #if os(iOS) || os(tvOS)
 
-import UIKit
-import ReactiveKit
+    import UIKit
+    import ReactiveKit
 
-public protocol CollectionViewBond {
-    associatedtype DataSource: DataSourceProtocol
-    func cellForRow(at indexPath: IndexPath, collectionView: UICollectionView, dataSource: DataSource) -> UICollectionViewCell
-}
+    public extension ReactiveExtensions where Base: UICollectionView {
 
-private struct SimpleCollectionViewBond<DataSource: DataSourceProtocol>: CollectionViewBond {
-
-    let createCell: (DataSource, IndexPath, UICollectionView) -> UICollectionViewCell
-
-    func cellForRow(at indexPath: IndexPath, collectionView: UICollectionView, dataSource: DataSource) -> UICollectionViewCell {
-        return createCell(dataSource, indexPath, collectionView)
-    }
-}
-
-public extension ReactiveExtensions where Base: UICollectionView {
-
-    public var delegate: ProtocolProxy {
-        return protocolProxy(for: UICollectionViewDelegate.self, keyPath: \.delegate)
-    }
-
-    public var dataSource: ProtocolProxy {
-        return protocolProxy(for: UICollectionViewDataSource.self, keyPath: \.dataSource)
-    }
-}
-
-public extension SignalProtocol where Element: DataSourceEventProtocol, Element.BatchKind == BatchKindDiff, Error == NoError {
-
-    @discardableResult
-    public func bind(to collectionView: UICollectionView, createCell: @escaping (DataSource, IndexPath, UICollectionView) -> UICollectionViewCell) -> Disposable {
-        return bind(to: collectionView, using: SimpleCollectionViewBond<DataSource>(createCell: createCell))
-    }
-
-    @discardableResult
-    public func bind<B: CollectionViewBond>(to collectionView: UICollectionView, using bond: B) -> Disposable where B.DataSource == DataSource {
-
-        let dataSource = Property<DataSource?>(nil)
-        let disposable = CompositeDisposable()
-
-        disposable += collectionView.reactive.dataSource.feed(
-            property: dataSource,
-            to: #selector(UICollectionViewDataSource.collectionView(_:cellForItemAt:)),
-            map: { (dataSource: DataSource?, collectionView: UICollectionView, indexPath: NSIndexPath) -> UICollectionViewCell in
-                return bond.cellForRow(at: indexPath as IndexPath, collectionView: collectionView, dataSource: dataSource!)
-            }
-        )
-
-        disposable += collectionView.reactive.dataSource.feed(
-            property: dataSource,
-            to: #selector(UICollectionViewDataSource.collectionView(_:numberOfItemsInSection:)),
-            map: { (dataSource: DataSource?, _: UICollectionView, section: Int) -> Int in dataSource?.numberOfItems(inSection: section) ?? 0 }
-        )
-
-        disposable += collectionView.reactive.dataSource.feed(
-            property: dataSource,
-            to: #selector(UICollectionViewDataSource.numberOfSections(in:)),
-            map: { (dataSource: DataSource?, _: UICollectionView) -> Int in dataSource?.numberOfSections ?? 0 }
-        )
-
-        var bufferedEvents: [DataSourceEventKind]? = nil
-
-        disposable += bind(to: collectionView) { collectionView, event in
-            dataSource.value = event.dataSource
-
-            let applyEventOfKind: (DataSourceEventKind) -> () = { kind in
-                switch kind {
-                case .reload:
-                    collectionView.reloadData()
-                case .insertItems(let indexPaths):
-                    collectionView.insertItems(at: indexPaths)
-                case .deleteItems(let indexPaths):
-                    collectionView.deleteItems(at: indexPaths)
-                case .reloadItems(let indexPaths):
-                    collectionView.reloadItems(at: indexPaths)
-                case .moveItem(let indexPath, let newIndexPath):
-                    collectionView.moveItem(at: indexPath, to: newIndexPath)
-                case .insertSections(let indexSet):
-                    collectionView.insertSections(indexSet)
-                case .deleteSections(let indexSet):
-                    collectionView.deleteSections(indexSet)
-                case .reloadSections(let indexSet):
-                    collectionView.reloadSections(indexSet)
-                case .moveSection(let index, let newIndex):
-                    collectionView.moveSection(index, toSection: newIndex)
-                case .beginUpdates:
-                    fatalError()
-                case .endUpdates:
-                    fatalError()
-                }
-            }
-
-            switch event.kind {
-            case .beginUpdates:
-                bufferedEvents = []
-            case .endUpdates:
-                if let bufferedEvents = bufferedEvents {
-                    collectionView.performBatchUpdates({ bufferedEvents.forEach(applyEventOfKind) }, completion: nil)
-                } else {
-                    fatalError("Bond: Unexpected event .endUpdates. Should have been preceded by a .beginUpdates event.")
-                }
-                bufferedEvents = nil
-            default:
-                if bufferedEvents != nil {
-                    bufferedEvents!.append(event.kind)
-                } else {
-                    applyEventOfKind(event.kind)
-                }
-            }
-            _ = collectionView.numberOfSections // Hack to immediately apply changes
+        /// A `ProtocolProxy` for the collection view delegate.
+        ///
+        /// - Note: Accessing this property for the first time will replace collection view's current delegate
+        /// with a protocol proxy object (an object that is stored in this property).
+        /// Current delegate will be used as `forwardTo` delegate of protocol proxy.
+        public var delegate: ProtocolProxy {
+            return protocolProxy(for: UICollectionViewDelegate.self, keyPath: \.delegate)
         }
 
-        return disposable
+        /// A `ProtocolProxy` for the collection view data source.
+        ///
+        /// - Note: Accessing this property for the first time will replace collection view's current data source
+        /// with a protocol proxy object (an object that is stored in this property).
+        /// Current data source will be used as `forwardTo` data source of protocol proxy.
+        public var dataSource: ProtocolProxy {
+            return protocolProxy(for: UICollectionViewDataSource.self, keyPath: \.dataSource)
+        }
+
+        /// A signal that emits index paths of selected collection view cells.
+        ///
+        /// - Note: Uses collection view's `delegate` protocol proxy to observe calls made to `UICollectionViewDelegate.collectionView(_:didSelectItemAt:)` method.
+        var selectedItemIndexPath: SafeSignal<IndexPath> {
+            return delegate.signal(for: #selector(UICollectionViewDelegate.collectionView(_:didSelectItemAt:))) { (subject: SafePublishSubject<IndexPath>, _: UICollectionView, indexPath: IndexPath) in
+                subject.next(indexPath)
+            }
+        }
     }
-}
+
+    /// A type used by the collection view bindings that provides binding options and actions.
+    open class CollectionViewBinder<DataSource: DataSourceProtocol> {
+
+        open let createCell: (DataSource, IndexPath, UICollectionView) -> UICollectionViewCell
+
+        /// - parameter createCell: A closure that creates cell for a given collection view and configures it with the given data source at the given index path.
+        public init(_ createCell: @escaping (DataSource, IndexPath, UICollectionView) -> UICollectionViewCell) {
+            self.createCell = createCell
+        }
+
+        /// - returns: A cell for the given collection view configured with the given data source at the given index path.
+        open func cellForRow(at indexPath: IndexPath, collectionView: UICollectionView, dataSource: DataSource) -> UICollectionViewCell {
+            return createCell(dataSource, indexPath, collectionView)
+        }
+    }
+
+    public extension SignalProtocol where Element: DataSourceEventProtocol, Element.BatchKind == BatchKindDiff, Error == NoError {
+
+        /// Binds the signal of data source elements to the given collection view.
+        ///
+        /// - parameters:
+        ///     - collectionView: A collection view that should display the data from the data source.
+        ///     - createCell: A closure that creates (dequeues) cell for the given collection view and configures it with the given data source at the given index path.
+        /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the collection view is deallocated.
+        @discardableResult
+        public func bind(to collectionView: UICollectionView, createCell: @escaping (DataSource, IndexPath, UICollectionView) -> UICollectionViewCell) -> Disposable {
+            return bind(to: collectionView, using: CollectionViewBinder<DataSource>(createCell))
+        }
+
+        /// Binds the signal of data source elements to the given collection view.
+        ///
+        /// - parameters:
+        ///     - collectionView: A collection view that should display the data from the data source.
+        ///     - binder: A `CollectionViewBinder` or its subclass that will manage the binding.
+        /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the collection view is deallocated.
+        @discardableResult
+        public func bind(to collectionView: UICollectionView, using binder: CollectionViewBinder<DataSource>) -> Disposable {
+
+            let dataSource = Property<DataSource?>(nil)
+            let disposable = CompositeDisposable()
+
+            disposable += collectionView.reactive.dataSource.feed(
+                property: dataSource,
+                to: #selector(UICollectionViewDataSource.collectionView(_:cellForItemAt:)),
+                map: { (dataSource: DataSource?, collectionView: UICollectionView, indexPath: NSIndexPath) -> UICollectionViewCell in
+                    return binder.cellForRow(at: indexPath as IndexPath, collectionView: collectionView, dataSource: dataSource!)
+                }
+            )
+
+            disposable += collectionView.reactive.dataSource.feed(
+                property: dataSource,
+                to: #selector(UICollectionViewDataSource.collectionView(_:numberOfItemsInSection:)),
+                map: { (dataSource: DataSource?, _: UICollectionView, section: Int) -> Int in
+                    dataSource?.numberOfItems(inSection: section) ?? 0
+                }
+            )
+
+            disposable += collectionView.reactive.dataSource.feed(
+                property: dataSource,
+                to: #selector(UICollectionViewDataSource.numberOfSections(in:)),
+                map: { (dataSource: DataSource?, _: UICollectionView) -> Int in
+                    dataSource?.numberOfSections ?? 0
+                }
+            )
+
+            var bufferedEvents: [DataSourceEventKind]? = nil
+
+            disposable += bind(to: collectionView) { collectionView, event in
+                dataSource.value = event.dataSource
+
+                let applyEventOfKind: (DataSourceEventKind) -> () = { kind in
+                    switch kind {
+                    case .reload:
+                        collectionView.reloadData()
+                    case .insertItems(let indexPaths):
+                        collectionView.insertItems(at: indexPaths)
+                    case .deleteItems(let indexPaths):
+                        collectionView.deleteItems(at: indexPaths)
+                    case .reloadItems(let indexPaths):
+                        collectionView.reloadItems(at: indexPaths)
+                    case .moveItem(let indexPath, let newIndexPath):
+                        collectionView.moveItem(at: indexPath, to: newIndexPath)
+                    case .insertSections(let indexSet):
+                        collectionView.insertSections(indexSet)
+                    case .deleteSections(let indexSet):
+                        collectionView.deleteSections(indexSet)
+                    case .reloadSections(let indexSet):
+                        collectionView.reloadSections(indexSet)
+                    case .moveSection(let index, let newIndex):
+                        collectionView.moveSection(index, toSection: newIndex)
+                    case .beginUpdates:
+                        fatalError()
+                    case .endUpdates:
+                        fatalError()
+                    }
+                }
+
+                switch event.kind {
+                case .beginUpdates:
+                    bufferedEvents = []
+                case .endUpdates:
+                    if let bufferedEvents = bufferedEvents {
+                        collectionView.performBatchUpdates({ bufferedEvents.forEach(applyEventOfKind) }, completion: nil)
+                    } else {
+                        fatalError("Bond: Unexpected event .endUpdates. Should have been preceded by a .beginUpdates event.")
+                    }
+                    bufferedEvents = nil
+                default:
+                    if bufferedEvents != nil {
+                        bufferedEvents!.append(event.kind)
+                    } else {
+                        applyEventOfKind(event.kind)
+                    }
+                }
+
+                 // Hack to immediately apply changes. Solves the crashing issue when performing updates before collection view is on screen.
+                _ = collectionView.numberOfSections
+            }
+
+            return disposable
+        }
+    }
+
+    public extension SignalProtocol where Element: DataSourceEventProtocol, Element.DataSource: QueryableDataSourceProtocol, Element.DataSource.Index == IndexPath, Element.BatchKind == BatchKindDiff, Error == NoError {
+
+        /// Binds the signal of data source elements to the given collection view.
+        ///
+        /// - parameters:
+        ///     - collectionView: A collection view that should display the data from the data source.
+        ///     - cellType: A type of the cells that should display the data. Cell type name will be used as reusable identifier and the binding will automatically dequeue cell.
+        ///     - configureCell: A closure that configures the cell with the data source item at the respective index path.
+        /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the collection view is deallocated.
+        @discardableResult
+        public func bind<Cell: UICollectionViewCell>(to collectionView: UICollectionView, cellType: Cell.Type, configureCell: @escaping (Cell, DataSource.Item) -> Void) -> Disposable {
+            let identifier = String(describing: Cell.self)
+            collectionView.register(cellType as AnyClass, forCellWithReuseIdentifier: identifier)
+            return bind(to: collectionView, createCell: { (dataSource, indexPath, collectionView) -> UICollectionViewCell in
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! Cell
+                let item = dataSource.item(at: indexPath)
+                configureCell(cell, item)
+                return cell
+            })
+        }
+    }
+
+    public extension SignalProtocol where Element: DataSourceEventProtocol, Element.DataSource: QueryableDataSourceProtocol, Element.DataSource.Index == Int, Element.BatchKind == BatchKindDiff, Error == NoError {
+
+        /// Binds the signal of data source elements to the given collection view.
+        ///
+        /// - parameters:
+        ///     - collectionView: A collection view that should display the data from the data source.
+        ///     - cellType: A type of the cells that should display the data. Cell type name will be used as reusable identifier and the binding will automatically dequeue cell.
+        ///     - configureCell: A closure that configures the cell with the data source item at the respective index path item.
+        /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the collection view is deallocated.
+        @discardableResult
+        public func bind<Cell: UICollectionViewCell>(to collectionView: UICollectionView, cellType: Cell.Type, configureCell: @escaping (Cell, DataSource.Item) -> Void) -> Disposable {
+            let identifier = String(describing: Cell.self)
+            collectionView.register(cellType as AnyClass, forCellWithReuseIdentifier: identifier)
+            return bind(to: collectionView, createCell: { (dataSource, indexPath, collectionView) -> UICollectionViewCell in
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! Cell
+                let item = dataSource.item(at: indexPath.item)
+                configureCell(cell, item)
+                return cell
+            })
+        }
+    }
 
 #endif
