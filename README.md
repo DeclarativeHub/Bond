@@ -176,7 +176,7 @@ No need to implement data source objects and do everything manually. Check out [
 
 Bond provides `NSObject` extensions that make it easy to convert delegate method calls into signal. The extensions are built on top of ObjC runtime and enable you to intercept delegate method invocations and convert them into signal events.
 
-Bond uses protocol proxies to implement table and collection view bindings and to provide signals like `tableView.reactive.selectedRowIndexPath`. Check out [protocol proxies documentation](Documentation/ProtocolProxies.md) to learn more.
+Bond uses protocol proxies to implement table and collection view bindings and to provide signals like `tableView.reactive.selectedRowIndexPath`. Check out [the protocol proxies documentation](Documentation/ProtocolProxies.md) to learn more.
 
 
 ## Requirements

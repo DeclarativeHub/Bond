@@ -201,7 +201,7 @@ All binding methods presented in the previous use cases are just convenience met
 
 If you need to customize the binding behaviour, you can subclass that type and then make a binding by passing your custom instance of `TableViewBinder` to `bind(to:using:)` method. You would do that if you need to further manage how an event is applied to the table view - for example if you want different animations for different events.
 
-Check out [the implementation of the default binder]() to learn what would make sense to subclass and override.
+Check out [the implementation of the default binder](https://github.com/DeclarativeHub/Bond/blob/master/Sources/Bond/UIKit/UITableView.swift#L62) to learn what would make sense to subclass and override.
 
 ### Custom data source in addition to bindings
 
