@@ -316,6 +316,22 @@ class BondTests: XCTestCase {
         view.text = "c"
         NotificationCenter.default.post(name: NSNotification.Name.UITextViewTextDidChange, object: view)
     }
+    
+    func testUISearchBar() {
+        let subject = PublishSubject1<String?>()
+        
+        let view = UISearchBar()
+        subject.bind(to: view)
+        
+        subject.next("a")
+        XCTAssertEqual(view.text!, "a")
+        
+        subject.next("b")
+        XCTAssertEqual(view.text!, "b")
+        
+        view.text = "c"
+        view.reactive.text.expectNext(["c"])
+    }
 }
 
 #endif
