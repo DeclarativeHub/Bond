@@ -16,6 +16,7 @@
 		16887E2E1D7444C900EDA099 /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1652178B1D70591E00C9FAEE /* ReactiveKit.framework */; };
 		16887E3A1D744ABB00EDA099 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16887E391D744ABB00EDA099 /* AppDelegate.swift */; };
 		16887E441D744ABB00EDA099 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 16887E421D744ABB00EDA099 /* LaunchScreen.storyboard */; };
+		75CA9E9220678E600011E5BB /* UISearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CA9E9120678E600011E5BB /* UISearchBar.swift */; };
 		9025DCAB1F981693007B7689 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0220091F8BE898002F8380 /* Property.swift */; };
 		9025DCB01F981694007B7689 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0220091F8BE898002F8380 /* Property.swift */; };
 		9025DCB11F9816A7007B7689 /* UIAccessibilityIdentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC86E9AE1E9145CC008563B2 /* UIAccessibilityIdentification.swift */; };
@@ -321,6 +322,7 @@
 		16887E451D744ABB00EDA099 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		16D30EAE1D6591D300C2435D /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		16D30ED61D65D11900C2435D /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		75CA9E9120678E600011E5BB /* UISearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISearchBar.swift; sourceTree = "<group>"; };
 		90A3FAC21E0C8D8B0086A7F1 /* Differ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Differ.xcodeproj; path = Carthage/Checkouts/Differ/Differ.xcodeproj; sourceTree = "<group>"; };
 		90C04D021E8F0A97000077C8 /* Bond-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Bond-Info.plist"; sourceTree = "<group>"; };
 		90C04D031E8F0A97000077C8 /* Bond.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bond.h; sourceTree = "<group>"; };
@@ -614,6 +616,7 @@
 				90C04D521E8F0B1D000077C8 /* UITableView.swift */,
 				90C04D531E8F0B1D000077C8 /* UITextField.swift */,
 				90C04D541E8F0B1D000077C8 /* UITextView.swift */,
+				75CA9E9120678E600011E5BB /* UISearchBar.swift */,
 				90C04D551E8F0B1D000077C8 /* UIView.swift */,
 			);
 			path = UIKit;
@@ -978,6 +981,7 @@
 				90A443071E9055D100D611FE /* NSButton.swift in Sources */,
 				90C04D701E8F0B89000077C8 /* Bond.swift in Sources */,
 				90A443061E9055D100D611FE /* NSAppearanceCustomization.swift in Sources */,
+				75CA9E9220678E600011E5BB /* UISearchBar.swift in Sources */,
 				90C04DC31E8F0B97000077C8 /* UITextView.swift in Sources */,
 				90A443131E9055D200D611FE /* NSTextView.swift in Sources */,
 				90C04DB21E8F0B97000077C8 /* UIButton.swift in Sources */,
