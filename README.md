@@ -13,17 +13,17 @@ Bond is built on top of ReactiveKit and bridges the gap between the reactive and
 Bond is a backbone of the [Binder Architecture](https://github.com/DeclarativeHub/TheBinderArchitecture) - a preferred architecture to be used with the framework.
 
 
-## What can it do?
+## Why use Bond?
 
-Let's say you would like to act on a text change event of a `UITextField`. Well, you could setup 'target-action' mechanism between your object and go through all that target-action selector registration pain, or you could simply use Bond and do this:
+Say that you would like to do something when text of a text field changes. Well, you could setup the *target-action* mechanism between your objects and go through all that target-action selector registration pain, or you could simply use Bond and do this:
 
 ```swift
 textField.reactive.text.observeNext { text in
-  print(text)
+    print(text)
 }
 ```
 
-Now, instead of printing what the user has typed, you can _bind_ it to a `UILabel`:
+Now, instead of printing what the user has typed, you can _bind_ it to a label:
 
 ```swift
 textField.reactive.text.bind(to: label.reactive.text)
@@ -35,7 +35,7 @@ Because binding to a label text property is so common, you can even do:
 textField.reactive.text.bind(to: label)
 ```
 
-That one line establishes a binding between text field's text property and label's text property. In effect, whenever user makes a change to the text field, that change will be automatically propagated to the label.
+That one line establishes a binding between the text field's text property and label's text property. In effect, whenever user makes a change to the text field, that change will automatically be propagated to the label.
 
 More often than not, direct binding is not enough. Usually you need to transform input is some way, like prepending a greeting to a name. As Bond is backed by ReactiveKit it has full confidence in functional paradigm.
 
@@ -47,7 +47,7 @@ textField.reactive.text
 
 Whenever a change occurs in the text field, new value will be transformed by the closure and propagated to the label.
 
-Notice how we've used `reactive.text` property of the UITextField. It's an observable representation of the `text` property provided by Bond framework. There are many other extensions like that one for various UIKit components. They are all placed within `.reactive` proxy. Just start typing `.reactive.` on any UIKit object and you'll get the list of available extensions.
+Notice how we have used `reactive.text` property of the fext field. It is an observable representation of the `text` property provided by Bond framework. There are many other extensions like that one for various UIKit components. They are all placed within the `.reactive` proxy.
 
 For example, to observe button events do:
 
@@ -86,7 +86,7 @@ viewModel.numberOfFollowers
   .bind(to: label)
 ```
 
-Point here is not in the simplicity of a value assignment to the text property of a label, but in the creation of a binding which automatically updates label text property whenever number of followers change.
+Point here is not in the simplicity of a value assignment to the text property of a label, but in the creation of a binding which automatically updates label text property whenever the number of followers change.
 
 Bond also supports two way bindings. Here is an example of how you could keep username text field and username property of your View Model in sync (whenever any of them change, other one will be updated too):
 
@@ -95,7 +95,7 @@ viewModel.username
   .bidirectionalBind(to: usernameTextField.reactive.text)
 ```
 
-Bond is also great for observing various different events and asynchronous tasks. For example, you could observe a notification just like this:
+Bond is also great for observing various different events and asynchronous tasks. For example, you could observe a notification like this:
 
 ```swift
 NotificationCenter.default.reactive.notification("MyNotification")
@@ -128,266 +128,29 @@ repositories.bind(to: collectionView) { array, indexPath, collectionView in
 
 Yes, that's right!
 
-## Observable
+## Reactive Extensions
 
-Observable wraps mutable state into an object that enables observation of that state. Whenever the state changes, an observer can be notified.
+Bond is all about bindings and other reactive extensions. To learn more about how bindings work and how to create your own bindings check out [the documentation on bindings](Documentation/Bindings.md).
 
-To create the observable, just initialize it with the initial value.
+If you are interested in what bindings and extensions are supported, just start typing `.reactive.` on any UIKit or AppKit object and you will get the list of available extensions. You can also skim over the [source files](https://github.com/DeclarativeHub/Bond/tree/master/Sources/Bond/UIKit) to get an overview.
 
-```swift
-let name = Observable("Jim")
-```
+## Observable Collections
 
-> `nil` is valid value for observables that wrap optional type.
+When working with arrays usually we need to know how exactly did an array change. New elements could have been inserted into the array and old ones deleted or updated. Bond provides mechanisms for observing such fine-grained changes.
 
-Observables are signals just like signals of `Signal` type from ReactiveKit framework. To learn more about signals, consult [ReactiveKit documentation](https://github.com/ReactiveKit/ReactiveKit). Observables can be transformed into another signals, observed and bound in the same manner as signals can be.
-
-For example, you can register an observer with `observe` or `observeNext` methods.
-
-```swift
-name.observeNext { value in
-  print("Hi \(value)!")
-}
-```
-
-> When you register an observer, it will be immediately invoked with the current value of the observable so that snippet will print "Hi Jim!".
-
-To change value of the observable afterwards, just set the `value` property.
-
-```swift
-name.value = "Jim Kirk" // Prints: Hi Jim Kirk!
-```
-
-Observables, like signals, can be bound to views:
-
-```swift
-name.bind(to: nameLabel)
-```
-
-Observable is just a typealias for ReactiveKit `Property` type. You can use that name if it suits you better.
-
-## Bindings
-
-Binding is a connection between a signal or observable that produces events and a *bond* that observers events and performs certain actions (e.g. updates UI).
-
-The producing side of bindings are signals that are defined in ReactiveKit framework on top of which Bond is built. To learn more about signals, consult [ReactiveKit documentation](https://github.com/ReactiveKit/ReactiveKit).
-
-The consuming side of bindings is represented by the `Bond` type. It is a simple struct that performs an action on a given target whenever the bound signal fires an event.
-
-```swift
-public struct Bond<Element>: BindableProtocol {
-  public init<Target: Deallocatable>(target: Target, context: ExecutionContext, setter: @escaping (Target, Element) -> Void)
-}
-```
-
-The only requirement is that the target must be "deallocatable", in other words that it provides a signal of its own deallocation.
-
-```swift
-public protocol Deallocatable: class {
-  var deallocated: Signal<Void, NoError> { get }
-}
-```
-
-All NSObject subclasses conform to that protocol out of the box. Let's see how we could implement a Bond for text property of a label. It's recommended to implement reactive extensions on `ReactiveExtensions` proxy protocol. That way you encapsulate extensions within the `.reactive` property.
-
-```swift
-extension ReactiveExtensions where Base: UILabel {
-  var myTextBond: Bond<String?> {
-    return bond { label, text in
-      label.text = text
-    }
-  }
-}
-```
-
-That's it! To bind any string signal, just use `bind(to:)` method on that bond.
-
-```swift
-let name: Signal<String, NoError> = ...
-name.bind(to: nameLabel.reactive.myTextBond)
-```
-
-> Bonds will automatically ensure that the target object is updated on the main thread (queue). That means that the signal can generate events on a background thread without you worrying how the UI will be updated - it will always happen on the main thread.
-
-Note that you can bind only __non-failable__ signals, i.e. signals with `NoError` error type. Only those kind of signals are safe to represent the data that UI displays.
-
-
-Bindings will automatically dispose themselves (i.e. cancel source signals) when the binding target gets deallocated. For example, if we do
-
-```swift
-blurredImage().bind(to: imageView)
-```
-
-then the image processing will be automatically cancelled when the image view gets deallocated. Isn't that cool!
-
-### Inline Bindings
-
-Most of the time you should be able to replace an observation with a binding. Consider the following example. Say we have a signal of users
-
-```swift
-let presentUserProfile: Signal<User, NoError> = ...
-```
-
-and we would like to present a profile screen when a user is sent on the signal. Usually we would do something like:
-
-```swift
-presentUserProfile.observeOn(.main).observeNext { [weak self] user in
-  let profileViewController = ProfileViewController(user: user)
-  self?.present(profileViewController, animated: true)
-}.dispose(in: bag)
-```
-
-But that's ugly! We have to dispatch everything to the main queue, be cautious not to create a retain cycle and ensure that the disposable we get from the observation is handled.
-
-Thankfully Bond provides a better way. We can create inline binding instead of the observation. Just do the following
-
-```swift
-presentUserProfile.bind(to: self) { me, user in
-  let profileViewController = ProfileViewController(user: user)
-  me.present(profileViewController, animated: true)
-}
-```
-
-and stop worrying about threading, retain cycles and disposing  because bindings take care of all that automatically. Just bind a signal to the target responsible for performing side effects (in our example, to the object responsible for presenting a profile view controller). The closure you provide will be called whenever the signal emits an event with both the target and the sent element as arguments.
-
-## Reactive Delegates
-
-Bond provides NSObject extensions that makes it easy to convert delegate pattern into signals.
-
-First make an extension on ReactiveExtensions (where `Base` is defined as your type - `UITableView` in the following example), that provides a reactive delegate proxy:
-
-```swift
-extension ReactiveExtensions where Base: UITableView {
-
-  public var delegate: ProtocolProxy {
-    return protocolProxy(for: UITableViewDelegate.self, keyPath: \.delegate)
-  }
-}
-```
-
-> Note: `reactive.delegate` is already provided by Bond. This is an example of the implementation.
-
-You can then convert methods of that protocol into signals:
-
-```swift
-extension ReactiveExtensions where Base: UITableView {
-
-    var selectedRow: Signal<Int, NoError> {
-        return delegate.signal(for: #selector(UITableViewDelegate.tableView(_:didSelectRowAt:))) { (subject: SafePublishSubject<Int>, _: UITableView, indexPath: IndexPath) in
-            subject.next(indexPath.row)
-        }
-    }
-}
-```
-
-Method `signal(for:)` takes two parameters: a selector to convert to a signal and a mapping closure that maps selector method arguments into a signal.
-
-Now you can do:
-
-```swift
-tableView.reactive.selectedRow.observeNext { row in
-  print("Tapped row at index \(row).")
-}.dispose(in: bag)
-```
-
-**Note:** Protocol proxy takes up delegate slot of the object so if you also need to implement delegate methods manually, don't set `tableView.delegate = x`, rather set `tableView.reactive.delegate.forwardTo = x`.
-
-Protocol methods that return values are usually used to query data. Such methods can be set up to be fed from a property type. For example:
-
-```swift
-let numberOfItems = Property(12)
-
-tableView.reactive.dataSource.feed(
-  property: numberOfItems,
-  to: #selector(UITableViewDataSource.tableView(_:numberOfRowsInSection:)),
-  map: { (value: Int, _: UITableView, _: Int) -> Int in value }
-)
-```
-
-Method `feed` takes three parameters: a property to feed from, a selector, and a mapping closure that maps from the property value and selector method arguments to the selector method return value.
-
-You should not set more that one feed property per selector.
-
-Note that in the mapping closures of both `signal(for:)` and `feed` methods you must be explicit about argument and return types.
-
-## Reactive Data Sources
-
-Bond provides a way to make reactive data sources and allows such sources to be easily bound to table or collection views.
-
-Any signal that emits elements of the following type can be bound to a table or collection view
-
-```swift
-public struct DataSourceEvent<DataSource: DataSourceProtocol>: DataSourceEventProtocol {
-  public let kind: DataSourceEventKind
-  public let dataSource: DataSource
-}
-```
-
-where the data source is any object conforming to `DataSource` protocol
-
-```swift
-public protocol DataSourceProtocol {
-  func numberOfSections() -> Int
-  func numberOfItems(inSection section: Int) -> Int
-}
-```
-
-and kind is a case of the enumeration `DataSourceEventKind`:
-
-```swift
-public enum DataSourceEventKind {
-  case reload
-
-  case insertRows([IndexPath])
-  case deleteRows([IndexPath])
-  case reloadRows([IndexPath])
-  case moveRow(IndexPath, IndexPath)
-
-  case insertSections(IndexSet)
-  case deleteSections(IndexSet)
-  case reloadSections(IndexSet)
-  case moveSection(Int, Int)
-
-  case beginUpdates
-  case endUpdates
-}
-```
-
-If you have a signal that emits an array of elements you can bind it to a table view.
-
-```swift
-let places = SafeSignal.just(["London", "Berlin", "Copenhagen"])
-
-places.bind(to: tableView) { places, indexPath, tableView in
-  let cell = tableView.dequeueCell(withIdentifier: "Cell", for: indexPath) as! PlaceCell
-  cell.place = places[indexPath.row]
-  return cell
-}
-```
-
-Whenever the signal emits new array, it will be mapped to a `.reload` event and cause the table view to update. To get fine-grained changes, you should use better data source.
-
-### ObservableArray / MutableObservableArray
-
-When working with arrays, it's usually not enough to know only that the array has changed, but how exactly did it change. New elements could have been inserted into the array and old ones deleted or updated. Bond provides mechanisms for observing such fine-grained changes.
-
-Creating a Signal/Observable/Property of arrays enables observation of the change of the array as whole, but to observe fine-grained changes Bond provides you with the `ObservableArray` type. Just like the Observable, it is a type conforming to SignalProtocol, but instead of sending events that match the wrapped value type, it sends events of the `ObservableArrayChange` type that actually conforms to `DataSourceEventProtocol`. Such event contains both the array itself (the data source) and the change that was just applied to the array (like element insertion or deletion).
-
-To create observable array, just initialize it with the initial array.
+For example, Bond provides you with a `(Mutable)ObservableArray` type that can be used to generate and observe fine-grained changes.
 
 ```swift
 let names = MutableObservableArray(["Steve", "Tim"])
-```
 
-When observing observable array, events you receive will contain detailed description of changes that happened.
+...
 
-```swift
 names.observeNext { e in
   print("array: \(e.source), change: \(e.change)")
 }
 ```
 
-You work with the observable array like you'd work with the array it encapsulates.
+You work with the observable array like you would work with the array it encapsulates.
 
 ```swift
 names.append("John") // prints: array ["Steve", "Tim", "John"], change: .inserts([2])
@@ -395,140 +158,26 @@ names.removeLast()   // prints: array ["Steve", "Tim"], change: .deletes([2])
 names[1] = "Mark"    // prints: array ["Steve", "Mark"], change: .updates([1])
 ```
 
-Observable array can be mapped or filtered. For example, if we map our array
+Peek into [observable collections documentation](Documentation/ObservableCollections.md) to learn more about observable collections.
 
-```
-names.map { $0.characters.count }.observeNext { e in
-  print("array: \(e.source), change: \(e.change)")
+## Data Source Signals
+
+Observable collections and other data source signals enable us to build powerful UI bindings. For example, an observable array could be bound to a collection view just like this:
+
+```swift
+names.bind(to: collectionView, cellType: UserCell.self) { (cell, name) in
+    cell.titleLabel.text = name
 }
 ```
 
-then modifying it
+No need to implement data source objects and do everything manually. Check out [documentation on the data source signals](Documentation/DataSourceSignals.md) to learn more about them and about table or collection view bindings. 
 
-```swift
-names.append("Tony") // prints: array [5, 3, 4], change: .inserts([2])
-```
+## Protocol Proxies
 
-gives us fine-grained notification of mapped array changes.
+Bond provides `NSObject` extensions that make it easy to convert delegate method calls into signal. The extensions are built on top of ObjC runtime and enable you to intercept delegate method invocations and convert them into signal events.
 
-Mapping and filtering arrays operates on an array signal. To get the result back as an observable array, just bind it to an instance of ObservableArray.
+Bond uses protocol proxies to implement table and collection view bindings and to provide signals like `tableView.reactive.selectedRowIndexPath`. Check out [protocol proxies documentation](Documentation/ProtocolProxies.md) to learn more.
 
-```swift
-let nameLengths = MutableObservableArray<Int>()
-names.map { $0.characters.count }.bind(to: nameLengths)
-```
-
-Such features enable us to build powerful UI bindings. Observable array can be bound to `UITableView` or `UICollectionView`. Just provide a closure that creates cells to the `bind(to:)` method.
-
-```swift
-let posts: ObservableArray <[Post]> = ...
-
-posts.bind(to: tableView) { posts, indexPath, tableView in
-  let cell = tableView.dequeueCell(withIdentifier: "PostCell", for: indexPath) as! PostCell
-  cell.post = posts[indexPath.row]
-  return cell
-}
-```
-
-Subsequent changes done to the `posts` array will then be automatically reflected in the table view.
-
-#### Array diff
-
-When you need to replace an array with another array, but need an event that contains fine-grained changes (for example to update table/collection view with nice animations), you can use method `replace(with:performDiff:)`. Let's say you have
-
-```swift
-let numbers: MutableObservableArray([1, 2, 3])
-```
-
-and you do
-
-```swift
-numbers.replace(with: [0, 1, 3, 4], performDiff: true)
-```
-
-then the row at index path 1 would be deleted and new rows would be inserted at index paths 0 and 3. The view would automatically animate only the changes from the *merge*. Helpful, isn't it.
-
-### Observable2DArray / MutableObservable2DArray
-
-Array is often not enough. Usually our data is grouped into sections. To enable such use case, Bond provides two-dimensional arrays that can be observed and bound to table or collection views.
-
-Let's explain this type by example. First we'll need some sections. A section represents a group of items. Those items, i.e. section can have a metadata associated with it. In iOS it's useful to display section header and footer titles to the user so let's define that as our metadata:
-
-```swift
-typealias SectionMetadata = (header: String, footer: String)
-```
-> If you need only, for example, header title, then you don't need to define separate type. Just use `String` instead of `SectionMetadata` in examples that follow.
-
-Now that we have defined our metadata type, we can create a section:
-
-```swift
-let cities = Observable2DArraySection<SectionMetadata, String>(
-  metadata: (header: "Cities", footer: "That's it"),
-  items: ["Paris", "Berlin"]
-)
-```
-
-Section is defined with `Observable2DArraySection` type. It's generic over its metadata type and type of the items it can contain. To create a section we passed section metadata and section items.
-
-We can now create an observable 2D array. Let's create mutable variant so we can later modify it.
-
-```swift
-let array = MutableObservable2DArray([cities])
-```
-
-You just pass it an array of sections. Such array can be bound to a table or collection view. You can bind it the same way as you would bind `ObservableArray`. However, if you want to display header and/or footer titles, you'll need to define `TableViewBond` object.
-
-```swift
-struct MyBond: TableViewBond {
-
-  func cellForRow(at indexPath: IndexPath, tableView: UITableView, dataSource: Observable2DArray<SectionMetadata, String>) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-    cell.textLabel?.text = array[indexPath]
-    return cell
-  }
-
-  func titleForHeader(in section: Int, dataSource: Observable2DArray<SectionMetadata, String>) -> String? {
-    return dataSource[section].metadata.header
-  }
-
-  func titleForFooter(in section: Int, dataSource: Observable2DArray<SectionMetadata, String>) -> String? {
-    return dataSource[section].metadata.footer
-  }
-}
-```
-
-Only the method `cellForRow:at:tableView:` is required. Other two are optional and are used when we want to show header and/or footer titles.
-
-Method `cellForRow:at:tableView:` describes how cells are instantiated (dequeued) and filled with data. Method `titleForHeader/Footer` just reads section metadata from the data source object and returns it.
-
-> If you don't need to display header and/or footer titles, you don't need to create `TableViewBond` type. Just bind `Observable2DArray` as you would bind `ObservableArray` as described in the previous section of this document.
-
-Now that we have a table view bond type, you can bind our array to the table view:
-
-```swift
-array.bind(to: tableView, using: MyBond())
-```
-
-We just pass it an instance of table view bond type.
-
-And that's it. If you run that code you'll see a table view with one section that has header and footer and two items.
-
-If you now modify the array like
-
-```swift
-array.appendItem("Copenhagen", toSection: 0)
-```
-
-the new item will automatically be inserted and animated into the table view.
-
-You can also, for example; add another section:
-
-```swift
-let countries = Observable2DArraySection<SectionMetadata, String>(metadata: ("Countries", "No more..."), items: ["France", "Croatia"])
-array.appendSection(countries)
-```
-
-There are many other methods. Just look at the code reference or source.
 
 ## Requirements
 
@@ -548,7 +197,7 @@ There are many other methods. Just look at the code reference or source.
 ### Carthage
 
 1. Add the following to your *Cartfile*:
-  <br> `github "ReactiveKit/Bond"`
+  <br> `github "DeclarativeHub/Bond"`
 2. Run `carthage update`
 3. Add the framework as described in [Carthage Readme](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application)
 
@@ -557,35 +206,6 @@ There are many other methods. Just look at the code reference or source.
 1. Add the following to your *Podfile*:
   <br> `pod 'Bond'`
 2. Run `pod install`.
-
-## <a name="migration"></a>Migration
-
-### Migration from v5.x to v6.x
-
-* Extensions are moved into `reactive` proxy. Replace occurrences of `bnd_` with `reactive.`. For example `label.bnd_text` becomes `label.reactive.text`. The simplest way is to do _Search and Replace_ in Xcode across the project.
-* `Bond<Target, Element>` becomes `Bond<Element>`.
-* `DynamicSubject<Target, Element>` becomes `DynamicSubject<Element>`.
-* `disposeIn()` is deprecated in favour of `dispose(in:)`.
-
-### Migration from v4.x to v5.x
-
-There are some big changes in Bond v5! Bond is now backed by ReactiveKit framework. All reactive types have been moved down to ReactiveKit. Bond builds its infrastructure on top of ReactiveKit types, primarily on top of `Signal` that serves the purpose of `EventProducer`.
-
-Bindings have been improved and simplified. It gives them better performances and additional uses. ObservableArray has been reimplemented and significantly simplified and optimised. New features are introduced: reactive delegates and reactive data sources.
-
-What that means for you? Well, nothing has changed conceptually so your migration should be easy. Following is a list of changes:
-
-* `EventProducer` is removed. Use Signal from ReactiveKit for reactive programming.
-* Operator `deliverOn` is renamed to `observeOn`.
-* Method `bindTo` is renamed to `bind(to:)`.
-* Method `observe` is renamed to `observeNext`.
-* `ObservableArray` is reimplemented. Mapping and filtering it is not supported any more.
-* `ObservableArray` is now immutable. Use `MutableObservableArray` instead.
-* Table view and collection view binding closure now has the data source as first argument and the index path as second argument.
-* KVO can now be established using the methods `keyPath(:ofType:)` / `keyPath(:ofExpectedType:)` on any NSObject subclass.
-* `Queue` is removed. Use `DispatchQueue` instead.
-
-
 
 ## License
 

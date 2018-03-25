@@ -56,7 +56,10 @@ public protocol DataSourceEventProtocol {
     associatedtype DataSource: DataSourceProtocol
     associatedtype BatchKind: DataSourceBatchKind
 
+    /// Represents data source event kind like insertion, deletion, etc.
     var kind: DataSourceEventKind { get }
+
+    /// The data source itself.
     var dataSource: DataSource { get }
 }
 
