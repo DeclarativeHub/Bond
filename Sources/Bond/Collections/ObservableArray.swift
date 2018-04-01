@@ -22,8 +22,8 @@
 //  THE SOFTWARE.
 //
 
-import Foundation
 import Differ
+import Foundation
 import ReactiveKit
 
 public enum ObservableArrayChange {
@@ -73,7 +73,6 @@ public struct ObservableArrayPatchEvent<Item>: ObservableArrayEventProtocol {
 }
 
 public class ObservableArray<Item>: SignalProtocol {
-
     public fileprivate(set) var array: [Item]
     fileprivate let subject = PublishSubject<ObservableArrayEvent<Item>, NoError>()
     fileprivate let lock = NSRecursiveLock(name: "com.reactivekit.bond.observablearray")
@@ -111,9 +110,7 @@ public class ObservableArray<Item>: SignalProtocol {
     }
 
     public subscript(index: Int) -> Item {
-        get {
-            return array[index]
-        }
+        return array[index]
     }
 
     public func observe(with observer: @escaping (Event<ObservableArrayEvent<Item>, NoError>) -> Void) -> Disposable {
@@ -123,37 +120,33 @@ public class ObservableArray<Item>: SignalProtocol {
 }
 
 extension ObservableArray: CustomDebugStringConvertible {
-
     public var debugDescription: String {
         return array.debugDescription
     }
 }
 
 extension ObservableArray: Deallocatable {
-
     public var deallocated: Signal<Void, NoError> {
         return subject.disposeBag.deallocated
     }
 }
 
 extension ObservableArray where Item: Equatable {
-
     public static func ==(lhs: ObservableArray<Item>, rhs: ObservableArray<Item>) -> Bool {
         return lhs.array == rhs.array
     }
 }
 
 public class MutableObservableArray<Item>: ObservableArray<Item> {
-
     /// Append `newElement` to the array.
     public func append(_ newElement: Item) {
         lock.lock(); defer { lock.unlock() }
         array.append(newElement)
-        subject.next(ObservableArrayEvent(change: .inserts([array.count-1]), source: self))
+        subject.next(ObservableArrayEvent(change: .inserts([array.count - 1]), source: self))
     }
 
     /// Insert `newElement` at index `i`.
-    public func insert(_ newElement: Item, at index: Int)  {
+    public func insert(_ newElement: Item, at index: Int) {
         lock.lock(); defer { lock.unlock() }
         array.insert(newElement, at: index)
         subject.next(ObservableArrayEvent(change: .inserts([index]), source: self))
@@ -163,7 +156,7 @@ public class MutableObservableArray<Item>: ObservableArray<Item> {
     public func insert(contentsOf newElements: [Item], at index: Int) {
         lock.lock(); defer { lock.unlock() }
         array.insert(contentsOf: newElements, at: index)
-        subject.next(ObservableArrayEvent(change: .inserts(Array(index..<index+newElements.count)), source: self))
+        subject.next(ObservableArrayEvent(change: .inserts(Array(index..<index + newElements.count)), source: self))
     }
 
     /// Move the element at index `i` to index `toIndex`.
@@ -250,7 +243,6 @@ public class MutableObservableArray<Item>: ObservableArray<Item> {
 }
 
 extension MutableObservableArray: BindableProtocol {
-
     public func bind(signal: Signal<ObservableArrayEvent<Item>, NoError>) -> Disposable {
         return signal
             .take(until: deallocated)
@@ -265,7 +257,6 @@ extension MutableObservableArray: BindableProtocol {
 // MARK: DataSourceProtocol conformation
 
 extension ObservableArrayChange {
-
     public var asDataSourceEventKind: DataSourceEventKind {
         switch self {
         case .reset:
@@ -287,7 +278,6 @@ extension ObservableArrayChange {
 }
 
 extension ObservableArrayEvent: DataSourceEventProtocol {
-
     public typealias BatchKind = BatchKindDiff
 
     public var kind: DataSourceEventKind {
@@ -300,7 +290,6 @@ extension ObservableArrayEvent: DataSourceEventProtocol {
 }
 
 extension ObservableArrayPatchEvent: DataSourceEventProtocol {
-
     public typealias BatchKind = BatchKindPatch
 
     public var kind: DataSourceEventKind {
@@ -313,7 +302,6 @@ extension ObservableArrayPatchEvent: DataSourceEventProtocol {
 }
 
 extension ObservableArray: QueryableDataSourceProtocol {
-
     public var numberOfSections: Int {
         return 1
     }
@@ -328,7 +316,6 @@ extension ObservableArray: QueryableDataSourceProtocol {
 }
 
 extension MutableObservableArray {
-
     public func replace(with array: [Item]) {
         lock.lock(); defer { lock.unlock() }
         self.array = array
@@ -337,7 +324,6 @@ extension MutableObservableArray {
 }
 
 extension MutableObservableArray where Item: Equatable {
-
     public func replace(with array: [Item], performDiff: Bool) {
         if performDiff {
             lock.lock()
@@ -368,7 +354,6 @@ extension MutableObservableArray where Item: Equatable {
 }
 
 public extension SignalProtocol where Element: ObservableArrayEventProtocol {
-
     public typealias Item = Element.Item
 
     /// Map underlying ObservableArray.
@@ -464,17 +449,16 @@ public extension SignalProtocol where Element: ObservableArrayEventProtocol {
 
             let source = ObservableArray(filtered)
             return changes.map { ObservableArrayEvent(change: $0, source: source) }
-            }._unwrap()
+        }._unwrap()
     }
 }
 
 extension SignalProtocol where Element: Collection, Element.Iterator.Element: Equatable {
-
     // Diff each emitted collection with the previously emitted one.
     // Returns a signal of ObservableArrayEvents that can be bound to a table or collection view.
     public func diff() -> Signal<ObservableArrayEvent<Element.Iterator.Element>, Error> {
         return Signal { observer in
-            var previous: MutableObservableArray<Element.Iterator.Element>? = nil
+            var previous: MutableObservableArray<Element.Iterator.Element>?
             return self.observe { event in
                 switch event {
                 case .next(let element):
@@ -498,11 +482,10 @@ extension SignalProtocol where Element: Collection, Element.Iterator.Element: Eq
 }
 
 fileprivate extension SignalProtocol where Element: Sequence {
-
     /// Unwrap sequence elements into signal elements.
     fileprivate func _unwrap() -> Signal<Element.Iterator.Element, Error> {
         return Signal { observer in
-            return self.observe { event in
+            self.observe { event in
                 switch event {
                 case .next(let array):
                     array.forEach { observer.next($0) }
@@ -522,32 +505,31 @@ func generateDiff(from sequenceOfChanges: [ObservableArrayChange]) -> [Observabl
     for i in 0..<diff.count {
         for j in 0..<i {
             switch (diff[i], diff[j]) {
-
             // (deletes, *)
-            case let (.deletes(l), .deletes(r)):
+            case (.deletes(let l), .deletes(let r)):
                 guard let pivot = l.first else { break }
                 guard let index = r.first else { break }
                 if pivot >= index {
-                    diff[i] = .deletes([pivot+1])
+                    diff[i] = .deletes([pivot + 1])
                 }
-            case let (.deletes(l), .inserts(r)):
+            case (.deletes(let l), .inserts(let r)):
                 guard let pivot = l.first else { break }
                 guard let index = r.first else { break }
                 if pivot < index {
-                    diff[j] = .inserts([index-1])
+                    diff[j] = .inserts([index - 1])
                 } else if pivot == index {
                     diff[j] = .inserts([])
                     diff[i] = .deletes([])
                 } else if pivot > index {
-                    diff[i] = .deletes([pivot-1])
+                    diff[i] = .deletes([pivot - 1])
                 }
-            case let (.deletes(l), .updates(r)):
+            case (.deletes(let l), .updates(let r)):
                 guard let pivot = l.first else { break }
                 guard let index = r.first else { break }
                 if pivot == index {
                     diff[j] = .updates([])
                 }
-            case (let .deletes(l), let .move(from, to)):
+            case (let .deletes(l), .move(let from, let to)):
                 guard let pivot = l.first else { break }
                 guard from != -1 else { break }
                 var newTo = to
@@ -556,51 +538,51 @@ func generateDiff(from sequenceOfChanges: [ObservableArrayChange]) -> [Observabl
                     diff[i] = .deletes([from])
                     break
                 } else if pivot < to {
-                    newTo = to-1
+                    newTo = to - 1
                     diff[j] = .move(from, newTo)
                 }
                 if pivot >= from && pivot < to {
-                    diff[i] = .deletes([pivot+1])
+                    diff[i] = .deletes([pivot + 1])
                 }
 
             // (inserts, *)
             case (.inserts, .deletes):
                 break
-            case let (.inserts(l), .inserts(r)):
+            case (.inserts(let l), .inserts(let r)):
                 guard let pivot = l.first else { break }
                 guard let index = r.first else { break }
                 if pivot <= index {
-                    diff[j] = .inserts([index+1])
+                    diff[j] = .inserts([index + 1])
                 }
             case (.inserts, .updates):
                 break
-            case (let .inserts(l), let .move(from, to)):
+            case (let .inserts(l), .move(let from, let to)):
                 guard let pivot = l.first else { break }
                 guard from != -1 else { break }
                 if pivot <= to {
-                    diff[j] = .move(from, to+1)
+                    diff[j] = .move(from, to + 1)
                 }
 
             // (updates, *)
-            case let (.updates(l), .deletes(r)):
+            case (.updates(let l), .deletes(let r)):
                 guard let pivot = l.first else { break }
                 guard let index = r.first else { break }
                 if pivot >= index {
-                    diff[i] = .updates([pivot+1])
+                    diff[i] = .updates([pivot + 1])
                 }
-            case let (.updates(l), .inserts(r)):
+            case (.updates(let l), .inserts(let r)):
                 guard let pivot = l.first else { break }
                 guard let index = r.first else { break }
                 if pivot == index {
                     diff[i] = .updates([])
                 }
-            case let (.updates(l), .updates(r)):
+            case (.updates(let l), .updates(let r)):
                 guard let pivot = l.first else { break }
                 guard let index = r.first else { break }
                 if pivot == index {
                     diff[i] = .updates([])
                 }
-            case (let .updates(l), let .move(from, to)):
+            case (let .updates(l), .move(let from, let to)):
                 guard var pivot = l.first else { break }
                 guard from != -1 else { break }
                 if pivot == from {
@@ -647,14 +629,12 @@ func generateDiff(from sequenceOfChanges: [ObservableArrayChange]) -> [Observabl
 }
 
 fileprivate extension ObservableArrayChange {
-
     fileprivate var unwrap: [ObservableArrayChange] {
-
         func deletionsPatch(_ indices: [Int]) -> [Int] {
             var indices = indices
             for i in 0..<indices.count {
                 let pivot = indices[i]
-                for j in (i+1)..<indices.count {
+                for j in (i + 1)..<indices.count {
                     let index = indices[j]
                     if index > pivot {
                         indices[j] = index - 1
@@ -692,7 +672,6 @@ fileprivate extension ObservableArrayChange {
 }
 
 extension ObservableArrayChange: Equatable {
-
     public static func ==(lhs: ObservableArrayChange, rhs: ObservableArrayChange) -> Bool {
         switch (lhs, rhs) {
         case (.reset, .reset):
@@ -716,16 +695,14 @@ extension ObservableArrayChange: Equatable {
 }
 
 public extension SignalProtocol where Element: ObservableArrayEventProtocol {
-
     /// Converts diff events into patch events by transforming batch updates into resets (i.e. disabling batch updates).
     /// - If you wish to keep batch updated, make your array element type conforming to Equatable protocol and use
     ///             `patchingBatch` method instead.
     public func toPatchesByResettingBatch() -> Signal<ObservableArrayPatchEvent<Item>, Error> {
-
         var isBatching = false
 
         return Signal { observer in
-            return self.observe { event in
+            self.observe { event in
                 switch event {
                 case .next(let observableArrayEvent):
 
@@ -754,15 +731,13 @@ public extension SignalProtocol where Element: ObservableArrayEventProtocol {
 }
 
 public extension SignalProtocol where Element: ObservableArrayEventProtocol, Element.Item: Equatable {
-
     /// Converts diff events into patch events.
     public func toPatches() -> Signal<ObservableArrayPatchEvent<Item>, Error> {
-
         var isBatching = false
         var originalArray: [Item] = []
 
         return Signal { observer in
-            return self.observe { event in
+            self.observe { event in
                 switch event {
                 case .next(let observableArrayEvent):
 
