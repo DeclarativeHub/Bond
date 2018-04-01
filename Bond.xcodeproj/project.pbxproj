@@ -203,6 +203,9 @@
 		90C04DDA1E8F0BAF000077C8 /* UICollectionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04DCF1E8F0BA7000077C8 /* UICollectionViewTests.swift */; };
 		90C04DDB1E8F0BAF000077C8 /* UIKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04DD01E8F0BA7000077C8 /* UIKitTests.swift */; };
 		90C04DDC1E8F0BAF000077C8 /* UITableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04DD11E8F0BA7000077C8 /* UITableViewTests.swift */; };
+		90E24B4A206F507000CF92F7 /* ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E24B49206F507000CF92F7 /* ObservableCollection.swift */; };
+		90E24B4B206F507000CF92F7 /* ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E24B49206F507000CF92F7 /* ObservableCollection.swift */; };
+		90E24B4C206F507000CF92F7 /* ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E24B49206F507000CF92F7 /* ObservableCollection.swift */; };
 		EC02200A1F8BE898002F8380 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0220091F8BE898002F8380 /* Property.swift */; };
 		EC86E9AF1E9145CC008563B2 /* UIAccessibilityIdentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC86E9AE1E9145CC008563B2 /* UIAccessibilityIdentification.swift */; };
 		EC86E9B01E9145CC008563B2 /* UIAccessibilityIdentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC86E9AE1E9145CC008563B2 /* UIAccessibilityIdentification.swift */; };
@@ -394,6 +397,7 @@
 		90C04DCF1E8F0BA7000077C8 /* UICollectionViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewTests.swift; sourceTree = "<group>"; };
 		90C04DD01E8F0BA7000077C8 /* UIKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitTests.swift; sourceTree = "<group>"; };
 		90C04DD11E8F0BA7000077C8 /* UITableViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewTests.swift; sourceTree = "<group>"; };
+		90E24B49206F507000CF92F7 /* ObservableCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableCollection.swift; sourceTree = "<group>"; };
 		EC0220091F8BE898002F8380 /* Property.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Property.swift; sourceTree = "<group>"; };
 		EC378E961E13FFD100E2197D /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		EC86E9AE1E9145CC008563B2 /* UIAccessibilityIdentification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAccessibilityIdentification.swift; sourceTree = "<group>"; };
@@ -584,6 +588,7 @@
 			children = (
 				90C04D381E8F0B1D000077C8 /* Observable2DArray.swift */,
 				90C04D391E8F0B1D000077C8 /* ObservableArray.swift */,
+				90E24B49206F507000CF92F7 /* ObservableCollection.swift */,
 				90C04D3A1E8F0B1D000077C8 /* ObservableDictionary.swift */,
 				90C04D3B1E8F0B1D000077C8 /* ObservableSet.swift */,
 			);
@@ -991,6 +996,7 @@
 				90C04DB01E8F0B97000077C8 /* UIBarButtonItem.swift in Sources */,
 				90A443091E9055D100D611FE /* NSControl.swift in Sources */,
 				90C04D7A1E8F0B89000077C8 /* SignalProtocol.swift in Sources */,
+				90E24B4A206F507000CF92F7 /* ObservableCollection.swift in Sources */,
 				90C04DBA1E8F0B97000077C8 /* UINavigationItem.swift in Sources */,
 				ECAFB8D9200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */,
 				90C04DB71E8F0B97000077C8 /* UIImageView.swift in Sources */,
@@ -1063,6 +1069,7 @@
 				90A4432E1E9055D800D611FE /* UILabel.swift in Sources */,
 				90C04D681E8F0B89000077C8 /* Observable.swift in Sources */,
 				90A443331E9055D800D611FE /* UISegmentedControl.swift in Sources */,
+				90E24B4B206F507000CF92F7 /* ObservableCollection.swift in Sources */,
 				90C04D851E8F0B8D000077C8 /* NSSlider.swift in Sources */,
 				90A443261E9055D800D611FE /* UIBarButtonItem.swift in Sources */,
 				90C04D871E8F0B8D000077C8 /* NSTableView.swift in Sources */,
@@ -1129,6 +1136,7 @@
 				90C04D5E1E8F0B88000077C8 /* ProtocolProxy.swift in Sources */,
 				90C04D971E8F0B96000077C8 /* UIActivityIndicatorView.swift in Sources */,
 				90C04D9A1E8F0B96000077C8 /* UIBarItem.swift in Sources */,
+				90E24B4C206F507000CF92F7 /* ObservableCollection.swift in Sources */,
 				90C04DAD1E8F0B96000077C8 /* UIView.swift in Sources */,
 				EC86E9B01E9145CC008563B2 /* UIAccessibilityIdentification.swift in Sources */,
 				90A4431C1E9055D200D611FE /* NSProgressIndicator.swift in Sources */,
