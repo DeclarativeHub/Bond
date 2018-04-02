@@ -25,43 +25,6 @@
 import Differ
 import ReactiveKit
 
-public enum ObservableCollectionChange<Index: Equatable>: Equatable {
-    case reset
-    case inserts([Index])
-    case deletes([Index])
-    case updates([Index])
-    case move(Index, Index)
-    case beginBatchEditing
-    case endBatchEditing
-}
-
-public protocol ObservableCollectionEventProtocol {
-    associatedtype UnderlyingCollection: Collection
-
-    var change: ObservableCollectionChange<UnderlyingCollection.Index> { get }
-    var source: UnderlyingCollection { get }
-}
-
-public struct ObservableCollectionEvent<UnderlyingCollection: Collection>: ObservableCollectionEventProtocol {
-    public let change: ObservableCollectionChange<UnderlyingCollection.Index>
-    public let source: UnderlyingCollection
-
-    public init(change: ObservableCollectionChange<UnderlyingCollection.Index>, source: UnderlyingCollection) {
-        self.change = change
-        self.source = source
-    }
-}
-
-public struct ObservableCollectionPatchEvent<UnderlyingCollection: Collection>: ObservableCollectionEventProtocol {
-    public let change: ObservableCollectionChange<UnderlyingCollection.Index>
-    public let source: UnderlyingCollection
-
-    public init(change: ObservableCollectionChange<UnderlyingCollection.Index>, source: UnderlyingCollection) {
-        self.change = change
-        self.source = source
-    }
-}
-
 public class ObservableCollection<UnderlyingCollection: Collection>: SignalProtocol {
     public fileprivate(set) var collection: UnderlyingCollection
     public let subject = PublishSubject<ObservableCollectionEvent<UnderlyingCollection>, NoError>()
