@@ -25,44 +25,44 @@
 import Differ
 import ReactiveKit
 
-public enum ObservableCollectionChange<UnderlyingCollection: Collection>: Equatable {
+public enum ObservableCollectionChange<Index: Equatable>: Equatable {
     case reset
-    case inserts([UnderlyingCollection.Index])
-    case deletes([UnderlyingCollection.Index])
-    case updates([UnderlyingCollection.Index])
-    case move(UnderlyingCollection.Index, UnderlyingCollection.Index)
+    case inserts([Index])
+    case deletes([Index])
+    case updates([Index])
+    case move(Index, Index)
     case beginBatchEditing
     case endBatchEditing
 }
 
 public protocol ObservableCollectionEventProtocol {
-    associatedtype UnderlyingCollection: Collection & DataSourceProtocol
+    associatedtype UnderlyingCollection: Collection
 
-    var change: ObservableCollectionChange<UnderlyingCollection> { get }
+    var change: ObservableCollectionChange<UnderlyingCollection.Index> { get }
     var source: UnderlyingCollection { get }
 }
 
-public struct ObservableCollectionEvent<UnderlyingCollection: Collection & DataSourceProtocol>: ObservableCollectionEventProtocol {
-    public let change: ObservableCollectionChange<UnderlyingCollection>
+public struct ObservableCollectionEvent<UnderlyingCollection: Collection>: ObservableCollectionEventProtocol {
+    public let change: ObservableCollectionChange<UnderlyingCollection.Index>
     public let source: UnderlyingCollection
 
-    public init(change: ObservableCollectionChange<UnderlyingCollection>, source: UnderlyingCollection) {
+    public init(change: ObservableCollectionChange<UnderlyingCollection.Index>, source: UnderlyingCollection) {
         self.change = change
         self.source = source
     }
 }
 
-public struct ObservableCollectionPatchEvent<UnderlyingCollection: Collection & DataSourceProtocol>: ObservableCollectionEventProtocol {
-    public let change: ObservableCollectionChange<UnderlyingCollection>
+public struct ObservableCollectionPatchEvent<UnderlyingCollection: Collection>: ObservableCollectionEventProtocol {
+    public let change: ObservableCollectionChange<UnderlyingCollection.Index>
     public let source: UnderlyingCollection
 
-    public init(change: ObservableCollectionChange<UnderlyingCollection>, source: UnderlyingCollection) {
+    public init(change: ObservableCollectionChange<UnderlyingCollection.Index>, source: UnderlyingCollection) {
         self.change = change
         self.source = source
     }
 }
 
-public class ObservableCollection<UnderlyingCollection: Collection & DataSourceProtocol>: SignalProtocol {
+public class ObservableCollection<UnderlyingCollection: Collection>: SignalProtocol {
     public fileprivate(set) var collection: UnderlyingCollection
     public let subject = PublishSubject<ObservableCollectionEvent<UnderlyingCollection>, NoError>()
     public let lock = NSRecursiveLock(name: "com.reactivekit.bond.observable-collection")
@@ -135,13 +135,13 @@ extension ObservableCollection: Deallocatable {
     }
 }
 
-extension ObservableCollection where UnderlyingCollection: Equatable {
+extension ObservableCollection: Equatable where UnderlyingCollection: Equatable {
     public static func == (lhs: ObservableCollection<UnderlyingCollection>, rhs: ObservableCollection<UnderlyingCollection>) -> Bool {
         return lhs.collection == rhs.collection
     }
 }
 
-public class MutableObservableCollection<UnderlyingCollection: MutableCollection & DataSourceProtocol>: ObservableCollection<UnderlyingCollection> {
+public class MutableObservableCollection<UnderlyingCollection: MutableCollection>: ObservableCollection<UnderlyingCollection> {
     public override subscript(index: UnderlyingCollection.Index) -> UnderlyingCollection.Element {
         get {
             return collection[index]
@@ -159,7 +159,7 @@ public class MutableObservableCollection<UnderlyingCollection: MutableCollection
 
         // use proxy to collect changes
         let proxy = MutableObservableCollection(collection)
-        var patch: [ObservableCollectionChange<UnderlyingCollection>] = []
+        var patch: [ObservableCollectionChange<UnderlyingCollection.Index>] = []
         let disposable = proxy.skip(first: 1).observeNext { event in
             patch.append(event.change)
         }
@@ -274,7 +274,7 @@ extension ObservableCollectionChange {
     }
 }
 
-extension ObservableCollectionChange where UnderlyingCollection.Index == Int {
+extension ObservableCollectionChange where Index == Int {
     public var asDataSourceEventKind: DataSourceEventKind {
         switch self {
         case .reset:
@@ -295,7 +295,9 @@ extension ObservableCollectionChange where UnderlyingCollection.Index == Int {
     }
 }
 
-extension ObservableCollectionEvent: DataSourceEventProtocol {
+extension ObservableCollectionEvent: DataSourceEventProtocol where UnderlyingCollection: DataSourceProtocol {
+
+    public typealias DataSource = UnderlyingCollection
     public typealias BatchKind = BatchKindDiff
 
     public var kind: DataSourceEventKind {
@@ -307,7 +309,9 @@ extension ObservableCollectionEvent: DataSourceEventProtocol {
     }
 }
 
-extension ObservableCollectionPatchEvent: DataSourceEventProtocol {
+extension ObservableCollectionPatchEvent: DataSourceEventProtocol where UnderlyingCollection: DataSourceProtocol {
+
+    public typealias DataSource = UnderlyingCollection
     public typealias BatchKind = BatchKindPatch
 
     public var kind: DataSourceEventKind {
@@ -372,8 +376,8 @@ extension MutableObservableCollection where UnderlyingCollection.Element: Equata
 }
 
 fileprivate extension ObservableCollectionChange {
-    fileprivate func unwrap(using list: UnderlyingCollection) -> [ObservableCollectionChange] {
-        func deletionsPatch(_ indices: [UnderlyingCollection.Index]) -> [UnderlyingCollection.Index] {
+    fileprivate func unwrap<C: Collection>(using list: C) -> [ObservableCollectionChange] where C.Index == Index {
+        func deletionsPatch(_ indices: [Index]) -> [Index] {
             var indices = indices
             for i in 0..<indices.count {
                 let pivot = indices[i]
@@ -387,7 +391,7 @@ fileprivate extension ObservableCollectionChange {
             return indices
         }
 
-        func insertionsPatch(_ indices: [UnderlyingCollection.Index]) -> [UnderlyingCollection.Index] {
+        func insertionsPatch(_ indices: [Index]) -> [Index] {
             var indices = indices
             for i in 0..<indices.count {
                 let pivot = indices[i]
@@ -415,7 +419,7 @@ fileprivate extension ObservableCollectionChange {
 }
 
 // swiftlint:disable:next function_body_length
-func generateDiff<UnderlyingCollection: Collection>(from sequenceOfChanges: [ObservableCollectionChange<UnderlyingCollection>], in list: UnderlyingCollection) -> [ObservableCollectionChange<UnderlyingCollection>] {
+func generateDiff<Index, C: Collection>(from sequenceOfChanges: [ObservableCollectionChange<Index>], in list: C) -> [ObservableCollectionChange<Index>] where C.Index == Index {
     var diff = sequenceOfChanges.flatMap { $0.unwrap(using: list) }
 
     for i in 0..<diff.count {
