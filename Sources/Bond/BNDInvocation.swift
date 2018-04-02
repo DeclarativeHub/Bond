@@ -19,11 +19,11 @@ internal extension BNDInvocation {
         let size = Int(methodSignature.getArgumentSize(at: UInt(index)))
         let alignment = Int(methodSignature.getArgumentAlignment(at: UInt(index)))
 
-        let pointer = UnsafeMutableRawPointer.allocate(bytes: size, alignedTo: alignment)
+        let pointer = UnsafeMutableRawPointer.allocate(byteCount: size, alignment: alignment)
         getArgument(pointer, at: index)
 
         defer {
-            pointer.deallocate(bytes: size, alignedTo: alignment)
+            pointer.deallocate()
         }
 
         let type = methodSignature.getArgumentType(at: UInt(index))
@@ -72,10 +72,10 @@ internal extension BNDInvocation {
 
         func write<U, V>(_ value: V, as type: U.Type) {
             let pointer = UnsafeMutablePointer<U>.allocate(capacity: 1)
-            pointer.initialize(to: value as! U, count: 1)
+            pointer.initialize(repeating: value as! U, count: 1)
             setReturnValue(pointer)
-            pointer.deinitialize()
-            pointer.deallocate(capacity: 1)
+            pointer.deinitialize(count: 1)
+            pointer.deallocate()
         }
 
         switch type {

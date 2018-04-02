@@ -413,12 +413,12 @@ public extension SignalProtocol where Element: ObservableArrayEventProtocol {
             var changes: [ObservableArrayChange] = []
             switch event.change {
             case .inserts(let indices):
-                let newIndices = indices.flatMap { indexMap[$0] }
+                let newIndices = indices.compactMap { indexMap[$0] }
                 if newIndices.count > 0 {
                     changes = [.inserts(newIndices)]
                 }
             case .deletes(let indices):
-                let newIndices = indices.flatMap { previousIndexMap[$0] }
+                let newIndices = indices.compactMap { previousIndexMap[$0] }
                 if newIndices.count > 0 {
                     changes = [.deletes(newIndices)]
                 }
