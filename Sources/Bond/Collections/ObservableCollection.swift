@@ -25,9 +25,7 @@
 import Differ
 import ReactiveKit
 
-public typealias ObservableCollectionType = Collection & DataSourceProtocol
-
-public enum ObservableCollectionChange<UnderlyingCollection: ObservableCollectionType>: Equatable {
+public enum ObservableCollectionChange<UnderlyingCollection: Collection>: Equatable {
     case reset
     case inserts([UnderlyingCollection.Index])
     case deletes([UnderlyingCollection.Index])
@@ -38,13 +36,13 @@ public enum ObservableCollectionChange<UnderlyingCollection: ObservableCollectio
 }
 
 public protocol ObservableCollectionEventProtocol {
-    associatedtype UnderlyingCollection: ObservableCollectionType
     
+    associatedtype UnderlyingCollection: Collection & DataSourceProtocol
     var change: ObservableCollectionChange<UnderlyingCollection> { get }
     var source: UnderlyingCollection { get }
 }
 
-public struct ObservableCollectionEvent<UnderlyingCollection: ObservableCollectionType>: ObservableCollectionEventProtocol {
+public struct ObservableCollectionEvent<UnderlyingCollection: Collection & DataSourceProtocol>: ObservableCollectionEventProtocol {
     public let change: ObservableCollectionChange<UnderlyingCollection>
     public let source: UnderlyingCollection
     
@@ -54,7 +52,7 @@ public struct ObservableCollectionEvent<UnderlyingCollection: ObservableCollecti
     }
 }
 
-public struct ObservableCollectionPatchEvent<UnderlyingCollection: ObservableCollectionType>: ObservableCollectionEventProtocol {
+public struct ObservableCollectionPatchEvent<UnderlyingCollection: Collection & DataSourceProtocol>: ObservableCollectionEventProtocol {
     public let change: ObservableCollectionChange<UnderlyingCollection>
     public let source: UnderlyingCollection
     
@@ -64,8 +62,8 @@ public struct ObservableCollectionPatchEvent<UnderlyingCollection: ObservableCol
     }
 }
 
-public class ObservableCollection<UnderlyingCollection: ObservableCollectionType>: SignalProtocol {
     public fileprivate(set) var list: UnderlyingCollection
+public class ObservableCollection<UnderlyingCollection: Collection & DataSourceProtocol>: SignalProtocol {
     public let subject = PublishSubject<ObservableCollectionEvent<UnderlyingCollection>, NoError>()
     public let lock = NSRecursiveLock(name: "com.reactivekit.bond.observable-collection")
     
@@ -417,7 +415,7 @@ fileprivate extension ObservableCollectionChange {
 }
 
 // swiftlint:disable:next function_body_length
-func generateDiff<UnderlyingCollection: ObservableCollectionType>(from sequenceOfChanges: [ObservableCollectionChange<UnderlyingCollection>], in list: UnderlyingCollection) -> [ObservableCollectionChange<UnderlyingCollection>] {
+func generateDiff<UnderlyingCollection: Collection>(from sequenceOfChanges: [ObservableCollectionChange<UnderlyingCollection>], in list: UnderlyingCollection) -> [ObservableCollectionChange<UnderlyingCollection>] {
     var diff = sequenceOfChanges.flatMap { $0.unwrap(using: list) }
     
     for i in 0..<diff.count {

@@ -28,9 +28,9 @@ public protocol QueryableDataSourceProtocol: DataSourceProtocol {
     func item(at index: Index) -> Item
 }
 
-extension Array: QueryableDataSourceProtocol {
+extension Collection where Self: QueryableDataSourceProtocol {
     
-    public func item(at index: Int) -> Element {
+    public func item<I, E>(at index: I) -> E where I == Self.Index, E == Self.Element {
         return self[index]
     }
 }
