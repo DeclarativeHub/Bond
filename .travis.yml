@@ -12,7 +12,7 @@ install:
   - gem install xcpretty
 
 script:
-  - set -o pipefail && travis_retry xcodebuild -project Bond.xcodeproj -scheme Bond-iOS -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 7,OS=11.0' test | xcpretty
+  - set -o pipefail && travis_retry xcodebuild -project Bond.xcodeproj -scheme Bond-iOS -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone X,OS=11.3' test | xcpretty
   - swift test
 
 after_success:
