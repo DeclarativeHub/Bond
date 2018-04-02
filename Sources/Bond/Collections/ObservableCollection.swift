@@ -62,49 +62,49 @@ public struct ObservableCollectionPatchEvent<UnderlyingCollection: Collection & 
     }
 }
 
-    public fileprivate(set) var list: UnderlyingCollection
 public class ObservableCollection<UnderlyingCollection: Collection & DataSourceProtocol>: SignalProtocol {
+    public fileprivate(set) var collection: UnderlyingCollection
     public let subject = PublishSubject<ObservableCollectionEvent<UnderlyingCollection>, NoError>()
     public let lock = NSRecursiveLock(name: "com.reactivekit.bond.observable-collection")
     
     public init(_ list: UnderlyingCollection) {
-        self.list = list
+        collection = list
     }
     
     public func makeIterator() -> UnderlyingCollection.Iterator {
-        return list.makeIterator()
+        return collection.makeIterator()
     }
     
     public var underestimatedCount: Int {
-        return list.underestimatedCount
+        return collection.underestimatedCount
     }
     
     public var startIndex: UnderlyingCollection.Index {
-        return list.startIndex
+        return collection.startIndex
     }
     
     public var endIndex: UnderlyingCollection.Index {
-        return list.endIndex
+        return collection.endIndex
     }
     
     public func index(after i: UnderlyingCollection.Index) -> UnderlyingCollection.Index {
-        return list.index(after: i)
+        return collection.index(after: i)
     }
     
     public var isEmpty: Bool {
-        return list.isEmpty
+        return collection.isEmpty
     }
     
     public var count: Int {
-        return list.count
+        return collection.count
     }
     
     public subscript(index: UnderlyingCollection.Index) -> UnderlyingCollection.Element {
-        return list[index]
+        return collection[index]
     }
     
     public func observe(with observer: @escaping (Event<ObservableCollectionEvent<UnderlyingCollection>, NoError>) -> Void) -> Disposable {
-        observer(.next(ObservableCollectionEvent(change: .reset, source: list)))
+        observer(.next(ObservableCollectionEvent(change: .reset, source: collection)))
         return subject.observe(with: observer)
     }
     
@@ -112,7 +112,7 @@ public class ObservableCollection<UnderlyingCollection: Collection & DataSourceP
         var indices: [UnderlyingCollection.Index] = [from]
         var i = from
         while i != to {
-            list.formIndex(after: &i)
+            collection.formIndex(after: &i)
             indices.append(i)
         }
         return indices
@@ -120,7 +120,7 @@ public class ObservableCollection<UnderlyingCollection: Collection & DataSourceP
     
     fileprivate func offsetIndex(_ index: UnderlyingCollection.Index, by offset: Int) -> UnderlyingCollection.Index {
         var offsetIndex = index
-        list.formIndex(&offsetIndex, offsetBy: offset)
+        collection.formIndex(&offsetIndex, offsetBy: offset)
         return offsetIndex
     }
     
@@ -137,57 +137,57 @@ extension ObservableCollection: Deallocatable {
 
 extension ObservableCollection where UnderlyingCollection: Equatable {
     public static func == (lhs: ObservableCollection<UnderlyingCollection>, rhs: ObservableCollection<UnderlyingCollection>) -> Bool {
-        return lhs.list == rhs.list
+        return lhs.collection == rhs.collection
     }
 }
 
 public class MutableObservableCollection<UnderlyingCollection: MutableCollection & DataSourceProtocol>: ObservableCollection<UnderlyingCollection> {
     public override subscript(index: UnderlyingCollection.Index) -> UnderlyingCollection.Element {
         get {
-            return list[index]
+            return collection[index]
         }
         set {
             lock.lock(); defer { lock.unlock() }
-            list[index] = newValue
-            subject.next(ObservableCollectionEvent(change: .updates([index]), source: list))
+            collection[index] = newValue
+            subject.next(ObservableCollectionEvent(change: .updates([index]), source: collection))
         }
     }
-    
+
     /// Perform batched updates on the array.
     public func batchUpdate(_ update: (MutableObservableCollection<UnderlyingCollection>) -> Void) {
         lock.lock(); defer { lock.unlock() }
-        
+
         // use proxy to collect changes
-        let proxy = MutableObservableCollection(list)
+        let proxy = MutableObservableCollection(collection)
         var patch: [ObservableCollectionChange<UnderlyingCollection>] = []
         let disposable = proxy.skip(first: 1).observeNext { event in
             patch.append(event.change)
         }
         update(proxy)
         disposable.dispose()
-        
+
         // generate diff from changes
-        let diff = generateDiff(from: patch, in: list)
-        
+        let diff = generateDiff(from: patch, in: collection)
+
         // if only reset, do not batch:
         if diff == [ObservableCollectionChange.reset] {
-            list = proxy.list
-            subject.next(ObservableCollectionEvent(change: .reset, source: list))
+            collection = proxy.collection
+            subject.next(ObservableCollectionEvent(change: .reset, source: collection))
         } else if diff.isEmpty == false {
             // ...otherwise batch:
-            subject.next(ObservableCollectionEvent(change: .beginBatchEditing, source: list))
-            list = proxy.list
+            subject.next(ObservableCollectionEvent(change: .beginBatchEditing, source: collection))
+            collection = proxy.collection
             diff.forEach { change in
-                subject.next(ObservableCollectionEvent(change: change, source: self.list))
+                subject.next(ObservableCollectionEvent(change: change, source: self.collection))
             }
-            subject.next(ObservableCollectionEvent(change: .endBatchEditing, source: list))
+            subject.next(ObservableCollectionEvent(change: .endBatchEditing, source: collection))
         }
     }
-    
+
     /// Change the underlying value withouth notifying the observers.
     public func silentUpdate(_ update: (inout UnderlyingCollection) -> Void) {
         lock.lock(); defer { lock.unlock() }
-        update(&list)
+        update(&collection)
     }
 }
 
@@ -195,44 +195,44 @@ extension MutableObservableCollection where UnderlyingCollection: RangeReplaceab
     /// Append `newElement` to the array.
     public func append(_ newElement: UnderlyingCollection.Element) {
         lock.lock(); defer { lock.unlock() }
-        list.append(newElement)
-        let index = list.index(list.endIndex, offsetBy: -1)
-        subject.next(ObservableCollectionEvent(change: .inserts([index]), source: list))
+        collection.append(newElement)
+        let index = collection.index(collection.endIndex, offsetBy: -1)
+        subject.next(ObservableCollectionEvent(change: .inserts([index]), source: collection))
     }
     
     /// Insert `newElement` at index `i`.
     public func insert(_ newElement: UnderlyingCollection.Element, at index: UnderlyingCollection.Index) {
         lock.lock(); defer { lock.unlock() }
-        list.insert(newElement, at: index)
-        subject.next(ObservableCollectionEvent(change: .inserts([index]), source: list))
+        collection.insert(newElement, at: index)
+        subject.next(ObservableCollectionEvent(change: .inserts([index]), source: collection))
     }
     
     /// Insert elements `newElements` at index `i`.
     public func insert(contentsOf newElements: [UnderlyingCollection.Element], at index: UnderlyingCollection.Index) {
         lock.lock(); defer { lock.unlock() }
         for newElement in newElements.reversed() {
-            list.insert(newElement, at: index)
+            collection.insert(newElement, at: index)
         }
         
         let endIndex = offsetIndex(index, by: newElements.count)
         let indices = indexes(from: index, to: endIndex)
-        subject.next(ObservableCollectionEvent(change: .inserts(indices), source: list))
+        subject.next(ObservableCollectionEvent(change: .inserts(indices), source: collection))
     }
     
     /// Move the element at index `i` to index `toIndex`.
     public func moveItem(from fromIndex: UnderlyingCollection.Index, to toIndex: UnderlyingCollection.Index) {
         lock.lock(); defer { lock.unlock() }
-        let item = list.remove(at: fromIndex)
-        list.insert(item, at: toIndex)
-        subject.next(ObservableCollectionEvent(change: .move(fromIndex, toIndex), source: list))
+        let item = collection.remove(at: fromIndex)
+        collection.insert(item, at: toIndex)
+        subject.next(ObservableCollectionEvent(change: .move(fromIndex, toIndex), source: collection))
     }
     
     /// Remove and return the element at index i.
     @discardableResult
     public func remove(at index: UnderlyingCollection.Index) -> UnderlyingCollection.Element {
         lock.lock(); defer { lock.unlock() }
-        let element = list.remove(at: index)
-        subject.next(ObservableCollectionEvent(change: .deletes([index]), source: list))
+        let element = collection.remove(at: index)
+        subject.next(ObservableCollectionEvent(change: .deletes([index]), source: collection))
         return element
     }
     
@@ -240,17 +240,17 @@ extension MutableObservableCollection where UnderlyingCollection: RangeReplaceab
     @discardableResult
     public func removeLast() -> UnderlyingCollection.Element {
         lock.lock(); defer { lock.unlock() }
-        let element = list.remove(at: list.endIndex)
-        subject.next(ObservableCollectionEvent(change: .deletes([list.endIndex]), source: list))
+        let element = collection.remove(at: collection.endIndex)
+        subject.next(ObservableCollectionEvent(change: .deletes([collection.endIndex]), source: collection))
         return element
     }
     
     /// Remove all elements from the array.
     public func removeAll() {
         lock.lock(); defer { lock.unlock() }
-        let indices = indexes(from: list.startIndex, to: list.endIndex)
-        list.removeAll(keepingCapacity: false)
-        subject.next(ObservableCollectionEvent(change: .deletes(indices), source: list))
+        let indices = indexes(from: collection.startIndex, to: collection.endIndex)
+        collection.removeAll(keepingCapacity: false)
+        subject.next(ObservableCollectionEvent(change: .deletes(indices), source: collection))
     }
 }
 
@@ -260,8 +260,8 @@ extension MutableObservableCollection: BindableProtocol {
             .take(until: deallocated)
             .observeNext { [weak self] event in
                 guard let s = self else { return }
-                s.list = event.source
-                s.subject.next(ObservableCollectionEvent(change: event.change, source: s.list))
+                s.collection = event.source
+                s.subject.next(ObservableCollectionEvent(change: event.change, source: s.collection))
             }
     }
 }
@@ -336,8 +336,8 @@ extension ObservableCollection: QueryableDataSourceProtocol {
 extension MutableObservableCollection {
     public func replace(with list: UnderlyingCollection) {
         lock.lock(); defer { lock.unlock() }
-        self.list = list
-        subject.next(ObservableCollectionEvent(change: .reset, source: self.list))
+        collection = list
+        subject.next(ObservableCollectionEvent(change: .reset, source: collection))
     }
 }
 
@@ -346,24 +346,24 @@ extension MutableObservableCollection where UnderlyingCollection.Element: Equata
         if performDiff {
             lock.lock()
             
-            let diff = self.list.extendedDiff(list)
-            subject.next(ObservableCollectionEvent(change: .beginBatchEditing, source: self.list))
-            self.list = list
             
+            let diff = collection.extendedDiff(list)
+            subject.next(ObservableCollectionEvent(change: .beginBatchEditing, source: collection))
+            collection = list
             for step in diff {
                 switch step {
                 case .insert(let index):
-                    subject.next(ObservableCollectionEvent(change: .inserts([index]), source: self.list))
                     
+                    subject.next(ObservableCollectionEvent(change: .inserts([index]), source: collection))
                 case .delete(let index):
-                    subject.next(ObservableCollectionEvent(change: .deletes([index]), source: self.list))
                     
+                    subject.next(ObservableCollectionEvent(change: .deletes([index]), source: collection))
                 case .move(let from, let to):
-                    subject.next(ObservableCollectionEvent(change: .move(from, to), source: self.list))
+                    subject.next(ObservableCollectionEvent(change: .move(from, to), source: collection))
                 }
             }
             
-            subject.next(ObservableCollectionEvent(change: .endBatchEditing, source: self.list))
+            subject.next(ObservableCollectionEvent(change: .endBatchEditing, source: collection))
             lock.unlock()
         } else {
             replace(with: list)
