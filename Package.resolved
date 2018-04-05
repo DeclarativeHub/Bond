@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/tonyarnold/Differ.git",
         "state": {
           "branch": null,
-          "revision": "3c73520891f2fc0e06920445c1785c2835413728",
-          "version": "1.0.2"
+          "revision": "c0e4b222b5ae3c97a6087cc9b6a9adc01108635b",
+          "version": "1.2.0"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/ReactiveKit/ReactiveKit.git",
         "state": {
           "branch": null,
-          "revision": "6ee182d81a6e03fb23b177123f5787afc2a7960e",
-          "version": "3.7.3"
+          "revision": "9a39d064df41a013ed5d76c2703e517a315d5665",
+          "version": "3.9.4"
         }
       }
     ]
