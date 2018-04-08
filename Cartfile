@@ -1,2 +1,2 @@
 github "DeclarativeHub/ReactiveKit" ~> 3.9
-github "tonyarnold/Differ" ~> 1.0
+github "tonyarnold/Differ" ~> 1.2

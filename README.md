@@ -181,8 +181,8 @@ Bond uses protocol proxies to implement table and collection view bindings and t
 
 ## Requirements
 
-* iOS 8.0+ / macOS 10.9+ / tvOS 9.0+
-* Xcode 9
+* iOS 8.0+ / macOS 10.11+ / tvOS 9.0+
+* Xcode 9.3+
 
 ## Communication
 

@@ -26,6 +26,8 @@
 		904B87D11F6FFDEE00FE0A24 /* Differ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 904B87B11F6FFCD300FE0A24 /* Differ.framework */; };
 		904B87D51F6FFE0300FE0A24 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16210A3C1D3EC474004AEDF3 /* Bond.framework */; };
 		904B87D61F6FFE0300FE0A24 /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1652178B1D70591E00C9FAEE /* ReactiveKit.framework */; };
+		9085354620759ACE00E9CA9D /* ObservableCollectionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1325D120726C6800F466B6 /* ObservableCollectionEvent.swift */; };
+		9085354B20759ACE00E9CA9D /* ObservableCollectionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1325D120726C6800F466B6 /* ObservableCollectionEvent.swift */; };
 		90A443061E9055D100D611FE /* NSAppearanceCustomization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D251E8F0B1D000077C8 /* NSAppearanceCustomization.swift */; };
 		90A443071E9055D100D611FE /* NSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D261E8F0B1D000077C8 /* NSButton.swift */; };
 		90A443081E9055D100D611FE /* NSColorWell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D271E8F0B1D000077C8 /* NSColorWell.swift */; };
@@ -1381,7 +1383,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1439,7 +1441,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = BUILDING_WITH_XCODE;
