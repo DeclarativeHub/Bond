@@ -1,20 +1,21 @@
 //: Playground - noun: a place where people can play
 
-import UIKit
+import AppKit
 import Bond
 import ReactiveKit
 import PlaygroundSupport
 
 // Play here!
 
-let d = ["a": 1, "c": 3]
-let i = d.index(forKey: "b")!
+let c = MutableObservableCollection(["a", "b", "c", "d", "e"])
 
-let s = SafeSignal<ObservableCollectionEvent<[String: Int]>>.sequence([
-    ObservableCollectionEvent<[String: Int]>.init(collection: ["a": 1, "c": 3], diff: []),
-    ObservableCollectionEvent<[String: Int]>.init(collection: d, diff: [.insert(at: i)])
-])
+c.observeNext { (event) in
+    print(event.collection, "diff:", event.diff, "patch:", event.diff.patch)
+}
 
-s.sortedCollection(by: { $0.1 > $1.1 }).observeNext { e in
-    print(e)
+c.batchUpdate { (c) in
+    c.remove(at: 0)
+    c.insert("o", at: 1)
+    c.append("z")
+    c.removeLast()
 }
