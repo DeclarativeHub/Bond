@@ -206,25 +206,53 @@
 		EC02200A1F8BE898002F8380 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0220091F8BE898002F8380 /* Property.swift */; };
 		EC1325D220726C6800F466B6 /* ObservableCollectionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1325D120726C6800F466B6 /* ObservableCollectionEvent.swift */; };
 		EC6A35DE2075DD0200E8F805 /* ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E24B49206F507000CF92F7 /* ObservableCollection.swift */; };
-		EC6A35E42075E00D00E8F805 /* Diffing.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A35E32075E00D00E8F805 /* Diffing.swift */; };
+		EC6A35E42075E00D00E8F805 /* CollectionOperation+Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A35E32075E00D00E8F805 /* CollectionOperation+Diff.swift */; };
 		EC6A35E72075FD5000E8F805 /* Diffing.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A35E52075FCB600E8F805 /* Diffing.swift */; };
 		EC6A35E82076054F00E8F805 /* ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E24B49206F507000CF92F7 /* ObservableCollection.swift */; };
 		EC6A35E92076054F00E8F805 /* ObservableCollectionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1325D120726C6800F466B6 /* ObservableCollectionEvent.swift */; };
-		EC6A35EA2076054F00E8F805 /* Diffing.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A35E32075E00D00E8F805 /* Diffing.swift */; };
+		EC6A35EA2076054F00E8F805 /* CollectionOperation+Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A35E32075E00D00E8F805 /* CollectionOperation+Diff.swift */; };
 		EC6A35EB2076055000E8F805 /* ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E24B49206F507000CF92F7 /* ObservableCollection.swift */; };
 		EC6A35EC2076055000E8F805 /* ObservableCollectionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1325D120726C6800F466B6 /* ObservableCollectionEvent.swift */; };
-		EC6A35ED2076055000E8F805 /* Diffing.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A35E32075E00D00E8F805 /* Diffing.swift */; };
+		EC6A35ED2076055000E8F805 /* CollectionOperation+Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A35E32075E00D00E8F805 /* CollectionOperation+Diff.swift */; };
 		EC86E9AF1E9145CC008563B2 /* UIAccessibilityIdentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC86E9AE1E9145CC008563B2 /* UIAccessibilityIdentification.swift */; };
 		EC86E9B01E9145CC008563B2 /* UIAccessibilityIdentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC86E9AE1E9145CC008563B2 /* UIAccessibilityIdentification.swift */; };
 		EC893EC41F07A164007981EC /* BNDProtocolProxyBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 90C04D181E8F0B12000077C8 /* BNDProtocolProxyBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EC893EC51F07A164007981EC /* BNDProtocolProxyBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 90C04D181E8F0B12000077C8 /* BNDProtocolProxyBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EC893EC61F07A164007981EC /* BNDProtocolProxyBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 90C04D181E8F0B12000077C8 /* BNDProtocolProxyBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ECA869802078DFE000342172 /* ObservableCollection+Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA8697F2078DFE000342172 /* ObservableCollection+Dictionary.swift */; };
 		ECAFB8D4200A7E3900EE0669 /* BNDInvocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAFB8D3200A7E3900EE0669 /* BNDInvocation.swift */; };
 		ECAFB8D5200A7E3900EE0669 /* BNDInvocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAFB8D3200A7E3900EE0669 /* BNDInvocation.swift */; };
 		ECAFB8D6200A7E3900EE0669 /* BNDInvocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAFB8D3200A7E3900EE0669 /* BNDInvocation.swift */; };
 		ECAFB8D9200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAFB8D8200B60AA00EE0669 /* ProtocolProxyController.swift */; };
 		ECAFB8DA200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAFB8D8200B60AA00EE0669 /* ProtocolProxyController.swift */; };
 		ECAFB8DB200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAFB8D8200B60AA00EE0669 /* ProtocolProxyController.swift */; };
+		ECC1A6C4207A137500AE762C /* ObservableCollection+MutableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC1A6C3207A137500AE762C /* ObservableCollection+MutableCollection.swift */; };
+		ECC1A6C5207A137500AE762C /* ObservableCollection+MutableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC1A6C3207A137500AE762C /* ObservableCollection+MutableCollection.swift */; };
+		ECC1A6C6207A137500AE762C /* ObservableCollection+MutableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC1A6C3207A137500AE762C /* ObservableCollection+MutableCollection.swift */; };
+		ECC1A6D0207A18DC00AE762C /* NSTableView+ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC1A6CF207A18DC00AE762C /* NSTableView+ObservableCollection.swift */; };
+		ECC1A6D1207A18DC00AE762C /* NSTableView+ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC1A6CF207A18DC00AE762C /* NSTableView+ObservableCollection.swift */; };
+		ECC1A6D2207A18DC00AE762C /* NSTableView+ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC1A6CF207A18DC00AE762C /* NSTableView+ObservableCollection.swift */; };
+		ECF15FC22079101B00DEB77D /* CollectionOperation+Patch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FC12079101B00DEB77D /* CollectionOperation+Patch.swift */; };
+		ECF15FC32079101B00DEB77D /* CollectionOperation+Patch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FC12079101B00DEB77D /* CollectionOperation+Patch.swift */; };
+		ECF15FC42079101B00DEB77D /* CollectionOperation+Patch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FC12079101B00DEB77D /* CollectionOperation+Patch.swift */; };
+		ECF15FCA2079108D00DEB77D /* CollectionOperation+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FC92079108D00DEB77D /* CollectionOperation+Differ.swift */; };
+		ECF15FCB2079108D00DEB77D /* CollectionOperation+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FC92079108D00DEB77D /* CollectionOperation+Differ.swift */; };
+		ECF15FCC2079108D00DEB77D /* CollectionOperation+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FC92079108D00DEB77D /* CollectionOperation+Differ.swift */; };
+		ECF15FCE2079110D00DEB77D /* CollectionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FCD2079110D00DEB77D /* CollectionOperation.swift */; };
+		ECF15FCF2079110D00DEB77D /* CollectionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FCD2079110D00DEB77D /* CollectionOperation.swift */; };
+		ECF15FD02079110D00DEB77D /* CollectionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FCD2079110D00DEB77D /* CollectionOperation.swift */; };
+		ECF15FD22079FE5F00DEB77D /* ObservableCollection+RangeReplaceableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FD12079FE5F00DEB77D /* ObservableCollection+RangeReplaceableCollection.swift */; };
+		ECF15FD32079FE5F00DEB77D /* ObservableCollection+RangeReplaceableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FD12079FE5F00DEB77D /* ObservableCollection+RangeReplaceableCollection.swift */; };
+		ECF15FD42079FE5F00DEB77D /* ObservableCollection+RangeReplaceableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FD12079FE5F00DEB77D /* ObservableCollection+RangeReplaceableCollection.swift */; };
+		ECF15FD62079FEE600DEB77D /* MutableObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FD52079FEE600DEB77D /* MutableObservableCollection.swift */; };
+		ECF15FD72079FEE600DEB77D /* MutableObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FD52079FEE600DEB77D /* MutableObservableCollection.swift */; };
+		ECF15FD82079FEE600DEB77D /* MutableObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FD52079FEE600DEB77D /* MutableObservableCollection.swift */; };
+		ECF15FDB207A0F1900DEB77D /* ObservableCollection+Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FDA207A0F1900DEB77D /* ObservableCollection+Array.swift */; };
+		ECF15FDC207A0F1900DEB77D /* ObservableCollection+Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FDA207A0F1900DEB77D /* ObservableCollection+Array.swift */; };
+		ECF15FDD207A0F1900DEB77D /* ObservableCollection+Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FDA207A0F1900DEB77D /* ObservableCollection+Array.swift */; };
+		ECF15FDF207A0F8E00DEB77D /* ObservableCollection+Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FDE207A0F8E00DEB77D /* ObservableCollection+Set.swift */; };
+		ECF15FE0207A0F8E00DEB77D /* ObservableCollection+Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FDE207A0F8E00DEB77D /* ObservableCollection+Set.swift */; };
+		ECF15FE1207A0F8E00DEB77D /* ObservableCollection+Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FDE207A0F8E00DEB77D /* ObservableCollection+Set.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -408,13 +436,23 @@
 		EC0220091F8BE898002F8380 /* Property.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Property.swift; sourceTree = "<group>"; };
 		EC1325D120726C6800F466B6 /* ObservableCollectionEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableCollectionEvent.swift; sourceTree = "<group>"; };
 		EC378E961E13FFD100E2197D /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
-		EC6A35E32075E00D00E8F805 /* Diffing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diffing.swift; sourceTree = "<group>"; };
+		EC6A35E32075E00D00E8F805 /* CollectionOperation+Diff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionOperation+Diff.swift"; sourceTree = "<group>"; };
 		EC6A35E52075FCB600E8F805 /* Diffing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diffing.swift; sourceTree = "<group>"; };
 		EC86E9AE1E9145CC008563B2 /* UIAccessibilityIdentification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAccessibilityIdentification.swift; sourceTree = "<group>"; };
+		ECA8697F2078DFE000342172 /* ObservableCollection+Dictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableCollection+Dictionary.swift"; sourceTree = "<group>"; };
 		ECAFB8D3200A7E3900EE0669 /* BNDInvocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BNDInvocation.swift; sourceTree = "<group>"; };
 		ECAFB8D8200B60AA00EE0669 /* ProtocolProxyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolProxyController.swift; sourceTree = "<group>"; };
+		ECC1A6C3207A137500AE762C /* ObservableCollection+MutableCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableCollection+MutableCollection.swift"; sourceTree = "<group>"; };
+		ECC1A6CF207A18DC00AE762C /* NSTableView+ObservableCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+ObservableCollection.swift"; sourceTree = "<group>"; };
 		ECD5940B1D93F2E400C840C2 /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		ECD5940C1D93F2ED00C840C2 /* Bond.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Bond.podspec; sourceTree = "<group>"; };
+		ECF15FC12079101B00DEB77D /* CollectionOperation+Patch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionOperation+Patch.swift"; sourceTree = "<group>"; };
+		ECF15FC92079108D00DEB77D /* CollectionOperation+Differ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionOperation+Differ.swift"; sourceTree = "<group>"; };
+		ECF15FCD2079110D00DEB77D /* CollectionOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionOperation.swift; sourceTree = "<group>"; };
+		ECF15FD12079FE5F00DEB77D /* ObservableCollection+RangeReplaceableCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableCollection+RangeReplaceableCollection.swift"; sourceTree = "<group>"; };
+		ECF15FD52079FEE600DEB77D /* MutableObservableCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutableObservableCollection.swift; sourceTree = "<group>"; };
+		ECF15FDA207A0F1900DEB77D /* ObservableCollection+Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableCollection+Array.swift"; sourceTree = "<group>"; };
+		ECF15FDE207A0F8E00DEB77D /* ObservableCollection+Set.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableCollection+Set.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -587,6 +625,7 @@
 				EC0220091F8BE898002F8380 /* Property.swift */,
 				90C04D581E8F0B5E000077C8 /* AppKit */,
 				90C04D561E8F0B31000077C8 /* Collections */,
+				ECF15FD9207A036D00DEB77D /* ObservableCollection */,
 				90C04D591E8F0B75000077C8 /* Shared */,
 				90C04D571E8F0B4A000077C8 /* UIKit */,
 			);
@@ -600,9 +639,6 @@
 				90C04D391E8F0B1D000077C8 /* ObservableArray.swift */,
 				90C04D3A1E8F0B1D000077C8 /* ObservableDictionary.swift */,
 				90C04D3B1E8F0B1D000077C8 /* ObservableSet.swift */,
-				90E24B49206F507000CF92F7 /* ObservableCollection.swift */,
-				EC1325D120726C6800F466B6 /* ObservableCollectionEvent.swift */,
-				EC6A35E32075E00D00E8F805 /* Diffing.swift */,
 			);
 			path = Collections;
 			sourceTree = "<group>";
@@ -654,6 +690,7 @@
 				90C04D311E8F0B1D000077C8 /* NSSlider.swift */,
 				90C04D321E8F0B1D000077C8 /* NSStatusBarButton.swift */,
 				90C04D331E8F0B1D000077C8 /* NSTableView.swift */,
+				ECC1A6CF207A18DC00AE762C /* NSTableView+ObservableCollection.swift */,
 				90C04D341E8F0B1D000077C8 /* NSTextField.swift */,
 				90C04D351E8F0B1D000077C8 /* NSTextView.swift */,
 				90C04D361E8F0B1D000077C8 /* NSView.swift */,
@@ -699,6 +736,25 @@
 				EC6A35E52075FCB600E8F805 /* Diffing.swift */,
 			);
 			path = BondTests;
+			sourceTree = "<group>";
+		};
+		ECF15FD9207A036D00DEB77D /* ObservableCollection */ = {
+			isa = PBXGroup;
+			children = (
+				ECF15FCD2079110D00DEB77D /* CollectionOperation.swift */,
+				EC6A35E32075E00D00E8F805 /* CollectionOperation+Diff.swift */,
+				ECF15FC12079101B00DEB77D /* CollectionOperation+Patch.swift */,
+				ECF15FC92079108D00DEB77D /* CollectionOperation+Differ.swift */,
+				EC1325D120726C6800F466B6 /* ObservableCollectionEvent.swift */,
+				90E24B49206F507000CF92F7 /* ObservableCollection.swift */,
+				ECF15FD52079FEE600DEB77D /* MutableObservableCollection.swift */,
+				ECF15FDA207A0F1900DEB77D /* ObservableCollection+Array.swift */,
+				ECA8697F2078DFE000342172 /* ObservableCollection+Dictionary.swift */,
+				ECF15FDE207A0F8E00DEB77D /* ObservableCollection+Set.swift */,
+				ECC1A6C3207A137500AE762C /* ObservableCollection+MutableCollection.swift */,
+				ECF15FD12079FE5F00DEB77D /* ObservableCollection+RangeReplaceableCollection.swift */,
+			);
+			path = ObservableCollection;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -972,12 +1028,15 @@
 			files = (
 				90A4437A1E91390000D611FE /* BNDProtocolProxyBase.m in Sources */,
 				90A4430F1E9055D100D611FE /* NSSlider.swift in Sources */,
+				ECF15FDB207A0F1900DEB77D /* ObservableCollection+Array.swift in Sources */,
 				90C04DAF1E8F0B97000077C8 /* UIApplication.swift in Sources */,
+				ECF15FCE2079110D00DEB77D /* CollectionOperation.swift in Sources */,
 				90C04D721E8F0B89000077C8 /* DynamicSubject.swift in Sources */,
 				90C04D791E8F0B89000077C8 /* NSObject.swift in Sources */,
 				90C04D761E8F0B89000077C8 /* CALayer.swift in Sources */,
 				90C04DB81E8F0B97000077C8 /* UILabel.swift in Sources */,
 				90C04DC11E8F0B97000077C8 /* UITableView.swift in Sources */,
+				ECF15FCA2079108D00DEB77D /* CollectionOperation+Differ.swift in Sources */,
 				90A443141E9055D200D611FE /* NSView.swift in Sources */,
 				90C04DB41E8F0B97000077C8 /* UIControl.swift in Sources */,
 				90C04DC01E8F0B97000077C8 /* UISwitch.swift in Sources */,
@@ -987,7 +1046,9 @@
 				90C04D741E8F0B89000077C8 /* ProtocolProxy.swift in Sources */,
 				90C04DAE1E8F0B97000077C8 /* UIActivityIndicatorView.swift in Sources */,
 				90C04DB11E8F0B97000077C8 /* UIBarItem.swift in Sources */,
+				ECF15FDF207A0F8E00DEB77D /* ObservableCollection+Set.swift in Sources */,
 				90C04DC41E8F0B97000077C8 /* UIView.swift in Sources */,
+				ECA869802078DFE000342172 /* ObservableCollection+Dictionary.swift in Sources */,
 				EC86E9AF1E9145CC008563B2 /* UIAccessibilityIdentification.swift in Sources */,
 				90A4430D1E9055D100D611FE /* NSProgressIndicator.swift in Sources */,
 				EC1325D220726C6800F466B6 /* ObservableCollectionEvent.swift in Sources */,
@@ -1010,18 +1071,20 @@
 				90C04DB01E8F0B97000077C8 /* UIBarButtonItem.swift in Sources */,
 				EC6A35DE2075DD0200E8F805 /* ObservableCollection.swift in Sources */,
 				90A443091E9055D100D611FE /* NSControl.swift in Sources */,
-				EC6A35E42075E00D00E8F805 /* Diffing.swift in Sources */,
+				EC6A35E42075E00D00E8F805 /* CollectionOperation+Diff.swift in Sources */,
 				90C04D7A1E8F0B89000077C8 /* SignalProtocol.swift in Sources */,
 				90C04DBA1E8F0B97000077C8 /* UINavigationItem.swift in Sources */,
 				ECAFB8D9200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */,
 				90C04DB71E8F0B97000077C8 /* UIImageView.swift in Sources */,
 				90C04DBF1E8F0B97000077C8 /* UIStepper.swift in Sources */,
 				90A4430E1E9055D100D611FE /* NSSegmentedControl.swift in Sources */,
+				ECC1A6D0207A18DC00AE762C /* NSTableView+ObservableCollection.swift in Sources */,
 				90A4430A1E9055D100D611FE /* NSImageView.swift in Sources */,
 				90A4430C1E9055D100D611FE /* NSPopUpButton.swift in Sources */,
 				ECAFB8D4200A7E3900EE0669 /* BNDInvocation.swift in Sources */,
 				90A443121E9055D100D611FE /* NSTextField.swift in Sources */,
 				90C04DC21E8F0B97000077C8 /* UITextField.swift in Sources */,
+				ECC1A6C4207A137500AE762C /* ObservableCollection+MutableCollection.swift in Sources */,
 				90C04DB51E8F0B97000077C8 /* UIDatePicker.swift in Sources */,
 				90C04D951E8F0B92000077C8 /* ObservableDictionary.swift in Sources */,
 				90C04D931E8F0B92000077C8 /* Observable2DArray.swift in Sources */,
@@ -1029,8 +1092,11 @@
 				90C04D751E8F0B89000077C8 /* QueryableDataSource.swift in Sources */,
 				90C04D771E8F0B89000077C8 /* NotificationCenter.swift in Sources */,
 				90C04D781E8F0B89000077C8 /* NSObject+KVO.swift in Sources */,
+				ECF15FD62079FEE600DEB77D /* MutableObservableCollection.swift in Sources */,
+				ECF15FC22079101B00DEB77D /* CollectionOperation+Patch.swift in Sources */,
 				90A443081E9055D100D611FE /* NSColorWell.swift in Sources */,
 				90C04DBB1E8F0B97000077C8 /* UIProgressView.swift in Sources */,
+				ECF15FD22079FE5F00DEB77D /* ObservableCollection+RangeReplaceableCollection.swift in Sources */,
 				90C04DB31E8F0B97000077C8 /* UICollectionView.swift in Sources */,
 				90C04D961E8F0B92000077C8 /* ObservableSet.swift in Sources */,
 			);
@@ -1068,6 +1134,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				90A4437D1E91391B00D611FE /* BNDProtocolProxyBase.m in Sources */,
+				ECC1A6D1207A18DC00AE762C /* NSTableView+ObservableCollection.swift in Sources */,
 				90A443361E9055D800D611FE /* UISwitch.swift in Sources */,
 				90A443271E9055D800D611FE /* UIBarItem.swift in Sources */,
 				90C04D861E8F0B8D000077C8 /* NSStatusBarButton.swift in Sources */,
@@ -1075,13 +1142,15 @@
 				90C04D891E8F0B8D000077C8 /* NSTextView.swift in Sources */,
 				90C04D841E8F0B8D000077C8 /* NSSegmentedControl.swift in Sources */,
 				90C04D671E8F0B89000077C8 /* DynamicSubject.swift in Sources */,
+				ECF15FCF2079110D00DEB77D /* CollectionOperation.swift in Sources */,
 				90C04D6E1E8F0B89000077C8 /* NSObject.swift in Sources */,
-				EC6A35EA2076054F00E8F805 /* Diffing.swift in Sources */,
+				EC6A35EA2076054F00E8F805 /* CollectionOperation+Diff.swift in Sources */,
 				90C04D7B1E8F0B8D000077C8 /* NSAppearanceCustomization.swift in Sources */,
 				90A4432C1E9055D800D611FE /* UIGestureRecognizer.swift in Sources */,
 				90C04D8A1E8F0B8D000077C8 /* NSView.swift in Sources */,
 				90C04D6B1E8F0B89000077C8 /* CALayer.swift in Sources */,
 				90A443311E9055D800D611FE /* UIProgressView.swift in Sources */,
+				ECF15FD72079FEE600DEB77D /* MutableObservableCollection.swift in Sources */,
 				9025DCAB1F981693007B7689 /* Property.swift in Sources */,
 				90A4432E1E9055D800D611FE /* UILabel.swift in Sources */,
 				90C04D681E8F0B89000077C8 /* Observable.swift in Sources */,
@@ -1097,15 +1166,19 @@
 				90C04D881E8F0B8D000077C8 /* NSTextField.swift in Sources */,
 				90A4432A1E9055D800D611FE /* UIControl.swift in Sources */,
 				90C04D661E8F0B89000077C8 /* DataSource.swift in Sources */,
+				ECF15FC32079101B00DEB77D /* CollectionOperation+Patch.swift in Sources */,
 				90A443291E9055D800D611FE /* UICollectionView.swift in Sources */,
 				90C04D651E8F0B89000077C8 /* Bond.swift in Sources */,
 				90C04D6F1E8F0B89000077C8 /* SignalProtocol.swift in Sources */,
+				ECF15FD32079FE5F00DEB77D /* ObservableCollection+RangeReplaceableCollection.swift in Sources */,
 				90C04D901E8F0B91000077C8 /* ObservableArray.swift in Sources */,
 				90C04D6A1E8F0B89000077C8 /* QueryableDataSource.swift in Sources */,
 				90A443391E9055D800D611FE /* UITextView.swift in Sources */,
 				90C04D7F1E8F0B8D000077C8 /* NSImageView.swift in Sources */,
+				ECF15FCB2079108D00DEB77D /* CollectionOperation+Differ.swift in Sources */,
 				90C04D7D1E8F0B8D000077C8 /* NSColorWell.swift in Sources */,
 				90A443321E9055D800D611FE /* UIRefreshControl.swift in Sources */,
+				ECF15FDC207A0F1900DEB77D /* ObservableCollection+Array.swift in Sources */,
 				90A4433A1E9055D800D611FE /* UIView.swift in Sources */,
 				90C04D801E8F0B8D000077C8 /* NSLayoutConstraint.swift in Sources */,
 				ECAFB8DA200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */,
@@ -1115,6 +1188,7 @@
 				90A4432F1E9055D800D611FE /* UINavigationBar.swift in Sources */,
 				90C04D7E1E8F0B8D000077C8 /* NSControl.swift in Sources */,
 				ECAFB8D5200A7E3900EE0669 /* BNDInvocation.swift in Sources */,
+				ECF15FE0207A0F8E00DEB77D /* ObservableCollection+Set.swift in Sources */,
 				90C04D911E8F0B91000077C8 /* ObservableDictionary.swift in Sources */,
 				90C04D831E8F0B8D000077C8 /* NSProgressIndicator.swift in Sources */,
 				90C04D6C1E8F0B89000077C8 /* NotificationCenter.swift in Sources */,
@@ -1127,6 +1201,7 @@
 				90A443371E9055D800D611FE /* UITableView.swift in Sources */,
 				90A443341E9055D800D611FE /* UISlider.swift in Sources */,
 				9025DCB11F9816A7007B7689 /* UIAccessibilityIdentification.swift in Sources */,
+				ECC1A6C5207A137500AE762C /* ObservableCollection+MutableCollection.swift in Sources */,
 				90A4432B1E9055D800D611FE /* UIDatePicker.swift in Sources */,
 				EC6A35E92076054F00E8F805 /* ObservableCollectionEvent.swift in Sources */,
 			);
@@ -1137,6 +1212,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				90A4437E1E91391D00D611FE /* BNDProtocolProxyBase.m in Sources */,
+				ECC1A6D2207A18DC00AE762C /* NSTableView+ObservableCollection.swift in Sources */,
 				90A4431E1E9055D200D611FE /* NSSlider.swift in Sources */,
 				ECAFB8D6200A7E3900EE0669 /* BNDInvocation.swift in Sources */,
 				90C04D981E8F0B96000077C8 /* UIApplication.swift in Sources */,
@@ -1144,13 +1220,15 @@
 				90C04D631E8F0B88000077C8 /* NSObject.swift in Sources */,
 				90C04D601E8F0B88000077C8 /* CALayer.swift in Sources */,
 				90C04DA11E8F0B96000077C8 /* UILabel.swift in Sources */,
+				ECF15FD02079110D00DEB77D /* CollectionOperation.swift in Sources */,
 				90C04DAA1E8F0B96000077C8 /* UITableView.swift in Sources */,
-				EC6A35ED2076055000E8F805 /* Diffing.swift in Sources */,
+				EC6A35ED2076055000E8F805 /* CollectionOperation+Diff.swift in Sources */,
 				90A443231E9055D200D611FE /* NSView.swift in Sources */,
 				90C04D9D1E8F0B96000077C8 /* UIControl.swift in Sources */,
 				90C04DA91E8F0B96000077C8 /* UISwitch.swift in Sources */,
 				90C04D5D1E8F0B88000077C8 /* Observable.swift in Sources */,
 				90A4431F1E9055D200D611FE /* NSStatusBarButton.swift in Sources */,
+				ECF15FD82079FEE600DEB77D /* MutableObservableCollection.swift in Sources */,
 				90C04D8C1E8F0B91000077C8 /* ObservableArray.swift in Sources */,
 				90C04D5E1E8F0B88000077C8 /* ProtocolProxy.swift in Sources */,
 				90C04D971E8F0B96000077C8 /* UIActivityIndicatorView.swift in Sources */,
@@ -1166,15 +1244,19 @@
 				90C04D5B1E8F0B88000077C8 /* DataSource.swift in Sources */,
 				90C04DA61E8F0B96000077C8 /* UISegmentedControl.swift in Sources */,
 				90A443161E9055D200D611FE /* NSButton.swift in Sources */,
+				ECF15FC42079101B00DEB77D /* CollectionOperation+Patch.swift in Sources */,
 				90C04D5A1E8F0B88000077C8 /* Bond.swift in Sources */,
 				90A443151E9055D200D611FE /* NSAppearanceCustomization.swift in Sources */,
 				90C04DAC1E8F0B96000077C8 /* UITextView.swift in Sources */,
+				ECF15FD42079FE5F00DEB77D /* ObservableCollection+RangeReplaceableCollection.swift in Sources */,
 				90A443221E9055D200D611FE /* NSTextView.swift in Sources */,
 				90C04D9B1E8F0B96000077C8 /* UIButton.swift in Sources */,
 				070FE2781F0138190031B7BD /* NSLayoutConstraint.swift in Sources */,
 				90C04D9F1E8F0B96000077C8 /* UIGestureRecognizer.swift in Sources */,
+				ECF15FCC2079108D00DEB77D /* CollectionOperation+Differ.swift in Sources */,
 				90A4431A1E9055D200D611FE /* NSMenuItem.swift in Sources */,
 				90C04D991E8F0B96000077C8 /* UIBarButtonItem.swift in Sources */,
+				ECF15FDD207A0F1900DEB77D /* ObservableCollection+Array.swift in Sources */,
 				90A443181E9055D200D611FE /* NSControl.swift in Sources */,
 				90C04D641E8F0B88000077C8 /* SignalProtocol.swift in Sources */,
 				90C04DA31E8F0B96000077C8 /* UINavigationItem.swift in Sources */,
@@ -1184,6 +1266,7 @@
 				90A4431D1E9055D200D611FE /* NSSegmentedControl.swift in Sources */,
 				90A443191E9055D200D611FE /* NSImageView.swift in Sources */,
 				90A4431B1E9055D200D611FE /* NSPopUpButton.swift in Sources */,
+				ECF15FE1207A0F8E00DEB77D /* ObservableCollection+Set.swift in Sources */,
 				90A443211E9055D200D611FE /* NSTextField.swift in Sources */,
 				90C04DAB1E8F0B96000077C8 /* UITextField.swift in Sources */,
 				90C04D9E1E8F0B96000077C8 /* UIDatePicker.swift in Sources */,
@@ -1196,6 +1279,7 @@
 				90A443171E9055D200D611FE /* NSColorWell.swift in Sources */,
 				90C04DA41E8F0B96000077C8 /* UIProgressView.swift in Sources */,
 				90C04D9C1E8F0B96000077C8 /* UICollectionView.swift in Sources */,
+				ECC1A6C6207A137500AE762C /* ObservableCollection+MutableCollection.swift in Sources */,
 				90C04D8E1E8F0B91000077C8 /* ObservableSet.swift in Sources */,
 				EC6A35EC2076055000E8F805 /* ObservableCollectionEvent.swift in Sources */,
 			);

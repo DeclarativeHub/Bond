@@ -1,43 +1,71 @@
 //
-//  SignalProtocol+ObservableCollection.swift
-//  Bond-iOS
+//  The MIT License (MIT)
 //
-//  Created by Srdan Rasic on 02/04/2018.
-//  Copyright © 2018 Swift Bond. All rights reserved.
+//  Copyright (c) 2018 DeclarativeHub/Bond
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 //
 
 import ReactiveKit
 
-public enum CollectionDiffStep<Index: Comparable>: Equatable {
-    case insert(at: Index)
-    case delete(at: Index)
-    case update(at: Index)
-    case move(from: Index, to: Index)
-}
-
 public protocol ObservableCollectionEventProtocol {
+
     associatedtype UnderlyingCollection: Collection
+
     var collection: UnderlyingCollection { get }
-    var diff: [CollectionDiffStep<UnderlyingCollection.Index>] { get }
+    var diff: [CollectionOperation<UnderlyingCollection.Index>] { get }
 }
 
 public struct ObservableCollectionEvent<UnderlyingCollection: Collection>: ObservableCollectionEventProtocol {
-    public let collection: UnderlyingCollection
-    public let diff: [CollectionDiffStep<UnderlyingCollection.Index>]
 
-    public init(collection: UnderlyingCollection, diff: [CollectionDiffStep<UnderlyingCollection.Index>]) {
+    /// The underlying collection managed by the observable collection.
+    public let collection: UnderlyingCollection
+
+    /// Description of changes made to the underlying collection.
+    ///
+    /// Delete, update and move from indices refer to the original collection.
+    /// Insert and move to indices refer to the new collection (the one contained in this event).
+    ///
+    /// The diff structure is compatible with UICollectionView and UITableView batch updates requirements.
+    /// NSTableView batch updates work with a sequence of operations called patch. Use `.diff.patch` to get
+    /// the description of changes in the patch format.
+    ///
+    /// Changing `["A", "B"]` to `[]` gives the diff `[D(0), D(1)]`, while the patch might look like `[D(0), D(0)]`.
+    ///
+    /// - Note: Empty diff does not mean that the collection did not change, only that the diff is not available.
+    /// On such event one should act as if the whole collection has changed - e.g. reload the table view.
+    public let diff: [CollectionOperation<UnderlyingCollection.Index>]
+
+    public init(collection: UnderlyingCollection, diff: [CollectionOperation<UnderlyingCollection.Index>]) {
         self.collection = collection
         self.diff = diff
     }
 }
 
 public extension SignalProtocol where Element: ObservableCollectionEventProtocol {
+
     public typealias UnderlyingCollection = Element.UnderlyingCollection
 }
 
 public extension SignalProtocol where Element: ObservableCollectionEventProtocol, Element.UnderlyingCollection.Index: Hashable {
 
-    /// - complexity: Each event transforms collection O(nlogn).
+    /// - complexity: Each event sorts the collection O(nlogn).
     public func sortedCollection(by areInIncreasingOrder: @escaping (UnderlyingCollection.Element, UnderlyingCollection.Element) -> Bool) -> Signal<ObservableCollectionEvent<[UnderlyingCollection.Element]>, Error> {
         var previousIndexMap: [UnderlyingCollection.Index: Int] = [:]
         return map { (event: Element) -> ObservableCollectionEvent<[UnderlyingCollection.Element]> in
@@ -68,7 +96,7 @@ public extension SignalProtocol where Element: ObservableCollectionEventProtocol
 
 public extension SignalProtocol where Element: ObservableCollectionEventProtocol, Element.UnderlyingCollection.Index: Hashable, Element.UnderlyingCollection.Element: Comparable {
 
-    /// - complexity: Each event transforms collection O(nlogn).
+    /// - complexity: Each event sorts collection O(nlogn).
     public func sortedCollection() -> Signal<ObservableCollectionEvent<[UnderlyingCollection.Element]>, Error> {
         return sortedCollection(by: <)
     }
@@ -127,9 +155,9 @@ public extension SignalProtocol where Element: ObservableCollectionEventProtocol
     }
 }
 
-extension CollectionDiffStep where Index: Hashable {
+extension CollectionOperation where Index: Hashable {
 
-    public func transformingIndices<NewIndex>(fromIndexMap: [Index: NewIndex], toIndexMap: [Index: NewIndex]) -> CollectionDiffStep<NewIndex>? {
+    public func transformingIndices<NewIndex>(fromIndexMap: [Index: NewIndex], toIndexMap: [Index: NewIndex]) -> CollectionOperation<NewIndex>? {
         switch self {
         case .insert(let index):
             if let mappedIndex = toIndexMap[index] {
@@ -150,11 +178,10 @@ extension CollectionDiffStep where Index: Hashable {
                 return .delete(at: mappedIndex)
             }
         case .move(let from, let to):
-            if let mappedFrom = toIndexMap[from], let mappedTo = toIndexMap[to] { // TODO: check if from should use fromIndexMap
+            if let mappedFrom = fromIndexMap[from], let mappedTo = toIndexMap[to] {
                 return .move(from: mappedFrom, to: mappedTo)
             }
         }
         return nil
     }
 }
-
