@@ -22,6 +22,8 @@
 //  THE SOFTWARE.
 //
 
+#if canImport(AppKit)
+
 import Foundation
 import AppKit
 import ReactiveKit
@@ -32,7 +34,7 @@ open class TableViewBinder<UnderlyingCollection: Collection> where UnderlyingCol
     public var deleteAnimation: NSTableView.AnimationOptions? = [.effectFade, .slideUp]
 
     let measureCell: ((UnderlyingCollection, Int, NSTableView) -> CGFloat?)?
-    let createCell: ((UnderlyingCollection, Int, NSTableView) -> NSView?)?
+    let createCell: ((UnderlyingCollection, Int, NSTableColumn?, NSTableView) -> NSView?)?
 
     public init() {
         // This initializer allows subclassing without having to declare default initializer in subclass.
@@ -40,7 +42,7 @@ open class TableViewBinder<UnderlyingCollection: Collection> where UnderlyingCol
         createCell = nil
     }
 
-    public init(measureCell: ((UnderlyingCollection, Int, NSTableView) -> CGFloat?)? = nil, createCell: ((UnderlyingCollection, Int, NSTableView) -> NSView?)? = nil) {
+    public init(measureCell: ((UnderlyingCollection, Int, NSTableView) -> CGFloat?)? = nil, createCell: ((UnderlyingCollection, Int, NSTableColumn?, NSTableView) -> NSView?)? = nil) {
         self.measureCell = measureCell
         self.createCell = createCell
     }
@@ -49,8 +51,8 @@ open class TableViewBinder<UnderlyingCollection: Collection> where UnderlyingCol
         return measureCell?(dataSource, index, tableView) ?? tableView.rowHeight
     }
 
-    open func cellForRow(at index: Int, tableView: NSTableView, dataSource: UnderlyingCollection) -> NSView? {
-        return createCell?(dataSource, index, tableView) ?? nil
+    open func cellForRow(at index: Int, tableColumn: NSTableColumn?, tableView: NSTableView, dataSource: UnderlyingCollection) -> NSView? {
+        return createCell?(dataSource, index, tableColumn, tableView) ?? nil
     }
 
     open func apply(diff: [CollectionOperation<Int>], to tableView: NSTableView) {
@@ -83,7 +85,7 @@ public extension SignalProtocol where
     Element: ObservableCollectionEventProtocol, Element.UnderlyingCollection.Index == Int, Error == NoError {
 
     @discardableResult
-    public func bind(to tableView: NSTableView, animated: Bool = true, createCell: @escaping (UnderlyingCollection, Int, NSTableView) -> NSView?) -> Disposable {
+    public func bind(to tableView: NSTableView, animated: Bool = true, createCell: @escaping (UnderlyingCollection, Int, NSTableColumn?, NSTableView) -> NSView?) -> Disposable {
         let binder = TableViewBinder(measureCell: nil, createCell: createCell)
         if !animated {
             binder.deleteAnimation = nil
@@ -110,9 +112,9 @@ public extension SignalProtocol where
         disposable += tableView.reactive.delegate.feed(
             property: dataSource,
             to: #selector(NSTableViewDelegate.tableView(_:viewFor:row:)),
-            map: { (dataSource: UnderlyingCollection?, tableView: NSTableView, _: NSTableColumn, row: Int) -> NSView? in
+            map: { (dataSource: UnderlyingCollection?, tableView: NSTableView, tableColumn: NSTableColumn, row: Int) -> NSView? in
                 guard let dataSource = dataSource else { return nil }
-                return binder.cellForRow(at: row, tableView: tableView, dataSource: dataSource)
+                return binder.cellForRow(at: row, tableColumn: tableColumn, tableView: tableView, dataSource: dataSource)
             }
         )
 
@@ -141,3 +143,4 @@ public extension SignalProtocol where
     }
 }
 
+#endif
