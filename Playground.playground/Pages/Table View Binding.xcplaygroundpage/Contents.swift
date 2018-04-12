@@ -1,6 +1,5 @@
 //: Playground - noun: a place where people can play
 
-import AppKit
 import Bond
 import ReactiveKit
 import PlaygroundSupport
@@ -14,8 +13,8 @@ c.observeNext { (event) in
 }
 
 c.batchUpdate { (c) in
-    c.remove(at: 0)
-    c.insert("o", at: 1)
-    c.append("z")
-    c.removeLast()
+    c.moveItem(from: 0, to: 3)
+    c.remove(at: 2)
+    c.moveItem(from: 2, to: 1)
+    c.insert("p", at: 0)
 }

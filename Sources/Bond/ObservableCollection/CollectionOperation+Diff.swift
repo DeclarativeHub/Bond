@@ -38,7 +38,7 @@ extension CollectionOperation where Index: Strideable {
     }
 }
 
-private extension CollectionOperation {
+extension CollectionOperation {
 
     /// A function that merges two subsequent collection operations into a diff.
     typealias Merge = (CollectionOperation<Index>, CollectionOperation<Index>) -> (existing: CollectionOperation<Index>?, new: CollectionOperation<Index>?)
@@ -93,7 +93,7 @@ private extension CollectionOperation {
     }
 }
 
-private extension CollectionOperation {
+extension CollectionOperation {
 
     /// Merge the receiver with the given operation.
     /// Potentially consumes the receiver, the given operation or both.
@@ -124,7 +124,7 @@ private extension CollectionOperation {
     }
 }
 
-private extension CollectionOperation where Index: Strideable {
+extension CollectionOperation where Index: Strideable {
 
     /// Merge the receiver with the given operation by offseting indices of both operations if needed.
     /// Potentially consumes the receiver, the given operation or both.
@@ -219,15 +219,50 @@ private extension CollectionOperation where Index: Strideable {
                 return (.update(at: i1), .move(from: i2from, to: i2to))
             }
         // Move:
-//        case (.move(let i1from, let i1to), .insert(let i2)):
-//            return [.move(from: i1from, to: i1to), .insert(at: i2)]
-//        case (.move(let i1from, let i1to), .delete(let i2)):
-//            if i1to == i2 {
-//                return [.delete(at: i1from)]
-//            }
-//            return [.move(from: i1from, to: i1to), .insert(at: i2)]
-        default:
-            return (nil, nil) // TODO
+        case (.move(let i1from, let i1to), .insert(let i2)):
+            if i2 <= i1to {
+                return (.move(from: i1from, to: i1to.advanced(by: 1)), .insert(at: i2))
+            } else {
+                return (.move(from: i1from, to: i1to), .insert(at: i2))
+            }
+        case (.move(let i1from, let i1to), .delete(let i2)):
+            if i1to == i2 {
+                return (nil, .delete(at: i1from))
+            } else if i1to < i2 {
+                if i1from < i2 {
+                    return (.move(from: i1from, to: i1to), .delete(at: i2))
+                } else {
+                    return (.move(from: i1from, to: i1to), .delete(at: i2.advanced(by: -1)))
+                }
+            } else /* i1to > i2 */ {
+                if i1from <= i2 {
+                    return (.move(from: i1from, to: i1to.advanced(by: -1)), .delete(at: i2.advanced(by: 1)))
+                } else {
+                    return (.move(from: i1from, to: i1to.advanced(by: -1)), .delete(at: i2))
+                }
+            }
+        case (.move(let i1from, let i1to), .update(let i2)):
+            if i1to == i2 {
+                return (.delete(at: i1from), .insert(at: i2))
+            } else {
+                return (.move(from: i1from, to: i1to), .update(at: i2))
+            }
+        case (.move(let i1from, let i1to), .move(let i2from, let i2to)):
+            if i1to == i2from && i2to == i1from {
+                return (nil, nil)
+            } else if i1to == i2from && i2to != i1from {
+                return (.move(from: i1from, to: i2to), nil)
+            } else {
+                // Treat incoming move as delete + insert
+                let d1 = merging(with: .delete(at: i2from))
+                let d2 = d1.existing!.merging(with: .insert(at: i2to))
+                switch (d2.existing!, d1.new!, d2.new!) {
+                case (.move(let i1from, let i1to), .delete(let i2from), .insert(let i2to)):
+                    return (.move(from: i1from, to: i1to), .move(from: i2from, to: i2to))
+                default:
+                    fatalError("Impossible code path.")
+                }
+            }
         }
     }
 }
