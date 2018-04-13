@@ -22,19 +22,20 @@
 //  THE SOFTWARE.
 //
 
-extension MutableObservableTree where UnderlyingTreeNode.NodeCollection: RangeReplaceableCollection {
+extension MutableObservableTree where UnderlyingTreeNode: MutableCollection & RangeReplaceableCollection, UnderlyingTreeNode.Element: MutableCollection & RangeReplaceableCollection {
     /// Append `newElement` at the end of the collection.
-    public func append(_ newElement: UnderlyingTreeNode.NodeCollection.Element) {
+    public func append(_ newElement: UnderlyingTreeNode.Element) {
         descriptiveUpdate { (node) -> [TreeOperation] in
-            node.children.append(newElement)
-            let insertionIndex = node.children.index(node.children.endIndex, offsetBy: -1)
-            return [.insert(at: node.indexPath.appending(insertionIndex))]
+            var parent = node as! UnderlyingTreeNode.Element
+            parent.children.append(newElement)
+            let insertionIndex = parent.children.index(parent.children.endIndex, offsetBy: -1)
+            return [.insert(at: parent.indexPath.appending(insertionIndex))]
         }
     }
 
     /// Insert `newElement` at index `i`.
-    public func insert(_ newElement: UnderlyingTreeNode.NodeCollection.Element, at index: IndexPath) {
-        descriptiveUpdate { (_) -> [TreeOperation] in
+    public func insert(_ newElement: UnderlyingTreeNode.Element, at index: IndexPath) {
+        descriptiveUpdate { (node) -> [TreeOperation] in
             var parent = node[index.dropLast()]
             parent.children.insert(newElement, at: index.item)
             return [.insert(at: index)]
@@ -42,7 +43,7 @@ extension MutableObservableTree where UnderlyingTreeNode.NodeCollection: RangeRe
     }
 
     /// Insert elements `newElements` at index `i`.
-    public func insert(contentsOf newElements: [UnderlyingTreeNode.NodeCollection.Element], at index: IndexPath) {
+    public func insert(contentsOf newElements: [UnderlyingTreeNode.Element], at index: IndexPath) {
         descriptiveUpdate { (node) -> [TreeOperation] in
             var parent = node[index.dropLast()]
             for newElement in newElements.reversed() {
@@ -67,8 +68,8 @@ extension MutableObservableTree where UnderlyingTreeNode.NodeCollection: RangeRe
 
     /// Remove and return the element at index i.
     @discardableResult
-    public func remove(at index: IndexPath) -> UnderlyingTreeNode.NodeCollection.Element {
-        return descriptiveUpdate { (node) -> ([TreeOperation], UnderlyingTreeNode.NodeCollection.Element) in
+    public func remove(at index: IndexPath) -> UnderlyingTreeNode.Element {
+        return descriptiveUpdate { (node) -> ([TreeOperation], UnderlyingTreeNode.Element) in
             var parent = node[index.dropLast()]
             let element = parent.children.remove(at: index.item)
             return ([.delete(at: index)], element)
@@ -77,22 +78,21 @@ extension MutableObservableTree where UnderlyingTreeNode.NodeCollection: RangeRe
 
     /// Remove an element from the end of the collection in O(1).
     @discardableResult
-    public func removeLast() -> UnderlyingTreeNode.NodeCollection.Element {
-        return descriptiveUpdate { (node) -> ([TreeOperation], UnderlyingTreeNode.NodeCollection.Element) in
-            let index = node.children.index(node.endIndex, offsetBy: -1)
-            let element = node.children.remove(at: index)
-            return ([.delete(at: node.indexPath.appending(index))], element)
+    public func removeLast() -> UnderlyingTreeNode.Element {
+        return descriptiveUpdate { (node) -> ([TreeOperation], UnderlyingTreeNode.Element) in
+            var parent = node as! UnderlyingTreeNode.Element
+            let index = parent.children.index(parent.endIndex, offsetBy: -1)
+            let element = parent.children.remove(at: index)
+            return ([.delete(at: parent.indexPath.appending(index))], element)
         }
     }
 
     /// Remove all elements from the collection.
     public func removeAll() {
         descriptiveUpdate { (node) -> [TreeOperation] in
-            let indexPath = node.indexPath
-            let diff = node.children.indices
-                .map { indexPath.appending($0) }
-                .map { TreeOperation.delete(at: $0)}
-            node.children.removeAll(keepingCapacity: false)
+            var parent = node as! UnderlyingTreeNode.Element
+            let diff = parent.children.indices.map { TreeOperation.delete(at: parent.indexPath.appending($0)) }
+            parent.children.removeAll(keepingCapacity: false)
             return diff
         }
     }

@@ -22,18 +22,28 @@
 //  THE SOFTWARE.
 //
 
-public extension MutableObservableTree where UnderlyingTreeNode.NodeCollection: MutableCollection {
-
+public extension TreeNode where Self: MutableCollection, Element: MutableCollection {
     /// Access or update the element at `index`.
-    public subscript(path: IndexPath) -> UnderlyingTreeNode.NodeCollection.Element {
+    public subscript(position: Int) -> Element {
         get {
-            return node[path]
+            return children[position]
         }
         set {
-            descriptiveUpdate { (node) -> [TreeOperation] in
-                node[path] = newValue
-                return [.update(at: path)]
-            }
+            // (tonyarnold/2018-04-12) TODO: [Tree Parents] Work out how to assign the node a new parent here.
+            //            newValue.parent = self
+            children[position] = newValue
+        }
+    }
+
+    /// Access or update the element at `path`.
+    public subscript(path: IndexPath) -> Element {
+        get {
+            let immediateChild = children[path.startIndex]
+            return immediateChild[path.dropFirst()]
+        }
+        set {
+            var parent = self[path.dropLast()]
+            parent[path.item] = newValue
         }
     }
 }
