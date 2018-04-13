@@ -20,6 +20,8 @@
 		9025DCAB1F981693007B7689 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0220091F8BE898002F8380 /* Property.swift */; };
 		9025DCB01F981694007B7689 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0220091F8BE898002F8380 /* Property.swift */; };
 		9025DCB11F9816A7007B7689 /* UIAccessibilityIdentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC86E9AE1E9145CC008563B2 /* UIAccessibilityIdentification.swift */; };
+		9049214D20802CEF007DA067 /* ObservableCollection+Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA8697F2078DFE000342172 /* ObservableCollection+Dictionary.swift */; };
+		9049215220802CF0007DA067 /* ObservableCollection+Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA8697F2078DFE000342172 /* ObservableCollection+Dictionary.swift */; };
 		904B87B91F6FFCE700FE0A24 /* Differ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 904B87B11F6FFCD300FE0A24 /* Differ.framework */; };
 		904B87BC1F6FFCEB00FE0A24 /* Differ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 904B87B11F6FFCD300FE0A24 /* Differ.framework */; };
 		904B87BD1F6FFCEE00FE0A24 /* Differ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 904B87B11F6FFCD300FE0A24 /* Differ.framework */; };
@@ -1183,6 +1185,7 @@
 				90C04D801E8F0B8D000077C8 /* NSLayoutConstraint.swift in Sources */,
 				ECAFB8DA200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */,
 				90A443351E9055D800D611FE /* UIStepper.swift in Sources */,
+				9049214D20802CEF007DA067 /* ObservableCollection+Dictionary.swift in Sources */,
 				90A443301E9055D800D611FE /* UINavigationItem.swift in Sources */,
 				90C04D821E8F0B8D000077C8 /* NSPopUpButton.swift in Sources */,
 				90A4432F1E9055D800D611FE /* UINavigationBar.swift in Sources */,
@@ -1261,6 +1264,7 @@
 				90C04D641E8F0B88000077C8 /* SignalProtocol.swift in Sources */,
 				90C04DA31E8F0B96000077C8 /* UINavigationItem.swift in Sources */,
 				ECAFB8DB200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */,
+				9049215220802CF0007DA067 /* ObservableCollection+Dictionary.swift in Sources */,
 				90C04DA01E8F0B96000077C8 /* UIImageView.swift in Sources */,
 				90C04DA81E8F0B96000077C8 /* UIStepper.swift in Sources */,
 				90A4431D1E9055D200D611FE /* NSSegmentedControl.swift in Sources */,
