@@ -22,7 +22,6 @@
 //  THE SOFTWARE.
 //
 
-
 public protocol TreeNode: Collection & Equatable where Element: TreeNode, Index == Int, Element.Element == Element {
     var parent: Element? { get set }
     var children: Self { get set }
@@ -70,8 +69,8 @@ public extension TreeNode {
         guard
             let parent = parent,
             let node = self as? Element
-            else {
-                return IndexPath()
+        else {
+            return IndexPath()
         }
 
         var indexPath = parent.indexPath

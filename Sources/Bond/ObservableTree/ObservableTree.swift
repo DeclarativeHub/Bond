@@ -47,7 +47,7 @@ public class ObservableTree<UnderlyingTreeNode: TreeNode & Equatable>: SignalPro
     }
 
     public func observe(with observer: @escaping (Event<ObservableTreeEvent<UnderlyingTreeNode>, NoError>) -> Void) -> Disposable {
-        observer(.next(ObservableTreeEvent(node: self.node, diff: [])))
+        observer(.next(ObservableTreeEvent(node: node, diff: [])))
         return subject.observe(with: observer)
     }
 
