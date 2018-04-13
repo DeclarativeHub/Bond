@@ -24,6 +24,8 @@
 
 import ReactiveKit
 
+public typealias TreeOperation = CollectionOperation<IndexPath>
+
 public protocol ObservableTreeEventProtocol {
 
     associatedtype UnderlyingTreeNode: TreeNode

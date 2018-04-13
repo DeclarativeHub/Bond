@@ -34,21 +34,12 @@
 		90677C05207EDE0800BC4505 /* MutableObservableTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C04207EDE0800BC4505 /* MutableObservableTree.swift */; };
 		90677C06207EDE0800BC4505 /* MutableObservableTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C04207EDE0800BC4505 /* MutableObservableTree.swift */; };
 		90677C07207EDE0800BC4505 /* MutableObservableTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C04207EDE0800BC4505 /* MutableObservableTree.swift */; };
-		90677C09207EDE1600BC4505 /* TreeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C08207EDE1600BC4505 /* TreeOperation.swift */; };
-		90677C0A207EDE1600BC4505 /* TreeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C08207EDE1600BC4505 /* TreeOperation.swift */; };
-		90677C0B207EDE1600BC4505 /* TreeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C08207EDE1600BC4505 /* TreeOperation.swift */; };
 		90677C0D207EDE2000BC4505 /* ObservableTreeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C0C207EDE2000BC4505 /* ObservableTreeEvent.swift */; };
 		90677C0E207EDE2000BC4505 /* ObservableTreeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C0C207EDE2000BC4505 /* ObservableTreeEvent.swift */; };
 		90677C0F207EDE2000BC4505 /* ObservableTreeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C0C207EDE2000BC4505 /* ObservableTreeEvent.swift */; };
 		90677C11207EE44B00BC4505 /* TreeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C10207EE44B00BC4505 /* TreeProtocol.swift */; };
 		90677C12207EE44B00BC4505 /* TreeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C10207EE44B00BC4505 /* TreeProtocol.swift */; };
 		90677C13207EE44B00BC4505 /* TreeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C10207EE44B00BC4505 /* TreeProtocol.swift */; };
-		90677C15207F216400BC4505 /* TreeOperation+Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C14207F216400BC4505 /* TreeOperation+Diff.swift */; };
-		90677C16207F216400BC4505 /* TreeOperation+Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C14207F216400BC4505 /* TreeOperation+Diff.swift */; };
-		90677C17207F216400BC4505 /* TreeOperation+Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C14207F216400BC4505 /* TreeOperation+Diff.swift */; };
-		90677C19207F216E00BC4505 /* TreeOperation+Patch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C18207F216E00BC4505 /* TreeOperation+Patch.swift */; };
-		90677C1A207F216E00BC4505 /* TreeOperation+Patch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C18207F216E00BC4505 /* TreeOperation+Patch.swift */; };
-		90677C1B207F216E00BC4505 /* TreeOperation+Patch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C18207F216E00BC4505 /* TreeOperation+Patch.swift */; };
 		90677C21207F248000BC4505 /* IndexPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C20207F248000BC4505 /* IndexPath.swift */; };
 		90677C22207F248000BC4505 /* IndexPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C20207F248000BC4505 /* IndexPath.swift */; };
 		90677C23207F248000BC4505 /* IndexPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C20207F248000BC4505 /* IndexPath.swift */; };
@@ -64,6 +55,12 @@
 		90677C35207F37B600BC4505 /* ObservableTree+Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C34207F37B600BC4505 /* ObservableTree+Set.swift */; };
 		90677C36207F37B600BC4505 /* ObservableTree+Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C34207F37B600BC4505 /* ObservableTree+Set.swift */; };
 		90677C37207F37B600BC4505 /* ObservableTree+Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C34207F37B600BC4505 /* ObservableTree+Set.swift */; };
+		90677C3D207F38AE00BC4505 /* NSOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C3C207F38AE00BC4505 /* NSOutlineView.swift */; };
+		90677C3E207F38AE00BC4505 /* NSOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C3C207F38AE00BC4505 /* NSOutlineView.swift */; };
+		90677C3F207F38AE00BC4505 /* NSOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C3C207F38AE00BC4505 /* NSOutlineView.swift */; };
+		90677C45207F391700BC4505 /* NSOutlineView+ObservableTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C44207F391700BC4505 /* NSOutlineView+ObservableTree.swift */; };
+		90677C46207F391700BC4505 /* NSOutlineView+ObservableTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C44207F391700BC4505 /* NSOutlineView+ObservableTree.swift */; };
+		90677C47207F391700BC4505 /* NSOutlineView+ObservableTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C44207F391700BC4505 /* NSOutlineView+ObservableTree.swift */; };
 		90A443061E9055D100D611FE /* NSAppearanceCustomization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D251E8F0B1D000077C8 /* NSAppearanceCustomization.swift */; };
 		90A443071E9055D100D611FE /* NSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D261E8F0B1D000077C8 /* NSButton.swift */; };
 		90A443081E9055D100D611FE /* NSColorWell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D271E8F0B1D000077C8 /* NSColorWell.swift */; };
@@ -402,16 +399,15 @@
 		75CA9E9120678E600011E5BB /* UISearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISearchBar.swift; sourceTree = "<group>"; };
 		90677C00207EDDFD00BC4505 /* ObservableTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableTree.swift; sourceTree = "<group>"; };
 		90677C04207EDE0800BC4505 /* MutableObservableTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutableObservableTree.swift; sourceTree = "<group>"; };
-		90677C08207EDE1600BC4505 /* TreeOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeOperation.swift; sourceTree = "<group>"; };
 		90677C0C207EDE2000BC4505 /* ObservableTreeEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableTreeEvent.swift; sourceTree = "<group>"; };
 		90677C10207EE44B00BC4505 /* TreeProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeProtocol.swift; sourceTree = "<group>"; };
-		90677C14207F216400BC4505 /* TreeOperation+Diff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeOperation+Diff.swift"; sourceTree = "<group>"; };
-		90677C18207F216E00BC4505 /* TreeOperation+Patch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeOperation+Patch.swift"; sourceTree = "<group>"; };
 		90677C20207F248000BC4505 /* IndexPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexPath.swift; sourceTree = "<group>"; };
 		90677C24207F2C5C00BC4505 /* MutableObservableTree+MutableCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MutableObservableTree+MutableCollection.swift"; sourceTree = "<group>"; };
 		90677C28207F2E0900BC4505 /* MutableObservableTree+RangeReplaceableCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MutableObservableTree+RangeReplaceableCollection.swift"; sourceTree = "<group>"; };
 		90677C2C207F34AC00BC4505 /* ObservableTree+Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableTree+Array.swift"; sourceTree = "<group>"; };
 		90677C34207F37B600BC4505 /* ObservableTree+Set.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableTree+Set.swift"; sourceTree = "<group>"; };
+		90677C3C207F38AE00BC4505 /* NSOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSOutlineView.swift; sourceTree = "<group>"; };
+		90677C44207F391700BC4505 /* NSOutlineView+ObservableTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSOutlineView+ObservableTree.swift"; sourceTree = "<group>"; };
 		90A3FAC21E0C8D8B0086A7F1 /* Differ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Differ.xcodeproj; path = Carthage/Checkouts/Differ/Differ.xcodeproj; sourceTree = "<group>"; };
 		90C04D021E8F0A97000077C8 /* Bond-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Bond-Info.plist"; sourceTree = "<group>"; };
 		90C04D031E8F0A97000077C8 /* Bond.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bond.h; sourceTree = "<group>"; };
@@ -640,9 +636,6 @@
 			isa = PBXGroup;
 			children = (
 				90677C10207EE44B00BC4505 /* TreeProtocol.swift */,
-				90677C08207EDE1600BC4505 /* TreeOperation.swift */,
-				90677C14207F216400BC4505 /* TreeOperation+Diff.swift */,
-				90677C18207F216E00BC4505 /* TreeOperation+Patch.swift */,
 				90677C0C207EDE2000BC4505 /* ObservableTreeEvent.swift */,
 				90677C00207EDDFD00BC4505 /* ObservableTree.swift */,
 				90677C2C207F34AC00BC4505 /* ObservableTree+Array.swift */,
@@ -755,6 +748,8 @@
 				90C04D281E8F0B1D000077C8 /* NSControl.swift */,
 				90C04D291E8F0B1D000077C8 /* NSImageView.swift */,
 				90C04D2B1E8F0B1D000077C8 /* NSMenuItem.swift */,
+				90677C3C207F38AE00BC4505 /* NSOutlineView.swift */,
+				90677C44207F391700BC4505 /* NSOutlineView+ObservableTree.swift */,
 				90C04D2E1E8F0B1D000077C8 /* NSPopUpButton.swift */,
 				90C04D2F1E8F0B1D000077C8 /* NSProgressIndicator.swift */,
 				90C04D301E8F0B1D000077C8 /* NSSegmentedControl.swift */,
@@ -1099,7 +1094,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				90677C19207F216E00BC4505 /* TreeOperation+Patch.swift in Sources */,
 				90A4437A1E91390000D611FE /* BNDProtocolProxyBase.m in Sources */,
 				90A4430F1E9055D100D611FE /* NSSlider.swift in Sources */,
 				ECF15FDB207A0F1900DEB77D /* ObservableCollection+Array.swift in Sources */,
@@ -1129,7 +1123,6 @@
 				EC86E9AF1E9145CC008563B2 /* UIAccessibilityIdentification.swift in Sources */,
 				90A4430D1E9055D100D611FE /* NSProgressIndicator.swift in Sources */,
 				EC1325D220726C6800F466B6 /* ObservableCollectionEvent.swift in Sources */,
-				90677C09207EDE1600BC4505 /* TreeOperation.swift in Sources */,
 				90C04DB91E8F0B97000077C8 /* UINavigationBar.swift in Sources */,
 				EC02200A1F8BE898002F8380 /* Property.swift in Sources */,
 				90C04DBE1E8F0B97000077C8 /* UISlider.swift in Sources */,
@@ -1150,7 +1143,6 @@
 				EC6A35DE2075DD0200E8F805 /* ObservableCollection.swift in Sources */,
 				90A443091E9055D100D611FE /* NSControl.swift in Sources */,
 				90677C35207F37B600BC4505 /* ObservableTree+Set.swift in Sources */,
-				90677C15207F216400BC4505 /* TreeOperation+Diff.swift in Sources */,
 				90677C21207F248000BC4505 /* IndexPath.swift in Sources */,
 				EC6A35E42075E00D00E8F805 /* CollectionOperation+Diff.swift in Sources */,
 				90677C29207F2E0900BC4505 /* MutableObservableTree+RangeReplaceableCollection.swift in Sources */,
@@ -1159,8 +1151,10 @@
 				90C04D7A1E8F0B89000077C8 /* SignalProtocol.swift in Sources */,
 				90C04DBA1E8F0B97000077C8 /* UINavigationItem.swift in Sources */,
 				ECAFB8D9200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */,
+				90677C45207F391700BC4505 /* NSOutlineView+ObservableTree.swift in Sources */,
 				90C04DB71E8F0B97000077C8 /* UIImageView.swift in Sources */,
 				90C04DBF1E8F0B97000077C8 /* UIStepper.swift in Sources */,
+				90677C3D207F38AE00BC4505 /* NSOutlineView.swift in Sources */,
 				90A4430E1E9055D100D611FE /* NSSegmentedControl.swift in Sources */,
 				ECC1A6D0207A18DC00AE762C /* NSTableView+ObservableCollection.swift in Sources */,
 				90A4430A1E9055D100D611FE /* NSImageView.swift in Sources */,
@@ -1233,9 +1227,9 @@
 				90C04D6E1E8F0B89000077C8 /* NSObject.swift in Sources */,
 				EC6A35EA2076054F00E8F805 /* CollectionOperation+Diff.swift in Sources */,
 				90677C06207EDE0800BC4505 /* MutableObservableTree.swift in Sources */,
+				90677C3E207F38AE00BC4505 /* NSOutlineView.swift in Sources */,
 				90677C02207EDDFD00BC4505 /* ObservableTree.swift in Sources */,
 				90C04D7B1E8F0B8D000077C8 /* NSAppearanceCustomization.swift in Sources */,
-				90677C0A207EDE1600BC4505 /* TreeOperation.swift in Sources */,
 				90A4432C1E9055D800D611FE /* UIGestureRecognizer.swift in Sources */,
 				90677C12207EE44B00BC4505 /* TreeProtocol.swift in Sources */,
 				90C04D8A1E8F0B8D000077C8 /* NSView.swift in Sources */,
@@ -1247,6 +1241,7 @@
 				90A4432E1E9055D800D611FE /* UILabel.swift in Sources */,
 				90C04D681E8F0B89000077C8 /* Observable.swift in Sources */,
 				90A443331E9055D800D611FE /* UISegmentedControl.swift in Sources */,
+				90677C46207F391700BC4505 /* NSOutlineView+ObservableTree.swift in Sources */,
 				EC6A35E82076054F00E8F805 /* ObservableCollection.swift in Sources */,
 				90C04D851E8F0B8D000077C8 /* NSSlider.swift in Sources */,
 				90677C36207F37B600BC4505 /* ObservableTree+Set.swift in Sources */,
@@ -1288,14 +1283,12 @@
 				90C04D911E8F0B91000077C8 /* ObservableDictionary.swift in Sources */,
 				90C04D831E8F0B8D000077C8 /* NSProgressIndicator.swift in Sources */,
 				90C04D6C1E8F0B89000077C8 /* NotificationCenter.swift in Sources */,
-				90677C1A207F216E00BC4505 /* TreeOperation+Patch.swift in Sources */,
 				90A443251E9055D800D611FE /* UIApplication.swift in Sources */,
 				90C04D6D1E8F0B89000077C8 /* NSObject+KVO.swift in Sources */,
 				90677C2A207F2E0900BC4505 /* MutableObservableTree+RangeReplaceableCollection.swift in Sources */,
 				90C04D8F1E8F0B91000077C8 /* Observable2DArray.swift in Sources */,
 				90A443241E9055D800D611FE /* UIActivityIndicatorView.swift in Sources */,
 				90C04D921E8F0B91000077C8 /* ObservableSet.swift in Sources */,
-				90677C16207F216400BC4505 /* TreeOperation+Diff.swift in Sources */,
 				90A443281E9055D800D611FE /* UIButton.swift in Sources */,
 				90A443371E9055D800D611FE /* UITableView.swift in Sources */,
 				90A443341E9055D800D611FE /* UISlider.swift in Sources */,
@@ -1324,9 +1317,9 @@
 				90C04DAA1E8F0B96000077C8 /* UITableView.swift in Sources */,
 				EC6A35ED2076055000E8F805 /* CollectionOperation+Diff.swift in Sources */,
 				90677C07207EDE0800BC4505 /* MutableObservableTree.swift in Sources */,
+				90677C3F207F38AE00BC4505 /* NSOutlineView.swift in Sources */,
 				90677C03207EDDFD00BC4505 /* ObservableTree.swift in Sources */,
 				90A443231E9055D200D611FE /* NSView.swift in Sources */,
-				90677C0B207EDE1600BC4505 /* TreeOperation.swift in Sources */,
 				90C04D9D1E8F0B96000077C8 /* UIControl.swift in Sources */,
 				90677C13207EE44B00BC4505 /* TreeProtocol.swift in Sources */,
 				90C04DA91E8F0B96000077C8 /* UISwitch.swift in Sources */,
@@ -1338,6 +1331,7 @@
 				90C04D5E1E8F0B88000077C8 /* ProtocolProxy.swift in Sources */,
 				90C04D971E8F0B96000077C8 /* UIActivityIndicatorView.swift in Sources */,
 				90C04D9A1E8F0B96000077C8 /* UIBarItem.swift in Sources */,
+				90677C47207F391700BC4505 /* NSOutlineView+ObservableTree.swift in Sources */,
 				EC6A35EB2076055000E8F805 /* ObservableCollection.swift in Sources */,
 				90C04DAD1E8F0B96000077C8 /* UIView.swift in Sources */,
 				90677C37207F37B600BC4505 /* ObservableTree+Set.swift in Sources */,
@@ -1379,14 +1373,12 @@
 				90A443211E9055D200D611FE /* NSTextField.swift in Sources */,
 				90C04DAB1E8F0B96000077C8 /* UITextField.swift in Sources */,
 				90C04D9E1E8F0B96000077C8 /* UIDatePicker.swift in Sources */,
-				90677C1B207F216E00BC4505 /* TreeOperation+Patch.swift in Sources */,
 				90C04D8D1E8F0B91000077C8 /* ObservableDictionary.swift in Sources */,
 				90C04D8B1E8F0B91000077C8 /* Observable2DArray.swift in Sources */,
 				90677C2B207F2E0900BC4505 /* MutableObservableTree+RangeReplaceableCollection.swift in Sources */,
 				90A443201E9055D200D611FE /* NSTableView.swift in Sources */,
 				90C04D5F1E8F0B88000077C8 /* QueryableDataSource.swift in Sources */,
 				90C04D611E8F0B88000077C8 /* NotificationCenter.swift in Sources */,
-				90677C17207F216400BC4505 /* TreeOperation+Diff.swift in Sources */,
 				90C04D621E8F0B88000077C8 /* NSObject+KVO.swift in Sources */,
 				90A443171E9055D200D611FE /* NSColorWell.swift in Sources */,
 				90C04DA41E8F0B96000077C8 /* UIProgressView.swift in Sources */,

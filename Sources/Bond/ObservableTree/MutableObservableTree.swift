@@ -23,11 +23,6 @@
 //
 
 public class MutableObservableTree<UnderlyingTreeNode: TreeNode & Equatable>: ObservableTree<UnderlyingTreeNode> {
-    /// Access the element at `path`.
-    public subscript(path: IndexPath) -> UnderlyingTreeNode.NodeCollection.Element {
-        return node[path]
-    }
-
     /// Update the collection and provide a description of changes (diff).
     /// Emits an event with the updated collection and the given diff.
     public func descriptiveUpdate(_ update: (inout UnderlyingTreeNode) -> [TreeOperation]) {

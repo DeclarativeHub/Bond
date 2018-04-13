@@ -22,9 +22,9 @@
 //  THE SOFTWARE.
 //
 
-extension ObservableTree where UnderlyingTreeNode.NodeCollection: ArrayViewProtocol {
+extension ObservableTree where UnderlyingTreeNode: ArrayViewProtocol {
     /// Underlying collection as an array.
-    public var array: [UnderlyingTreeNode.NodeCollection.Element] {
-        return node.children.arrayView
+    public var array: [UnderlyingTreeNode.Element] {
+        return node.arrayView
     }
 }

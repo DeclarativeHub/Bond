@@ -24,8 +24,18 @@
 
 import Foundation
 
-extension IndexPath {
-    func advanced(by offset: Index) -> IndexPath {
+extension IndexPath: Strideable {
+    public typealias Stride = Int
+
+    public func distance(to other: IndexPath) -> Int {
+        guard section == other.section else {
+            return Int.max // (tonyarnold/2018-04-13) TODO: This probably needs to return a more meaningful value, or support striding by IndexPaths
+        }
+
+        return item.distance(to: other.item)
+    }
+
+    public func advanced(by offset: Int) -> IndexPath {
         return dropLast().appending(endIndex.advanced(by: offset))
     }
 }

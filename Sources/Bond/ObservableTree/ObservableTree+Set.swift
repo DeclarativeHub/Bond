@@ -22,9 +22,9 @@
 //  THE SOFTWARE.
 //
 
-extension ObservableTree where UnderlyingTreeNode.NodeCollection: SetViewProtocol {
+extension ObservableTree where UnderlyingTreeNode: SetViewProtocol {
     /// Underlying collection as a set.
-    public var set: Set<UnderlyingTreeNode.NodeCollection.Element> {
-        return node.children.setView
+    public var set: Set<UnderlyingTreeNode.Element> {
+        return node.setView
     }
 }
