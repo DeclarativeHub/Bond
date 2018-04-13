@@ -54,7 +54,7 @@ open class OutlineViewBinder<UnderlyingTreeNode: TreeNode> {
     }
 
     open func apply(diff: [TreeOperation], node: UnderlyingTreeNode, to outlineView: NSOutlineView) {
-        if (insertAnimation == nil && deleteAnimation == nil) || diff.isEmpty {
+        if (self.insertAnimation == nil && self.deleteAnimation == nil) || diff.isEmpty {
             outlineView.reloadData()
             return
         }
@@ -82,14 +82,11 @@ open class OutlineViewBinder<UnderlyingTreeNode: TreeNode> {
 
         outlineView.endUpdates()
     }
-
 }
 
 public extension SignalProtocol where Element: ObservableTreeEventProtocol {
-
     public typealias UnderlyingTreeNode = Element.UnderlyingTreeNode
 }
-
 
 public extension SignalProtocol where Element: ObservableTreeEventProtocol, Error == NoError {
     @discardableResult
