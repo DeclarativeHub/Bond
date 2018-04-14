@@ -53,6 +53,20 @@ public class MutableObservableCollection<UnderlyingCollection: Collection>: Obse
     }
 }
 
+extension MutableObservableCollection where UnderlyingCollection: ExpressibleByArrayLiteral {
+
+    public convenience init() {
+        self.init([])
+    }
+}
+
+extension MutableObservableCollection where UnderlyingCollection: ExpressibleByDictionaryLiteral {
+
+    public convenience init() {
+        self.init([:])
+    }
+}
+
 extension MutableObservableCollection {
 
     /// Performs batched updates on the collection by merging subsequent diffs using the given `mergeDiffs` function.
