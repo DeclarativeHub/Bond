@@ -63,7 +63,11 @@
 
         open var rowAnimation: UITableViewRowAnimation = .automatic
 
-        open let createCell: (DataSource, IndexPath, UITableView) -> UITableViewCell
+        open let createCell: ((DataSource, IndexPath, UITableView) -> UITableViewCell)?
+
+        public init() {
+            createCell = nil
+        }
 
         /// - parameter createCell: A closure that creates cell for a given table view and configures it with the given data source at the given index path.
         public init(_ createCell: @escaping (DataSource, IndexPath, UITableView) -> UITableViewCell) {
@@ -72,7 +76,11 @@
 
         /// - returns: A cell for the given table view configured with the given data source at the given index path.
         open func cellForRow(at indexPath: IndexPath, tableView: UITableView, dataSource: DataSource) -> UITableViewCell {
-            return createCell(dataSource, indexPath, tableView)
+            if let createCell = createCell {
+                return createCell(dataSource, indexPath, tableView)
+            } else {
+                fatalError("Subclass of TableViewBinder should override and implement cellForRow(at:tableView:dataSource:) method. Do not call super.")
+            }
         }
 
         /// Applies the given data source event to the table view.
