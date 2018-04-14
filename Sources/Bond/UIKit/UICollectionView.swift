@@ -60,7 +60,11 @@
     /// A type used by the collection view bindings that provides binding options and actions.
     open class CollectionViewBinder<DataSource: DataSourceProtocol> {
 
-        open let createCell: (DataSource, IndexPath, UICollectionView) -> UICollectionViewCell
+        open let createCell: ((DataSource, IndexPath, UICollectionView) -> UICollectionViewCell)?
+
+        public init() {
+            createCell = nil
+        }
 
         /// - parameter createCell: A closure that creates cell for a given collection view and configures it with the given data source at the given index path.
         public init(_ createCell: @escaping (DataSource, IndexPath, UICollectionView) -> UICollectionViewCell) {
@@ -69,7 +73,11 @@
 
         /// - returns: A cell for the given collection view configured with the given data source at the given index path.
         open func cellForRow(at indexPath: IndexPath, collectionView: UICollectionView, dataSource: DataSource) -> UICollectionViewCell {
-            return createCell(dataSource, indexPath, collectionView)
+            if let createCell = createCell {
+                return createCell(dataSource, indexPath, collectionView)
+            } else {
+                fatalError("Subclass of CollectionViewBinder should override and implement cellForRow(at:collectionView:dataSource:) method. Do not call super.")
+            }
         }
     }
 
