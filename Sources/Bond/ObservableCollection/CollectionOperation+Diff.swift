@@ -34,7 +34,7 @@ extension CollectionOperation where Index: Strideable {
 
     /// Merge the given diffs into a single diff.
     public static func merge(diffs: [[CollectionOperation<Index>]]) -> [CollectionOperation<Index>] {
-        return merge(diffs: diffs, merge: { $0.merging(with: $1) }, makePatch: { $0.patch } )
+        return merge(diffs: diffs, merge: { $0.merging(with: $1) }, makePatch: { $0 } )
     }
 }
 
@@ -52,7 +52,7 @@ extension CollectionOperation {
 
         for nextDiff in diffs {
             var reminders: [CollectionOperation<Index>] = []
-            for step in makePatch(nextDiff) {
+            for step in makePatch(nextDiff) { // TODO: should this really be patch??
                 let result = step.transformDiff(diff, merge: merge)
                 diff = result.diff
                 if let reminder = result.reminder {

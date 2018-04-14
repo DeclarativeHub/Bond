@@ -25,6 +25,13 @@
 extension Collection where Element: CollectionOperationProtocol, Element.Index: Strideable {
 
     public var patch: [CollectionOperation<Element.Index>] {
+
+        // Diff is patch if changes are applied in the following order:
+        // 1. Apply updates
+        // 2. Apply deletes sorted descending
+        // 3. Apply moves with offset indices
+        // 4. Apply inserts sorted ascending
+
         let sortedForPatching = self.sortedForPatching.map { $0.asCollectionOperation }
         let moves = sortedForPatching.filter { $0.isMove }
 
@@ -32,16 +39,27 @@ extension Collection where Element: CollectionOperationProtocol, Element.Index: 
             return sortedForPatching
         }
 
-        var patch = sortedForPatching.filter { !$0.isMove }
+        let updates = sortedForPatching.filter { $0.isUpdate }
+        let deletes = sortedForPatching.filter { $0.isDelete }
+        let inserts = sortedForPatching.filter { $0.isInsert }
+        var offsetMoves = moves
 
-        for var move in moves {
-            for step in patch {
-                move = move.offsetIfMove(by: step)
+        for index in 0..<moves.count {
+            for operation in deletes + inserts {
+                offsetMoves[index].offsetMoveByDeletionOrInsertion(operation)
             }
-            patch.append(move)
         }
 
-        return patch
+        for index in 0..<moves.count {
+            for operation in moves.suffix(from: index.advanced(by: 1)) {
+                offsetMoves[index].offsetMoveToIndexByMove(operation)
+            }
+            for operation in offsetMoves.prefix(upTo: index) {
+                offsetMoves[index].offsetMoveFromIndexByMove(operation)
+            }
+        }
+
+        return updates + deletes + offsetMoves + inserts
     }
 
     private var sortedForPatching: [Element] {
@@ -56,7 +74,7 @@ extension Collection where Element: CollectionOperationProtocol, Element.Index: 
             case (.insert, .update):
                 return false
             case (.insert, .move):
-                return true
+                return false
 
             // Delete:
             case (.delete, .insert):
@@ -80,13 +98,13 @@ extension Collection where Element: CollectionOperationProtocol, Element.Index: 
 
             // Move:
             case (.move, .insert):
-                return false
+                return true
             case (.move, .delete):
                 return false
             case (.move, .update):
                 return false
             case (.move(let i1from, _), .move(let i2from, _)):
-                return i1from < i2from
+                return i2from < i1from
             }
         })
     }
@@ -94,30 +112,38 @@ extension Collection where Element: CollectionOperationProtocol, Element.Index: 
 
 private extension CollectionOperation where Index: Strideable {
 
-    func offsetIfMove(by other: CollectionOperation<Index>) -> CollectionOperation<Index> {
-        guard case .move(let from, let to) = self else { return self }
+    mutating func offsetMoveByDeletionOrInsertion(_ other: CollectionOperation<Index>) {
+        guard case .move(let from, let to) = self else { return }
 
         switch other {
-        case .insert(let at):
-            if at <= from {
-                return .move(from: from.advanced(by: 1), to: to)
-            } else {
-                return self
-            }
-        case .delete(let at):
-            if at <= from {
-                return .move(from: from.advanced(by: -1), to: to)
-            } else {
-                return self
-            }
-        case .update:
-            return self
-        case .move(let fromOther, _):
-            if fromOther <= from {
-                return .move(from: from.advanced(by: -1), to: to)
-            } else {
-                return self
-            }
+        case .insert(let at) where at < to:
+            self = .move(from: from, to: to.advanced(by: -1))
+        case .delete(let at) where at < from :
+            self = .move(from: from.advanced(by: -1), to: to)
+        default:
+            break
+        }
+    }
+
+    mutating func offsetMoveToIndexByMove(_ other: CollectionOperation<Index>) {
+        guard case .move(let from, let to) = self else { return }
+        guard case .move(let from2, let to2) = other else { return }
+
+        if from2 < to && to < to2 {
+            self = .move(from: from, to: to.advanced(by: 1))
+        } else if to <= from2 && to > to2 {
+            self = .move(from: from, to: to.advanced(by: -1))
+        }
+    }
+
+    mutating func offsetMoveFromIndexByMove(_ other: CollectionOperation<Index>) {
+        guard case .move(let from, let to) = self else { return }
+        guard case .move(let from2, let to2) = other else { return }
+
+        if from2 < from && from < to2 {
+            self = .move(from: from.advanced(by: -1), to: to)
+        } else if from < from2 && from >= to2 {
+            self = .move(from: from.advanced(by: 1), to: to)
         }
     }
 }
