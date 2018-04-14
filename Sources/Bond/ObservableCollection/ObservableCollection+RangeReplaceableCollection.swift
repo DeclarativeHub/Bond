@@ -53,10 +53,9 @@ extension MutableObservableCollection where UnderlyingCollection: RangeReplaceab
     }
 
     /// Move the element at index `i` to index `toIndex`.
-    public func moveItem(from fromIndex: UnderlyingCollection.Index, to toIndex: UnderlyingCollection.Index) {
+    public func move(from fromIndex: UnderlyingCollection.Index, to toIndex: UnderlyingCollection.Index) {
         descriptiveUpdate { (collection) -> [CollectionOperation<UnderlyingCollection.Index>] in
-            let item = collection.remove(at: fromIndex)
-            collection.insert(item, at: toIndex)
+            collection.move(from: fromIndex, to: toIndex)
             return [.move(from: fromIndex, to: toIndex)]
         }
     }
@@ -87,5 +86,36 @@ extension MutableObservableCollection where UnderlyingCollection: RangeReplaceab
             collection.removeAll(keepingCapacity: false)
             return diff
         }
+    }
+}
+
+extension MutableObservableCollection where UnderlyingCollection: RangeReplaceableCollection, UnderlyingCollection.Index: Strideable, UnderlyingCollection.Index.Stride == Int {
+
+    public func move(from fromIndices: [UnderlyingCollection.Index], to toIndex: UnderlyingCollection.Index) {
+        descriptiveUpdate { (collection) -> [CollectionOperation<UnderlyingCollection.Index>] in
+            collection.move(from: fromIndices, to: toIndex)
+            return fromIndices.enumerated().map {
+                .move(from: $0.element, to: toIndex.advanced(by: $0.offset))
+            }
+        }
+    }
+}
+
+extension RangeReplaceableCollection {
+
+    public mutating func move(from fromIndex: Index, to toIndex: Index) {
+        let item = remove(at: fromIndex)
+        insert(item, at: toIndex)
+    }
+}
+
+extension RangeReplaceableCollection where Index: Strideable, Index.Stride == Int {
+
+    public mutating func move(from fromIndices: [Index], to toIndex: Index) {
+        let items = fromIndices.map { self[$0] }
+        for index in fromIndices.sorted().reversed() {
+            remove(at: index)
+        }
+        insert(contentsOf: items, at: toIndex)
     }
 }
