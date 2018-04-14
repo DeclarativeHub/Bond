@@ -30,6 +30,68 @@ extension ObservableCollection where UnderlyingCollection: SetViewProtocol {
     }
 }
 
+extension MutableObservableCollection where UnderlyingCollection: SetViewProtocol {
+
+    /// Insert item in the set.
+    public func insert(_ member: UnderlyingCollection.Element) {
+        descriptiveUpdate { (collection) -> [CollectionOperation<UnderlyingCollection.Index>] in
+            let index = collection.setView.index(of: member)
+            if index == nil {
+                collection.setView.insert(member)
+                let index = collection.setView.index(of: member) as! UnderlyingCollection.Index
+                return [.insert(at: index)]
+            } else {
+                return []
+            }
+        }
+    }
+
+    /// Update an item in the set.
+    public func update(with member: UnderlyingCollection.Element) {
+        descriptiveUpdate { (collection) -> [CollectionOperation<UnderlyingCollection.Index>] in
+            let index = collection.setView.index(of: member)
+            collection.setView.update(with: member)
+            if let index = index {
+                return [.update(at: index as! UnderlyingCollection.Index)]
+            } else {
+                let index = collection.setView.index(of: member) as! UnderlyingCollection.Index
+                return [.insert(at: index)]
+            }
+        }
+    }
+
+    /// Remove item from the set.
+    @discardableResult
+    public func remove(_ member: UnderlyingCollection.Element) -> UnderlyingCollection.Element? {
+        return descriptiveUpdate { (collection) -> ([CollectionOperation<UnderlyingCollection.Index>], UnderlyingCollection.Element?) in
+            if let index = set.index(of: member) {
+                let element = collection.setView.remove(at: index)
+                return ([.delete(at: index as! UnderlyingCollection.Index)], element)
+            } else {
+                return ([], nil)
+            }
+        }
+    }
+
+    /// Remove item from the set by index.
+    @discardableResult
+    public func remove(at index: Set<UnderlyingCollection.Element>.Index) -> UnderlyingCollection.Element? {
+        return descriptiveUpdate { (collection) -> ([CollectionOperation<UnderlyingCollection.Index>], UnderlyingCollection.Element?) in
+            let element = collection.setView.remove(at: index)
+            return ([.delete(at: index as! UnderlyingCollection.Index)], element)
+        }
+    }
+
+    /// Removes all items from the set.
+    public func removeAll() {
+        descriptiveUpdate { (collection) -> [CollectionOperation<UnderlyingCollection.Index>] in
+            let indices = set.indices
+            collection.setView.removeAll()
+            return indices.map { .delete(at: $0 as! UnderlyingCollection.Index) }
+        }
+    }
+}
+
 /// A type that can be viewed as a set.
 public protocol SetViewProtocol {
 
