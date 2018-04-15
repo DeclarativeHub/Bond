@@ -85,7 +85,7 @@ public extension SignalProtocol where
     Element: ObservableCollectionEventProtocol, Element.UnderlyingCollection.Index == Int, Error == NoError {
 
     @discardableResult
-    public func bind(to tableView: NSTableView, animated: Bool = true, createCell: @escaping (UnderlyingCollection, Int, NSTableColumn?, NSTableView) -> NSView?) -> Disposable {
+    public func bind(to tableView: NSTableView, animated: Bool = true, createCell: @escaping (Element.UnderlyingCollection, Int, NSTableColumn?, NSTableView) -> NSView?) -> Disposable {
         let binder = TableViewBinder(measureCell: nil, createCell: createCell)
         if !animated {
             binder.deleteAnimation = nil
@@ -95,15 +95,15 @@ public extension SignalProtocol where
     }
 
     @discardableResult
-    public func bind(to tableView: NSTableView, using binder: TableViewBinder<UnderlyingCollection>) -> Disposable {
+    public func bind(to tableView: NSTableView, using binder: TableViewBinder<Element.UnderlyingCollection>) -> Disposable {
 
-        let dataSource = Property<UnderlyingCollection?>(nil)
+        let dataSource = Property<Element.UnderlyingCollection?>(nil)
         let disposable = CompositeDisposable()
 
         disposable += tableView.reactive.delegate.feed(
             property: dataSource,
             to: #selector(NSTableViewDelegate.tableView(_:heightOfRow:)),
-            map: { (dataSource: UnderlyingCollection?, tableView: NSTableView, row: Int) -> CGFloat in
+            map: { (dataSource: Element.UnderlyingCollection?, tableView: NSTableView, row: Int) -> CGFloat in
                 guard let dataSource = dataSource else { return tableView.rowHeight }
                 return binder.heightForRow(at: row, tableView: tableView, dataSource: dataSource) ?? tableView.rowHeight
             }
@@ -112,7 +112,7 @@ public extension SignalProtocol where
         disposable += tableView.reactive.delegate.feed(
             property: dataSource,
             to: #selector(NSTableViewDelegate.tableView(_:viewFor:row:)),
-            map: { (dataSource: UnderlyingCollection?, tableView: NSTableView, tableColumn: NSTableColumn, row: Int) -> NSView? in
+            map: { (dataSource: Element.UnderlyingCollection?, tableView: NSTableView, tableColumn: NSTableColumn, row: Int) -> NSView? in
                 guard let dataSource = dataSource else { return nil }
                 return binder.cellForRow(at: row, tableColumn: tableColumn, tableView: tableView, dataSource: dataSource)
             }
@@ -121,7 +121,7 @@ public extension SignalProtocol where
         disposable += tableView.reactive.dataSource.feed(
             property: dataSource,
             to: #selector(NSTableViewDataSource.numberOfRows(in:)),
-            map: { (dataSource: UnderlyingCollection?, _: NSTableView) -> Int in
+            map: { (dataSource: Element.UnderlyingCollection?, _: NSTableView) -> Int in
                 return dataSource?.count ?? 0
             }
         )
@@ -129,7 +129,7 @@ public extension SignalProtocol where
         disposable += tableView.reactive.dataSource.feed(
             property: dataSource,
             to: #selector(NSTableViewDataSource.tableView(_:objectValueFor:row:)),
-            map: { (dataSource: UnderlyingCollection?, _: NSTableView, _: NSTableColumn, row: Int) -> Any? in
+            map: { (dataSource: Element.UnderlyingCollection?, _: NSTableView, _: NSTableColumn, row: Int) -> Any? in
                 return dataSource?[row]
             }
         )
