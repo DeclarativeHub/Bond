@@ -22,9 +22,39 @@
 //  THE SOFTWARE.
 //
 
-extension ObservableTree where UnderlyingTreeNode: ArrayViewProtocol {
-    /// Underlying collection as an array.
-    public var array: [UnderlyingTreeNode.Element] {
-        return node.arrayView
+public protocol TreeNodeProtocol: MutableCollection where Index == IndexPath, Element == Self {
+
+    associatedtype Value
+    var value: Value { get set }
+    var children: [Self] { get set }
+}
+
+public protocol RangeReplacableTreeNode: TreeNodeProtocol {
+
+    mutating func replaceSubrange<C>(_ subrange: Range<IndexPath>, with newChildren: C) where C: Collection, C.Element == Self
+}
+
+extension RangeReplacableTreeNode {
+
+    // All methods below should be implemented using `replaceSubrange` method,
+    // not modifying the children directly
+
+    public mutating func append(_ newNode: Self) {
+        insert(newNode, at: endIndex)
+    }
+
+    public mutating func insert(_ newNode: Self, at indexPath: IndexPath) {
+        replaceSubrange(indexPath..<indexPath, with: [newNode])
+    }
+
+    public mutating func insert(contentsOf newNodes: [Self], at indexPath: IndexPath) {
+        replaceSubrange(indexPath..<indexPath, with: newNodes)
+    }
+
+    public mutating func remove(at indexPath: IndexPath) -> Self {
+        let subtree = self[indexPath]
+        replaceSubrange(indexPath..<index(after: indexPath), with: [])
+        return subtree
     }
 }
+
