@@ -1,7 +1,7 @@
 # Bond, Swift Bond
 
 [![Platform](https://img.shields.io/cocoapods/p/Bond.svg?style=flat)](http://cocoadocs.org/docsets/Bond/)
-[![CI Status](https://travis-ci.org/ReactiveKit/Bond.svg?branch=master)](https://travis-ci.org/ReactiveKit/Bond)
+[![CI Status](https://travis-ci.org/DeclarativeHub/Bond.svg?branch=master)](https://travis-ci.org/DeclarativeHub/Bond)
 [![Join Us on Gitter](https://img.shields.io/badge/GITTER-join%20chat-blue.svg)](https://gitter.im/ReactiveKit/General)
 [![Twitter](https://img.shields.io/badge/twitter-@srdanrasic-red.svg?style=flat)](https://twitter.com/srdanrasic)
 
