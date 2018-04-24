@@ -25,8 +25,8 @@
 public protocol TreeNodeProtocol: MutableCollection where Index == IndexPath, Element == Self {
 
     associatedtype Value
-    var value: Value { get set }
-    var children: [Self] { get set }
+    var value: Value { get }
+    var children: [Self] { get }
 }
 
 public protocol RangeReplacableTreeNode: TreeNodeProtocol {
@@ -35,9 +35,6 @@ public protocol RangeReplacableTreeNode: TreeNodeProtocol {
 }
 
 extension RangeReplacableTreeNode {
-
-    // All methods below should be implemented using `replaceSubrange` method,
-    // not modifying the children directly
 
     public mutating func append(_ newNode: Self) {
         insert(newNode, at: endIndex)
