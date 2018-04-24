@@ -27,12 +27,12 @@
 import AppKit
 import ReactiveKit
 
-open class OutlineViewBinder<UnderlyingTreeNode: TreeNode> {
+open class OutlineViewBinder<TreeNode: TreeNodeProtocol> {
     public var insertAnimation: NSOutlineView.AnimationOptions? = [.effectFade, .slideUp]
     public var deleteAnimation: NSOutlineView.AnimationOptions? = [.effectFade, .slideUp]
 
-    let measureCell: ((UnderlyingTreeNode, UnderlyingTreeNode.Element?, NSOutlineView) -> CGFloat?)?
-    let createCell: ((UnderlyingTreeNode, UnderlyingTreeNode.Element?, NSTableColumn?, NSOutlineView) -> NSView?)?
+    let measureCell: ((TreeNode, TreeNode.Value?, NSOutlineView) -> CGFloat?)?
+    let createCell: ((TreeNode, TreeNode.Value?, NSTableColumn?, NSOutlineView) -> NSView?)?
 
     public init() {
         // This initializer allows subclassing without having to declare default initializer in subclass.
@@ -40,20 +40,20 @@ open class OutlineViewBinder<UnderlyingTreeNode: TreeNode> {
         self.createCell = nil
     }
 
-    public init(measureCell: ((UnderlyingTreeNode, UnderlyingTreeNode.Element?, NSOutlineView) -> CGFloat?)? = nil, createCell: ((UnderlyingTreeNode, UnderlyingTreeNode.Element?, NSTableColumn?, NSOutlineView) -> NSView?)? = nil) {
+    public init(measureCell: ((TreeNode, TreeNode.Value?, NSOutlineView) -> CGFloat?)? = nil, createCell: ((TreeNode, TreeNode.Value?, NSTableColumn?, NSOutlineView) -> NSView?)? = nil) {
         self.measureCell = measureCell
         self.createCell = createCell
     }
 
-    open func height(for item: UnderlyingTreeNode.Element?, outlineView: NSOutlineView, dataSource: UnderlyingTreeNode) -> CGFloat? {
+    open func height(for item: TreeNode.Value?, outlineView: NSOutlineView, dataSource: TreeNode) -> CGFloat? {
         return self.measureCell?(dataSource, item, outlineView) ?? outlineView.rowHeight
     }
 
-    open func cell(for item: UnderlyingTreeNode.Element?, tableColumn: NSTableColumn?, outlineView: NSOutlineView, dataSource: UnderlyingTreeNode) -> NSView? {
+    open func cell(for item: TreeNode.Value?, tableColumn: NSTableColumn?, outlineView: NSOutlineView, dataSource: TreeNode) -> NSView? {
         return self.createCell?(dataSource, item, tableColumn, outlineView) ?? nil
     }
 
-    open func apply(diff: [TreeOperation], node: UnderlyingTreeNode, to outlineView: NSOutlineView) {
+    open func apply(diff: [CollectionOperation<TreeNode.Index>], rootNode: TreeNode, to outlineView: NSOutlineView) {
         if (self.insertAnimation == nil && self.deleteAnimation == nil) || diff.isEmpty {
             outlineView.reloadData()
             return
@@ -64,18 +64,18 @@ open class OutlineViewBinder<UnderlyingTreeNode: TreeNode> {
         for operation in diff.patch {
             switch operation {
             case .insert(let at):
-                let parent = node[at.dropLast()]
+                let parent = rootNode[at.dropLast()]
                 outlineView.insertItems(at: IndexSet(integer: at.item), inParent: parent, withAnimation: insertAnimation ?? [])
             case .delete(let at):
-                let parent = node[at.dropLast()]
+                let parent = rootNode[at.dropLast()]
                 outlineView.removeItems(at: IndexSet(integer: at.item), inParent: parent, withAnimation: deleteAnimation ?? [])
             case .update(let at):
-                let parent = node[at.dropLast()]
+                let parent = rootNode[at.dropLast()]
                 let item = outlineView.child(at.item, ofItem: parent)
                 outlineView.reloadItem(item)
             case .move(let from, let to):
-                let fromParent = node[from.dropLast()]
-                let toParent = node[to.dropLast()]
+                let fromParent = rootNode[from.dropLast()]
+                let toParent = rootNode[to.dropLast()]
                 outlineView.moveItem(at: from.item, inParent: fromParent, to: to.item, inParent: toParent)
             }
         }
@@ -84,13 +84,11 @@ open class OutlineViewBinder<UnderlyingTreeNode: TreeNode> {
     }
 }
 
-public extension SignalProtocol where Element: ObservableTreeEventProtocol {
-    public typealias UnderlyingTreeNode = Element.UnderlyingTreeNode
-}
 
-public extension SignalProtocol where Element: ObservableTreeEventProtocol, Error == NoError {
+public extension SignalProtocol where Element: ObservableCollectionEventProtocol, Element.UnderlyingCollection: TreeNodeProtocol, Error == NoError {
+
     @discardableResult
-    public func bind(to outlineView: NSOutlineView, animated: Bool = true, createCell: @escaping (UnderlyingTreeNode, UnderlyingTreeNode.Element?, NSTableColumn?, NSOutlineView) -> NSView?) -> Disposable {
+    public func bind(to outlineView: NSOutlineView, animated: Bool = true, createCell: @escaping (Element.UnderlyingCollection, Element.UnderlyingCollection.Value?, NSTableColumn?, NSOutlineView) -> NSView?) -> Disposable {
         let binder = OutlineViewBinder(measureCell: nil, createCell: createCell)
         if !animated {
             binder.deleteAnimation = nil
@@ -100,14 +98,14 @@ public extension SignalProtocol where Element: ObservableTreeEventProtocol, Erro
     }
 
     @discardableResult
-    public func bind(to outlineView: NSOutlineView, using binder: OutlineViewBinder<UnderlyingTreeNode>) -> Disposable {
-        let dataSource = Property<UnderlyingTreeNode?>(nil)
+    public func bind(to outlineView: NSOutlineView, using binder: OutlineViewBinder<Element.UnderlyingCollection>) -> Disposable {
+        let dataSource = Property<Element.UnderlyingCollection?>(nil)
         let disposable = CompositeDisposable()
 
         disposable += outlineView.reactive.delegate.feed(
             property: dataSource,
             to: #selector(NSOutlineViewDelegate.outlineView(_:heightOfRowByItem:)),
-            map: { (dataSource: UnderlyingTreeNode?, outlineView: NSOutlineView, item: UnderlyingTreeNode.Element?) -> CGFloat in
+            map: { (dataSource: Element.UnderlyingCollection?, outlineView: NSOutlineView, item: Element.UnderlyingCollection.Value?) -> CGFloat in
                 guard let dataSource = dataSource else { return outlineView.rowHeight }
                 return binder.height(for: item, outlineView: outlineView, dataSource: dataSource) ?? outlineView.rowHeight
             }
@@ -116,7 +114,7 @@ public extension SignalProtocol where Element: ObservableTreeEventProtocol, Erro
         disposable += outlineView.reactive.delegate.feed(
             property: dataSource,
             to: #selector(NSOutlineViewDelegate.outlineView(_:viewFor:item:)),
-            map: { (dataSource: UnderlyingTreeNode?, outlineView: NSOutlineView, tableColumn: NSTableColumn, item: UnderlyingTreeNode.Element?) -> NSView? in
+            map: { (dataSource: Element.UnderlyingCollection?, outlineView: NSOutlineView, tableColumn: NSTableColumn, item: Element.UnderlyingCollection.Value?) -> NSView? in
                 guard let dataSource = dataSource else { return nil }
                 return binder.cell(for: item, tableColumn: tableColumn, outlineView: outlineView, dataSource: dataSource)
             }
@@ -125,23 +123,23 @@ public extension SignalProtocol where Element: ObservableTreeEventProtocol, Erro
         disposable += outlineView.reactive.dataSource.feed(
             property: dataSource,
             to: #selector(NSOutlineViewDataSource.outlineView(_:numberOfChildrenOfItem:)),
-            map: { (dataSource: UnderlyingTreeNode?, _: NSOutlineView, item: UnderlyingTreeNode.Element?) -> Int in
+            map: { (dataSource: Element.UnderlyingCollection?, _: NSOutlineView, item: Element.UnderlyingCollection?) -> Int in
                 guard let dataSource = dataSource else { return 0 }
-                return item?.count ?? dataSource.count
+                return item?.children.count ?? dataSource.count // TODO check if this is correct
             }
         )
 
         disposable += outlineView.reactive.dataSource.feed(
             property: dataSource,
             to: #selector(NSOutlineViewDataSource.outlineView(_:objectValueFor:byItem:)),
-            map: { (_: UnderlyingTreeNode?, _: NSOutlineView, _: NSTableColumn, item: UnderlyingTreeNode.Element?) -> Any? in
-                return item
+            map: { (_: Element.UnderlyingCollection?, _: NSOutlineView, _: NSTableColumn, item: Element.UnderlyingCollection?) -> Any? in
+                return item // TODO check if this is correct
             }
         )
 
         disposable += self.bind(to: outlineView) { outlineView, event in
-            dataSource.value = event.node
-            binder.apply(diff: event.diff, node: event.node, to: outlineView)
+            dataSource.value = event.collection
+            binder.apply(diff: event.diff, rootNode: event.collection, to: outlineView)
         }
 
         return disposable
