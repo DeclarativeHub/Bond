@@ -1,5 +1,5 @@
 language: swift
-osx_image: xcode9
+osx_image: xcode9.3
 
 # Travis is currently experiencing issues with Xcode builds: https://github.com/travis-ci/travis-ci/issues/6675#issuecomment-257964767
 # When this is resolved, remove the entire `before_install` block, as well as the `travis_retry` command below.
