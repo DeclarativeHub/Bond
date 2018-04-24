@@ -28,6 +28,39 @@
 		904B87D11F6FFDEE00FE0A24 /* Differ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 904B87B11F6FFCD300FE0A24 /* Differ.framework */; };
 		904B87D51F6FFE0300FE0A24 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16210A3C1D3EC474004AEDF3 /* Bond.framework */; };
 		904B87D61F6FFE0300FE0A24 /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1652178B1D70591E00C9FAEE /* ReactiveKit.framework */; };
+		90677C01207EDDFD00BC4505 /* ObservableTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C00207EDDFD00BC4505 /* ObservableTree.swift */; };
+		90677C02207EDDFD00BC4505 /* ObservableTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C00207EDDFD00BC4505 /* ObservableTree.swift */; };
+		90677C03207EDDFD00BC4505 /* ObservableTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C00207EDDFD00BC4505 /* ObservableTree.swift */; };
+		90677C05207EDE0800BC4505 /* MutableObservableTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C04207EDE0800BC4505 /* MutableObservableTree.swift */; };
+		90677C06207EDE0800BC4505 /* MutableObservableTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C04207EDE0800BC4505 /* MutableObservableTree.swift */; };
+		90677C07207EDE0800BC4505 /* MutableObservableTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C04207EDE0800BC4505 /* MutableObservableTree.swift */; };
+		90677C0D207EDE2000BC4505 /* ObservableTreeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C0C207EDE2000BC4505 /* ObservableTreeEvent.swift */; };
+		90677C0E207EDE2000BC4505 /* ObservableTreeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C0C207EDE2000BC4505 /* ObservableTreeEvent.swift */; };
+		90677C0F207EDE2000BC4505 /* ObservableTreeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C0C207EDE2000BC4505 /* ObservableTreeEvent.swift */; };
+		90677C11207EE44B00BC4505 /* TreeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C10207EE44B00BC4505 /* TreeProtocol.swift */; };
+		90677C12207EE44B00BC4505 /* TreeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C10207EE44B00BC4505 /* TreeProtocol.swift */; };
+		90677C13207EE44B00BC4505 /* TreeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C10207EE44B00BC4505 /* TreeProtocol.swift */; };
+		90677C21207F248000BC4505 /* IndexPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C20207F248000BC4505 /* IndexPath.swift */; };
+		90677C22207F248000BC4505 /* IndexPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C20207F248000BC4505 /* IndexPath.swift */; };
+		90677C23207F248000BC4505 /* IndexPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C20207F248000BC4505 /* IndexPath.swift */; };
+		90677C25207F2C5C00BC4505 /* MutableObservableTree+MutableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C24207F2C5C00BC4505 /* MutableObservableTree+MutableCollection.swift */; };
+		90677C26207F2C5C00BC4505 /* MutableObservableTree+MutableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C24207F2C5C00BC4505 /* MutableObservableTree+MutableCollection.swift */; };
+		90677C27207F2C5C00BC4505 /* MutableObservableTree+MutableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C24207F2C5C00BC4505 /* MutableObservableTree+MutableCollection.swift */; };
+		90677C29207F2E0900BC4505 /* MutableObservableTree+RangeReplaceableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C28207F2E0900BC4505 /* MutableObservableTree+RangeReplaceableCollection.swift */; };
+		90677C2A207F2E0900BC4505 /* MutableObservableTree+RangeReplaceableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C28207F2E0900BC4505 /* MutableObservableTree+RangeReplaceableCollection.swift */; };
+		90677C2B207F2E0900BC4505 /* MutableObservableTree+RangeReplaceableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C28207F2E0900BC4505 /* MutableObservableTree+RangeReplaceableCollection.swift */; };
+		90677C2D207F34AC00BC4505 /* ObservableTree+Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C2C207F34AC00BC4505 /* ObservableTree+Array.swift */; };
+		90677C2E207F34AC00BC4505 /* ObservableTree+Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C2C207F34AC00BC4505 /* ObservableTree+Array.swift */; };
+		90677C2F207F34AC00BC4505 /* ObservableTree+Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C2C207F34AC00BC4505 /* ObservableTree+Array.swift */; };
+		90677C35207F37B600BC4505 /* ObservableTree+Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C34207F37B600BC4505 /* ObservableTree+Set.swift */; };
+		90677C36207F37B600BC4505 /* ObservableTree+Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C34207F37B600BC4505 /* ObservableTree+Set.swift */; };
+		90677C37207F37B600BC4505 /* ObservableTree+Set.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C34207F37B600BC4505 /* ObservableTree+Set.swift */; };
+		90677C3D207F38AE00BC4505 /* NSOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C3C207F38AE00BC4505 /* NSOutlineView.swift */; };
+		90677C3E207F38AE00BC4505 /* NSOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C3C207F38AE00BC4505 /* NSOutlineView.swift */; };
+		90677C3F207F38AE00BC4505 /* NSOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C3C207F38AE00BC4505 /* NSOutlineView.swift */; };
+		90677C45207F391700BC4505 /* NSOutlineView+ObservableTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C44207F391700BC4505 /* NSOutlineView+ObservableTree.swift */; };
+		90677C46207F391700BC4505 /* NSOutlineView+ObservableTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C44207F391700BC4505 /* NSOutlineView+ObservableTree.swift */; };
+		90677C47207F391700BC4505 /* NSOutlineView+ObservableTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C44207F391700BC4505 /* NSOutlineView+ObservableTree.swift */; };
 		90A443061E9055D100D611FE /* NSAppearanceCustomization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D251E8F0B1D000077C8 /* NSAppearanceCustomization.swift */; };
 		90A443071E9055D100D611FE /* NSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D261E8F0B1D000077C8 /* NSButton.swift */; };
 		90A443081E9055D100D611FE /* NSColorWell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D271E8F0B1D000077C8 /* NSColorWell.swift */; };
@@ -364,6 +397,17 @@
 		16D30EAE1D6591D300C2435D /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		16D30ED61D65D11900C2435D /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		75CA9E9120678E600011E5BB /* UISearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISearchBar.swift; sourceTree = "<group>"; };
+		90677C00207EDDFD00BC4505 /* ObservableTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableTree.swift; sourceTree = "<group>"; };
+		90677C04207EDE0800BC4505 /* MutableObservableTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutableObservableTree.swift; sourceTree = "<group>"; };
+		90677C0C207EDE2000BC4505 /* ObservableTreeEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableTreeEvent.swift; sourceTree = "<group>"; };
+		90677C10207EE44B00BC4505 /* TreeProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeProtocol.swift; sourceTree = "<group>"; };
+		90677C20207F248000BC4505 /* IndexPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexPath.swift; sourceTree = "<group>"; };
+		90677C24207F2C5C00BC4505 /* MutableObservableTree+MutableCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MutableObservableTree+MutableCollection.swift"; sourceTree = "<group>"; };
+		90677C28207F2E0900BC4505 /* MutableObservableTree+RangeReplaceableCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MutableObservableTree+RangeReplaceableCollection.swift"; sourceTree = "<group>"; };
+		90677C2C207F34AC00BC4505 /* ObservableTree+Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableTree+Array.swift"; sourceTree = "<group>"; };
+		90677C34207F37B600BC4505 /* ObservableTree+Set.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableTree+Set.swift"; sourceTree = "<group>"; };
+		90677C3C207F38AE00BC4505 /* NSOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSOutlineView.swift; sourceTree = "<group>"; };
+		90677C44207F391700BC4505 /* NSOutlineView+ObservableTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSOutlineView+ObservableTree.swift"; sourceTree = "<group>"; };
 		90A3FAC21E0C8D8B0086A7F1 /* Differ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Differ.xcodeproj; path = Carthage/Checkouts/Differ/Differ.xcodeproj; sourceTree = "<group>"; };
 		90C04D021E8F0A97000077C8 /* Bond-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Bond-Info.plist"; sourceTree = "<group>"; };
 		90C04D031E8F0A97000077C8 /* Bond.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bond.h; sourceTree = "<group>"; };
@@ -588,6 +632,21 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		90677BFB207EDDE500BC4505 /* ObservableTree */ = {
+			isa = PBXGroup;
+			children = (
+				90677C10207EE44B00BC4505 /* TreeProtocol.swift */,
+				90677C0C207EDE2000BC4505 /* ObservableTreeEvent.swift */,
+				90677C00207EDDFD00BC4505 /* ObservableTree.swift */,
+				90677C2C207F34AC00BC4505 /* ObservableTree+Array.swift */,
+				90677C34207F37B600BC4505 /* ObservableTree+Set.swift */,
+				90677C04207EDE0800BC4505 /* MutableObservableTree.swift */,
+				90677C24207F2C5C00BC4505 /* MutableObservableTree+MutableCollection.swift */,
+				90677C28207F2E0900BC4505 /* MutableObservableTree+RangeReplaceableCollection.swift */,
+			);
+			path = ObservableTree;
+			sourceTree = "<group>";
+		};
 		90C04D011E8F0A97000077C8 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -630,6 +689,7 @@
 				90C04D581E8F0B5E000077C8 /* AppKit */,
 				90C04D561E8F0B31000077C8 /* Collections */,
 				ECF15FD9207A036D00DEB77D /* ObservableCollection */,
+				90677BFB207EDDE500BC4505 /* ObservableTree */,
 				90C04D591E8F0B75000077C8 /* Shared */,
 				90C04D571E8F0B4A000077C8 /* UIKit */,
 			);
@@ -688,6 +748,8 @@
 				90C04D281E8F0B1D000077C8 /* NSControl.swift */,
 				90C04D291E8F0B1D000077C8 /* NSImageView.swift */,
 				90C04D2B1E8F0B1D000077C8 /* NSMenuItem.swift */,
+				90677C3C207F38AE00BC4505 /* NSOutlineView.swift */,
+				90677C44207F391700BC4505 /* NSOutlineView+ObservableTree.swift */,
 				90C04D2E1E8F0B1D000077C8 /* NSPopUpButton.swift */,
 				90C04D2F1E8F0B1D000077C8 /* NSProgressIndicator.swift */,
 				90C04D301E8F0B1D000077C8 /* NSSegmentedControl.swift */,
@@ -706,6 +768,7 @@
 			isa = PBXGroup;
 			children = (
 				90C04D211E8F0B1D000077C8 /* CALayer.swift */,
+				90677C20207F248000BC4505 /* IndexPath.swift */,
 				90C04D241E8F0B1D000077C8 /* NotificationCenter.swift */,
 				90C04D2A1E8F0B1D000077C8 /* NSLayoutConstraint.swift */,
 				90C04D2D1E8F0B1D000077C8 /* NSObject.swift */,
@@ -1040,6 +1103,9 @@
 				90C04D791E8F0B89000077C8 /* NSObject.swift in Sources */,
 				90C04D761E8F0B89000077C8 /* CALayer.swift in Sources */,
 				90C04DB81E8F0B97000077C8 /* UILabel.swift in Sources */,
+				90677C25207F2C5C00BC4505 /* MutableObservableTree+MutableCollection.swift in Sources */,
+				90677C05207EDE0800BC4505 /* MutableObservableTree.swift in Sources */,
+				90677C2D207F34AC00BC4505 /* ObservableTree+Array.swift in Sources */,
 				90C04DC11E8F0B97000077C8 /* UITableView.swift in Sources */,
 				ECF15FCA2079108D00DEB77D /* CollectionOperation+Differ.swift in Sources */,
 				90A443141E9055D200D611FE /* NSView.swift in Sources */,
@@ -1076,12 +1142,19 @@
 				90C04DB01E8F0B97000077C8 /* UIBarButtonItem.swift in Sources */,
 				EC6A35DE2075DD0200E8F805 /* ObservableCollection.swift in Sources */,
 				90A443091E9055D100D611FE /* NSControl.swift in Sources */,
+				90677C35207F37B600BC4505 /* ObservableTree+Set.swift in Sources */,
+				90677C21207F248000BC4505 /* IndexPath.swift in Sources */,
 				EC6A35E42075E00D00E8F805 /* CollectionOperation+Diff.swift in Sources */,
+				90677C29207F2E0900BC4505 /* MutableObservableTree+RangeReplaceableCollection.swift in Sources */,
+				90677C01207EDDFD00BC4505 /* ObservableTree.swift in Sources */,
+				90677C11207EE44B00BC4505 /* TreeProtocol.swift in Sources */,
 				90C04D7A1E8F0B89000077C8 /* SignalProtocol.swift in Sources */,
 				90C04DBA1E8F0B97000077C8 /* UINavigationItem.swift in Sources */,
 				ECAFB8D9200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */,
+				90677C45207F391700BC4505 /* NSOutlineView+ObservableTree.swift in Sources */,
 				90C04DB71E8F0B97000077C8 /* UIImageView.swift in Sources */,
 				90C04DBF1E8F0B97000077C8 /* UIStepper.swift in Sources */,
+				90677C3D207F38AE00BC4505 /* NSOutlineView.swift in Sources */,
 				90A4430E1E9055D100D611FE /* NSSegmentedControl.swift in Sources */,
 				ECC1A6D0207A18DC00AE762C /* NSTableView+ObservableCollection.swift in Sources */,
 				90A4430A1E9055D100D611FE /* NSImageView.swift in Sources */,
@@ -1100,6 +1173,7 @@
 				90C04D781E8F0B89000077C8 /* NSObject+KVO.swift in Sources */,
 				ECF15FD62079FEE600DEB77D /* MutableObservableCollection.swift in Sources */,
 				ECF15FC22079101B00DEB77D /* CollectionOperation+Patch.swift in Sources */,
+				90677C0D207EDE2000BC4505 /* ObservableTreeEvent.swift in Sources */,
 				90A443081E9055D100D611FE /* NSColorWell.swift in Sources */,
 				90C04DBB1E8F0B97000077C8 /* UIProgressView.swift in Sources */,
 				ECF15FD22079FE5F00DEB77D /* ObservableCollection+RangeReplaceableCollection.swift in Sources */,
@@ -1141,6 +1215,7 @@
 			files = (
 				90A4437D1E91391B00D611FE /* BNDProtocolProxyBase.m in Sources */,
 				ECC1A6D1207A18DC00AE762C /* NSTableView+ObservableCollection.swift in Sources */,
+				90677C22207F248000BC4505 /* IndexPath.swift in Sources */,
 				90A443361E9055D800D611FE /* UISwitch.swift in Sources */,
 				90A443271E9055D800D611FE /* UIBarItem.swift in Sources */,
 				90C04D861E8F0B8D000077C8 /* NSStatusBarButton.swift in Sources */,
@@ -1151,24 +1226,32 @@
 				ECF15FCF2079110D00DEB77D /* CollectionOperation.swift in Sources */,
 				90C04D6E1E8F0B89000077C8 /* NSObject.swift in Sources */,
 				EC6A35EA2076054F00E8F805 /* CollectionOperation+Diff.swift in Sources */,
+				90677C06207EDE0800BC4505 /* MutableObservableTree.swift in Sources */,
+				90677C3E207F38AE00BC4505 /* NSOutlineView.swift in Sources */,
+				90677C02207EDDFD00BC4505 /* ObservableTree.swift in Sources */,
 				90C04D7B1E8F0B8D000077C8 /* NSAppearanceCustomization.swift in Sources */,
 				90A4432C1E9055D800D611FE /* UIGestureRecognizer.swift in Sources */,
+				90677C12207EE44B00BC4505 /* TreeProtocol.swift in Sources */,
 				90C04D8A1E8F0B8D000077C8 /* NSView.swift in Sources */,
 				90C04D6B1E8F0B89000077C8 /* CALayer.swift in Sources */,
 				90A443311E9055D800D611FE /* UIProgressView.swift in Sources */,
 				ECF15FD72079FEE600DEB77D /* MutableObservableCollection.swift in Sources */,
 				9025DCAB1F981693007B7689 /* Property.swift in Sources */,
+				90677C26207F2C5C00BC4505 /* MutableObservableTree+MutableCollection.swift in Sources */,
 				90A4432E1E9055D800D611FE /* UILabel.swift in Sources */,
 				90C04D681E8F0B89000077C8 /* Observable.swift in Sources */,
 				90A443331E9055D800D611FE /* UISegmentedControl.swift in Sources */,
+				90677C46207F391700BC4505 /* NSOutlineView+ObservableTree.swift in Sources */,
 				EC6A35E82076054F00E8F805 /* ObservableCollection.swift in Sources */,
 				90C04D851E8F0B8D000077C8 /* NSSlider.swift in Sources */,
+				90677C36207F37B600BC4505 /* ObservableTree+Set.swift in Sources */,
 				90A443261E9055D800D611FE /* UIBarButtonItem.swift in Sources */,
 				90C04D871E8F0B8D000077C8 /* NSTableView.swift in Sources */,
 				90C04D691E8F0B89000077C8 /* ProtocolProxy.swift in Sources */,
 				90A4432D1E9055D800D611FE /* UIImageView.swift in Sources */,
 				90C04D7C1E8F0B8D000077C8 /* NSButton.swift in Sources */,
 				90A443381E9055D800D611FE /* UITextField.swift in Sources */,
+				90677C0E207EDE2000BC4505 /* ObservableTreeEvent.swift in Sources */,
 				90C04D881E8F0B8D000077C8 /* NSTextField.swift in Sources */,
 				90A4432A1E9055D800D611FE /* UIControl.swift in Sources */,
 				90C04D661E8F0B89000077C8 /* DataSource.swift in Sources */,
@@ -1178,6 +1261,7 @@
 				90C04D6F1E8F0B89000077C8 /* SignalProtocol.swift in Sources */,
 				ECF15FD32079FE5F00DEB77D /* ObservableCollection+RangeReplaceableCollection.swift in Sources */,
 				90C04D901E8F0B91000077C8 /* ObservableArray.swift in Sources */,
+				90677C2E207F34AC00BC4505 /* ObservableTree+Array.swift in Sources */,
 				90C04D6A1E8F0B89000077C8 /* QueryableDataSource.swift in Sources */,
 				90A443391E9055D800D611FE /* UITextView.swift in Sources */,
 				90C04D7F1E8F0B8D000077C8 /* NSImageView.swift in Sources */,
@@ -1201,6 +1285,7 @@
 				90C04D6C1E8F0B89000077C8 /* NotificationCenter.swift in Sources */,
 				90A443251E9055D800D611FE /* UIApplication.swift in Sources */,
 				90C04D6D1E8F0B89000077C8 /* NSObject+KVO.swift in Sources */,
+				90677C2A207F2E0900BC4505 /* MutableObservableTree+RangeReplaceableCollection.swift in Sources */,
 				90C04D8F1E8F0B91000077C8 /* Observable2DArray.swift in Sources */,
 				90A443241E9055D800D611FE /* UIActivityIndicatorView.swift in Sources */,
 				90C04D921E8F0B91000077C8 /* ObservableSet.swift in Sources */,
@@ -1220,6 +1305,7 @@
 			files = (
 				90A4437E1E91391D00D611FE /* BNDProtocolProxyBase.m in Sources */,
 				ECC1A6D2207A18DC00AE762C /* NSTableView+ObservableCollection.swift in Sources */,
+				90677C23207F248000BC4505 /* IndexPath.swift in Sources */,
 				90A4431E1E9055D200D611FE /* NSSlider.swift in Sources */,
 				ECAFB8D6200A7E3900EE0669 /* BNDInvocation.swift in Sources */,
 				90C04D981E8F0B96000077C8 /* UIApplication.swift in Sources */,
@@ -1230,24 +1316,32 @@
 				ECF15FD02079110D00DEB77D /* CollectionOperation.swift in Sources */,
 				90C04DAA1E8F0B96000077C8 /* UITableView.swift in Sources */,
 				EC6A35ED2076055000E8F805 /* CollectionOperation+Diff.swift in Sources */,
+				90677C07207EDE0800BC4505 /* MutableObservableTree.swift in Sources */,
+				90677C3F207F38AE00BC4505 /* NSOutlineView.swift in Sources */,
+				90677C03207EDDFD00BC4505 /* ObservableTree.swift in Sources */,
 				90A443231E9055D200D611FE /* NSView.swift in Sources */,
 				90C04D9D1E8F0B96000077C8 /* UIControl.swift in Sources */,
+				90677C13207EE44B00BC4505 /* TreeProtocol.swift in Sources */,
 				90C04DA91E8F0B96000077C8 /* UISwitch.swift in Sources */,
 				90C04D5D1E8F0B88000077C8 /* Observable.swift in Sources */,
 				90A4431F1E9055D200D611FE /* NSStatusBarButton.swift in Sources */,
 				ECF15FD82079FEE600DEB77D /* MutableObservableCollection.swift in Sources */,
 				90C04D8C1E8F0B91000077C8 /* ObservableArray.swift in Sources */,
+				90677C27207F2C5C00BC4505 /* MutableObservableTree+MutableCollection.swift in Sources */,
 				90C04D5E1E8F0B88000077C8 /* ProtocolProxy.swift in Sources */,
 				90C04D971E8F0B96000077C8 /* UIActivityIndicatorView.swift in Sources */,
 				90C04D9A1E8F0B96000077C8 /* UIBarItem.swift in Sources */,
+				90677C47207F391700BC4505 /* NSOutlineView+ObservableTree.swift in Sources */,
 				EC6A35EB2076055000E8F805 /* ObservableCollection.swift in Sources */,
 				90C04DAD1E8F0B96000077C8 /* UIView.swift in Sources */,
+				90677C37207F37B600BC4505 /* ObservableTree+Set.swift in Sources */,
 				EC86E9B01E9145CC008563B2 /* UIAccessibilityIdentification.swift in Sources */,
 				90A4431C1E9055D200D611FE /* NSProgressIndicator.swift in Sources */,
 				90C04DA21E8F0B96000077C8 /* UINavigationBar.swift in Sources */,
 				9025DCB01F981694007B7689 /* Property.swift in Sources */,
 				90C04DA71E8F0B96000077C8 /* UISlider.swift in Sources */,
 				90C04DA51E8F0B96000077C8 /* UIRefreshControl.swift in Sources */,
+				90677C0F207EDE2000BC4505 /* ObservableTreeEvent.swift in Sources */,
 				90C04D5B1E8F0B88000077C8 /* DataSource.swift in Sources */,
 				90C04DA61E8F0B96000077C8 /* UISegmentedControl.swift in Sources */,
 				90A443161E9055D200D611FE /* NSButton.swift in Sources */,
@@ -1257,6 +1351,7 @@
 				90C04DAC1E8F0B96000077C8 /* UITextView.swift in Sources */,
 				ECF15FD42079FE5F00DEB77D /* ObservableCollection+RangeReplaceableCollection.swift in Sources */,
 				90A443221E9055D200D611FE /* NSTextView.swift in Sources */,
+				90677C2F207F34AC00BC4505 /* ObservableTree+Array.swift in Sources */,
 				90C04D9B1E8F0B96000077C8 /* UIButton.swift in Sources */,
 				070FE2781F0138190031B7BD /* NSLayoutConstraint.swift in Sources */,
 				90C04D9F1E8F0B96000077C8 /* UIGestureRecognizer.swift in Sources */,
@@ -1280,6 +1375,7 @@
 				90C04D9E1E8F0B96000077C8 /* UIDatePicker.swift in Sources */,
 				90C04D8D1E8F0B91000077C8 /* ObservableDictionary.swift in Sources */,
 				90C04D8B1E8F0B91000077C8 /* Observable2DArray.swift in Sources */,
+				90677C2B207F2E0900BC4505 /* MutableObservableTree+RangeReplaceableCollection.swift in Sources */,
 				90A443201E9055D200D611FE /* NSTableView.swift in Sources */,
 				90C04D5F1E8F0B88000077C8 /* QueryableDataSource.swift in Sources */,
 				90C04D611E8F0B88000077C8 /* NotificationCenter.swift in Sources */,
