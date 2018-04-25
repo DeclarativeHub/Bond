@@ -27,7 +27,7 @@ public protocol TreeNodeProtocol: MutableCollection where Index == IndexPath, El
     associatedtype Value
     var value: Value { get }
 
-    associatedtype Children: Collection where Children.Index == Int, Children.Element == Self
+    associatedtype Children: Collection where Children.Element == Self
     var children: Children { get }
 }
 
