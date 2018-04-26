@@ -13,7 +13,7 @@ install:
 
 script:
   - set -o pipefail && travis_retry xcodebuild -project Bond.xcodeproj -scheme Bond-iOS -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone X,OS=11.3' test | xcpretty
-  - swift test
+  - swift test -Xswiftc "-target" -Xswiftc "x86_64-apple-macosx10.11"
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
