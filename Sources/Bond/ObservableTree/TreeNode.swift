@@ -22,6 +22,8 @@
 //  THE SOFTWARE.
 //
 
+import Foundation
+
 public struct TreeNode<Value>: RangeReplacableTreeNode, CustomDebugStringConvertible {
 
     public var value: Value

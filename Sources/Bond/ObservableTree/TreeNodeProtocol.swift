@@ -22,6 +22,8 @@
 //  THE SOFTWARE.
 //
 
+import Foundation
+
 public protocol TreeNodeProtocol: MutableCollection where Index == IndexPath, Element == Self {
 
     associatedtype Value
