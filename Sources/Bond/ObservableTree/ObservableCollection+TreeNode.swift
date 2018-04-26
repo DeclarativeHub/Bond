@@ -70,12 +70,38 @@ extension MutableObservableCollection where UnderlyingCollection: RangeReplacabl
         }
     }
 
+    /// Move the element at index `i` to index `toIndex`.
+    public func move(from fromIndex: IndexPath, to toIndex: IndexPath) {
+        descriptiveUpdate { (collection) -> [CollectionOperation<IndexPath>] in
+            collection.move(from: fromIndex, to: toIndex)
+            return [.move(from: fromIndex, to: toIndex)]
+        }
+    }
+
+    public func move(from fromIndices: [IndexPath], to toIndex: IndexPath) {
+        descriptiveUpdate { (collection) -> [CollectionOperation<IndexPath>] in
+            collection.move(from: fromIndices, to: toIndex)
+            return fromIndices.enumerated().map {
+                .move(from: $0.element, to: toIndex.advanced(by: $0.offset))
+            }
+        }
+    }
+
     /// Remove and return the element at index i.
     @discardableResult
     public func remove(at index: IndexPath) -> UnderlyingCollection {
         return descriptiveUpdate { (collection) -> ([CollectionOperation<IndexPath>], UnderlyingCollection) in
             let element = collection.remove(at: index)
             return ([.delete(at: index)], element)
+        }
+    }
+
+    /// Remove all elements from the collection.
+    public func removeAll() {
+        descriptiveUpdate { (collection) -> [CollectionOperation<IndexPath>] in
+            let diff = collection.indices.map { CollectionOperation.delete(at: $0) }
+            collection.removeAll()
+            return diff
         }
     }
 }

@@ -50,10 +50,28 @@ extension RangeReplacableTreeNode {
         replaceSubrange(indexPath..<indexPath, with: newNodes)
     }
 
+    public mutating func move(from fromIndex: IndexPath, to toIndex: IndexPath) {
+        let subtree = remove(at: fromIndex)
+        insert(subtree, at: toIndex)
+    }
+
+    public mutating func move(from fromIndices: [IndexPath], to toIndex: IndexPath) {
+        let items = fromIndices.map { self[$0] }
+        for index in fromIndices.sorted().reversed() {
+            remove(at: index)
+        }
+        insert(contentsOf: items, at: toIndex)
+    }
+
+    @discardableResult
     public mutating func remove(at indexPath: IndexPath) -> Self {
         let subtree = self[indexPath]
         replaceSubrange(indexPath..<index(after: indexPath), with: [])
         return subtree
+    }
+
+    public mutating func removeAll() {
+        replaceSubrange(startIndex..<endIndex, with: [])
     }
 }
 
