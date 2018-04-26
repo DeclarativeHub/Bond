@@ -22,6 +22,8 @@
 //  THE SOFTWARE.
 //
 
+import Foundation
+
 extension ObservableCollection where UnderlyingCollection: TreeNodeProtocol {
 
     public var rootNode: UnderlyingCollection {

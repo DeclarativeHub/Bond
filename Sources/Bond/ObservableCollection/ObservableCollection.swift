@@ -23,6 +23,7 @@
 //
 
 import Differ
+import Foundation
 import ReactiveKit
 
 public class ObservableCollection<UnderlyingCollection: Collection>: SignalProtocol {
