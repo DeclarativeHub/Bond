@@ -52,20 +52,106 @@ extension CollectionOperation {
     }
 }
 
-extension CollectionOperation where Index: Strideable {
+extension CollectionOperation {
 
     /// Merge the given diffs into a single diff.
-    /// - Complexity: O(Dˆ2) where D is the total number of operations in the given diffs.
-    public static func merge(diffs: [[CollectionOperation<Index>]]) -> [CollectionOperation<Index>] {
-        let patch = diffs.flatMap({ $0.patch })
+    public static func mergeDiffsByAnnihilating(_ diffs: [[CollectionOperation<Index>]]) -> [CollectionOperation<Index>] {
         var diff: [DiffElement] = []
-        for operation in patch {
-            operation.append(to: &diff)
+        for operation in diffs.flatMap({ $0 }) {
+            append(operation, to: &diff)
         }
         return diff.map { $0.asCollectionOperation }
     }
 
-    public func append(to diff: inout [DiffElement]) {
+    private static func append(_ operation: CollectionOperation<Index>, to diff: inout [DiffElement]) {
+        switch operation {
+        case .insert(let at):
+            diff.append(DiffElement(kind: .insert, sourceIndex: nil, destinationIndex: at))
+        case .delete(let at):
+            var isAnnihilated: Bool = false
+            if let indexOfConflicted = diff.index(where: { $0.destinationIndex == at }) {
+                let conflicted = diff[indexOfConflicted]
+                switch conflicted.kind {
+                case .insert:
+                    diff.remove(at: indexOfConflicted)
+                    isAnnihilated = true
+                case .update:
+                    diff.remove(at: indexOfConflicted)
+                case .move:
+                    diff[indexOfConflicted] = DiffElement(kind: .delete, sourceIndex: conflicted.sourceIndex, destinationIndex: nil)
+                    isAnnihilated = true
+                default:
+                    break
+                }
+            }
+            if !isAnnihilated {
+                diff.append(DiffElement(kind: .delete, sourceIndex: at, destinationIndex: nil))
+            }
+        case .update(let at):
+            var isAnnihilated: Bool = false
+            if let indexOfConflicted = diff.index(where: { $0.destinationIndex == at }) {
+                let conflicted = diff[indexOfConflicted]
+                switch conflicted.kind {
+                case .insert:
+                    isAnnihilated = true
+                case .update:
+                    isAnnihilated = true
+                case .move:
+                    diff[indexOfConflicted] = DiffElement(kind: .delete, sourceIndex: conflicted.sourceIndex, destinationIndex: nil)
+                    diff.append(DiffElement(kind: .insert, sourceIndex: nil, destinationIndex: at))
+                    isAnnihilated = true
+                default:
+                    break
+                }
+            }
+            if !isAnnihilated {
+                diff.append(DiffElement(kind: .update, sourceIndex: at, destinationIndex: at))
+            }
+        case .move(let from, let to):
+            var isAnnihilated: Bool = false
+            if let indexOfConflicted = diff.index(where: { $0.destinationIndex == from }) {
+                let conflicted = diff[indexOfConflicted]
+                switch conflicted.kind {
+                case .insert:
+                    diff[indexOfConflicted] = DiffElement(kind: .insert, sourceIndex: nil, destinationIndex: to)
+                    isAnnihilated = true
+                case .update:
+                    diff[indexOfConflicted] = DiffElement(kind: .delete, sourceIndex: conflicted.sourceIndex, destinationIndex: nil)
+                    diff.append(DiffElement(kind: .insert, sourceIndex: nil, destinationIndex: to))
+                    isAnnihilated = true
+                case .move:
+                    if to == conflicted.sourceIndex! {
+                        diff.remove(at: indexOfConflicted)
+                        isAnnihilated = true
+                    } else {
+                        diff[indexOfConflicted] = DiffElement(kind: .move, sourceIndex: conflicted.sourceIndex, destinationIndex: to)
+                        isAnnihilated = true
+                    }
+                default:
+                    break
+                }
+            }
+            if !isAnnihilated {
+                diff.append(DiffElement(kind: .move, sourceIndex: from, destinationIndex: to))
+            }
+        }
+    }
+}
+
+extension CollectionOperation where Index: Strideable {
+
+    /// Merge the given diffs into a single diff.
+    /// - Complexity: O(Dˆ2) where D is the total number of operations in the given diffs.
+    public static func mergeDiffsByShiftingAndAnnihilating(_ diffs: [[CollectionOperation<Index>]]) -> [CollectionOperation<Index>] {
+        let patch = diffs.flatMap({ $0.patch })
+        var diff: [DiffElement] = []
+        for operation in patch {
+            append(operation, to: &diff)
+        }
+        return diff.map { $0.asCollectionOperation }
+    }
+
+    private static func append(_ operation: CollectionOperation<Index>, to diff: inout [DiffElement]) {
 
         func shiftDestinationIndex(by shift: Index.Stride, iff test: (Index) -> Bool) {
             for index in 0..<diff.count {
@@ -97,7 +183,7 @@ extension CollectionOperation where Index: Strideable {
             return index
         }
 
-        switch self {
+        switch operation {
         case .insert(let at):
             shiftDestinationIndex(by: 1, iff: { $0 >= at })
             diff.append(DiffElement(kind: .insert, sourceIndex: nil, destinationIndex: at))
@@ -175,57 +261,3 @@ extension CollectionOperation where Index: Strideable {
         }
     }
 }
-
-extension CollectionOperation {
-
-    /// Merge the given diffs into a single diff.
-    public static func merge(diffs: [[CollectionOperation<Index>]]) -> [CollectionOperation<Index>] {
-        let diff = diffs.flatMap { $0 }
-        // TODO: handle special cases
-        return diff
-    }
-}
-
-//extension CollectionOperation {
-//
-//    /// Merge the receiver with the given operation.
-//    /// Potentially consumes the receiver, the given operation or both.
-//    /// For example `I(3).merge(with: D(3))` annihilates both operations resulting in `(nil, nil)`.
-//    func merging(with other: CollectionOperation<Index>) -> (existing: CollectionOperation<Index>?, new: CollectionOperation<Index>?) {
-//        switch (self, other) {
-//        // Insert:
-//        case (.insert(let i1), .delete(let i2)) where i1 == i2:
-//            return (nil, nil)
-//        case (.insert(let i1), .update(let i2)) where i1 == i2:
-//            return (self, nil)
-//        case (.insert(let i1), .move(let i2from, let i2to)) where i1 == i2from:
-//            return (.insert(at: i2to), nil)
-//        case (.insert, _):
-//            return (self, other)
-//        // Delete:
-//        case (.delete, _):
-//            return (self, other)
-//        // Update:
-//        case (.update(let i1), .delete(let i2)) where i1 == i2:
-//            return (nil, other)
-//        case (.update(let i1), .update(let i2)) where i1 == i2:
-//            return (self, nil)
-//        case (.update(let i1), .move(let i2from, let i2to)) where i1 == i2from:
-//            return (.delete(at: i1), .insert(at: i2to))
-//        case (.update, _):
-//            return (self, other)
-//        // Move:
-//        case (.move(let i1from, let i1to), .delete(let i2)) where i1to == i2:
-//            return (.delete(at: i1from), nil)
-//        case (.move(let i1from, let i1to), .update(let i2)) where i1to == i2:
-//            return (.delete(at: i1from), .insert(at: i2))
-//        case (.move(let i1from, let i1to), .move(let i2from, let i2to)) where i1to == i2from && i2to == i1from:
-//            return (nil, nil)
-//        case (.move(let i1from, let i1to), .move(let i2from, let i2to)) where i1to == i2from && i2to != i1from:
-//            return (.move(from: i1from, to: i2to), nil)
-//        case (.move, _):
-//            return (self, other)
-//        }
-//    }
-//}
-
