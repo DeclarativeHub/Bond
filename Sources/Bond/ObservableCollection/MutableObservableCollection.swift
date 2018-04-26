@@ -51,26 +51,18 @@ public class MutableObservableCollection<UnderlyingCollection: Collection>: Obse
         lock.lock(); defer { lock.unlock() }
         update(&collection)
     }
-}
 
-extension MutableObservableCollection where UnderlyingCollection: ExpressibleByArrayLiteral {
 
-    public convenience init() {
-        self.init([])
+    /// Replace the underlying collection with the given collection. Emits an event with the empty diff.
+    public func replace(with newCollection: UnderlyingCollection) {
+        descriptiveUpdate { (collection) -> [CollectionOperation<UnderlyingCollection.Index>] in
+            collection = newCollection
+            return []
+        }
     }
-}
 
-extension MutableObservableCollection where UnderlyingCollection: ExpressibleByDictionaryLiteral {
-
-    public convenience init() {
-        self.init([:])
-    }
-}
-
-extension MutableObservableCollection {
-
-    /// Performs batched updates on the collection by merging subsequent diffs using the given `mergeDiffs` function.
-    private func batchUpdate(_ update: (MutableObservableCollection<UnderlyingCollection>) -> Void, mergeDiffs: ([[CollectionOperation<UnderlyingCollection.Index>]]) -> [CollectionOperation<UnderlyingCollection.Index>]) {
+    /// Perform batched updates on the collection. Emits an event with the combined diff of all made changes.
+    public func batchUpdate(_ update: (MutableObservableCollection<UnderlyingCollection>) -> Void, mergeDiffs: CollectionDiffMerger<UnderlyingCollection>) {
         lock.lock(); defer { lock.unlock() }
 
         // use proxy to collect changes
@@ -84,48 +76,40 @@ extension MutableObservableCollection {
 
         descriptiveUpdate { (collection) -> [CollectionOperation<UnderlyingCollection.Index>] in
             collection = proxy.collection
-            return mergeDiffs(diffs)
+            return mergeDiffs(collection, diffs)
         }
     }
 
     /// Perform batched updates on the collection. Emits an event with the combined diff of all made changes.
-    /// - Complexity: O(Dˆ2) where D is the number of changes made to the collection.
     public func batchUpdate(_ update: (MutableObservableCollection<UnderlyingCollection>) -> Void) {
-        return batchUpdate(update, mergeDiffs: CollectionOperation.merge)
+        batchUpdate(update, mergeDiffs: { _, diffs in CollectionOperation.mergeDiffsByAnnihilating(diffs) })
     }
-
-    /// Replace the underlying collection with the given collection. Emits an event with the empty diff.
-    public func replace(with newCollection: UnderlyingCollection) {
-        descriptiveUpdate { (collection) -> [CollectionOperation<UnderlyingCollection.Index>] in
-            collection = newCollection
-            return []
-        }
-    }
-}
-
-extension MutableObservableCollection where UnderlyingCollection.Index: Strideable {
-
-    /// Perform batched updates on the array. Emits an event with the combined diff of all made changes.
-    /// - Complexity: O(Dˆ2) where D is the number of changes made to the collection.
-    public func batchUpdate(_ update: (MutableObservableCollection<UnderlyingCollection>) -> Void) {
-        return batchUpdate(update, mergeDiffs: CollectionOperation.merge)
-    }
-}
-
-extension MutableObservableCollection where UnderlyingCollection.Element: Equatable, UnderlyingCollection.Index == Int {
 
     /// Replace the underlying collection with the given collection. Setting `performDiff: true` will make the framework
     /// calculate the diff between the existing and new collection and emit an event with the calculated diff.
-    /// - Complexity: O((N+M)*D) if `performDiff: true`, O(1) otherwise.
-    public func replace(with newCollection: UnderlyingCollection, performDiff: Bool) {
+    public func replace(with newCollection: UnderlyingCollection, performDiff: Bool, generateDiff: CollectionDiffer<UnderlyingCollection>) {
         if performDiff {
             descriptiveUpdate { (collection) -> [CollectionOperation<UnderlyingCollection.Index>] in
-                let diff = collection.extendedDiff(newCollection).diff
+                let diff = generateDiff(collection, newCollection)
                 collection = newCollection
                 return diff
             }
         } else {
             replace(with: newCollection)
         }
+    }
+}
+
+extension MutableObservableCollection where UnderlyingCollection: ExpressibleByArrayLiteral {
+
+    public convenience init() {
+        self.init([])
+    }
+}
+
+extension MutableObservableCollection where UnderlyingCollection: ExpressibleByDictionaryLiteral {
+
+    public convenience init() {
+        self.init([:])
     }
 }

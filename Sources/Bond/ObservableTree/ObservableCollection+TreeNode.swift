@@ -81,10 +81,13 @@ extension MutableObservableCollection where UnderlyingCollection: RangeReplacabl
     }
 
     public func move(from fromIndices: [IndexPath], to toIndex: IndexPath) {
+        guard toIndex.count > 0 else {
+            fatalError("Cannot move node(s) to root node.")
+        }
         descriptiveUpdate { (collection) -> [CollectionOperation<IndexPath>] in
             collection.move(from: fromIndices, to: toIndex)
             return fromIndices.enumerated().map {
-                .move(from: $0.element, to: toIndex.advanced(by: $0.offset))
+                .move(from: $0.element, to: toIndex.dropLast().appending(toIndex.last! + $0.offset))
             }
         }
     }

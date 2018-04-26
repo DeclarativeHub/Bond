@@ -23,7 +23,6 @@
 //
 
 import ReactiveKit
-import Differ
 
 public extension SignalProtocol where Element: ObservableCollectionEventProtocol {
 
@@ -153,16 +152,9 @@ extension CollectionOperation where Index: Hashable {
     }
 }
 
-extension SignalProtocol where Element: Collection, Element.Element: Equatable, Element.Index == Int {
+extension SignalProtocol where Element: Collection {
 
-    public func diff() -> Signal<ObservableCollectionEvent<Element>, Error> {
-        return diff { $0 == $1 }
-    }
-}
-
-extension SignalProtocol where Element: Collection, Element.Index == Int {
-
-    public func diff(_ areEqual: @escaping (Element.Element, Element.Element) -> Bool) -> Signal<ObservableCollectionEvent<Element>, Error> {
+    public func diff(generateDiff: @escaping CollectionDiffer<Element>) -> Signal<ObservableCollectionEvent<Element>, Error> {
         return Signal { observer in
             var collection: Element?
             return self.observe { event in
@@ -170,7 +162,7 @@ extension SignalProtocol where Element: Collection, Element.Index == Int {
                 case .next(let element):
                     let newCollection = element
                     if let collection = collection {
-                        let diff = collection.extendedDiff(newCollection, isEqual: areEqual).diff
+                        let diff = generateDiff(collection, newCollection)
                         observer.next(ObservableCollectionEvent(collection: newCollection, diff: diff))
                     } else {
                         observer.next(ObservableCollectionEvent(collection: newCollection, diff: []))

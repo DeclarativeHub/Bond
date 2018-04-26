@@ -61,7 +61,7 @@ open class OutlineViewBinder<TreeNode: TreeNodeProtocol> {
 
         outlineView.beginUpdates()
 
-        for operation in diff.patch {
+        for operation in diff { // TODO: use tree patch when implemented!
             switch operation {
             case .insert(let at):
                 let parent = rootNode[at.dropLast()]

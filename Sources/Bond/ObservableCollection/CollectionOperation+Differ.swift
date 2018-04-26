@@ -23,6 +23,7 @@
 //
 
 import Differ
+import ReactiveKit
 
 extension ExtendedDiff.Element {
 
@@ -42,5 +43,29 @@ extension ExtendedDiff {
 
     public var diff: [CollectionOperation<Int>] {
         return elements.map { $0.asCollectionOperation }
+    }
+}
+
+extension MutableObservableCollection where UnderlyingCollection.Element: Equatable, UnderlyingCollection.Index == Int {
+
+    /// Replace the underlying collection with the given collection. Setting `performDiff: true` will make the framework
+    /// calculate the diff between the existing and new collection and emit an event with the calculated diff.
+    /// - Complexity: O((N+M)*D) if `performDiff: true`, O(1) otherwise.
+    public func replace(with newCollection: UnderlyingCollection, performDiff: Bool) {
+        replace(with: newCollection, performDiff: performDiff, generateDiff: { $0.extendedDiff($1).diff })
+    }
+}
+
+extension SignalProtocol where Element: Collection, Element.Index == Int {
+
+    public func diff(_ areEqual: @escaping (Element.Element, Element.Element) -> Bool) -> Signal<ObservableCollectionEvent<Element>, Error> {
+        return diff(generateDiff: { c1, c2 in c1.extendedDiff(c2, isEqual: areEqual).diff })
+    }
+}
+
+extension SignalProtocol where Element: Collection, Element.Element: Equatable, Element.Index == Int {
+
+    public func diff() -> Signal<ObservableCollectionEvent<Element>, Error> {
+        return diff(generateDiff: { c1, c2 in c1.extendedDiff(c2).diff })
     }
 }

@@ -15,3 +15,9 @@ tree.observeNext { (event) in
 tree.append(TreeNode("Child A"))
 tree.append(TreeNode("Child B"))
 tree.insert(TreeNode("Chile X"), at: [0, 0])
+
+tree.batchUpdate { (tree) in
+    tree.append(TreeNode<String>("oho"))
+    tree.insert(TreeNode<String>("111"), at: [0])
+}
+

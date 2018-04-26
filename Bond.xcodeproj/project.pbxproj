@@ -31,9 +31,6 @@
 		90677C11207EE44B00BC4505 /* TreeNodeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C10207EE44B00BC4505 /* TreeNodeProtocol.swift */; };
 		90677C12207EE44B00BC4505 /* TreeNodeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C10207EE44B00BC4505 /* TreeNodeProtocol.swift */; };
 		90677C13207EE44B00BC4505 /* TreeNodeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C10207EE44B00BC4505 /* TreeNodeProtocol.swift */; };
-		90677C21207F248000BC4505 /* IndexPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C20207F248000BC4505 /* IndexPath.swift */; };
-		90677C22207F248000BC4505 /* IndexPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C20207F248000BC4505 /* IndexPath.swift */; };
-		90677C23207F248000BC4505 /* IndexPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C20207F248000BC4505 /* IndexPath.swift */; };
 		90677C3D207F38AE00BC4505 /* NSOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C3C207F38AE00BC4505 /* NSOutlineView.swift */; };
 		90677C3E207F38AE00BC4505 /* NSOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C3C207F38AE00BC4505 /* NSOutlineView.swift */; };
 		90677C3F207F38AE00BC4505 /* NSOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C3C207F38AE00BC4505 /* NSOutlineView.swift */; };
@@ -223,14 +220,14 @@
 		EC5E0F2D208FCF3B0069C48C /* ObservableCollection+TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC70643A208FCDE2009BEB1C /* ObservableCollection+TreeNode.swift */; };
 		EC671C892082113400EA7672 /* ObservableCollectionEvent+Signal.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC671C882082113400EA7672 /* ObservableCollectionEvent+Signal.swift */; };
 		EC6A35DE2075DD0200E8F805 /* ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E24B49206F507000CF92F7 /* ObservableCollection.swift */; };
-		EC6A35E42075E00D00E8F805 /* CollectionOperation+Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A35E32075E00D00E8F805 /* CollectionOperation+Diff.swift */; };
+		EC6A35E42075E00D00E8F805 /* CollectionOperation+DiffMerge.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A35E32075E00D00E8F805 /* CollectionOperation+DiffMerge.swift */; };
 		EC6A35E72075FD5000E8F805 /* CollectionOperation+Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A35E52075FCB600E8F805 /* CollectionOperation+Diff.swift */; };
 		EC6A35E82076054F00E8F805 /* ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E24B49206F507000CF92F7 /* ObservableCollection.swift */; };
 		EC6A35E92076054F00E8F805 /* ObservableCollectionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1325D120726C6800F466B6 /* ObservableCollectionEvent.swift */; };
-		EC6A35EA2076054F00E8F805 /* CollectionOperation+Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A35E32075E00D00E8F805 /* CollectionOperation+Diff.swift */; };
+		EC6A35EA2076054F00E8F805 /* CollectionOperation+DiffMerge.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A35E32075E00D00E8F805 /* CollectionOperation+DiffMerge.swift */; };
 		EC6A35EB2076055000E8F805 /* ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E24B49206F507000CF92F7 /* ObservableCollection.swift */; };
 		EC6A35EC2076055000E8F805 /* ObservableCollectionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1325D120726C6800F466B6 /* ObservableCollectionEvent.swift */; };
-		EC6A35ED2076055000E8F805 /* CollectionOperation+Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A35E32075E00D00E8F805 /* CollectionOperation+Diff.swift */; };
+		EC6A35ED2076055000E8F805 /* CollectionOperation+DiffMerge.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A35E32075E00D00E8F805 /* CollectionOperation+DiffMerge.swift */; };
 		EC706433208FCD36009BEB1C /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC706432208FCD36009BEB1C /* TreeNode.swift */; };
 		EC706438208FCD46009BEB1C /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC706432208FCD36009BEB1C /* TreeNode.swift */; };
 		EC706439208FCD46009BEB1C /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC706432208FCD36009BEB1C /* TreeNode.swift */; };
@@ -240,6 +237,8 @@
 		EC893EC41F07A164007981EC /* BNDProtocolProxyBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 90C04D181E8F0B12000077C8 /* BNDProtocolProxyBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EC893EC51F07A164007981EC /* BNDProtocolProxyBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 90C04D181E8F0B12000077C8 /* BNDProtocolProxyBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EC893EC61F07A164007981EC /* BNDProtocolProxyBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 90C04D181E8F0B12000077C8 /* BNDProtocolProxyBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EC8B1CFA20925EF600674D95 /* ObservableCollectionEvent+Signal.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC671C882082113400EA7672 /* ObservableCollectionEvent+Signal.swift */; };
+		EC8B1CFB20925EF600674D95 /* ObservableCollectionEvent+Signal.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC671C882082113400EA7672 /* ObservableCollectionEvent+Signal.swift */; };
 		ECA869802078DFE000342172 /* ObservableCollection+Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECA8697F2078DFE000342172 /* ObservableCollection+Dictionary.swift */; };
 		ECAFB8D4200A7E3900EE0669 /* BNDInvocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAFB8D3200A7E3900EE0669 /* BNDInvocation.swift */; };
 		ECAFB8D5200A7E3900EE0669 /* BNDInvocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAFB8D3200A7E3900EE0669 /* BNDInvocation.swift */; };
@@ -253,9 +252,9 @@
 		ECC1A6D0207A18DC00AE762C /* NSTableView+ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC1A6CF207A18DC00AE762C /* NSTableView+ObservableCollection.swift */; };
 		ECC1A6D1207A18DC00AE762C /* NSTableView+ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC1A6CF207A18DC00AE762C /* NSTableView+ObservableCollection.swift */; };
 		ECC1A6D2207A18DC00AE762C /* NSTableView+ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC1A6CF207A18DC00AE762C /* NSTableView+ObservableCollection.swift */; };
-		ECF15FC22079101B00DEB77D /* CollectionOperation+Patch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FC12079101B00DEB77D /* CollectionOperation+Patch.swift */; };
-		ECF15FC32079101B00DEB77D /* CollectionOperation+Patch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FC12079101B00DEB77D /* CollectionOperation+Patch.swift */; };
-		ECF15FC42079101B00DEB77D /* CollectionOperation+Patch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FC12079101B00DEB77D /* CollectionOperation+Patch.swift */; };
+		ECF15FC22079101B00DEB77D /* CollectionOperation+DiffPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FC12079101B00DEB77D /* CollectionOperation+DiffPatch.swift */; };
+		ECF15FC32079101B00DEB77D /* CollectionOperation+DiffPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FC12079101B00DEB77D /* CollectionOperation+DiffPatch.swift */; };
+		ECF15FC42079101B00DEB77D /* CollectionOperation+DiffPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FC12079101B00DEB77D /* CollectionOperation+DiffPatch.swift */; };
 		ECF15FCA2079108D00DEB77D /* CollectionOperation+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FC92079108D00DEB77D /* CollectionOperation+Differ.swift */; };
 		ECF15FCB2079108D00DEB77D /* CollectionOperation+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FC92079108D00DEB77D /* CollectionOperation+Differ.swift */; };
 		ECF15FCC2079108D00DEB77D /* CollectionOperation+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FC92079108D00DEB77D /* CollectionOperation+Differ.swift */; };
@@ -383,7 +382,6 @@
 		16D30ED61D65D11900C2435D /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		75CA9E9120678E600011E5BB /* UISearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISearchBar.swift; sourceTree = "<group>"; };
 		90677C10207EE44B00BC4505 /* TreeNodeProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeNodeProtocol.swift; sourceTree = "<group>"; };
-		90677C20207F248000BC4505 /* IndexPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexPath.swift; sourceTree = "<group>"; };
 		90677C3C207F38AE00BC4505 /* NSOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSOutlineView.swift; sourceTree = "<group>"; };
 		90677C44207F391700BC4505 /* NSOutlineView+ObservableTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSOutlineView+ObservableTree.swift"; sourceTree = "<group>"; };
 		90A3FAC21E0C8D8B0086A7F1 /* Differ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Differ.xcodeproj; path = Carthage/Checkouts/Differ/Differ.xcodeproj; sourceTree = "<group>"; };
@@ -462,7 +460,7 @@
 		EC1325D120726C6800F466B6 /* ObservableCollectionEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableCollectionEvent.swift; sourceTree = "<group>"; };
 		EC378E961E13FFD100E2197D /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		EC671C882082113400EA7672 /* ObservableCollectionEvent+Signal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableCollectionEvent+Signal.swift"; sourceTree = "<group>"; };
-		EC6A35E32075E00D00E8F805 /* CollectionOperation+Diff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionOperation+Diff.swift"; sourceTree = "<group>"; };
+		EC6A35E32075E00D00E8F805 /* CollectionOperation+DiffMerge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionOperation+DiffMerge.swift"; sourceTree = "<group>"; };
 		EC6A35E52075FCB600E8F805 /* CollectionOperation+Diff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionOperation+Diff.swift"; sourceTree = "<group>"; };
 		EC706432208FCD36009BEB1C /* TreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeNode.swift; sourceTree = "<group>"; };
 		EC70643A208FCDE2009BEB1C /* ObservableCollection+TreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableCollection+TreeNode.swift"; sourceTree = "<group>"; };
@@ -474,7 +472,7 @@
 		ECC1A6CF207A18DC00AE762C /* NSTableView+ObservableCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+ObservableCollection.swift"; sourceTree = "<group>"; };
 		ECD5940B1D93F2E400C840C2 /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		ECD5940C1D93F2ED00C840C2 /* Bond.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Bond.podspec; sourceTree = "<group>"; };
-		ECF15FC12079101B00DEB77D /* CollectionOperation+Patch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionOperation+Patch.swift"; sourceTree = "<group>"; };
+		ECF15FC12079101B00DEB77D /* CollectionOperation+DiffPatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionOperation+DiffPatch.swift"; sourceTree = "<group>"; };
 		ECF15FC92079108D00DEB77D /* CollectionOperation+Differ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionOperation+Differ.swift"; sourceTree = "<group>"; };
 		ECF15FCD2079110D00DEB77D /* CollectionOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionOperation.swift; sourceTree = "<group>"; };
 		ECF15FD12079FE5F00DEB77D /* ObservableCollection+RangeReplaceableCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableCollection+RangeReplaceableCollection.swift"; sourceTree = "<group>"; };
@@ -743,7 +741,6 @@
 			isa = PBXGroup;
 			children = (
 				90C04D211E8F0B1D000077C8 /* CALayer.swift */,
-				90677C20207F248000BC4505 /* IndexPath.swift */,
 				90C04D241E8F0B1D000077C8 /* NotificationCenter.swift */,
 				90C04D2A1E8F0B1D000077C8 /* NSLayoutConstraint.swift */,
 				90C04D2D1E8F0B1D000077C8 /* NSObject.swift */,
@@ -784,8 +781,8 @@
 			isa = PBXGroup;
 			children = (
 				ECF15FCD2079110D00DEB77D /* CollectionOperation.swift */,
-				EC6A35E32075E00D00E8F805 /* CollectionOperation+Diff.swift */,
-				ECF15FC12079101B00DEB77D /* CollectionOperation+Patch.swift */,
+				ECF15FC12079101B00DEB77D /* CollectionOperation+DiffPatch.swift */,
+				EC6A35E32075E00D00E8F805 /* CollectionOperation+DiffMerge.swift */,
 				ECF15FC92079108D00DEB77D /* CollectionOperation+Differ.swift */,
 				EC1325D120726C6800F466B6 /* ObservableCollectionEvent.swift */,
 				EC671C882082113400EA7672 /* ObservableCollectionEvent+Signal.swift */,
@@ -1114,8 +1111,7 @@
 				90C04DB01E8F0B97000077C8 /* UIBarButtonItem.swift in Sources */,
 				EC6A35DE2075DD0200E8F805 /* ObservableCollection.swift in Sources */,
 				90A443091E9055D100D611FE /* NSControl.swift in Sources */,
-				90677C21207F248000BC4505 /* IndexPath.swift in Sources */,
-				EC6A35E42075E00D00E8F805 /* CollectionOperation+Diff.swift in Sources */,
+				EC6A35E42075E00D00E8F805 /* CollectionOperation+DiffMerge.swift in Sources */,
 				90677C11207EE44B00BC4505 /* TreeNodeProtocol.swift in Sources */,
 				EC70643B208FCDE2009BEB1C /* ObservableCollection+TreeNode.swift in Sources */,
 				90C04D7A1E8F0B89000077C8 /* SignalProtocol.swift in Sources */,
@@ -1143,7 +1139,7 @@
 				EC671C892082113400EA7672 /* ObservableCollectionEvent+Signal.swift in Sources */,
 				90C04D781E8F0B89000077C8 /* NSObject+KVO.swift in Sources */,
 				ECF15FD62079FEE600DEB77D /* MutableObservableCollection.swift in Sources */,
-				ECF15FC22079101B00DEB77D /* CollectionOperation+Patch.swift in Sources */,
+				ECF15FC22079101B00DEB77D /* CollectionOperation+DiffPatch.swift in Sources */,
 				90A443081E9055D100D611FE /* NSColorWell.swift in Sources */,
 				90C04DBB1E8F0B97000077C8 /* UIProgressView.swift in Sources */,
 				ECF15FD22079FE5F00DEB77D /* ObservableCollection+RangeReplaceableCollection.swift in Sources */,
@@ -1185,7 +1181,6 @@
 			files = (
 				90A4437D1E91391B00D611FE /* BNDProtocolProxyBase.m in Sources */,
 				ECC1A6D1207A18DC00AE762C /* NSTableView+ObservableCollection.swift in Sources */,
-				90677C22207F248000BC4505 /* IndexPath.swift in Sources */,
 				90A443361E9055D800D611FE /* UISwitch.swift in Sources */,
 				90A443271E9055D800D611FE /* UIBarItem.swift in Sources */,
 				90C04D861E8F0B8D000077C8 /* NSStatusBarButton.swift in Sources */,
@@ -1195,7 +1190,7 @@
 				90C04D671E8F0B89000077C8 /* DynamicSubject.swift in Sources */,
 				ECF15FCF2079110D00DEB77D /* CollectionOperation.swift in Sources */,
 				90C04D6E1E8F0B89000077C8 /* NSObject.swift in Sources */,
-				EC6A35EA2076054F00E8F805 /* CollectionOperation+Diff.swift in Sources */,
+				EC6A35EA2076054F00E8F805 /* CollectionOperation+DiffMerge.swift in Sources */,
 				90677C3E207F38AE00BC4505 /* NSOutlineView.swift in Sources */,
 				90C04D7B1E8F0B8D000077C8 /* NSAppearanceCustomization.swift in Sources */,
 				90A4432C1E9055D800D611FE /* UIGestureRecognizer.swift in Sources */,
@@ -1221,7 +1216,8 @@
 				90C04D881E8F0B8D000077C8 /* NSTextField.swift in Sources */,
 				90A4432A1E9055D800D611FE /* UIControl.swift in Sources */,
 				90C04D661E8F0B89000077C8 /* DataSource.swift in Sources */,
-				ECF15FC32079101B00DEB77D /* CollectionOperation+Patch.swift in Sources */,
+				EC8B1CFA20925EF600674D95 /* ObservableCollectionEvent+Signal.swift in Sources */,
+				ECF15FC32079101B00DEB77D /* CollectionOperation+DiffPatch.swift in Sources */,
 				90A443291E9055D800D611FE /* UICollectionView.swift in Sources */,
 				90C04D651E8F0B89000077C8 /* Bond.swift in Sources */,
 				90C04D6F1E8F0B89000077C8 /* SignalProtocol.swift in Sources */,
@@ -1270,7 +1266,6 @@
 			files = (
 				90A4437E1E91391D00D611FE /* BNDProtocolProxyBase.m in Sources */,
 				ECC1A6D2207A18DC00AE762C /* NSTableView+ObservableCollection.swift in Sources */,
-				90677C23207F248000BC4505 /* IndexPath.swift in Sources */,
 				90A4431E1E9055D200D611FE /* NSSlider.swift in Sources */,
 				ECAFB8D6200A7E3900EE0669 /* BNDInvocation.swift in Sources */,
 				90C04D981E8F0B96000077C8 /* UIApplication.swift in Sources */,
@@ -1280,7 +1275,7 @@
 				90C04DA11E8F0B96000077C8 /* UILabel.swift in Sources */,
 				ECF15FD02079110D00DEB77D /* CollectionOperation.swift in Sources */,
 				90C04DAA1E8F0B96000077C8 /* UITableView.swift in Sources */,
-				EC6A35ED2076055000E8F805 /* CollectionOperation+Diff.swift in Sources */,
+				EC6A35ED2076055000E8F805 /* CollectionOperation+DiffMerge.swift in Sources */,
 				90677C3F207F38AE00BC4505 /* NSOutlineView.swift in Sources */,
 				90A443231E9055D200D611FE /* NSView.swift in Sources */,
 				90C04D9D1E8F0B96000077C8 /* UIControl.swift in Sources */,
@@ -1306,7 +1301,8 @@
 				90C04D5B1E8F0B88000077C8 /* DataSource.swift in Sources */,
 				90C04DA61E8F0B96000077C8 /* UISegmentedControl.swift in Sources */,
 				90A443161E9055D200D611FE /* NSButton.swift in Sources */,
-				ECF15FC42079101B00DEB77D /* CollectionOperation+Patch.swift in Sources */,
+				EC8B1CFB20925EF600674D95 /* ObservableCollectionEvent+Signal.swift in Sources */,
+				ECF15FC42079101B00DEB77D /* CollectionOperation+DiffPatch.swift in Sources */,
 				90C04D5A1E8F0B88000077C8 /* Bond.swift in Sources */,
 				90A443151E9055D200D611FE /* NSAppearanceCustomization.swift in Sources */,
 				90C04DAC1E8F0B96000077C8 /* UITextView.swift in Sources */,

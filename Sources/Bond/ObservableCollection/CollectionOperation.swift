@@ -87,3 +87,7 @@ public enum CollectionOperation<Index: Comparable>: CollectionOperationProtocol,
         }
     }
 }
+
+public typealias CollectionDiffer<C: Collection> = (_ old: C, _ new: C) -> [CollectionOperation<C.Index>]
+
+public typealias CollectionDiffMerger<C: Collection> = (_ collection: C, _ diffs: [[CollectionOperation<C.Index>]]) -> [CollectionOperation<C.Index>]
