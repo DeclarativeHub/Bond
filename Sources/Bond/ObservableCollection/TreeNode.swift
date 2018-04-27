@@ -49,6 +49,11 @@ public struct TreeNode<Value>: RangeReplacableTreeNode, CustomDebugStringConvert
         self.value = value
     }
 
+    public init(_ value: Value, children: [TreeNode<Value>]) {
+        self.value = value
+        self.children = children
+    }
+
     public func index(after i: IndexPath) -> IndexPath {
         var i = i
         i[i.count-1] = children.index(after: i[i.count-1])
