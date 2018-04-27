@@ -51,7 +51,7 @@ public struct TreeNode<Value>: RangeReplacableTreeNode, CustomDebugStringConvert
 
     public func index(after i: IndexPath) -> IndexPath {
         var i = i
-        i[0] = children.index(after: i[0])
+        i[i.count-1] = children.index(after: i[i.count-1])
         return i
     }
 
@@ -74,11 +74,16 @@ public struct TreeNode<Value>: RangeReplacableTreeNode, CustomDebugStringConvert
     }
 
     public mutating func replaceSubrange<C>(_ subrange: Range<IndexPath>, with newChildren: C) where C: Collection, C.Element == TreeNode<Value> {
-        guard subrange.lowerBound.count == subrange.upperBound.count, !subrange.lowerBound.isEmpty else { fatalError() }
+        print(#function, subrange)
+        guard subrange.lowerBound.count == subrange.upperBound.count, !subrange.lowerBound.isEmpty else {
+            fatalError("Range lowerBound and upperBound must be at the same level!")
+        }
         if subrange.lowerBound.count == 1 {
             children.replaceSubrange(subrange.lowerBound[0]..<subrange.upperBound[0], with: newChildren)
         } else {
-            guard subrange.lowerBound[0] == subrange.upperBound[0] else { fatalError() }
+            guard subrange.lowerBound[0] == subrange.upperBound[0] else {
+                fatalError("Range lowerBound and upperBound must point to the same subtree!")
+            }
             children[subrange.lowerBound[0]].replaceSubrange(subrange.lowerBound.dropFirst()..<subrange.upperBound.dropFirst(), with: newChildren)
         }
     }

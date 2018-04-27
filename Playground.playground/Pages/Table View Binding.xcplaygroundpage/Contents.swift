@@ -9,15 +9,15 @@ import PlaygroundSupport
 let tree = MutableObservableCollection(TreeNode("Root"))
 
 tree.observeNext { (event) in
-    print(event.collection, "diff", event.diff, "patch", event.diff.patch)
+    print(event.collection, "diff", event.diff, "patch", event.patch)
 }
 
 tree.append(TreeNode("Child A"))
 tree.append(TreeNode("Child B"))
-tree.insert(TreeNode("Chile X"), at: [0, 0])
 
 tree.batchUpdate { (tree) in
-    tree.append(TreeNode<String>("oho"))
-    tree.insert(TreeNode<String>("111"), at: [0])
+    tree[[0]] = TreeNode<String>("oho")
+    tree.move(from: [0], to: [0, 0])
+    tree.append(TreeNode<String>("huhu"))
+    tree.move(from: [0, 0], to: [1])
 }
-

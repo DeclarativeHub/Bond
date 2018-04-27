@@ -216,18 +216,21 @@
 		90C04DDC1E8F0BAF000077C8 /* UITableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04DD11E8F0BA7000077C8 /* UITableViewTests.swift */; };
 		EC02200A1F8BE898002F8380 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0220091F8BE898002F8380 /* Property.swift */; };
 		EC1325D220726C6800F466B6 /* ObservableCollectionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1325D120726C6800F466B6 /* ObservableCollectionEvent.swift */; };
+		EC305A76209330B2006DC960 /* CollectionOperation+DiffMerge.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A35E32075E00D00E8F805 /* CollectionOperation+DiffMerge.swift */; };
+		EC305A77209330B2006DC960 /* CollectionOperation+DiffMerge.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A35E32075E00D00E8F805 /* CollectionOperation+DiffMerge.swift */; };
+		EC305A78209330B3006DC960 /* CollectionOperation+DiffMerge.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A35E32075E00D00E8F805 /* CollectionOperation+DiffMerge.swift */; };
+		EC55087920935BC1006771F5 /* IndexStrider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC55087820935BC1006771F5 /* IndexStrider.swift */; };
+		EC55087A20935BC1006771F5 /* IndexStrider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC55087820935BC1006771F5 /* IndexStrider.swift */; };
+		EC55087B20935BC1006771F5 /* IndexStrider.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC55087820935BC1006771F5 /* IndexStrider.swift */; };
 		EC5E0F28208FCF3B0069C48C /* ObservableCollection+TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC70643A208FCDE2009BEB1C /* ObservableCollection+TreeNode.swift */; };
 		EC5E0F2D208FCF3B0069C48C /* ObservableCollection+TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC70643A208FCDE2009BEB1C /* ObservableCollection+TreeNode.swift */; };
 		EC671C892082113400EA7672 /* ObservableCollectionEvent+Signal.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC671C882082113400EA7672 /* ObservableCollectionEvent+Signal.swift */; };
 		EC6A35DE2075DD0200E8F805 /* ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E24B49206F507000CF92F7 /* ObservableCollection.swift */; };
-		EC6A35E42075E00D00E8F805 /* CollectionOperation+DiffMerge.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A35E32075E00D00E8F805 /* CollectionOperation+DiffMerge.swift */; };
 		EC6A35E72075FD5000E8F805 /* CollectionOperation+Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A35E52075FCB600E8F805 /* CollectionOperation+Diff.swift */; };
 		EC6A35E82076054F00E8F805 /* ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E24B49206F507000CF92F7 /* ObservableCollection.swift */; };
 		EC6A35E92076054F00E8F805 /* ObservableCollectionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1325D120726C6800F466B6 /* ObservableCollectionEvent.swift */; };
-		EC6A35EA2076054F00E8F805 /* CollectionOperation+DiffMerge.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A35E32075E00D00E8F805 /* CollectionOperation+DiffMerge.swift */; };
 		EC6A35EB2076055000E8F805 /* ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E24B49206F507000CF92F7 /* ObservableCollection.swift */; };
 		EC6A35EC2076055000E8F805 /* ObservableCollectionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1325D120726C6800F466B6 /* ObservableCollectionEvent.swift */; };
-		EC6A35ED2076055000E8F805 /* CollectionOperation+DiffMerge.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A35E32075E00D00E8F805 /* CollectionOperation+DiffMerge.swift */; };
 		EC706433208FCD36009BEB1C /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC706432208FCD36009BEB1C /* TreeNode.swift */; };
 		EC706438208FCD46009BEB1C /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC706432208FCD36009BEB1C /* TreeNode.swift */; };
 		EC706439208FCD46009BEB1C /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC706432208FCD36009BEB1C /* TreeNode.swift */; };
@@ -459,6 +462,7 @@
 		EC0220091F8BE898002F8380 /* Property.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Property.swift; sourceTree = "<group>"; };
 		EC1325D120726C6800F466B6 /* ObservableCollectionEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableCollectionEvent.swift; sourceTree = "<group>"; };
 		EC378E961E13FFD100E2197D /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		EC55087820935BC1006771F5 /* IndexStrider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexStrider.swift; sourceTree = "<group>"; };
 		EC671C882082113400EA7672 /* ObservableCollectionEvent+Signal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableCollectionEvent+Signal.swift"; sourceTree = "<group>"; };
 		EC6A35E32075E00D00E8F805 /* CollectionOperation+DiffMerge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionOperation+DiffMerge.swift"; sourceTree = "<group>"; };
 		EC6A35E52075FCB600E8F805 /* CollectionOperation+Diff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionOperation+Diff.swift"; sourceTree = "<group>"; };
@@ -610,16 +614,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		90677BFB207EDDE500BC4505 /* ObservableTree */ = {
-			isa = PBXGroup;
-			children = (
-				90677C10207EE44B00BC4505 /* TreeNodeProtocol.swift */,
-				EC706432208FCD36009BEB1C /* TreeNode.swift */,
-				EC70643A208FCDE2009BEB1C /* ObservableCollection+TreeNode.swift */,
-			);
-			path = ObservableTree;
-			sourceTree = "<group>";
-		};
 		90C04D011E8F0A97000077C8 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -662,7 +656,6 @@
 				90C04D581E8F0B5E000077C8 /* AppKit */,
 				90C04D561E8F0B31000077C8 /* Collections */,
 				ECF15FD9207A036D00DEB77D /* ObservableCollection */,
-				90677BFB207EDDE500BC4505 /* ObservableTree */,
 				90C04D591E8F0B75000077C8 /* Shared */,
 				90C04D571E8F0B4A000077C8 /* UIKit */,
 			);
@@ -780,6 +773,9 @@
 		ECF15FD9207A036D00DEB77D /* ObservableCollection */ = {
 			isa = PBXGroup;
 			children = (
+				EC55087820935BC1006771F5 /* IndexStrider.swift */,
+				EC706432208FCD36009BEB1C /* TreeNode.swift */,
+				90677C10207EE44B00BC4505 /* TreeNodeProtocol.swift */,
 				ECF15FCD2079110D00DEB77D /* CollectionOperation.swift */,
 				ECF15FC12079101B00DEB77D /* CollectionOperation+DiffPatch.swift */,
 				EC6A35E32075E00D00E8F805 /* CollectionOperation+DiffMerge.swift */,
@@ -793,6 +789,7 @@
 				ECF15FDE207A0F8E00DEB77D /* ObservableCollection+Set.swift */,
 				ECC1A6C3207A137500AE762C /* ObservableCollection+MutableCollection.swift */,
 				ECF15FD12079FE5F00DEB77D /* ObservableCollection+RangeReplaceableCollection.swift */,
+				EC70643A208FCDE2009BEB1C /* ObservableCollection+TreeNode.swift */,
 			);
 			path = ObservableCollection;
 			sourceTree = "<group>";
@@ -1108,10 +1105,10 @@
 				070FE2741F0138180031B7BD /* NSLayoutConstraint.swift in Sources */,
 				90C04DB61E8F0B97000077C8 /* UIGestureRecognizer.swift in Sources */,
 				90A4430B1E9055D100D611FE /* NSMenuItem.swift in Sources */,
+				EC305A78209330B3006DC960 /* CollectionOperation+DiffMerge.swift in Sources */,
 				90C04DB01E8F0B97000077C8 /* UIBarButtonItem.swift in Sources */,
 				EC6A35DE2075DD0200E8F805 /* ObservableCollection.swift in Sources */,
 				90A443091E9055D100D611FE /* NSControl.swift in Sources */,
-				EC6A35E42075E00D00E8F805 /* CollectionOperation+DiffMerge.swift in Sources */,
 				90677C11207EE44B00BC4505 /* TreeNodeProtocol.swift in Sources */,
 				EC70643B208FCDE2009BEB1C /* ObservableCollection+TreeNode.swift in Sources */,
 				90C04D7A1E8F0B89000077C8 /* SignalProtocol.swift in Sources */,
@@ -1132,6 +1129,7 @@
 				90C04DB51E8F0B97000077C8 /* UIDatePicker.swift in Sources */,
 				90C04D951E8F0B92000077C8 /* ObservableDictionary.swift in Sources */,
 				90C04D931E8F0B92000077C8 /* Observable2DArray.swift in Sources */,
+				EC55087920935BC1006771F5 /* IndexStrider.swift in Sources */,
 				90A443111E9055D100D611FE /* NSTableView.swift in Sources */,
 				90C04D751E8F0B89000077C8 /* QueryableDataSource.swift in Sources */,
 				90C04D771E8F0B89000077C8 /* NotificationCenter.swift in Sources */,
@@ -1190,11 +1188,11 @@
 				90C04D671E8F0B89000077C8 /* DynamicSubject.swift in Sources */,
 				ECF15FCF2079110D00DEB77D /* CollectionOperation.swift in Sources */,
 				90C04D6E1E8F0B89000077C8 /* NSObject.swift in Sources */,
-				EC6A35EA2076054F00E8F805 /* CollectionOperation+DiffMerge.swift in Sources */,
 				90677C3E207F38AE00BC4505 /* NSOutlineView.swift in Sources */,
 				90C04D7B1E8F0B8D000077C8 /* NSAppearanceCustomization.swift in Sources */,
 				90A4432C1E9055D800D611FE /* UIGestureRecognizer.swift in Sources */,
 				90677C12207EE44B00BC4505 /* TreeNodeProtocol.swift in Sources */,
+				EC55087A20935BC1006771F5 /* IndexStrider.swift in Sources */,
 				90C04D8A1E8F0B8D000077C8 /* NSView.swift in Sources */,
 				90C04D6B1E8F0B89000077C8 /* CALayer.swift in Sources */,
 				90A443311E9055D800D611FE /* UIProgressView.swift in Sources */,
@@ -1221,6 +1219,7 @@
 				90A443291E9055D800D611FE /* UICollectionView.swift in Sources */,
 				90C04D651E8F0B89000077C8 /* Bond.swift in Sources */,
 				90C04D6F1E8F0B89000077C8 /* SignalProtocol.swift in Sources */,
+				EC305A77209330B2006DC960 /* CollectionOperation+DiffMerge.swift in Sources */,
 				ECF15FD32079FE5F00DEB77D /* ObservableCollection+RangeReplaceableCollection.swift in Sources */,
 				90C04D901E8F0B91000077C8 /* ObservableArray.swift in Sources */,
 				90C04D6A1E8F0B89000077C8 /* QueryableDataSource.swift in Sources */,
@@ -1275,11 +1274,11 @@
 				90C04DA11E8F0B96000077C8 /* UILabel.swift in Sources */,
 				ECF15FD02079110D00DEB77D /* CollectionOperation.swift in Sources */,
 				90C04DAA1E8F0B96000077C8 /* UITableView.swift in Sources */,
-				EC6A35ED2076055000E8F805 /* CollectionOperation+DiffMerge.swift in Sources */,
 				90677C3F207F38AE00BC4505 /* NSOutlineView.swift in Sources */,
 				90A443231E9055D200D611FE /* NSView.swift in Sources */,
 				90C04D9D1E8F0B96000077C8 /* UIControl.swift in Sources */,
 				90677C13207EE44B00BC4505 /* TreeNodeProtocol.swift in Sources */,
+				EC55087B20935BC1006771F5 /* IndexStrider.swift in Sources */,
 				90C04DA91E8F0B96000077C8 /* UISwitch.swift in Sources */,
 				90C04D5D1E8F0B88000077C8 /* Observable.swift in Sources */,
 				90A4431F1E9055D200D611FE /* NSStatusBarButton.swift in Sources */,
@@ -1306,6 +1305,7 @@
 				90C04D5A1E8F0B88000077C8 /* Bond.swift in Sources */,
 				90A443151E9055D200D611FE /* NSAppearanceCustomization.swift in Sources */,
 				90C04DAC1E8F0B96000077C8 /* UITextView.swift in Sources */,
+				EC305A76209330B2006DC960 /* CollectionOperation+DiffMerge.swift in Sources */,
 				ECF15FD42079FE5F00DEB77D /* ObservableCollection+RangeReplaceableCollection.swift in Sources */,
 				90A443221E9055D200D611FE /* NSTextView.swift in Sources */,
 				90C04D9B1E8F0B96000077C8 /* UIButton.swift in Sources */,

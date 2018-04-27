@@ -82,7 +82,9 @@ public class MutableObservableCollection<UnderlyingCollection: Collection>: Obse
 
     /// Perform batched updates on the collection. Emits an event with the combined diff of all made changes.
     public func batchUpdate(_ update: (MutableObservableCollection<UnderlyingCollection>) -> Void) {
-        batchUpdate(update, mergeDiffs: { _, diffs in CollectionOperation.mergeDiffsByAnnihilating(diffs) })
+        batchUpdate(update, mergeDiffs: { _, diffs in
+            CollectionOperation.mergeDiffs(diffs, using: PositionIndependentStrider())
+        })
     }
 
     /// Replace the underlying collection with the given collection. Setting `performDiff: true` will make the framework
