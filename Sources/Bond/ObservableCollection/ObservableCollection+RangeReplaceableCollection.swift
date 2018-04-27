@@ -101,6 +101,17 @@ extension MutableObservableCollection where UnderlyingCollection: RangeReplaceab
     }
 }
 
+extension MutableObservableCollection where UnderlyingCollection.Index: Strideable {
+
+    /// Perform batched updates on the collection. Emits an event with the combined diff of all made changes.
+    /// Diffs are combined by shifting elements when needed and annihilating confling operations like I(2) -> D(2).
+    public func batchUpdate(_ update: (MutableObservableCollection<UnderlyingCollection>) -> Void) {
+        batchUpdate(update, mergeDiffs: { _, diffs in
+            CollectionOperation.mergeDiffs(diffs, using: StridableIndexStrider())
+        })
+    }
+}
+
 extension RangeReplaceableCollection {
 
     public mutating func move(from fromIndex: Index, to toIndex: Index) {

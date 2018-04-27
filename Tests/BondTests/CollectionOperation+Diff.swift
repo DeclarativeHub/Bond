@@ -13,8 +13,8 @@ extension CollectionOperation where Index: Strideable, Index.Stride == Int {
 
     func merging(with other: CollectionOperation<Index>) -> [CollectionOperation<Index>] {
         var diff: [DiffElement] = []
-        self.append(to: &diff)
-        other.append(to: &diff)
+        CollectionOperation.append(self, to: &diff, using: StridableIndexStrider())
+        CollectionOperation.append(other, to: &diff, using: StridableIndexStrider())
         return diff.map { $0.asCollectionOperation }
     }
 }
