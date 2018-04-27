@@ -74,6 +74,45 @@ public enum CollectionOperation<Index: Comparable>: CollectionOperationProtocol,
         }
     }
 
+    public var sourceIndex: Index? {
+        switch self {
+        case .insert:
+            return nil
+        case .delete(let at):
+            return at
+        case .update(let at):
+            return at
+        case .move(let from, _):
+            return from
+        }
+    }
+
+    public var destinationIndex: Index? {
+        switch self {
+        case .insert(let at):
+            return at
+        case .delete:
+            return nil
+        case .update:
+            return nil
+        case .move(_, let to):
+            return to
+        }
+    }
+
+    public func mapIndex<U>(_ transform: (Index) -> U) -> CollectionOperation<U> {
+        switch self {
+        case .insert(let at):
+            return .insert(at: transform(at))
+        case .delete(let at):
+            return .delete(at: transform(at))
+        case .update(let at):
+            return .update(at: transform(at))
+        case .move(let from, let to):
+            return .move(from: transform(from), to: transform(to))
+        }
+    }
+
     public var debugDescription: String {
         switch self {
         case .insert(let at):
