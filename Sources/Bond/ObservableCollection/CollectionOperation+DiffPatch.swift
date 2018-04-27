@@ -22,9 +22,9 @@
 //  THE SOFTWARE.
 //
 
-extension Collection where Element: CollectionOperationProtocol, Element.Index: Strideable {
+extension Collection where Element: CollectionOperationProtocol {
 
-    public var patch: [CollectionOperation<Element.Index>] {
+    public func patch<S: IndexStrider>(using strider: S) -> [CollectionOperation<Element.Index>] where S.Index == Element.Index {
 
         // Diff is patch if changes are applied in the following order:
         // 1. Apply updates
@@ -46,16 +46,13 @@ extension Collection where Element: CollectionOperationProtocol, Element.Index: 
 
         for index in 0..<moves.count {
             for operation in deletes + inserts {
-                offsetMoves[index].offsetMoveByDeletionOrInsertion(operation)
+                offsetMoves[index].offsetMoveByDeletionOrInsertion(operation, using: strider)
             }
-        }
-
-        for index in 0..<moves.count {
             for operation in moves.suffix(from: index.advanced(by: 1)) {
-                offsetMoves[index].offsetMoveToIndexByMove(operation)
+                offsetMoves[index].offsetMoveToIndexByMove(operation, using: strider)
             }
             for operation in offsetMoves.prefix(upTo: index) {
-                offsetMoves[index].offsetMoveFromIndexByMove(operation)
+                offsetMoves[index].offsetMoveFromIndexByMove(operation, using: strider)
             }
         }
 
@@ -110,40 +107,33 @@ extension Collection where Element: CollectionOperationProtocol, Element.Index: 
     }
 }
 
-private extension CollectionOperation where Index: Strideable {
+private extension CollectionOperation {
 
-    mutating func offsetMoveByDeletionOrInsertion(_ other: CollectionOperation<Index>) {
+    mutating func offsetMoveByDeletionOrInsertion<S: IndexStrider>(_ other: CollectionOperation<Index>, using strider: S) where S.Index == Index {
         guard case .move(let from, let to) = self else { return }
-
         switch other {
-        case .insert(let at) where at < to:
-            self = .move(from: from, to: to.advanced(by: -1))
-        case .delete(let at) where at < from :
-            self = .move(from: from.advanced(by: -1), to: to)
+        case .insert(let at):
+            self = .move(from: from, to: strider.shiftLeft(to, ifPositionedAfter: at))
+        case .delete(let at):
+            self = .move(from: strider.shiftLeft(from, ifPositionedAfter: at), to: to)
         default:
             break
         }
     }
 
-    mutating func offsetMoveToIndexByMove(_ other: CollectionOperation<Index>) {
-        guard case .move(let from, let to) = self else { return }
+    mutating func offsetMoveToIndexByMove<S: IndexStrider>(_ other: CollectionOperation<Index>, using strider: S) where S.Index == Index {
+        guard case .move(let from, var to) = self else { return }
         guard case .move(let from2, let to2) = other else { return }
-
-        if from2 < to && to < to2 {
-            self = .move(from: from, to: to.advanced(by: 1))
-        } else if to <= from2 && to > to2 {
-            self = .move(from: from, to: to.advanced(by: -1))
-        }
+        to = strider.shiftRight(to, ifPositionedBeforeOrAt: from2)
+        to = strider.shiftLeft(to, ifPositionedAfter: to2)
+        self = .move(from: from, to: to)
     }
 
-    mutating func offsetMoveFromIndexByMove(_ other: CollectionOperation<Index>) {
-        guard case .move(let from, let to) = self else { return }
+    mutating func offsetMoveFromIndexByMove<S: IndexStrider>(_ other: CollectionOperation<Index>, using strider: S) where S.Index == Index {
+        guard case .move(var from, let to) = self else { return }
         guard case .move(let from2, let to2) = other else { return }
-
-        if from2 < from && from < to2 {
-            self = .move(from: from.advanced(by: -1), to: to)
-        } else if from < from2 && from >= to2 {
-            self = .move(from: from.advanced(by: 1), to: to)
-        }
+        from = strider.shiftLeft(from, ifPositionedAfter: from2)
+        from = strider.shiftRight(from, ifPositionedBeforeOrAt: to2)
+        self = .move(from: from, to: to)
     }
 }

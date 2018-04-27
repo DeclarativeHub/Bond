@@ -44,6 +44,14 @@ extension MutableObservableCollection where UnderlyingCollection: TreeNodeProtoc
             }
         }
     }
+
+    /// Perform batched updates on the collection. Emits an event with the combined diff of all made changes.
+    /// Diffs are combined by shifting elements when needed and annihilating confling operations like I(2) -> D(2).
+    public func batchUpdate(_ update: (MutableObservableCollection<UnderlyingCollection>) -> Void) {
+        batchUpdate(update, mergeDiffs: { _, diffs in
+            CollectionOperation.mergeDiffs(diffs, using: IndexPathTreeIndexStrider())
+        })
+    }
 }
 
 extension MutableObservableCollection where UnderlyingCollection: RangeReplacableTreeNode {
@@ -87,7 +95,7 @@ extension MutableObservableCollection where UnderlyingCollection: RangeReplacabl
         descriptiveUpdate { (collection) -> [CollectionOperation<IndexPath>] in
             collection.move(from: fromIndices, to: toIndex)
             return fromIndices.enumerated().map {
-                .move(from: $0.element, to: toIndex.dropLast().appending(toIndex.last! + $0.offset))
+                .move(from: $0.element, to: toIndex.advanced(by: $0.offset, atLevel: toIndex.count-1))
             }
         }
     }

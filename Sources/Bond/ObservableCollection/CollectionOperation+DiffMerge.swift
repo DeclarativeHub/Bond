@@ -55,108 +55,22 @@ extension CollectionOperation {
 extension CollectionOperation {
 
     /// Merge the given diffs into a single diff.
-    public static func mergeDiffsByAnnihilating(_ diffs: [[CollectionOperation<Index>]]) -> [CollectionOperation<Index>] {
-        var diff: [DiffElement] = []
-        for operation in diffs.flatMap({ $0 }) {
-            append(operation, to: &diff)
-        }
-        return diff.map { $0.asCollectionOperation }
-    }
-
-    private static func append(_ operation: CollectionOperation<Index>, to diff: inout [DiffElement]) {
-        switch operation {
-        case .insert(let at):
-            diff.append(DiffElement(kind: .insert, sourceIndex: nil, destinationIndex: at))
-        case .delete(let at):
-            var isAnnihilated: Bool = false
-            if let indexOfConflicted = diff.index(where: { $0.destinationIndex == at }) {
-                let conflicted = diff[indexOfConflicted]
-                switch conflicted.kind {
-                case .insert:
-                    diff.remove(at: indexOfConflicted)
-                    isAnnihilated = true
-                case .update:
-                    diff.remove(at: indexOfConflicted)
-                case .move:
-                    diff[indexOfConflicted] = DiffElement(kind: .delete, sourceIndex: conflicted.sourceIndex, destinationIndex: nil)
-                    isAnnihilated = true
-                default:
-                    break
-                }
-            }
-            if !isAnnihilated {
-                diff.append(DiffElement(kind: .delete, sourceIndex: at, destinationIndex: nil))
-            }
-        case .update(let at):
-            var isAnnihilated: Bool = false
-            if let indexOfConflicted = diff.index(where: { $0.destinationIndex == at }) {
-                let conflicted = diff[indexOfConflicted]
-                switch conflicted.kind {
-                case .insert:
-                    isAnnihilated = true
-                case .update:
-                    isAnnihilated = true
-                case .move:
-                    diff[indexOfConflicted] = DiffElement(kind: .delete, sourceIndex: conflicted.sourceIndex, destinationIndex: nil)
-                    diff.append(DiffElement(kind: .insert, sourceIndex: nil, destinationIndex: at))
-                    isAnnihilated = true
-                default:
-                    break
-                }
-            }
-            if !isAnnihilated {
-                diff.append(DiffElement(kind: .update, sourceIndex: at, destinationIndex: at))
-            }
-        case .move(let from, let to):
-            var isAnnihilated: Bool = false
-            if let indexOfConflicted = diff.index(where: { $0.destinationIndex == from }) {
-                let conflicted = diff[indexOfConflicted]
-                switch conflicted.kind {
-                case .insert:
-                    diff[indexOfConflicted] = DiffElement(kind: .insert, sourceIndex: nil, destinationIndex: to)
-                    isAnnihilated = true
-                case .update:
-                    diff[indexOfConflicted] = DiffElement(kind: .delete, sourceIndex: conflicted.sourceIndex, destinationIndex: nil)
-                    diff.append(DiffElement(kind: .insert, sourceIndex: nil, destinationIndex: to))
-                    isAnnihilated = true
-                case .move:
-                    if to == conflicted.sourceIndex! {
-                        diff.remove(at: indexOfConflicted)
-                        isAnnihilated = true
-                    } else {
-                        diff[indexOfConflicted] = DiffElement(kind: .move, sourceIndex: conflicted.sourceIndex, destinationIndex: to)
-                        isAnnihilated = true
-                    }
-                default:
-                    break
-                }
-            }
-            if !isAnnihilated {
-                diff.append(DiffElement(kind: .move, sourceIndex: from, destinationIndex: to))
-            }
-        }
-    }
-}
-
-extension CollectionOperation where Index: Strideable {
-
-    /// Merge the given diffs into a single diff.
     /// - Complexity: O(Dˆ2) where D is the total number of operations in the given diffs.
-    public static func mergeDiffsByShiftingAndAnnihilating(_ diffs: [[CollectionOperation<Index>]]) -> [CollectionOperation<Index>] {
-        let patch = diffs.flatMap({ $0.patch })
+    public static func mergeDiffs<S: IndexStrider>(_ diffs: [[CollectionOperation<Index>]], using strider: S) -> [CollectionOperation<Index>] where S.Index == Index {
+        let patch = diffs.flatMap { $0.patch(using: strider) }
         var diff: [DiffElement] = []
         for operation in patch {
-            append(operation, to: &diff)
+            append(operation, to: &diff, using: strider)
         }
         return diff.map { $0.asCollectionOperation }
     }
 
-    private static func append(_ operation: CollectionOperation<Index>, to diff: inout [DiffElement]) {
+    static func append<S: IndexStrider>(_ operation: CollectionOperation<Index>, to diff: inout [DiffElement], using strider: S) where S.Index == Index  {
 
-        func shiftDestinationIndex(by shift: Index.Stride, iff test: (Index) -> Bool) {
+        func forEachDiffDestinationIndex(_ block: (inout Index) -> Void) {
             for index in 0..<diff.count {
-                if let destinationIndex = diff[index].destinationIndex, test(destinationIndex) {
-                    diff[index].destinationIndex = destinationIndex.advanced(by: shift)
+                if diff[index].destinationIndex != nil {
+                    block(&diff[index].destinationIndex!)
                 }
             }
         }
@@ -165,17 +79,13 @@ extension CollectionOperation where Index: Strideable {
             var index = index
             for element in diff {
                 switch element.kind {
-                case .insert where element.destinationIndex! < index:
-                    index = index.advanced(by: -1)
-                case .delete where element.sourceIndex! <= index:
-                    index = index.advanced(by: 1)
+                case .insert:
+                    index = strider.shiftLeft(index, ifPositionedAfter: element.destinationIndex!)
+                case .delete:
+                    index = strider.shiftRight(index, ifPositionedBeforeOrAt: element.sourceIndex!)
                 case .move:
-                    if element.destinationIndex! < index {
-                        index = index.advanced(by: -1)
-                    }
-                    if element.sourceIndex! <= index {
-                        index = index.advanced(by: 1)
-                    }
+                    index = strider.shiftLeft(index, ifPositionedAfter: element.destinationIndex!)
+                    index = strider.shiftRight(index, ifPositionedBeforeOrAt: element.sourceIndex!)
                 default:
                     break
                 }
@@ -185,7 +95,7 @@ extension CollectionOperation where Index: Strideable {
 
         switch operation {
         case .insert(let at):
-            shiftDestinationIndex(by: 1, iff: { $0 >= at })
+            forEachDiffDestinationIndex { $0 = strider.shiftRight($0, ifPositionedBeforeOrAt: at) }
             diff.append(DiffElement(kind: .insert, sourceIndex: nil, destinationIndex: at))
         case .delete(let at):
             var isAnnihilated: Bool = false
@@ -193,18 +103,18 @@ extension CollectionOperation where Index: Strideable {
                 let conflicted = diff[indexOfConflicted]
                 switch conflicted.kind {
                 case .insert:
-                    diff.remove(at: indexOfConflicted)
                     isAnnihilated = true
+                    diff.remove(at: indexOfConflicted)
                 case .update:
                     diff.remove(at: indexOfConflicted)
                 case .move:
-                    diff[indexOfConflicted] = DiffElement(kind: .delete, sourceIndex: conflicted.sourceIndex, destinationIndex: nil)
                     isAnnihilated = true
+                    diff[indexOfConflicted] = DiffElement(kind: .delete, sourceIndex: conflicted.sourceIndex, destinationIndex: nil)
                 default:
                     break
                 }
             }
-            shiftDestinationIndex(by: -1, iff: { $0 > at })
+            forEachDiffDestinationIndex { $0 = strider.shiftLeft($0, ifPositionedAfter: at) }
             if !isAnnihilated {
                 diff.append(DiffElement(kind: .delete, sourceIndex: sourceIndex(for: at), destinationIndex: nil))
             }
@@ -218,9 +128,9 @@ extension CollectionOperation where Index: Strideable {
                 case .update:
                     isAnnihilated = true
                 case .move:
+                    isAnnihilated = true
                     diff[indexOfConflicted] = DiffElement(kind: .delete, sourceIndex: conflicted.sourceIndex, destinationIndex: nil)
                     diff.append(DiffElement(kind: .insert, sourceIndex: nil, destinationIndex: at))
-                    isAnnihilated = true
                 default:
                     break
                 }
@@ -234,19 +144,24 @@ extension CollectionOperation where Index: Strideable {
                 let conflicted = diff[indexOfConflicted]
                 switch conflicted.kind {
                 case .insert:
-                    diff[indexOfConflicted] = DiffElement(kind: .insert, sourceIndex: nil, destinationIndex: to)
                     isAnnihilated = true
+                    forEachDiffDestinationIndex { $0 = strider.shiftLeft($0, ifPositionedAfter: from) }
+                    forEachDiffDestinationIndex { $0 = strider.shiftRight($0, ifPositionedBeforeOrAt: to) }
+                    diff[indexOfConflicted] = DiffElement(kind: .insert, sourceIndex: nil, destinationIndex: to)
                 case .update:
+                    isAnnihilated = true
                     diff[indexOfConflicted] = DiffElement(kind: .delete, sourceIndex: conflicted.sourceIndex, destinationIndex: nil)
                     diff.append(DiffElement(kind: .insert, sourceIndex: nil, destinationIndex: to))
-                    isAnnihilated = true
                 case .move:
+                    isAnnihilated = true
                     if to == conflicted.sourceIndex! {
                         diff.remove(at: indexOfConflicted)
-                        isAnnihilated = true
+                        forEachDiffDestinationIndex { $0 = strider.shiftLeft($0, ifPositionedAfter: from) }
+                        forEachDiffDestinationIndex { $0 = strider.shiftRight($0, ifPositionedBeforeOrAt: to) }
                     } else {
+                        forEachDiffDestinationIndex { $0 = strider.shiftLeft($0, ifPositionedAfter: from) }
+                        forEachDiffDestinationIndex { $0 = strider.shiftRight($0, ifPositionedBeforeOrAt: to) }
                         diff[indexOfConflicted] = DiffElement(kind: .move, sourceIndex: conflicted.sourceIndex, destinationIndex: to)
-                        isAnnihilated = true
                     }
                 default:
                     break
@@ -254,8 +169,8 @@ extension CollectionOperation where Index: Strideable {
             }
             if !isAnnihilated {
                 let index = sourceIndex(for: from)
-                shiftDestinationIndex(by: -1, iff: { $0 > from })
-                shiftDestinationIndex(by: 1, iff: { $0 >= to })
+                forEachDiffDestinationIndex { $0 = strider.shiftLeft($0, ifPositionedAfter: from) }
+                forEachDiffDestinationIndex { $0 = strider.shiftRight($0, ifPositionedBeforeOrAt: to) }
                 diff.append(DiffElement(kind: .move, sourceIndex: index, destinationIndex: to))
             }
         }

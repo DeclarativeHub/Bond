@@ -28,6 +28,8 @@ public protocol ObservableCollectionEventProtocol {
 
     var collection: UnderlyingCollection { get }
     var diff: [CollectionOperation<UnderlyingCollection.Index>] { get }
+
+    var asObservableCollectionEvent: ObservableCollectionEvent<UnderlyingCollection> { get }
 }
 
 public struct ObservableCollectionEvent<UnderlyingCollection: Collection>: ObservableCollectionEventProtocol {
@@ -50,8 +52,33 @@ public struct ObservableCollectionEvent<UnderlyingCollection: Collection>: Obser
     /// On such event one should act as if the whole collection has changed - e.g. reload the table view.
     public let diff: [CollectionOperation<UnderlyingCollection.Index>]
 
+    public var asObservableCollectionEvent: ObservableCollectionEvent<UnderlyingCollection> {
+        return self
+    }
+
     public init(collection: UnderlyingCollection, diff: [CollectionOperation<UnderlyingCollection.Index>]) {
         self.collection = collection
         self.diff = diff
+    }
+}
+
+extension ObservableCollectionEventProtocol {
+
+    public var patch: [CollectionOperation<UnderlyingCollection.Index>] {
+        return diff.patch(using: PositionIndependentStrider())
+    }
+}
+
+extension ObservableCollectionEventProtocol where UnderlyingCollection.Index: Strideable {
+
+    public var patch: [CollectionOperation<UnderlyingCollection.Index>] {
+        return diff.patch(using: StridableIndexStrider())
+    }
+}
+
+extension ObservableCollectionEventProtocol where UnderlyingCollection: TreeNodeProtocol {
+
+    public var patch: [CollectionOperation<UnderlyingCollection.Index>] {
+        return diff.patch(using: IndexPathTreeIndexStrider())
     }
 }
