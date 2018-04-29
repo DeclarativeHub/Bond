@@ -231,6 +231,7 @@
 		EC6A35E92076054F00E8F805 /* ObservableCollectionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1325D120726C6800F466B6 /* ObservableCollectionEvent.swift */; };
 		EC6A35EB2076055000E8F805 /* ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E24B49206F507000CF92F7 /* ObservableCollection.swift */; };
 		EC6A35EC2076055000E8F805 /* ObservableCollectionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1325D120726C6800F466B6 /* ObservableCollectionEvent.swift */; };
+		EC6D82092095B4CE007C919E /* ObservableCollection+Array2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6D82082095B4CE007C919E /* ObservableCollection+Array2D.swift */; };
 		EC706433208FCD36009BEB1C /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC706432208FCD36009BEB1C /* TreeNode.swift */; };
 		EC706438208FCD46009BEB1C /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC706432208FCD36009BEB1C /* TreeNode.swift */; };
 		EC706439208FCD46009BEB1C /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC706432208FCD36009BEB1C /* TreeNode.swift */; };
@@ -466,6 +467,7 @@
 		EC671C882082113400EA7672 /* ObservableCollectionEvent+Signal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableCollectionEvent+Signal.swift"; sourceTree = "<group>"; };
 		EC6A35E32075E00D00E8F805 /* CollectionOperation+DiffMerge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionOperation+DiffMerge.swift"; sourceTree = "<group>"; };
 		EC6A35E52075FCB600E8F805 /* CollectionOperation+Diff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionOperation+Diff.swift"; sourceTree = "<group>"; };
+		EC6D82082095B4CE007C919E /* ObservableCollection+Array2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableCollection+Array2D.swift"; sourceTree = "<group>"; };
 		EC706432208FCD36009BEB1C /* TreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeNode.swift; sourceTree = "<group>"; };
 		EC70643A208FCDE2009BEB1C /* ObservableCollection+TreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableCollection+TreeNode.swift"; sourceTree = "<group>"; };
 		EC86E9AE1E9145CC008563B2 /* UIAccessibilityIdentification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAccessibilityIdentification.swift; sourceTree = "<group>"; };
@@ -790,6 +792,7 @@
 				ECC1A6C3207A137500AE762C /* ObservableCollection+MutableCollection.swift */,
 				ECF15FD12079FE5F00DEB77D /* ObservableCollection+RangeReplaceableCollection.swift */,
 				EC70643A208FCDE2009BEB1C /* ObservableCollection+TreeNode.swift */,
+				EC6D82082095B4CE007C919E /* ObservableCollection+Array2D.swift */,
 			);
 			path = ObservableCollection;
 			sourceTree = "<group>";
@@ -1116,6 +1119,7 @@
 				ECAFB8D9200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */,
 				90677C45207F391700BC4505 /* NSOutlineView+ObservableTree.swift in Sources */,
 				90C04DB71E8F0B97000077C8 /* UIImageView.swift in Sources */,
+				EC6D82092095B4CE007C919E /* ObservableCollection+Array2D.swift in Sources */,
 				90C04DBF1E8F0B97000077C8 /* UIStepper.swift in Sources */,
 				90677C3D207F38AE00BC4505 /* NSOutlineView.swift in Sources */,
 				90A4430E1E9055D100D611FE /* NSSegmentedControl.swift in Sources */,
