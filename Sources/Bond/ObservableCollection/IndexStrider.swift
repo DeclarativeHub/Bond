@@ -13,6 +13,9 @@ public protocol IndexStrider {
 
     func shiftLeft(_ index: Index, ifPositionedAfter other: Index) -> Index
     func shiftRight(_ index: Index, ifPositionedBeforeOrAt other: Index) -> Index
+
+    func isIndex(_ index: Index, ancestorOf other: Index) -> Bool
+    func replaceAncestor(_ ancestor: Index, with newAncestor: Index, of index: Index) -> Index
 }
 
 public struct PositionIndependentStrider<Index>: IndexStrider {
@@ -22,6 +25,14 @@ public struct PositionIndependentStrider<Index>: IndexStrider {
     }
 
     public func shiftRight(_ index: Index, ifPositionedBeforeOrAt other: Index) -> Index {
+        return index
+    }
+
+    public func isIndex(_ index: Index, ancestorOf other: Index) -> Bool {
+        return false
+    }
+
+    public func replaceAncestor(_ ancestor: Index, with newAncestor: Index, of index: Index) -> Index {
         return index
     }
 }
@@ -43,6 +54,14 @@ public struct StridableIndexStrider<Index: Strideable>: IndexStrider {
             return index
         }
     }
+
+    public func isIndex(_ index: Index, ancestorOf other: Index) -> Bool {
+        return false
+    }
+
+    public func replaceAncestor(_ ancestor: Index, with newAncestor: Index, of index: Index) -> Index {
+        return index
+    }
 }
 
 public struct IndexPathTreeIndexStrider: IndexStrider {
@@ -60,11 +79,22 @@ public struct IndexPathTreeIndexStrider: IndexStrider {
     public func shiftRight(_ index: IndexPath, ifPositionedBeforeOrAt other: IndexPath) -> IndexPath {
         guard other.count > 0 && other.count <= index.count else { return index }
         let level = other.count - 1
-        if other[level] <= index[level] {
+        if other[level] < index[level] || index == other {
             return index.advanced(by: 1, atLevel: level)
         } else {
             return index
         }
+    }
+
+    public func isIndex(_ index: IndexPath, ancestorOf other: IndexPath) -> Bool {
+        guard index.count < other.count else {
+            return false
+        }
+        return other.prefix(index.count) == index
+    }
+
+    public func replaceAncestor(_ ancestor: IndexPath, with newAncestor: IndexPath, of index: IndexPath) -> IndexPath {
+        return newAncestor + index.dropFirst(ancestor.count)
     }
 }
 

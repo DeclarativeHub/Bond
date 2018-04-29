@@ -61,7 +61,6 @@ public struct TreeNode<Value>: RangeReplacableTreeNode, CustomDebugStringConvert
     }
 
     public mutating func replaceChildrenSubrange<C>(_ subrange: Range<IndexPath>, with newChildren: C) where C: Collection, C.Element == TreeNode<Value> {
-        print(#function, subrange)
         guard subrange.lowerBound.count == subrange.upperBound.count, !subrange.lowerBound.isEmpty else {
             fatalError("Range lowerBound and upperBound must be at the same level!")
         }
