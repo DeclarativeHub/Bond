@@ -103,7 +103,7 @@ extension MutableObservableCollection where UnderlyingCollection.Element: Equata
     }
 }
 
-extension MutableObservableCollection where UnderlyingCollection: TreeNodeProtocol, UnderlyingCollection.Children.Index == Int {
+extension MutableObservableCollection where UnderlyingCollection: TreeNodeProtocol {
 
     /// Replace the underlying collection with the given collection. Setting `performDiff: true` will make the framework
     /// calculate the diff between the existing and new collection and emit an event with the calculated diff.
@@ -113,7 +113,7 @@ extension MutableObservableCollection where UnderlyingCollection: TreeNodeProtoc
     }
 }
 
-extension MutableObservableCollection where UnderlyingCollection: TreeNodeProtocol, UnderlyingCollection.Value: Equatable, UnderlyingCollection.Children.Index == Int {
+extension MutableObservableCollection where UnderlyingCollection: TreeNodeProtocol, UnderlyingCollection.Value: Equatable {
 
     /// Replace the underlying collection with the given collection. Setting `performDiff: true` will make the framework
     /// calculate the diff between the existing and new collection and emit an event with the calculated diff.
@@ -137,14 +137,14 @@ extension SignalProtocol where Element: Collection, Element.Element: Equatable, 
     }
 }
 
-extension SignalProtocol where Element: TreeNodeProtocol, Element.Children.Index == Int {
+extension SignalProtocol where Element: TreeNodeProtocol {
 
     public func diff(_ areEqual: @escaping (Element.Value, Element.Value) -> Bool) -> Signal<ObservableCollectionEvent<Element>, Error> {
         return diff(generateDiff: { $0.treeDiff($1, areEqual: areEqual) })
     }
 }
 
-extension SignalProtocol where Element: TreeNodeProtocol, Element.Children.Index == Int, Element.Value: Equatable {
+extension SignalProtocol where Element: TreeNodeProtocol, Element.Value: Equatable {
 
     public func diff() -> Signal<ObservableCollectionEvent<Element>, Error> {
         return diff(generateDiff: { $0.treeDiff($1) })

@@ -60,25 +60,7 @@ public struct TreeNode<Value>: RangeReplacableTreeNode, CustomDebugStringConvert
         return i
     }
 
-    public subscript(indexPath: IndexPath) -> TreeNode {
-        get {
-            if let first = indexPath.first {
-                let child = children[first]
-                return child[indexPath.dropFirst()]
-            } else {
-                return self
-            }
-        }
-        set {
-            if indexPath.isEmpty {
-                self = newValue
-            } else {
-                children[indexPath[0]][indexPath.dropFirst()] = newValue
-            }
-        }
-    }
-
-    public mutating func replaceSubrange<C>(_ subrange: Range<IndexPath>, with newChildren: C) where C: Collection, C.Element == TreeNode<Value> {
+    public mutating func replaceChildrenSubrange<C>(_ subrange: Range<IndexPath>, with newChildren: C) where C: Collection, C.Element == TreeNode<Value> {
         print(#function, subrange)
         guard subrange.lowerBound.count == subrange.upperBound.count, !subrange.lowerBound.isEmpty else {
             fatalError("Range lowerBound and upperBound must be at the same level!")
@@ -89,7 +71,7 @@ public struct TreeNode<Value>: RangeReplacableTreeNode, CustomDebugStringConvert
             guard subrange.lowerBound[0] == subrange.upperBound[0] else {
                 fatalError("Range lowerBound and upperBound must point to the same subtree!")
             }
-            children[subrange.lowerBound[0]].replaceSubrange(subrange.lowerBound.dropFirst()..<subrange.upperBound.dropFirst(), with: newChildren)
+            children[subrange.lowerBound[0]].replaceChildrenSubrange(subrange.lowerBound.dropFirst()..<subrange.upperBound.dropFirst(), with: newChildren)
         }
     }
 

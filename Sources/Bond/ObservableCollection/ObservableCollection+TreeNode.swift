@@ -31,7 +31,7 @@ extension ObservableCollection where UnderlyingCollection: TreeNodeProtocol {
     }
 }
 
-extension MutableObservableCollection where UnderlyingCollection: TreeNodeProtocol {
+extension MutableObservableCollection where UnderlyingCollection: MutableTreeNodeProtocol {
 
     public subscript(indexPath: IndexPath) -> UnderlyingCollection {
         get {
@@ -45,12 +45,39 @@ extension MutableObservableCollection where UnderlyingCollection: TreeNodeProtoc
         }
     }
 
+    public subscript(valueAt indexPath: IndexPath) -> UnderlyingCollection.Value {
+        get {
+            return collection[indexPath].value
+        }
+        set {
+            descriptiveUpdate { (collection) -> [CollectionOperation<IndexPath>] in
+                collection[indexPath].value = newValue
+                return [.update(at: indexPath)]
+            }
+        }
+    }
+
     /// Perform batched updates on the collection. Emits an event with the combined diff of all made changes.
     /// Diffs are combined by shifting elements when needed and annihilating confling operations like I(2) -> D(2).
     public func batchUpdate(_ update: (MutableObservableCollection<UnderlyingCollection>) -> Void) {
         batchUpdate(update, mergeDiffs: { _, diffs in
             CollectionOperation.mergeDiffs(diffs, using: IndexPathTreeIndexStrider())
         })
+    }
+
+    /// Perform batched updates on the collection. Emits an event with the combined diff of all made changes.
+    /// Diffs are combined by shifting elements when needed and annihilating confling operations like I(2) -> D(2).
+    public func batchUpdate(subtreeAt indexPath: IndexPath, _ update: (MutableObservableCollection<UnderlyingCollection>) -> Void) {
+        let view = MutableObservableCollection(collection[indexPath])
+        var viewDiff: [CollectionOperation<IndexPath>] = []
+        view.batchUpdate(update, mergeDiffs: { _, diffs in
+            viewDiff = CollectionOperation.mergeDiffs(diffs, using: IndexPathTreeIndexStrider())
+            return []
+        })
+        descriptiveUpdate { (collection) -> ([CollectionOperation<IndexPath>]) in
+            collection[indexPath] = view.collection
+            return viewDiff.map { $0.mapIndex { indexPath + $0 } }
+        }
     }
 }
 

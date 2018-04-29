@@ -29,13 +29,49 @@ public protocol TreeNodeProtocol: MutableCollection where Index == IndexPath, El
     associatedtype Value
     var value: Value { get }
 
-    associatedtype Children: Collection where Children.Element == Self
+    associatedtype Children: Collection where Children.Element == Self, Children.Index == Int
     var children: Children { get }
 }
 
-public protocol RangeReplacableTreeNode: TreeNodeProtocol {
+public protocol MutableTreeNodeProtocol: TreeNodeProtocol where Children: MutableCollection {
+    var value: Value { get set }
+    var children: Children { get set }
+}
 
-    mutating func replaceSubrange<C>(_ subrange: Range<IndexPath>, with newChildren: C) where C: Collection, C.Element == Self
+extension MutableTreeNodeProtocol where Children: MutableCollection {
+
+    public subscript(indexPath: IndexPath) -> Self {
+        get {
+            if let first = indexPath.first {
+                let child = children[first]
+                return child[indexPath.dropFirst()]
+            } else {
+                return self
+            }
+        }
+        set {
+            if indexPath.isEmpty {
+                self = newValue
+            } else {
+                children[indexPath[0]][indexPath.dropFirst()] = newValue
+            }
+        }
+    }
+
+    public subscript(valueAt indexPath: IndexPath) -> Value {
+        get {
+            return self[indexPath].value
+        }
+        set {
+            self[indexPath].value = newValue
+        }
+    }
+}
+
+public protocol RangeReplacableTreeNode: MutableTreeNodeProtocol {
+
+    // rename
+    mutating func replaceChildrenSubrange<C>(_ subrange: Range<IndexPath>, with newChildren: C) where C: Collection, C.Element == Self
 }
 
 extension RangeReplacableTreeNode {
@@ -45,11 +81,11 @@ extension RangeReplacableTreeNode {
     }
 
     public mutating func insert(_ newNode: Self, at indexPath: IndexPath) {
-        replaceSubrange(indexPath..<indexPath, with: [newNode])
+        replaceChildrenSubrange(indexPath..<indexPath, with: [newNode])
     }
 
     public mutating func insert(contentsOf newNodes: [Self], at indexPath: IndexPath) {
-        replaceSubrange(indexPath..<indexPath, with: newNodes)
+        replaceChildrenSubrange(indexPath..<indexPath, with: newNodes)
     }
 
     public mutating func move(from fromIndex: IndexPath, to toIndex: IndexPath) {
@@ -68,12 +104,12 @@ extension RangeReplacableTreeNode {
     @discardableResult
     public mutating func remove(at indexPath: IndexPath) -> Self {
         let subtree = self[indexPath]
-        replaceSubrange(indexPath..<index(after: indexPath), with: [])
+        replaceChildrenSubrange(indexPath..<index(after: indexPath), with: [])
         return subtree
     }
 
     public mutating func removeAll() {
-        replaceSubrange(startIndex..<endIndex, with: [])
+        replaceChildrenSubrange(startIndex..<endIndex, with: [])
     }
 }
 
