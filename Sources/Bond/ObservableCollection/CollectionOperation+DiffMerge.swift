@@ -98,6 +98,26 @@ extension CollectionOperation {
             forEachDiffDestinationIndex { $0 = strider.shiftRight($0, ifPositionedBeforeOrAt: at) }
             diff.append(DiffElement(kind: .insert, sourceIndex: nil, destinationIndex: at))
         case .delete(let at):
+            // [Applies to tress] Remove operations that apply to the deleted node's subtree.
+            for (index, element) in diff.reversed().enumerated() {
+                switch element.asCollectionOperation {
+                case .insert(let insertAt) where strider.isIndex(at, ancestorOf: insertAt):
+                    diff.remove(at: index)
+                case .update(let updateAt) where strider.isIndex(at, ancestorOf: updateAt):
+                    diff.remove(at: index)
+                case .delete(let deleteAt) where strider.isIndex(at, ancestorOf: deleteAt):
+                    diff.remove(at: index)
+                case .move(let moveFrom, let moveTo) where strider.isIndex(at, ancestorOf: moveTo):
+                    if strider.isIndex(at, ancestorOf: moveFrom) {
+                        diff.remove(at: index)
+                    } else {
+                        diff[index] = DiffElement(kind: .delete, sourceIndex: moveFrom, destinationIndex: nil)
+                    }
+                default:
+                    break
+                }
+            }
+            // Handle the operation, if such exists, that applies to the element (node) that is now deleted.
             var isAnnihilated: Bool = false
             if let indexOfConflicted = diff.index(where: { $0.destinationIndex == at }) {
                 let conflicted = diff[indexOfConflicted]
@@ -139,9 +159,29 @@ extension CollectionOperation {
                 diff.append(DiffElement(kind: .update, sourceIndex: sourceIndex(for: at), destinationIndex: at))
             }
         case .move(let from, let to):
+            for (index, element) in diff.enumerated() {
+                switch element.asCollectionOperation {
+                case .insert(let insertAt) where strider.isIndex(from, ancestorOf: insertAt):
+                    diff[index].destinationIndex = strider.replaceAncestor(from, with: to, of: insertAt)
+                case .update(let updateAt) where strider.isIndex(from, ancestorOf: updateAt):
+                    diff[index].sourceIndex = strider.replaceAncestor(from, with: to, of: updateAt)
+                case .delete(let deleteAt) where strider.isIndex(from, ancestorOf: deleteAt):
+                    diff[index].sourceIndex = strider.replaceAncestor(from, with: to, of: deleteAt)
+                case .move(let moveFrom, let moveTo):
+                    if strider.isIndex(from, ancestorOf: moveFrom) {
+                        diff[index].sourceIndex = strider.replaceAncestor(from, with: to, of: moveFrom)
+                    }
+                    if strider.isIndex(from, ancestorOf: moveTo) {
+                        diff[index].destinationIndex = strider.replaceAncestor(from, with: to, of: moveTo)
+                    }
+                default:
+                    break
+                }
+            }
             var isAnnihilated: Bool = false
             if let indexOfConflicted = diff.index(where: { $0.destinationIndex == from }) {
                 let conflicted = diff[indexOfConflicted]
+                print("con", conflicted)
                 switch conflicted.kind {
                 case .insert:
                     isAnnihilated = true
@@ -168,6 +208,7 @@ extension CollectionOperation {
                 }
             }
             if !isAnnihilated {
+                print("na")
                 let index = sourceIndex(for: from)
                 forEachDiffDestinationIndex { $0 = strider.shiftLeft($0, ifPositionedAfter: from) }
                 forEachDiffDestinationIndex { $0 = strider.shiftRight($0, ifPositionedBeforeOrAt: to) }

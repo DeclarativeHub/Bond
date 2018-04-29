@@ -52,6 +52,8 @@ extension TreeNodeProtocol where Children.Index == Int {
         var diff: [CollectionOperation<IndexPath>] = []
         let isEqual: (Self, Self) -> Bool = { a, b in areEqual(a.value, b.value) }
 
+        // todo handle root?
+
         let traces = children.outputDiffPathTraces(to: other.children, isEqual: isEqual)
 
         let levelDiff = Diff(traces: traces)
@@ -83,7 +85,8 @@ extension TreeNodeProtocol where Children.Index == Int, Value: Equatable {
     }
 }
 
-extension MutableObservableCollection where UnderlyingCollection.Index == Int {
+extension MutableObservableCollection
+where UnderlyingCollection.Index == Int {
 
     /// Replace the underlying collection with the given collection. Setting `performDiff: true` will make the framework
     /// calculate the diff between the existing and new collection and emit an event with the calculated diff.
@@ -93,7 +96,8 @@ extension MutableObservableCollection where UnderlyingCollection.Index == Int {
     }
 }
 
-extension MutableObservableCollection where UnderlyingCollection.Element: Equatable, UnderlyingCollection.Index == Int {
+extension MutableObservableCollection
+where UnderlyingCollection.Element: Equatable, UnderlyingCollection.Index == Int {
 
     /// Replace the underlying collection with the given collection. Setting `performDiff: true` will make the framework
     /// calculate the diff between the existing and new collection and emit an event with the calculated diff.
@@ -103,7 +107,8 @@ extension MutableObservableCollection where UnderlyingCollection.Element: Equata
     }
 }
 
-extension MutableObservableCollection where UnderlyingCollection: TreeNodeProtocol {
+extension MutableObservableCollection
+where UnderlyingCollection: TreeNodeProtocol {
 
     /// Replace the underlying collection with the given collection. Setting `performDiff: true` will make the framework
     /// calculate the diff between the existing and new collection and emit an event with the calculated diff.
@@ -113,13 +118,42 @@ extension MutableObservableCollection where UnderlyingCollection: TreeNodeProtoc
     }
 }
 
-extension MutableObservableCollection where UnderlyingCollection: TreeNodeProtocol, UnderlyingCollection.Value: Equatable {
+extension MutableObservableCollection
+where UnderlyingCollection: TreeNodeProtocol, UnderlyingCollection.Value: Equatable {
 
     /// Replace the underlying collection with the given collection. Setting `performDiff: true` will make the framework
     /// calculate the diff between the existing and new collection and emit an event with the calculated diff.
     /// - Complexity: O((N+M)*D) if `performDiff: true`, O(1) otherwise.
     public func replace(with newCollection: UnderlyingCollection, performDiff: Bool) {
         replace(with: newCollection, performDiff: performDiff, generateDiff: { $0.treeDiff($1) })
+    }
+}
+
+extension MutableObservableCollection
+where UnderlyingCollection: Array2DProtocol, UnderlyingCollection: MutableTreeNodeProtocol {
+
+    public func replaceSection(at index: Int, newItems: [UnderlyingCollection.Value.Item], performDiff: Bool, areEqual: @escaping (UnderlyingCollection.Value.Item, UnderlyingCollection.Value.Item) -> Bool) {
+        batchUpdate(subtreeAt: [index]) { (subtree: MutableObservableCollection<UnderlyingCollection>) in
+            let section = UnderlyingCollection(section: subtree.collection.value.array2DElementView.section!, items: newItems)
+            subtree.replace(with: section, performDiff: performDiff, areEqual: { (lhs, rhs) -> Bool in
+                switch (lhs.array2DElementView, rhs.array2DElementView) {
+                case (.section, .section):
+                    return true
+                case (.item(let lhs), .item(let rhs)):
+                    return areEqual(lhs, rhs)
+                default:
+                    return false
+                }
+            })
+        }
+    }
+}
+
+extension MutableObservableCollection
+where UnderlyingCollection: Array2DProtocol, UnderlyingCollection: MutableTreeNodeProtocol, UnderlyingCollection.Value.Item: Equatable {
+
+    public func replaceSection(at index: Int, newItems: [UnderlyingCollection.Value.Item], performDiff: Bool) {
+        return replaceSection(at: index, newItems: newItems, performDiff: performDiff, areEqual: { $0 == $1 })
     }
 }
 
