@@ -23,6 +23,7 @@
 //
 
 import Differ
+import Foundation
 import ReactiveKit
 
 extension ExtendedDiff.Element {
