@@ -31,18 +31,25 @@ open class OutlineViewBinder<TreeNode: TreeNodeProtocol> {
     public var insertAnimation: NSOutlineView.AnimationOptions? = [.effectFade, .slideUp]
     public var deleteAnimation: NSOutlineView.AnimationOptions? = [.effectFade, .slideUp]
 
+    let isItemExpandable: ((TreeNode, TreeNode.Value?, NSOutlineView) -> Bool)?
     let measureCell: ((TreeNode, TreeNode.Value?, NSOutlineView) -> CGFloat?)?
     let createCell: ((TreeNode, TreeNode.Value?, NSTableColumn?, NSOutlineView) -> NSView?)?
 
     public init() {
         // This initializer allows subclassing without having to declare default initializer in subclass.
+        self.isItemExpandable = nil
         self.measureCell = nil
         self.createCell = nil
     }
 
-    public init(measureCell: ((TreeNode, TreeNode.Value?, NSOutlineView) -> CGFloat?)? = nil, createCell: ((TreeNode, TreeNode.Value?, NSTableColumn?, NSOutlineView) -> NSView?)? = nil) {
+    public init(isItemExpandable: ((TreeNode, TreeNode.Value?, NSOutlineView) -> Bool)? = nil, measureCell: ((TreeNode, TreeNode.Value?, NSOutlineView) -> CGFloat?)? = nil, createCell: ((TreeNode, TreeNode.Value?, NSTableColumn?, NSOutlineView) -> NSView?)? = nil) {
+        self.isItemExpandable = isItemExpandable
         self.measureCell = measureCell
         self.createCell = createCell
+    }
+
+    open func isExpandable(for item: TreeNode.Value?, outlineView: NSOutlineView, dataSource: TreeNode) -> Bool {
+        return self.isItemExpandable?(dataSource, item, outlineView) ?? false
     }
 
     open func height(for item: TreeNode.Value?, outlineView: NSOutlineView, dataSource: TreeNode) -> CGFloat? {
@@ -87,9 +94,7 @@ open class OutlineViewBinder<TreeNode: TreeNodeProtocol> {
     }
 }
 
-
 public extension SignalProtocol where Element: ObservableCollectionEventProtocol, Element.UnderlyingCollection: TreeNodeProtocol, Error == NoError {
-
     @discardableResult
     public func bind(to outlineView: NSOutlineView, animated: Bool = true, createCell: @escaping (Element.UnderlyingCollection, Element.UnderlyingCollection.Value?, NSTableColumn?, NSOutlineView) -> NSView?) -> Disposable {
         let binder = OutlineViewBinder(measureCell: nil, createCell: createCell)
@@ -108,18 +113,18 @@ public extension SignalProtocol where Element: ObservableCollectionEventProtocol
         disposable += outlineView.reactive.delegate.feed(
             property: dataSource,
             to: #selector(NSOutlineViewDelegate.outlineView(_:heightOfRowByItem:)),
-            map: { (dataSource: Element.UnderlyingCollection?, outlineView: NSOutlineView, item: Element.UnderlyingCollection.Value?) -> CGFloat in
+            map: { (dataSource: Element.UnderlyingCollection?, outlineView: NSOutlineView, item: Element.UnderlyingCollection?) -> CGFloat in
                 guard let dataSource = dataSource else { return outlineView.rowHeight }
-                return binder.height(for: item, outlineView: outlineView, dataSource: dataSource) ?? outlineView.rowHeight
+                return binder.height(for: item?.value, outlineView: outlineView, dataSource: dataSource) ?? outlineView.rowHeight
             }
         )
 
         disposable += outlineView.reactive.delegate.feed(
             property: dataSource,
             to: #selector(NSOutlineViewDelegate.outlineView(_:viewFor:item:)),
-            map: { (dataSource: Element.UnderlyingCollection?, outlineView: NSOutlineView, tableColumn: NSTableColumn, item: Element.UnderlyingCollection.Value?) -> NSView? in
+            map: { (dataSource: Element.UnderlyingCollection?, outlineView: NSOutlineView, tableColumn: NSTableColumn, item: Element.UnderlyingCollection?) -> NSView? in
                 guard let dataSource = dataSource else { return nil }
-                return binder.cell(for: item, tableColumn: tableColumn, outlineView: outlineView, dataSource: dataSource)
+                return binder.cell(for: item?.value, tableColumn: tableColumn, outlineView: outlineView, dataSource: dataSource)
             }
         )
 
@@ -128,7 +133,30 @@ public extension SignalProtocol where Element: ObservableCollectionEventProtocol
             to: #selector(NSOutlineViewDataSource.outlineView(_:numberOfChildrenOfItem:)),
             map: { (dataSource: Element.UnderlyingCollection?, _: NSOutlineView, item: Element.UnderlyingCollection?) -> Int in
                 guard let dataSource = dataSource else { return 0 }
-                return item?.children.count ?? dataSource.count // TODO check if this is correct
+                return item?.children.count ?? dataSource.count
+            }
+        )
+
+        disposable += outlineView.reactive.dataSource.feed(
+            property: dataSource,
+            to: #selector(NSOutlineViewDataSource.outlineView(_:child:ofItem:)),
+            map: { (dataSource: Element.UnderlyingCollection?, _: NSOutlineView, child: Int, item: Element.UnderlyingCollection?) -> Any in
+                guard let item = item else {
+                    // If item is nil, then we return the child from the root node
+                    return dataSource![IndexPath(index: child)]
+                }
+
+                // otherwise return item's child
+                return item[IndexPath(index: child)]
+            }
+        )
+
+        disposable += outlineView.reactive.dataSource.feed(
+            property: dataSource,
+            to: #selector(NSOutlineViewDataSource.outlineView(_:isItemExpandable:)),
+            map: { (dataSource: Element.UnderlyingCollection?, outlineView: NSOutlineView, item: Element.UnderlyingCollection?) -> Bool in
+                guard let dataSource = dataSource else { return false }
+                return binder.isExpandable(for: item?.value, outlineView: outlineView, dataSource: dataSource)
             }
         )
 
@@ -136,7 +164,7 @@ public extension SignalProtocol where Element: ObservableCollectionEventProtocol
             property: dataSource,
             to: #selector(NSOutlineViewDataSource.outlineView(_:objectValueFor:byItem:)),
             map: { (_: Element.UnderlyingCollection?, _: NSOutlineView, _: NSTableColumn, item: Element.UnderlyingCollection?) -> Any? in
-                return item // TODO check if this is correct
+                return item?.value
             }
         )
 
