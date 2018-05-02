@@ -57,7 +57,7 @@ internal extension BNDInvocation {
         case NSObjCSelectorType:
             return pointer.assumingMemoryBound(to: Optional<Selector>.self).pointee as! T
         case NSObjCObjectType:
-            return pointer.assumingMemoryBound(to: Optional<AnyObject>.self).pointee as! T
+            return pointer.downcastPointee(to: T.self, assuming: Optional<AnyObject>.self)
         default:
             return pointer.assumingMemoryBound(to: T.self).pointee
         }
@@ -111,6 +111,32 @@ internal extension BNDInvocation {
             write(value, as: Optional<AnyObject>.self)
         default:
             write(value, as: T.self)
+        }
+    }
+}
+
+private extension UnsafeMutableRawPointer {
+
+    func downcastPointee<T, U>(to: T.Type, assuming: U.Type) -> T {
+        if let OptionalT = T.self as? OptionalFromAny.Type {
+            return OptionalT.init(from: assumingMemoryBound(to: U.self).pointee) as! T
+        } else {
+            return assumingMemoryBound(to: U.self).pointee as! T
+        }
+    }
+}
+
+private protocol OptionalFromAny {
+    init(from unsafeValue: Any?)
+}
+
+extension Optional: OptionalFromAny {
+
+    init(from unsafeValue: Any?) {
+        if let unsafeValue = unsafeValue {
+            self = unsafeValue as? Wrapped
+        } else {
+            self = nil
         }
     }
 }
