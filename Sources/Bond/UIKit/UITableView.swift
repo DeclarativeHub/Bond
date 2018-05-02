@@ -50,9 +50,10 @@
         /// A signal that emits index paths of selected table view cells.
         ///
         /// - Note: Uses table view's `delegate` protocol proxy to observe calls made to `UITableViewDelegate.tableView(_:didSelectRowAt:)` method.
-        public var selectedRowIndexPath: SafeSignal<IndexPath> {
-            return delegate.signal(for: #selector(UITableViewDelegate.tableView(_:didSelectRowAt:))) { (subject: SafePublishSubject<IndexPath>, _: UITableView, indexPath: IndexPath) in
-                subject.next(indexPath)
+        public var selectRowAtIndexPath: SafeSignal<(UITableView, IndexPath)> {
+            return delegate.signal(for: #selector(UITableViewDelegate.tableView(_:didSelectRowAt:))) {
+                (subject: SafePublishSubject<(UITableView, IndexPath)>, tableView: UITableView, indexPath: IndexPath) in
+                subject.next((tableView, indexPath))
             }
         }
     }
