@@ -23,6 +23,7 @@ import ReactiveKit
     func methodD(_ object: TestObject, value: Int) -> NSString
     func methodE(_ object: TestObject, value: NSIndexPath)
     func methodF(_ object: TestObject, value: NSIndexPath) -> Int
+    func methodG(_ object: TestObject, value: Any?)
 }
 
 class TestObject: NSObject {
@@ -54,6 +55,10 @@ class TestObject: NSObject {
 
     func callMethodF(_ value: NSIndexPath) -> Int {
         return delegate.methodF(self, value: value)
+    }
+
+    func callMethodG(_ value: Any?) {
+        delegate.methodG(self, value: value)
     }
 }
 
@@ -163,5 +168,16 @@ class ProtocolProxyTests: XCTestCase {
         signal.expectNext([IndexPath(indexes: [2, 2]), IndexPath(indexes: [3, 3])])
         _ = object.callMethodF(NSIndexPath(indexes: [2, 2], length: 2))
         _ = object.callMethodF(NSIndexPath(indexes: [3, 3], length: 2))
+    }
+
+    func testCallbackG() {
+        let signal = protocolProxy.signal(for: #selector(TestDelegate.methodG(_:value:))) { (subject: SafePublishSubject<Int?>, _: TestObject, value: Any?) in
+            subject.next(value as? Int)
+        }
+
+        signal.expectNext([10, nil, 20])
+        object.callMethodG(10)
+        object.callMethodG(nil)
+        object.callMethodG(20)
     }
 }
