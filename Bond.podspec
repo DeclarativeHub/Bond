@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "Bond"
-  s.version      = "6.8.1"
+  s.version      = "6.8.2"
   s.summary      = "A Swift binding framework"
 
   s.description  = <<-DESC
@@ -19,9 +19,9 @@ Pod::Spec.new do |s|
   s.author             = { "Srdan Rasic" => "srdan.rasic@gmail.com" }
   s.social_media_url   = "http://twitter.com/srdanrasic"
   s.ios.deployment_target = "8.0"
-  s.osx.deployment_target = "10.10"
+  s.osx.deployment_target = "10.11"
   s.tvos.deployment_target = "9.0"
-  s.source       = { :git => "https://github.com/SwiftBond/Bond.git", :tag => "6.8.1" }
+  s.source       = { :git => "https://github.com/SwiftBond/Bond.git", :tag => "6.8.2" }
   s.source_files  = "Sources/**/*.{h,m,swift}", "Supporting Files/Bond.h"
   s.ios.exclude_files = "Sources/Bond/AppKit"
   s.tvos.exclude_files = "Sources/Bond/AppKit"
