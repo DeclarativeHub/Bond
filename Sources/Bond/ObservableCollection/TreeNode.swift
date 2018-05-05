@@ -60,6 +60,24 @@ public struct TreeNode<Value>: RangeReplacableTreeNode, CustomDebugStringConvert
         return i
     }
 
+    public subscript(indexPath: IndexPath) -> TreeNode<Value> {
+        get {
+            if let first = indexPath.first {
+                let child = children[first]
+                return child[indexPath.dropFirst()]
+            } else {
+                return self
+            }
+        }
+        set {
+            if indexPath.isEmpty {
+                self = newValue
+            } else {
+                children[indexPath[0]][indexPath.dropFirst()] = newValue
+            }
+        }
+    }
+
     public mutating func replaceChildrenSubrange<C>(_ subrange: Range<IndexPath>, with newChildren: C) where C: Collection, C.Element == TreeNode<Value> {
         guard subrange.lowerBound.count == subrange.upperBound.count, !subrange.lowerBound.isEmpty else {
             fatalError("Range lowerBound and upperBound must be at the same level!")

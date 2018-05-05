@@ -215,9 +215,10 @@
 		90C04DDB1E8F0BAF000077C8 /* UIKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04DD01E8F0BA7000077C8 /* UIKitTests.swift */; };
 		90C04DDC1E8F0BAF000077C8 /* UITableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04DD11E8F0BA7000077C8 /* UITableViewTests.swift */; };
 		EC02200A1F8BE898002F8380 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0220091F8BE898002F8380 /* Property.swift */; };
+		EC11F569209DB0AB00D05C43 /* ObservableCollection+Array2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6D82082095B4CE007C919E /* ObservableCollection+Array2D.swift */; };
+		EC11F56A209DB0AB00D05C43 /* ObservableCollection+Array2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6D82082095B4CE007C919E /* ObservableCollection+Array2D.swift */; };
+		EC11F56B209DB0AB00D05C43 /* ObservableCollection+Array2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6D82082095B4CE007C919E /* ObservableCollection+Array2D.swift */; };
 		EC1325D220726C6800F466B6 /* ObservableCollectionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1325D120726C6800F466B6 /* ObservableCollectionEvent.swift */; };
-		EC26CF3720961D8800EC5F9D /* ObservableCollection+Array2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6D82082095B4CE007C919E /* ObservableCollection+Array2D.swift */; };
-		EC26CF3C20961D8800EC5F9D /* ObservableCollection+Array2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6D82082095B4CE007C919E /* ObservableCollection+Array2D.swift */; };
 		EC305A76209330B2006DC960 /* CollectionOperation+DiffMerge.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A35E32075E00D00E8F805 /* CollectionOperation+DiffMerge.swift */; };
 		EC305A77209330B2006DC960 /* CollectionOperation+DiffMerge.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A35E32075E00D00E8F805 /* CollectionOperation+DiffMerge.swift */; };
 		EC305A78209330B3006DC960 /* CollectionOperation+DiffMerge.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A35E32075E00D00E8F805 /* CollectionOperation+DiffMerge.swift */; };
@@ -233,7 +234,6 @@
 		EC6A35E92076054F00E8F805 /* ObservableCollectionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1325D120726C6800F466B6 /* ObservableCollectionEvent.swift */; };
 		EC6A35EB2076055000E8F805 /* ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E24B49206F507000CF92F7 /* ObservableCollection.swift */; };
 		EC6A35EC2076055000E8F805 /* ObservableCollectionEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1325D120726C6800F466B6 /* ObservableCollectionEvent.swift */; };
-		EC6D82092095B4CE007C919E /* ObservableCollection+Array2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6D82082095B4CE007C919E /* ObservableCollection+Array2D.swift */; };
 		EC706433208FCD36009BEB1C /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC706432208FCD36009BEB1C /* TreeNode.swift */; };
 		EC706438208FCD46009BEB1C /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC706432208FCD36009BEB1C /* TreeNode.swift */; };
 		EC706439208FCD46009BEB1C /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC706432208FCD36009BEB1C /* TreeNode.swift */; };
@@ -1121,7 +1121,7 @@
 				ECAFB8D9200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */,
 				90677C45207F391700BC4505 /* NSOutlineView+ObservableTree.swift in Sources */,
 				90C04DB71E8F0B97000077C8 /* UIImageView.swift in Sources */,
-				EC6D82092095B4CE007C919E /* ObservableCollection+Array2D.swift in Sources */,
+				EC11F56B209DB0AB00D05C43 /* ObservableCollection+Array2D.swift in Sources */,
 				90C04DBF1E8F0B97000077C8 /* UIStepper.swift in Sources */,
 				90677C3D207F38AE00BC4505 /* NSOutlineView.swift in Sources */,
 				90A4430E1E9055D100D611FE /* NSSegmentedControl.swift in Sources */,
@@ -1237,7 +1237,7 @@
 				ECF15FDC207A0F1900DEB77D /* ObservableCollection+Array.swift in Sources */,
 				90A4433A1E9055D800D611FE /* UIView.swift in Sources */,
 				90C04D801E8F0B8D000077C8 /* NSLayoutConstraint.swift in Sources */,
-				EC26CF3C20961D8800EC5F9D /* ObservableCollection+Array2D.swift in Sources */,
+				EC11F56A209DB0AB00D05C43 /* ObservableCollection+Array2D.swift in Sources */,
 				ECAFB8DA200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */,
 				EC5E0F2D208FCF3B0069C48C /* ObservableCollection+TreeNode.swift in Sources */,
 				90A443351E9055D800D611FE /* UIStepper.swift in Sources */,
@@ -1324,7 +1324,7 @@
 				ECF15FDD207A0F1900DEB77D /* ObservableCollection+Array.swift in Sources */,
 				90A443181E9055D200D611FE /* NSControl.swift in Sources */,
 				90C04D641E8F0B88000077C8 /* SignalProtocol.swift in Sources */,
-				EC26CF3720961D8800EC5F9D /* ObservableCollection+Array2D.swift in Sources */,
+				EC11F569209DB0AB00D05C43 /* ObservableCollection+Array2D.swift in Sources */,
 				90C04DA31E8F0B96000077C8 /* UINavigationItem.swift in Sources */,
 				EC5E0F28208FCF3B0069C48C /* ObservableCollection+TreeNode.swift in Sources */,
 				ECAFB8DB200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */,

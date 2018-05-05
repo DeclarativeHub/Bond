@@ -24,7 +24,7 @@
 
 import Foundation
 
-public protocol TreeNodeProtocol: MutableCollection where Index == IndexPath, Element == Self {
+public protocol TreeNodeProtocol: Collection where Index == IndexPath, Element == Self {
 
     associatedtype Value
     var value: Value { get }
@@ -35,10 +35,16 @@ public protocol TreeNodeProtocol: MutableCollection where Index == IndexPath, El
 
 public protocol MutableTreeNodeProtocol: TreeNodeProtocol where Children: MutableCollection {
     var value: Value { get set }
-    var children: Children { get set }
+    subscript(indexPath: IndexPath) -> Self { get set }
 }
 
-extension MutableTreeNodeProtocol where Children: MutableCollection {
+public protocol RangeReplacableTreeNode: MutableTreeNodeProtocol {
+
+    mutating func replaceChildrenSubrange<C>(_ subrange: Range<IndexPath>, with newChildren: C)
+    where C: Collection, C.Element == Self
+}
+
+extension TreeNodeProtocol {
 
     public subscript(indexPath: IndexPath) -> Self {
         get {
@@ -49,14 +55,16 @@ extension MutableTreeNodeProtocol where Children: MutableCollection {
                 return self
             }
         }
-        set {
-            if indexPath.isEmpty {
-                self = newValue
-            } else {
-                children[indexPath[0]][indexPath.dropFirst()] = newValue
-            }
+    }
+
+    public subscript(valueAt indexPath: IndexPath) -> Value {
+        get {
+            return self[indexPath].value
         }
     }
+}
+
+extension MutableTreeNodeProtocol {
 
     public subscript(valueAt indexPath: IndexPath) -> Value {
         get {
@@ -66,12 +74,6 @@ extension MutableTreeNodeProtocol where Children: MutableCollection {
             self[indexPath].value = newValue
         }
     }
-}
-
-public protocol RangeReplacableTreeNode: MutableTreeNodeProtocol {
-
-    // rename
-    mutating func replaceChildrenSubrange<C>(_ subrange: Range<IndexPath>, with newChildren: C) where C: Collection, C.Element == Self
 }
 
 extension RangeReplacableTreeNode {
