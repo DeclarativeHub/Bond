@@ -132,7 +132,11 @@ public extension SignalProtocol where Element: ObservableCollectionEventProtocol
             property: dataSource,
             to: #selector(NSOutlineViewDataSource.outlineView(_:numberOfChildrenOfItem:)),
             map: { (dataSource: Element.UnderlyingCollection?, _: NSOutlineView, item: Element.UnderlyingCollection?) -> Int in
-                return item?.children.count ?? (dataSource != nil ? 1 : 0)
+                guard let item = item else {
+                    return dataSource?.children.count ?? 0
+                }
+
+                return item.children.count
             }
         )
 
@@ -141,7 +145,7 @@ public extension SignalProtocol where Element: ObservableCollectionEventProtocol
             to: #selector(NSOutlineViewDataSource.outlineView(_:child:ofItem:)),
             map: { (dataSource: Element.UnderlyingCollection?, _: NSOutlineView, child: Int, item: Element.UnderlyingCollection?) -> Any in
                 guard let item = item else {
-                    return dataSource!
+                    return dataSource!.children[child]
                 }
                 return item.children[child]
             }
