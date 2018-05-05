@@ -130,33 +130,33 @@ where UnderlyingCollection: TreeNodeProtocol, UnderlyingCollection.Value: Equata
     }
 }
 
-//extension MutableObservableCollection
-//where UnderlyingCollection: Array2DProtocol, UnderlyingCollection: MutableTreeNodeProtocol {
-//
-//    public func replaceSection(at index: Int, newItems: [UnderlyingCollection.Value.Item], performDiff: Bool, areEqual: @escaping (UnderlyingCollection.Value.Item, UnderlyingCollection.Value.Item) -> Bool) {
-//        batchUpdate(subtreeAt: [index]) { (subtree: MutableObservableCollection<UnderlyingCollection>) in
-//            let section = UnderlyingCollection(section: subtree.collection.value.array2DElementView.section!, items: newItems)
-//            subtree.replace(with: section, performDiff: performDiff, areEqual: { (lhs, rhs) -> Bool in
-//                switch (lhs.array2DElementView, rhs.array2DElementView) {
-//                case (.section, .section):
-//                    return true
-//                case (.item(let lhs), .item(let rhs)):
-//                    return areEqual(lhs, rhs)
-//                default:
-//                    return false
-//                }
-//            })
-//        }
-//    }
-//}
+extension MutableObservableCollection
+where UnderlyingCollection: Array2DProtocol {
 
-//extension MutableObservableCollection
-//where UnderlyingCollection: Array2DProtocol, UnderlyingCollection: MutableTreeNodeProtocol, UnderlyingCollection.Value.Item: Equatable {
-//
-//    public func replaceSection(at index: Int, newItems: [UnderlyingCollection.Value.Item], performDiff: Bool) {
-//        return replaceSection(at: index, newItems: newItems, performDiff: performDiff, areEqual: { $0 == $1 })
-//    }
-//}
+    public func replaceSection(at index: Int, newItems: [Item], performDiff: Bool, areEqual: @escaping (Item, Item) -> Bool) {
+        if performDiff {
+            descriptiveUpdate { (collection) -> [CollectionOperation<IndexPath>] in
+                let section = collection.array2DView.sections[index]
+                let diff = section.items.extendedDiff(newItems, isEqual: areEqual).diff.map { $0.mapIndex { IndexPath(item: $0, section: index) } }
+                collection.array2DView.sections[index].items = newItems
+                return diff
+            }
+        } else {
+            descriptiveUpdate { (collection) -> [CollectionOperation<IndexPath>] in
+                collection.array2DView.sections[index].items = newItems
+                return []
+            }
+        }
+    }
+}
+
+extension MutableObservableCollection
+where UnderlyingCollection: Array2DProtocol, UnderlyingCollection.Item: Equatable {
+
+    public func replaceSection(at index: Int, newItems: [Item], performDiff: Bool) {
+        return replaceSection(at: index, newItems: newItems, performDiff: performDiff, areEqual: { $0 == $1 })
+    }
+}
 
 extension SignalProtocol where Element: Collection, Element.Index == Int {
 
