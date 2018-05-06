@@ -113,7 +113,7 @@ extension ArrayBasedTreeNode {
 
     public func index(after i: IndexPath) -> IndexPath {
         guard i.count > 0 else {
-            fatalError("Invalid index path.")
+            return [0]
         }
         if self[i].isEmpty == false {
             return i + [0]
