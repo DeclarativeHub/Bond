@@ -29,10 +29,6 @@ public struct TreeNode<Value>: ArrayBasedTreeNode, CustomDebugStringConvertible 
     public var value: Value
     public var children: [TreeNode<Value>]
 
-    public var startIndex: IndexPath {
-        return []
-    }
-
     public init(_ value: Value) {
         self.value = value
         self.children = []
