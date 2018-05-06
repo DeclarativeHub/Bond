@@ -152,8 +152,19 @@ extension ArrayBasedTreeNode {
     }
 
     public mutating func replaceChildrenSubrange<C>(_ subrange: Range<IndexPath>, with newChildren: C) where C: Collection, C.Element == ChildNode {
-        guard subrange.lowerBound.count == subrange.upperBound.count, !subrange.lowerBound.isEmpty else {
-            fatalError("Range lowerBound and upperBound of \(subrange) must be at the same level!")
+        guard !subrange.lowerBound.isEmpty else {
+            fatalError("Invalid index")
+        }
+        guard subrange.lowerBound.count == subrange.upperBound.count else {
+            if index(after: subrange.lowerBound) == subrange.upperBound { // deleting last child
+                let endIndex = subrange.lowerBound.count > 1 ? self[subrange.lowerBound.dropLast()].count : count
+                var upperBound = subrange.lowerBound
+                upperBound[upperBound.count-1] = endIndex
+                replaceChildrenSubrange(subrange.lowerBound..<upperBound, with: newChildren)
+                return
+            } else {
+                fatalError("Range lowerBound and upperBound of \(subrange) must be at the same level!")
+            }
         }
         if subrange.lowerBound.count == 1 {
             children.replaceSubrange(subrange.lowerBound[0]..<subrange.upperBound[0], with: newChildren)

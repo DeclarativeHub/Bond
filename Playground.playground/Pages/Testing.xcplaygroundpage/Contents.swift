@@ -6,7 +6,7 @@ import PlaygroundSupport
 
 // Play here!
 
-let t = TreeArray<String>([
+var t = TreeArray<String>([
     TreeNode("Child 00", [
         TreeNode("Child 000"),
         TreeNode("Child 001"),
@@ -20,17 +20,13 @@ let t = TreeArray<String>([
 
 let tree = MutableObservableCollection(t)
 
-//tree.observeNext { (event) in
-//    print(event.collection, "diff", event.diff, "patch", event.patch)
-//}
-//
-//tree.batchUpdate { (tree) in
-////    tree[[0]] = TreeNode<String>("Child X")
-////    tree.move(from: [0], to: [0, 0])
-////    tree.append(TreeNode<String>("Child Y"))
-////    tree.move(from: [0, 0], to: [1])
-//}
+tree.observeNext { (event) in
+    print(event.collection, "diff", event.diff, "patch", event.patch)
+}
 
-for n in t {
-    print(n)
+tree.batchUpdate { (tree) in
+    tree[[1]] = TreeNode<String>("Child X")
+    tree.move(from: [1], to: [0, 1])
+    tree.append(TreeNode<String>("Child Y"))
+    tree.move(from: [0, 1], to: [1])
 }
