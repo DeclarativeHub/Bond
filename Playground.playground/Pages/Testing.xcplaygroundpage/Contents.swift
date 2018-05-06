@@ -6,7 +6,7 @@ import PlaygroundSupport
 
 // Play here!
 
-let tree = MutableObservableCollection(TreeNode("Root"))
+let tree = MutableObservableCollection(TreeArray<String>())
 
 tree.observeNext { (event) in
     print(event.collection, "diff", event.diff, "patch", event.patch)
