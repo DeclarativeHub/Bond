@@ -24,43 +24,19 @@
 
 import Foundation
 
-public struct TreeNode<Value>: RandomAccessCollection, MutableCollection, RangeReplacableTreeNode, CustomDebugStringConvertible {
+public struct TreeNode<Value>: ArrayBasedTreeNode, CustomDebugStringConvertible {
 
     public var value: Value
     public var children: [TreeNode<Value>]
-
-    public var startIndex: IndexPath {
-        return IndexPath(index: children.startIndex)
-    }
-
-    public var endIndex: IndexPath {
-        return IndexPath(index: children.endIndex)
-    }
-
-    public var isEmpty: Bool {
-        return children.isEmpty
-    }
-
-    public var count: Int {
-        return children.count
-    }
 
     public init(_ value: Value) {
         self.value = value
         self.children = []
     }
 
-    public init(_ value: Value, children: [TreeNode<Value>]) {
+    public init(_ value: Value, _ children: [TreeNode<Value>]) {
         self.value = value
         self.children = children
-    }
-
-    public func index(after i: IndexPath) -> IndexPath {
-        return IndexPath(index: children.index(after: i[0]))
-    }
-
-    public func index(before i: IndexPath) -> IndexPath {
-        return IndexPath(index: children.index(before: i[0]))
     }
 
     public subscript(indexPath: IndexPath) -> TreeNode<Value> {
@@ -78,20 +54,6 @@ public struct TreeNode<Value>: RandomAccessCollection, MutableCollection, RangeR
             } else {
                 children[indexPath[0]][indexPath.dropFirst()] = newValue
             }
-        }
-    }
-
-    public mutating func replaceChildrenSubrange<C>(_ subrange: Range<IndexPath>, with newChildren: C) where C: Collection, C.Element == TreeNode<Value> {
-        guard subrange.lowerBound.count == subrange.upperBound.count, !subrange.lowerBound.isEmpty else {
-            fatalError("Range lowerBound and upperBound must be at the same level!")
-        }
-        if subrange.lowerBound.count == 1 {
-            children.replaceSubrange(subrange.lowerBound[0]..<subrange.upperBound[0], with: newChildren)
-        } else {
-            guard subrange.lowerBound[0] == subrange.upperBound[0] else {
-                fatalError("Range lowerBound and upperBound must point to the same subtree!")
-            }
-            children[subrange.lowerBound[0]].replaceChildrenSubrange(subrange.lowerBound.dropFirst()..<subrange.upperBound.dropFirst(), with: newChildren)
         }
     }
 

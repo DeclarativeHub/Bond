@@ -48,6 +48,12 @@ public protocol RangeReplacableTreeNode: MutableTreeNodeProtocol {
     where C: Collection, C.Element == Element
 }
 
+public protocol ArrayBasedTreeNode: RandomAccessCollection, MutableCollection, RangeReplacableTreeNode where Index == IndexPath {
+
+    associatedtype ChildNode: ArrayBasedTreeNode where ChildNode.ChildNode == ChildNode
+    var children: [ChildNode] { get set }
+}
+
 extension RangeReplacableTreeNode {
 
     public mutating func append(_ newNode: Element) {
@@ -84,5 +90,78 @@ extension RangeReplacableTreeNode {
             remove(at: index)
         }
         insert(contentsOf: items, at: toIndex)
+    }
+}
+
+extension ArrayBasedTreeNode {
+
+    public var startIndex: IndexPath {
+        return IndexPath(index: children.startIndex)
+    }
+
+    public var endIndex: IndexPath {
+        return IndexPath(index: children.endIndex)
+    }
+
+    public var isEmpty: Bool {
+        return children.isEmpty
+    }
+
+    public var count: Int {
+        return children.count
+    }
+
+    public func index(after i: IndexPath) -> IndexPath {
+        guard i.count > 0 else {
+            fatalError("Invalid index path.")
+        }
+        if self[i].isEmpty == false {
+            return i + [0]
+        } else {
+            var i = i
+            while i.count > 1 {
+                let parent = self[i.dropLast()]
+                let indexInParent = i.last!
+                if indexInParent < parent.count - 1 {
+                    return i.dropLast().appending(indexInParent + 1)
+                } else {
+                    i = i.dropLast()
+                }
+            }
+            return i.advanced(by: 1, atLevel: 0)
+        }
+    }
+
+    public func index(before i: IndexPath) -> IndexPath {
+        guard i.count > 0 else {
+            fatalError("Invalid index path.")
+        }
+        if i.last! == 0 {
+            return i.dropLast()
+        } else {
+            var i = i.advanced(by: -1, atLevel: i.count - 1)
+            while true {
+                let potentialNode = self[i]
+                if potentialNode.isEmpty {
+                    return i
+                } else {
+                    i = i + [potentialNode.count - 1] // last child of potential node is next potential node
+                }
+            }
+        }
+    }
+
+    public mutating func replaceChildrenSubrange<C>(_ subrange: Range<IndexPath>, with newChildren: C) where C: Collection, C.Element == ChildNode {
+        guard subrange.lowerBound.count == subrange.upperBound.count, !subrange.lowerBound.isEmpty else {
+            fatalError("Range lowerBound and upperBound of \(subrange) must be at the same level!")
+        }
+        if subrange.lowerBound.count == 1 {
+            children.replaceSubrange(subrange.lowerBound[0]..<subrange.upperBound[0], with: newChildren)
+        } else {
+            guard subrange.lowerBound[0] == subrange.upperBound[0] else {
+                fatalError("Range lowerBound and upperBound must point to the same subtree!")
+            }
+            children[subrange.lowerBound[0]].replaceChildrenSubrange(subrange.lowerBound.dropFirst()..<subrange.upperBound.dropFirst(), with: newChildren)
+        }
     }
 }
