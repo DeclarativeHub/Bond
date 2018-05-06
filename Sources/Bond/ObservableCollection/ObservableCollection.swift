@@ -28,6 +28,8 @@ import ReactiveKit
 
 public class ObservableCollection<UnderlyingCollection: Collection>: SignalProtocol {
 
+    public typealias Index = UnderlyingCollection.Index
+
     public internal(set) var collection: UnderlyingCollection
     internal let subject = PublishSubject<ObservableCollectionEvent<UnderlyingCollection>, NoError>()
     public let lock = NSRecursiveLock(name: "com.reactivekit.bond.observable-collection")

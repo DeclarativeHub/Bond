@@ -24,9 +24,9 @@
 
 import Foundation
 
-public struct TreeNode<Value>: RandomAccessCollection, MutableCollection, RangeReplacableTreeNode, CustomDebugStringConvertible {
+public struct TreeArray<Value>: RandomAccessCollection, MutableCollection, RangeReplacableTreeNode, CustomDebugStringConvertible {
 
-    public var value: Value
+    public var value: Void = ()
     public var children: [TreeNode<Value>]
 
     public var startIndex: IndexPath {
@@ -45,13 +45,11 @@ public struct TreeNode<Value>: RandomAccessCollection, MutableCollection, RangeR
         return children.count
     }
 
-    public init(_ value: Value) {
-        self.value = value
+    public init() {
         self.children = []
     }
 
-    public init(_ value: Value, children: [TreeNode<Value>]) {
-        self.value = value
+    public init(children: [TreeNode<Value>]) {
         self.children = children
     }
 
@@ -65,19 +63,12 @@ public struct TreeNode<Value>: RandomAccessCollection, MutableCollection, RangeR
 
     public subscript(indexPath: IndexPath) -> TreeNode<Value> {
         get {
-            if let first = indexPath.first {
-                let child = children[first]
-                return child[indexPath.dropFirst()]
-            } else {
-                return self
-            }
+            guard let index = indexPath.first else { fatalError() }
+            return children[index][indexPath.dropFirst()]
         }
         set {
-            if indexPath.isEmpty {
-                self = newValue
-            } else {
-                children[indexPath[0]][indexPath.dropFirst()] = newValue
-            }
+            guard let index = indexPath.first else { fatalError() }
+            return children[index][indexPath.dropFirst()] = newValue
         }
     }
 
@@ -96,8 +87,6 @@ public struct TreeNode<Value>: RandomAccessCollection, MutableCollection, RangeR
     }
 
     public var debugDescription: String {
-        var subtree = children.map { $0.debugDescription }.joined(separator: ", ")
-        if subtree.isEmpty { subtree = "-" }
-        return "(\(value): \(subtree))"
+        return "[" + children.map { $0.debugDescription }.joined(separator: ", ") + "]"
     }
 }

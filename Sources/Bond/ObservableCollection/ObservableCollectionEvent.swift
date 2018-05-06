@@ -76,7 +76,7 @@ extension ObservableCollectionEventProtocol where UnderlyingCollection.Index: St
     }
 }
 
-extension ObservableCollectionEventProtocol where UnderlyingCollection: TreeNodeProtocol {
+extension ObservableCollectionEventProtocol where UnderlyingCollection: TreeNodeProtocol, UnderlyingCollection.Index == IndexPath {
 
     public var patch: [CollectionOperation<UnderlyingCollection.Index>] {
         return diff.patch(using: IndexPathTreeIndexStrider())

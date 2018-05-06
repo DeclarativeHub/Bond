@@ -14,12 +14,12 @@ tree.observeNext { (event) in
 
 tree.append(TreeNode("Child A"))
 tree.append(TreeNode("Child B"))
+tree.move(from: [0], to: [1])
 
-tree.batchUpdate { (tree) in
-    tree[[0]] = TreeNode<String>("Child X")
-    tree.move(from: [0], to: [0, 0])
-    tree.append(TreeNode<String>("Child Y"))
-    tree.move(from: [0, 0], to: [1])
-}
 
-tree.replace(with: TreeNode("Root", children: [TreeNode("Child X")]), performDiff: true)
+//tree.batchUpdate { (tree) in
+//    tree[[0]] = TreeNode<String>("Child X")
+//    tree.move(from: [0], to: [0, 0])
+//    tree.append(TreeNode<String>("Child Y"))
+//    tree.move(from: [0, 0], to: [1])
+//}

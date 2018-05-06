@@ -95,7 +95,7 @@ public struct Array2D<Value, Item>: Array2DProtocol, CustomDebugStringConvertibl
         self.sections = []
     }
 
-    public init(sections: [Section] = []) {
+    public init(sections: [Section]) {
         self.sections = sections
     }
 

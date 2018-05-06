@@ -27,7 +27,7 @@
 import AppKit
 import ReactiveKit
 
-open class OutlineViewBinder<TreeNode: TreeNodeProtocol> {
+open class OutlineViewBinder<TreeNode: TreeNodeProtocol> where TreeNode.Index == IndexPath {
     public var insertAnimation: NSOutlineView.AnimationOptions? = [.effectFade, .slideUp]
     public var deleteAnimation: NSOutlineView.AnimationOptions? = [.effectFade, .slideUp]
 
@@ -94,7 +94,8 @@ open class OutlineViewBinder<TreeNode: TreeNodeProtocol> {
     }
 }
 
-public extension SignalProtocol where Element: ObservableCollectionEventProtocol, Element.UnderlyingCollection: TreeNodeProtocol, Error == NoError {
+public extension SignalProtocol where Element: ObservableCollectionEventProtocol, Element.UnderlyingCollection: TreeNodeProtocol, Element.UnderlyingCollection.Index == IndexPath, Error == NoError {
+
     @discardableResult
     public func bind(to outlineView: NSOutlineView, animated: Bool = true, createCell: @escaping (_ root: Element.UnderlyingCollection, _ node: Element.UnderlyingCollection?, _ column: NSTableColumn?, _ outlineView: NSOutlineView) -> NSView?) -> Disposable {
         let binder = OutlineViewBinder(measureCell: nil, createCell: createCell)
@@ -133,10 +134,9 @@ public extension SignalProtocol where Element: ObservableCollectionEventProtocol
             to: #selector(NSOutlineViewDataSource.outlineView(_:numberOfChildrenOfItem:)),
             map: { (dataSource: Element.UnderlyingCollection?, _: NSOutlineView, item: Element.UnderlyingCollection?) -> Int in
                 guard let item = item else {
-                    return dataSource?.children.count ?? 0
+                    return dataSource?.count ?? 0
                 }
-
-                return item.children.count
+                return item.count
             }
         )
 
@@ -145,9 +145,9 @@ public extension SignalProtocol where Element: ObservableCollectionEventProtocol
             to: #selector(NSOutlineViewDataSource.outlineView(_:child:ofItem:)),
             map: { (dataSource: Element.UnderlyingCollection?, _: NSOutlineView, child: Int, item: Element.UnderlyingCollection?) -> Any in
                 guard let item = item else {
-                    return dataSource!.children[child]
+                    return dataSource![IndexPath(index: child)]
                 }
-                return item.children[child]
+                return item[IndexPath(index: child)]
             }
         )
 
@@ -155,7 +155,7 @@ public extension SignalProtocol where Element: ObservableCollectionEventProtocol
             property: dataSource,
             to: #selector(NSOutlineViewDataSource.outlineView(_:isItemExpandable:)),
             map: { (dataSource: Element.UnderlyingCollection?, outlineView: NSOutlineView, item: Element.UnderlyingCollection?) -> Bool in
-                return (item?.children.count ?? 0) > 0
+                return (item?.count ?? 0) > 0
             }
         )
 

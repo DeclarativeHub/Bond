@@ -26,32 +26,22 @@ import Foundation
 
 extension ObservableCollection where UnderlyingCollection: TreeNodeProtocol {
 
+    public typealias Node = UnderlyingCollection.Element
+
     public var rootNode: UnderlyingCollection {
         return collection
     }
 }
 
-extension MutableObservableCollection where UnderlyingCollection: MutableTreeNodeProtocol {
+extension MutableObservableCollection where UnderlyingCollection: MutableCollection, UnderlyingCollection: MutableTreeNodeProtocol, UnderlyingCollection.Index == IndexPath {
 
-    public subscript(indexPath: IndexPath) -> UnderlyingCollection {
+    public subscript(indexPath: IndexPath) -> UnderlyingCollection.Element {
         get {
             return collection[indexPath]
         }
         set {
-            descriptiveUpdate { (collection) -> [CollectionOperation<IndexPath>] in
+            descriptiveUpdate { (collection) -> [CollectionOperation<Index>] in
                 collection[indexPath] = newValue
-                return [.update(at: indexPath)]
-            }
-        }
-    }
-
-    public subscript(valueAt indexPath: IndexPath) -> UnderlyingCollection.Value {
-        get {
-            return collection[indexPath].value
-        }
-        set {
-            descriptiveUpdate { (collection) -> [CollectionOperation<IndexPath>] in
-                collection[indexPath].value = newValue
                 return [.update(at: indexPath)]
             }
         }
@@ -64,6 +54,9 @@ extension MutableObservableCollection where UnderlyingCollection: MutableTreeNod
             CollectionOperation.mergeDiffs(diffs, using: IndexPathTreeIndexStrider())
         })
     }
+}
+
+extension MutableObservableCollection where UnderlyingCollection: MutableCollection, UnderlyingCollection: RangeReplacableTreeNode, UnderlyingCollection.Index == IndexPath, UnderlyingCollection.Element == UnderlyingCollection {
 
     /// Perform batched updates on the collection. Emits an event with the combined diff of all made changes.
     /// Diffs are combined by shifting elements when needed and annihilating confling operations like I(2) -> D(2).
@@ -84,8 +77,8 @@ extension MutableObservableCollection where UnderlyingCollection: MutableTreeNod
 extension MutableObservableCollection where UnderlyingCollection: RangeReplacableTreeNode {
 
     /// Insert `newElement` at index `i`.
-    public func append(_ newNode: UnderlyingCollection) {
-        descriptiveUpdate { (collection) -> [CollectionOperation<IndexPath>] in
+    public func append(_ newNode: Node) {
+        descriptiveUpdate { (collection) -> [CollectionOperation<Index>] in
             let index = collection.endIndex
             collection.append(newNode)
             return [.insert(at: index)]
@@ -93,44 +86,32 @@ extension MutableObservableCollection where UnderlyingCollection: RangeReplacabl
     }
 
     /// Insert `newElement` at index `i`.
-    public func insert(_ newNode: UnderlyingCollection, at indexPath: IndexPath) {
-        descriptiveUpdate { (collection) -> [CollectionOperation<IndexPath>] in
+    public func insert(_ newNode: Node, at indexPath: Index) {
+        descriptiveUpdate { (collection) -> [CollectionOperation<Index>] in
             collection.insert(newNode, at: indexPath)
             return [.insert(at: indexPath)]
         }
     }
 
-    public func insert(contentsOf newNodes: [UnderlyingCollection], at indexPath: IndexPath) {
-        descriptiveUpdate { (collection) -> [CollectionOperation<IndexPath>] in
+    public func insert(contentsOf newNodes: [Node], at indexPath: Index) {
+        descriptiveUpdate { (collection) -> [CollectionOperation<Index>] in
             collection.insert(contentsOf: newNodes, at: indexPath)
             return [.insert(at: indexPath)]
         }
     }
 
     /// Move the element at index `i` to index `toIndex`.
-    public func move(from fromIndex: IndexPath, to toIndex: IndexPath) {
-        descriptiveUpdate { (collection) -> [CollectionOperation<IndexPath>] in
+    public func move(from fromIndex: Index, to toIndex: Index) {
+        descriptiveUpdate { (collection) -> [CollectionOperation<Index>] in
             collection.move(from: fromIndex, to: toIndex)
             return [.move(from: fromIndex, to: toIndex)]
         }
     }
 
-    public func move(from fromIndices: [IndexPath], to toIndex: IndexPath) {
-        guard toIndex.count > 0 else {
-            fatalError("Cannot move node(s) to root node.")
-        }
-        descriptiveUpdate { (collection) -> [CollectionOperation<IndexPath>] in
-            collection.move(from: fromIndices, to: toIndex)
-            return fromIndices.enumerated().map {
-                .move(from: $0.element, to: toIndex.advanced(by: $0.offset, atLevel: toIndex.count-1))
-            }
-        }
-    }
-
     /// Remove and return the element at index i.
     @discardableResult
-    public func remove(at index: IndexPath) -> UnderlyingCollection {
-        return descriptiveUpdate { (collection) -> ([CollectionOperation<IndexPath>], UnderlyingCollection) in
+    public func remove(at index: Index) -> Node {
+        return descriptiveUpdate { (collection) -> ([CollectionOperation<Index>], Node) in
             let element = collection.remove(at: index)
             return ([.delete(at: index)], element)
         }
@@ -138,10 +119,25 @@ extension MutableObservableCollection where UnderlyingCollection: RangeReplacabl
 
     /// Remove all elements from the collection.
     public func removeAll() {
-        descriptiveUpdate { (collection) -> [CollectionOperation<IndexPath>] in
+        descriptiveUpdate { (collection) -> [CollectionOperation<Index>] in
             let diff = collection.indices.map { CollectionOperation.delete(at: $0) }
             collection.removeAll()
             return diff
+        }
+    }
+}
+
+extension MutableObservableCollection where UnderlyingCollection: RangeReplacableTreeNode, UnderlyingCollection.Index == IndexPath {
+
+    public func move(from fromIndices: [Index], to toIndex: Index) {
+        guard toIndex.count > 0 else {
+            fatalError("Cannot move node(s) to root node.")
+        }
+        descriptiveUpdate { (collection) -> [CollectionOperation<Index>] in
+            collection.move(from: fromIndices, to: toIndex)
+            return fromIndices.enumerated().map {
+                .move(from: $0.element, to: toIndex.advanced(by: $0.offset, atLevel: toIndex.count-1))
+            }
         }
     }
 }
