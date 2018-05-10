@@ -74,23 +74,31 @@ open class OutlineViewBinder<TreeNode: TreeNodeProtocol> where TreeNode.Index ==
         for operation in patch {
             switch operation {
             case .insert(let at):
-                let parent = rootNode[at.dropLast()]
+                let parent = outlineViewParentNode(rootedIn: rootNode, atPath: at)
                 outlineView.insertItems(at: IndexSet(integer: at.last!), inParent: parent, withAnimation: insertAnimation ?? [])
             case .delete(let at):
-                let parent = rootNode[at.dropLast()]
+                let parent = outlineViewParentNode(rootedIn: rootNode, atPath: at)
                 outlineView.removeItems(at: IndexSet(integer: at.last!), inParent: parent, withAnimation: deleteAnimation ?? [])
             case .update(let at):
-                let parent = rootNode[at.dropLast()]
+                let parent = outlineViewParentNode(rootedIn: rootNode, atPath: at)
                 let item = outlineView.child(at.last!, ofItem: parent)
                 outlineView.reloadItem(item)
             case .move(let from, let to):
-                let fromParent = rootNode[from.dropLast()]
-                let toParent = rootNode[to.dropLast()]
+                let fromParent = outlineViewParentNode(rootedIn: rootNode, atPath: from)
+                let toParent = outlineViewParentNode(rootedIn: rootNode, atPath: to)
                 outlineView.moveItem(at: from.last!, inParent: fromParent, to: to.last!, inParent: toParent)
             }
         }
 
         outlineView.endUpdates()
+    }
+
+    private func outlineViewParentNode(rootedIn rootNode: TreeNode, atPath path: IndexPath) -> TreeNode.Element? {
+        guard path.count > 1 else {
+            return nil
+        }
+
+        return rootNode[path.dropLast()]
     }
 }
 
