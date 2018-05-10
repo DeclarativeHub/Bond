@@ -22,6 +22,8 @@
 //  THE SOFTWARE.
 //
 
+import Foundation
+
 public protocol ObservableCollectionEventProtocol {
 
     associatedtype UnderlyingCollection: Collection
