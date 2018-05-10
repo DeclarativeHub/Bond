@@ -63,3 +63,57 @@ public struct TreeNode<Value>: ArrayBasedTreeNode, CustomDebugStringConvertible 
         return "(\(value): \(subtree))"
     }
 }
+
+extension TreeNode {
+
+    /// Class-based variant of TreeNode.
+    public class Object: ArrayBasedTreeNode, CustomDebugStringConvertible {
+
+        public var value: Value
+        public var children: [Object]
+
+        public init(_ value: Value) {
+            self.value = value
+            self.children = []
+        }
+
+        public init(_ value: Value, _ children: [Object]) {
+            self.value = value
+            self.children = children
+        }
+
+        public init(_ value: Value, _ children: [TreeNode]) {
+            self.value = value
+            self.children = children.map { $0.asObject }
+        }
+
+        public subscript(indexPath: IndexPath) -> Object {
+            get {
+                if let first = indexPath.first {
+                    let child = children[first]
+                    return child[indexPath.dropFirst()]
+                } else {
+                    return self
+                }
+            }
+            set {
+                if indexPath.isEmpty {
+                    self.value = newValue.value
+                    self.children = newValue.children
+                } else {
+                    children[indexPath[0]][indexPath.dropFirst()] = newValue
+                }
+            }
+        }
+
+        public var debugDescription: String {
+            var subtree = children.map { $0.debugDescription }.joined(separator: ", ")
+            if subtree.isEmpty { subtree = "-" }
+            return "(\(value): \(subtree))"
+        }
+    }
+
+    public var asObject: Object {
+        return Object(value, children)
+    }
+}

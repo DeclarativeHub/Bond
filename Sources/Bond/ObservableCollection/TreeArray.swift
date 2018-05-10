@@ -24,6 +24,7 @@
 
 import Foundation
 
+/// A tree root node without a value.
 public struct TreeArray<Value>: ArrayBasedTreeNode, CustomDebugStringConvertible {
 
     public var value: Void = ()
@@ -50,5 +51,42 @@ public struct TreeArray<Value>: ArrayBasedTreeNode, CustomDebugStringConvertible
 
     public var debugDescription: String {
         return "[" + children.map { $0.debugDescription }.joined(separator: ", ") + "]"
+    }
+}
+
+extension TreeArray {
+
+    /// Class-based variant of TreeArray.
+    public class Object: ArrayBasedTreeNode, CustomDebugStringConvertible {
+
+        public var value: Void = ()
+        public var children: [TreeNode<Value>.Object]
+
+        public init() {
+            self.children = []
+        }
+
+        public init(_ children: [TreeNode<Value>.Object]) {
+            self.children = children
+        }
+
+        public init(_ children: [TreeNode<Value>]) {
+            self.children = children.map { $0.asObject }
+        }
+
+        public subscript(indexPath: IndexPath) -> TreeNode<Value>.Object {
+            get {
+                guard let index = indexPath.first else { fatalError() }
+                return children[index][indexPath.dropFirst()]
+            }
+            set {
+                guard let index = indexPath.first else { fatalError() }
+                return children[index][indexPath.dropFirst()] = newValue
+            }
+        }
+
+        public var debugDescription: String {
+            return "[" + children.map { $0.debugDescription }.joined(separator: ", ") + "]"
+        }
     }
 }
