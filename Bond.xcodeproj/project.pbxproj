@@ -255,6 +255,12 @@
 		ECAFB8D9200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAFB8D8200B60AA00EE0669 /* ProtocolProxyController.swift */; };
 		ECAFB8DA200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAFB8D8200B60AA00EE0669 /* ProtocolProxyController.swift */; };
 		ECAFB8DB200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAFB8D8200B60AA00EE0669 /* ProtocolProxyController.swift */; };
+		ECBAF8CB20A6DEDF001BB898 /* CollectionOperation+Differ+TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBAF8CA20A6DEDF001BB898 /* CollectionOperation+Differ+TreeNode.swift */; };
+		ECBAF8D020A6DF3F001BB898 /* CollectionOperation+Differ+TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBAF8CA20A6DEDF001BB898 /* CollectionOperation+Differ+TreeNode.swift */; };
+		ECBAF8D120A6DF3F001BB898 /* CollectionOperation+Differ+TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBAF8CA20A6DEDF001BB898 /* CollectionOperation+Differ+TreeNode.swift */; };
+		ECBAF8D320A6E12C001BB898 /* CollectionOperation+Differ+Array2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBAF8D220A6E12C001BB898 /* CollectionOperation+Differ+Array2D.swift */; };
+		ECBAF8D420A6E159001BB898 /* CollectionOperation+Differ+Array2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBAF8D220A6E12C001BB898 /* CollectionOperation+Differ+Array2D.swift */; };
+		ECBAF8D520A6E15A001BB898 /* CollectionOperation+Differ+Array2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBAF8D220A6E12C001BB898 /* CollectionOperation+Differ+Array2D.swift */; };
 		ECC1A6C4207A137500AE762C /* ObservableCollection+MutableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC1A6C3207A137500AE762C /* ObservableCollection+MutableCollection.swift */; };
 		ECC1A6C5207A137500AE762C /* ObservableCollection+MutableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC1A6C3207A137500AE762C /* ObservableCollection+MutableCollection.swift */; };
 		ECC1A6C6207A137500AE762C /* ObservableCollection+MutableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC1A6C3207A137500AE762C /* ObservableCollection+MutableCollection.swift */; };
@@ -264,9 +270,9 @@
 		ECF15FC22079101B00DEB77D /* CollectionOperation+DiffPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FC12079101B00DEB77D /* CollectionOperation+DiffPatch.swift */; };
 		ECF15FC32079101B00DEB77D /* CollectionOperation+DiffPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FC12079101B00DEB77D /* CollectionOperation+DiffPatch.swift */; };
 		ECF15FC42079101B00DEB77D /* CollectionOperation+DiffPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FC12079101B00DEB77D /* CollectionOperation+DiffPatch.swift */; };
-		ECF15FCA2079108D00DEB77D /* CollectionOperation+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FC92079108D00DEB77D /* CollectionOperation+Differ.swift */; };
-		ECF15FCB2079108D00DEB77D /* CollectionOperation+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FC92079108D00DEB77D /* CollectionOperation+Differ.swift */; };
-		ECF15FCC2079108D00DEB77D /* CollectionOperation+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FC92079108D00DEB77D /* CollectionOperation+Differ.swift */; };
+		ECF15FCA2079108D00DEB77D /* CollectionOperation+Differ+Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FC92079108D00DEB77D /* CollectionOperation+Differ+Array.swift */; };
+		ECF15FCB2079108D00DEB77D /* CollectionOperation+Differ+Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FC92079108D00DEB77D /* CollectionOperation+Differ+Array.swift */; };
+		ECF15FCC2079108D00DEB77D /* CollectionOperation+Differ+Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FC92079108D00DEB77D /* CollectionOperation+Differ+Array.swift */; };
 		ECF15FCE2079110D00DEB77D /* CollectionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FCD2079110D00DEB77D /* CollectionOperation.swift */; };
 		ECF15FCF2079110D00DEB77D /* CollectionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FCD2079110D00DEB77D /* CollectionOperation.swift */; };
 		ECF15FD02079110D00DEB77D /* CollectionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF15FCD2079110D00DEB77D /* CollectionOperation.swift */; };
@@ -480,12 +486,14 @@
 		ECA8697F2078DFE000342172 /* ObservableCollection+Dictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableCollection+Dictionary.swift"; sourceTree = "<group>"; };
 		ECAFB8D3200A7E3900EE0669 /* BNDInvocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BNDInvocation.swift; sourceTree = "<group>"; };
 		ECAFB8D8200B60AA00EE0669 /* ProtocolProxyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolProxyController.swift; sourceTree = "<group>"; };
+		ECBAF8CA20A6DEDF001BB898 /* CollectionOperation+Differ+TreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionOperation+Differ+TreeNode.swift"; sourceTree = "<group>"; };
+		ECBAF8D220A6E12C001BB898 /* CollectionOperation+Differ+Array2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionOperation+Differ+Array2D.swift"; sourceTree = "<group>"; };
 		ECC1A6C3207A137500AE762C /* ObservableCollection+MutableCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableCollection+MutableCollection.swift"; sourceTree = "<group>"; };
 		ECC1A6CF207A18DC00AE762C /* NSTableView+ObservableCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+ObservableCollection.swift"; sourceTree = "<group>"; };
 		ECD5940B1D93F2E400C840C2 /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		ECD5940C1D93F2ED00C840C2 /* Bond.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Bond.podspec; sourceTree = "<group>"; };
 		ECF15FC12079101B00DEB77D /* CollectionOperation+DiffPatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionOperation+DiffPatch.swift"; sourceTree = "<group>"; };
-		ECF15FC92079108D00DEB77D /* CollectionOperation+Differ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionOperation+Differ.swift"; sourceTree = "<group>"; };
+		ECF15FC92079108D00DEB77D /* CollectionOperation+Differ+Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionOperation+Differ+Array.swift"; sourceTree = "<group>"; };
 		ECF15FCD2079110D00DEB77D /* CollectionOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionOperation.swift; sourceTree = "<group>"; };
 		ECF15FD12079FE5F00DEB77D /* ObservableCollection+RangeReplaceableCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ObservableCollection+RangeReplaceableCollection.swift"; sourceTree = "<group>"; };
 		ECF15FD52079FEE600DEB77D /* MutableObservableCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutableObservableCollection.swift; sourceTree = "<group>"; };
@@ -788,7 +796,9 @@
 				ECF15FCD2079110D00DEB77D /* CollectionOperation.swift */,
 				ECF15FC12079101B00DEB77D /* CollectionOperation+DiffPatch.swift */,
 				EC6A35E32075E00D00E8F805 /* CollectionOperation+DiffMerge.swift */,
-				ECF15FC92079108D00DEB77D /* CollectionOperation+Differ.swift */,
+				ECF15FC92079108D00DEB77D /* CollectionOperation+Differ+Array.swift */,
+				ECBAF8D220A6E12C001BB898 /* CollectionOperation+Differ+Array2D.swift */,
+				ECBAF8CA20A6DEDF001BB898 /* CollectionOperation+Differ+TreeNode.swift */,
 				EC1325D120726C6800F466B6 /* ObservableCollectionEvent.swift */,
 				EC671C882082113400EA7672 /* ObservableCollectionEvent+Signal.swift */,
 				90E24B49206F507000CF92F7 /* ObservableCollection.swift */,
@@ -1083,7 +1093,7 @@
 				90C04D761E8F0B89000077C8 /* CALayer.swift in Sources */,
 				90C04DB81E8F0B97000077C8 /* UILabel.swift in Sources */,
 				90C04DC11E8F0B97000077C8 /* UITableView.swift in Sources */,
-				ECF15FCA2079108D00DEB77D /* CollectionOperation+Differ.swift in Sources */,
+				ECF15FCA2079108D00DEB77D /* CollectionOperation+Differ+Array.swift in Sources */,
 				90A443141E9055D200D611FE /* NSView.swift in Sources */,
 				90C04DB41E8F0B97000077C8 /* UIControl.swift in Sources */,
 				90C04DC01E8F0B97000077C8 /* UISwitch.swift in Sources */,
@@ -1100,6 +1110,7 @@
 				ECA869802078DFE000342172 /* ObservableCollection+Dictionary.swift in Sources */,
 				EC86E9AF1E9145CC008563B2 /* UIAccessibilityIdentification.swift in Sources */,
 				90A4430D1E9055D100D611FE /* NSProgressIndicator.swift in Sources */,
+				ECBAF8D320A6E12C001BB898 /* CollectionOperation+Differ+Array2D.swift in Sources */,
 				EC1325D220726C6800F466B6 /* ObservableCollectionEvent.swift in Sources */,
 				90C04DB91E8F0B97000077C8 /* UINavigationBar.swift in Sources */,
 				EC02200A1F8BE898002F8380 /* Property.swift in Sources */,
@@ -1130,6 +1141,7 @@
 				EC11F56B209DB0AB00D05C43 /* ObservableCollection+Array2D.swift in Sources */,
 				90C04DBF1E8F0B97000077C8 /* UIStepper.swift in Sources */,
 				90A4430E1E9055D100D611FE /* NSSegmentedControl.swift in Sources */,
+				ECBAF8CB20A6DEDF001BB898 /* CollectionOperation+Differ+TreeNode.swift in Sources */,
 				ECC1A6D0207A18DC00AE762C /* NSTableView+ObservableCollection.swift in Sources */,
 				90A4430A1E9055D100D611FE /* NSImageView.swift in Sources */,
 				90A4430C1E9055D100D611FE /* NSPopUpButton.swift in Sources */,
@@ -1238,7 +1250,8 @@
 				90C04D6A1E8F0B89000077C8 /* QueryableDataSource.swift in Sources */,
 				90A443391E9055D800D611FE /* UITextView.swift in Sources */,
 				90C04D7F1E8F0B8D000077C8 /* NSImageView.swift in Sources */,
-				ECF15FCB2079108D00DEB77D /* CollectionOperation+Differ.swift in Sources */,
+				ECBAF8D020A6DF3F001BB898 /* CollectionOperation+Differ+TreeNode.swift in Sources */,
+				ECF15FCB2079108D00DEB77D /* CollectionOperation+Differ+Array.swift in Sources */,
 				90C04D7D1E8F0B8D000077C8 /* NSColorWell.swift in Sources */,
 				90A443321E9055D800D611FE /* UIRefreshControl.swift in Sources */,
 				ECF15FDC207A0F1900DEB77D /* ObservableCollection+Array.swift in Sources */,
@@ -1251,6 +1264,7 @@
 				90A443301E9055D800D611FE /* UINavigationItem.swift in Sources */,
 				90C04D821E8F0B8D000077C8 /* NSPopUpButton.swift in Sources */,
 				90A4432F1E9055D800D611FE /* UINavigationBar.swift in Sources */,
+				ECBAF8D420A6E159001BB898 /* CollectionOperation+Differ+Array2D.swift in Sources */,
 				90C04D7E1E8F0B8D000077C8 /* NSControl.swift in Sources */,
 				ECAFB8D5200A7E3900EE0669 /* BNDInvocation.swift in Sources */,
 				ECF15FE0207A0F8E00DEB77D /* ObservableCollection+Set.swift in Sources */,
@@ -1326,7 +1340,8 @@
 				90C04D9B1E8F0B96000077C8 /* UIButton.swift in Sources */,
 				070FE2781F0138190031B7BD /* NSLayoutConstraint.swift in Sources */,
 				90C04D9F1E8F0B96000077C8 /* UIGestureRecognizer.swift in Sources */,
-				ECF15FCC2079108D00DEB77D /* CollectionOperation+Differ.swift in Sources */,
+				ECBAF8D120A6DF3F001BB898 /* CollectionOperation+Differ+TreeNode.swift in Sources */,
+				ECF15FCC2079108D00DEB77D /* CollectionOperation+Differ+Array.swift in Sources */,
 				90A4431A1E9055D200D611FE /* NSMenuItem.swift in Sources */,
 				90C04D991E8F0B96000077C8 /* UIBarButtonItem.swift in Sources */,
 				ECF15FDD207A0F1900DEB77D /* ObservableCollection+Array.swift in Sources */,
@@ -1339,6 +1354,7 @@
 				90C04DA01E8F0B96000077C8 /* UIImageView.swift in Sources */,
 				90C04DA81E8F0B96000077C8 /* UIStepper.swift in Sources */,
 				90A4431D1E9055D200D611FE /* NSSegmentedControl.swift in Sources */,
+				ECBAF8D520A6E15A001BB898 /* CollectionOperation+Differ+Array2D.swift in Sources */,
 				90A443191E9055D200D611FE /* NSImageView.swift in Sources */,
 				90A4431B1E9055D200D611FE /* NSPopUpButton.swift in Sources */,
 				ECF15FE1207A0F8E00DEB77D /* ObservableCollection+Set.swift in Sources */,
