@@ -42,7 +42,7 @@ public class ObservableCollection<UnderlyingCollection: Collection>: SignalProto
     /// Underlying collection
     public internal(set) var collection: UnderlyingCollection
 
-    internal let subject = PublishSubject<ObservableCollectionEvent<UnderlyingCollection>, NoError>()
+    internal let subject = PublishSubject<ModifiedCollection<UnderlyingCollection>, NoError>()
     internal let lock = NSRecursiveLock(name: "com.reactivekit.bond.observable-collection")
 
     public init(_ collection: UnderlyingCollection) {
@@ -59,8 +59,8 @@ public class ObservableCollection<UnderlyingCollection: Collection>: SignalProto
         return collection.count
     }
 
-    public func observe(with observer: @escaping (Event<ObservableCollectionEvent<UnderlyingCollection>, NoError>) -> Void) -> Disposable {
-        observer(.next(ObservableCollectionEvent(collection: collection, diff: [])))
+    public func observe(with observer: @escaping (Event<ModifiedCollection<UnderlyingCollection>, NoError>) -> Void) -> Disposable {
+        observer(.next(ModifiedCollection(collection: collection, diff: [])))
         return subject.observe(with: observer)
     }
 }
@@ -71,7 +71,7 @@ extension ObservableCollection: Deallocatable, BindableProtocol {
         return subject.disposeBag.deallocated
     }
 
-    public func bind(signal: Signal<ObservableCollectionEvent<UnderlyingCollection>, NoError>) -> Disposable {
+    public func bind(signal: Signal<ModifiedCollection<UnderlyingCollection>, NoError>) -> Disposable {
         return signal
             .take(until: deallocated)
             .observeNext { [weak self] event in

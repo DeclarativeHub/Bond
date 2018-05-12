@@ -181,7 +181,6 @@ extension CollectionOperation {
             var isAnnihilated: Bool = false
             if let indexOfConflicted = diff.index(where: { $0.destinationIndex == from }) {
                 let conflicted = diff[indexOfConflicted]
-                print("con", conflicted)
                 switch conflicted.kind {
                 case .insert:
                     isAnnihilated = true
@@ -208,7 +207,6 @@ extension CollectionOperation {
                 }
             }
             if !isAnnihilated {
-                print("na")
                 let index = sourceIndex(for: from)
                 forEachDiffDestinationIndex { $0 = strider.shiftLeft($0, ifPositionedAfter: from) }
                 forEachDiffDestinationIndex { $0 = strider.shiftRight($0, ifPositionedBeforeOrAt: to) }

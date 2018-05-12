@@ -27,6 +27,7 @@ public protocol CollectionOperationProtocol: Equatable {
     var asCollectionOperation: CollectionOperation<Index> { get }
 }
 
+/// Described the change made to a collection. An array of collection operations is called "diff".
 public enum CollectionOperation<Index: Comparable>: CollectionOperationProtocol, CustomDebugStringConvertible {
 
     case insert(at: Index)

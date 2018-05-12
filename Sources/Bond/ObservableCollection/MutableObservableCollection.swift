@@ -50,7 +50,7 @@ public final class MutableObservableCollection<UnderlyingCollection: Collection>
     public func descriptiveUpdate(_ update: (inout UnderlyingCollection) -> [CollectionOperation<UnderlyingCollection.Index>]) {
         lock.lock(); defer { lock.unlock() }
         let diff = update(&collection)
-        subject.next(ObservableCollectionEvent(collection: collection, diff: diff))
+        subject.next(ModifiedCollection(collection: collection, diff: diff))
     }
 
     /// Update the collection and provide a description of changes (diff).
@@ -58,7 +58,7 @@ public final class MutableObservableCollection<UnderlyingCollection: Collection>
     public func descriptiveUpdate<T>(_ update: (inout UnderlyingCollection) -> ([CollectionOperation<UnderlyingCollection.Index>], T)) -> T {
         lock.lock(); defer { lock.unlock() }
         let (diff, result) = update(&collection)
-        subject.next(ObservableCollectionEvent(collection: collection, diff: diff))
+        subject.next(ModifiedCollection(collection: collection, diff: diff))
         return result
     }
 

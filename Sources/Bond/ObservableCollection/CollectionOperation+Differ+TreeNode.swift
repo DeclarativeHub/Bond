@@ -69,6 +69,7 @@ extension ArrayBasedTreeNode {
 
 extension ArrayBasedTreeNode where ChildNode.Value: Equatable, Value: Equatable {
 
+    /// Diff the receiver against the given tree.
     public func treeDiff(_ other: Self) -> [CollectionOperation<IndexPath>] {
         return treeDiff(other, areRootsEqual: { $0 == $1 }, areChildrenEqual: { $0 == $1 })
     }
@@ -76,6 +77,7 @@ extension ArrayBasedTreeNode where ChildNode.Value: Equatable, Value: Equatable 
 
 extension ArrayBasedTreeNode where ChildNode.Value: Equatable, Value == Void {
 
+    /// Diff the receiver against the given tree.
     public func treeDiff(_ other: Self) -> [CollectionOperation<IndexPath>] {
         return treeDiff(other, areRootsEqual: { _, _ in true }, areChildrenEqual: { $0 == $1 })
     }
@@ -83,28 +85,32 @@ extension ArrayBasedTreeNode where ChildNode.Value: Equatable, Value == Void {
 
 extension SignalProtocol where Element: ArrayBasedTreeNode {
 
-    public func diff(areRootsEqual: @escaping (Element.Value, Element.Value) -> Bool, areChildrenEqual: @escaping (Element.ChildNode.Value, Element.ChildNode.Value) -> Bool) -> Signal<ObservableCollectionEvent<Element>, Error> {
+    /// Diff each next element (tree) against the previous one and emit a diff event.
+    public func diff(areRootsEqual: @escaping (Element.Value, Element.Value) -> Bool, areChildrenEqual: @escaping (Element.ChildNode.Value, Element.ChildNode.Value) -> Bool) -> Signal<ModifiedCollection<Element>, Error> {
         return diff(generateDiff: { $0.treeDiff($1, areRootsEqual: areRootsEqual, areChildrenEqual: areChildrenEqual) })
     }
 }
 
 extension SignalProtocol where Element: ArrayBasedTreeNode, Element.Value == Element.ChildNode.Value {
 
-    public func diff(_ areEqual: @escaping (Element.Value, Element.Value) -> Bool) -> Signal<ObservableCollectionEvent<Element>, Error> {
+    /// Diff each next element (tree) against the previous one and emit a diff event.
+    public func diff(_ areEqual: @escaping (Element.Value, Element.Value) -> Bool) -> Signal<ModifiedCollection<Element>, Error> {
         return diff(generateDiff: { $0.treeDiff($1, areRootsEqual: areEqual, areChildrenEqual: areEqual) })
     }
 }
 
 extension SignalProtocol where Element: ArrayBasedTreeNode, Element.ChildNode.Value: Equatable, Element.Value: Equatable {
 
-    public func diff() -> Signal<ObservableCollectionEvent<Element>, Error> {
+    /// Diff each next element (tree) against the previous one and emit a diff event.
+    public func diff() -> Signal<ModifiedCollection<Element>, Error> {
         return diff(generateDiff: { $0.treeDiff($1) })
     }
 }
 
 extension SignalProtocol where Element: ArrayBasedTreeNode, Element.ChildNode.Value: Equatable, Element.Value == Void {
 
-    public func diff() -> Signal<ObservableCollectionEvent<Element>, Error> {
+    /// Diff each next element (tree) against the previous one and emit a diff event.
+    public func diff() -> Signal<ModifiedCollection<Element>, Error> {
         return diff(generateDiff: { $0.treeDiff($1) })
     }
 }
@@ -112,8 +118,8 @@ extension SignalProtocol where Element: ArrayBasedTreeNode, Element.ChildNode.Va
 extension MutableObservableCollection
 where UnderlyingCollection: ArrayBasedTreeNode {
 
-    /// Replace the underlying collection with the given collection. Setting `performDiff: true` will make the framework
-    /// calculate the diff between the existing and new collection and emit an event with the calculated diff.
+    /// Replace the underlying tree with the given tree. Setting `performDiff: true` will make the framework
+    /// calculate the diff between the existing and the new tree and emits an event with the calculated diff.
     /// - Complexity: O((N+M)*D) if `performDiff: true`, O(1) otherwise.
     public func replace(with newCollection: UnderlyingCollection, performDiff: Bool, areRootsEqual: @escaping (UnderlyingCollection.Value, UnderlyingCollection.Value) -> Bool, areChildrenEqual: @escaping (UnderlyingCollection.ChildNode.Value, UnderlyingCollection.ChildNode.Value) -> Bool) {
         replace(with: newCollection, performDiff: performDiff, generateDiff: {
@@ -125,8 +131,8 @@ where UnderlyingCollection: ArrayBasedTreeNode {
 extension MutableObservableCollection
 where UnderlyingCollection: ArrayBasedTreeNode, UnderlyingCollection.Value == UnderlyingCollection.ChildNode.Value {
 
-    /// Replace the underlying collection with the given collection. Setting `performDiff: true` will make the framework
-    /// calculate the diff between the existing and new collection and emit an event with the calculated diff.
+    /// Replace the underlying tree with the given tree. Setting `performDiff: true` will make the framework
+    /// calculate the diff between the existing and the new tree and emits an event with the calculated diff.
     /// - Complexity: O((N+M)*D) if `performDiff: true`, O(1) otherwise.
     public func replace(with newCollection: UnderlyingCollection, performDiff: Bool, areEqual: @escaping (UnderlyingCollection.Value, UnderlyingCollection.Value) -> Bool) {
         replace(with: newCollection, performDiff: performDiff, generateDiff: {
@@ -138,8 +144,8 @@ where UnderlyingCollection: ArrayBasedTreeNode, UnderlyingCollection.Value == Un
 extension MutableObservableCollection
 where UnderlyingCollection: ArrayBasedTreeNode, UnderlyingCollection.ChildNode.Value: Equatable, UnderlyingCollection.Value: Equatable {
 
-    /// Replace the underlying collection with the given collection. Setting `performDiff: true` will make the framework
-    /// calculate the diff between the existing and new collection and emit an event with the calculated diff.
+    /// Replace the underlying tree with the given tree. Setting `performDiff: true` will make the framework
+    /// calculate the diff between the existing and the new tree and emits an event with the calculated diff.
     /// - Complexity: O((N+M)*D) if `performDiff: true`, O(1) otherwise.
     public func replace(with newCollection: UnderlyingCollection, performDiff: Bool) {
         replace(with: newCollection, performDiff: performDiff, generateDiff: { $0.treeDiff($1) })
@@ -149,8 +155,8 @@ where UnderlyingCollection: ArrayBasedTreeNode, UnderlyingCollection.ChildNode.V
 extension MutableObservableCollection
 where UnderlyingCollection: ArrayBasedTreeNode, UnderlyingCollection.ChildNode.Value: Equatable, UnderlyingCollection.Value == Void {
 
-    /// Replace the underlying collection with the given collection. Setting `performDiff: true` will make the framework
-    /// calculate the diff between the existing and new collection and emit an event with the calculated diff.
+    /// Replace the underlying tree with the given tree. Setting `performDiff: true` will make the framework
+    /// calculate the diff between the existing and the new tree and emits an event with the calculated diff.
     /// - Complexity: O((N+M)*D) if `performDiff: true`, O(1) otherwise.
     public func replace(with newCollection: UnderlyingCollection, performDiff: Bool) {
         replace(with: newCollection, performDiff: performDiff, generateDiff: { $0.treeDiff($1) })

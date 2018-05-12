@@ -24,17 +24,17 @@
 
 import ReactiveKit
 
-public extension SignalProtocol where Element: ObservableCollectionEventProtocol {
+public extension SignalProtocol where Element: ModifiedCollectionProtocol {
 
     public typealias UnderlyingCollection = Element.UnderlyingCollection
 }
 
-public extension SignalProtocol where Element: ObservableCollectionEventProtocol, Element.UnderlyingCollection.Index: Hashable {
+public extension SignalProtocol where Element: ModifiedCollectionProtocol, Element.UnderlyingCollection.Index: Hashable {
 
     /// - complexity: Each event sorts the collection O(nlogn).
-    public func sortedCollection(by areInIncreasingOrder: @escaping (UnderlyingCollection.Element, UnderlyingCollection.Element) -> Bool) -> Signal<ObservableCollectionEvent<[UnderlyingCollection.Element]>, Error> {
+    public func sortedCollection(by areInIncreasingOrder: @escaping (UnderlyingCollection.Element, UnderlyingCollection.Element) -> Bool) -> Signal<ModifiedCollection<[UnderlyingCollection.Element]>, Error> {
         var previousIndexMap: [UnderlyingCollection.Index: Int] = [:]
-        return map { (event: Element) -> ObservableCollectionEvent<[UnderlyingCollection.Element]> in
+        return map { (event: Element) -> ModifiedCollection<[UnderlyingCollection.Element]> in
 
             let indices = event.collection.indices
             let elementsWithIndices = Swift.zip(event.collection, indices)
@@ -52,7 +52,7 @@ public extension SignalProtocol where Element: ObservableCollectionEventProtocol
             let diff = event.diff.compactMap { $0.transformingIndices(fromIndexMap: previousIndexMap, toIndexMap: indexMap) }
             previousIndexMap = indexMap
 
-            return ObservableCollectionEvent(
+            return ModifiedCollection(
                 collection: sortedElements,
                 diff: diff
             )
@@ -60,20 +60,20 @@ public extension SignalProtocol where Element: ObservableCollectionEventProtocol
     }
 }
 
-public extension SignalProtocol where Element: ObservableCollectionEventProtocol, Element.UnderlyingCollection.Index: Hashable, Element.UnderlyingCollection.Element: Comparable {
+public extension SignalProtocol where Element: ModifiedCollectionProtocol, Element.UnderlyingCollection.Index: Hashable, Element.UnderlyingCollection.Element: Comparable {
 
     /// - complexity: Each event sorts collection O(nlogn).
-    public func sortedCollection() -> Signal<ObservableCollectionEvent<[UnderlyingCollection.Element]>, Error> {
+    public func sortedCollection() -> Signal<ModifiedCollection<[UnderlyingCollection.Element]>, Error> {
         return sortedCollection(by: <)
     }
 }
 
-public extension SignalProtocol where Element: ObservableCollectionEventProtocol, Element.UnderlyingCollection.Index == Int {
+public extension SignalProtocol where Element: ModifiedCollectionProtocol, Element.UnderlyingCollection.Index == Int {
 
     /// - complexity: Each event transforms collection O(n). Use `lazyMapCollection` if you need on-demand mapping.
-    public func mapCollection<U>(_ transform: @escaping (UnderlyingCollection.Element) -> U) -> Signal<ObservableCollectionEvent<[U]>, Error> {
-        return map { (event: Element) -> ObservableCollectionEvent<[U]> in
-            return ObservableCollectionEvent(
+    public func mapCollection<U>(_ transform: @escaping (UnderlyingCollection.Element) -> U) -> Signal<ModifiedCollection<[U]>, Error> {
+        return map { (event: Element) -> ModifiedCollection<[U]> in
+            return ModifiedCollection(
                 collection: event.collection.map(transform),
                 diff: event.diff
             )
@@ -81,9 +81,9 @@ public extension SignalProtocol where Element: ObservableCollectionEventProtocol
     }
 
     /// - complexity: O(1).
-    public func lazyMapCollection<U>(_ transform: @escaping (UnderlyingCollection.Element) -> U) -> Signal<ObservableCollectionEvent<LazyMapCollection<UnderlyingCollection, U>>, Error> {
-        return map { (event: Element) -> ObservableCollectionEvent<LazyMapCollection<UnderlyingCollection, U>> in
-            return ObservableCollectionEvent(
+    public func lazyMapCollection<U>(_ transform: @escaping (UnderlyingCollection.Element) -> U) -> Signal<ModifiedCollection<LazyMapCollection<UnderlyingCollection, U>>, Error> {
+        return map { (event: Element) -> ModifiedCollection<LazyMapCollection<UnderlyingCollection, U>> in
+            return ModifiedCollection(
                 collection: event.collection.lazy.map(transform),
                 diff: event.diff
             )
@@ -91,9 +91,9 @@ public extension SignalProtocol where Element: ObservableCollectionEventProtocol
     }
 
     /// - complexity: Each event transforms collection O(n).
-    public func filterCollection(_ isIncluded: @escaping (UnderlyingCollection.Element) -> Bool) -> Signal<ObservableCollectionEvent<[UnderlyingCollection.Element]>, Error> {
+    public func filterCollection(_ isIncluded: @escaping (UnderlyingCollection.Element) -> Bool) -> Signal<ModifiedCollection<[UnderlyingCollection.Element]>, Error> {
         var previousIndexMap: [Int: Int] = [:]
-        return map { (event: Element) -> ObservableCollectionEvent<[UnderlyingCollection.Element]> in
+        return map { (event: Element) -> ModifiedCollection<[UnderlyingCollection.Element]> in
             let collection = event.collection
             var filtered: [UnderlyingCollection.Element] = []
             var indexMap: [Int: Int] = [:]
@@ -113,7 +113,7 @@ public extension SignalProtocol where Element: ObservableCollectionEventProtocol
             let diff = event.diff.compactMap { $0.transformingIndices(fromIndexMap: previousIndexMap, toIndexMap: indexMap) }
             previousIndexMap = indexMap
 
-            return ObservableCollectionEvent(
+            return ModifiedCollection(
                 collection: filtered,
                 diff: diff
             )
@@ -154,7 +154,7 @@ extension CollectionOperation where Index: Hashable {
 
 extension SignalProtocol where Element: Collection {
 
-    public func diff(generateDiff: @escaping CollectionDiffer<Element>) -> Signal<ObservableCollectionEvent<Element>, Error> {
+    public func diff(generateDiff: @escaping CollectionDiffer<Element>) -> Signal<ModifiedCollection<Element>, Error> {
         return Signal { observer in
             var collection: Element?
             return self.observe { event in
@@ -163,9 +163,9 @@ extension SignalProtocol where Element: Collection {
                     let newCollection = element
                     if let collection = collection {
                         let diff = generateDiff(collection, newCollection)
-                        observer.next(ObservableCollectionEvent(collection: newCollection, diff: diff))
+                        observer.next(ModifiedCollection(collection: newCollection, diff: diff))
                     } else {
-                        observer.next(ObservableCollectionEvent(collection: newCollection, diff: []))
+                        observer.next(ModifiedCollection(collection: newCollection, diff: []))
                     }
                     collection = newCollection
                 case .failed(let error):

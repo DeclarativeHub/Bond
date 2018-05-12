@@ -50,7 +50,7 @@ extension ExtendedDiff {
 extension SignalProtocol where Element: Collection, Element.Index == Int {
 
     /// Diff each next element (array) against the previous one and emit a diff event.
-    public func diff(_ areEqual: @escaping (Element.Element, Element.Element) -> Bool) -> Signal<ObservableCollectionEvent<Element>, Error> {
+    public func diff(_ areEqual: @escaping (Element.Element, Element.Element) -> Bool) -> Signal<ModifiedCollection<Element>, Error> {
         return diff(generateDiff: { c1, c2 in c1.extendedDiff(c2, isEqual: areEqual).diff })
     }
 }
@@ -58,7 +58,7 @@ extension SignalProtocol where Element: Collection, Element.Index == Int {
 extension SignalProtocol where Element: Collection, Element.Element: Equatable, Element.Index == Int {
 
     /// Diff each next element (array) against the previous one and emit a diff event.
-    public func diff() -> Signal<ObservableCollectionEvent<Element>, Error> {
+    public func diff() -> Signal<ModifiedCollection<Element>, Error> {
         return diff(generateDiff: { c1, c2 in c1.extendedDiff(c2).diff })
     }
 }

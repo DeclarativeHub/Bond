@@ -55,7 +55,7 @@ open class TableViewBinder<UnderlyingCollection: Collection> where UnderlyingCol
         return createCell?(dataSource, index, tableColumn, tableView) ?? nil
     }
 
-    open func apply(_ event: ObservableCollectionEvent<UnderlyingCollection>, to tableView: NSTableView) {
+    open func apply(_ event: ModifiedCollection<UnderlyingCollection>, to tableView: NSTableView) {
         if (insertAnimation == nil && deleteAnimation == nil) || event.diff.isEmpty {
             tableView.reloadData()
             return
@@ -82,7 +82,7 @@ open class TableViewBinder<UnderlyingCollection: Collection> where UnderlyingCol
 }
 
 public extension SignalProtocol where
-    Element: ObservableCollectionEventProtocol, Element.UnderlyingCollection.Index == Int, Error == NoError {
+    Element: ModifiedCollectionProtocol, Element.UnderlyingCollection.Index == Int, Error == NoError {
 
     @discardableResult
     public func bind(to tableView: NSTableView, animated: Bool = true, createCell: @escaping (Element.UnderlyingCollection, Int, NSTableColumn?, NSTableView) -> NSView?) -> Disposable {
@@ -136,7 +136,7 @@ public extension SignalProtocol where
 
         disposable += bind(to: tableView) { tableView, event in
             dataSource.value = event.collection
-            binder.apply(event.asObservableCollectionEvent, to: tableView)
+            binder.apply(event.asModifiedCollection, to: tableView)
         }
 
         return disposable

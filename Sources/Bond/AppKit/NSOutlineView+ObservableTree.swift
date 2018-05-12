@@ -60,7 +60,7 @@ open class OutlineViewBinder<TreeNode: TreeNodeProtocol> where TreeNode.Index ==
         return self.createCell?(dataSource, item, tableColumn, outlineView) ?? nil
     }
 
-    open func apply(_ event: ObservableCollectionEvent<TreeNode>, to outlineView: NSOutlineView) {
+    open func apply(_ event: ModifiedCollection<TreeNode>, to outlineView: NSOutlineView) {
         if (self.insertAnimation == nil && self.deleteAnimation == nil) || event.diff.isEmpty {
             outlineView.reloadData()
             return
@@ -103,7 +103,7 @@ open class OutlineViewBinder<TreeNode: TreeNodeProtocol> where TreeNode.Index ==
 }
 
 public extension SignalProtocol where
-    Element: ObservableCollectionEventProtocol,
+    Element: ModifiedCollectionProtocol,
     Element.UnderlyingCollection: AnyObject,
     Element.UnderlyingCollection: TreeNodeProtocol,
     Element.UnderlyingCollection.Index == IndexPath,
@@ -184,7 +184,7 @@ public extension SignalProtocol where
 
         disposable += self.bind(to: outlineView) { outlineView, event in
             dataSource.value = event.collection
-            binder.apply(event.asObservableCollectionEvent, to: outlineView)
+            binder.apply(event.asModifiedCollection, to: outlineView)
         }
 
         return disposable

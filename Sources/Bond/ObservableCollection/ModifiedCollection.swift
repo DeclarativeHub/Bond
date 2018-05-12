@@ -24,28 +24,32 @@
 
 import Foundation
 
-public protocol ObservableCollectionEventProtocol {
+public protocol ModifiedCollectionProtocol {
 
     associatedtype UnderlyingCollection: Collection
 
     var collection: UnderlyingCollection { get }
     var diff: [CollectionOperation<UnderlyingCollection.Index>] { get }
 
-    var asObservableCollectionEvent: ObservableCollectionEvent<UnderlyingCollection> { get }
+    var asModifiedCollection: ModifiedCollection<UnderlyingCollection> { get }
 }
 
-public struct ObservableCollectionEvent<UnderlyingCollection: Collection>: ObservableCollectionEventProtocol {
+/// A container of the collection that has been modified and the description of those modifications (diff).
+/// Note that collection already has the changes (diff) applied. The container does not maintain previous state
+/// of the collection.
+public struct ModifiedCollection<UnderlyingCollection: Collection>: ModifiedCollectionProtocol {
 
-    /// The underlying collection managed by the observable collection.
+    /// The collection that has been modified.
+    /// The collection already has the diff applied.
     public let collection: UnderlyingCollection
 
-    /// Description of changes made to the underlying collection.
+    /// Description of changes made to the collection.
     ///
     /// Delete, update and move from indices refer to the original collection.
     /// Insert and move to indices refer to the new collection (the one contained in this event).
     ///
     /// The diff structure is compatible with UICollectionView and UITableView batch updates requirements.
-    /// NSTableView batch updates work with a sequence of operations called patch. Use `.diff.patch` to get
+    /// NSTableView batch updates work with a sequence of operations called patch. Use `.patch` to get
     /// the description of changes in the patch format.
     ///
     /// Changing `["A", "B"]` to `[]` gives the diff `[D(0), D(1)]`, while the patch might look like `[D(0), D(0)]`.
@@ -54,31 +58,31 @@ public struct ObservableCollectionEvent<UnderlyingCollection: Collection>: Obser
     /// On such event one should act as if the whole collection has changed - e.g. reload the table view.
     public let diff: [CollectionOperation<UnderlyingCollection.Index>]
 
-    public var asObservableCollectionEvent: ObservableCollectionEvent<UnderlyingCollection> {
-        return self
-    }
-
     public init(collection: UnderlyingCollection, diff: [CollectionOperation<UnderlyingCollection.Index>]) {
         self.collection = collection
         self.diff = diff
     }
+
+    public var asModifiedCollection: ModifiedCollection<UnderlyingCollection> {
+        return self
+    }
 }
 
-extension ObservableCollectionEventProtocol {
+extension ModifiedCollectionProtocol {
 
     public var patch: [CollectionOperation<UnderlyingCollection.Index>] {
         return diff.patch(using: PositionIndependentStrider())
     }
 }
 
-extension ObservableCollectionEventProtocol where UnderlyingCollection.Index: Strideable {
+extension ModifiedCollectionProtocol where UnderlyingCollection.Index: Strideable {
 
     public var patch: [CollectionOperation<UnderlyingCollection.Index>] {
         return diff.patch(using: StridableIndexStrider())
     }
 }
 
-extension ObservableCollectionEventProtocol where UnderlyingCollection: TreeNodeProtocol, UnderlyingCollection.Index == IndexPath {
+extension ModifiedCollectionProtocol where UnderlyingCollection: TreeNodeProtocol, UnderlyingCollection.Index == IndexPath {
 
     public var patch: [CollectionOperation<UnderlyingCollection.Index>] {
         return diff.patch(using: IndexPathTreeIndexStrider())
