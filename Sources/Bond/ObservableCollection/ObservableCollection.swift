@@ -26,22 +26,35 @@ import Differ
 import Foundation
 import ReactiveKit
 
+/// `ObservableCollection` is a wrapper over any `Collection` that provides mechanisms
+/// for generating and observing events that describe changes done to the underlying collection.
+///
+/// An observable collection can be bound to a table or collection view. The binding updates
+/// the view data according to changes done to the underlying collection.
+///
+/// Use `MutableObservableCollection` subclass to get a variant of `ObservableCollection` that can
+/// mutate the underlying collection.
 public class ObservableCollection<UnderlyingCollection: Collection>: SignalProtocol {
 
+    /// Underlying collection index
     public typealias Index = UnderlyingCollection.Index
 
+    /// Underlying collection
     public internal(set) var collection: UnderlyingCollection
+
     internal let subject = PublishSubject<ObservableCollectionEvent<UnderlyingCollection>, NoError>()
-    public let lock = NSRecursiveLock(name: "com.reactivekit.bond.observable-collection")
+    internal let lock = NSRecursiveLock(name: "com.reactivekit.bond.observable-collection")
 
     public init(_ collection: UnderlyingCollection) {
         self.collection = collection
     }
 
+    /// Returns `true` if underlying collection is empty, `false` otherwise.
     public var isEmpty: Bool {
         return collection.isEmpty
     }
 
+    /// Number of elements in the underlying collection.
     public var count: Int {
         return collection.count
     }
@@ -49,26 +62,6 @@ public class ObservableCollection<UnderlyingCollection: Collection>: SignalProto
     public func observe(with observer: @escaping (Event<ObservableCollectionEvent<UnderlyingCollection>, NoError>) -> Void) -> Disposable {
         observer(.next(ObservableCollectionEvent(collection: collection, diff: [])))
         return subject.observe(with: observer)
-    }
-
-    public func indexes(from: UnderlyingCollection.Index, to: UnderlyingCollection.Index) -> [UnderlyingCollection.Index] {
-        var indices: [UnderlyingCollection.Index] = [from]
-        var i = from
-        while i != to {
-            collection.formIndex(after: &i)
-            indices.append(i)
-        }
-        return indices
-    }
-
-    public func offsetIndex(_ index: UnderlyingCollection.Index, by offset: Int) -> UnderlyingCollection.Index {
-        var offsetIndex = index
-        collection.formIndex(&offsetIndex, offsetBy: offset)
-        return offsetIndex
-    }
-
-    public var indexRange: ClosedRange<UnderlyingCollection.Index> {
-        return collection.startIndex...collection.endIndex
     }
 }
 

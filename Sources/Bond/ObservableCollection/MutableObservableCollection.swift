@@ -22,7 +22,23 @@
 //  THE SOFTWARE.
 //
 
-public class MutableObservableCollection<UnderlyingCollection: Collection>: ObservableCollection<UnderlyingCollection> {
+/// `MutableObservableCollection` is a mutable variant of `ObservableCollection`.
+/// A set of methods that `MutableObservableCollection` exposes dependes on the underlying collection.
+///
+/// For example, it the underlying collection is an array, then following is possible:
+/// ```
+/// let c = MutableObservableCollection([1, 2, 3])
+/// c.append(4)
+/// c.insert(0, at: 0)
+/// ```
+///
+/// On the other hand, if the underlying collection is a dictionary, then following is possible:
+/// ```
+/// let c = MutableObservableCollection(["Paris": 100, "Berlin": 200])
+/// c["Paris"] = 150
+/// c["Berlin"] = nil
+/// ```
+public final class MutableObservableCollection<UnderlyingCollection: Collection>: ObservableCollection<UnderlyingCollection> {
 
     /// Access the element at `index`.
     public subscript(index: UnderlyingCollection.Index) -> UnderlyingCollection.Element {

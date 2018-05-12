@@ -43,12 +43,9 @@ extension MutableObservableCollection where UnderlyingCollection: RangeReplaceab
     /// Insert elements `newElements` at index `i`.
     public func insert(contentsOf newElements: [UnderlyingCollection.Element], at index: UnderlyingCollection.Index) {
         descriptiveUpdate { (collection) -> [CollectionOperation<UnderlyingCollection.Index>] in
-            for newElement in newElements.reversed() {
-                collection.insert(newElement, at: index)
-            }
-            let endIndex = offsetIndex(index, by: newElements.count)
-            let indices = indexes(from: index, to: endIndex)
-            return indices.map { CollectionOperation.insert(at: $0) }
+            collection.insert(contentsOf: newElements, at: index)
+            let endIndex = collection.index(index, offsetBy: newElements.count)
+            return collection.indices[index..<endIndex].map { CollectionOperation.insert(at: $0) }
         }
     }
 

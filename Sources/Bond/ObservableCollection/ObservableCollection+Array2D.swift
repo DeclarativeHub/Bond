@@ -30,11 +30,34 @@ public protocol Array2DProtocol: RangeReplaceableCollection where Index == Index
     var array2DView: Array2D<Value, Item> { get set }
 }
 
+/// An array of items of type `Array2D.Item` grouped into sections of type `Array2D.Section`.
+/// Elements of this collection are of enum type `Array2D.Element`. Iterating a 2D array visits
+/// all sections and all items in depth-first search order.
+///
+/// Generic argument `Item` specifies the type of the items in the 2D array.
+///
+/// Generic argument `Value` specifies the type of the section value of the 2D array. If you are
+/// for example binding an `ObservableArray<Array2D>` to a `UITable/CollectionView` then you could constrain
+/// `Value` to `String` to provide section titles. When no section data is needed or available, constrain it to `Void`.
+///
+/// To access item at the given index path do:
+/// ```
+/// array2d[itemAt: indexPath] = "Updated"
+/// ```
+///
+/// To access section at the given index do:
+/// ```
+/// array2d[sectionAt: index] = Array2D.Section("Title")
+/// ```
 public struct Array2D<Value, Item>: Array2DProtocol, CustomDebugStringConvertible {
 
+    /// Represents a section in 2D array.
     public struct Section: MutableCollection, CustomDebugStringConvertible {
 
+        /// A section value. Can be constraint to `Void` when no value is available.
         public var value: Value
+
+        /// Items of the section.
         public var items: [Item]
 
         public init(value: Value, items: [Item] = []) {
@@ -68,6 +91,8 @@ public struct Array2D<Value, Item>: Array2DProtocol, CustomDebugStringConvertibl
         }
     }
 
+    /// Array2D is a collection of `Array2D.Element` elements.
+    /// An element can be either a section or an item.
     public enum Element {
         case section(Section)
         case item(Item)
@@ -89,6 +114,7 @@ public struct Array2D<Value, Item>: Array2DProtocol, CustomDebugStringConvertibl
         }
     }
 
+    /// Sections of te 2D array.
     public var sections: [Section]
 
     public init() {
@@ -130,10 +156,15 @@ public struct Array2D<Value, Item>: Array2DProtocol, CustomDebugStringConvertibl
         }
     }
 
+    /// A 2D array is empty if there are neither sections nor items in the array.
+    /// A 2D array that has at least one section is not considered empty even if
+    /// all its sections have zero items.
     public var isEmpty: Bool {
         return count == 0
     }
 
+    /// Total number of sections and items combined. For example, if the array
+    /// contains one section with one item, then the count value will be 2.
     public var count: Int {
         return sections.reduce(0) { $0 + $1.items.count + 1 }
     }
@@ -157,6 +188,26 @@ public struct Array2D<Value, Item>: Array2DProtocol, CustomDebugStringConvertibl
             default:
                 fatalError()
             }
+        }
+    }
+
+    /// Access item at the given index path.
+    public subscript(itemAt indexPath: IndexPath) -> Item {
+        get {
+            return sections[indexPath.section].items[indexPath.item]
+        }
+        set {
+            sections[indexPath.section].items[indexPath.item] = newValue
+        }
+    }
+
+    /// Access section at the given index.
+    public subscript(sectionAt index: Int) -> Section {
+        get {
+            return sections[index]
+        }
+        set {
+            sections[index] = newValue
         }
     }
 

@@ -28,24 +28,13 @@ extension ObservableCollection where UnderlyingCollection: TreeNodeProtocol {
 
     public typealias Node = UnderlyingCollection.Element
 
+    /// Underlying collection as a tree.
     public var rootNode: UnderlyingCollection {
         return collection
     }
 }
 
-extension MutableObservableCollection where UnderlyingCollection: MutableCollection, UnderlyingCollection: MutableTreeNodeProtocol, UnderlyingCollection.Index == IndexPath {
-
-    public subscript(indexPath: IndexPath) -> UnderlyingCollection.Element {
-        get {
-            return collection[indexPath]
-        }
-        set {
-            descriptiveUpdate { (collection) -> [CollectionOperation<Index>] in
-                collection[indexPath] = newValue
-                return [.update(at: indexPath)]
-            }
-        }
-    }
+extension MutableObservableCollection where UnderlyingCollection: MutableTreeNodeProtocol, UnderlyingCollection.Index == IndexPath {
 
     /// Perform batched updates on the collection. Emits an event with the combined diff of all made changes.
     /// Diffs are combined by shifting elements when needed and annihilating confling operations like I(2) -> D(2).
@@ -58,7 +47,7 @@ extension MutableObservableCollection where UnderlyingCollection: MutableCollect
 
 extension MutableObservableCollection where UnderlyingCollection: MutableCollection, UnderlyingCollection: RangeReplacableTreeNode, UnderlyingCollection.Index == IndexPath, UnderlyingCollection.Element == UnderlyingCollection {
 
-    /// Perform batched updates on the collection. Emits an event with the combined diff of all made changes.
+    /// Perform batched updates on the subtree of the collection. Emits an event with the combined diff of all made changes.
     /// Diffs are combined by shifting elements when needed and annihilating confling operations like I(2) -> D(2).
     public func batchUpdate(subtreeAt indexPath: IndexPath, _ update: (MutableObservableCollection<UnderlyingCollection>) -> Void) {
         let view = MutableObservableCollection(collection[indexPath])
@@ -76,7 +65,7 @@ extension MutableObservableCollection where UnderlyingCollection: MutableCollect
 
 extension MutableObservableCollection where UnderlyingCollection: RangeReplacableTreeNode {
 
-    /// Insert `newElement` at index `i`.
+    /// Append `newNode` at the end of the root node's children collection.
     public func append(_ newNode: Node) {
         descriptiveUpdate { (collection) -> [CollectionOperation<Index>] in
             let index = collection.endIndex
@@ -85,11 +74,11 @@ extension MutableObservableCollection where UnderlyingCollection: RangeReplacabl
         }
     }
 
-    /// Insert `newElement` at index `i`.
-    public func insert(_ newNode: Node, at indexPath: Index) {
+    /// Insert `newNode` at index `i`.
+    public func insert(_ newNode: Node, at index: Index) {
         descriptiveUpdate { (collection) -> [CollectionOperation<Index>] in
-            collection.insert(newNode, at: indexPath)
-            return [.insert(at: indexPath)]
+            collection.insert(newNode, at: index)
+            return [.insert(at: index)]
         }
     }
 
