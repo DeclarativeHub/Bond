@@ -49,7 +49,7 @@ open class OutlineViewBinder<TreeNode: TreeNodeProtocol> where TreeNode.Index ==
     }
 
     open func isExpandable(for item: TreeNode.Element?, outlineView: NSOutlineView, dataSource: TreeNode) -> Bool {
-        return self.isItemExpandable?(dataSource, item, outlineView) ?? false
+        return self.isItemExpandable?(dataSource, item, outlineView) ?? (item?.isEmpty == false)
     }
 
     open func height(for item: TreeNode.Element?, outlineView: NSOutlineView, dataSource: TreeNode) -> CGFloat? {
@@ -170,7 +170,8 @@ public extension SignalProtocol where
             property: dataSource,
             to: #selector(NSOutlineViewDataSource.outlineView(_:isItemExpandable:)),
             map: { (dataSource: Element.UnderlyingCollection?, outlineView: NSOutlineView, item: Element.UnderlyingCollection.Element?) -> Bool in
-                return (item?.count ?? 0) > 0
+                guard let dataSource = dataSource else { return false }
+                return binder.isExpandable(for: item, outlineView: outlineView, dataSource: dataSource)
             }
         )
 
