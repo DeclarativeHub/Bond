@@ -44,9 +44,9 @@ public extension ReactiveExtensions where Base: UIGestureRecognizer {
 #if os(iOS)
 
 #if swift(>=4.2)
-typealias BNDSwipeGestureRecognizerDirection = UISwipeGestureRecognizer.Direction
+public typealias BNDSwipeGestureRecognizerDirection = UISwipeGestureRecognizer.Direction
 #else
-typealias BNDSwipeGestureRecognizerDirection = UISwipeGestureRecognizerDirection
+public typealias BNDSwipeGestureRecognizerDirection = UISwipeGestureRecognizerDirection
 #endif
 
 public extension ReactiveExtensions where Base: UIView {

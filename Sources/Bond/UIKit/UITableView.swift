@@ -58,9 +58,9 @@
     }
 
     #if swift(>=4.2)
-    typealias BNDTableViewRowAnimation = UITableView.RowAnimation
+    public typealias BNDTableViewRowAnimation = UITableView.RowAnimation
     #else
-    typealias BNDTableViewRowAnimation = UITableViewRowAnimation
+    public typealias BNDTableViewRowAnimation = UITableViewRowAnimation
     #endif
 
     /// A type used by the table view bindings that provides binding options and actions.

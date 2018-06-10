@@ -17,9 +17,9 @@ extension SignalProtocol {
     public static func heartbeat(interval seconds: Double) -> Signal<Void, NoError> {
         #if swift(>=4.2)
         let willEnterForegroundName = UIApplication.willEnterForegroundNotification
-        let didEnterBackgorundName = NSNotification.Name.UIApplicationDidEnterBackground
+        let didEnterBackgorundName = UIApplication.didEnterBackgroundNotification
         #else
-        let willEnterForegroundName = UIApplication.didEnterBackgroundNotification
+        let willEnterForegroundName = NSNotification.Name.UIApplicationDidEnterBackground
         let didEnterBackgorundName = NSNotification.Name.UIApplicationDidEnterBackground
         #endif
         

@@ -28,9 +28,9 @@ import UIKit
 import ReactiveKit
 
 #if swift(>=4.2)
-typealias BNDControlEvents = UIControl.Event
+public typealias BNDControlEvents = UIControl.Event
 #else
-typealias BNDControlEvents = UIControlEvents
+public typealias BNDControlEvents = UIControlEvents
 #endif
 
 public extension ReactiveExtensions where Base: UIControl {
