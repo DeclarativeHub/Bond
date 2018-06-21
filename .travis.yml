@@ -2,7 +2,7 @@ language: swift
 osx_image: xcode9.4
 
 script:
-  - set -o pipefail && travis_retry xcodebuild -project Bond.xcodeproj -scheme Bond-iOS -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 7,OS=11.3' test | xcpretty
+  - set -o pipefail && xcodebuild clean test -project Bond.xcodeproj -scheme Bond-iOS -destination "platform=iOS Simulator,name=iPhone 7,OS=11.4" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO -quiet | xcpretty
   - swift test
 
 after_success:
