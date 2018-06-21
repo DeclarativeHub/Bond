@@ -1,16 +1,6 @@
 language: swift
 osx_image: xcode9.4
 
-# Travis is currently experiencing issues with Xcode builds: https://github.com/travis-ci/travis-ci/issues/6675#issuecomment-257964767
-# When this is resolved, remove the entire `before_install` block, as well as the `travis_retry` command below.
-before_install:
-  - export IOS_SIMULATOR_UDID=`instruments -s devices | grep "iPhone 7 (11.3" | awk -F '[ ]' '{print $4}' | awk -F '[\[]' '{print $2}' | sed 's/.$//'`
-  - echo $IOS_SIMULATOR_UDID
-  - open -a "simulator" --args -CurrentDeviceUDID $IOS_SIMULATOR_UDID
-
-install:
-  - gem install xcpretty
-
 script:
   - set -o pipefail && travis_retry xcodebuild -project Bond.xcodeproj -scheme Bond-iOS -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 7,OS=11.3' test | xcpretty
   - swift test
