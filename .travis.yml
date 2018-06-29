@@ -3,7 +3,7 @@ osx_image: xcode9.4
 
 script:
   - set -o pipefail && xcodebuild clean test -project Bond.xcodeproj -scheme Bond-iOS -destination "platform=iOS Simulator,name=iPhone 7,OS=11.4" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO -quiet | xcpretty
-  - swift test
+  - swift test -Xswiftc "-target" -Xswiftc "x86_64-apple-macosx10.11"
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
