@@ -231,7 +231,7 @@ class MyDataSource /* or: extension MyViewController */: UITableViewDataSource {
 You would then set that object as `forwardTo` on reactive data source:
 
 ```swift
-tableView.reactive.forwardTo = myDataSource
+tableView.reactive.dataSource.forwardTo = myDataSource
 ```
 
 Make sure you do **not** set this as `tableView.dataSource` **after** the binding is established - that would break the binding! If you do that **before** the binding is established, that's fine. In fact, Bond will then automatically "move" it to `forwardTo`.
