@@ -34,28 +34,28 @@ extension MutableObservableCollection where UnderlyingCollection: SetViewProtoco
 
     /// Insert item in the set.
     public func insert(_ member: UnderlyingCollection.Element) {
-        descriptiveUpdate { (collection) -> [CollectionOperation<UnderlyingCollection.Index>] in
+        descriptiveUpdate { (collection) -> CollectionDiff<UnderlyingCollection.Index> in
             let index = collection.setView.index(of: member)
             if index == nil {
                 collection.setView.insert(member)
                 let index = collection.setView.index(of: member) as! UnderlyingCollection.Index
-                return [.insert(at: index)]
+                return CollectionDiff(inserts: [index], areIndicesPresorted: true)
             } else {
-                return []
+                return .init()
             }
         }
     }
 
     /// Update an item in the set.
     public func update(with member: UnderlyingCollection.Element) {
-        descriptiveUpdate { (collection) -> [CollectionOperation<UnderlyingCollection.Index>] in
+        descriptiveUpdate { (collection) -> CollectionDiff<UnderlyingCollection.Index> in
             let index = collection.setView.index(of: member)
             collection.setView.update(with: member)
             if let index = index {
-                return [.update(at: index as! UnderlyingCollection.Index)]
+                return CollectionDiff(updates: [index as! UnderlyingCollection.Index], areIndicesPresorted: true)
             } else {
                 let index = collection.setView.index(of: member) as! UnderlyingCollection.Index
-                return [.insert(at: index)]
+                return CollectionDiff(inserts: [index], areIndicesPresorted: true)
             }
         }
     }
@@ -63,12 +63,12 @@ extension MutableObservableCollection where UnderlyingCollection: SetViewProtoco
     /// Remove item from the set.
     @discardableResult
     public func remove(_ member: UnderlyingCollection.Element) -> UnderlyingCollection.Element? {
-        return descriptiveUpdate { (collection) -> ([CollectionOperation<UnderlyingCollection.Index>], UnderlyingCollection.Element?) in
+        return descriptiveUpdate { (collection) -> (CollectionDiff<UnderlyingCollection.Index>, UnderlyingCollection.Element?) in
             if let index = set.index(of: member) {
                 let element = collection.setView.remove(at: index)
-                return ([.delete(at: index as! UnderlyingCollection.Index)], element)
+                return (CollectionDiff(deletes: [index as! UnderlyingCollection.Index], areIndicesPresorted: true), element)
             } else {
-                return ([], nil)
+                return (CollectionDiff(), nil)
             }
         }
     }
@@ -76,18 +76,18 @@ extension MutableObservableCollection where UnderlyingCollection: SetViewProtoco
     /// Remove item from the set by index.
     @discardableResult
     public func remove(at index: Set<UnderlyingCollection.Element>.Index) -> UnderlyingCollection.Element? {
-        return descriptiveUpdate { (collection) -> ([CollectionOperation<UnderlyingCollection.Index>], UnderlyingCollection.Element?) in
+        return descriptiveUpdate { (collection) -> (CollectionDiff<UnderlyingCollection.Index>, UnderlyingCollection.Element?) in
             let element = collection.setView.remove(at: index)
-            return ([.delete(at: index as! UnderlyingCollection.Index)], element)
+            return (CollectionDiff(deletes: [index as! UnderlyingCollection.Index], areIndicesPresorted: true), element)
         }
     }
 
     /// Removes all items from the set.
     public func removeAll() {
-        descriptiveUpdate { (collection) -> [CollectionOperation<UnderlyingCollection.Index>] in
+        descriptiveUpdate { (collection) -> CollectionDiff<UnderlyingCollection.Index> in
             let indices = set.indices
             collection.setView.removeAll()
-            return indices.map { .delete(at: $0 as! UnderlyingCollection.Index) }
+            return CollectionDiff(deletes: indices.reversed().map { $0 as! UnderlyingCollection.Index }, areIndicesPresorted: true)
         }
     }
 }

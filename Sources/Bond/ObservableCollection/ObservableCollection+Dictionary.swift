@@ -48,14 +48,14 @@ extension MutableObservableCollection where UnderlyingCollection: DictionaryView
 
     /// Update (or insert) value in the dictionary.
     public func updateValue(_ value: UnderlyingCollection.Value, forKey key: UnderlyingCollection.Key) -> UnderlyingCollection.Value? {
-        return descriptiveUpdate { (collection) -> ([CollectionOperation<UnderlyingCollection.Index>], UnderlyingCollection.Value?) in
+        return descriptiveUpdate { (collection) -> (CollectionDiff<UnderlyingCollection.Index>, UnderlyingCollection.Value?) in
             if let index = collection.dictionaryView.index(forKey: key) {
                 let old = collection.dictionaryView.updateValue(value, forKey: key)
-                return ([.update(at: index as! UnderlyingCollection.Index)], old)
+                return (CollectionDiff(updates: [index as! UnderlyingCollection.Index], areIndicesPresorted: true), old)
             } else {
                 _ = collection.dictionaryView.updateValue(value, forKey: key)
                 let index = collection.dictionaryView.index(forKey: key)!
-                return ([.insert(at: index as! UnderlyingCollection.Index)], nil)
+                return (CollectionDiff(inserts: [index as! UnderlyingCollection.Index], areIndicesPresorted: true), nil)
             }
         }
     }
@@ -64,9 +64,9 @@ extension MutableObservableCollection where UnderlyingCollection: DictionaryView
     @discardableResult
     public func removeValue(forKey key: UnderlyingCollection.Key) -> UnderlyingCollection.Value? {
         if let index = dictionary.index(forKey: key) {
-            return descriptiveUpdate { (collection) -> ([CollectionOperation<UnderlyingCollection.Index>], UnderlyingCollection.Value?) in
+            return descriptiveUpdate { (collection) -> (CollectionDiff<UnderlyingCollection.Index>, UnderlyingCollection.Value?) in
                 let (_, old) = collection.dictionaryView.remove(at: index)
-                return ([.delete(at: index as! UnderlyingCollection.Index)], old)
+                return (CollectionDiff(deletes: [index as! UnderlyingCollection.Index], areIndicesPresorted: true), old)
             }
         } else {
             return nil

@@ -47,7 +47,7 @@ public final class MutableObservableCollection<UnderlyingCollection: Collection>
 
     /// Update the collection and provide a description of changes (diff).
     /// Emits an event with the updated collection and the given diff.
-    public func descriptiveUpdate(_ update: (inout UnderlyingCollection) -> [CollectionOperation<UnderlyingCollection.Index>]) {
+    public func descriptiveUpdate(_ update: (inout UnderlyingCollection) -> CollectionDiff<UnderlyingCollection.Index>) {
         lock.lock(); defer { lock.unlock() }
         let diff = update(&collection)
         subject.next(ModifiedCollection(collection: collection, diff: diff))
@@ -55,7 +55,7 @@ public final class MutableObservableCollection<UnderlyingCollection: Collection>
 
     /// Update the collection and provide a description of changes (diff).
     /// Emits an event with the updated collection and the given diff.
-    public func descriptiveUpdate<T>(_ update: (inout UnderlyingCollection) -> ([CollectionOperation<UnderlyingCollection.Index>], T)) -> T {
+    public func descriptiveUpdate<T>(_ update: (inout UnderlyingCollection) -> (CollectionDiff<UnderlyingCollection.Index>, T)) -> T {
         lock.lock(); defer { lock.unlock() }
         let (diff, result) = update(&collection)
         subject.next(ModifiedCollection(collection: collection, diff: diff))
@@ -71,9 +71,9 @@ public final class MutableObservableCollection<UnderlyingCollection: Collection>
 
     /// Replace the underlying collection with the given collection. Emits an event with the empty diff.
     public func replace(with newCollection: UnderlyingCollection) {
-        descriptiveUpdate { (collection) -> [CollectionOperation<UnderlyingCollection.Index>] in
+        descriptiveUpdate { (collection) -> CollectionDiff<UnderlyingCollection.Index> in
             collection = newCollection
-            return []
+            return CollectionDiff()
         }
     }
 
@@ -83,14 +83,14 @@ public final class MutableObservableCollection<UnderlyingCollection: Collection>
 
         // use proxy to collect changes
         let proxy = MutableObservableCollection(collection)
-        var diffs: [[CollectionOperation<UnderlyingCollection.Index>]] = []
+        var diffs: [CollectionDiff<UnderlyingCollection.Index>] = []
         let disposable = proxy.skip(first: 1).observeNext { event in
             diffs.append(event.diff)
         }
         update(proxy)
         disposable.dispose()
 
-        descriptiveUpdate { (collection) -> [CollectionOperation<UnderlyingCollection.Index>] in
+        descriptiveUpdate { (collection) ->CollectionDiff<UnderlyingCollection.Index> in
             collection = proxy.collection
             return mergeDiffs(collection, diffs)
         }
@@ -99,7 +99,7 @@ public final class MutableObservableCollection<UnderlyingCollection: Collection>
     /// Perform batched updates on the collection. Emits an event with the combined diff of all made changes.
     public func batchUpdate(_ update: (MutableObservableCollection<UnderlyingCollection>) -> Void) {
         batchUpdate(update, mergeDiffs: { _, diffs in
-            CollectionOperation.mergeDiffs(diffs, using: PositionIndependentStrider())
+            CollectionDiff<UnderlyingCollection.Index>(merging: diffs, strider: PositionIndependentStrider())
         })
     }
 
@@ -107,7 +107,7 @@ public final class MutableObservableCollection<UnderlyingCollection: Collection>
     /// calculate the diff between the existing and new collection and emit an event with the calculated diff.
     public func replace(with newCollection: UnderlyingCollection, performDiff: Bool, generateDiff: CollectionDiffer<UnderlyingCollection>) {
         if performDiff {
-            descriptiveUpdate { (collection) -> [CollectionOperation<UnderlyingCollection.Index>] in
+            descriptiveUpdate { (collection) -> CollectionDiff<UnderlyingCollection.Index> in
                 let diff = generateDiff(collection, newCollection)
                 collection = newCollection
                 return diff

@@ -26,62 +26,62 @@ extension MutableObservableCollection where UnderlyingCollection: RangeReplaceab
 
     /// Append `newElement` at the end of the collection.
     public func append(_ newElement: UnderlyingCollection.Element) {
-        descriptiveUpdate { (collection) -> [CollectionOperation<UnderlyingCollection.Index>] in
+        descriptiveUpdate { (collection) -> CollectionDiff<UnderlyingCollection.Index> in
             collection.append(newElement)
-            return [.insert(at: collection.index(collection.endIndex, offsetBy: -1))]
+            return CollectionDiff(inserts: [collection.index(collection.endIndex, offsetBy: -1)], areIndicesPresorted: true)
         }
     }
 
     /// Insert `newElement` at index `i`.
     public func insert(_ newElement: UnderlyingCollection.Element, at index: UnderlyingCollection.Index) {
-        descriptiveUpdate { (collection) -> [CollectionOperation<UnderlyingCollection.Index>] in
+        descriptiveUpdate { (collection) -> CollectionDiff<UnderlyingCollection.Index> in
             collection.insert(newElement, at: index)
-            return [.insert(at: index)]
+            return CollectionDiff(inserts: [index], areIndicesPresorted: true)
         }
     }
 
     /// Insert elements `newElements` at index `i`.
     public func insert(contentsOf newElements: [UnderlyingCollection.Element], at index: UnderlyingCollection.Index) {
-        descriptiveUpdate { (collection) -> [CollectionOperation<UnderlyingCollection.Index>] in
+        descriptiveUpdate { (collection) -> CollectionDiff<UnderlyingCollection.Index> in
             collection.insert(contentsOf: newElements, at: index)
             let endIndex = collection.index(index, offsetBy: newElements.count)
-            return collection.indices[index..<endIndex].map { CollectionOperation.insert(at: $0) }
+            return CollectionDiff(inserts: collection.indices[index..<endIndex].map { $0 }, areIndicesPresorted: true)
         }
     }
 
     /// Move the element at index `i` to index `toIndex`.
     public func move(from fromIndex: UnderlyingCollection.Index, to toIndex: UnderlyingCollection.Index) {
-        descriptiveUpdate { (collection) -> [CollectionOperation<UnderlyingCollection.Index>] in
+        descriptiveUpdate { (collection) -> CollectionDiff<UnderlyingCollection.Index> in
             collection.move(from: fromIndex, to: toIndex)
-            return [.move(from: fromIndex, to: toIndex)]
+            return CollectionDiff(moves: [(from: fromIndex, to: toIndex)], areIndicesPresorted: true)
         }
     }
 
     /// Remove and return the element at index i.
     @discardableResult
     public func remove(at index: UnderlyingCollection.Index) -> UnderlyingCollection.Element {
-        return descriptiveUpdate { (collection) -> ([CollectionOperation<UnderlyingCollection.Index>], UnderlyingCollection.Element) in
+        return descriptiveUpdate { (collection) -> (CollectionDiff<UnderlyingCollection.Index>, UnderlyingCollection.Element) in
             let element = collection.remove(at: index)
-            return ([.delete(at: index)], element)
+            return (CollectionDiff(deletes: [index], areIndicesPresorted: true), element)
         }
     }
 
     /// Remove an element from the end of the collection in O(1).
     @discardableResult
     public func removeLast() -> UnderlyingCollection.Element {
-        return descriptiveUpdate { (collection) -> ([CollectionOperation<UnderlyingCollection.Index>], UnderlyingCollection.Element) in
+        return descriptiveUpdate { (collection) -> (CollectionDiff<UnderlyingCollection.Index>, UnderlyingCollection.Element) in
             let index = collection.index(collection.endIndex, offsetBy: -1)
             let element = collection.remove(at: index)
-            return ([.delete(at: index)], element)
+            return (CollectionDiff(deletes: [index], areIndicesPresorted: true), element)
         }
     }
 
     /// Remove all elements from the collection.
     public func removeAll() {
-        descriptiveUpdate { (collection) -> [CollectionOperation<UnderlyingCollection.Index>] in
-            let diff = collection.indices.map { CollectionOperation.delete(at: $0) }
+        descriptiveUpdate { (collection) -> CollectionDiff<UnderlyingCollection.Index> in
+            let deletes = collection.indices.reversed().map { $0 }
             collection.removeAll(keepingCapacity: false)
-            return diff
+            return CollectionDiff(deletes: deletes, areIndicesPresorted: true)
         }
     }
 }
@@ -89,11 +89,12 @@ extension MutableObservableCollection where UnderlyingCollection: RangeReplaceab
 extension MutableObservableCollection where UnderlyingCollection: RangeReplaceableCollection, UnderlyingCollection.Index: Strideable, UnderlyingCollection.Index.Stride == Int {
 
     public func move(from fromIndices: [UnderlyingCollection.Index], to toIndex: UnderlyingCollection.Index) {
-        descriptiveUpdate { (collection) -> [CollectionOperation<UnderlyingCollection.Index>] in
+        descriptiveUpdate { (collection) -> CollectionDiff<UnderlyingCollection.Index> in
             collection.move(from: fromIndices, to: toIndex)
-            return fromIndices.enumerated().map {
-                .move(from: $0.element, to: toIndex.advanced(by: $0.offset))
+            let moves = fromIndices.enumerated().map {
+                (from: $0.element, to: toIndex.advanced(by: $0.offset))
             }
+            return CollectionDiff(moves: moves, areIndicesPresorted: true)
         }
     }
 }
@@ -104,7 +105,7 @@ extension MutableObservableCollection where UnderlyingCollection.Index: Strideab
     /// Diffs are combined by shifting elements when needed and annihilating confling operations like I(2) -> D(2).
     public func batchUpdate(_ update: (MutableObservableCollection<UnderlyingCollection>) -> Void) {
         batchUpdate(update, mergeDiffs: { _, diffs in
-            CollectionOperation.mergeDiffs(diffs, using: StridableIndexStrider())
+            CollectionDiff<UnderlyingCollection.Index>(merging: diffs, strider: StridableIndexStrider())
         })
     }
 }

@@ -40,7 +40,7 @@ extension MutableObservableCollection where UnderlyingCollection: MutableTreeNod
     /// Diffs are combined by shifting elements when needed and annihilating confling operations like I(2) -> D(2).
     public func batchUpdate(_ update: (MutableObservableCollection<UnderlyingCollection>) -> Void) {
         batchUpdate(update, mergeDiffs: { _, diffs in
-            CollectionOperation.mergeDiffs(diffs, using: IndexPathTreeIndexStrider())
+            CollectionDiff<UnderlyingCollection.Index>(merging: diffs, strider: IndexPathTreeIndexStrider())
         })
     }
 }
@@ -51,14 +51,14 @@ extension MutableObservableCollection where UnderlyingCollection: MutableCollect
     /// Diffs are combined by shifting elements when needed and annihilating confling operations like I(2) -> D(2).
     public func batchUpdate(subtreeAt indexPath: IndexPath, _ update: (MutableObservableCollection<UnderlyingCollection>) -> Void) {
         let view = MutableObservableCollection(collection[indexPath])
-        var viewDiff: [CollectionOperation<IndexPath>] = []
+        var viewDiff = CollectionDiff<UnderlyingCollection.Index>()
         view.batchUpdate(update, mergeDiffs: { _, diffs in
-            viewDiff = CollectionOperation.mergeDiffs(diffs, using: IndexPathTreeIndexStrider())
-            return []
+            viewDiff = CollectionDiff<UnderlyingCollection.Index>(merging: diffs, strider: IndexPathTreeIndexStrider())
+            return CollectionDiff<UnderlyingCollection.Index>()
         })
-        descriptiveUpdate { (collection) -> ([CollectionOperation<IndexPath>]) in
+        descriptiveUpdate { (collection) -> CollectionDiff<IndexPath> in
             collection[indexPath] = view.collection
-            return viewDiff.map { $0.mapIndex { indexPath + $0 } }
+            return viewDiff.mapIndices { indexPath + $0 }
         }
     }
 }
@@ -67,51 +67,51 @@ extension MutableObservableCollection where UnderlyingCollection: RangeReplacabl
 
     /// Append `newNode` at the end of the root node's children collection.
     public func append(_ newNode: Node) {
-        descriptiveUpdate { (collection) -> [CollectionOperation<Index>] in
+        descriptiveUpdate { (collection) -> CollectionDiff<Index> in
             let index = collection.endIndex
             collection.append(newNode)
-            return [.insert(at: index)]
+            return CollectionDiff(inserts: [index], areIndicesPresorted: true)
         }
     }
 
     /// Insert `newNode` at index `i`.
     public func insert(_ newNode: Node, at index: Index) {
-        descriptiveUpdate { (collection) -> [CollectionOperation<Index>] in
+        descriptiveUpdate { (collection) -> CollectionDiff<Index> in
             collection.insert(newNode, at: index)
-            return [.insert(at: index)]
+            return CollectionDiff(inserts: [index], areIndicesPresorted: true)
         }
     }
 
     public func insert(contentsOf newNodes: [Node], at indexPath: Index) {
-        descriptiveUpdate { (collection) -> [CollectionOperation<Index>] in
+        descriptiveUpdate { (collection) -> CollectionDiff<Index> in
             collection.insert(contentsOf: newNodes, at: indexPath)
-            return [.insert(at: indexPath)]
+            return CollectionDiff(inserts: [indexPath], areIndicesPresorted: true)
         }
     }
 
     /// Move the element at index `i` to index `toIndex`.
     public func move(from fromIndex: Index, to toIndex: Index) {
-        descriptiveUpdate { (collection) -> [CollectionOperation<Index>] in
+        descriptiveUpdate { (collection) -> CollectionDiff<Index> in
             collection.move(from: fromIndex, to: toIndex)
-            return [.move(from: fromIndex, to: toIndex)]
+            return CollectionDiff(moves: [(from: fromIndex, to: toIndex)], areIndicesPresorted: true)
         }
     }
 
     /// Remove and return the element at index i.
     @discardableResult
     public func remove(at index: Index) -> Node {
-        return descriptiveUpdate { (collection) -> ([CollectionOperation<Index>], Node) in
+        return descriptiveUpdate { (collection) -> (CollectionDiff<Index>, Node) in
             let element = collection.remove(at: index)
-            return ([.delete(at: index)], element)
+            return (CollectionDiff(deletes: [index], areIndicesPresorted: true), element)
         }
     }
 
     /// Remove all elements from the collection.
     public func removeAll() {
-        descriptiveUpdate { (collection) -> [CollectionOperation<Index>] in
-            let diff = collection.indices.map { CollectionOperation.delete(at: $0) }
+        descriptiveUpdate { (collection) -> CollectionDiff<Index> in
+            let deletes = collection.indices.reversed().map { $0 }
             collection.removeAll()
-            return diff
+            return CollectionDiff(deletes: deletes, areIndicesPresorted: true)
         }
     }
 }
@@ -122,11 +122,12 @@ extension MutableObservableCollection where UnderlyingCollection: RangeReplacabl
         guard toIndex.count > 0 else {
             fatalError("Cannot move node(s) to root node.")
         }
-        descriptiveUpdate { (collection) -> [CollectionOperation<Index>] in
+        descriptiveUpdate { (collection) -> CollectionDiff<Index> in
             collection.move(from: fromIndices, to: toIndex)
-            return fromIndices.enumerated().map {
-                .move(from: $0.element, to: toIndex.advanced(by: $0.offset, atLevel: toIndex.count-1))
+            let moves = fromIndices.enumerated().map {
+                (from: $0.element, to: toIndex.advanced(by: $0.offset, atLevel: toIndex.count-1))
             }
+            return CollectionDiff(moves: moves, areIndicesPresorted: true)
         }
     }
 }

@@ -31,16 +31,16 @@ where UnderlyingCollection: Array2DProtocol {
 
     public func replaceSection(at index: Int, newItems: [Item], performDiff: Bool, areEqual: @escaping (Item, Item) -> Bool) {
         if performDiff {
-            descriptiveUpdate { (collection) -> [CollectionOperation<IndexPath>] in
+            descriptiveUpdate { (collection) -> CollectionDiff<IndexPath> in
                 let section = collection.array2DView.sections[index]
-                let diff = section.items.extendedDiff(newItems, isEqual: areEqual).diff.map { $0.mapIndex { IndexPath(item: $0, section: index) } }
+                let diff = section.items.extendedDiff(newItems, isEqual: areEqual).asCollectionDiff.mapIndices { IndexPath(item: $0, section: index) }
                 collection.array2DView.sections[index].items = newItems
                 return diff
             }
         } else {
-            descriptiveUpdate { (collection) -> [CollectionOperation<IndexPath>] in
+            descriptiveUpdate { (collection) -> CollectionDiff<IndexPath> in
                 collection.array2DView.sections[index].items = newItems
-                return []
+                return CollectionDiff()
             }
         }
     }

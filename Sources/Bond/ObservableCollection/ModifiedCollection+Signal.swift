@@ -49,7 +49,7 @@ public extension SignalProtocol where Element: ModifiedCollectionProtocol, Eleme
                 return indexMap.merging([new.element: new.offset], uniquingKeysWith: { $1 })
             })
 
-            let diff = event.diff.compactMap { $0.transformingIndices(fromIndexMap: previousIndexMap, toIndexMap: indexMap) }
+            let diff = event.diff.transformingIndices(fromIndexMap: previousIndexMap, toIndexMap: indexMap)
             previousIndexMap = indexMap
 
             return ModifiedCollection(
@@ -110,7 +110,7 @@ public extension SignalProtocol where Element: ModifiedCollectionProtocol, Eleme
                 }
             }
 
-            let diff = event.diff.compactMap { $0.transformingIndices(fromIndexMap: previousIndexMap, toIndexMap: indexMap) }
+            let diff = event.diff.transformingIndices(fromIndexMap: previousIndexMap, toIndexMap: indexMap)
             previousIndexMap = indexMap
 
             return ModifiedCollection(
@@ -121,34 +121,31 @@ public extension SignalProtocol where Element: ModifiedCollectionProtocol, Eleme
     }
 }
 
-extension CollectionOperation where Index: Hashable {
+extension CollectionDiff where Index: Hashable {
 
-    public func transformingIndices<NewIndex>(fromIndexMap: [Index: NewIndex], toIndexMap: [Index: NewIndex]) -> CollectionOperation<NewIndex>? {
-        switch self {
-        case .insert(let index):
-            if let mappedIndex = toIndexMap[index] {
-                return .insert(at: mappedIndex)
-            }
-        case .delete(let index):
-            if let mappedIndex = fromIndexMap[index] {
-                return .delete(at: mappedIndex)
-            }
-        case .update(let index):
-            if let mappedIndex = toIndexMap[index] {
-                if let _ = fromIndexMap[index] {
-                    return .update(at: mappedIndex)
-                } else {
-                    return .insert(at: mappedIndex)
-                }
-            } else if let mappedIndex = fromIndexMap[index] {
-                return .delete(at: mappedIndex)
-            }
-        case .move(let from, let to):
-            if let mappedFrom = fromIndexMap[from], let mappedTo = toIndexMap[to] {
-                return .move(from: mappedFrom, to: mappedTo)
+    public func transformingIndices<NewIndex>(fromIndexMap: [Index: NewIndex], toIndexMap: [Index: NewIndex]) -> CollectionDiff<NewIndex> {
+        var inserts = self.inserts.compactMap { toIndexMap[$0] }
+        var deletes = self.deletes.compactMap { fromIndexMap[$0] }
+        let moves = self.moves.compactMap { (move: (from: Index, to: Index)) -> (from: NewIndex, to: NewIndex)? in
+            if let mappedFrom = fromIndexMap[move.from], let mappedTo = toIndexMap[move.to] {
+                return (from: mappedFrom, to: mappedTo)
+            } else {
+                return nil
             }
         }
-        return nil
+        var updates: [NewIndex] = []
+        for index in self.updates {
+            if let mappedIndex = toIndexMap[index] {
+                if let _ = fromIndexMap[index] {
+                    updates.append(mappedIndex)
+                } else {
+                    inserts.append(mappedIndex)
+                }
+            } else if let mappedIndex = fromIndexMap[index] {
+                deletes.append(mappedIndex)
+            }
+        }
+        return CollectionDiff<NewIndex>(inserts: inserts, deletes: deletes, updates: updates, moves: moves, areIndicesPresorted: false)
     }
 }
 
@@ -165,7 +162,7 @@ extension SignalProtocol where Element: Collection {
                         let diff = generateDiff(collection, newCollection)
                         observer.next(ModifiedCollection(collection: newCollection, diff: diff))
                     } else {
-                        observer.next(ModifiedCollection(collection: newCollection, diff: []))
+                        observer.next(ModifiedCollection(collection: newCollection, diff: .init()))
                     }
                     collection = newCollection
                 case .failed(let error):

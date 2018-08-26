@@ -25,8 +25,8 @@ tree.observeNext { (event) in
 }
 
 tree.batchUpdate { (tree) in
-    tree[[1]] = TreeNode<String>("Child X")
-    tree.move(from: [1], to: [0, 1])
+//    tree[[0]].value = "Ohoho" //TreeNode<String>("Child X")
     tree.append(TreeNode<String>("Child Y"))
-    tree.move(from: [0, 1], to: [1])
+    tree.move(from: [0, 2], to: [2, 0])
+//    tree.move(from: [0, 1], to: [1])
 }

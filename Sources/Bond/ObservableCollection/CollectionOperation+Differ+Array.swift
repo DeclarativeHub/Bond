@@ -26,24 +26,23 @@ import Differ
 import Foundation
 import ReactiveKit
 
-extension ExtendedDiff.Element {
-
-    public var asCollectionOperation: CollectionOperation<Int> {
-        switch self {
-        case .insert(let index):
-            return .insert(at: index)
-        case .delete(let index):
-            return .delete(at: index)
-        case .move(let fromIndex, let toIndex):
-            return .move(from: fromIndex, to: toIndex)
-        }
-    }
-}
-
 extension ExtendedDiff {
 
-    public var diff: [CollectionOperation<Int>] {
-        return elements.map { $0.asCollectionOperation }
+    public var asCollectionDiff: CollectionDiff<Int> {
+        var inserts: [Int] = []
+        var deletes: [Int] = []
+        var moves: [(from: Int, to: Int)] = []
+        for element in elements {
+            switch element {
+            case .insert(let at):
+                inserts.append(at)
+            case .delete(let at):
+                deletes.append(at)
+            case .move(let from, let to):
+                moves.append((from: from, to: to))
+            }
+        }
+        return CollectionDiff(inserts: inserts, deletes: deletes, updates: [], moves: moves, areIndicesPresorted: false)
     }
 }
 
@@ -51,7 +50,7 @@ extension SignalProtocol where Element: Collection, Element.Index == Int {
 
     /// Diff each next element (array) against the previous one and emit a diff event.
     public func diff(_ areEqual: @escaping (Element.Element, Element.Element) -> Bool) -> Signal<ModifiedCollection<Element>, Error> {
-        return diff(generateDiff: { c1, c2 in c1.extendedDiff(c2, isEqual: areEqual).diff })
+        return diff(generateDiff: { c1, c2 in c1.extendedDiff(c2, isEqual: areEqual).asCollectionDiff })
     }
 }
 
@@ -59,7 +58,7 @@ extension SignalProtocol where Element: Collection, Element.Element: Equatable, 
 
     /// Diff each next element (array) against the previous one and emit a diff event.
     public func diff() -> Signal<ModifiedCollection<Element>, Error> {
-        return diff(generateDiff: { c1, c2 in c1.extendedDiff(c2).diff })
+        return diff(generateDiff: { c1, c2 in c1.extendedDiff(c2).asCollectionDiff })
     }
 }
 
@@ -70,7 +69,7 @@ where UnderlyingCollection.Index == Int {
     /// calculate the diff between the existing and new collection and emit an event with the calculated diff.
     /// - Complexity: O((N+M)*D) if `performDiff: true`, O(1) otherwise.
     public func replace(with newCollection: UnderlyingCollection, performDiff: Bool, areEqual: @escaping (UnderlyingCollection.Element, UnderlyingCollection.Element) -> Bool) {
-        replace(with: newCollection, performDiff: performDiff, generateDiff: { $0.extendedDiff($1, isEqual: areEqual).diff })
+        replace(with: newCollection, performDiff: performDiff, generateDiff: { $0.extendedDiff($1, isEqual: areEqual).asCollectionDiff })
     }
 }
 
@@ -81,6 +80,6 @@ where UnderlyingCollection.Element: Equatable, UnderlyingCollection.Index == Int
     /// calculate the diff between the existing and new collection and emit an event with the calculated diff.
     /// - Complexity: O((N+M)*D) if `performDiff: true`, O(1) otherwise.
     public func replace(with newCollection: UnderlyingCollection, performDiff: Bool) {
-        replace(with: newCollection, performDiff: performDiff, generateDiff: { $0.extendedDiff($1).diff })
+        replace(with: newCollection, performDiff: performDiff, generateDiff: { $0.extendedDiff($1).asCollectionDiff })
     }
 }

@@ -60,7 +60,7 @@ public class ObservableCollection<UnderlyingCollection: Collection>: SignalProto
     }
 
     public func observe(with observer: @escaping (Event<ModifiedCollection<UnderlyingCollection>, NoError>) -> Void) -> Disposable {
-        observer(.next(ModifiedCollection(collection: collection, diff: [])))
+        observer(.next(ModifiedCollection(collection: collection, diff: .init())))
         return subject.observe(with: observer)
     }
 }

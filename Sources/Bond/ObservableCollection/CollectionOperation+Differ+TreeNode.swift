@@ -28,23 +28,19 @@ import ReactiveKit
 
 extension ArrayBasedTreeNode {
 
-    public func treeDiff(_ other: Self, rootIndex: IndexPath = [], areRootsEqual: @escaping (Value, Value) -> Bool, areChildrenEqual: @escaping (ChildNode.Value, ChildNode.Value) -> Bool) -> [CollectionOperation<IndexPath>] {
+    public func treeDiff(_ other: Self, rootIndex: IndexPath = [], areRootsEqual: @escaping (Value, Value) -> Bool, areChildrenEqual: @escaping (ChildNode.Value, ChildNode.Value) -> Bool) -> CollectionDiff<IndexPath> {
 
         // Check roots
         if rootIndex.isEmpty && !areRootsEqual(value, other.value) {
-            return [.update(at: rootIndex)]
+            return CollectionDiff(updates: [rootIndex], areIndicesPresorted: true)
         }
 
-        var diff: [CollectionOperation<IndexPath>] = []
         let isEqual: (ChildNode, ChildNode) -> Bool = { a, b in areChildrenEqual(a.value, b.value) }
-
         let traces = children.outputDiffPathTraces(to: other.children, isEqual: isEqual)
-
         let levelDiff = Diff(traces: traces)
         let levelExtendedDiff = children.extendedDiff(from: levelDiff, other: other.children, isEqual: isEqual)
 
-        let indexPathLevelExtendedDiff = levelExtendedDiff.diff.map { $0.mapIndex { rootIndex.appending($0) } }
-        diff.append(contentsOf: indexPathLevelExtendedDiff)
+        var diff = levelExtendedDiff.asCollectionDiff.mapIndices { rootIndex.appending($0) }
 
         let matchingLevelTraces = traces.filter { trace in
             return trace.from.x + 1 == trace.to.x && trace.from.y + 1 == trace.to.y // Differ matchPoint
@@ -60,7 +56,7 @@ extension ArrayBasedTreeNode {
                 areRootsEqual: areChildrenEqual,
                 areChildrenEqual: areChildrenEqual
             )
-            diff.append(contentsOf: childrenDiff)
+            diff = diff.merging(childrenDiff)
         }
 
         return diff
@@ -70,7 +66,7 @@ extension ArrayBasedTreeNode {
 extension ArrayBasedTreeNode where ChildNode.Value: Equatable, Value: Equatable {
 
     /// Diff the receiver against the given tree.
-    public func treeDiff(_ other: Self) -> [CollectionOperation<IndexPath>] {
+    public func treeDiff(_ other: Self) -> CollectionDiff<IndexPath> {
         return treeDiff(other, areRootsEqual: { $0 == $1 }, areChildrenEqual: { $0 == $1 })
     }
 }
@@ -78,7 +74,7 @@ extension ArrayBasedTreeNode where ChildNode.Value: Equatable, Value: Equatable 
 extension ArrayBasedTreeNode where ChildNode.Value: Equatable, Value == Void {
 
     /// Diff the receiver against the given tree.
-    public func treeDiff(_ other: Self) -> [CollectionOperation<IndexPath>] {
+    public func treeDiff(_ other: Self) -> CollectionDiff<IndexPath> {
         return treeDiff(other, areRootsEqual: { _, _ in true }, areChildrenEqual: { $0 == $1 })
     }
 }

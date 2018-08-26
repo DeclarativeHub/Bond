@@ -117,3 +117,5 @@ extension TreeNode {
         return Object(value, children)
     }
 }
+
+extension TreeNode: Equatable where Value: Equatable {}

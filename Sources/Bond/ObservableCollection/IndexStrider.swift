@@ -9,10 +9,10 @@
 import Foundation
 
 public protocol IndexStrider {
+
     associatedtype Index
 
-    func shiftLeft(_ index: Index, ifPositionedAfter other: Index) -> Index
-    func shiftRight(_ index: Index, ifPositionedBeforeOrAt other: Index) -> Index
+    func shift(_ index: Index, by: Int) -> Index
 
     func isIndex(_ index: Index, ancestorOf other: Index) -> Bool
     func replaceAncestor(_ ancestor: Index, with newAncestor: Index, of index: Index) -> Index
@@ -20,11 +20,7 @@ public protocol IndexStrider {
 
 public struct PositionIndependentStrider<Index>: IndexStrider {
 
-    public func shiftLeft(_ index: Index, ifPositionedAfter other: Index) -> Index {
-        return index
-    }
-
-    public func shiftRight(_ index: Index, ifPositionedBeforeOrAt other: Index) -> Index {
+    public func shift(_ index: Index, by: Int) -> Index {
         return index
     }
 
@@ -39,19 +35,13 @@ public struct PositionIndependentStrider<Index>: IndexStrider {
 
 public struct StridableIndexStrider<Index: Strideable>: IndexStrider {
 
-    public func shiftLeft(_ index: Index, ifPositionedAfter other: Index) -> Index {
-        if other < index {
+    public func shift(_ index: Index, by: Int) -> Index {
+        if by == -1 {
             return index.advanced(by: -1)
-        } else {
-            return index
-        }
-    }
-
-    public func shiftRight(_ index: Index, ifPositionedBeforeOrAt other: Index) -> Index {
-        if other <= index {
+        } else if by == 1 {
             return index.advanced(by: 1)
         } else {
-            return index
+            fatalError()
         }
     }
 
@@ -66,23 +56,14 @@ public struct StridableIndexStrider<Index: Strideable>: IndexStrider {
 
 public struct IndexPathTreeIndexStrider: IndexStrider {
 
-    public func shiftLeft(_ index: IndexPath, ifPositionedAfter other: IndexPath) -> IndexPath {
-        guard other.count > 0 && other.count <= index.count else { return index }
-        let level = other.count - 1
-        if other[level] < index[level] {
+    public func shift(_ index: IndexPath, by: Int) -> IndexPath {
+        let level = index.count - 1
+        if by == -1 {
             return index.advanced(by: -1, atLevel: level)
-        } else {
-            return index
-        }
-    }
-
-    public func shiftRight(_ index: IndexPath, ifPositionedBeforeOrAt other: IndexPath) -> IndexPath {
-        guard other.count > 0 && other.count <= index.count else { return index }
-        let level = other.count - 1
-        if other[level] < index[level] || index == other {
+        } else if by == 1 {
             return index.advanced(by: 1, atLevel: level)
         } else {
-            return index
+            fatalError()
         }
     }
 

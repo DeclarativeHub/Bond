@@ -22,18 +22,37 @@
 //  THE SOFTWARE.
 //
 
-public extension MutableObservableCollection where UnderlyingCollection: MutableCollection {
+public protocol CollectionOperationProtocol: Equatable {
+    associatedtype Index: Comparable
+    var asCollectionOperation: ValuelessPatchOperation<Index> { get }
+}
 
-    /// Access or update the element at `index`.
-    public subscript(index: UnderlyingCollection.Index) -> UnderlyingCollection.Element {
-        get {
-            return collection[index]
-        }
-        set {
-            descriptiveUpdate { (collection) -> CollectionDiff<UnderlyingCollection.Index> in
-                collection[index] = newValue
-                return CollectionDiff(updates: [index], areIndicesPresorted: true)
-            }
+/// Described the change made to a collection. An array of collection operations is called "diff".
+public enum ValuelessPatchOperation<Index: Comparable>: CollectionOperationProtocol, CustomDebugStringConvertible {
+
+    case insert(at: Index)
+    case delete(at: Index)
+    case update(at: Index)
+    case move(from: Index, to: Index)
+
+    public var asCollectionOperation: ValuelessPatchOperation<Index> {
+        return self
+    }
+
+    public var debugDescription: String {
+        switch self {
+        case .insert(let at):
+            return "I(at: \(at))"
+        case .delete(let at):
+            return "D(at: \(at))"
+        case .update(let at):
+            return "U(at: \(at))"
+        case .move(let from, let to):
+            return "M(from: \(from), to: \(to))"
         }
     }
 }
+
+public typealias CollectionDiffer<C: Collection> = (_ old: C, _ new: C) -> CollectionDiff<C.Index>
+
+public typealias CollectionDiffMerger<C: Collection> = (_ collection: C, _ diffs: [CollectionDiff<C.Index>]) -> CollectionDiff<C.Index>

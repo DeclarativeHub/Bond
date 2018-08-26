@@ -256,9 +256,9 @@ extension MutableObservableCollection where UnderlyingCollection: Array2DProtoco
             return collection.array2DView[indexPath].item!
         }
         set {
-            descriptiveUpdate { (collection) -> [CollectionOperation<IndexPath>] in
+            descriptiveUpdate { (collection) -> CollectionDiff<IndexPath> in
                 collection.array2DView[indexPath] = .item(newValue)
-                return [.update(at: indexPath)]
+                return CollectionDiff(updates: [indexPath], areIndicesPresorted: true)
             }
         }
     }
@@ -268,9 +268,9 @@ extension MutableObservableCollection where UnderlyingCollection: Array2DProtoco
             return collection.array2DView.sections[index]
         }
         set {
-            descriptiveUpdate { (collection) -> [CollectionOperation<IndexPath>] in
+            descriptiveUpdate { (collection) -> CollectionDiff<IndexPath> in
                 collection.array2DView.sections[index] = newValue
-                return [.update(at: [index])]
+                return CollectionDiff(updates: [[index]], areIndicesPresorted: true)
             }
         }
     }
@@ -325,12 +325,12 @@ extension MutableObservableCollection where UnderlyingCollection: Array2DProtoco
 
     /// Remove all items from the array. Keep empty sections.
     public func removeAllItems() {
-        descriptiveUpdate { (collection) -> [CollectionOperation<IndexPath>] in
+        descriptiveUpdate { (collection) -> CollectionDiff<IndexPath> in
             let indices = collection.array2DView.indices.map { $0 }.filter { $0.count == 2 }
             for index in collection.array2DView.sections.indices {
                 collection.array2DView.sections[index].items = []
             }
-            return indices.map { .delete(at: $0) }
+            return CollectionDiff(deletes: indices.reversed().map { $0 }, areIndicesPresorted: true)
         }
     }
 

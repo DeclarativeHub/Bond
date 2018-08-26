@@ -29,7 +29,7 @@ public protocol ModifiedCollectionProtocol {
     associatedtype UnderlyingCollection: Collection
 
     var collection: UnderlyingCollection { get }
-    var diff: [CollectionOperation<UnderlyingCollection.Index>] { get }
+    var diff: CollectionDiff<UnderlyingCollection.Index> { get }
 
     var asModifiedCollection: ModifiedCollection<UnderlyingCollection> { get }
 }
@@ -56,9 +56,9 @@ public struct ModifiedCollection<UnderlyingCollection: Collection>: ModifiedColl
     ///
     /// - Note: Empty diff does not mean that the collection did not change, only that the diff is not available.
     /// On such event one should act as if the whole collection has changed - e.g. reload the table view.
-    public let diff: [CollectionOperation<UnderlyingCollection.Index>]
+    public let diff: CollectionDiff<UnderlyingCollection.Index>
 
-    public init(collection: UnderlyingCollection, diff: [CollectionOperation<UnderlyingCollection.Index>]) {
+    public init(collection: UnderlyingCollection, diff: CollectionDiff<UnderlyingCollection.Index>) {
         self.collection = collection
         self.diff = diff
     }
@@ -70,21 +70,21 @@ public struct ModifiedCollection<UnderlyingCollection: Collection>: ModifiedColl
 
 extension ModifiedCollectionProtocol {
 
-    public var patch: [CollectionOperation<UnderlyingCollection.Index>] {
-        return diff.patch(using: PositionIndependentStrider())
+    public var patch: [PatchOperation<UnderlyingCollection.Element, UnderlyingCollection.Index>] {
+        return diff.patch(to: collection, using: PositionIndependentStrider())
     }
 }
 
 extension ModifiedCollectionProtocol where UnderlyingCollection.Index: Strideable {
 
-    public var patch: [CollectionOperation<UnderlyingCollection.Index>] {
-        return diff.patch(using: StridableIndexStrider())
+    public var patch: [PatchOperation<UnderlyingCollection.Element, UnderlyingCollection.Index>] {
+        return diff.patch(to: collection, using: StridableIndexStrider())
     }
 }
 
 extension ModifiedCollectionProtocol where UnderlyingCollection: TreeNodeProtocol, UnderlyingCollection.Index == IndexPath {
 
-    public var patch: [CollectionOperation<UnderlyingCollection.Index>] {
-        return diff.patch(using: IndexPathTreeIndexStrider())
+    public var patch: [PatchOperation<UnderlyingCollection.Element, UnderlyingCollection.Index>] {
+        return diff.patch(to: collection, using: IndexPathTreeIndexStrider())
     }
 }
