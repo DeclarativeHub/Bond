@@ -1,7 +1,7 @@
 //
 //  The MIT License (MIT)
 //
-//  Copyright (c) 2017 Tony Arnold (@tonyarnold)
+//  Copyright (c) 2018 DeclarativeHub/Bond
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,15 +22,29 @@
 //  THE SOFTWARE.
 //
 
-public protocol QueryableDataSourceProtocol: DataSourceProtocol {
-    associatedtype Item
-    associatedtype Index
-    func item(at index: Index) -> Item
+extension ObservableCollection where UnderlyingCollection: ArrayViewProtocol {
+
+    /// Underlying collection as an array.
+    public var array: [UnderlyingCollection.Element] {
+        return collection.arrayView
+    }
 }
 
-extension Collection where Self: QueryableDataSourceProtocol {
-    
-    public func item<I, E>(at index: I) -> E where I == Self.Index, E == Self.Element {
-        return self[index]
+/// A type that can be viewed as an array.
+public protocol ArrayViewProtocol {
+
+    associatedtype Element
+    var arrayView: [Element] { get set }
+}
+
+extension Array: ArrayViewProtocol {
+
+    public var arrayView: [Element] {
+        get {
+            return self
+        }
+        set {
+            self = newValue
+        }
     }
 }

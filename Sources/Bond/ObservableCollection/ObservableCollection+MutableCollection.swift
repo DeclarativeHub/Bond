@@ -1,7 +1,7 @@
 //
 //  The MIT License (MIT)
 //
-//  Copyright (c) 2017 Tony Arnold (@tonyarnold)
+//  Copyright (c) 2018 DeclarativeHub/Bond
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,15 +22,18 @@
 //  THE SOFTWARE.
 //
 
-public protocol QueryableDataSourceProtocol: DataSourceProtocol {
-    associatedtype Item
-    associatedtype Index
-    func item(at index: Index) -> Item
-}
+public extension MutableObservableCollection where UnderlyingCollection: MutableCollection {
 
-extension Collection where Self: QueryableDataSourceProtocol {
-    
-    public func item<I, E>(at index: I) -> E where I == Self.Index, E == Self.Element {
-        return self[index]
+    /// Access or update the element at `index`.
+    public subscript(index: UnderlyingCollection.Index) -> UnderlyingCollection.Element {
+        get {
+            return collection[index]
+        }
+        set {
+            descriptiveUpdate { (collection) -> [CollectionOperation<UnderlyingCollection.Index>] in
+                collection[index] = newValue
+                return [.update(at: index)]
+            }
+        }
     }
 }
