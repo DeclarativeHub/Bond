@@ -53,7 +53,14 @@ public extension ReactiveExtensions where Base: NSTextField {
         return dynamicSubject(
             signal: self.textDidChange.eraseType(),
             get: { (textField: NSTextField) -> String in
-                return textField.formatter?.editingString(for: textField.stringValue) ?? textField.stringValue
+                guard
+                    let fieldEditor = textField.currentEditor(),
+                    let formatter = textField.formatter
+                else {
+                    return textField.stringValue
+                }
+
+                return formatter.editingString(for: fieldEditor.string) ?? fieldEditor.string
             },
             set: { (textField: NSTextField, value: String) in
                 textField.stringValue = value
