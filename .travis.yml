@@ -1,9 +1,12 @@
 language: swift
-osx_image: xcode9.4
+osx_image: xcode10
 
-script:
-  - set -o pipefail && xcodebuild clean test -project Bond.xcodeproj -scheme Bond-iOS -destination "platform=iOS Simulator,name=iPhone 7,OS=11.4" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO -quiet | xcpretty
-  - swift test
-
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+jobs:
+  include:
+    - stage: "Tests"
+      name: "Run Xcode Tests"
+      script:
+        - set -o pipefail && xcodebuild clean test -project Bond.xcodeproj -scheme Bond-iOS -destination "platform=iOS Simulator,name=iPhone 7,OS=11.4" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO -quiet | xcpretty
+      after_success: bash <(curl -s https://codecov.io/bash)
+    - script: swift test
+      name: "Run Swift Package Manager Tests"
