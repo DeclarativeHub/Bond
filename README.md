@@ -186,8 +186,7 @@ Bond uses protocol proxies to implement table and collection view bindings and t
 
 ## Communication
 
-* If you'd like to ask a general question, use Stack Overflow.
-* If you'd like to ask a quick question or chat about the project, try [Gitter](https://gitter.im/ReactiveKit/General).
+* If you'd like to ask a question, open an issue.
 * If you found a bug, open an issue.
 * If you have a feature request, open an issue.
 * If you want to contribute, submit a pull request (include unit tests).
