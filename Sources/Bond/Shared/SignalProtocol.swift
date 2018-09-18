@@ -6,11 +6,12 @@
 //  Copyright © 2016 Swift Bond. All rights reserved.
 //
 
+#if os(iOS) || os(tvOS)
+
 import ReactiveKit
+import UIKit
 
 extension SignalProtocol {
-
-    #if os(iOS) || os(tvOS)
 
     /// Fires an event on start and every `interval` seconds as long as the app is in foreground.
     /// Pauses when the app goes to background. Restarts when the app is back in foreground.
@@ -29,6 +30,5 @@ extension SignalProtocol {
             return Signal<Int, NoError>.interval(seconds, queue: .global()).replace(with: ()).start(with: ()).take(until: didEnterBackgorund)
         }
     }
-
-    #endif
 }
+#endif

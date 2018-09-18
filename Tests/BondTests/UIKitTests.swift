@@ -314,7 +314,7 @@ class BondTests: XCTestCase {
 
         view.reactive.text.expectNext(["b", "c"])
         view.text = "c"
-        NotificationCenter.default.post(name: NSNotification.Name.UITextViewTextDidChange, object: view)
+        NotificationCenter.default.post(name: UITextView.textDidChangeNotification, object: view)
     }
     
     func testUISearchBar() {

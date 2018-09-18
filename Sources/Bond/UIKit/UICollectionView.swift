@@ -60,7 +60,7 @@
     /// A type used by the collection view bindings that provides binding options and actions.
     open class CollectionViewBinder<DataSource: DataSourceProtocol> {
 
-        open let createCell: ((DataSource, IndexPath, UICollectionView) -> UICollectionViewCell)?
+        public let createCell: ((DataSource, IndexPath, UICollectionView) -> UICollectionViewCell)?
 
         public init() {
             createCell = nil

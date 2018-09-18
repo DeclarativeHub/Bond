@@ -69,7 +69,7 @@
 
         open var rowAnimation: BNDTableViewRowAnimation = .automatic
 
-        open let createCell: ((DataSource, IndexPath, UITableView) -> UITableViewCell)?
+        public let createCell: ((DataSource, IndexPath, UITableView) -> UITableViewCell)?
 
         public init() {
             createCell = nil
@@ -272,14 +272,21 @@
 
     // MARK: Deprecated stuff
 
-    @available(*, deprecated, message: "Subclass TableViewBinder instead.")
+    //@available(*, deprecated, message: "Subclass TableViewBinder instead.")
     public protocol TableViewBond {
 
         associatedtype DataSource: DataSourceProtocol
 
+        @available(*, deprecated, message: "Subclass TableViewBinder instead.")
         func apply(event: DataSourceEvent<DataSource, BatchKindDiff>, to tableView: UITableView)
+
+        @available(*, deprecated, message: "Subclass TableViewBinder instead.")
         func cellForRow(at indexPath: IndexPath, tableView: UITableView, dataSource: DataSource) -> UITableViewCell
+
+        @available(*, deprecated, message: "Subclass TableViewBinder instead.")
         func titleForHeader(in section: Int, dataSource: DataSource) -> String?
+
+        @available(*, deprecated, message: "Subclass TableViewBinder instead.")
         func titleForFooter(in section: Int, dataSource: DataSource) -> String?
     }
 

@@ -28,15 +28,15 @@ class TestTableView: UITableView {
         observedEvents.append(.endUpdates)
     }
 
-    open override func insertSections(_ sections: IndexSet, with animation: UITableViewRowAnimation) {
+    open override func insertSections(_ sections: IndexSet, with animation: UITableView.RowAnimation) {
         observedEvents.append(.insertSections(sections))
     }
 
-    open override func deleteSections(_ sections: IndexSet, with animation: UITableViewRowAnimation) {
+    open override func deleteSections(_ sections: IndexSet, with animation: UITableView.RowAnimation) {
         observedEvents.append(.deleteSections(sections))
     }
 
-    open override func reloadSections(_ sections: IndexSet, with animation: UITableViewRowAnimation) {
+    open override func reloadSections(_ sections: IndexSet, with animation: UITableView.RowAnimation) {
         observedEvents.append(.reloadSections(sections))
     }
 
@@ -44,15 +44,15 @@ class TestTableView: UITableView {
         observedEvents.append(.moveSection(section, newSection))
     }
 
-    open override func insertRows(at indexPaths: [IndexPath], with animation: UITableViewRowAnimation) {
+    open override func insertRows(at indexPaths: [IndexPath], with animation: UITableView.RowAnimation) {
         observedEvents.append(.insertItems(indexPaths))
     }
 
-    open override func deleteRows(at indexPaths: [IndexPath], with animation: UITableViewRowAnimation) {
+    open override func deleteRows(at indexPaths: [IndexPath], with animation: UITableView.RowAnimation) {
         observedEvents.append(.deleteItems(indexPaths))
     }
 
-    open override func reloadRows(at indexPaths: [IndexPath], with animation: UITableViewRowAnimation) {
+    open override func reloadRows(at indexPaths: [IndexPath], with animation: UITableView.RowAnimation) {
         observedEvents.append(.reloadItems(indexPaths))
     }
 
