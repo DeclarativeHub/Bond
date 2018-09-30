@@ -24,21 +24,27 @@
 
 import Foundation
 
+public protocol TreeArrayProtocol: ArrayBasedTreeNode where ChildNode == TreeNode<ChildValue> {
+    associatedtype ChildValue
+    init()
+    var asTreeArray: TreeArray<ChildValue> { get set }
+}
+
 /// A tree root node without a value.
-public struct TreeArray<Value>: ArrayBasedTreeNode, CustomDebugStringConvertible {
+public struct TreeArray<ChildValue>: TreeArrayProtocol, CustomDebugStringConvertible {
 
     public var value: Void = ()
-    public var children: [TreeNode<Value>]
+    public var children: [TreeNode<ChildValue>]
 
     public init() {
         self.children = []
     }
 
-    public init(_ children: [TreeNode<Value>]) {
+    public init(_ children: [TreeNode<ChildValue>]) {
         self.children = children
     }
 
-    public subscript(indexPath: IndexPath) -> TreeNode<Value> {
+    public subscript(indexPath: IndexPath) -> TreeNode<ChildValue> {
         get {
             guard let index = indexPath.first else { fatalError() }
             return children[index][indexPath.dropFirst()]
@@ -46,6 +52,15 @@ public struct TreeArray<Value>: ArrayBasedTreeNode, CustomDebugStringConvertible
         set {
             guard let index = indexPath.first else { fatalError() }
             return children[index][indexPath.dropFirst()] = newValue
+        }
+    }
+
+    public var asTreeArray: TreeArray<ChildValue> {
+        get {
+            return self
+        }
+        set {
+            self = newValue
         }
     }
 
@@ -60,21 +75,21 @@ extension TreeArray {
     public class Object: ArrayBasedTreeNode, CustomDebugStringConvertible {
 
         public var value: Void = ()
-        public var children: [TreeNode<Value>.Object]
+        public var children: [TreeNode<ChildValue>.Object]
 
         public init() {
             self.children = []
         }
 
-        public init(_ children: [TreeNode<Value>.Object]) {
+        public init(_ children: [TreeNode<ChildValue>.Object]) {
             self.children = children
         }
 
-        public init(_ children: [TreeNode<Value>]) {
+        public init(_ children: [TreeNode<ChildValue>]) {
             self.children = children.map { $0.asObject }
         }
 
-        public subscript(indexPath: IndexPath) -> TreeNode<Value>.Object {
+        public subscript(indexPath: IndexPath) -> TreeNode<ChildValue>.Object {
             get {
                 guard let index = indexPath.first else { fatalError() }
                 return children[index][indexPath.dropFirst()]

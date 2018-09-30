@@ -24,7 +24,7 @@
 
 import Foundation
 
-public struct TreeNode<Value>: ArrayBasedTreeNode, CustomDebugStringConvertible {
+public struct TreeNode<Value>: ArrayBasedTreeNode, MutableTreeNodeProtocol, CustomDebugStringConvertible {
 
     public var value: Value
     public var children: [TreeNode<Value>]

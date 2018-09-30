@@ -24,366 +24,253 @@
 
 #if os(iOS) || os(tvOS)
 
-    import UIKit
-    import ReactiveKit
+import UIKit
+import ReactiveKit
 
-    public extension ReactiveExtensions where Base: UITableView {
+private var TableViewBinderDataSourceAssociationKey = "TableViewBinderDataSource"
 
-        /// A `ProtocolProxy` for the table view delegate.
-        ///
-        /// - Note: Accessing this property for the first time will replace table view's current delegate
-        /// with a protocol proxy object (an object that is stored in this property).
-        /// Current delegate will be used as `forwardTo` delegate of protocol proxy.
-        public var delegate: ProtocolProxy {
-            return protocolProxy(for: UITableViewDelegate.self, keyPath: \.delegate)
-        }
+open class TableViewBinderDataSource<Changeset: SectionedDataSourceChangesetProtocol>: NSObject, UITableViewDataSource {
 
-        /// A `ProtocolProxy` for the table view data source.
-        ///
-        /// - Note: Accessing this property for the first time will replace table view's current data source
-        /// with a protocol proxy object (an object that is stored in this property).
-        /// Current data source will be used as `forwardTo` data source of protocol proxy.
-        public var dataSource: ProtocolProxy {
-            return protocolProxy(for: UITableViewDataSource.self, keyPath: \.dataSource)
-        }
+    public var createCell: ((Changeset.DataSource, IndexPath, UITableView) -> UITableViewCell)?
 
-        /// A signal that emits index paths of selected table view cells.
-        ///
-        /// - Note: Uses table view's `delegate` protocol proxy to observe calls made to `UITableViewDelegate.tableView(_:didSelectRowAt:)` method.
-        public var selectedRowIndexPath: SafeSignal<IndexPath> {
-            return delegate.signal(for: #selector(UITableViewDelegate.tableView(_:didSelectRowAt:))) { (subject: SafePublishSubject<IndexPath>, _: UITableView, indexPath: IndexPath) in
-                subject.next(indexPath)
-            }
-        }
-    }
-
-    /// A type used by the table view bindings that provides binding options and actions.
-    /// Subclass `TableViewBinder` to configure peculiarities of the bindings like animations.
-    open class TableViewBinder<DataSource: DataSourceProtocol> {
-
-        open var rowAnimation: UITableViewRowAnimation = .automatic
-
-        open let createCell: ((DataSource, IndexPath, UITableView) -> UITableViewCell)?
-
-        public init() {
-            createCell = nil
-        }
-
-        /// - parameter createCell: A closure that creates cell for a given table view and configures it with the given data source at the given index path.
-        public init(_ createCell: @escaping (DataSource, IndexPath, UITableView) -> UITableViewCell) {
-            self.createCell = createCell
-        }
-
-        /// - returns: A cell for the given table view configured with the given data source at the given index path.
-        open func cellForRow(at indexPath: IndexPath, tableView: UITableView, dataSource: DataSource) -> UITableViewCell {
-            if let createCell = createCell {
-                return createCell(dataSource, indexPath, tableView)
+    public var changeset: Changeset? = nil {
+        didSet {
+            if let changeset = changeset, oldValue != nil {
+                applyChageset(changeset)
             } else {
-                fatalError("Subclass of TableViewBinder should override and implement cellForRow(at:tableView:dataSource:) method. Do not call super.")
-            }
-        }
-
-        /// Applies the given data source event to the table view.
-        ///
-        /// For example, for `.insertItems(let indexPaths)` event the default implementation calls `tableView.insertRows(at: indexPaths, with: rowAnimation)`.
-        ///
-        /// Override to implement custom event application.
-        open func apply(event: DataSourceEvent<DataSource, BatchKindDiff>, to tableView: UITableView) {
-            switch event.kind {
-            case .reload:
-                tableView.reloadData()
-            case .insertItems(let indexPaths):
-                tableView.insertRows(at: indexPaths, with: rowAnimation)
-            case .deleteItems(let indexPaths):
-                tableView.deleteRows(at: indexPaths, with: rowAnimation)
-            case .reloadItems(let indexPaths):
-                tableView.reloadRows(at: indexPaths, with: rowAnimation)
-            case .moveItem(let indexPath, let newIndexPath):
-                tableView.moveRow(at: indexPath, to: newIndexPath)
-            case .insertSections(let indexSet):
-                tableView.insertSections(indexSet, with: rowAnimation)
-            case .deleteSections(let indexSet):
-                tableView.deleteSections(indexSet, with: rowAnimation)
-            case .reloadSections(let indexSet):
-                tableView.reloadSections(indexSet, with: rowAnimation)
-            case .moveSection(let index, let newIndex):
-                tableView.moveSection(index, toSection: newIndex)
-            case .beginUpdates:
-                tableView.beginUpdates()
-            case .endUpdates:
-                tableView.endUpdates()
+                tableView?.reloadData()
             }
         }
     }
 
-    /// A `TableViewBinder` subclass that applies events without animations or batching.
-    /// Overrides `apply(event:)` method and just calls `tableView.reloadData()` for any event.
-    open class ReloadingTableViewBinder<DataSource: DataSourceProtocol>: TableViewBinder<DataSource> {
-
-        open override func apply(event: DataSourceEvent<DataSource, BatchKindDiff>, to tableView: UITableView) {
+    public weak var tableView: UITableView? = nil {
+        didSet {
+            guard let tableView = tableView else { return }
+            associateWithTableView(tableView)
             tableView.reloadData()
         }
     }
 
-    public extension SignalProtocol where Element: DataSourceEventProtocol, Element.BatchKind == BatchKindDiff, Error == NoError {
+    open var rowInsertionAnimation: UITableViewRowAnimation = .automatic
+    open var rowDeletionAnimation: UITableViewRowAnimation = .automatic
+    open var rowReloadAnimation: UITableViewRowAnimation = .automatic
 
-        public typealias DataSource = Element.DataSource
-
-        /// Binds the signal of data source elements to the given table view.
-        ///
-        /// - parameters:
-        ///     - tableView: A table view that should display the data from the data source.
-        ///     - animated: Animate partial or batched updates. Default is `true`.
-        ///     - rowAnimation: Row animation for partial or batched updates. Relevant only when `animated` is `true`. Default is `.automatic`.
-        ///     - createCell: A closure that creates (dequeues) cell for the given table view and configures it with the given data source at the given index path.
-        /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
-        @discardableResult
-        public func bind(to tableView: UITableView, animated: Bool = true, rowAnimation: UITableViewRowAnimation = .automatic, createCell: @escaping (DataSource, IndexPath, UITableView) -> UITableViewCell) -> Disposable {
-            if animated {
-                let binder = TableViewBinder<DataSource>(createCell)
-                binder.rowAnimation = rowAnimation
-                return bind(to: tableView, using: binder)
-            } else {
-                let binder = ReloadingTableViewBinder<DataSource>(createCell)
-                binder.rowAnimation = rowAnimation
-                return bind(to: tableView, using: binder)
-            }
-        }
-
-        /// Binds the signal of data source elements to the given table view.
-        ///
-        /// - parameters:
-        ///     - tableView: A table view that should display the data from the data source.
-        ///     - binder: A `TableViewBinder` or its subclass that will manage the binding.
-        /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
-        @discardableResult
-        public func bind(to tableView: UITableView, using binder: TableViewBinder<DataSource>) -> Disposable {
-            let dataSource = Property<DataSource?>(nil)
-            let disposable = CompositeDisposable()
-
-            disposable += tableView.reactive.dataSource.feed(
-                property: dataSource,
-                to: #selector(UITableViewDataSource.tableView(_:cellForRowAt:)),
-                map: { (dataSource: DataSource?, tableView: UITableView, indexPath: NSIndexPath) -> UITableViewCell in
-                    return binder.cellForRow(at: indexPath as IndexPath, tableView: tableView, dataSource: dataSource!)
-                }
-            )
-
-            // TODO: Remove when TableViewBond is removed
-            if let bondBinder = binder as? AnyTableViewBondBinder<DataSource> {
-                disposable += tableView.reactive.dataSource.feed(
-                    property: dataSource,
-                    to: #selector(UITableViewDataSource.tableView(_:titleForHeaderInSection:)),
-                    map: { (dataSource: DataSource?, tableView: UITableView, index: Int) -> NSString? in
-                        guard let dataSource = dataSource else { return nil }
-                        return bondBinder.titleForHeader(in: index, dataSource: dataSource) as NSString?
-                    }
-                )
-
-                disposable += tableView.reactive.dataSource.feed(
-                    property: dataSource,
-                    to: #selector(UITableViewDataSource.tableView(_:titleForFooterInSection:)),
-                    map: { (dataSource: DataSource?, tableView: UITableView, index: Int) -> NSString? in
-                        guard let dataSource = dataSource else { return nil }
-                        return bondBinder.titleForFooter(in: index, dataSource: dataSource) as NSString?
-                    }
-                )
-            }
-
-            disposable += tableView.reactive.dataSource.feed(
-                property: dataSource,
-                to: #selector(UITableViewDataSource.tableView(_:numberOfRowsInSection:)),
-                map: { (dataSource: DataSource?, _: UITableView, section: Int) -> Int in
-                    dataSource?.numberOfItems(inSection: section) ?? 0
-                }
-            )
-
-            disposable += tableView.reactive.dataSource.feed(
-                property: dataSource,
-                to: #selector(UITableViewDataSource.numberOfSections(in:)),
-                map: { (dataSource: DataSource?, _: UITableView) -> Int in
-                    dataSource?.numberOfSections ?? 0
-                }
-            )
-
-            disposable += bind(to: tableView) { (tableView, event) in
-                let event = event._unbox
-                dataSource.value = event.dataSource
-                binder.apply(event: event, to: tableView)
-            }
-
-            return disposable
-        }
+    public override init() {
+        createCell = nil
     }
 
-    public extension SignalProtocol where Element: DataSourceEventProtocol, Element.DataSource: QueryableDataSourceProtocol, Element.DataSource.Index == IndexPath, Element.BatchKind == BatchKindDiff, Error == NoError {
-
-        /// Binds the signal of data source elements to the given table view.
-        ///
-        /// - parameters:
-        ///     - tableView: A table view that should display the data from the data source.
-        ///     - cellType: A type of the cells that should display the data. Cell type name will be used as reusable identifier and the binding will automatically dequeue cell.
-        ///     - animated: Animate partial or batched updates. Default is `true`.
-        ///     - rowAnimation: Row animation for partial or batched updates. Relevant only when `animated` is `true`. Default is `.automatic`.
-        ///     - configureCell: A closure that configures the cell with the data source item at the respective index path.
-        /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
-        @discardableResult
-        public func bind<Cell: UITableViewCell>(to tableView: UITableView, cellType: Cell.Type, animated: Bool = true, rowAnimation: UITableViewRowAnimation = .automatic, configureCell: @escaping (Cell, DataSource.Item) -> Void) -> Disposable {
-            let identifier = String(describing: Cell.self)
-            tableView.register(cellType as AnyClass, forCellReuseIdentifier: identifier)
-            return bind(to: tableView, animated: animated, rowAnimation: rowAnimation, createCell: { (dataSource, indexPath, tableView) -> UITableViewCell in
-                let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! Cell
-                let item = dataSource.item(at: indexPath)
-                configureCell(cell, item)
-                return cell
-            })
-        }
+    /// - parameter createCell: A closure that creates cell for a given table view and configures it with the given data source at the given index path.
+    public init(_ createCell: @escaping (Changeset.DataSource, IndexPath, UITableView) -> UITableViewCell) {
+        self.createCell = createCell
     }
 
-    public extension SignalProtocol where Element: DataSourceEventProtocol, Element.DataSource: QueryableDataSourceProtocol, Element.DataSource.Index == Int, Element.BatchKind == BatchKindDiff, Error == NoError {
-
-        /// Binds the signal of data source elements to the given table view.
-        ///
-        /// - parameters:
-        ///     - tableView: A table view that should display the data from the data source.
-        ///     - cellType: A type of the cells that should display the data. Cell type name will be used as reusable identifier and the binding will automatically dequeue cell.
-        ///     - animated: Animate partial or batched updates. Default is `true`.
-        ///     - rowAnimation: Row animation for partial or batched updates. Relevant only when `animated` is `true`. Default is `.automatic`.
-        ///     - configureCell: A closure that configures the cell with the data source item at the respective index path row.
-        /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
-        @discardableResult
-        public func bind<Cell: UITableViewCell>(to tableView: UITableView, cellType: Cell.Type, animated: Bool = true, rowAnimation: UITableViewRowAnimation = .automatic, configureCell: @escaping (Cell, DataSource.Item) -> Void) -> Disposable {
-            let identifier = String(describing: Cell.self)
-            tableView.register(cellType as AnyClass, forCellReuseIdentifier: identifier)
-            return bind(to: tableView, animated: animated, rowAnimation: rowAnimation, createCell: { (dataSource, indexPath, tableView) -> UITableViewCell in
-                let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! Cell
-                let item = dataSource.item(at: indexPath.row)
-                configureCell(cell, item)
-                return cell
-            })
-        }
+    open func numberOfSections(in tableView: UITableView) -> Int {
+        return changeset?.dataSource.numberOfSections ?? 0
     }
 
-    // MARK: Deprecated stuff
-
-    @available(*, deprecated, message: "Subclass TableViewBinder instead.")
-    public protocol TableViewBond {
-
-        associatedtype DataSource: DataSourceProtocol
-
-        func apply(event: DataSourceEvent<DataSource, BatchKindDiff>, to tableView: UITableView)
-        func cellForRow(at indexPath: IndexPath, tableView: UITableView, dataSource: DataSource) -> UITableViewCell
-        func titleForHeader(in section: Int, dataSource: DataSource) -> String?
-        func titleForFooter(in section: Int, dataSource: DataSource) -> String?
+    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return changeset?.dataSource.numberOfItems(inSection: section) ?? 0
     }
 
-    @available(*, deprecated)
-    extension TableViewBond {
-
-        public func apply(event: DataSourceEvent<DataSource, BatchKindDiff>, to tableView: UITableView) {
-            switch event.kind {
-            case .reload:
-                tableView.reloadData()
-            case .insertItems(let indexPaths):
-                tableView.insertRows(at: indexPaths, with: .automatic)
-            case .deleteItems(let indexPaths):
-                tableView.deleteRows(at: indexPaths, with: .automatic)
-            case .reloadItems(let indexPaths):
-                tableView.reloadRows(at: indexPaths, with: .automatic)
-            case .moveItem(let indexPath, let newIndexPath):
-                tableView.moveRow(at: indexPath, to: newIndexPath)
-            case .insertSections(let indexSet):
-                tableView.insertSections(indexSet, with: .automatic)
-            case .deleteSections(let indexSet):
-                tableView.deleteSections(indexSet, with: .automatic)
-            case .reloadSections(let indexSet):
-                tableView.reloadSections(indexSet, with: .automatic)
-            case .moveSection(let index, let newIndex):
-                tableView.moveSection(index, toSection: newIndex)
-            case .beginUpdates:
-                tableView.beginUpdates()
-            case .endUpdates:
-                tableView.endUpdates()
-            }
-        }
-
-        public func titleForHeader(in section: Int, dataSource: DataSource) -> String? {
-            return nil
-        }
-
-        public func titleForFooter(in section: Int, dataSource: DataSource) -> String? {
-            return nil
+    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let changeset = changeset else { fatalError() }
+        if let createCell = createCell {
+            return createCell(changeset.dataSource, indexPath, tableView)
+        } else {
+            fatalError("Subclass of TableViewBinderDataSource should override and implement tableView(_:cellForRowAt:) method if they do not initialize `createCell` closure.")
         }
     }
-
-    @available(*, deprecated)
-    private struct DefaultTableViewBond<DataSource: DataSourceProtocol>: TableViewBond {
-
-        let createCell: (DataSource, IndexPath, UITableView) -> UITableViewCell
-
-        func cellForRow(at indexPath: IndexPath, tableView: UITableView, dataSource: DataSource) -> UITableViewCell {
-            return createCell(dataSource, indexPath, tableView)
-        }
-    }
-
-    @available(*, deprecated)
-    private struct ReloadingTableViewBond<DataSource: DataSourceProtocol>: TableViewBond {
-
-        let createCell: (DataSource, IndexPath, UITableView) -> UITableViewCell
-
-        func cellForRow(at indexPath: IndexPath, tableView: UITableView, dataSource: DataSource) -> UITableViewCell {
-            return createCell(dataSource, indexPath, tableView)
-        }
-
-        func apply(event: DataSourceEvent<DataSource, BatchKindDiff>, to tableView: UITableView) {
+    
+    open func applyChageset(_ changeset: Changeset) {
+        guard let tableView = tableView else { return }
+        if changeset.diffs.count == 0 {
             tableView.reloadData()
+        } else if changeset.diffs.count == 1 {
+            applyChagesetDiff(changeset.diffs.first!)
+        } else {
+            tableView.beginUpdates()
+            changeset.diffs.forEach { (diff) in
+                self.applyChagesetDiff(diff)
+            }
+            tableView.endUpdates()
         }
     }
 
-    private class AnyTableViewBondBinder<DataSource: DataSourceProtocol>: TableViewBinder<DataSource> {
-
-        func titleForHeader(in section: Int, dataSource: DataSource) -> String? {
-            return nil
-        }
-
-        func titleForFooter(in section: Int, dataSource: DataSource) -> String? {
-            return nil
-        }
-    }
-
-    @available(*, deprecated)
-    private class TableViewBondBinder<Bond: TableViewBond>: AnyTableViewBondBinder<Bond.DataSource> {
-
-        let bond: Bond
-
-        init(_ bond: Bond) {
-            self.bond = bond
-
-            super.init { (dataSource, indexPath, tableView) -> UITableViewCell in
-                return bond.cellForRow(at: indexPath, tableView: tableView, dataSource: dataSource)
+    open func applyChagesetDiff(_ diff: SectionedDataSourceDiff) {
+        guard let tableView = tableView else { return }
+        switch diff {
+        case .inserts(let indexPaths):
+            let insertedSections = indexPaths.filter { $0.count == 1 }.map { $0[0] }
+            if !insertedSections.isEmpty {
+                tableView.insertSections(IndexSet(insertedSections), with: rowInsertionAnimation)
+            }
+            let insertedItems = indexPaths.filter { $0.count == 2 }
+            if !insertedItems.isEmpty {
+                tableView.insertRows(at: insertedItems, with: rowInsertionAnimation)
+            }
+        case .deletes(let indexPaths):
+            let deletedSections = indexPaths.filter { $0.count == 1 }.map { $0[0] }
+            if !deletedSections.isEmpty {
+                tableView.deleteSections(IndexSet(deletedSections), with: rowDeletionAnimation)
+            }
+            let deletedItems = indexPaths.filter { $0.count == 2 }
+            if !deletedItems.isEmpty {
+                tableView.deleteRows(at: deletedItems, with: rowDeletionAnimation)
+            }
+        case .updates(let indexPaths):
+            let updatedItems = indexPaths.filter { $0.count == 2 }
+            let updatedSections = indexPaths.filter { $0.count == 1 }.map { $0[0] }
+            if !updatedItems.isEmpty {
+                tableView.reloadRows(at: updatedItems, with: rowReloadAnimation)
+            }
+            if !updatedSections.isEmpty {
+                tableView.reloadSections(IndexSet(updatedSections), with: rowReloadAnimation)
+            }
+        case .move(let indexPath, let newIndexPath):
+            if indexPath.count == 2 && newIndexPath.count == 2 {
+                tableView.moveRow(at: indexPath, to: newIndexPath)
+            } else if indexPath.count == 1 && newIndexPath.count == 1 {
+                tableView.moveSection(indexPath[0], toSection: newIndexPath[0])
             }
         }
+    }
 
-        override func apply(event: DataSourceEvent<Bond.DataSource, BatchKindDiff>, to tableView: UITableView) {
-            bond.apply(event: event, to: tableView)
+    private func associateWithTableView(_ tableView: UITableView) {
+        objc_setAssociatedObject(tableView, &TableViewBinderDataSourceAssociationKey, self, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        if tableView.reactive.hasProtocolProxy(for: UITableViewDataSource.self) {
+            tableView.reactive.dataSource.forwardTo = self
+        } else {
+            tableView.dataSource = self
         }
+    }
+}
 
-        override func titleForHeader(in section: Int, dataSource: Bond.DataSource) -> String? {
-            return bond.titleForHeader(in: section, dataSource: dataSource)
+extension TableViewBinderDataSource {
+
+    public class ReloadingBinder: TableViewBinderDataSource {
+
+        public override func applyChageset(_ changeset: Changeset) {
+            tableView?.reloadData()
         }
+    }
+}
 
-        override func titleForFooter(in section: Int, dataSource: Bond.DataSource) -> String? {
-            return bond.titleForFooter(in: section, dataSource: dataSource)
+extension SignalProtocol where Element: SectionedDataSourceChangesetProtocol, Error == NoError {
+
+    public typealias Changeset = Element
+    public typealias DataSource = Element.DataSource
+
+    /// Binds the signal of data source elements to the given table view.
+    ///
+    /// - parameters:
+    ///     - tableView: A table view that should display the data from the data source.
+    ///     - animated: Animate partial or batched updates. Default is `true`.
+    ///     - rowAnimation: Row animation for partial or batched updates. Relevant only when `animated` is `true`. Default is `.automatic`.
+    ///     - createCell: A closure that creates (dequeues) cell for the given table view and configures it with the given data source at the given index path.
+    /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
+    @discardableResult
+    public func bind(to tableView: UITableView, animated: Bool = true, rowAnimation: UITableViewRowAnimation = .automatic, createCell: @escaping (DataSource, IndexPath, UITableView) -> UITableViewCell) -> Disposable {
+        if animated {
+            let binder = TableViewBinderDataSource<Changeset>(createCell)
+            binder.rowInsertionAnimation = rowAnimation
+            binder.rowDeletionAnimation = rowAnimation
+            binder.rowReloadAnimation = rowAnimation
+            return bind(to: tableView, using: binder)
+        } else {
+            let binder = TableViewBinderDataSource<Changeset>.ReloadingBinder(createCell)
+            return bind(to: tableView, using: binder)
         }
     }
 
-    public extension SignalProtocol where Element: DataSourceEventProtocol, Element.BatchKind == BatchKindDiff, Error == NoError {
-
-        @available(*, deprecated, message: "Use an overload that accepts TableViewBinder object instead of deprecated TableViewBond.")
-        @discardableResult
-        public func bind<B: TableViewBond>(to tableView: UITableView, using bond: B) -> Disposable where B.DataSource == DataSource {
-            return bind(to: tableView, using: TableViewBondBinder(bond))
+    /// Binds the signal of data source elements to the given table view.
+    ///
+    /// - parameters:
+    ///     - tableView: A table view that should display the data from the data source.
+    ///     - binder: A `TableViewBinder` or its subclass that will manage the binding.
+    /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
+    @discardableResult
+    public func bind(to tableView: UITableView, using binder: TableViewBinderDataSource<Changeset>) -> Disposable {
+        binder.tableView = tableView
+        return bind(to: tableView) { (_, changeset) in
+            binder.changeset = changeset
         }
     }
+}
+
+extension SignalProtocol where Element: SectionedDataSourceChangesetProtocol, Element.DataSource: QueryableSectionedDataSourceProtocol, Error == NoError {
+
+    /// Binds the signal of data source elements to the given table view.
+    ///
+    /// - parameters:
+    ///     - tableView: A table view that should display the data from the data source.
+    ///     - cellType: A type of the cells that should display the data. Cell type name will be used as reusable identifier and the binding will automatically dequeue cell.
+    ///     - animated: Animate partial or batched updates. Default is `true`.
+    ///     - rowAnimation: Row animation for partial or batched updates. Relevant only when `animated` is `true`. Default is `.automatic`.
+    ///     - configureCell: A closure that configures the cell with the data source item at the respective index path.
+    /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
+    @discardableResult
+    public func bind<Cell: UITableViewCell>(to tableView: UITableView, cellType: Cell.Type, animated: Bool = true, rowAnimation: UITableViewRowAnimation = .automatic, configureCell: @escaping (Cell, Changeset.DataSource.Item) -> Void) -> Disposable {
+        let identifier = String(describing: Cell.self)
+        tableView.register(cellType as AnyClass, forCellReuseIdentifier: identifier)
+        return bind(to: tableView, animated: animated, rowAnimation: rowAnimation, createCell: { (dataSource, indexPath, tableView) -> UITableViewCell in
+            let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! Cell
+            let item = dataSource.item(at: indexPath)
+            configureCell(cell, item)
+            return cell
+        })
+    }
+
+    /// Binds the signal of data source elements to the given table view.
+    ///
+    /// - parameters:
+    ///     - tableView: A table view that should display the data from the data source.
+    ///     - cellType: A type of the cells that should display the data. Cell type name will be used as reusable identifier and the binding will automatically dequeue cell.
+    ///     - animated: Animate partial or batched updates. Default is `true`.
+    ///     - rowAnimation: Row animation for partial or batched updates. Relevant only when `animated` is `true`. Default is `.automatic`.
+    ///     - configureCell: A closure that configures the cell with the data source item at the respective index path.
+    /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
+    @discardableResult
+    public func bind<Cell: UITableViewCell>(to tableView: UITableView, cellType: Cell.Type, using binder: TableViewBinderDataSource<Element>, configureCell: @escaping (Cell, Changeset.DataSource.Item) -> Void) -> Disposable {
+        let identifier = String(describing: Cell.self)
+        tableView.register(cellType as AnyClass, forCellReuseIdentifier: identifier)
+        binder.createCell = { (dataSource, indexPath, tableView) -> UITableViewCell in
+            let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! Cell
+            let item = dataSource.item(at: indexPath)
+            configureCell(cell, item)
+            return cell
+        }
+        return bind(to: tableView, using: binder)
+    }
+}
+
+public extension ReactiveExtensions where Base: UITableView {
+
+    /// A `ProtocolProxy` for the table view delegate.
+    ///
+    /// - Note: Accessing this property for the first time will replace table view's current delegate
+    /// with a protocol proxy object (an object that is stored in this property).
+    /// Current delegate will be used as `forwardTo` delegate of protocol proxy.
+    public var delegate: ProtocolProxy {
+        return protocolProxy(for: UITableViewDelegate.self, keyPath: \.delegate)
+    }
+
+    /// A `ProtocolProxy` for the table view data source.
+    ///
+    /// - Note: Accessing this property for the first time will replace table view's current data source
+    /// with a protocol proxy object (an object that is stored in this property).
+    /// Current data source will be used as `forwardTo` data source of protocol proxy.
+    public var dataSource: ProtocolProxy {
+        return protocolProxy(for: UITableViewDataSource.self, keyPath: \.dataSource)
+    }
+
+    /// A signal that emits index paths of selected table view cells.
+    ///
+    /// - Note: Uses table view's `delegate` protocol proxy to observe calls made to `UITableViewDelegate.tableView(_:didSelectRowAt:)` method.
+    public var selectedRowIndexPath: SafeSignal<IndexPath> {
+        return delegate.signal(for: #selector(UITableViewDelegate.tableView(_:didSelectRowAt:))) { (subject: SafePublishSubject<IndexPath>, _: UITableView, indexPath: IndexPath) in
+            subject.next(indexPath)
+        }
+    }
+}
 
 #endif

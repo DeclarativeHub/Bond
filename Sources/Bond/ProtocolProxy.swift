@@ -403,6 +403,10 @@ extension ReactiveExtensions where Base: NSObject {
         return protocolProxy(protocol: `protocol`, controller: controller)
     }
 
+    public func hasProtocolProxy(for protocol: Protocol) -> Bool {
+        return base.protocolProxies.values.first(where: { $0.protocol === `protocol` }) != nil
+    }
+
     private func protocolProxy(protocol: Protocol, controller: ProtocolProxyPropertyController) -> ProtocolProxy {
         if let proxy = base.protocolProxies[controller] {
             return proxy
