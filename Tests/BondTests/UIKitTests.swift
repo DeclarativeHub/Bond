@@ -108,7 +108,7 @@ class BondTests: XCTestCase {
         SafeSignal.just(false).bind(to: view.reactive.isEnabled)
         XCTAssertEqual(view.isEnabled, false)
 
-        view.reactive.controlEvents(UIControlEvents.touchUpInside).expectNext([(), ()])
+        view.reactive.controlEvents(BNDControlEvents.touchUpInside).expectNext([(), ()])
         view.sendActions(for: .touchUpInside)
         view.sendActions(for: .touchUpOutside)
         view.sendActions(for: .touchUpInside)
@@ -314,7 +314,7 @@ class BondTests: XCTestCase {
 
         view.reactive.text.expectNext(["b", "c"])
         view.text = "c"
-        NotificationCenter.default.post(name: NSNotification.Name.UITextViewTextDidChange, object: view)
+        NotificationCenter.default.post(name: UITextView.textDidChangeNotification, object: view)
     }
     
     func testUISearchBar() {

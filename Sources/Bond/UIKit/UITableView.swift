@@ -51,9 +51,9 @@ open class TableViewBinderDataSource<Changeset: SectionedDataSourceChangesetProt
         }
     }
 
-    open var rowInsertionAnimation: UITableViewRowAnimation = .automatic
-    open var rowDeletionAnimation: UITableViewRowAnimation = .automatic
-    open var rowReloadAnimation: UITableViewRowAnimation = .automatic
+    open var rowInsertionAnimation: UITableView.RowAnimation = .automatic
+    open var rowDeletionAnimation: UITableView.RowAnimation = .automatic
+    open var rowReloadAnimation: UITableView.RowAnimation = .automatic
 
     public override init() {
         createCell = nil
@@ -169,7 +169,7 @@ extension SignalProtocol where Element: SectionedDataSourceChangesetProtocol, Er
     ///     - createCell: A closure that creates (dequeues) cell for the given table view and configures it with the given data source at the given index path.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
     @discardableResult
-    public func bind(to tableView: UITableView, animated: Bool = true, rowAnimation: UITableViewRowAnimation = .automatic, createCell: @escaping (DataSource, IndexPath, UITableView) -> UITableViewCell) -> Disposable {
+    public func bind(to tableView: UITableView, animated: Bool = true, rowAnimation: UITableView.RowAnimation = .automatic, createCell: @escaping (DataSource, IndexPath, UITableView) -> UITableViewCell) -> Disposable {
         if animated {
             let binder = TableViewBinderDataSource<Changeset>(createCell)
             binder.rowInsertionAnimation = rowAnimation
@@ -209,7 +209,7 @@ extension SignalProtocol where Element: SectionedDataSourceChangesetProtocol, El
     ///     - configureCell: A closure that configures the cell with the data source item at the respective index path.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
     @discardableResult
-    public func bind<Cell: UITableViewCell>(to tableView: UITableView, cellType: Cell.Type, animated: Bool = true, rowAnimation: UITableViewRowAnimation = .automatic, configureCell: @escaping (Cell, Changeset.DataSource.Item) -> Void) -> Disposable {
+    public func bind<Cell: UITableViewCell>(to tableView: UITableView, cellType: Cell.Type, animated: Bool = true, rowAnimation: UITableView.RowAnimation = .automatic, configureCell: @escaping (Cell, Changeset.DataSource.Item) -> Void) -> Disposable {
         let identifier = String(describing: Cell.self)
         tableView.register(cellType as AnyClass, forCellReuseIdentifier: identifier)
         return bind(to: tableView, animated: animated, rowAnimation: rowAnimation, createCell: { (dataSource, indexPath, tableView) -> UITableViewCell in

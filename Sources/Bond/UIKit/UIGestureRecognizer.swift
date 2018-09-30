@@ -43,6 +43,12 @@ public extension ReactiveExtensions where Base: UIGestureRecognizer {
 
 #if os(iOS)
 
+#if swift(>=4.2)
+public typealias BNDSwipeGestureRecognizerDirection = UISwipeGestureRecognizer.Direction
+#else
+public typealias BNDSwipeGestureRecognizerDirection = UISwipeGestureRecognizerDirection
+#endif
+
 public extension ReactiveExtensions where Base: UIView {
     
     public func addGestureRecognizer<T: UIGestureRecognizer>(_ gestureRecognizer: T) -> SafeSignal<T> {
@@ -76,7 +82,7 @@ public extension ReactiveExtensions where Base: UIView {
         return addGestureRecognizer(gesture)
     }
 
-    public func swipeGesture(numberOfTouches: Int, direction: UISwipeGestureRecognizerDirection) -> SafeSignal<UISwipeGestureRecognizer> {
+    public func swipeGesture(numberOfTouches: Int, direction: BNDSwipeGestureRecognizerDirection) -> SafeSignal<UISwipeGestureRecognizer> {
         let gesture = UISwipeGestureRecognizer()
         gesture.numberOfTouchesRequired = numberOfTouches
         gesture.direction = direction

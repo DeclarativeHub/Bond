@@ -2,7 +2,6 @@
 
 [![Platform](https://img.shields.io/cocoapods/p/Bond.svg?style=flat)](http://cocoadocs.org/docsets/Bond/)
 [![CI Status](https://travis-ci.org/DeclarativeHub/Bond.svg?branch=master)](https://travis-ci.org/DeclarativeHub/Bond)
-[![Join Us on Gitter](https://img.shields.io/badge/GITTER-join%20chat-blue.svg)](https://gitter.im/ReactiveKit/General)
 [![Twitter](https://img.shields.io/badge/twitter-@srdanrasic-red.svg?style=flat)](https://twitter.com/srdanrasic)
 
 <br>
@@ -186,8 +185,7 @@ Bond uses protocol proxies to implement table and collection view bindings and t
 
 ## Communication
 
-* If you'd like to ask a general question, use Stack Overflow.
-* If you'd like to ask a quick question or chat about the project, try [Gitter](https://gitter.im/ReactiveKit/General).
+* If you'd like to ask a question, open an issue.
 * If you found a bug, open an issue.
 * If you have a feature request, open an issue.
 * If you want to contribute, submit a pull request (include unit tests).

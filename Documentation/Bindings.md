@@ -1,6 +1,6 @@
 # Bindings
 
-Binding is a connection between a signal that produces events and a *bond* object that observers events and performs certain actions (e.g. updates UI).
+Binding is a connection between a signal that produces events and a *bond* object that observes events and performs certain actions (e.g. updates UI).
 
 The producing side of bindings are signals that are defined in ReactiveKit framework on top of which Bond is built. To learn more about signals, consult [ReactiveKit documentation](https://github.com/ReactiveKit/ReactiveKit).
 
@@ -12,7 +12,7 @@ public struct Bond<Element>: BindableProtocol {
 }
 ```
 
-The only requirement is that the target must be *Deallocatable*, in other words that it provides a signal of its own deallocation.
+The only requirement is that the target must be *Deallocatable*, in other words that it provides a signal for its own deallocation.
 
 ```swift
 public protocol Deallocatable: class {
@@ -20,7 +20,7 @@ public protocol Deallocatable: class {
 }
 ```
 
-All `NSObject` subclasses conform to that protocol out of the box. Let us see how we could implement a Bond for text property of a label. It is recommended to implement reactive extensions on `ReactiveExtensions` proxy protocol. That way you encapsulate extensions within the `.reactive` property.
+All `NSObject` subclasses conform to that protocol out of the box. Let us see how we could implement a Bond for text property of a label. It is recommended to implement reactive extensions through the `ReactiveExtensions` proxy protocol. That way you encapsulate extensions within the `.reactive` property.
 
 ```swift
 extension ReactiveExtensions where Base: UILabel {
@@ -72,7 +72,7 @@ presentUserProfile.observeOn(.main).observeNext { [weak self] user in
 
 But that's ugly! We have to dispatch everything to the main queue, be cautious not to create a retain cycle and ensure that the disposable we get from the observation is handled.
 
-Thankfully Bond provides a better way. We can create inline binding instead of the observation. Just do the following
+Thankfully Bond provides a better way. We can create an inline binding instead of the observation. Just do the following
 
 ```swift
 presentUserProfile.bind(to: self) { me, user in
@@ -81,4 +81,4 @@ presentUserProfile.bind(to: self) { me, user in
 }
 ```
 
-and stop worrying about threading, retain cycles and disposing  because bindings take care of all that automatically. Just bind a signal to the target responsible for performing side effects (in our example, to the object responsible for presenting a profile view controller). The closure you provide will be called whenever the signal emits an event with both the target and the sent element as arguments.
+and stop worrying about threading, retain cycles and disposing, because bindings take care of all that automatically. Just bind a signal to the target responsible for performing side effects (in our example, to the object responsible for presenting a profile view controller). The closure you provide will be called whenever the signal emits an event with both the target and the sent element as arguments.
