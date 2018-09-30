@@ -24,50 +24,34 @@
 
 import Foundation
 
-public protocol CollectionChangesetProtocol: ChangesetProtocol where Operation == CollectionChangeset<Collection>.Operation, Diff == CollectionChangeset<Collection>.Diff, Collection.Index: Strideable {
+public protocol CollectionChangesetProtocol: ChangesetProtocol where
+    Collection: Swift.Collection,
+    Operation == ArrayBasedOperation<Collection.Element, Collection.Index>,
+    Diff == ArrayBasedDiff<Collection.Index>,
+    Collection.Index: Strideable {
+    
     var asCollectionChangeset: CollectionChangeset<Collection> { get }
 }
 
 public struct CollectionChangeset<Collection: Swift.Collection>: CollectionChangesetProtocol where Collection.Index: Strideable {
 
-    public enum Operation {
-        case insert(Collection.Element, at: Collection.Index)
-        case delete(at: Collection.Index)
-        case update(at: Collection.Index, newElement: Collection.Element)
-        case move(from: Collection.Index, to: Collection.Index)
-    }
-
-    public struct Diff {
-        public var inserts: [Collection.Index]
-        public var deletes: [Collection.Index]
-        public var updates: [Collection.Index]
-        public var moves: [(from: Collection.Index, to: Collection.Index)]
-
-        public init(inserts: [Collection.Index] = [], deletes: [Collection.Index] = [], updates: [Collection.Index] = [], moves: [(from: Collection.Index, to: Collection.Index)] = []) {
-            self.inserts = inserts
-            self.deletes = deletes
-            self.updates = updates
-            self.moves = moves
-        }
-    }
-
-    public var diff: Diff
-    public var patch: [Operation]
+    public var diff: ArrayBasedDiff<Collection.Index>
+    public var patch: [ArrayBasedOperation<Collection.Element, Collection.Index>]
     public var collection: Collection
 
-    public init(collection: Collection, patch: [Operation]) {
+    public init(collection: Collection, patch: [ArrayBasedOperation<Collection.Element, Collection.Index>]) {
         self.collection = collection
         self.patch = patch
-        self.diff = Diff(from: patch)
+        self.diff = ArrayBasedDiff(from: patch)
     }
 
-    public init(collection: Collection, diff: Diff) {
+    public init(collection: Collection, diff: ArrayBasedDiff<Collection.Index>) {
         self.collection = collection
         self.patch = diff.generatePatch(to: collection)
         self.diff = diff
     }
 
-    public init(collection: Collection, patch: [Operation], diff: Diff) {
+    public init(collection: Collection, patch: [ArrayBasedOperation<Collection.Element, Collection.Index>], diff: ArrayBasedDiff<Collection.Index>) {
         self.collection = collection
         self.patch = patch
         self.diff = diff
@@ -171,76 +155,8 @@ Changeset.Collection.Index.Stride == Int {
             let movesDiff = fromIndices.enumerated().map {
                 (from: $0.element, to: toIndex.advanced(by: $0.offset))
             }
-            return CollectionChangeset<Collection>.Diff(moves: movesDiff).generatePatch(to: collection)
+            return ArrayBasedDiff<Collection.Index>(moves: movesDiff).generatePatch(to: collection)
         }
     }
 }
 
-extension RangeReplaceableCollection {
-
-    public mutating func move(from fromIndex: Index, to toIndex: Index) {
-        let item = remove(at: fromIndex)
-        insert(item, at: toIndex)
-    }
-}
-
-extension RangeReplaceableCollection where Index: Strideable {
-
-    public mutating func move(from fromIndices: [Index], to toIndex: Index) {
-        let items = fromIndices.map { self[$0] }
-        for index in fromIndices.sorted().reversed() {
-            remove(at: index)
-        }
-        insert(contentsOf: items, at: toIndex)
-    }
-}
-
-extension RangeReplaceableCollection where Self: MutableCollection, Index: Strideable {
-
-    public mutating func apply(_ operation: CollectionChangeset<Self>.Operation) {
-        switch operation {
-        case .insert(let element, let at):
-            insert(element, at: at)
-        case .delete(let at):
-            _ = remove(at: at)
-        case .update(let at, let newElement):
-            self[at] = newElement
-        case .move(let from, let to):
-            let element = remove(at: from)
-            insert(element, at: to)
-        }
-    }
-}
-
-extension ChangesetContainerProtocol where Changeset.Collection: RangeReplaceableCollection, Changeset.Collection: MutableCollection, Changeset.Collection.Index: Strideable, Changeset.Operation == CollectionChangeset<Changeset.Collection>.Operation {
-
-    public func apply(_ operation: Changeset.Operation) {
-        descriptiveUpdate { (collection) -> [Changeset.Operation] in
-            collection.apply(operation)
-            return [operation]
-        }
-    }
-}
-
-extension CollectionChangeset.Operation: CustomDebugStringConvertible {
-
-    public var debugDescription: String {
-        switch self {
-        case .insert(let element, let at):
-            return "I(\(element), at: \(at))"
-        case .delete(let at):
-            return "D(at: \(at))"
-        case .update(let at, let newElement):
-            return "U(at: \(at), with: \(newElement))"
-        case .move(let from, let to):
-            return "M(from: \(from), to: \(to))"
-        }
-    }
-}
-
-extension CollectionChangeset.Diff: CustomDebugStringConvertible {
-
-    public var debugDescription: String {
-        return "Inserts: \(inserts), Deletes: \(deletes), Updates: \(updates), Moves: \(moves)]"
-    }
-}

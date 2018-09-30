@@ -47,3 +47,30 @@ extension Array {
         insert(element, at: index)
     }
 }
+
+
+extension Collection {
+
+    func indices(where isIncluded: (Element) -> Bool) -> [Index] {
+        return indices.filter { isIncluded(self[$0]) }
+    }
+}
+
+extension RangeReplaceableCollection {
+
+    public mutating func move(from fromIndex: Index, to toIndex: Index) {
+        let item = remove(at: fromIndex)
+        insert(item, at: toIndex)
+    }
+}
+
+extension RangeReplaceableCollection where Index: Strideable {
+
+    public mutating func move(from fromIndices: [Index], to toIndex: Index) {
+        let items = fromIndices.map { self[$0] }
+        for index in fromIndices.sorted().reversed() {
+            remove(at: index)
+        }
+        insert(contentsOf: items, at: toIndex)
+    }
+}

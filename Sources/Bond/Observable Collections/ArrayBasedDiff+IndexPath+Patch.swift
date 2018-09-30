@@ -24,15 +24,15 @@
 
 import Foundation
 
-extension TreeChangeset.Diff {
+extension ArrayBasedDiff where Index == IndexPath {
 
-    private struct Edit {
+    private struct Edit<Element> {
 
         var deletionIndex: IndexPath?
         var insertionIndex: IndexPath?
-        var element: Collection.ChildNode?
+        var element: Element?
 
-        var asOperation: TreeChangeset.Operation {
+        var asOperation: ArrayBasedOperation<Element, Index> {
             if let from = deletionIndex, let to = insertionIndex {
                 return .move(from: from, to: to)
             } else if let deletionIndex = deletionIndex {
@@ -45,14 +45,14 @@ extension TreeChangeset.Diff {
         }
     }
 
-    func generatePatch(to collection: Collection) -> [TreeChangeset.Operation] {
+    public func generatePatch<C: TreeNodeProtocol>(to collection: C) -> [ArrayBasedOperation<C.ChildNode, C.Index>] where C.Index == IndexPath {
 
-        let inserts = self.inserts.map { Edit(deletionIndex: nil, insertionIndex: $0, element: collection[$0]) }
-        let deletes = self.deletes.map { Edit(deletionIndex: $0, insertionIndex: nil, element: nil) }
-        let moves = self.moves.map { Edit(deletionIndex: $0.from, insertionIndex: $0.to, element: nil) }
+        let inserts = self.inserts.map { Edit<C.ChildNode>(deletionIndex: nil, insertionIndex: $0, element: collection[$0]) }
+        let deletes = self.deletes.map { Edit<C.ChildNode>(deletionIndex: $0, insertionIndex: nil, element: nil) }
+        let moves = self.moves.map { Edit<C.ChildNode>(deletionIndex: $0.from, insertionIndex: $0.to, element: nil) }
 
-        func makeInsertionTree(_ script: [Edit]) -> TreeNode<Int> {
-            func insert(_ edit: Edit, value: Int, into tree: TreeNode<Int>) -> TreeNode<Int> {
+        func makeInsertionTree(_ script: [Edit<C.ChildNode>]) -> TreeNode<Int> {
+            func insert(_ edit: Edit<C.ChildNode>, value: Int, into tree: TreeNode<Int>) -> TreeNode<Int> {
                 var tree = tree
                 if let insertionIndex = edit.insertionIndex, let index = tree.children.firstIndex(where: { script[$0.value].insertionIndex?.isAncestor(of: insertionIndex) ?? false }) {
                     tree.children[index] = insert(edit, value: value, into: tree.children[index])
@@ -76,8 +76,8 @@ extension TreeChangeset.Diff {
             return tree
         }
 
-        func makeDeletionTree(_ script: [Edit]) -> TreeNode<Int> {
-            func insert(_ edit: Edit, value: Int, into tree: TreeNode<Int>) -> TreeNode<Int> {
+        func makeDeletionTree(_ script: [Edit<C.ChildNode>]) -> TreeNode<Int> {
+            func insert(_ edit: Edit<C.ChildNode>, value: Int, into tree: TreeNode<Int>) -> TreeNode<Int> {
                 var tree = tree
                 if let deletionIndex = edit.deletionIndex, let index = tree.children.firstIndex(where: { script[$0.value].deletionIndex?.isAncestor(of: deletionIndex) ?? false }) {
                     tree.children[index] = insert(edit, value: value, into: tree.children[index])

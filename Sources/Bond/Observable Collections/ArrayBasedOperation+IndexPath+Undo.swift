@@ -24,7 +24,7 @@
 
 import Foundation
 
-extension TreeChangeset.Operation.Valueless {
+extension AnyArrayBasedOperation where Index == IndexPath {
 
     func undoOperationOn(_ index: IndexPath) -> IndexPath? {
         switch self {
@@ -106,11 +106,11 @@ extension TreeChangeset.Operation.Valueless {
         }
     }
 
-    static func undo<C: BidirectionalCollection>(patch: C, on index: IndexPath) -> IndexPath? where C.Element == TreeChangeset.Operation.Valueless {
+    static func undo<C: BidirectionalCollection>(patch: C, on index: IndexPath) -> IndexPath? where C.Element == AnyArrayBasedOperation<IndexPath> {
         return patch.reversed().reduce(index) { index, operation in index.flatMap { operation.undoOperationOn($0) } }
     }
 
-    static func simulate<C: BidirectionalCollection>(patch: C, on index: IndexPath) -> IndexPath? where C.Element == TreeChangeset.Operation.Valueless {
+    static func simulate<C: BidirectionalCollection>(patch: C, on index: IndexPath) -> IndexPath? where C.Element == AnyArrayBasedOperation<IndexPath> {
         return patch.reduce(index) { index, operation in index.flatMap { operation.simulateOperationOn($0) } }
     }
 }

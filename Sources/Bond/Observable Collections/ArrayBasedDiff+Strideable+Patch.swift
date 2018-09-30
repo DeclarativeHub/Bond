@@ -24,15 +24,15 @@
 
 import Foundation
 
-extension CollectionChangeset.Diff where Collection.Index: Strideable {
+extension ArrayBasedDiff where Index: Strideable {
 
-    private struct Edit {
+    private struct Edit<Element> {
 
-        var deletionIndex: Collection.Index?
-        var insertionIndex: Collection.Index?
-        var element: Collection.Element?
+        var deletionIndex: Index?
+        var insertionIndex: Index?
+        var element: Element?
 
-        var asOperation: CollectionChangeset.Operation {
+        var asOperation: ArrayBasedOperation<Element, Index> {
             if let from = deletionIndex, let to = insertionIndex {
                 return .move(from: from, to: to)
             } else if let deletionIndex = deletionIndex {
@@ -45,11 +45,11 @@ extension CollectionChangeset.Diff where Collection.Index: Strideable {
         }
     }
 
-    func generatePatch(to collection: Collection) -> [CollectionChangeset.Operation] {
+    public func generatePatch<C: Collection>(to collection: C) -> [ArrayBasedOperation<C.Element, C.Index>] where C.Index == Index {
 
-        let inserts = self.inserts.map { Edit(deletionIndex: nil, insertionIndex: $0, element: collection[$0]) }
-        let deletes = self.deletes.map { Edit(deletionIndex: $0, insertionIndex: nil, element: nil) }
-        let moves = self.moves.map { Edit(deletionIndex: $0.from, insertionIndex: $0.to, element: nil) }
+        let inserts = self.inserts.map { Edit<C.Element>(deletionIndex: nil, insertionIndex: $0, element: collection[$0]) }
+        let deletes = self.deletes.map { Edit<C.Element>(deletionIndex: $0, insertionIndex: nil, element: nil) }
+        let moves = self.moves.map { Edit<C.Element>(deletionIndex: $0.from, insertionIndex: $0.to, element: nil) }
 
         var script = deletes + moves + inserts
 
@@ -84,11 +84,11 @@ extension CollectionChangeset.Diff where Collection.Index: Strideable {
 
         let patch = script.map { $0.asOperation }
 
-        let updatesInFinalCollection: [Collection.Index] = self.updates.compactMap {
-            return CollectionChangeset.Operation.simulate(patch: patch, on: $0)
+        let updatesInFinalCollection: [Index] = self.updates.compactMap {
+            return AnyArrayBasedOperation.simulate(patch: patch.map { $0.asAnyArrayBasedOperation }, on: $0)
         }
 
-        let updates = zip(self.updates, updatesInFinalCollection).map { (pair) -> CollectionChangeset.Operation in
+        let updates = zip(self.updates, updatesInFinalCollection).map { (pair) -> ArrayBasedOperation<C.Element, C.Index> in
             return .update(at: pair.0, newElement: collection[pair.1!])
         }
 

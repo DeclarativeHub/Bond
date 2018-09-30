@@ -24,11 +24,11 @@
 
 import Foundation
 
-extension CollectionChangeset.Operation {
+extension AnyArrayBasedOperation where Index: Strideable {
 
-    func undoOperationOn(_ index: Collection.Index) -> Collection.Index? {
+    func undoOperationOn(_ index: Index) -> Index? {
         switch self {
-        case .insert(_, let insertionIndex):
+        case .insert(let insertionIndex):
             if insertionIndex == index {
                 return nil
             } else if insertionIndex < index {
@@ -60,9 +60,9 @@ extension CollectionChangeset.Operation {
         }
     }
 
-    func simulateOperationOn(_ index: Collection.Index) -> Collection.Index? {
+    func simulateOperationOn(_ index: Index) -> Index? {
         switch self {
-        case .insert(_, let insertionIndex):
+        case .insert(let insertionIndex):
             if insertionIndex <= index {
                 return index.advanced(by: 1)
             } else {
@@ -94,11 +94,11 @@ extension CollectionChangeset.Operation {
         }
     }
 
-    static func undo<C: BidirectionalCollection>(patch: C, on index: Collection.Index) -> Collection.Index? where C.Element == CollectionChangeset.Operation {
+    static func undo<C: BidirectionalCollection>(patch: C, on index: Index) -> Index? where C.Element == AnyArrayBasedOperation<Index> {
         return patch.reversed().reduce(index) { index, operation in index.flatMap { operation.undoOperationOn($0) } }
     }
 
-    static func simulate<C: BidirectionalCollection>(patch: C, on index: Collection.Index) -> Collection.Index? where C.Element == CollectionChangeset.Operation {
+    static func simulate<C: BidirectionalCollection>(patch: C, on index: Index) -> Index? where C.Element == AnyArrayBasedOperation<Index> {
         return patch.reduce(index) { index, operation in index.flatMap { operation.simulateOperationOn($0) } }
     }
 }

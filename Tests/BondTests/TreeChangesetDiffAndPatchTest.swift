@@ -10,9 +10,9 @@
 import XCTest
 @testable import Bond
 
-extension TreeChangeset.Operation where Collection == TreeNode<Int> {
+extension ArrayBasedOperation where Element == TreeNode<Int>, Index == IndexPath {
 
-    static func randomOperation(collection: Collection) -> TreeChangeset<Collection>.Operation {
+    static func randomOperation(collection: TreeNode<Int>) -> ArrayBasedOperation<TreeNode<Int>, IndexPath> {
         let element = TreeNode(Int.random(in: 11..<100))
         let indices = collection.indices
         guard indices.count > 1 else {

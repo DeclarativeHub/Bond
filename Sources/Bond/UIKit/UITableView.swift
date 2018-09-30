@@ -29,9 +29,9 @@ import ReactiveKit
 
 private var TableViewBinderDataSourceAssociationKey = "TableViewBinderDataSource"
 
-open class TableViewBinderDataSource<Changeset: SectionedDataSourceChangesetProtocol>: NSObject, UITableViewDataSource {
+open class TableViewBinderDataSource<Changeset: ChangesetProtocol>: NSObject, UITableViewDataSource where Changeset.Diff: ArrayBasedDiffProtocol, Changeset.Diff.Index: SectionedDataIndexPathConvertable, Changeset.Collection: SectionedDataSourceProtocol {
 
-    public var createCell: ((Changeset.DataSource, IndexPath, UITableView) -> UITableViewCell)?
+    public var createCell: ((Changeset.Collection, IndexPath, UITableView) -> UITableViewCell)?
 
     public var changeset: Changeset? = nil {
         didSet {
@@ -60,22 +60,22 @@ open class TableViewBinderDataSource<Changeset: SectionedDataSourceChangesetProt
     }
 
     /// - parameter createCell: A closure that creates cell for a given table view and configures it with the given data source at the given index path.
-    public init(_ createCell: @escaping (Changeset.DataSource, IndexPath, UITableView) -> UITableViewCell) {
+    public init(_ createCell: @escaping (Changeset.Collection, IndexPath, UITableView) -> UITableViewCell) {
         self.createCell = createCell
     }
 
     open func numberOfSections(in tableView: UITableView) -> Int {
-        return changeset?.dataSource.numberOfSections ?? 0
+        return changeset?.collection.numberOfSections ?? 0
     }
 
     open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return changeset?.dataSource.numberOfItems(inSection: section) ?? 0
+        return changeset?.collection.numberOfItems(inSection: section) ?? 0
     }
 
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let changeset = changeset else { fatalError() }
         if let createCell = createCell {
-            return createCell(changeset.dataSource, indexPath, tableView)
+            return createCell(changeset.collection, indexPath, tableView)
         } else {
             fatalError("Subclass of TableViewBinderDataSource should override and implement tableView(_:cellForRowAt:) method if they do not initialize `createCell` closure.")
         }
@@ -83,54 +83,49 @@ open class TableViewBinderDataSource<Changeset: SectionedDataSourceChangesetProt
     
     open func applyChageset(_ changeset: Changeset) {
         guard let tableView = tableView else { return }
-        if changeset.diffs.count == 0 {
+        let diff = changeset.diff.asArrayBasedDiff.map { $0.asSectionDataIndexPath }
+        if diff.isEmpty {
             tableView.reloadData()
-        } else if changeset.diffs.count == 1 {
-            applyChagesetDiff(changeset.diffs.first!)
+//        } else if diff.count == 1 {
+//            applyChagesetDiff(changeset.diffs.first!)
         } else {
             tableView.beginUpdates()
-            changeset.diffs.forEach { (diff) in
-                self.applyChagesetDiff(diff)
-            }
+            applyChagesetDiff(diff)
             tableView.endUpdates()
         }
     }
 
-    open func applyChagesetDiff(_ diff: SectionedDataSourceDiff) {
+    open func applyChagesetDiff(_ diff: ArrayBasedDiff<IndexPath>) {
         guard let tableView = tableView else { return }
-        switch diff {
-        case .inserts(let indexPaths):
-            let insertedSections = indexPaths.filter { $0.count == 1 }.map { $0[0] }
-            if !insertedSections.isEmpty {
-                tableView.insertSections(IndexSet(insertedSections), with: rowInsertionAnimation)
-            }
-            let insertedItems = indexPaths.filter { $0.count == 2 }
-            if !insertedItems.isEmpty {
-                tableView.insertRows(at: insertedItems, with: rowInsertionAnimation)
-            }
-        case .deletes(let indexPaths):
-            let deletedSections = indexPaths.filter { $0.count == 1 }.map { $0[0] }
-            if !deletedSections.isEmpty {
-                tableView.deleteSections(IndexSet(deletedSections), with: rowDeletionAnimation)
-            }
-            let deletedItems = indexPaths.filter { $0.count == 2 }
-            if !deletedItems.isEmpty {
-                tableView.deleteRows(at: deletedItems, with: rowDeletionAnimation)
-            }
-        case .updates(let indexPaths):
-            let updatedItems = indexPaths.filter { $0.count == 2 }
-            let updatedSections = indexPaths.filter { $0.count == 1 }.map { $0[0] }
-            if !updatedItems.isEmpty {
-                tableView.reloadRows(at: updatedItems, with: rowReloadAnimation)
-            }
-            if !updatedSections.isEmpty {
-                tableView.reloadSections(IndexSet(updatedSections), with: rowReloadAnimation)
-            }
-        case .move(let indexPath, let newIndexPath):
-            if indexPath.count == 2 && newIndexPath.count == 2 {
-                tableView.moveRow(at: indexPath, to: newIndexPath)
-            } else if indexPath.count == 1 && newIndexPath.count == 1 {
-                tableView.moveSection(indexPath[0], toSection: newIndexPath[0])
+        let insertedSections = diff.inserts.filter { $0.count == 1 }.map { $0[0] }
+        if !insertedSections.isEmpty {
+            tableView.insertSections(IndexSet(insertedSections), with: rowInsertionAnimation)
+        }
+        let insertedItems = diff.inserts.filter { $0.count == 2 }
+        if !insertedItems.isEmpty {
+            tableView.insertRows(at: insertedItems, with: rowInsertionAnimation)
+        }
+        let deletedSections = diff.deletes.filter { $0.count == 1 }.map { $0[0] }
+        if !deletedSections.isEmpty {
+            tableView.deleteSections(IndexSet(deletedSections), with: rowDeletionAnimation)
+        }
+        let deletedItems = diff.deletes.filter { $0.count == 2 }
+        if !deletedItems.isEmpty {
+            tableView.deleteRows(at: deletedItems, with: rowDeletionAnimation)
+        }
+        let updatedItems = diff.updates.filter { $0.count == 2 }
+        if !updatedItems.isEmpty {
+            tableView.reloadRows(at: updatedItems, with: rowReloadAnimation)
+        }
+        let updatedSections = diff.updates.filter { $0.count == 1 }.map { $0[0] }
+        if !updatedSections.isEmpty {
+            tableView.reloadSections(IndexSet(updatedSections), with: rowReloadAnimation)
+        }
+        for move in diff.moves {
+            if move.from.count == 2 && move.to.count == 2 {
+                tableView.moveRow(at: move.from, to: move.to)
+            } else if move.from.count == 1 && move.to.count == 1 {
+                tableView.moveSection(move.from[0], toSection: move.to[0])
             }
         }
     }
@@ -155,10 +150,9 @@ extension TableViewBinderDataSource {
     }
 }
 
-extension SignalProtocol where Element: SectionedDataSourceChangesetProtocol, Error == NoError {
+extension SignalProtocol where Element: ChangesetProtocol, Element.Diff: ArrayBasedDiffProtocol, Element.Diff.Index: SectionedDataIndexPathConvertable, Element.Collection: SectionedDataSourceProtocol, Error == NoError {
 
     public typealias Changeset = Element
-    public typealias DataSource = Element.DataSource
 
     /// Binds the signal of data source elements to the given table view.
     ///
@@ -169,7 +163,7 @@ extension SignalProtocol where Element: SectionedDataSourceChangesetProtocol, Er
     ///     - createCell: A closure that creates (dequeues) cell for the given table view and configures it with the given data source at the given index path.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
     @discardableResult
-    public func bind(to tableView: UITableView, animated: Bool = true, rowAnimation: UITableView.RowAnimation = .automatic, createCell: @escaping (DataSource, IndexPath, UITableView) -> UITableViewCell) -> Disposable {
+    public func bind(to tableView: UITableView, animated: Bool = true, rowAnimation: UITableView.RowAnimation = .automatic, createCell: @escaping (Changeset.Collection, IndexPath, UITableView) -> UITableViewCell) -> Disposable {
         if animated {
             let binder = TableViewBinderDataSource<Changeset>(createCell)
             binder.rowInsertionAnimation = rowAnimation
@@ -197,7 +191,7 @@ extension SignalProtocol where Element: SectionedDataSourceChangesetProtocol, Er
     }
 }
 
-extension SignalProtocol where Element: SectionedDataSourceChangesetProtocol, Element.DataSource: QueryableSectionedDataSourceProtocol, Error == NoError {
+extension SignalProtocol where Element: ChangesetProtocol, Element.Diff: ArrayBasedDiffProtocol, Element.Diff.Index: SectionedDataIndexPathConvertable, Element.Collection: QueryableSectionedDataSourceProtocol, Error == NoError {
 
     /// Binds the signal of data source elements to the given table view.
     ///
@@ -209,7 +203,7 @@ extension SignalProtocol where Element: SectionedDataSourceChangesetProtocol, El
     ///     - configureCell: A closure that configures the cell with the data source item at the respective index path.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
     @discardableResult
-    public func bind<Cell: UITableViewCell>(to tableView: UITableView, cellType: Cell.Type, animated: Bool = true, rowAnimation: UITableView.RowAnimation = .automatic, configureCell: @escaping (Cell, Changeset.DataSource.Item) -> Void) -> Disposable {
+    public func bind<Cell: UITableViewCell>(to tableView: UITableView, cellType: Cell.Type, animated: Bool = true, rowAnimation: UITableView.RowAnimation = .automatic, configureCell: @escaping (Cell, Changeset.Collection.Item) -> Void) -> Disposable {
         let identifier = String(describing: Cell.self)
         tableView.register(cellType as AnyClass, forCellReuseIdentifier: identifier)
         return bind(to: tableView, animated: animated, rowAnimation: rowAnimation, createCell: { (dataSource, indexPath, tableView) -> UITableViewCell in
@@ -230,7 +224,7 @@ extension SignalProtocol where Element: SectionedDataSourceChangesetProtocol, El
     ///     - configureCell: A closure that configures the cell with the data source item at the respective index path.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
     @discardableResult
-    public func bind<Cell: UITableViewCell>(to tableView: UITableView, cellType: Cell.Type, using binder: TableViewBinderDataSource<Element>, configureCell: @escaping (Cell, Changeset.DataSource.Item) -> Void) -> Disposable {
+    public func bind<Cell: UITableViewCell>(to tableView: UITableView, cellType: Cell.Type, using binder: TableViewBinderDataSource<Element>, configureCell: @escaping (Cell, Changeset.Collection.Item) -> Void) -> Disposable {
         let identifier = String(describing: Cell.self)
         tableView.register(cellType as AnyClass, forCellReuseIdentifier: identifier)
         binder.createCell = { (dataSource, indexPath, tableView) -> UITableViewCell in

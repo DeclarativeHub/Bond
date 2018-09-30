@@ -24,9 +24,13 @@
 
 import Foundation
 
-extension CollectionChangeset.Diff {
+extension ArrayBasedDiff where Index: Strideable {
 
-    public init(from patch: [CollectionChangeset<Collection>.Operation]) {
+    public init<T>(from patch: [ArrayBasedOperation<T, Index>]) {
+        self.init(from: patch.map { $0.asAnyArrayBasedOperation })
+    }
+
+    public init(from patch: [AnyArrayBasedOperation<Index>]) {
         self.init()
 
         guard !patch.isEmpty else {
@@ -36,22 +40,22 @@ extension CollectionChangeset.Diff {
         for patchSoFar in (1...patch.count).map({ patch.prefix(upTo: $0) }) {
             let patchToUndo = patchSoFar.dropLast()
             switch patchSoFar.last! {
-            case .insert(_, let atIndex):
+            case .insert(let atIndex):
                 recordInsertion(at: atIndex)
             case .delete(let atIndex):
-                let sourceIndex = CollectionChangeset.Operation.undo(patch: patchToUndo, on: atIndex)
+                let sourceIndex = AnyArrayBasedOperation<Index>.undo(patch: patchToUndo, on: atIndex)
                 recordDeletion(at: atIndex, sourceIndex: sourceIndex)
-            case .update(let atIndex, _):
-                let sourceIndex = CollectionChangeset.Operation.undo(patch: patchToUndo, on: atIndex)
+            case .update(let atIndex):
+                let sourceIndex = AnyArrayBasedOperation<Index>.undo(patch: patchToUndo, on: atIndex)
                 recordUpdate(at: atIndex, sourceIndex: sourceIndex)
             case .move(let fromIndex, let toIndex):
-                let sourceIndex = CollectionChangeset.Operation.undo(patch: patchToUndo, on: fromIndex)
+                let sourceIndex = AnyArrayBasedOperation<Index>.undo(patch: patchToUndo, on: fromIndex)
                 recordMove(from: fromIndex, to: toIndex, sourceIndex: sourceIndex)
             }
         }
     }
     
-    private mutating func recordInsertion(at insertionIndex: Collection.Index) {
+    private mutating func recordInsertion(at insertionIndex: Index) {
         forEachDestinationIndex { (index) in
             if insertionIndex <= index {
                 index = index.advanced(by: 1)
@@ -60,7 +64,7 @@ extension CollectionChangeset.Diff {
         inserts.append(insertionIndex)
     }
 
-    private mutating func recordDeletion(at deletionIndex: Collection.Index, sourceIndex: Collection.Index?) {
+    private mutating func recordDeletion(at deletionIndex: Index, sourceIndex: Index?) {
 
         defer {
             forEachDestinationIndex { (index) in
@@ -90,7 +94,7 @@ extension CollectionChangeset.Diff {
         deletes.append(sourceIndex!)
     }
 
-    private mutating func recordUpdate(at updateIndex: Collection.Index, sourceIndex: Collection.Index?) {
+    private mutating func recordUpdate(at updateIndex: Index, sourceIndex: Index?) {
 
         // If updating previously inserted index
         if inserts.contains(where: { $0 == updateIndex }) {
@@ -114,7 +118,7 @@ extension CollectionChangeset.Diff {
         updates.append(sourceIndex!)
     }
 
-    private mutating func recordMove(from fromIndex: Collection.Index, to toIndex: Collection.Index, sourceIndex: Collection.Index?) {
+    private mutating func recordMove(from fromIndex: Index, to toIndex: Index, sourceIndex: Index?) {
         guard fromIndex != toIndex else { return }
 
         func adjustDestinationIndices() {
@@ -154,7 +158,7 @@ extension CollectionChangeset.Diff {
         moves.append((from: sourceIndex!, to: toIndex))
     }
 
-    private mutating func forEachDestinationIndex(apply: (inout Collection.Index) -> Void) {
+    private mutating func forEachDestinationIndex(apply: (inout Index) -> Void) {
         for i in 0..<inserts.count {
             apply(&inserts[i])
         }

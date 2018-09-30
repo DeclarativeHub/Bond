@@ -24,13 +24,13 @@
 
 import Foundation
 
-extension TreeChangeset.Diff {
+extension ArrayBasedDiff where Index == IndexPath {
 
-    public init(from patch: [TreeChangeset<Collection>.Operation]) {
-        self.init(from: patch.map { $0.asValueless })
+    public init<T>(from patch: [ArrayBasedOperation<T, IndexPath>]) {
+        self.init(from: patch.map { $0.asAnyArrayBasedOperation })
     }
 
-    public init(from patch: [TreeChangeset<Collection>.Operation.Valueless]) {
+    public init(from patch: [AnyArrayBasedOperation<Index>]) {
         self.init()
 
         guard !patch.isEmpty else {
@@ -43,20 +43,20 @@ extension TreeChangeset.Diff {
             case .insert(let atIndex):
                 recordInsertion(at: atIndex)
             case .delete(let atIndex):
-                let sourceIndex = TreeChangeset.Operation.Valueless.undo(patch: patchToUndo, on: atIndex)
+                let sourceIndex = AnyArrayBasedOperation<Index>.undo(patch: patchToUndo, on: atIndex)
                 recordDeletion(at: atIndex, sourceIndex: sourceIndex)
             case .update(let atIndex):
-                let sourceIndex = TreeChangeset.Operation.Valueless.undo(patch: patchToUndo, on: atIndex)
+                let sourceIndex = AnyArrayBasedOperation<Index>.undo(patch: patchToUndo, on: atIndex)
                 recordUpdate(at: atIndex, sourceIndex: sourceIndex)
             case .move(let fromIndex, let toIndex):
-                let sourceIndex = TreeChangeset.Operation.Valueless.undo(patch: patchToUndo, on: fromIndex)
+                let sourceIndex = AnyArrayBasedOperation<Index>.undo(patch: patchToUndo, on: fromIndex)
                 recordMove(from: fromIndex, to: toIndex, sourceIndex: sourceIndex)
             }
         }
     }
 
 
-    private mutating func recordInsertion(at insertionIndex: Collection.Index) {
+    private mutating func recordInsertion(at insertionIndex: Index) {
         // If inserting into a previously inserted subtree, skip
         if inserts.contains(where: { $0.isAncestor(of: insertionIndex) }) {
             return
@@ -73,7 +73,7 @@ extension TreeChangeset.Diff {
         inserts.append(insertionIndex)
     }
 
-    private mutating func recordDeletion(at deletionIndex: Collection.Index, sourceIndex: Collection.Index?) {
+    private mutating func recordDeletion(at deletionIndex: Index, sourceIndex: Index?) {
 
         func adjustDestinationIndices() {
             forEachDestinationIndex { (index) in
@@ -133,7 +133,7 @@ extension TreeChangeset.Diff {
         adjustDestinationIndices()
     }
 
-    private mutating func recordUpdate(at updateIndex: Collection.Index, sourceIndex: Collection.Index?) {
+    private mutating func recordUpdate(at updateIndex: Index, sourceIndex: Index?) {
 
 //        // If updating previously inserted index
 //        if inserts.contains(where: { $0 == updateIndex }) {
@@ -195,7 +195,7 @@ extension TreeChangeset.Diff {
 //        updates.insert(updateIndexInSourceIndexSpace, isOrderedBefore: <)
     }
 
-    private mutating func recordMove(from fromIndex: Collection.Index, to toIndex: Collection.Index, sourceIndex: Collection.Index?) {
+    private mutating func recordMove(from fromIndex: Index, to toIndex: Index, sourceIndex: Index?) {
         guard fromIndex != toIndex else { return }
 
         var insertsIntoSubtree: [Int] = []
@@ -285,19 +285,12 @@ extension TreeChangeset.Diff {
         moves.append((from: sourceIndex!, to: toIndex))
     }
 
-    private mutating func forEachDestinationIndex(insertsToSkip: Set<Int> = [], movesToSkip: Set<Int> = [], apply: (inout Collection.Index) -> Void) {
+    private mutating func forEachDestinationIndex(insertsToSkip: Set<Int> = [], movesToSkip: Set<Int> = [], apply: (inout Index) -> Void) {
         for i in 0..<inserts.count where !insertsToSkip.contains(i) {
             apply(&inserts[i])
         }
         for i in 0..<moves.count where !movesToSkip.contains(i) {
             apply(&moves[i].to)
         }
-    }
-}
-
-extension Collection {
-
-    func indices(where isIncluded: (Element) -> Bool) -> [Index] {
-        return indices.filter { isIncluded(self[$0]) }
     }
 }

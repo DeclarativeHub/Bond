@@ -106,7 +106,6 @@
 		90C04D6E1E8F0B89000077C8 /* NSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D2D1E8F0B1D000077C8 /* NSObject.swift */; };
 		90C04D6F1E8F0B89000077C8 /* SignalProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D3E1E8F0B1D000077C8 /* SignalProtocol.swift */; };
 		90C04D701E8F0B89000077C8 /* Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D201E8F0B1D000077C8 /* Bond.swift */; };
-		90C04D711E8F0B89000077C8 /* SectionedDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D221E8F0B1D000077C8 /* SectionedDataSourceProtocol.swift */; };
 		90C04D721E8F0B89000077C8 /* DynamicSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D231E8F0B1D000077C8 /* DynamicSubject.swift */; };
 		90C04D731E8F0B89000077C8 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D371E8F0B1D000077C8 /* Observable.swift */; };
 		90C04D741E8F0B89000077C8 /* ProtocolProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D3C1E8F0B1D000077C8 /* ProtocolProxy.swift */; };
@@ -171,7 +170,6 @@
 		90C04DBE1E8F0B97000077C8 /* UISlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D4F1E8F0B1D000077C8 /* UISlider.swift */; };
 		90C04DBF1E8F0B97000077C8 /* UIStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D501E8F0B1D000077C8 /* UIStepper.swift */; };
 		90C04DC01E8F0B97000077C8 /* UISwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D511E8F0B1D000077C8 /* UISwitch.swift */; };
-		90C04DC11E8F0B97000077C8 /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D521E8F0B1D000077C8 /* UITableView.swift */; };
 		90C04DC21E8F0B97000077C8 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D531E8F0B1D000077C8 /* UITextField.swift */; };
 		90C04DC31E8F0B97000077C8 /* UITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D541E8F0B1D000077C8 /* UITextView.swift */; };
 		90C04DC41E8F0B97000077C8 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D551E8F0B1D000077C8 /* UIView.swift */; };
@@ -183,14 +181,6 @@
 		EC381187209EFFAD00613B29 /* NSOutlineView+ObservableTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C44207F391700BC4505 /* NSOutlineView+ObservableTree.swift */; };
 		EC381188209EFFAD00613B29 /* NSOutlineView+ObservableTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C44207F391700BC4505 /* NSOutlineView+ObservableTree.swift */; };
 		EC5EB13C215D1CAF00338531 /* ChangesetProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB13B215D1CAF00338531 /* ChangesetProtocol.swift */; };
-		EC5EB13E215D352400338531 /* CollectionChangeset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB13D215D352400338531 /* CollectionChangeset.swift */; };
-		EC5EB144215D480E00338531 /* SetChangeset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB143215D480E00338531 /* SetChangeset.swift */; };
-		EC5EB146215D493000338531 /* DictionaryChangeset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB145215D493000338531 /* DictionaryChangeset.swift */; };
-		EC5EB154215D6BBC00338531 /* TreeChangeset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB149215D668900338531 /* TreeChangeset.swift */; };
-		EC5EB156215D721600338531 /* ChangesetContainerProtocol+Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB155215D721600338531 /* ChangesetContainerProtocol+Property.swift */; };
-		EC5EB16F215D783700338531 /* TreeChangeset+Array2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB16E215D783700338531 /* TreeChangeset+Array2D.swift */; };
-		EC5EB172215D7B0600338531 /* CollectionChangeset.Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB171215D7B0600338531 /* CollectionChangeset.Diff.swift */; };
-		EC5EB174215D7B3100338531 /* TreeChangeset.Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB173215D7B3100338531 /* TreeChangeset.Diff.swift */; };
 		EC86E9AF1E9145CC008563B2 /* UIAccessibilityIdentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC86E9AE1E9145CC008563B2 /* UIAccessibilityIdentification.swift */; };
 		EC86E9B01E9145CC008563B2 /* UIAccessibilityIdentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC86E9AE1E9145CC008563B2 /* UIAccessibilityIdentification.swift */; };
 		EC893EC41F07A164007981EC /* BNDProtocolProxyBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 90C04D181E8F0B12000077C8 /* BNDProtocolProxyBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -203,71 +193,90 @@
 		ECAFB8DA200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAFB8D8200B60AA00EE0669 /* ProtocolProxyController.swift */; };
 		ECAFB8DB200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAFB8D8200B60AA00EE0669 /* ProtocolProxyController.swift */; };
 		ECBC51B82161637A00BE80EC /* ChangesetProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB13B215D1CAF00338531 /* ChangesetProtocol.swift */; };
-		ECBC51B92161637A00BE80EC /* ChangesetProtocol+Signal.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC4357621610C040002A869 /* ChangesetProtocol+Signal.swift */; };
+		ECBC51B92161637A00BE80EC /* Signal+ChangesetProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC4357621610C040002A869 /* Signal+ChangesetProtocol.swift */; };
 		ECBC51BA2161637A00BE80EC /* ChangesetContainerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CA7215EB0C30079E521 /* ChangesetContainerProtocol.swift */; };
-		ECBC51BB2161637A00BE80EC /* ChangesetContainerProtocol+Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB155215D721600338531 /* ChangesetContainerProtocol+Property.swift */; };
+		ECBC51BB2161637A00BE80EC /* Property+ChangesetContainerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB155215D721600338531 /* Property+ChangesetContainerProtocol.swift */; };
 		ECBC51BC2161637A00BE80EC /* CollectionChangeset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB13D215D352400338531 /* CollectionChangeset.swift */; };
-		ECBC51BD2161637A00BE80EC /* CollectionChangeset.Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB171215D7B0600338531 /* CollectionChangeset.Diff.swift */; };
-		ECBC51BE2161637A00BE80EC /* CollectionChangeset.Diff+Patch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CA9215EB1640079E521 /* CollectionChangeset.Diff+Patch.swift */; };
-		ECBC51BF2161637A00BE80EC /* CollectionChangeset.Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CAB215EBDA90079E521 /* CollectionChangeset.Operation.swift */; };
-		ECBC51C02161637A00BE80EC /* CollectionChangeset+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC43578216114B80002A869 /* CollectionChangeset+Differ.swift */; };
-		ECBC51C22161637A00BE80EC /* TreeChangeset.Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB173215D7B3100338531 /* TreeChangeset.Diff.swift */; };
-		ECBC51C32161637A00BE80EC /* TreeChangeset.Diff+Patch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CB0215EC3D10079E521 /* TreeChangeset.Diff+Patch.swift */; };
-		ECBC51C52161637A00BE80EC /* TreeChangeset+Array2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB16E215D783700338531 /* TreeChangeset+Array2D.swift */; };
-		ECBC51C62161637A00BE80EC /* TreeChangeset+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC4357A216125B20002A869 /* TreeChangeset+Differ.swift */; };
+		ECBC51BD2161637A00BE80EC /* ArrayBasedDiff+Strideable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB171215D7B0600338531 /* ArrayBasedDiff+Strideable.swift */; };
+		ECBC51BE2161637A00BE80EC /* ArrayBasedDiff+Strideable+Patch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CA9215EB1640079E521 /* ArrayBasedDiff+Strideable+Patch.swift */; };
+		ECBC51BF2161637A00BE80EC /* ArrayBasedOperation+Strideable+Undo.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CAB215EBDA90079E521 /* ArrayBasedOperation+Strideable+Undo.swift */; };
+		ECBC51C02161637A00BE80EC /* ArrayBasedDiff+Strideable+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC43578216114B80002A869 /* ArrayBasedDiff+Strideable+Differ.swift */; };
+		ECBC51C22161637A00BE80EC /* ArrayBasedDiff+IndexPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB173215D7B3100338531 /* ArrayBasedDiff+IndexPath.swift */; };
+		ECBC51C32161637A00BE80EC /* ArrayBasedDiff+IndexPath+Patch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CB0215EC3D10079E521 /* ArrayBasedDiff+IndexPath+Patch.swift */; };
+		ECBC51C52161637A00BE80EC /* Array2DChangeset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB16E215D783700338531 /* Array2DChangeset.swift */; };
+		ECBC51C62161637A00BE80EC /* ArrayBasedDiff+IndexPath+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC4357A216125B20002A869 /* ArrayBasedDiff+IndexPath+Differ.swift */; };
 		ECBC51C72161637A00BE80EC /* DictionaryChangeset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB145215D493000338531 /* DictionaryChangeset.swift */; };
 		ECBC51C82161637A00BE80EC /* SetChangeset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB143215D480E00338531 /* SetChangeset.swift */; };
 		ECBC51CD2161637B00BE80EC /* ChangesetProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB13B215D1CAF00338531 /* ChangesetProtocol.swift */; };
-		ECBC51CE2161637B00BE80EC /* ChangesetProtocol+Signal.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC4357621610C040002A869 /* ChangesetProtocol+Signal.swift */; };
+		ECBC51CE2161637B00BE80EC /* Signal+ChangesetProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC4357621610C040002A869 /* Signal+ChangesetProtocol.swift */; };
 		ECBC51CF2161637B00BE80EC /* ChangesetContainerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CA7215EB0C30079E521 /* ChangesetContainerProtocol.swift */; };
-		ECBC51D02161637B00BE80EC /* ChangesetContainerProtocol+Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB155215D721600338531 /* ChangesetContainerProtocol+Property.swift */; };
 		ECBC51D12161637B00BE80EC /* CollectionChangeset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB13D215D352400338531 /* CollectionChangeset.swift */; };
-		ECBC51D22161637B00BE80EC /* CollectionChangeset.Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB171215D7B0600338531 /* CollectionChangeset.Diff.swift */; };
-		ECBC51D32161637B00BE80EC /* CollectionChangeset.Diff+Patch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CA9215EB1640079E521 /* CollectionChangeset.Diff+Patch.swift */; };
-		ECBC51D42161637B00BE80EC /* CollectionChangeset.Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CAB215EBDA90079E521 /* CollectionChangeset.Operation.swift */; };
-		ECBC51D52161637B00BE80EC /* CollectionChangeset+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC43578216114B80002A869 /* CollectionChangeset+Differ.swift */; };
+		ECBC51D22161637B00BE80EC /* ArrayBasedDiff+Strideable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB171215D7B0600338531 /* ArrayBasedDiff+Strideable.swift */; };
+		ECBC51D32161637B00BE80EC /* ArrayBasedDiff+Strideable+Patch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CA9215EB1640079E521 /* ArrayBasedDiff+Strideable+Patch.swift */; };
+		ECBC51D42161637B00BE80EC /* ArrayBasedOperation+Strideable+Undo.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CAB215EBDA90079E521 /* ArrayBasedOperation+Strideable+Undo.swift */; };
+		ECBC51D52161637B00BE80EC /* ArrayBasedDiff+Strideable+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC43578216114B80002A869 /* ArrayBasedDiff+Strideable+Differ.swift */; };
 		ECBC51D62161637B00BE80EC /* TreeChangeset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB149215D668900338531 /* TreeChangeset.swift */; };
-		ECBC51D72161637B00BE80EC /* TreeChangeset.Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB173215D7B3100338531 /* TreeChangeset.Diff.swift */; };
-		ECBC51D82161637B00BE80EC /* TreeChangeset.Diff+Patch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CB0215EC3D10079E521 /* TreeChangeset.Diff+Patch.swift */; };
-		ECBC51DA2161637B00BE80EC /* TreeChangeset+Array2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB16E215D783700338531 /* TreeChangeset+Array2D.swift */; };
-		ECBC51DB2161637B00BE80EC /* TreeChangeset+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC4357A216125B20002A869 /* TreeChangeset+Differ.swift */; };
+		ECBC51D72161637B00BE80EC /* ArrayBasedDiff+IndexPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB173215D7B3100338531 /* ArrayBasedDiff+IndexPath.swift */; };
+		ECBC51D82161637B00BE80EC /* ArrayBasedDiff+IndexPath+Patch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CB0215EC3D10079E521 /* ArrayBasedDiff+IndexPath+Patch.swift */; };
+		ECBC51DA2161637B00BE80EC /* Array2DChangeset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB16E215D783700338531 /* Array2DChangeset.swift */; };
+		ECBC51DB2161637B00BE80EC /* ArrayBasedDiff+IndexPath+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC4357A216125B20002A869 /* ArrayBasedDiff+IndexPath+Differ.swift */; };
 		ECBC51DC2161637B00BE80EC /* DictionaryChangeset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB145215D493000338531 /* DictionaryChangeset.swift */; };
 		ECBC51DD2161637B00BE80EC /* SetChangeset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB143215D480E00338531 /* SetChangeset.swift */; };
 		ECBC51EC2161639400BE80EC /* TreeNodeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C10207EE44B00BC4505 /* TreeNodeProtocol.swift */; };
 		ECBC51EE2161639400BE80EC /* TreeArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC860B24209E17B40010C09A /* TreeArray.swift */; };
-		ECBC51EF2161639400BE80EC /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CB2215EC5120079E521 /* Array.swift */; };
+		ECBC51EF2161639400BE80EC /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CB2215EC5120079E521 /* Collection.swift */; };
 		ECBC51F02161639500BE80EC /* TreeNodeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C10207EE44B00BC4505 /* TreeNodeProtocol.swift */; };
 		ECBC51F22161639500BE80EC /* TreeArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC860B24209E17B40010C09A /* TreeArray.swift */; };
-		ECBC51F32161639500BE80EC /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CB2215EC5120079E521 /* Array.swift */; };
+		ECBC51F32161639500BE80EC /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CB2215EC5120079E521 /* Collection.swift */; };
 		ECBC51F42161639500BE80EC /* TreeNodeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C10207EE44B00BC4505 /* TreeNodeProtocol.swift */; };
 		ECBC51F62161639500BE80EC /* TreeArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC860B24209E17B40010C09A /* TreeArray.swift */; };
-		ECBC51F72161639500BE80EC /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CB2215EC5120079E521 /* Array.swift */; };
+		ECBC51F72161639500BE80EC /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CB2215EC5120079E521 /* Collection.swift */; };
 		ECBC51F8216163BA00BE80EC /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC706432208FCD36009BEB1C /* TreeNode.swift */; };
 		ECBC51F9216163BA00BE80EC /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC706432208FCD36009BEB1C /* TreeNode.swift */; };
 		ECBC51FA216163BA00BE80EC /* TreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC706432208FCD36009BEB1C /* TreeNode.swift */; };
-		ECBC51FB216163E700BE80EC /* TreeChangeset.Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CAE215EBFCF0079E521 /* TreeChangeset.Operation.swift */; };
+		ECBC51FB216163E700BE80EC /* ArrayBasedOperation+IndexPath+Undo.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CAE215EBFCF0079E521 /* ArrayBasedOperation+IndexPath+Undo.swift */; };
 		ECBC51FC2161649900BE80EC /* TreeChangeset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB149215D668900338531 /* TreeChangeset.swift */; };
-		ECBC51FD216164B400BE80EC /* TreeChangeset.Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CAE215EBFCF0079E521 /* TreeChangeset.Operation.swift */; };
+		ECBC51FD216164B400BE80EC /* ArrayBasedOperation+IndexPath+Undo.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CAE215EBFCF0079E521 /* ArrayBasedOperation+IndexPath+Undo.swift */; };
+		ECBCE0B9216167710078E03B /* UICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D441E8F0B1D000077C8 /* UICollectionView.swift */; };
+		ECBCE0BF216167730078E03B /* UICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D441E8F0B1D000077C8 /* UICollectionView.swift */; };
+		ECBCE0C0216167730078E03B /* UICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D441E8F0B1D000077C8 /* UICollectionView.swift */; };
+		ECBCE0C2216168250078E03B /* ArrayBasedDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBCE0C1216168250078E03B /* ArrayBasedDiff.swift */; };
+		ECBCE0C3216168250078E03B /* ArrayBasedDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBCE0C1216168250078E03B /* ArrayBasedDiff.swift */; };
+		ECBCE0C4216168250078E03B /* ArrayBasedDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBCE0C1216168250078E03B /* ArrayBasedDiff.swift */; };
+		ECBCE0C62161696B0078E03B /* ArrayBasedOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBCE0C52161696B0078E03B /* ArrayBasedOperation.swift */; };
+		ECBCE0C72161696B0078E03B /* ArrayBasedOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBCE0C52161696B0078E03B /* ArrayBasedOperation.swift */; };
+		ECBCE0C82161696B0078E03B /* ArrayBasedOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBCE0C52161696B0078E03B /* ArrayBasedOperation.swift */; };
+		ECBCE0C921616A710078E03B /* CollectionChangeset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB13D215D352400338531 /* CollectionChangeset.swift */; };
+		ECBCE0CA21616B2D0078E03B /* ChangesetContainerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CA7215EB0C30079E521 /* ChangesetContainerProtocol.swift */; };
+		ECBCE0CB21616B4C0078E03B /* ArrayBasedDiff+Strideable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB171215D7B0600338531 /* ArrayBasedDiff+Strideable.swift */; };
+		ECBCE0CC21616B8B0078E03B /* ArrayBasedOperation+Strideable+Undo.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CAB215EBDA90079E521 /* ArrayBasedOperation+Strideable+Undo.swift */; };
+		ECBCE0CD21616BE50078E03B /* ArrayBasedDiff+Strideable+Patch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CA9215EB1640079E521 /* ArrayBasedDiff+Strideable+Patch.swift */; };
+		ECBCE0CF21616DD00078E03B /* ArrayBasedOperation+IndexPath+Undo.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CAE215EBFCF0079E521 /* ArrayBasedOperation+IndexPath+Undo.swift */; };
+		ECBCE0D421616F5D0078E03B /* Property+ChangesetContainerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB155215D721600338531 /* Property+ChangesetContainerProtocol.swift */; };
+		ECBCE0D621616FAA0078E03B /* TreeChangeset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB149215D668900338531 /* TreeChangeset.swift */; };
+		ECBCE0D7216170460078E03B /* ArrayBasedDiff+IndexPath+Patch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CB0215EC3D10079E521 /* ArrayBasedDiff+IndexPath+Patch.swift */; };
+		ECBCE0D8216170750078E03B /* ArrayBasedDiff+IndexPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB173215D7B3100338531 /* ArrayBasedDiff+IndexPath.swift */; };
+		ECBCE0DB216171050078E03B /* Array2DChangeset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB16E215D783700338531 /* Array2DChangeset.swift */; };
+		ECBCE0DC2161712C0078E03B /* SetChangeset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB143215D480E00338531 /* SetChangeset.swift */; };
+		ECBCE0DD216171320078E03B /* DictionaryChangeset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB145215D493000338531 /* DictionaryChangeset.swift */; };
+		ECBCE0DE2161713A0078E03B /* Property+ChangesetContainerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB155215D721600338531 /* Property+ChangesetContainerProtocol.swift */; };
+		ECBCE0E0216172E10078E03B /* Signal+ChangesetProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC4357621610C040002A869 /* Signal+ChangesetProtocol.swift */; };
+		ECBCE0E3216173160078E03B /* ArrayBasedDiff+Strideable+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC43578216114B80002A869 /* ArrayBasedDiff+Strideable+Differ.swift */; };
+		ECBCE0E4216174300078E03B /* ArrayBasedDiff+IndexPath+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC4357A216125B20002A869 /* ArrayBasedDiff+IndexPath+Differ.swift */; };
+		ECBCE0E62161766C0078E03B /* SectionedDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D221E8F0B1D000077C8 /* SectionedDataSourceProtocol.swift */; };
+		ECBCE0E8216179BC0078E03B /* UITableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04DD11E8F0BA7000077C8 /* UITableViewTests.swift */; };
+		ECBCE0EE21617E8D0078E03B /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D521E8F0B1D000077C8 /* UITableView.swift */; };
 		ECC1A6D0207A18DC00AE762C /* NSTableView+ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC1A6CF207A18DC00AE762C /* NSTableView+ObservableCollection.swift */; };
 		ECC1A6D1207A18DC00AE762C /* NSTableView+ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC1A6CF207A18DC00AE762C /* NSTableView+ObservableCollection.swift */; };
 		ECC1A6D2207A18DC00AE762C /* NSTableView+ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC1A6CF207A18DC00AE762C /* NSTableView+ObservableCollection.swift */; };
-		ECC4357721610C040002A869 /* ChangesetProtocol+Signal.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC4357621610C040002A869 /* ChangesetProtocol+Signal.swift */; };
-		ECC43579216114B80002A869 /* CollectionChangeset+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC43578216114B80002A869 /* CollectionChangeset+Differ.swift */; };
-		ECC4357B216125B20002A869 /* TreeChangeset+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC4357A216125B20002A869 /* TreeChangeset+Differ.swift */; };
 		ECC4357D216126B40002A869 /* CollectionChangesetDiffAndPatchTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6A35E52075FCB600E8F805 /* CollectionChangesetDiffAndPatchTest.swift */; };
 		ECC4357E216127490002A869 /* TreeChangesetDiffAndPatchTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC14E6482132948D00A5AC8D /* TreeChangesetDiffAndPatchTest.swift */; };
-		ECC43580216127EF0002A869 /* UITableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04DD11E8F0BA7000077C8 /* UITableViewTests.swift */; };
 		ECC4358221612B310002A869 /* UIKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04DD01E8F0BA7000077C8 /* UIKitTests.swift */; };
 		ECC4358321612B350002A869 /* ProtocolProxyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04DCE1E8F0BA7000077C8 /* ProtocolProxyTests.swift */; };
 		ECC4358421612B410002A869 /* BondTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04DC71E8F0BA7000077C8 /* BondTests.swift */; };
 		ECC4358521612B430002A869 /* DynamicSubjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04DC81E8F0BA7000077C8 /* DynamicSubjectTests.swift */; };
 		ECC4358621612B460002A869 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04DC91E8F0BA7000077C8 /* Helpers.swift */; };
 		ECC4358721612B480002A869 /* NSObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04DCA1E8F0BA7000077C8 /* NSObjectTests.swift */; };
-		ECDC8CA8215EB0C30079E521 /* ChangesetContainerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CA7215EB0C30079E521 /* ChangesetContainerProtocol.swift */; };
-		ECDC8CAA215EB1640079E521 /* CollectionChangeset.Diff+Patch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CA9215EB1640079E521 /* CollectionChangeset.Diff+Patch.swift */; };
-		ECDC8CAC215EBDA90079E521 /* CollectionChangeset.Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CAB215EBDA90079E521 /* CollectionChangeset.Operation.swift */; };
-		ECDC8CAF215EBFCF0079E521 /* TreeChangeset.Operation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CAE215EBFCF0079E521 /* TreeChangeset.Operation.swift */; };
-		ECDC8CB1215EC3D10079E521 /* TreeChangeset.Diff+Patch.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CB0215EC3D10079E521 /* TreeChangeset.Diff+Patch.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -362,10 +371,10 @@
 		16D30EAE1D6591D300C2435D /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		16D30ED61D65D11900C2435D /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		75CA9E9120678E600011E5BB /* UISearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISearchBar.swift; sourceTree = "<group>"; };
+		901E85A0214A125A00F03A80 /* NSGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSGestureRecognizer.swift; sourceTree = "<group>"; };
 		90677C10207EE44B00BC4505 /* TreeNodeProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeNodeProtocol.swift; sourceTree = "<group>"; };
 		90677C3C207F38AE00BC4505 /* NSOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSOutlineView.swift; sourceTree = "<group>"; };
 		90677C44207F391700BC4505 /* NSOutlineView+ObservableTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSOutlineView+ObservableTree.swift"; sourceTree = "<group>"; };
-		901E85A0214A125A00F03A80 /* NSGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSGestureRecognizer.swift; sourceTree = "<group>"; };
 		90A3FAC21E0C8D8B0086A7F1 /* Differ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Differ.xcodeproj; path = Carthage/Checkouts/Differ/Differ.xcodeproj; sourceTree = "<group>"; };
 		90C04D021E8F0A97000077C8 /* Bond-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Bond-Info.plist"; sourceTree = "<group>"; };
 		90C04D031E8F0A97000077C8 /* Bond.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bond.h; sourceTree = "<group>"; };
@@ -437,28 +446,30 @@
 		EC5EB143215D480E00338531 /* SetChangeset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetChangeset.swift; sourceTree = "<group>"; };
 		EC5EB145215D493000338531 /* DictionaryChangeset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryChangeset.swift; sourceTree = "<group>"; };
 		EC5EB149215D668900338531 /* TreeChangeset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeChangeset.swift; sourceTree = "<group>"; };
-		EC5EB155215D721600338531 /* ChangesetContainerProtocol+Property.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChangesetContainerProtocol+Property.swift"; sourceTree = "<group>"; };
-		EC5EB16E215D783700338531 /* TreeChangeset+Array2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeChangeset+Array2D.swift"; sourceTree = "<group>"; };
-		EC5EB171215D7B0600338531 /* CollectionChangeset.Diff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionChangeset.Diff.swift; sourceTree = "<group>"; };
-		EC5EB173215D7B3100338531 /* TreeChangeset.Diff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeChangeset.Diff.swift; sourceTree = "<group>"; };
+		EC5EB155215D721600338531 /* Property+ChangesetContainerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Property+ChangesetContainerProtocol.swift"; sourceTree = "<group>"; };
+		EC5EB16E215D783700338531 /* Array2DChangeset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array2DChangeset.swift; sourceTree = "<group>"; };
+		EC5EB171215D7B0600338531 /* ArrayBasedDiff+Strideable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArrayBasedDiff+Strideable.swift"; sourceTree = "<group>"; };
+		EC5EB173215D7B3100338531 /* ArrayBasedDiff+IndexPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArrayBasedDiff+IndexPath.swift"; sourceTree = "<group>"; };
 		EC6A35E52075FCB600E8F805 /* CollectionChangesetDiffAndPatchTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionChangesetDiffAndPatchTest.swift; sourceTree = "<group>"; };
 		EC706432208FCD36009BEB1C /* TreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeNode.swift; sourceTree = "<group>"; };
 		EC860B24209E17B40010C09A /* TreeArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeArray.swift; sourceTree = "<group>"; };
 		EC86E9AE1E9145CC008563B2 /* UIAccessibilityIdentification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAccessibilityIdentification.swift; sourceTree = "<group>"; };
 		ECAFB8D3200A7E3900EE0669 /* BNDInvocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BNDInvocation.swift; sourceTree = "<group>"; };
 		ECAFB8D8200B60AA00EE0669 /* ProtocolProxyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolProxyController.swift; sourceTree = "<group>"; };
+		ECBCE0C1216168250078E03B /* ArrayBasedDiff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayBasedDiff.swift; sourceTree = "<group>"; };
+		ECBCE0C52161696B0078E03B /* ArrayBasedOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayBasedOperation.swift; sourceTree = "<group>"; };
 		ECC1A6CF207A18DC00AE762C /* NSTableView+ObservableCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+ObservableCollection.swift"; sourceTree = "<group>"; };
-		ECC4357621610C040002A869 /* ChangesetProtocol+Signal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChangesetProtocol+Signal.swift"; sourceTree = "<group>"; };
-		ECC43578216114B80002A869 /* CollectionChangeset+Differ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionChangeset+Differ.swift"; sourceTree = "<group>"; };
-		ECC4357A216125B20002A869 /* TreeChangeset+Differ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeChangeset+Differ.swift"; sourceTree = "<group>"; };
+		ECC4357621610C040002A869 /* Signal+ChangesetProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Signal+ChangesetProtocol.swift"; sourceTree = "<group>"; };
+		ECC43578216114B80002A869 /* ArrayBasedDiff+Strideable+Differ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArrayBasedDiff+Strideable+Differ.swift"; sourceTree = "<group>"; };
+		ECC4357A216125B20002A869 /* ArrayBasedDiff+IndexPath+Differ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArrayBasedDiff+IndexPath+Differ.swift"; sourceTree = "<group>"; };
 		ECD5940B1D93F2E400C840C2 /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		ECD5940C1D93F2ED00C840C2 /* Bond.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = Bond.podspec; sourceTree = "<group>"; };
 		ECDC8CA7215EB0C30079E521 /* ChangesetContainerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangesetContainerProtocol.swift; sourceTree = "<group>"; };
-		ECDC8CA9215EB1640079E521 /* CollectionChangeset.Diff+Patch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionChangeset.Diff+Patch.swift"; sourceTree = "<group>"; };
-		ECDC8CAB215EBDA90079E521 /* CollectionChangeset.Operation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionChangeset.Operation.swift; sourceTree = "<group>"; };
-		ECDC8CAE215EBFCF0079E521 /* TreeChangeset.Operation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeChangeset.Operation.swift; sourceTree = "<group>"; };
-		ECDC8CB0215EC3D10079E521 /* TreeChangeset.Diff+Patch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeChangeset.Diff+Patch.swift"; sourceTree = "<group>"; };
-		ECDC8CB2215EC5120079E521 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
+		ECDC8CA9215EB1640079E521 /* ArrayBasedDiff+Strideable+Patch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArrayBasedDiff+Strideable+Patch.swift"; sourceTree = "<group>"; };
+		ECDC8CAB215EBDA90079E521 /* ArrayBasedOperation+Strideable+Undo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArrayBasedOperation+Strideable+Undo.swift"; sourceTree = "<group>"; };
+		ECDC8CAE215EBFCF0079E521 /* ArrayBasedOperation+IndexPath+Undo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArrayBasedOperation+IndexPath+Undo.swift"; sourceTree = "<group>"; };
+		ECDC8CB0215EC3D10079E521 /* ArrayBasedDiff+IndexPath+Patch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArrayBasedDiff+IndexPath+Patch.swift"; sourceTree = "<group>"; };
+		ECDC8CB2215EC5120079E521 /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -739,7 +750,7 @@
 				90677C10207EE44B00BC4505 /* TreeNodeProtocol.swift */,
 				EC706432208FCD36009BEB1C /* TreeNode.swift */,
 				EC860B24209E17B40010C09A /* TreeArray.swift */,
-				ECDC8CB2215EC5120079E521 /* Array.swift */,
+				ECDC8CB2215EC5120079E521 /* Collection.swift */,
 			);
 			path = "Data Structures";
 			sourceTree = "<group>";
@@ -747,23 +758,25 @@
 		ECF15FD9207A036D00DEB77D /* Observable Collections */ = {
 			isa = PBXGroup;
 			children = (
+				ECBCE0C1216168250078E03B /* ArrayBasedDiff.swift */,
+				EC5EB171215D7B0600338531 /* ArrayBasedDiff+Strideable.swift */,
+				ECDC8CA9215EB1640079E521 /* ArrayBasedDiff+Strideable+Patch.swift */,
+				ECC43578216114B80002A869 /* ArrayBasedDiff+Strideable+Differ.swift */,
+				EC5EB173215D7B3100338531 /* ArrayBasedDiff+IndexPath.swift */,
+				ECDC8CB0215EC3D10079E521 /* ArrayBasedDiff+IndexPath+Patch.swift */,
+				ECC4357A216125B20002A869 /* ArrayBasedDiff+IndexPath+Differ.swift */,
+				ECBCE0C52161696B0078E03B /* ArrayBasedOperation.swift */,
+				ECDC8CAB215EBDA90079E521 /* ArrayBasedOperation+Strideable+Undo.swift */,
+				ECDC8CAE215EBFCF0079E521 /* ArrayBasedOperation+IndexPath+Undo.swift */,
 				EC5EB13B215D1CAF00338531 /* ChangesetProtocol.swift */,
-				ECC4357621610C040002A869 /* ChangesetProtocol+Signal.swift */,
 				ECDC8CA7215EB0C30079E521 /* ChangesetContainerProtocol.swift */,
-				EC5EB155215D721600338531 /* ChangesetContainerProtocol+Property.swift */,
 				EC5EB13D215D352400338531 /* CollectionChangeset.swift */,
-				EC5EB171215D7B0600338531 /* CollectionChangeset.Diff.swift */,
-				ECDC8CA9215EB1640079E521 /* CollectionChangeset.Diff+Patch.swift */,
-				ECDC8CAB215EBDA90079E521 /* CollectionChangeset.Operation.swift */,
-				ECC43578216114B80002A869 /* CollectionChangeset+Differ.swift */,
 				EC5EB149215D668900338531 /* TreeChangeset.swift */,
-				EC5EB173215D7B3100338531 /* TreeChangeset.Diff.swift */,
-				ECDC8CB0215EC3D10079E521 /* TreeChangeset.Diff+Patch.swift */,
-				ECDC8CAE215EBFCF0079E521 /* TreeChangeset.Operation.swift */,
-				EC5EB16E215D783700338531 /* TreeChangeset+Array2D.swift */,
-				ECC4357A216125B20002A869 /* TreeChangeset+Differ.swift */,
-				EC5EB145215D493000338531 /* DictionaryChangeset.swift */,
 				EC5EB143215D480E00338531 /* SetChangeset.swift */,
+				EC5EB145215D493000338531 /* DictionaryChangeset.swift */,
+				EC5EB16E215D783700338531 /* Array2DChangeset.swift */,
+				ECC4357621610C040002A869 /* Signal+ChangesetProtocol.swift */,
+				EC5EB155215D721600338531 /* Property+ChangesetContainerProtocol.swift */,
 			);
 			path = "Observable Collections";
 			sourceTree = "<group>";
@@ -1035,44 +1048,46 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ECC4357B216125B20002A869 /* TreeChangeset+Differ.swift in Sources */,
 				90A4437A1E91390000D611FE /* BNDProtocolProxyBase.m in Sources */,
 				90A4430F1E9055D100D611FE /* NSSlider.swift in Sources */,
 				90C04DAF1E8F0B97000077C8 /* UIApplication.swift in Sources */,
 				90C04D721E8F0B89000077C8 /* DynamicSubject.swift in Sources */,
 				90C04D791E8F0B89000077C8 /* NSObject.swift in Sources */,
 				90C04D761E8F0B89000077C8 /* CALayer.swift in Sources */,
+				ECBCE0CB21616B4C0078E03B /* ArrayBasedDiff+Strideable.swift in Sources */,
+				ECBCE0D7216170460078E03B /* ArrayBasedDiff+IndexPath+Patch.swift in Sources */,
+				ECBCE0DE2161713A0078E03B /* Property+ChangesetContainerProtocol.swift in Sources */,
 				90C04DB81E8F0B97000077C8 /* UILabel.swift in Sources */,
-				90C04DC11E8F0B97000077C8 /* UITableView.swift in Sources */,
-				ECBC51F72161639500BE80EC /* Array.swift in Sources */,
-				EC5EB16F215D783700338531 /* TreeChangeset+Array2D.swift in Sources */,
+				ECBC51F72161639500BE80EC /* Collection.swift in Sources */,
 				90A443141E9055D200D611FE /* NSView.swift in Sources */,
 				90C04DB41E8F0B97000077C8 /* UIControl.swift in Sources */,
 				90C04DC01E8F0B97000077C8 /* UISwitch.swift in Sources */,
 				90C04D731E8F0B89000077C8 /* Observable.swift in Sources */,
+				ECBCE0C2216168250078E03B /* ArrayBasedDiff.swift in Sources */,
 				90A443101E9055D100D611FE /* NSStatusBarButton.swift in Sources */,
+				ECBCE0DD216171320078E03B /* DictionaryChangeset.swift in Sources */,
 				90C04D741E8F0B89000077C8 /* ProtocolProxy.swift in Sources */,
 				90C04DAE1E8F0B97000077C8 /* UIActivityIndicatorView.swift in Sources */,
 				90C04DB11E8F0B97000077C8 /* UIBarItem.swift in Sources */,
 				EC381186209EFFAC00613B29 /* NSOutlineView+ObservableTree.swift in Sources */,
 				EC5EB13C215D1CAF00338531 /* ChangesetProtocol.swift in Sources */,
 				90C04DC41E8F0B97000077C8 /* UIView.swift in Sources */,
+				ECBCE0CA21616B2D0078E03B /* ChangesetContainerProtocol.swift in Sources */,
 				EC86E9AF1E9145CC008563B2 /* UIAccessibilityIdentification.swift in Sources */,
 				90A4430D1E9055D100D611FE /* NSProgressIndicator.swift in Sources */,
 				90C04DB91E8F0B97000077C8 /* UINavigationBar.swift in Sources */,
 				EC02200A1F8BE898002F8380 /* Property.swift in Sources */,
 				90C04DBE1E8F0B97000077C8 /* UISlider.swift in Sources */,
 				90C04DBC1E8F0B97000077C8 /* UIRefreshControl.swift in Sources */,
-				EC5EB156215D721600338531 /* ChangesetContainerProtocol+Property.swift in Sources */,
 				ECBC51FA216163BA00BE80EC /* TreeNode.swift in Sources */,
-				90C04D711E8F0B89000077C8 /* SectionedDataSourceProtocol.swift in Sources */,
-				EC5EB146215D493000338531 /* DictionaryChangeset.swift in Sources */,
 				90C04DBD1E8F0B97000077C8 /* UISegmentedControl.swift in Sources */,
 				90A443071E9055D100D611FE /* NSButton.swift in Sources */,
+				ECBCE0E4216174300078E03B /* ArrayBasedDiff+IndexPath+Differ.swift in Sources */,
+				ECBCE0CD21616BE50078E03B /* ArrayBasedDiff+Strideable+Patch.swift in Sources */,
 				90C04D701E8F0B89000077C8 /* Bond.swift in Sources */,
 				ECBC51F62161639500BE80EC /* TreeArray.swift in Sources */,
+				ECBCE0E0216172E10078E03B /* Signal+ChangesetProtocol.swift in Sources */,
 				90A443061E9055D100D611FE /* NSAppearanceCustomization.swift in Sources */,
-				EC5EB174215D7B3100338531 /* TreeChangeset.Diff.swift in Sources */,
 				75CA9E9220678E600011E5BB /* UISearchBar.swift in Sources */,
 				90C04DC31E8F0B97000077C8 /* UITextView.swift in Sources */,
 				90A443131E9055D200D611FE /* NSTextView.swift in Sources */,
@@ -1080,39 +1095,40 @@
 				90C04DB21E8F0B97000077C8 /* UIButton.swift in Sources */,
 				070FE2741F0138180031B7BD /* NSLayoutConstraint.swift in Sources */,
 				90C04DB61E8F0B97000077C8 /* UIGestureRecognizer.swift in Sources */,
+				ECBCE0E62161766C0078E03B /* SectionedDataSourceProtocol.swift in Sources */,
 				90A4430B1E9055D100D611FE /* NSMenuItem.swift in Sources */,
 				90C04DB01E8F0B97000077C8 /* UIBarButtonItem.swift in Sources */,
 				90A443091E9055D100D611FE /* NSControl.swift in Sources */,
 				90C04D7A1E8F0B89000077C8 /* SignalProtocol.swift in Sources */,
-				EC5EB154215D6BBC00338531 /* TreeChangeset.swift in Sources */,
 				90C04DBA1E8F0B97000077C8 /* UINavigationItem.swift in Sources */,
 				ECAFB8D9200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */,
 				90C04DB71E8F0B97000077C8 /* UIImageView.swift in Sources */,
+				ECBCE0EE21617E8D0078E03B /* UITableView.swift in Sources */,
+				ECBCE0DC2161712C0078E03B /* SetChangeset.swift in Sources */,
+				ECBCE0C921616A710078E03B /* CollectionChangeset.swift in Sources */,
 				90C04DBF1E8F0B97000077C8 /* UIStepper.swift in Sources */,
 				90A4430E1E9055D100D611FE /* NSSegmentedControl.swift in Sources */,
 				ECC1A6D0207A18DC00AE762C /* NSTableView+ObservableCollection.swift in Sources */,
+				ECBCE0E3216173160078E03B /* ArrayBasedDiff+Strideable+Differ.swift in Sources */,
 				90A4430A1E9055D100D611FE /* NSImageView.swift in Sources */,
 				90A4430C1E9055D100D611FE /* NSPopUpButton.swift in Sources */,
 				ECAFB8D4200A7E3900EE0669 /* BNDInvocation.swift in Sources */,
+				ECBCE0CC21616B8B0078E03B /* ArrayBasedOperation+Strideable+Undo.swift in Sources */,
 				90A443121E9055D100D611FE /* NSTextField.swift in Sources */,
 				90C04DC21E8F0B97000077C8 /* UITextField.swift in Sources */,
-				ECDC8CB1215EC3D10079E521 /* TreeChangeset.Diff+Patch.swift in Sources */,
-				EC5EB13E215D352400338531 /* CollectionChangeset.swift in Sources */,
-				ECC4357721610C040002A869 /* ChangesetProtocol+Signal.swift in Sources */,
+				ECBCE0D621616FAA0078E03B /* TreeChangeset.swift in Sources */,
+				ECBCE0CF21616DD00078E03B /* ArrayBasedOperation+IndexPath+Undo.swift in Sources */,
+				ECBCE0C62161696B0078E03B /* ArrayBasedOperation.swift in Sources */,
 				90C04DB51E8F0B97000077C8 /* UIDatePicker.swift in Sources */,
 				90A443111E9055D100D611FE /* NSTableView.swift in Sources */,
-				ECDC8CAF215EBFCF0079E521 /* TreeChangeset.Operation.swift in Sources */,
 				ECBC51F42161639500BE80EC /* TreeNodeProtocol.swift in Sources */,
+				ECBCE0D8216170750078E03B /* ArrayBasedDiff+IndexPath.swift in Sources */,
 				90C04D771E8F0B89000077C8 /* NotificationCenter.swift in Sources */,
-				EC5EB144215D480E00338531 /* SetChangeset.swift in Sources */,
+				ECBCE0DB216171050078E03B /* Array2DChangeset.swift in Sources */,
+				ECBCE0B9216167710078E03B /* UICollectionView.swift in Sources */,
 				90C04D781E8F0B89000077C8 /* NSObject+KVO.swift in Sources */,
-				ECDC8CAA215EB1640079E521 /* CollectionChangeset.Diff+Patch.swift in Sources */,
 				90A443081E9055D100D611FE /* NSColorWell.swift in Sources */,
-				ECC43579216114B80002A869 /* CollectionChangeset+Differ.swift in Sources */,
 				90C04DBB1E8F0B97000077C8 /* UIProgressView.swift in Sources */,
-				ECDC8CAC215EBDA90079E521 /* CollectionChangeset.Operation.swift in Sources */,
-				ECDC8CA8215EB0C30079E521 /* ChangesetContainerProtocol.swift in Sources */,
-				EC5EB172215D7B0600338531 /* CollectionChangeset.Diff.swift in Sources */,
 				EC38117F209EFFA600613B29 /* NSOutlineView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1121,13 +1137,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECBCE0E8216179BC0078E03B /* UITableViewTests.swift in Sources */,
 				ECC4358521612B430002A869 /* DynamicSubjectTests.swift in Sources */,
 				ECC4358221612B310002A869 /* UIKitTests.swift in Sources */,
 				ECC4358321612B350002A869 /* ProtocolProxyTests.swift in Sources */,
 				ECC4358721612B480002A869 /* NSObjectTests.swift in Sources */,
 				ECC4358621612B460002A869 /* Helpers.swift in Sources */,
 				ECC4358421612B410002A869 /* BondTests.swift in Sources */,
-				ECC43580216127EF0002A869 /* UITableViewTests.swift in Sources */,
 				ECC4357E216127490002A869 /* TreeChangesetDiffAndPatchTest.swift in Sources */,
 				ECC4357D216126B40002A869 /* CollectionChangesetDiffAndPatchTest.swift in Sources */,
 			);
@@ -1149,8 +1165,9 @@
 				ECC1A6D1207A18DC00AE762C /* NSTableView+ObservableCollection.swift in Sources */,
 				90A443361E9055D800D611FE /* UISwitch.swift in Sources */,
 				90A443271E9055D800D611FE /* UIBarItem.swift in Sources */,
-				ECBC51C02161637A00BE80EC /* CollectionChangeset+Differ.swift in Sources */,
+				ECBC51C02161637A00BE80EC /* ArrayBasedDiff+Strideable+Differ.swift in Sources */,
 				90C04D861E8F0B8D000077C8 /* NSStatusBarButton.swift in Sources */,
+				ECBCE0C0216167730078E03B /* UICollectionView.swift in Sources */,
 				90C04D811E8F0B8D000077C8 /* NSMenuItem.swift in Sources */,
 				90C04D891E8F0B8D000077C8 /* NSTextView.swift in Sources */,
 				90C04D841E8F0B8D000077C8 /* NSSegmentedControl.swift in Sources */,
@@ -1163,22 +1180,23 @@
 				90C04D8A1E8F0B8D000077C8 /* NSView.swift in Sources */,
 				90C04D6B1E8F0B89000077C8 /* CALayer.swift in Sources */,
 				90A443311E9055D800D611FE /* UIProgressView.swift in Sources */,
-				ECBC51B92161637A00BE80EC /* ChangesetProtocol+Signal.swift in Sources */,
+				ECBC51B92161637A00BE80EC /* Signal+ChangesetProtocol.swift in Sources */,
 				ECBC51BC2161637A00BE80EC /* CollectionChangeset.swift in Sources */,
 				9025DCAB1F981693007B7689 /* Property.swift in Sources */,
 				90A4432E1E9055D800D611FE /* UILabel.swift in Sources */,
 				ECBC51C82161637A00BE80EC /* SetChangeset.swift in Sources */,
 				ECBC51F02161639500BE80EC /* TreeNodeProtocol.swift in Sources */,
-				ECBC51C32161637A00BE80EC /* TreeChangeset.Diff+Patch.swift in Sources */,
+				ECBC51C32161637A00BE80EC /* ArrayBasedDiff+IndexPath+Patch.swift in Sources */,
 				90C04D681E8F0B89000077C8 /* Observable.swift in Sources */,
 				90A443331E9055D800D611FE /* UISegmentedControl.swift in Sources */,
 				ECBC51F9216163BA00BE80EC /* TreeNode.swift in Sources */,
 				90C04D851E8F0B8D000077C8 /* NSSlider.swift in Sources */,
 				90A443261E9055D800D611FE /* UIBarButtonItem.swift in Sources */,
-				ECBC51BE2161637A00BE80EC /* CollectionChangeset.Diff+Patch.swift in Sources */,
-				ECBC51C62161637A00BE80EC /* TreeChangeset+Differ.swift in Sources */,
-				ECBC51BF2161637A00BE80EC /* CollectionChangeset.Operation.swift in Sources */,
+				ECBC51BE2161637A00BE80EC /* ArrayBasedDiff+Strideable+Patch.swift in Sources */,
+				ECBC51C62161637A00BE80EC /* ArrayBasedDiff+IndexPath+Differ.swift in Sources */,
+				ECBC51BF2161637A00BE80EC /* ArrayBasedOperation+Strideable+Undo.swift in Sources */,
 				ECBC51BA2161637A00BE80EC /* ChangesetContainerProtocol.swift in Sources */,
+				ECBCE0C72161696B0078E03B /* ArrayBasedOperation.swift in Sources */,
 				90C04D871E8F0B8D000077C8 /* NSTableView.swift in Sources */,
 				90C04D691E8F0B89000077C8 /* ProtocolProxy.swift in Sources */,
 				90A4432D1E9055D800D611FE /* UIImageView.swift in Sources */,
@@ -1197,7 +1215,7 @@
 				90A443321E9055D800D611FE /* UIRefreshControl.swift in Sources */,
 				90A4433A1E9055D800D611FE /* UIView.swift in Sources */,
 				90C04D801E8F0B8D000077C8 /* NSLayoutConstraint.swift in Sources */,
-				ECBC51BB2161637A00BE80EC /* ChangesetContainerProtocol+Property.swift in Sources */,
+				ECBC51BB2161637A00BE80EC /* Property+ChangesetContainerProtocol.swift in Sources */,
 				ECAFB8DA200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */,
 				90A443351E9055D800D611FE /* UIStepper.swift in Sources */,
 				90A443301E9055D800D611FE /* UINavigationItem.swift in Sources */,
@@ -1206,20 +1224,21 @@
 				90C04D7E1E8F0B8D000077C8 /* NSControl.swift in Sources */,
 				ECBC51C72161637A00BE80EC /* DictionaryChangeset.swift in Sources */,
 				ECAFB8D5200A7E3900EE0669 /* BNDInvocation.swift in Sources */,
-				ECBC51C22161637A00BE80EC /* TreeChangeset.Diff.swift in Sources */,
+				ECBC51C22161637A00BE80EC /* ArrayBasedDiff+IndexPath.swift in Sources */,
 				90C04D831E8F0B8D000077C8 /* NSProgressIndicator.swift in Sources */,
 				90C04D6C1E8F0B89000077C8 /* NotificationCenter.swift in Sources */,
 				90A443251E9055D800D611FE /* UIApplication.swift in Sources */,
 				90C04D6D1E8F0B89000077C8 /* NSObject+KVO.swift in Sources */,
 				90A443241E9055D800D611FE /* UIActivityIndicatorView.swift in Sources */,
+				ECBCE0C3216168250078E03B /* ArrayBasedDiff.swift in Sources */,
 				90A443281E9055D800D611FE /* UIButton.swift in Sources */,
-				ECBC51C52161637A00BE80EC /* TreeChangeset+Array2D.swift in Sources */,
+				ECBC51C52161637A00BE80EC /* Array2DChangeset.swift in Sources */,
 				90A443371E9055D800D611FE /* UITableView.swift in Sources */,
-				ECBC51F32161639500BE80EC /* Array.swift in Sources */,
+				ECBC51F32161639500BE80EC /* Collection.swift in Sources */,
 				ECBC51FC2161649900BE80EC /* TreeChangeset.swift in Sources */,
 				90A443341E9055D800D611FE /* UISlider.swift in Sources */,
-				ECBC51FD216164B400BE80EC /* TreeChangeset.Operation.swift in Sources */,
-				ECBC51BD2161637A00BE80EC /* CollectionChangeset.Diff.swift in Sources */,
+				ECBC51FD216164B400BE80EC /* ArrayBasedOperation+IndexPath+Undo.swift in Sources */,
+				ECBC51BD2161637A00BE80EC /* ArrayBasedDiff+Strideable.swift in Sources */,
 				9025DCB11F9816A7007B7689 /* UIAccessibilityIdentification.swift in Sources */,
 				90A4432B1E9055D800D611FE /* UIDatePicker.swift in Sources */,
 			);
@@ -1233,8 +1252,9 @@
 				ECC1A6D2207A18DC00AE762C /* NSTableView+ObservableCollection.swift in Sources */,
 				90A4431E1E9055D200D611FE /* NSSlider.swift in Sources */,
 				ECAFB8D6200A7E3900EE0669 /* BNDInvocation.swift in Sources */,
-				ECBC51D52161637B00BE80EC /* CollectionChangeset+Differ.swift in Sources */,
+				ECBC51D52161637B00BE80EC /* ArrayBasedDiff+Strideable+Differ.swift in Sources */,
 				90C04D981E8F0B96000077C8 /* UIApplication.swift in Sources */,
+				ECBCE0BF216167730078E03B /* UICollectionView.swift in Sources */,
 				90C04D5C1E8F0B88000077C8 /* DynamicSubject.swift in Sources */,
 				90C04D631E8F0B88000077C8 /* NSObject.swift in Sources */,
 				90C04D601E8F0B88000077C8 /* CALayer.swift in Sources */,
@@ -1247,22 +1267,23 @@
 				90C04DA91E8F0B96000077C8 /* UISwitch.swift in Sources */,
 				90C04D5D1E8F0B88000077C8 /* Observable.swift in Sources */,
 				90A4431F1E9055D200D611FE /* NSStatusBarButton.swift in Sources */,
-				ECBC51CE2161637B00BE80EC /* ChangesetProtocol+Signal.swift in Sources */,
+				ECBC51CE2161637B00BE80EC /* Signal+ChangesetProtocol.swift in Sources */,
 				ECBC51D12161637B00BE80EC /* CollectionChangeset.swift in Sources */,
 				90C04D5E1E8F0B88000077C8 /* ProtocolProxy.swift in Sources */,
 				90C04D971E8F0B96000077C8 /* UIActivityIndicatorView.swift in Sources */,
 				ECBC51DD2161637B00BE80EC /* SetChangeset.swift in Sources */,
 				ECBC51EC2161639400BE80EC /* TreeNodeProtocol.swift in Sources */,
-				ECBC51D82161637B00BE80EC /* TreeChangeset.Diff+Patch.swift in Sources */,
+				ECBC51D82161637B00BE80EC /* ArrayBasedDiff+IndexPath+Patch.swift in Sources */,
 				90C04D9A1E8F0B96000077C8 /* UIBarItem.swift in Sources */,
 				90C04DAD1E8F0B96000077C8 /* UIView.swift in Sources */,
 				ECBC51F8216163BA00BE80EC /* TreeNode.swift in Sources */,
 				ECBC51D62161637B00BE80EC /* TreeChangeset.swift in Sources */,
 				EC86E9B01E9145CC008563B2 /* UIAccessibilityIdentification.swift in Sources */,
 				90A4431C1E9055D200D611FE /* NSProgressIndicator.swift in Sources */,
-				ECBC51D32161637B00BE80EC /* CollectionChangeset.Diff+Patch.swift in Sources */,
-				ECBC51DB2161637B00BE80EC /* TreeChangeset+Differ.swift in Sources */,
-				ECBC51D42161637B00BE80EC /* CollectionChangeset.Operation.swift in Sources */,
+				ECBC51D32161637B00BE80EC /* ArrayBasedDiff+Strideable+Patch.swift in Sources */,
+				ECBC51DB2161637B00BE80EC /* ArrayBasedDiff+IndexPath+Differ.swift in Sources */,
+				ECBC51D42161637B00BE80EC /* ArrayBasedOperation+Strideable+Undo.swift in Sources */,
+				ECBCE0C82161696B0078E03B /* ArrayBasedOperation.swift in Sources */,
 				ECBC51CF2161637B00BE80EC /* ChangesetContainerProtocol.swift in Sources */,
 				90C04DA21E8F0B96000077C8 /* UINavigationBar.swift in Sources */,
 				9025DCB01F981694007B7689 /* Property.swift in Sources */,
@@ -1282,7 +1303,6 @@
 				90C04D9F1E8F0B96000077C8 /* UIGestureRecognizer.swift in Sources */,
 				90A4431A1E9055D200D611FE /* NSMenuItem.swift in Sources */,
 				90C04D991E8F0B96000077C8 /* UIBarButtonItem.swift in Sources */,
-				ECBC51D02161637B00BE80EC /* ChangesetContainerProtocol+Property.swift in Sources */,
 				90A443181E9055D200D611FE /* NSControl.swift in Sources */,
 				90C04D641E8F0B88000077C8 /* SignalProtocol.swift in Sources */,
 				90C04DA31E8F0B96000077C8 /* UINavigationItem.swift in Sources */,
@@ -1291,19 +1311,21 @@
 				90C04DA81E8F0B96000077C8 /* UIStepper.swift in Sources */,
 				ECBC51DC2161637B00BE80EC /* DictionaryChangeset.swift in Sources */,
 				90A4431D1E9055D200D611FE /* NSSegmentedControl.swift in Sources */,
-				ECBC51D72161637B00BE80EC /* TreeChangeset.Diff.swift in Sources */,
+				ECBC51D72161637B00BE80EC /* ArrayBasedDiff+IndexPath.swift in Sources */,
 				90A443191E9055D200D611FE /* NSImageView.swift in Sources */,
 				90A4431B1E9055D200D611FE /* NSPopUpButton.swift in Sources */,
 				90A443211E9055D200D611FE /* NSTextField.swift in Sources */,
 				90C04DAB1E8F0B96000077C8 /* UITextField.swift in Sources */,
+				ECBCE0C4216168250078E03B /* ArrayBasedDiff.swift in Sources */,
 				90C04D9E1E8F0B96000077C8 /* UIDatePicker.swift in Sources */,
 				90A443201E9055D200D611FE /* NSTableView.swift in Sources */,
-				ECBC51DA2161637B00BE80EC /* TreeChangeset+Array2D.swift in Sources */,
+				ECBC51DA2161637B00BE80EC /* Array2DChangeset.swift in Sources */,
 				90C04D611E8F0B88000077C8 /* NotificationCenter.swift in Sources */,
-				ECBC51EF2161639400BE80EC /* Array.swift in Sources */,
+				ECBC51EF2161639400BE80EC /* Collection.swift in Sources */,
 				90C04D621E8F0B88000077C8 /* NSObject+KVO.swift in Sources */,
-				ECBC51FB216163E700BE80EC /* TreeChangeset.Operation.swift in Sources */,
-				ECBC51D22161637B00BE80EC /* CollectionChangeset.Diff.swift in Sources */,
+				ECBCE0D421616F5D0078E03B /* Property+ChangesetContainerProtocol.swift in Sources */,
+				ECBC51FB216163E700BE80EC /* ArrayBasedOperation+IndexPath+Undo.swift in Sources */,
+				ECBC51D22161637B00BE80EC /* ArrayBasedDiff+Strideable.swift in Sources */,
 				90A443171E9055D200D611FE /* NSColorWell.swift in Sources */,
 				90C04DA41E8F0B96000077C8 /* UIProgressView.swift in Sources */,
 			);

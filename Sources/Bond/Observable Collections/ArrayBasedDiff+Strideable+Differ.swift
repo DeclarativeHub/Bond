@@ -26,7 +26,7 @@ import Foundation
 import Differ
 import ReactiveKit
 
-extension CollectionChangeset.Diff where Collection.Index == Int {
+extension ArrayBasedDiff where Index == Int {
 
     public init(from diff: ExtendedDiff) {
         self.init()
@@ -47,7 +47,7 @@ extension SignalProtocol where Element: Collection, Element.Index == Int {
 
     /// Diff each next element (array) against the previous one and emit a diff event.
     public func diff(_ areEqual: @escaping (Element.Element, Element.Element) -> Bool) -> Signal<CollectionChangeset<Element>, Error> {
-        return diff(generateDiff: { c1, c2 in CollectionChangeset<Element>.Diff(from: c1.extendedDiff(c2, isEqual: areEqual)) })
+        return diff(generateDiff: { c1, c2 in ArrayBasedDiff<Int>(from: c1.extendedDiff(c2, isEqual: areEqual)) })
     }
 }
 
@@ -55,7 +55,7 @@ extension SignalProtocol where Element: Collection, Element.Element: Equatable, 
 
     /// Diff each next element (array) against the previous one and emit a diff event.
     public func diff() -> Signal<CollectionChangeset<Element>, Error> {
-        return diff(generateDiff: { c1, c2 in CollectionChangeset<Element>.Diff(from: c1.extendedDiff(c2)) })
+        return diff(generateDiff: { c1, c2 in ArrayBasedDiff<Int>(from: c1.extendedDiff(c2)) })
     }
 }
 
@@ -65,8 +65,8 @@ extension ChangesetContainerProtocol where Changeset: CollectionChangesetProtoco
     /// calculate the diff between the existing and new collection and emit an event with the calculated diff.
     /// - Complexity: O((N+M)*D) if `performDiff: true`, O(1) otherwise.
     public func replace(with newCollection: Changeset.Collection, performDiff: Bool, areEqual: @escaping (Changeset.Collection.Element, Changeset.Collection.Element) -> Bool) {
-        replace(with: newCollection, performDiff: performDiff) { (old, new) -> Changeset.Diff in
-            return Changeset.Diff(from: old.extendedDiff(new, isEqual: areEqual))
+        replace(with: newCollection, performDiff: performDiff) { (old, new) -> ArrayBasedDiff<Int> in
+            return ArrayBasedDiff<Int>(from: old.extendedDiff(new, isEqual: areEqual))
         }
     }
 }
@@ -76,8 +76,8 @@ extension ChangesetContainerProtocol where Changeset: CollectionChangesetProtoco
     /// calculate the diff between the existing and new collection and emit an event with the calculated diff.
     /// - Complexity: O((N+M)*D) if `performDiff: true`, O(1) otherwise.
     public func replace(with newCollection: Changeset.Collection, performDiff: Bool) {
-        replace(with: newCollection, performDiff: performDiff) { (old, new) -> Changeset.Diff in
-            return Changeset.Diff(from: old.extendedDiff(new))
+        replace(with: newCollection, performDiff: performDiff) { (old, new) -> ArrayBasedDiff<Int> in
+            return ArrayBasedDiff<Int>(from: old.extendedDiff(new))
         }
     }
 }

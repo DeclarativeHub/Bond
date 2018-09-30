@@ -35,41 +35,6 @@ public protocol QueryableSectionedDataSourceProtocol: SectionedDataSourceProtoco
     func item(at indexPath: IndexPath) -> Item
 }
 
-public protocol SectionedDataSourceIndexConverable {
-    var asIndexPath: IndexPath { get }
-}
-
-public enum SectionedDataSourceDiff: Equatable {
-    case inserts([IndexPath])
-    case deletes([IndexPath])
-    case updates([IndexPath])
-    case move(from: IndexPath, to: IndexPath)
-}
-
-public protocol SectionedDataSourceChangesetProtocol {
-    associatedtype DataSource: SectionedDataSourceProtocol
-
-    /// Represents data source event kind like insertion, deletion, etc.
-    var diffs: [SectionedDataSourceDiff] { get }
-
-    /// The data source itself.
-    var dataSource: DataSource { get }
-}
-
-extension Int: SectionedDataSourceIndexConverable {
-
-    public var asIndexPath: IndexPath {
-        return [0, self]
-    }
-}
-
-extension IndexPath: SectionedDataSourceIndexConverable {
-
-    public var asIndexPath: IndexPath {
-        return self
-    }
-}
-
 extension Array: QueryableSectionedDataSourceProtocol {
 
     public var numberOfSections: Int {
@@ -105,69 +70,20 @@ extension TreeArray: QueryableSectionedDataSourceProtocol where ChildValue: Arra
     }
 }
 
-extension Array: SectionedDataSourceChangesetProtocol {
+public protocol SectionedDataIndexPathConvertable {
+    var asSectionDataIndexPath: IndexPath { get }
+}
 
-    public var diffs: [SectionedDataSourceDiff] {
-        return []
-    }
+extension IndexPath: SectionedDataIndexPathConvertable {
 
-    public var dataSource: Array<Element> {
+    public var asSectionDataIndexPath: IndexPath {
         return self
     }
 }
 
-extension CollectionChangeset: SectionedDataSourceChangesetProtocol where Collection: SectionedDataSourceProtocol, Collection.Index: SectionedDataSourceIndexConverable {
+extension Int: SectionedDataIndexPathConvertable {
 
-    public typealias DataSource = Collection
-
-    /// Represents data source event kind like insertion, deletion, etc.
-    public var diffs: [SectionedDataSourceDiff] {
-        var diffs: [SectionedDataSourceDiff] = []
-        if !diff.inserts.isEmpty {
-            diffs.append(.inserts(diff.inserts.map { $0.asIndexPath }))
-        }
-        if !diff.deletes.isEmpty {
-            diffs.append(.deletes(diff.deletes.map { $0.asIndexPath }))
-        }
-        if !diff.updates.isEmpty {
-            diffs.append(.updates(diff.updates.map { $0.asIndexPath }))
-        }
-        if !diff.moves.isEmpty {
-            diffs.append(contentsOf: diff.moves.map { .move(from: $0.from.asIndexPath, to: $0.to.asIndexPath) })
-        }
-        return diffs
-    }
-
-    /// The data source itself.
-    public var dataSource: Collection {
-        return collection
-    }
-}
-
-extension TreeChangeset: SectionedDataSourceChangesetProtocol where Collection: SectionedDataSourceProtocol {
-
-    public typealias DataSource = Collection
-
-    /// Represents data source event kind like insertion, deletion, etc.
-    public var diffs: [SectionedDataSourceDiff] {
-        var diffs: [SectionedDataSourceDiff] = []
-        if !diff.inserts.isEmpty {
-            diffs.append(.inserts(diff.inserts))
-        }
-        if !diff.deletes.isEmpty {
-            diffs.append(.deletes(diff.deletes))
-        }
-        if !diff.updates.isEmpty {
-            diffs.append(.updates(diff.updates))
-        }
-        if !diff.moves.isEmpty {
-            diffs.append(contentsOf: diff.moves.map { .move(from: $0.from, to: $0.to) })
-        }
-        return diffs
-    }
-
-    /// The data source itself.
-    public var dataSource: Collection {
-        return collection
+    public var asSectionDataIndexPath: IndexPath {
+        return [0, self]
     }
 }
