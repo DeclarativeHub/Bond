@@ -81,7 +81,7 @@ extension Array: QueryableSectionedDataSourceProtocol {
     }
 
     public func item(at indexPath: IndexPath) -> Element {
-        return self[indexPath.row]
+        return self[indexPath[1]]
     }
 }
 
