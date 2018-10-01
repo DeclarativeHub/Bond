@@ -28,7 +28,11 @@ public struct ArrayBasedDiff<Index>: ArrayBasedDiffProtocol {
     }
 
     public var isEmpty: Bool {
-        return inserts.count + deletes.count + updates.count + moves.count == 0
+        return count == 0
+    }
+
+    public var count: Int {
+        return inserts.count + deletes.count + updates.count + moves.count
     }
 
     public var asArrayBasedDiff: ArrayBasedDiff<Index> {

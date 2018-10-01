@@ -29,7 +29,7 @@ import ReactiveKit
 
 private var TableViewBinderDataSourceAssociationKey = "TableViewBinderDataSource"
 
-open class TableViewBinderDataSource<Changeset: ChangesetProtocol>: NSObject, UITableViewDataSource where Changeset.Diff: ArrayBasedDiffProtocol, Changeset.Diff.Index: SectionedDataIndexPathConvertable, Changeset.Collection: SectionedDataSourceProtocol {
+open class TableViewBinderDataSource<Changeset: SectionedDataSourceChangeset>: NSObject, UITableViewDataSource {
 
     public var createCell: ((Changeset.Collection, IndexPath, UITableView) -> UITableViewCell)?
 
@@ -47,7 +47,6 @@ open class TableViewBinderDataSource<Changeset: ChangesetProtocol>: NSObject, UI
         didSet {
             guard let tableView = tableView else { return }
             associateWithTableView(tableView)
-            tableView.reloadData()
         }
     }
 
@@ -86,8 +85,8 @@ open class TableViewBinderDataSource<Changeset: ChangesetProtocol>: NSObject, UI
         let diff = changeset.diff.asArrayBasedDiff.map { $0.asSectionDataIndexPath }
         if diff.isEmpty {
             tableView.reloadData()
-//        } else if diff.count == 1 {
-//            applyChagesetDiff(changeset.diffs.first!)
+        } else if diff.count == 1 {
+            applyChagesetDiff(diff)
         } else {
             tableView.beginUpdates()
             applyChagesetDiff(diff)
@@ -150,7 +149,7 @@ extension TableViewBinderDataSource {
     }
 }
 
-extension SignalProtocol where Element: ChangesetProtocol, Element.Diff: ArrayBasedDiffProtocol, Element.Diff.Index: SectionedDataIndexPathConvertable, Element.Collection: SectionedDataSourceProtocol, Error == NoError {
+extension SignalProtocol where Element: SectionedDataSourceChangeset, Error == NoError {
 
     public typealias Changeset = Element
 
@@ -191,7 +190,7 @@ extension SignalProtocol where Element: ChangesetProtocol, Element.Diff: ArrayBa
     }
 }
 
-extension SignalProtocol where Element: ChangesetProtocol, Element.Diff: ArrayBasedDiffProtocol, Element.Diff.Index: SectionedDataIndexPathConvertable, Element.Collection: QueryableSectionedDataSourceProtocol, Error == NoError {
+extension SignalProtocol where Element: SectionedDataSourceChangeset, Element.Collection: QueryableSectionedDataSourceProtocol, Error == NoError {
 
     /// Binds the signal of data source elements to the given table view.
     ///

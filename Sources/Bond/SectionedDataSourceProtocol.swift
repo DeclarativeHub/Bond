@@ -87,3 +87,17 @@ extension Int: SectionedDataIndexPathConvertable {
         return [0, self]
     }
 }
+
+public protocol SectionedDataSourceChangeset: ChangesetProtocol where Diff: ArrayBasedDiffProtocol, Diff.Index: SectionedDataIndexPathConvertable, Collection: SectionedDataSourceProtocol {
+}
+
+extension SectionedDataSourceChangeset {
+
+    public var indexPathArrayBasedDiff: ArrayBasedDiff<IndexPath> {
+        return diff.asArrayBasedDiff.map { $0.asSectionDataIndexPath }
+    }
+}
+
+extension CollectionChangeset: SectionedDataSourceChangeset where Diff.Index: SectionedDataIndexPathConvertable, Collection: SectionedDataSourceProtocol {}
+
+extension TreeChangeset: SectionedDataSourceChangeset where Collection: SectionedDataSourceProtocol {}

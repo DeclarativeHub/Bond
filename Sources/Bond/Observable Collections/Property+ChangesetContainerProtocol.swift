@@ -80,17 +80,14 @@ extension Property: ChangesetContainerProtocol where Value: ChangesetProtocol {
         let lock = NSRecursiveLock(name: "Property.CollectionChangeset.batchUpdate")
         lock.lock()
         let proxy = Property(value) // use proxy to collect changes
-        var patches: [Value.Operation] = []
+        var patche: [Changeset.Operation] = []
         let disposable = proxy.skip(first: 1).observeNext { event in
-            patches.append(contentsOf: event.patch)
+            patche.append(contentsOf: event.patch)
         }
         update(proxy)
         disposable.dispose()
+        value = Changeset(collection: proxy.value.collection, patch: patche)
         lock.unlock()
-        descriptiveUpdate { (collection) -> [Value.Operation] in
-            collection = proxy.value.collection
-            return patches
-        }
     }
 }
 
