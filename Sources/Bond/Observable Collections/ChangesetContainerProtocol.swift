@@ -109,7 +109,20 @@ extension ChangesetContainerProtocol where Changeset.Collection: Collection {
     }
 }
 
+extension ChangesetContainerProtocol where Changeset.Collection: Collection, Changeset.Collection.Index == Int {
+
+    /// Underlying array.
+    public var array: Collection {
+        return collection
+    }
+}
+
 extension ChangesetContainerProtocol where Changeset.Collection: TreeNodeProtocol {
+
+    /// Underlying tree.
+    public var tree: Collection {
+        return collection
+    }
 
     /// Returns `true` if underlying collection is empty, `false` otherwise.
     public var isEmpty: Bool {
