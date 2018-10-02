@@ -73,7 +73,7 @@ class TreeChangesetDiffAndPatchTest: XCTestCase {
         var collection = initialCollection
         var operations: [TreeChangeset<TreeNode<Int>>.Operation] = []
 
-        for _ in 0..<6 {
+        for _ in 0..<Int.random(in: 2...10) {
             let operation = TreeChangeset<TreeNode<Int>>.Operation.randomOperation(collection: collection, allowed: testOperations)
             collection.apply(operation)
             operations.append(operation)
