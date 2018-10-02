@@ -35,6 +35,19 @@ public protocol QueryableSectionedDataSourceProtocol: SectionedDataSourceProtoco
     func item(at indexPath: IndexPath) -> Item
 }
 
+
+public protocol SectionedDataIndexPathConvertable {
+    var asSectionDataIndexPath: IndexPath { get }
+}
+
+public protocol SectionedDataSourceChangeset: ChangesetProtocol where Diff: ArrayBasedDiffProtocol, Diff.Index: SectionedDataIndexPathConvertable, Collection: SectionedDataSourceProtocol {
+}
+
+public protocol SectionedDataSourceChangesetConvertible {
+    associatedtype Changeset: SectionedDataSourceChangeset
+    var asSectionedDataSourceChangeset: Changeset { get }
+}
+
 extension Array: QueryableSectionedDataSourceProtocol {
 
     public var numberOfSections: Int {
@@ -47,6 +60,24 @@ extension Array: QueryableSectionedDataSourceProtocol {
 
     public func item(at indexPath: IndexPath) -> Element {
         return self[indexPath[1]]
+    }
+}
+
+extension Array: SectionedDataSourceChangesetConvertible {
+
+    public var asSectionedDataSourceChangeset: CollectionChangeset<[Element]> {
+        return CollectionChangeset(collection: self, patch: [])
+    }
+}
+
+extension CollectionChangeset: SectionedDataSourceChangeset where Diff.Index: SectionedDataIndexPathConvertable, Collection: SectionedDataSourceProtocol {}
+
+extension CollectionChangeset: SectionedDataSourceChangesetConvertible where Diff.Index: SectionedDataIndexPathConvertable, Collection: SectionedDataSourceProtocol {
+
+    public typealias Changeset = CollectionChangeset<Collection>
+
+    public var asSectionedDataSourceChangeset: CollectionChangeset<Collection> {
+        return self
     }
 }
 
@@ -70,8 +101,22 @@ extension TreeArray: QueryableSectionedDataSourceProtocol where ChildValue: Arra
     }
 }
 
-public protocol SectionedDataIndexPathConvertable {
-    var asSectionDataIndexPath: IndexPath { get }
+extension TreeArray: SectionedDataSourceChangesetConvertible {
+
+    public var asSectionedDataSourceChangeset: TreeChangeset<TreeArray<ChildValue>> {
+        return TreeChangeset(collection: self, patch: [])
+    }
+}
+
+extension TreeChangeset: SectionedDataSourceChangeset where Collection: SectionedDataSourceProtocol {}
+
+extension TreeChangeset: SectionedDataSourceChangesetConvertible where Collection: SectionedDataSourceProtocol {
+
+    public typealias Changeset = TreeChangeset<Collection>
+
+    public var asSectionedDataSourceChangeset: TreeChangeset<Collection> {
+        return self
+    }
 }
 
 extension IndexPath: SectionedDataIndexPathConvertable {
@@ -87,17 +132,3 @@ extension Int: SectionedDataIndexPathConvertable {
         return [0, self]
     }
 }
-
-public protocol SectionedDataSourceChangeset: ChangesetProtocol where Diff: ArrayBasedDiffProtocol, Diff.Index: SectionedDataIndexPathConvertable, Collection: SectionedDataSourceProtocol {
-}
-
-extension SectionedDataSourceChangeset {
-
-    public var indexPathArrayBasedDiff: ArrayBasedDiff<IndexPath> {
-        return diff.asArrayBasedDiff.map { $0.asSectionDataIndexPath }
-    }
-}
-
-extension CollectionChangeset: SectionedDataSourceChangeset where Diff.Index: SectionedDataIndexPathConvertable, Collection: SectionedDataSourceProtocol {}
-
-extension TreeChangeset: SectionedDataSourceChangeset where Collection: SectionedDataSourceProtocol {}

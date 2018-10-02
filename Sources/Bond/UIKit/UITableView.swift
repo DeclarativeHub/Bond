@@ -179,9 +179,7 @@ extension TableViewBinderDataSource {
     }
 }
 
-extension SignalProtocol where Element: SectionedDataSourceChangeset, Error == NoError {
-
-    public typealias Changeset = Element
+extension SignalProtocol where Element: SectionedDataSourceChangesetConvertible, Error == NoError {
 
     /// Binds the signal of data source elements to the given table view.
     ///
@@ -192,15 +190,15 @@ extension SignalProtocol where Element: SectionedDataSourceChangeset, Error == N
     ///     - createCell: A closure that creates (dequeues) cell for the given table view and configures it with the given data source at the given index path.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
     @discardableResult
-    public func bind(to tableView: UITableView, animated: Bool = true, rowAnimation: UITableView.RowAnimation = .automatic, createCell: @escaping (Changeset.Collection, IndexPath, UITableView) -> UITableViewCell) -> Disposable {
+    public func bind(to tableView: UITableView, animated: Bool = true, rowAnimation: UITableView.RowAnimation = .automatic, createCell: @escaping (Element.Changeset.Collection, IndexPath, UITableView) -> UITableViewCell) -> Disposable {
         if animated {
-            let binder = TableViewBinderDataSource<Changeset>(createCell)
+            let binder = TableViewBinderDataSource<Element.Changeset>(createCell)
             binder.rowInsertionAnimation = rowAnimation
             binder.rowDeletionAnimation = rowAnimation
             binder.rowReloadAnimation = rowAnimation
             return bind(to: tableView, using: binder)
         } else {
-            let binder = TableViewBinderDataSource<Changeset>.ReloadingBinder(createCell)
+            let binder = TableViewBinderDataSource<Element.Changeset>.ReloadingBinder(createCell)
             return bind(to: tableView, using: binder)
         }
     }
@@ -212,15 +210,15 @@ extension SignalProtocol where Element: SectionedDataSourceChangeset, Error == N
     ///     - binder: A `TableViewBinder` or its subclass that will manage the binding.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
     @discardableResult
-    public func bind(to tableView: UITableView, using binder: TableViewBinderDataSource<Changeset>) -> Disposable {
+    public func bind(to tableView: UITableView, using binder: TableViewBinderDataSource<Element.Changeset>) -> Disposable {
         binder.tableView = tableView
         return bind(to: tableView) { (_, changeset) in
-            binder.changeset = changeset
+            binder.changeset = changeset.asSectionedDataSourceChangeset
         }
     }
 }
 
-extension SignalProtocol where Element: SectionedDataSourceChangeset, Element.Collection: QueryableSectionedDataSourceProtocol, Error == NoError {
+extension SignalProtocol where Element: SectionedDataSourceChangesetConvertible, Element.Changeset.Collection: QueryableSectionedDataSourceProtocol, Error == NoError {
 
     /// Binds the signal of data source elements to the given table view.
     ///
@@ -232,7 +230,7 @@ extension SignalProtocol where Element: SectionedDataSourceChangeset, Element.Co
     ///     - configureCell: A closure that configures the cell with the data source item at the respective index path.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
     @discardableResult
-    public func bind<Cell: UITableViewCell>(to tableView: UITableView, cellType: Cell.Type, animated: Bool = true, rowAnimation: UITableView.RowAnimation = .automatic, configureCell: @escaping (Cell, Changeset.Collection.Item) -> Void) -> Disposable {
+    public func bind<Cell: UITableViewCell>(to tableView: UITableView, cellType: Cell.Type, animated: Bool = true, rowAnimation: UITableView.RowAnimation = .automatic, configureCell: @escaping (Cell, Element.Changeset.Collection.Item) -> Void) -> Disposable {
         let identifier = String(describing: Cell.self)
         tableView.register(cellType as AnyClass, forCellReuseIdentifier: identifier)
         return bind(to: tableView, animated: animated, rowAnimation: rowAnimation, createCell: { (dataSource, indexPath, tableView) -> UITableViewCell in
@@ -253,7 +251,7 @@ extension SignalProtocol where Element: SectionedDataSourceChangeset, Element.Co
     ///     - configureCell: A closure that configures the cell with the data source item at the respective index path.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
     @discardableResult
-    public func bind<Cell: UITableViewCell>(to tableView: UITableView, cellType: Cell.Type, using binder: TableViewBinderDataSource<Element>, configureCell: @escaping (Cell, Changeset.Collection.Item) -> Void) -> Disposable {
+    public func bind<Cell: UITableViewCell>(to tableView: UITableView, cellType: Cell.Type, using binder: TableViewBinderDataSource<Element.Changeset>, configureCell: @escaping (Cell, Element.Changeset.Collection.Item) -> Void) -> Disposable {
         let identifier = String(describing: Cell.self)
         tableView.register(cellType as AnyClass, forCellReuseIdentifier: identifier)
         binder.createCell = { (dataSource, indexPath, tableView) -> UITableViewCell in

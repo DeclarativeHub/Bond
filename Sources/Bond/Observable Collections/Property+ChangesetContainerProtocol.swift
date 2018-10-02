@@ -111,3 +111,11 @@ extension Property where Value: ChangesetProtocol, Value.Collection: TreeArrayPr
         self.init(Value(collection: .init(), patch: []))
     }
 }
+
+extension AnyProperty {
+
+    // TODO: move to ReactiveKit
+    public convenience init(_ value: Value) {
+        self.init(property: Property(value))
+    }
+}

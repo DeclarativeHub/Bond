@@ -181,6 +181,7 @@
 		EC381187209EFFAD00613B29 /* NSOutlineView+ObservableTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C44207F391700BC4505 /* NSOutlineView+ObservableTree.swift */; };
 		EC381188209EFFAD00613B29 /* NSOutlineView+ObservableTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90677C44207F391700BC4505 /* NSOutlineView+ObservableTree.swift */; };
 		EC5EB13C215D1CAF00338531 /* ChangesetProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB13B215D1CAF00338531 /* ChangesetProtocol.swift */; };
+		EC79AAA421641AE20020E65E /* UICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D441E8F0B1D000077C8 /* UICollectionView.swift */; };
 		EC86E9AF1E9145CC008563B2 /* UIAccessibilityIdentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC86E9AE1E9145CC008563B2 /* UIAccessibilityIdentification.swift */; };
 		EC86E9B01E9145CC008563B2 /* UIAccessibilityIdentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC86E9AE1E9145CC008563B2 /* UIAccessibilityIdentification.swift */; };
 		EC893EC41F07A164007981EC /* BNDProtocolProxyBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 90C04D181E8F0B12000077C8 /* BNDProtocolProxyBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -237,7 +238,6 @@
 		ECBC51FB216163E700BE80EC /* ArrayBasedOperation+IndexPath+Undo.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CAE215EBFCF0079E521 /* ArrayBasedOperation+IndexPath+Undo.swift */; };
 		ECBC51FC2161649900BE80EC /* TreeChangeset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB149215D668900338531 /* TreeChangeset.swift */; };
 		ECBC51FD216164B400BE80EC /* ArrayBasedOperation+IndexPath+Undo.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CAE215EBFCF0079E521 /* ArrayBasedOperation+IndexPath+Undo.swift */; };
-		ECBCE0B9216167710078E03B /* UICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D441E8F0B1D000077C8 /* UICollectionView.swift */; };
 		ECBCE0BF216167730078E03B /* UICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D441E8F0B1D000077C8 /* UICollectionView.swift */; };
 		ECBCE0C0216167730078E03B /* UICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D441E8F0B1D000077C8 /* UICollectionView.swift */; };
 		ECBCE0C2216168250078E03B /* ArrayBasedDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBCE0C1216168250078E03B /* ArrayBasedDiff.swift */; };
@@ -1125,10 +1125,10 @@
 				ECBCE0D8216170750078E03B /* ArrayBasedDiff+IndexPath.swift in Sources */,
 				90C04D771E8F0B89000077C8 /* NotificationCenter.swift in Sources */,
 				ECBCE0DB216171050078E03B /* Array2DChangeset.swift in Sources */,
-				ECBCE0B9216167710078E03B /* UICollectionView.swift in Sources */,
 				90C04D781E8F0B89000077C8 /* NSObject+KVO.swift in Sources */,
 				90A443081E9055D100D611FE /* NSColorWell.swift in Sources */,
 				90C04DBB1E8F0B97000077C8 /* UIProgressView.swift in Sources */,
+				EC79AAA421641AE20020E65E /* UICollectionView.swift in Sources */,
 				EC38117F209EFFA600613B29 /* NSOutlineView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

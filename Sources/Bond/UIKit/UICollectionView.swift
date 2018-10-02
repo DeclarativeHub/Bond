@@ -165,7 +165,7 @@ open class CollectionViewBinderDataSource<Changeset: SectionedDataSourceChangese
     }
 }
 
-extension SignalProtocol where Element: SectionedDataSourceChangeset, Error == NoError {
+extension SignalProtocol where Element: SectionedDataSourceChangesetConvertible, Error == NoError {
 
     /// Binds the signal of data source elements to the given table view.
     ///
@@ -176,8 +176,8 @@ extension SignalProtocol where Element: SectionedDataSourceChangeset, Error == N
     ///     - createCell: A closure that creates (dequeues) cell for the given table view and configures it with the given data source at the given index path.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
     @discardableResult
-    public func bind(to collectionView: UICollectionView, createCell: @escaping (Changeset.Collection, IndexPath, UICollectionView) -> UICollectionViewCell) -> Disposable {
-        let binder = CollectionViewBinderDataSource<Changeset>(createCell)
+    public func bind(to collectionView: UICollectionView, createCell: @escaping (Element.Changeset.Collection, IndexPath, UICollectionView) -> UICollectionViewCell) -> Disposable {
+        let binder = CollectionViewBinderDataSource<Element.Changeset>(createCell)
         return bind(to: collectionView, using: binder)
     }
 
@@ -188,15 +188,15 @@ extension SignalProtocol where Element: SectionedDataSourceChangeset, Error == N
     ///     - binder: A `TableViewBinder` or its subclass that will manage the binding.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
     @discardableResult
-    public func bind(to collectionView: UICollectionView, using binder: CollectionViewBinderDataSource<Changeset>) -> Disposable {
+    public func bind(to collectionView: UICollectionView, using binder: CollectionViewBinderDataSource<Element.Changeset>) -> Disposable {
         binder.collectionView = collectionView
         return bind(to: collectionView) { (_, changeset) in
-            binder.changeset = changeset
+            binder.changeset = changeset.asSectionedDataSourceChangeset
         }
     }
 }
 
-extension SignalProtocol where Element: SectionedDataSourceChangeset, Element.Collection: QueryableSectionedDataSourceProtocol, Error == NoError {
+extension SignalProtocol where Element: SectionedDataSourceChangesetConvertible, Element.Changeset.Collection: QueryableSectionedDataSourceProtocol, Error == NoError {
 
     /// Binds the signal of data source elements to the given table view.
     ///
@@ -208,7 +208,7 @@ extension SignalProtocol where Element: SectionedDataSourceChangeset, Element.Co
     ///     - configureCell: A closure that configures the cell with the data source item at the respective index path.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
     @discardableResult
-    public func bind<Cell: UICollectionViewCell>(to collectionView: UICollectionView, cellType: Cell.Type, configureCell: @escaping (Cell, Changeset.Collection.Item) -> Void) -> Disposable {
+    public func bind<Cell: UICollectionViewCell>(to collectionView: UICollectionView, cellType: Cell.Type, configureCell: @escaping (Cell, Element.Changeset.Collection.Item) -> Void) -> Disposable {
         let identifier = String(describing: Cell.self)
         collectionView.register(cellType as AnyClass, forCellWithReuseIdentifier: identifier)
         return bind(to: collectionView, createCell: { (dataSource, indexPath, collectionView) -> UICollectionViewCell in
@@ -229,7 +229,7 @@ extension SignalProtocol where Element: SectionedDataSourceChangeset, Element.Co
     ///     - configureCell: A closure that configures the cell with the data source item at the respective index path.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
     @discardableResult
-    public func bind<Cell: UICollectionViewCell>(to collectionView: UICollectionView, cellType: Cell.Type, using binder: CollectionViewBinderDataSource<Element>, configureCell: @escaping (Cell, Changeset.Collection.Item) -> Void) -> Disposable {
+    public func bind<Cell: UICollectionViewCell>(to collectionView: UICollectionView, cellType: Cell.Type, using binder: CollectionViewBinderDataSource<Element.Changeset>, configureCell: @escaping (Cell, Element.Changeset.Collection.Item) -> Void) -> Disposable {
         let identifier = String(describing: Cell.self)
         collectionView.register(cellType as AnyClass, forCellWithReuseIdentifier: identifier)
         binder.createCell = { (dataSource, indexPath, collectionView) -> UICollectionViewCell in
