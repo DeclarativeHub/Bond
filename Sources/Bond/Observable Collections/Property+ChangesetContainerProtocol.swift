@@ -25,8 +25,8 @@
 import Foundation
 import ReactiveKit
 
-public typealias ObservableArray<Element> = AnyProperty<ArrayChangeset<Element>>
-public typealias MutableObservableArray<Element> = Property<ArrayChangeset<Element>>
+public typealias ObservableArray<Element> = AnyProperty<CollectionChangeset<[Element]>>
+public typealias MutableObservableArray<Element> = Property<CollectionChangeset<[Element]>>
 
 public typealias ObservableSet<Element: Hashable> = AnyProperty<SetChangeset<Element>>
 public typealias MutableObservableSet<Element: Hashable> = Property<SetChangeset<Element>>

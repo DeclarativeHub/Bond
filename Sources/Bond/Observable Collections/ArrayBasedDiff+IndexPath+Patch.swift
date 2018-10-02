@@ -139,6 +139,16 @@ extension ArrayBasedDiff where Index == IndexPath {
             }
         }
 
-        return (deletionScript + insertionScript).map { $0.asOperation }
+        let patch = (deletionScript + insertionScript).map { $0.asOperation }
+
+        let updatesInFinalCollection: [Index] = self.updates.compactMap {
+            return AnyArrayBasedOperation.simulate(patch: patch.map { $0.asAnyArrayBasedOperation }, on: $0)
+        }
+
+        let updates = zip(self.updates, updatesInFinalCollection).map { (pair) -> ArrayBasedOperation<C.ChildNode, C.Index> in
+            return .update(at: pair.0, newElement: collection[pair.1!])
+        }
+
+        return updates + patch
     }
 }

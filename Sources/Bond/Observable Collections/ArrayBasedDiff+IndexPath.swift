@@ -38,27 +38,34 @@ extension ArrayBasedDiff where Index == IndexPath {
         }
 
         for patchSoFar in (1...patch.count).map({ patch.prefix(upTo: $0) }) {
-            let patchToUndo = patchSoFar.dropLast()
+            let patchToUndo = Array(patchSoFar.dropLast())
             switch patchSoFar.last! {
             case .insert(let atIndex):
-                recordInsertion(at: atIndex)
+                recordInsertion(at: atIndex, patch: patchToUndo)
             case .delete(let atIndex):
                 let sourceIndex = AnyArrayBasedOperation<Index>.undo(patch: patchToUndo, on: atIndex)
-                recordDeletion(at: atIndex, sourceIndex: sourceIndex)
+                recordDeletion(at: atIndex, sourceIndex: sourceIndex, patch: patchToUndo)
             case .update(let atIndex):
                 let sourceIndex = AnyArrayBasedOperation<Index>.undo(patch: patchToUndo, on: atIndex)
                 recordUpdate(at: atIndex, sourceIndex: sourceIndex)
             case .move(let fromIndex, let toIndex):
                 let sourceIndex = AnyArrayBasedOperation<Index>.undo(patch: patchToUndo, on: fromIndex)
-                recordMove(from: fromIndex, to: toIndex, sourceIndex: sourceIndex)
+                recordMove(from: fromIndex, to: toIndex, sourceIndex: sourceIndex, patch: patchToUndo)
             }
         }
     }
 
+    private func updatesInFinalCollection(given patch: [AnyArrayBasedOperation<Index>]) -> [Index?] {
+        return updates.map { AnyArrayBasedOperation.simulate(patch: patch, on: $0) }
+    }
 
-    private mutating func recordInsertion(at insertionIndex: Index) {
+    private mutating func recordInsertion(at insertionIndex: Index, patch: [AnyArrayBasedOperation<Index>]) {
         // If inserting into a previously inserted subtree, skip
         if inserts.contains(where: { $0.isAncestor(of: insertionIndex) }) {
+            return
+        }
+
+        if updatesInFinalCollection(given: patch).contains(where: { $0 != nil && $0!.isAncestor(of: insertionIndex) }) {
             return
         }
 
@@ -73,7 +80,7 @@ extension ArrayBasedDiff where Index == IndexPath {
         inserts.append(insertionIndex)
     }
 
-    private mutating func recordDeletion(at deletionIndex: Index, sourceIndex: Index?) {
+    private mutating func recordDeletion(at deletionIndex: Index, sourceIndex: Index?, patch: [AnyArrayBasedOperation<Index>]) {
 
         func adjustDestinationIndices() {
             forEachDestinationIndex { (index) in
@@ -83,19 +90,24 @@ extension ArrayBasedDiff where Index == IndexPath {
             }
         }
 
+        //  If deleting in an updated subtree, skip
+        if updatesInFinalCollection(given: patch).contains(where: { $0 != nil && $0!.isAncestor(of: deletionIndex) }) {
+            return
+        }
+
+        // If deleting from a previously inserted subtree, skip
+        if inserts.contains(where: { $0.isAncestor(of: deletionIndex) }) {
+            return
+        }
+
+        // If deleting previously inserted element, undo insertion
+        if let index = inserts.firstIndex(where: { $0 == deletionIndex }) {
+            inserts.remove(at: index)
+            adjustDestinationIndices()
+            return
+        }
+
         guard let sourceIndex = sourceIndex else {
-
-            // If deleting from a previously inserted subtree, skip
-            if inserts.contains(where: { $0.isAncestor(of: deletionIndex) }) {
-                return
-            }
-
-            // If deleting previously inserted element, undo insertion
-            if let index = inserts.firstIndex(where: { $0 == deletionIndex }) {
-                inserts.remove(at: index)
-                adjustDestinationIndices()
-                return
-            }
 
             fatalError()
         }
@@ -123,11 +135,6 @@ extension ArrayBasedDiff where Index == IndexPath {
             adjustDestinationIndices()
             return
         }
-        
-        //  If deleting in an updated subtree, skip
-        if updates.contains(where: { $0.isAncestor(of: sourceIndex) }) { // TODO move up?
-            return
-        }
 
         deletes.append(sourceIndex)
         adjustDestinationIndices()
@@ -135,67 +142,63 @@ extension ArrayBasedDiff where Index == IndexPath {
 
     private mutating func recordUpdate(at updateIndex: Index, sourceIndex: Index?) {
 
-//        // If updating previously inserted index
-//        if inserts.contains(where: { $0 == updateIndex }) {
-//            return
-//        }
-//
-//        // If updating previously updated index
-//        if updates.contains(where: { $0 == sourceIndex }) {
-//            return
-//        }
-//
-//        // If updating previously moved index, replace move with delete+insert
-//        if let index = moves.firstIndex(where: { $0.to == updateIndex }) {
-//            let move = moves[index]
-//            moves.remove(at: index)
-//            deletes.append(move.from)
-//            inserts.append(move.to)
-//            return
-//        }
-//
-//        updates.append(sourceIndex!)
+        // If updating previously inserted index or in a such subtree
+        if inserts.contains(where: { $0 == updateIndex || $0.isAncestor(of: updateIndex) }) {
+            return
+        }
 
+        // If updating previously updated index or in a such subtree
+        if updates.contains(where: { $0 == sourceIndex || (sourceIndex != nil && $0.isAncestor(of: sourceIndex!)) }) {
+            return
+        }
 
-        
-//        // If updating previously inserted index or in a such subtree
-//        if inserts.contains(where: { $0 == updateIndex || strider.isIndex($0, ancestorOf: updateIndex) }) {
-//            return
-//        }
-//
-//        // Clear all previous operations affecting subtree that is about to be updated
-//        inserts.removeAll(where: { strider.isIndex(updateIndex, ancestorOf: $0) })
-//
-//        // If updating previously moved index, replace move with delete+insert
-//        if let index = moves.firstIndex(where: { $0.to == updateIndex }) {
-//            let move = moves[index]
-//            moves.remove(at: index)
-//            deletes.insert(move.from, isOrderedBefore: >)
-//            inserts.insert(move.to, isOrderedBefore: <)
-//            return
-//        }
-//
-//        // If there are moves to the updated subtree
-//        for (i, move) in moves.enumerated().filter({ strider.isIndex(updateIndex, ancestorOf: $0.element.to) }).reversed() {
-//            deletes.insert(move.from, isOrderedBefore: >)
-//            moves.remove(at: i)
-//        }
-//
-//        let updateIndexInSourceIndexSpace = convertToSourceCollectionIndexSpace(updateIndex, using: strider)
-//
-//        // If updating previously updated index or in a such subtree
-//        if updates.contains(where: { $0 == updateIndexInSourceIndexSpace }) {
-//            return
-//        }
-//
-//        // Clear all previous operations affecting subtree that is about to be updated
-//        updates.removeAll(where: { strider.isIndex(updateIndexInSourceIndexSpace, ancestorOf: $0) })
-//        deletes.removeAll(where: { strider.isIndex(updateIndexInSourceIndexSpace, ancestorOf: $0) })
-//
-//        updates.insert(updateIndexInSourceIndexSpace, isOrderedBefore: <)
+        // If there are insertions within the updated subtree, just remove them
+        inserts.removeAll(where: { updateIndex.isAncestor(of: $0) })
+
+        // If there are moves into the updated subtree, replaces them with deletions
+        for (i, move) in moves.enumerated().filter({ updateIndex.isAncestor(of: $0.element.to) }).reversed() {
+            deletes.append(move.from)
+            moves.remove(at: i)
+            updates.removeAll(where: { move.from.isAncestor(of: $0) })
+        }
+
+        // If updating previously moved index, replace move with delete+insert
+        if let index = moves.firstIndex(where: { $0.to == updateIndex }) {
+            let move = moves[index]
+            moves.remove(at: index)
+            deletes.append(move.from)
+            inserts.append(move.to)
+            return
+        }
+
+        guard let sourceIndex = sourceIndex else {
+            return
+        }
+
+        updates.removeAll(where: { sourceIndex.isAncestor(of: $0) })
+        deletes.removeAll(where: { sourceIndex.isAncestor(of: $0) })
+
+        // If there are moves from the updated tree, remove them and their dependencies
+        while let index = moves.firstIndex(where: { sourceIndex.isAncestor(of: $0.from) }) {
+            let move = moves[index]
+            moves.remove(at: index)
+            if !inserts.contains(where: { $0.isAncestor(of: move.to) }) {
+                inserts.append(move.to)
+                inserts.removeAll(where: { move.to.isAncestor(of: $0) })
+            }
+            while let index = moves.firstIndex(where: { move.to.isAncestor(of: $0.to) }) {
+                let move = moves[index]
+                moves.remove(at: index)
+                if !sourceIndex.isAncestor(of: move.from) {
+                    deletes.append(move.from)
+                }
+            }
+        }
+
+        updates.append(sourceIndex)
     }
 
-    private mutating func recordMove(from fromIndex: Index, to toIndex: Index, sourceIndex: Index?) {
+    private mutating func recordMove(from fromIndex: Index, to toIndex: Index, sourceIndex: Index?, patch: [AnyArrayBasedOperation<Index>]) {
         guard fromIndex != toIndex else { return }
 
         var insertsIntoSubtree: [Int] = []
@@ -228,14 +231,14 @@ extension ArrayBasedDiff where Index == IndexPath {
 
         // If moving previously inserted subtree, replace with the insertion at the new index
         if inserts.contains(where: { $0 == fromIndex }) {
-            recordDeletion(at: fromIndex, sourceIndex: sourceIndex)
-            recordInsertion(at: toIndex)
+            recordDeletion(at: fromIndex, sourceIndex: sourceIndex, patch: patch)
+            recordInsertion(at: toIndex, patch: patch + [.delete(at: fromIndex)])
             return
         }
 
         // If moving from a previously inserted subtree, replace with insert
         if inserts.contains(where: { $0.isAncestor(of: fromIndex) }) {
-            recordInsertion(at: toIndex)
+            recordInsertion(at: toIndex, patch: patch)
             return
         }
 
@@ -257,6 +260,7 @@ extension ArrayBasedDiff where Index == IndexPath {
             if inserts.contains(where: { $0.isAncestor(of: toIndex) }) {
                 moves.remove(at: i) //crach
                 movesIntoSubtree.removeAll(where: { $0 == i})
+                movesIntoSubtree = movesIntoSubtree.map { $0 > i ? $0 - 1 : $0 }
                 handleMoveIntoPreviouslyInsertedSubtree()
                 return
             }
@@ -266,10 +270,10 @@ extension ArrayBasedDiff where Index == IndexPath {
         }
 
         // If moving previously updated element
-        if let i = updates.firstIndex(where: { $0 == sourceIndex }) {
+        if let i = updatesInFinalCollection(given: patch).firstIndex(where: { $0 == fromIndex }) {
             updates.remove(at: i)
-            recordDeletion(at: fromIndex, sourceIndex: sourceIndex)
-            recordInsertion(at: toIndex)
+            recordDeletion(at: fromIndex, sourceIndex: sourceIndex, patch: patch)
+            recordInsertion(at: toIndex, patch: patch)
             return
         }
 

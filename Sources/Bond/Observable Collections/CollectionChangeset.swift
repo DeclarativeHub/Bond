@@ -62,8 +62,6 @@ public struct CollectionChangeset<Collection: Swift.Collection>: CollectionChang
     }
 }
 
-public typealias ArrayChangeset<Element> = CollectionChangeset<[Element]>
-
 extension ChangesetContainerProtocol where Changeset: CollectionChangesetProtocol, Changeset.Collection: MutableCollection {
 
     /// Access or update the element at `index`.

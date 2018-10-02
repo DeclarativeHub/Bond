@@ -10,15 +10,22 @@
 import XCTest
 @testable import Bond
 
+enum Operation: Int, CaseIterable {
+    case insert = 0
+    case delete
+    case update
+    case move
+}
+
 extension ArrayBasedOperation where Element == TreeNode<Int>, Index == IndexPath {
 
-    static func randomOperation(collection: TreeNode<Int>) -> ArrayBasedOperation<TreeNode<Int>, IndexPath> {
+    static func randomOperation(collection: TreeNode<Int>, allowed: [Operation]) -> ArrayBasedOperation<TreeNode<Int>, IndexPath> {
         let element = TreeNode(Int.random(in: 11..<100))
         let indices = collection.indices
         guard indices.count > 1 else {
             return .insert(element, at: [0])
         }
-        switch [0, 1, 3].randomElement() {
+        switch allowed.map({ $0.rawValue }).randomElement() {
         case 0:
             var at = indices.randomElement()!
             if Bool.random() {
@@ -48,21 +55,26 @@ class TreeChangesetDiffAndPatchTest: XCTestCase {
     let testTree = TreeNode(0, [TreeNode(1, [TreeNode(2)]), TreeNode(3, [TreeNode(4)])])
     let testTree2 = TreeNode(0, [TreeNode(1, [TreeNode(2), TreeNode(3, [TreeNode(4)])]), TreeNode(5)])
 
+//    func testA() {
+//        execTest(operations: [.move(from: [0, 1], to: [0]), .move(from: [1, 0], to: [0, 0]), .update(at: [1], newElement: TreeNode(75))], initialCollection: testTree2)
+//    }
+
     func testRandom() {
         measure {
             for _ in 0..<1000 {
-                oneRandomTest()
+                oneRandomTest([.insert, .delete, .update])
+                oneRandomTest([.insert, .delete, .move])
             }
         }
     }
 
-    func oneRandomTest() {
+    func oneRandomTest(_ testOperations: [Operation]) {
         let initialCollection = testTree2
         var collection = initialCollection
         var operations: [TreeChangeset<TreeNode<Int>>.Operation] = []
 
-        for _ in 0..<3 {// Int.random(in: 2...12) {
-            let operation = TreeChangeset<TreeNode<Int>>.Operation.randomOperation(collection: collection)
+        for _ in 0..<6 {
+            let operation = TreeChangeset<TreeNode<Int>>.Operation.randomOperation(collection: collection, allowed: testOperations)
             collection.apply(operation)
             operations.append(operation)
         }
@@ -78,7 +90,7 @@ class TreeChangesetDiffAndPatchTest: XCTestCase {
         }
 
         let diff = TreeChangeset<TreeNode<Int>>.Diff(from: operations)
-//        print("Operations: \(operations), Diff: \(diff),/ Collection: \(collection)")
+//        print("Operations: \(operations), Diff: \(diff), Collection: \(collection)")
 
         let patch = diff.generatePatch(to: collection)
 //        print("Operations: \(operations), Diff: \(diff), Patch: \(patch), Collection: \(collection), Initial: \(initialCollection)")
