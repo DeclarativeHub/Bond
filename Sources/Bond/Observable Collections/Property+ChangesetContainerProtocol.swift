@@ -25,6 +25,9 @@
 import Foundation
 import ReactiveKit
 
+public typealias ObservableCollection<Collection: Swift.Collection> = AnyProperty<CollectionChangeset<Collection>> where Collection.Index: Strideable
+public typealias MutableObservableCollection<Collection: Swift.Collection> = Property<CollectionChangeset<Collection>> where Collection.Index: Strideable
+
 public typealias ObservableArray<Element> = AnyProperty<CollectionChangeset<[Element]>>
 public typealias MutableObservableArray<Element> = Property<CollectionChangeset<[Element]>>
 

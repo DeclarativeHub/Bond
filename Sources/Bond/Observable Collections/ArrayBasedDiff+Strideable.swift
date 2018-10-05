@@ -26,10 +26,14 @@ import Foundation
 
 extension ArrayBasedDiff where Index: Strideable {
 
+    /// Calculates diff from the given patch.
+    /// - complexity: O(Nˆ2) where N is the number of patch operations.
     public init<T>(from patch: [ArrayBasedOperation<T, Index>]) {
         self.init(from: patch.map { $0.asAnyArrayBasedOperation })
     }
 
+    /// Calculates diff from the given patch.
+    /// - complexity: O(Nˆ2) where N is the number of patch operations.
     public init(from patch: [AnyArrayBasedOperation<Index>]) {
         self.init()
 

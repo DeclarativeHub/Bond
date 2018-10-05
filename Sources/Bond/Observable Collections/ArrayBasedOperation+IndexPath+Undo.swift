@@ -43,7 +43,7 @@ extension AnyArrayBasedOperation where Index == IndexPath {
                 return index
             }
         case .update(let updateIndex):
-            if updateIndex.isAncestor(of: index) { // updateIndex == index??
+            if updateIndex.isAncestor(of: index) {
                 return nil
             } else {
                 return index
@@ -83,7 +83,7 @@ extension AnyArrayBasedOperation where Index == IndexPath {
                 return index
             }
         case .update(let updateIndex):
-            if updateIndex.isAncestor(of: index) { // updateIndex == index??
+            if updateIndex.isAncestor(of: index) {
                 return nil
             } else {
                 return index
