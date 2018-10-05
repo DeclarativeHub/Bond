@@ -40,14 +40,15 @@ public struct ArrayBasedDiff<Index>: ArrayBasedDiffProtocol {
     }
 }
 
-extension ArrayBasedDiff {
+extension ArrayBasedDiffProtocol {
 
     func map<T>(_ transform: (Index) -> T) -> ArrayBasedDiff<T> {
+        let diff = asArrayBasedDiff
         return ArrayBasedDiff<T>(
-            inserts: inserts.map(transform),
-            deletes: deletes.map(transform),
-            updates: updates.map(transform),
-            moves: moves.map { (from: transform($0.from), to: transform($0.to)) }
+            inserts: diff.inserts.map(transform),
+            deletes: diff.deletes.map(transform),
+            updates: diff.updates.map(transform),
+            moves: diff.moves.map { (from: transform($0.from), to: transform($0.to)) }
         )
     }
 }

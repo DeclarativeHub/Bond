@@ -41,3 +41,24 @@ a.batchUpdate { (a) in
     a.append(1)
     a.append(2)
 }
+
+let s = MutableObservableSet(Set([1, 4, 3]))
+
+s.sortedCollection().mapCollection { $0 * 2 }.filterCollection { $0 > 2 }.observeNext { (changeset) in
+    print(changeset.collection, changeset.diff, changeset.patch)
+}
+
+s.insert(5)
+
+
+let d = MutableObservableDictionary(["A": 1])
+
+d.sortedCollection(by: { $0.key < $1.key }).mapCollection({ "\($0.key): \($0.value)"}).observeNext { (changeset) in
+    print(changeset.collection, changeset.diff, changeset.patch)
+}
+
+d["B"] = 2
+
+
+
+let custom = MutableObservableCollection([0, 1, 0])
