@@ -6,6 +6,8 @@ import PlaygroundSupport
 
 // Play here!
 
+// Tree array
+
 var t = TreeArray<String>([
     TreeNode("Child 00", [
         TreeNode("Child 000"),
@@ -31,6 +33,8 @@ ot.batchUpdate { (ot) in
     ot.remove(at: [0, 2, 1])
 }
 
+// Array
+
 let a = MutableObservableArray([1, 2, 3])
 
 a.observeNext { (cs) in
@@ -42,6 +46,8 @@ a.batchUpdate { (a) in
     a.append(2)
 }
 
+// Set
+
 let s = MutableObservableSet(Set([1, 4, 3]))
 
 s.sortedCollection().mapCollection { $0 * 2 }.filterCollection { $0 > 2 }.observeNext { (changeset) in
@@ -50,6 +56,7 @@ s.sortedCollection().mapCollection { $0 * 2 }.filterCollection { $0 > 2 }.observ
 
 s.insert(5)
 
+// Dictionary
 
 let d = MutableObservableDictionary(["A": 1])
 
@@ -59,6 +66,13 @@ d.sortedCollection(by: { $0.key < $1.key }).mapCollection({ "\($0.key): \($0.val
 
 d["B"] = 2
 
+// Custom collection - Data
 
+let data = MutableObservableCollection(Data(bytes: [0x0A, 0x0B]))
 
-let custom = MutableObservableCollection([0, 1, 0])
+data.observeNext { (changeset) in
+    print(changeset.collection, changeset.diff, changeset.patch)
+}
+
+data.append(0xFF)
+data[0] = 0xAA
