@@ -24,7 +24,7 @@
 
 import Foundation
 
-public protocol TreeArrayProtocol: OrderedCollectionTreeNode where ChildNode == TreeNode<ChildValue> {
+public protocol TreeArrayProtocol: ArrayBasedTreeNode where ChildNode == TreeNode<ChildValue> {
     associatedtype ChildValue
     init()
     var asTreeArray: TreeArray<ChildValue> { get set }
@@ -72,7 +72,7 @@ public struct TreeArray<ChildValue>: TreeArrayProtocol, CustomDebugStringConvert
 extension TreeArray {
 
     /// Class-based variant of TreeArray.
-    public class Object: OrderedCollectionTreeNode, CustomDebugStringConvertible {
+    public class Object: ArrayBasedTreeNode, CustomDebugStringConvertible {
 
         public var value: Void = ()
         public var children: [TreeNode<ChildValue>.Object]

@@ -150,13 +150,13 @@ extension RangeReplaceableTreeNode {
     }
 }
 
-public protocol OrderedCollectionTreeNode: RangeReplaceableTreeNode where Index == IndexPath {
+public protocol ArrayBasedTreeNode: RangeReplaceableTreeNode where Index == IndexPath {
 
     /// Child nodes of `self`.
     var children: [ChildNode] { get set }
 }
 
-extension OrderedCollectionTreeNode {
+extension ArrayBasedTreeNode {
 
     public var startIndex: IndexPath {
         return IndexPath(index: children.startIndex)

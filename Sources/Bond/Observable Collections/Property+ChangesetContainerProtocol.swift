@@ -40,11 +40,14 @@ public typealias MutableObservableSet<Element: Hashable> = Property<UnorderedCol
 public typealias ObservableDictionary<Key: Hashable, Value> = AnyProperty<UnorderedCollectionChangeset<Dictionary<Key, Value>>>
 public typealias MutableObservableDictionary<Key: Hashable, Value> = Property<UnorderedCollectionChangeset<Dictionary<Key, Value>>>
 
-public typealias ObservableTreeNode<Element> = AnyProperty<TreeChangeset<TreeNode<Element>>>
-public typealias MutableObservableTreeNode<Element> = Property<TreeChangeset<TreeNode<Element>>>
+public typealias ObservableTreeNode<Value> = AnyProperty<TreeChangeset<TreeNode<Value>>>
+public typealias MutableObservableTreeNode<Value> = Property<TreeChangeset<TreeNode<Value>>>
 
-public typealias ObservableTreeArray<Element> = AnyProperty<TreeChangeset<TreeArray<Element>>>
-public typealias MutableObservableTreeArray<Element> = Property<TreeChangeset<TreeArray<Element>>>
+public typealias ObservableObjectTreeNode<Value> = AnyProperty<TreeChangeset<TreeNode<Value>.Object>>
+public typealias MutableObservableObjectTreeNode<Value> = Property<TreeChangeset<TreeNode<Value>.Object>>
+
+public typealias ObservableObjectTreeArray<ChildValue> = AnyProperty<TreeChangeset<TreeArray<ChildValue>.Object>>
+public typealias MutableObservableObjectTreeArray<ChildValue> = Property<TreeChangeset<TreeArray<ChildValue>.Object>>
 
 public typealias ObservableArray2D<SectionValue, Item> = AnyProperty<TreeChangeset<Array2D<SectionValue, Item>>>
 public typealias MutableObservableArray2D<SectionValue, Item> = Property<TreeChangeset<Array2D<SectionValue, Item>>>

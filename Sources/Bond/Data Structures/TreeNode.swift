@@ -26,7 +26,7 @@ import Foundation
 
 /// A tree node represents a node in a tree structure.
 /// A tree node has a value associated with itself and zero or more child tree nodes of the same TreeNode type.
-public struct TreeNode<Value>: OrderedCollectionTreeNode, MutableTreeNodeProtocol, CustomDebugStringConvertible {
+public struct TreeNode<Value>: ArrayBasedTreeNode, MutableTreeNodeProtocol, CustomDebugStringConvertible {
 
     public var value: Value
     public var children: [TreeNode<Value>]
@@ -69,7 +69,7 @@ public struct TreeNode<Value>: OrderedCollectionTreeNode, MutableTreeNodeProtoco
 extension TreeNode {
 
     /// Class-based variant of TreeNode.
-    public class Object: OrderedCollectionTreeNode, CustomDebugStringConvertible {
+    public class Object: ArrayBasedTreeNode, CustomDebugStringConvertible {
 
         public var value: Value
         public var children: [Object]

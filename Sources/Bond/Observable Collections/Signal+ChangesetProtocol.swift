@@ -51,7 +51,7 @@ extension SignalProtocol where Element: Collection, Element.Index: Strideable {
     }
 }
 
-extension SignalProtocol where Element: OrderedCollectionTreeNode {
+extension SignalProtocol where Element: ArrayBasedTreeNode {
 
     public func diff(generateDiff: @escaping (Element, Element) -> TreeChangeset<Element>.Diff) -> Signal<TreeChangeset<Element>, Error> {
         return Signal { observer in

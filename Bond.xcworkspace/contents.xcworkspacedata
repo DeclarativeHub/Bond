@@ -2,7 +2,10 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:Playground.playground">
+      location = "group:Playground-macOS.playground">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/srdan/develop/Bond/Playground-iOS.playground">
    </FileRef>
    <FileRef
       location = "group:Bond.xcodeproj">

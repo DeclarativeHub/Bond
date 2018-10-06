@@ -2,7 +2,7 @@
 <playground version='6.0' target-platform='ios' display-mode='raw' executeOnSourceChanges='false'>
     <pages>
         <page name='Observable Collections'/>
+        <page name='UITableView Bindings'/>
         <page name='Key Value Observing'/>
-        <page name='Table View Data Source'/>
     </pages>
 </playground>
