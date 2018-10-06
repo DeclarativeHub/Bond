@@ -125,3 +125,24 @@ extension AnyProperty {
         self.init(property: Property(value))
     }
 }
+
+extension AnyProperty where Value: ChangesetProtocol {
+
+    public convenience init(_ collection: Value.Collection) {
+        self.init(Value(collection: collection, patch: []))
+    }
+}
+
+extension AnyProperty where Value: ChangesetProtocol, Value.Collection: RangeReplaceableCollection {
+
+    public convenience init() {
+        self.init(Value(collection: .init(), patch: []))
+    }
+}
+
+extension AnyProperty where Value: ChangesetProtocol, Value.Collection: TreeArrayProtocol {
+
+    public convenience init() {
+        self.init(Value(collection: .init(), patch: []))
+    }
+}
