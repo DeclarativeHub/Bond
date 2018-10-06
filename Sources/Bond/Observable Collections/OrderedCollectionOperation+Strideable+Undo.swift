@@ -24,7 +24,7 @@
 
 import Foundation
 
-extension AnyArrayBasedOperation where Index: Strideable {
+extension AnyOrderedCollectionOperation where Index: Strideable {
 
     func undoOperationOn(_ index: Index) -> Index? {
         switch self {
@@ -94,11 +94,11 @@ extension AnyArrayBasedOperation where Index: Strideable {
         }
     }
 
-    static func undo<C: BidirectionalCollection>(patch: C, on index: Index) -> Index? where C.Element == AnyArrayBasedOperation<Index> {
+    static func undo<C: BidirectionalCollection>(patch: C, on index: Index) -> Index? where C.Element == AnyOrderedCollectionOperation<Index> {
         return patch.reversed().reduce(index) { index, operation in index.flatMap { operation.undoOperationOn($0) } }
     }
 
-    static func simulate<C: BidirectionalCollection>(patch: C, on index: Index) -> Index? where C.Element == AnyArrayBasedOperation<Index> {
+    static func simulate<C: BidirectionalCollection>(patch: C, on index: Index) -> Index? where C.Element == AnyOrderedCollectionOperation<Index> {
         return patch.reduce(index) { index, operation in index.flatMap { operation.simulateOperationOn($0) } }
     }
 }

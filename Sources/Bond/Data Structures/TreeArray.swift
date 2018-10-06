@@ -24,13 +24,13 @@
 
 import Foundation
 
-public protocol TreeArrayProtocol: ArrayBasedTreeNode where ChildNode == TreeNode<ChildValue> {
+public protocol TreeArrayProtocol: OrderedCollectionTreeNode where ChildNode == TreeNode<ChildValue> {
     associatedtype ChildValue
     init()
     var asTreeArray: TreeArray<ChildValue> { get set }
 }
 
-/// A tree root node without a value.
+/// A tree array represents a valueless root node of a tree structure where children are of TreeNode<ChileValue> type.
 public struct TreeArray<ChildValue>: TreeArrayProtocol, CustomDebugStringConvertible {
 
     public var value: Void = ()
@@ -72,7 +72,7 @@ public struct TreeArray<ChildValue>: TreeArrayProtocol, CustomDebugStringConvert
 extension TreeArray {
 
     /// Class-based variant of TreeArray.
-    public class Object: ArrayBasedTreeNode, CustomDebugStringConvertible {
+    public class Object: OrderedCollectionTreeNode, CustomDebugStringConvertible {
 
         public var value: Void = ()
         public var children: [TreeNode<ChildValue>.Object]

@@ -35,12 +35,11 @@ public protocol QueryableSectionedDataSourceProtocol: SectionedDataSourceProtoco
     func item(at indexPath: IndexPath) -> Item
 }
 
-
 public protocol SectionedDataIndexPathConvertable {
     var asSectionDataIndexPath: IndexPath { get }
 }
 
-public protocol SectionedDataSourceChangeset: ChangesetProtocol where Diff: ArrayBasedDiffProtocol, Diff.Index: SectionedDataIndexPathConvertable, Collection: SectionedDataSourceProtocol {
+public protocol SectionedDataSourceChangeset: ChangesetProtocol where Diff: OrderedCollectionDiffProtocol, Diff.Index: SectionedDataIndexPathConvertable, Collection: SectionedDataSourceProtocol {
 }
 
 public protocol SectionedDataSourceChangesetConvertible {
@@ -65,18 +64,18 @@ extension Array: QueryableSectionedDataSourceProtocol {
 
 extension Array: SectionedDataSourceChangesetConvertible {
 
-    public var asSectionedDataSourceChangeset: CollectionChangeset<[Element]> {
-        return CollectionChangeset(collection: self, patch: [])
+    public var asSectionedDataSourceChangeset: OrderedCollectionChangeset<[Element]> {
+        return OrderedCollectionChangeset(collection: self, patch: [])
     }
 }
 
-extension CollectionChangeset: SectionedDataSourceChangeset where Diff.Index: SectionedDataIndexPathConvertable, Collection: SectionedDataSourceProtocol {}
+extension OrderedCollectionChangeset: SectionedDataSourceChangeset where Diff.Index: SectionedDataIndexPathConvertable, Collection: SectionedDataSourceProtocol {}
 
-extension CollectionChangeset: SectionedDataSourceChangesetConvertible where Diff.Index: SectionedDataIndexPathConvertable, Collection: SectionedDataSourceProtocol {
+extension OrderedCollectionChangeset: SectionedDataSourceChangesetConvertible where Diff.Index: SectionedDataIndexPathConvertable, Collection: SectionedDataSourceProtocol {
 
-    public typealias Changeset = CollectionChangeset<Collection>
+    public typealias Changeset = OrderedCollectionChangeset<Collection>
 
-    public var asSectionedDataSourceChangeset: CollectionChangeset<Collection> {
+    public var asSectionedDataSourceChangeset: OrderedCollectionChangeset<Collection> {
         return self
     }
 }
@@ -97,7 +96,7 @@ extension TreeArray: QueryableSectionedDataSourceProtocol where ChildValue: Arra
     public typealias Item = ChildValue.Item
 
     public func item(at indexPath: IndexPath) -> ChildValue.Item {
-        return self[indexPath].value.item!
+        return self[indexPath].value.asSectionedData.item!
     }
 }
 

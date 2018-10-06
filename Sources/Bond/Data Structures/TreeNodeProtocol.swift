@@ -24,30 +24,53 @@
 
 import Foundation
 
-/// A tree node is a collection of other tree nodes.
-/// Additionally, the tree node has a value associated with itself.
+/// A tree node represents a node in a tree structure.
+/// A tree node has a value associated with itself and zero or more child tree nodes.
 public protocol TreeNodeProtocol {
 
     /// Type of the node value.
     associatedtype Value
 
+    /// Index type used to iterate over child nodes.
     associatedtype Index
+
+    /// Type of the child node.
     associatedtype ChildNode: TreeNodeProtocol
 
-    /// Value of the node.
+    /// Value of the node, i.e. data that the node contains.
     var value: Value { get }
 
+    /// Index of the first child node.
     var startIndex: Index { get }
 
+    /// Index beyond last child node.
     var endIndex: Index { get }
 
+    /// True if node has not child nodes, false otherwise.
     var isEmpty: Bool { get }
 
+    /// Number of child nodes.
     var count: Int { get }
 
+    /// Index after the given index assuming depth-first tree search.
+    func index(after i: Index) -> Index
+
+    /// Index before the given index assuming depth-first tree search.
+    func index(before i: Index) -> Index
+
+    /// Indices of all nodes in the tree in DFS order. Does not include index of root node (self).
     var indices: [Index] { get }
 
+    /// Access tree node at the given index.
     subscript(_ index: Index) -> ChildNode { get }
+}
+
+extension TreeNodeProtocol {
+
+    /// Access value of a tree node at the given index.
+    public subscript(valueAt index: Index) -> ChildNode.Value {
+        return self[index].value
+    }
 }
 
 public protocol MutableTreeNodeProtocol: TreeNodeProtocol {
@@ -57,38 +80,40 @@ public protocol MutableTreeNodeProtocol: TreeNodeProtocol {
 
 public protocol RangeReplaceableTreeNode: MutableTreeNodeProtocol where Index: Comparable, ChildNode.Index == Index, ChildNode.ChildNode == ChildNode, ChildNode: RangeReplaceableTreeNode {
 
-    /// Replace children at the given subrange with another children.
+    /// Replace children at the given subrange with new children.
     /// Range lowerBound and upperBound must be at the same level.
     mutating func replaceChildrenSubrange<C>(_ subrange: Range<Index>, with newChildren: C)
     where C: Collection, C.Element == ChildNode
 
+    /// Index of the child node that follows the child node at the given index at the same level in the tree.
     func indexAtSameLevel(after i: Index) -> Index
 }
 
 extension RangeReplaceableTreeNode where Index == IndexPath {
 
     public func indexAtSameLevel(after i: IndexPath) -> IndexPath {
-        guard i.count > 0 else { return i }
-        var index = i
-        index[index.count-1] += 1
-        return index
+        return i.advanced(by: 1, atLevel: i.count-1)
     }
 }
 
 extension RangeReplaceableTreeNode {
 
+    /// Insert the new node into the tree as the last child of self.
     public mutating func append(_ newNode: ChildNode) {
         insert(newNode, at: endIndex)
     }
 
+    /// Insert the new node into the tree at the given index.
     public mutating func insert(_ newNode: ChildNode, at index: Index) {
         replaceChildrenSubrange(index..<index, with: [newNode])
     }
 
+    /// Insert the array of nodes into the tree at the given index.
     public mutating func insert(contentsOf newNodes: [ChildNode], at index: Index) {
         replaceChildrenSubrange(index..<index, with: newNodes)
     }
 
+    /// Replace the node at the given index with the new node.
     @discardableResult
     public mutating func update(at index: Index, newNode: ChildNode) -> ChildNode {
         let subtree = self[index]
@@ -96,6 +121,7 @@ extension RangeReplaceableTreeNode {
         return subtree
     }
 
+    /// Remove the node (including its subtree) at the given index.
     @discardableResult
     public mutating func remove(at index: Index) -> ChildNode {
         let subtree = self[index]
@@ -103,15 +129,18 @@ extension RangeReplaceableTreeNode {
         return subtree
     }
 
+    /// Remove all child node. Only the tree root node (self) will remain.
     public mutating func removeAll() {
         replaceChildrenSubrange(startIndex..<endIndex, with: [])
     }
 
+    /// Move the node from one position to another.
     public mutating func move(from fromIndex: Index, to toIndex: Index) {
         let subtree = remove(at: fromIndex)
         insert(subtree, at: toIndex)
     }
 
+    /// Gather the nodes with the given indices and move them to the given index.
     public mutating func move(from fromIndices: [Index], to toIndex: Index) {
         let items = fromIndices.map { self[$0] }
         for index in fromIndices.sorted().reversed() {
@@ -121,12 +150,13 @@ extension RangeReplaceableTreeNode {
     }
 }
 
-public protocol ArrayBasedTreeNode: RangeReplaceableTreeNode where Index == IndexPath {
+public protocol OrderedCollectionTreeNode: RangeReplaceableTreeNode where Index == IndexPath {
 
+    /// Child nodes of `self`.
     var children: [ChildNode] { get set }
 }
 
-extension ArrayBasedTreeNode {
+extension OrderedCollectionTreeNode {
 
     public var startIndex: IndexPath {
         return IndexPath(index: children.startIndex)
@@ -152,7 +182,6 @@ extension ArrayBasedTreeNode {
         }))
     }
 
-    // DFS
     public func index(after i: IndexPath) -> IndexPath {
         guard i.count > 0 else {
             fatalError("Invalid index path.")
@@ -174,7 +203,6 @@ extension ArrayBasedTreeNode {
         }
     }
 
-    // DFS
     public func index(before i: IndexPath) -> IndexPath {
         guard i.count > 0 else {
             fatalError("Invalid index path.")
@@ -217,49 +245,5 @@ extension ArrayBasedTreeNode {
             }
             children[subrange.lowerBound[0]].replaceChildrenSubrange(subrange.lowerBound.dropFirst()..<subrange.upperBound.dropFirst(), with: newChildren)
         }
-    }
-}
-
-public extension IndexPath {
-
-    public func isAffectedByDeletionOrInsertion(at index: IndexPath) -> Bool {
-        assert(index.count > 0)
-        assert(self.count > 0)
-        guard index.count <= self.count else { return false }
-        let testLevel = index.count - 1
-        if index.prefix(testLevel) == self.prefix(testLevel) {
-            return index[testLevel] <= self[testLevel]
-        } else {
-            return false
-        }
-    }
-
-    public func shifted(by: Int, atLevelOf other: IndexPath) -> IndexPath {
-        assert(self.count > 0)
-        assert(other.count > 0)
-        let level = other.count - 1
-        guard level < self.count else { return self }
-        if by == -1 {
-            return self.advanced(by: -1, atLevel: level)
-        } else if by == 1 {
-            return self.advanced(by: 1, atLevel: level)
-        } else {
-            fatalError()
-        }
-    }
-
-    public func advanced(by offset: Int, atLevel level: Int) -> IndexPath {
-        var copy = self
-        copy[level] += offset
-        return copy
-    }
-
-    public func isAncestor(of other: IndexPath) -> Bool {
-        guard self.count < other.count else { return false }
-        return self == other.prefix(self.count)
-    }
-
-    public func replacingAncestor(_ ancestor: IndexPath, with newAncestor: IndexPath) -> IndexPath {
-        return newAncestor + dropFirst(ancestor.count)
     }
 }

@@ -24,45 +24,31 @@
 
 import Foundation
 
-public protocol CollectionChangesetProtocol: ChangesetProtocol where
+public protocol OrderedCollectionChangesetProtocol: ChangesetProtocol where
     Collection: Swift.Collection,
-    Operation == ArrayBasedOperation<Collection.Element, Collection.Index>,
-    Diff == ArrayBasedDiff<Collection.Index>,
+    Operation == OrderedCollectionOperation<Collection.Element, Collection.Index>,
+    Diff == OrderedCollectionDiff<Collection.Index>,
     Collection.Index: Strideable {
     
-    var asCollectionChangeset: CollectionChangeset<Collection> { get }
+    var asOrderedCollectionChangeset: OrderedCollectionChangeset<Collection> { get }
 }
 
-public struct CollectionChangeset<Collection: Swift.Collection>: CollectionChangesetProtocol where Collection.Index: Strideable {
+public final class OrderedCollectionChangeset<Collection: Swift.Collection>: Changeset<Collection, OrderedCollectionOperation<Collection.Element, Collection.Index>, OrderedCollectionDiff<Collection.Index>>, OrderedCollectionChangesetProtocol where Collection.Index: Strideable {
 
-    public var diff: ArrayBasedDiff<Collection.Index>
-    public var patch: [ArrayBasedOperation<Collection.Element, Collection.Index>]
-    public var collection: Collection
-
-    public init(collection: Collection, patch: [ArrayBasedOperation<Collection.Element, Collection.Index>]) {
-        self.collection = collection
-        self.patch = patch
-        self.diff = ArrayBasedDiff(from: patch)
+    public override func calculateDiff(from patch: [OrderedCollectionOperation<Collection.Element, Collection.Index>]) -> OrderedCollectionDiff<Collection.Index> {
+        return Diff(from: patch)
     }
 
-    public init(collection: Collection, diff: ArrayBasedDiff<Collection.Index>) {
-        self.collection = collection
-        self.patch = diff.generatePatch(to: collection)
-        self.diff = diff
+    public override func calculatePatch(from diff: OrderedCollectionDiff<Collection.Index>) -> [OrderedCollectionOperation<Collection.Element, Collection.Index>] {
+        return diff.generatePatch(to: collection)
     }
 
-    public init(collection: Collection, patch: [ArrayBasedOperation<Collection.Element, Collection.Index>], diff: ArrayBasedDiff<Collection.Index>) {
-        self.collection = collection
-        self.patch = patch
-        self.diff = diff
-    }
-
-    public var asCollectionChangeset: CollectionChangeset<Collection> {
+    public var asOrderedCollectionChangeset: OrderedCollectionChangeset<Collection> {
         return self
     }
 }
 
-extension ChangesetContainerProtocol where Changeset: CollectionChangesetProtocol, Changeset.Collection: MutableCollection {
+extension ChangesetContainerProtocol where Changeset: OrderedCollectionChangesetProtocol, Changeset.Collection: MutableCollection {
 
     /// Access or update the element at `index`.
     public subscript(index: Collection.Index) -> Collection.Element {
@@ -78,7 +64,7 @@ extension ChangesetContainerProtocol where Changeset: CollectionChangesetProtoco
     }
 }
 
-extension ChangesetContainerProtocol where Changeset: CollectionChangesetProtocol, Changeset.Collection: RangeReplaceableCollection {
+extension ChangesetContainerProtocol where Changeset: OrderedCollectionChangesetProtocol, Changeset.Collection: RangeReplaceableCollection {
 
     /// Append `newElement` at the end of the collection.
     public func append(_ newElement: Collection.Element) {
@@ -143,7 +129,7 @@ extension ChangesetContainerProtocol where Changeset: CollectionChangesetProtoco
 }
 
 extension ChangesetContainerProtocol where
-Changeset: CollectionChangesetProtocol,
+Changeset: OrderedCollectionChangesetProtocol,
 Changeset.Collection: RangeReplaceableCollection,
 Changeset.Collection.Index.Stride == Int {
 
@@ -153,7 +139,7 @@ Changeset.Collection.Index.Stride == Int {
             let movesDiff = fromIndices.enumerated().map {
                 (from: $0.element, to: toIndex.advanced(by: $0.offset))
             }
-            return ArrayBasedDiff<Collection.Index>(moves: movesDiff).generatePatch(to: collection)
+            return OrderedCollectionDiff<Collection.Index>(inserts: [], deletes: [], updates: [], moves: movesDiff).generatePatch(to: collection)
         }
     }
 }

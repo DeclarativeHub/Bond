@@ -24,7 +24,7 @@
 
 import Foundation
 
-extension ArrayBasedDiff where Index == IndexPath {
+extension OrderedCollectionDiff where Index == IndexPath {
 
     private struct Edit<Element> {
 
@@ -32,7 +32,7 @@ extension ArrayBasedDiff where Index == IndexPath {
         var insertionIndex: IndexPath?
         var element: Element?
 
-        var asOperation: ArrayBasedOperation<Element, Index> {
+        var asOperation: OrderedCollectionOperation<Element, Index> {
             if let from = deletionIndex, let to = insertionIndex {
                 return .move(from: from, to: to)
             } else if let deletionIndex = deletionIndex {
@@ -45,7 +45,7 @@ extension ArrayBasedDiff where Index == IndexPath {
         }
     }
 
-    public func generatePatch<C: TreeNodeProtocol>(to collection: C) -> [ArrayBasedOperation<C.ChildNode, C.Index>] where C.Index == IndexPath {
+    public func generatePatch<C: TreeNodeProtocol>(to collection: C) -> [OrderedCollectionOperation<C.ChildNode, C.Index>] where C.Index == IndexPath {
 
         let inserts = self.inserts.map { Edit<C.ChildNode>(deletionIndex: nil, insertionIndex: $0, element: collection[$0]) }
         let deletes = self.deletes.map { Edit<C.ChildNode>(deletionIndex: $0, insertionIndex: nil, element: nil) }
@@ -142,10 +142,10 @@ extension ArrayBasedDiff where Index == IndexPath {
         let patch = (deletionScript + insertionScript).map { $0.asOperation }
 
         let updatesInFinalCollection: [Index] = self.updates.compactMap {
-            return AnyArrayBasedOperation.simulate(patch: patch.map { $0.asAnyArrayBasedOperation }, on: $0)
+            return AnyOrderedCollectionOperation.simulate(patch: patch.map { $0.asAnyOrderedCollectionOperation }, on: $0)
         }
 
-        let updates = zip(self.updates, updatesInFinalCollection).map { (pair) -> ArrayBasedOperation<C.ChildNode, C.Index> in
+        let updates = zip(self.updates, updatesInFinalCollection).map { (pair) -> OrderedCollectionOperation<C.ChildNode, C.Index> in
             return .update(at: pair.0, newElement: collection[pair.1!])
         }
 

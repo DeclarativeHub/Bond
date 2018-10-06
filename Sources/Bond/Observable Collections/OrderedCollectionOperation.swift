@@ -1,5 +1,5 @@
 //
-//  ArrayBasedOperation.swift
+//  OrderedCollectionOperation.swift
 //  Bond
 //
 //  Created by Srdan Rasic on 30/09/2018.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum ArrayBasedOperation<Element, Index> {
+public enum OrderedCollectionOperation<Element, Index> {
 
     case insert(Element, at: Index)
     case delete(at: Index)
@@ -16,7 +16,7 @@ public enum ArrayBasedOperation<Element, Index> {
     case move(from: Index, to: Index)
 }
 
-public enum AnyArrayBasedOperation<Index> {
+public enum AnyOrderedCollectionOperation<Index> {
 
     case insert(at: Index)
     case delete(at: Index)
@@ -24,9 +24,9 @@ public enum AnyArrayBasedOperation<Index> {
     case move(from: Index, to: Index)
 }
 
-extension ArrayBasedOperation {
+extension OrderedCollectionOperation {
 
-    public var asAnyArrayBasedOperation: AnyArrayBasedOperation<Index> {
+    public var asAnyOrderedCollectionOperation: AnyOrderedCollectionOperation<Index> {
         switch self {
         case .insert(_, let at):
             return .insert(at: at)
@@ -40,7 +40,7 @@ extension ArrayBasedOperation {
     }
 }
 
-extension ArrayBasedOperation: CustomDebugStringConvertible {
+extension OrderedCollectionOperation: CustomDebugStringConvertible {
 
     public var debugDescription: String {
         switch self {
@@ -58,7 +58,7 @@ extension ArrayBasedOperation: CustomDebugStringConvertible {
 
 extension RangeReplaceableCollection where Index: Strideable {
 
-    public mutating func apply(_ operation: CollectionChangeset<Self>.Operation) {
+    public mutating func apply(_ operation: OrderedCollectionChangeset<Self>.Operation) {
         switch operation {
         case .insert(let element, let at):
             insert(element, at: at)
@@ -91,7 +91,7 @@ extension RangeReplaceableTreeNode where Index == IndexPath {
     }
 }
 
-extension ChangesetContainerProtocol where Changeset.Collection: RangeReplaceableCollection, Changeset.Collection: MutableCollection, Changeset.Collection.Index: Strideable, Changeset.Operation == CollectionChangeset<Changeset.Collection>.Operation {
+extension ChangesetContainerProtocol where Changeset.Collection: RangeReplaceableCollection, Changeset.Collection: MutableCollection, Changeset.Collection.Index: Strideable, Changeset.Operation == OrderedCollectionChangeset<Changeset.Collection>.Operation {
 
     public func apply(_ operation: Changeset.Operation) {
         descriptiveUpdate { (collection) -> [Changeset.Operation] in

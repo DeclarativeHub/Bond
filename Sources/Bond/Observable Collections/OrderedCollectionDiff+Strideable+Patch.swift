@@ -24,7 +24,7 @@
 
 import Foundation
 
-extension ArrayBasedDiff where Index: Strideable {
+extension OrderedCollectionDiff where Index: Strideable {
 
     private struct Edit<Element> {
 
@@ -32,7 +32,7 @@ extension ArrayBasedDiff where Index: Strideable {
         var insertionIndex: Index?
         var element: Element?
 
-        var asOperation: ArrayBasedOperation<Element, Index> {
+        var asOperation: OrderedCollectionOperation<Element, Index> {
             if let from = deletionIndex, let to = insertionIndex {
                 return .move(from: from, to: to)
             } else if let deletionIndex = deletionIndex {
@@ -45,7 +45,7 @@ extension ArrayBasedDiff where Index: Strideable {
         }
     }
 
-    public func generatePatch<C: Collection>(to collection: C) -> [ArrayBasedOperation<C.Element, C.Index>] where C.Index == Index {
+    public func generatePatch<C: Collection>(to collection: C) -> [OrderedCollectionOperation<C.Element, C.Index>] where C.Index == Index {
 
         let inserts = self.inserts.map { Edit<C.Element>(deletionIndex: nil, insertionIndex: $0, element: collection[$0]) }
         let deletes = self.deletes.map { Edit<C.Element>(deletionIndex: $0, insertionIndex: nil, element: nil) }
@@ -85,10 +85,10 @@ extension ArrayBasedDiff where Index: Strideable {
         let patch = script.map { $0.asOperation }
 
         let updatesInFinalCollection: [Index] = self.updates.compactMap {
-            return AnyArrayBasedOperation.simulate(patch: patch.map { $0.asAnyArrayBasedOperation }, on: $0)
+            return AnyOrderedCollectionOperation.simulate(patch: patch.map { $0.asAnyOrderedCollectionOperation }, on: $0)
         }
 
-        let updates = zip(self.updates, updatesInFinalCollection).map { (pair) -> ArrayBasedOperation<C.Element, C.Index> in
+        let updates = zip(self.updates, updatesInFinalCollection).map { (pair) -> OrderedCollectionOperation<C.Element, C.Index> in
             return .update(at: pair.0, newElement: collection[pair.1!])
         }
 

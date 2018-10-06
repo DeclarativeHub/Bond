@@ -24,16 +24,7 @@
 
 import Foundation
 
-public protocol ChangesetProtocol {
+public protocol Instantiatable {
 
-    associatedtype Diff
-    associatedtype Operation
-    associatedtype Collection
-
-    var diff: Diff { get }
-    var patch: [Operation] { get }
-    var collection: Collection { get }
-
-    init(collection: Collection, patch: [Operation])
-    init(collection: Collection, diff: Diff)
+    init()
 }

@@ -24,17 +24,17 @@
 
 import Foundation
 
-extension ArrayBasedDiff where Index: Strideable {
+extension OrderedCollectionDiff where Index: Strideable {
 
     /// Calculates diff from the given patch.
     /// - complexity: O(Nˆ2) where N is the number of patch operations.
-    public init<T>(from patch: [ArrayBasedOperation<T, Index>]) {
-        self.init(from: patch.map { $0.asAnyArrayBasedOperation })
+    public init<T>(from patch: [OrderedCollectionOperation<T, Index>]) {
+        self.init(from: patch.map { $0.asAnyOrderedCollectionOperation })
     }
 
     /// Calculates diff from the given patch.
     /// - complexity: O(Nˆ2) where N is the number of patch operations.
-    public init(from patch: [AnyArrayBasedOperation<Index>]) {
+    public init(from patch: [AnyOrderedCollectionOperation<Index>]) {
         self.init()
 
         guard !patch.isEmpty else {
@@ -47,13 +47,13 @@ extension ArrayBasedDiff where Index: Strideable {
             case .insert(let atIndex):
                 recordInsertion(at: atIndex)
             case .delete(let atIndex):
-                let sourceIndex = AnyArrayBasedOperation<Index>.undo(patch: patchToUndo, on: atIndex)
+                let sourceIndex = AnyOrderedCollectionOperation<Index>.undo(patch: patchToUndo, on: atIndex)
                 recordDeletion(at: atIndex, sourceIndex: sourceIndex)
             case .update(let atIndex):
-                let sourceIndex = AnyArrayBasedOperation<Index>.undo(patch: patchToUndo, on: atIndex)
+                let sourceIndex = AnyOrderedCollectionOperation<Index>.undo(patch: patchToUndo, on: atIndex)
                 recordUpdate(at: atIndex, sourceIndex: sourceIndex)
             case .move(let fromIndex, let toIndex):
-                let sourceIndex = AnyArrayBasedOperation<Index>.undo(patch: patchToUndo, on: fromIndex)
+                let sourceIndex = AnyOrderedCollectionOperation<Index>.undo(patch: patchToUndo, on: fromIndex)
                 recordMove(from: fromIndex, to: toIndex, sourceIndex: sourceIndex)
             }
         }

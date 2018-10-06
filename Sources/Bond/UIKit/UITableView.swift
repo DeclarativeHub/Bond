@@ -112,7 +112,7 @@ open class TableViewBinderDataSource<Changeset: SectionedDataSourceChangeset>: N
     
     open func applyChageset(_ changeset: Changeset) {
         guard let tableView = tableView else { return }
-        let diff = changeset.diff.asArrayBasedDiff.map { $0.asSectionDataIndexPath }
+        let diff = changeset.diff.asOrderedCollectionDiff.map { $0.asSectionDataIndexPath }
         if diff.isEmpty {
             tableView.reloadData()
         } else if diff.count == 1 {
@@ -124,7 +124,7 @@ open class TableViewBinderDataSource<Changeset: SectionedDataSourceChangeset>: N
         }
     }
 
-    open func applyChagesetDiff(_ diff: ArrayBasedDiff<IndexPath>) {
+    open func applyChagesetDiff(_ diff: OrderedCollectionDiff<IndexPath>) {
         guard let tableView = tableView else { return }
         let insertedSections = diff.inserts.filter { $0.count == 1 }.map { $0[0] }
         if !insertedSections.isEmpty {

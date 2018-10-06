@@ -26,37 +26,23 @@ import Foundation
 
 public protocol TreeChangesetProtocol: ChangesetProtocol where
     Collection: TreeNodeProtocol,
-    Operation == ArrayBasedOperation<Collection.ChildNode, IndexPath>,
-    Diff == ArrayBasedDiff<IndexPath>,
+    Operation == OrderedCollectionOperation<Collection.ChildNode, IndexPath>,
+    Diff == OrderedCollectionDiff<IndexPath>,
     Collection.Index == IndexPath {
 
     var asTreeChangeset: TreeChangeset<Collection> { get }
 }
 
-public struct TreeChangeset<Collection: TreeNodeProtocol>: TreeChangesetProtocol where Collection.Index == IndexPath {
+public final class TreeChangeset<Collection: TreeNodeProtocol>: Changeset<Collection, OrderedCollectionOperation<Collection.ChildNode, IndexPath>, OrderedCollectionDiff<IndexPath>>, TreeChangesetProtocol where Collection.Index == IndexPath {
 
-    public var diff: ArrayBasedDiff<IndexPath>
-    public var patch: [ArrayBasedOperation<Collection.ChildNode, IndexPath>]
-    public var collection: Collection
-
-    public init(collection: Collection, patch: [ArrayBasedOperation<Collection.ChildNode, IndexPath>]) {
-        self.collection = collection
-        self.patch = patch
-        self.diff = Diff(from: patch)
+    public override func calculateDiff(from patch: [OrderedCollectionOperation<Collection.ChildNode, IndexPath>]) -> Diff {
+        return Diff(from: patch)
     }
 
-    public init(collection: Collection, diff: ArrayBasedDiff<IndexPath>) {
-        self.collection = collection
-        self.patch = diff.generatePatch(to: collection)
-        self.diff = diff
+    public override func calculatePatch(from diff: OrderedCollectionDiff<IndexPath>) -> [OrderedCollectionOperation<Collection.ChildNode, IndexPath>] {
+        return diff.generatePatch(to: collection)
     }
 
-    public init(collection: Collection, patch: [ArrayBasedOperation<Collection.ChildNode, IndexPath>], diff: ArrayBasedDiff<IndexPath>) {
-        self.collection = collection
-        self.patch = patch
-        self.diff = diff
-    }
-    
     public var asTreeChangeset: TreeChangeset<Collection> {
         return self
     }
@@ -83,13 +69,14 @@ extension ChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Cha
         }
     }
 
-//    public func insert(contentsOf newNodes: [ChildNode], at indexPath: IndexPath) {
-//        descriptiveUpdate { (collection) -> [Operation] in
-//            collection.insert(contentsOf: newNodes, at: indexPath)
-//            let indices = (0..<newNodes.count).map { collection.index(indexPath, offsetBy: $0) }
-//            return indices.map { Operation.insert(collection[$0], at: $0) }
-//        }
-//    }
+    public func insert(contentsOf newNodes: [ChildNode], at indexPath: IndexPath) {
+        guard newNodes.count > 0 else { return }
+        descriptiveUpdate { (collection) -> [Operation] in
+            collection.insert(contentsOf: newNodes, at: indexPath)
+            let indices = (0..<newNodes.count-1).reduce([indexPath]) { result, _ in result + [collection.index(after: result.last!)] }
+            return indices.map { Operation.insert(collection[$0], at: $0) }
+        }
+    }
 
     /// Move the element at index `i` to index `toIndex`.
     public func move(from fromIndex: IndexPath, to toIndex: IndexPath) {
@@ -105,7 +92,7 @@ extension ChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Cha
             let movesDiff = fromIndices.enumerated().map {
                 (from: $0.element, to: toIndex.advanced(by: $0.offset, atLevel: toIndex.count-1))
             }
-            return ArrayBasedDiff<IndexPath>(moves: movesDiff).generatePatch(to: collection)
+            return OrderedCollectionDiff<IndexPath>(inserts: [], deletes: [], updates: [], moves: movesDiff).generatePatch(to: collection)
         }
     }
 

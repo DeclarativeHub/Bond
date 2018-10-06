@@ -23,7 +23,7 @@ var t = TreeArray<String>([
 let ot = MutableObservableTreeArray(t)
 
 ot.observeNext { (cs) in
-    print(cs.diff, cs.patch)
+    print(cs.collection, cs.diff, cs.patch)
 }
 
 ot.insert(TreeNode("New"), at: [0, 0])
@@ -32,6 +32,8 @@ ot.batchUpdate { (ot) in
     ot.remove(at: [0, 0])
     ot.remove(at: [0, 2, 1])
 }
+
+ot.insert(contentsOf: [TreeNode("44"), TreeNode("55")], at: [0, 3])
 
 // Array
 
@@ -76,3 +78,4 @@ data.observeNext { (changeset) in
 
 data.append(0xFF)
 data[0] = 0xAA
+

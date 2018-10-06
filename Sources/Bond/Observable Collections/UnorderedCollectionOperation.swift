@@ -1,5 +1,5 @@
 //
-//  UnorderedOperation.swift
+//  UnorderedCollectionOperation.swift
 //  Bond
 //
 //  Created by Srdan Rasic on 05/10/2018.
@@ -8,23 +8,23 @@
 
 import Foundation
 
-public enum UnorderedOperation<Element, Index> {
+public enum UnorderedCollectionOperation<Element, Index> {
 
     case insert(Element, at: Index)
     case delete(at: Index)
     case update(at: Index, newElement: Element)
 }
 
-public enum AnyUnorderedOperation<Index> {
+public enum AnyUnorderedCollectionOperation<Index> {
 
     case insert(at: Index)
     case delete(at: Index)
     case update(at: Index)
 }
 
-extension UnorderedOperation {
+extension UnorderedCollectionOperation {
 
-    public var asAnyUnorderedOperation: AnyUnorderedOperation<Index> {
+    public var asAnyUnorderedCollectionOperation: AnyUnorderedCollectionOperation<Index> {
         switch self {
         case .insert(_, let at):
             return .insert(at: at)
@@ -36,7 +36,7 @@ extension UnorderedOperation {
     }
 }
 
-extension UnorderedOperation: CustomDebugStringConvertible {
+extension UnorderedCollectionOperation: CustomDebugStringConvertible {
 
     public var debugDescription: String {
         switch self {

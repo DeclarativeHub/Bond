@@ -24,17 +24,17 @@
 
 import Foundation
 
-extension ArrayBasedDiff where Index == IndexPath {
+extension OrderedCollectionDiff where Index == IndexPath {
 
     /// Calculates diff from the given patch.
     /// - complexity: O(Nˆ2) where N is the number of patch operations.
-    public init<T>(from patch: [ArrayBasedOperation<T, IndexPath>]) {
-        self.init(from: patch.map { $0.asAnyArrayBasedOperation })
+    public init<T>(from patch: [OrderedCollectionOperation<T, IndexPath>]) {
+        self.init(from: patch.map { $0.asAnyOrderedCollectionOperation })
     }
 
     /// Calculates diff from the given patch.
     /// - complexity: O(Nˆ2) where N is the number of patch operations.
-    public init(from patch: [AnyArrayBasedOperation<Index>]) {
+    public init(from patch: [AnyOrderedCollectionOperation<Index>]) {
         self.init()
 
         guard !patch.isEmpty else {
@@ -47,23 +47,23 @@ extension ArrayBasedDiff where Index == IndexPath {
             case .insert(let atIndex):
                 recordInsertion(at: atIndex, patch: patchToUndo)
             case .delete(let atIndex):
-                let sourceIndex = AnyArrayBasedOperation<Index>.undo(patch: patchToUndo, on: atIndex)
+                let sourceIndex = AnyOrderedCollectionOperation<Index>.undo(patch: patchToUndo, on: atIndex)
                 recordDeletion(at: atIndex, sourceIndex: sourceIndex, patch: patchToUndo)
             case .update(let atIndex):
-                let sourceIndex = AnyArrayBasedOperation<Index>.undo(patch: patchToUndo, on: atIndex)
+                let sourceIndex = AnyOrderedCollectionOperation<Index>.undo(patch: patchToUndo, on: atIndex)
                 recordUpdate(at: atIndex, sourceIndex: sourceIndex, patch: patchToUndo)
             case .move(let fromIndex, let toIndex):
-                let sourceIndex = AnyArrayBasedOperation<Index>.undo(patch: patchToUndo, on: fromIndex)
+                let sourceIndex = AnyOrderedCollectionOperation<Index>.undo(patch: patchToUndo, on: fromIndex)
                 recordMove(from: fromIndex, to: toIndex, sourceIndex: sourceIndex, patch: patchToUndo)
             }
         }
     }
 
-    private func updatesInFinalCollection(given patch: [AnyArrayBasedOperation<Index>]) -> [Index?] {
-        return updates.map { AnyArrayBasedOperation.simulate(patch: patch, on: $0) }
+    private func updatesInFinalCollection(given patch: [AnyOrderedCollectionOperation<Index>]) -> [Index?] {
+        return updates.map { AnyOrderedCollectionOperation.simulate(patch: patch, on: $0) }
     }
 
-    private mutating func recordInsertion(at insertionIndex: Index, patch: [AnyArrayBasedOperation<Index>]) {
+    private mutating func recordInsertion(at insertionIndex: Index, patch: [AnyOrderedCollectionOperation<Index>]) {
         // If inserting into an inserted subtree, skip
         if inserts.contains(where: { $0.isAncestor(of: insertionIndex) }) {
             return
@@ -83,7 +83,7 @@ extension ArrayBasedDiff where Index == IndexPath {
         inserts.append(insertionIndex)
     }
 
-    private mutating func recordDeletion(at deletionIndex: Index, sourceIndex: Index?, patch: [AnyArrayBasedOperation<Index>]) {
+    private mutating func recordDeletion(at deletionIndex: Index, sourceIndex: Index?, patch: [AnyOrderedCollectionOperation<Index>]) {
 
         func adjustDestinationIndices() {
             forEachDestinationIndex { (index) in
@@ -144,7 +144,7 @@ extension ArrayBasedDiff where Index == IndexPath {
         adjustDestinationIndices()
     }
 
-    private mutating func recordUpdate(at updateIndex: Index, sourceIndex: Index?, patch: [AnyArrayBasedOperation<Index>]) {
+    private mutating func recordUpdate(at updateIndex: Index, sourceIndex: Index?, patch: [AnyOrderedCollectionOperation<Index>]) {
 
         // If updating an inserted index or in a such subtree
         if inserts.contains(where: { $0 == updateIndex || $0.isAncestor(of: updateIndex) }) {
@@ -160,7 +160,7 @@ extension ArrayBasedDiff where Index == IndexPath {
         inserts.removeAll(where: { updateIndex.isAncestor(of: $0) })
 
         // If there are moves into the updated subtree, replaces them with deletions
-        var additionalPatch: [AnyArrayBasedOperation<Index>] = []
+        var additionalPatch: [AnyOrderedCollectionOperation<Index>] = []
         while let move = moves.first(where: { updateIndex.isAncestor(of: $0.to) }) {
             recordDeletion(at: move.to, sourceIndex: move.from, patch: patch + additionalPatch)
             additionalPatch.append(.delete(at: move.to))
@@ -205,7 +205,7 @@ extension ArrayBasedDiff where Index == IndexPath {
         }
     }
 
-    private mutating func recordMove(from fromIndex: Index, to toIndex: Index, sourceIndex: Index?, patch: [AnyArrayBasedOperation<Index>]) {
+    private mutating func recordMove(from fromIndex: Index, to toIndex: Index, sourceIndex: Index?, patch: [AnyOrderedCollectionOperation<Index>]) {
         guard fromIndex != toIndex else { return }
 
         // If moving previously inserted subtree, replace with the insertion at the new index

@@ -26,9 +26,9 @@ extension Set: _SetProtocol {
 }
 
 extension ChangesetContainerProtocol where
-    Changeset: UnorderedChangesetProtocol,
+    Changeset: UnorderedCollectionChangesetProtocol,
     Changeset.Collection: _SetProtocol,
-    Changeset.Operation == UnorderedOperation<Set<Changeset.Collection.Element>.Element, Set<Changeset.Collection.Element>.Index> {
+    Changeset.Operation == UnorderedCollectionOperation<Set<Changeset.Collection.Element>.Element, Set<Changeset.Collection.Element>.Index> {
 
     /// Insert item in the set.
     public func insert(_ member: Changeset.Collection.Element) {

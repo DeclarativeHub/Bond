@@ -108,7 +108,7 @@ open class CollectionViewBinderDataSource<Changeset: SectionedDataSourceChangese
 
     open func applyChageset(_ changeset: Changeset) {
         guard let collectionView = collectionView else { return }
-        let diff = changeset.diff.asArrayBasedDiff.map { $0.asSectionDataIndexPath }
+        let diff = changeset.diff.asOrderedCollectionDiff.map { $0.asSectionDataIndexPath }
         if diff.isEmpty {
             collectionView.reloadData()
         } else if diff.count == 1 {
@@ -120,7 +120,7 @@ open class CollectionViewBinderDataSource<Changeset: SectionedDataSourceChangese
         }
     }
 
-    open func applyChagesetDiff(_ diff: ArrayBasedDiff<IndexPath>) {
+    open func applyChagesetDiff(_ diff: OrderedCollectionDiff<IndexPath>) {
         guard let collectionView = collectionView else { return }
         let insertedSections = diff.inserts.filter { $0.count == 1 }.map { $0[0] }
         if !insertedSections.isEmpty {

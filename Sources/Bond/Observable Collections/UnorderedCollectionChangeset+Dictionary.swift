@@ -27,9 +27,9 @@ extension Dictionary: _DictionaryProtocol {
 }
 
 extension ChangesetContainerProtocol where
-    Changeset: UnorderedChangesetProtocol,
+    Changeset: UnorderedCollectionChangesetProtocol,
     Changeset.Collection: _DictionaryProtocol,
-    Changeset.Operation == UnorderedOperation<Dictionary<Changeset.Collection.Key, Changeset.Collection.Value>.Element, Dictionary<Changeset.Collection.Key, Changeset.Collection.Value>.Index> {
+    Changeset.Operation == UnorderedCollectionOperation<Dictionary<Changeset.Collection.Key, Changeset.Collection.Value>.Element, Dictionary<Changeset.Collection.Key, Changeset.Collection.Value>.Index> {
 
     /// Update, insert or remove value from the dictionary.
     public subscript(_ key: Changeset.Collection.Key) -> Changeset.Collection.Value? {

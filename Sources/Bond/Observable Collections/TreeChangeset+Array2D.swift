@@ -23,52 +23,6 @@
 //
 
 import Foundation
-import ReactiveKit
-
-public typealias Array2D<Section, Item> = TreeArray<Array2DElement<Section, Item>>
-
-public protocol Array2DElementProtocol {
-    associatedtype Section
-    associatedtype Item
-    var section: Section? { get }
-    var item: Item? { get }
-    init(section: Section)
-    init(item: Item)
-    var asSectionedData: Array2DElement<Section, Item> { get }
-}
-
-public enum Array2DElement<Section, Item>: Array2DElementProtocol {
-    case section(Section)
-    case item(Item)
-
-    public init(item: Item) {
-        self = .item(item)
-    }
-
-    public init(section: Section) {
-        self = .section(section)
-    }
-
-    public var section: Section? {
-        if case .section(let section) = self {
-            return section
-        } else {
-            return nil
-        }
-    }
-
-    public var item: Item? {
-        if case .item(let item) = self {
-            return item
-        } else {
-            return nil
-        }
-    }
-
-    public var asSectionedData: Array2DElement<Section, Item> {
-        return self
-    }
-}
 
 extension ChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Changeset.Collection: TreeArrayProtocol, Changeset.Collection.ChildValue: Array2DElementProtocol {
 
@@ -78,7 +32,7 @@ extension ChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Cha
 
     public subscript(itemAt indexPath: IndexPath) -> Item {
         get {
-            return collection.asTreeArray[indexPath].value.item!
+            return collection.asTreeArray[indexPath].value.asSectionedData.item!
         }
         set {
             descriptiveUpdate { (collection) -> [Operation] in
@@ -90,7 +44,7 @@ extension ChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Cha
 
     public subscript(sectionAt index: Int) -> Section {
         get {
-            return collection.asTreeArray[[index]].value.section!
+            return collection.asTreeArray[[index]].value.asSectionedData.section!
         }
         set {
             descriptiveUpdate { (collection) -> [Operation] in
@@ -119,11 +73,11 @@ extension ChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Cha
     public func insert(item: Item, at indexPath: IndexPath)  {
         insert(TreeNode(SectionedData(item: item)), at: indexPath)
     }
-//
-//    /// Insert `items` at index path `indexPath`.
-//    public func insert(contentsOf items: [Collection.Item], at indexPath: IndexPath) {
-//        insert(contentsOf: items.map { .item($0) }, at: indexPath)
-//    }
+
+    /// Insert `items` at index path `indexPath`.
+    public func insert(contentsOf items: [Item], at indexPath: IndexPath) {
+        insert(contentsOf: items.map { TreeNode(SectionedData(item: $0)) }, at: indexPath)
+    }
 
     /// Move the section at index `fromIndex` to index `toIndex`.
     public func moveSection(from fromIndex: Int, to toIndex: Int) {
@@ -138,13 +92,13 @@ extension ChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Cha
     /// Remove and return the section at `index`.
     @discardableResult
     public func removeSection(at index: Int) -> Section {
-        return remove(at: [index]).value.section!
+        return remove(at: [index]).value.asSectionedData.section!
     }
 
     /// Remove and return the item at `indexPath`.
     @discardableResult
     public func removeItem(at indexPath: IndexPath) -> Item {
-        return remove(at: indexPath).value.item!
+        return remove(at: indexPath).value.asSectionedData.item!
     }
 
     /// Remove all items from the array. Keep empty sections.

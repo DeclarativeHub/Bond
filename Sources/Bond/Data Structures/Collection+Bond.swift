@@ -24,7 +24,7 @@
 
 import Foundation
 
-extension Array {
+extension RangeReplaceableCollection where Index == Int {
 
     func insertionIndex(of element: Element, isOrderedBefore: (Element, Element) -> Bool) -> Int {
         var lo = 0

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <playground version='6.0' target-platform='ios' display-mode='raw' executeOnSourceChanges='false'>
     <pages>
-        <page name='Testing'/>
+        <page name='Observable Collections'/>
         <page name='Key Value Observing'/>
+        <page name='Table View Data Source'/>
     </pages>
 </playground>

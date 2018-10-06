@@ -25,20 +25,20 @@
 import Foundation
 import ReactiveKit
 
-public typealias ObservableCollection<Collection: Swift.Collection> = AnyProperty<CollectionChangeset<Collection>> where Collection.Index: Strideable
-public typealias MutableObservableCollection<Collection: Swift.Collection> = Property<CollectionChangeset<Collection>> where Collection.Index: Strideable
+public typealias ObservableCollection<Collection: Swift.Collection> = AnyProperty<OrderedCollectionChangeset<Collection>> where Collection.Index: Strideable
+public typealias MutableObservableCollection<Collection: Swift.Collection> = Property<OrderedCollectionChangeset<Collection>> where Collection.Index: Strideable
 
-public typealias ObservableUnorderedCollection<Collection: Swift.Collection> = AnyProperty<UnorderedChangeset<Collection>>
-public typealias MutableObservableUnorderedCollection<Collection: Swift.Collection> = Property<UnorderedChangeset<Collection>>
+public typealias ObservableUnorderedCollection<Collection: Swift.Collection> = AnyProperty<UnorderedCollectionChangeset<Collection>>
+public typealias MutableObservableUnorderedCollection<Collection: Swift.Collection> = Property<UnorderedCollectionChangeset<Collection>>
 
-public typealias ObservableArray<Element> = AnyProperty<CollectionChangeset<[Element]>>
-public typealias MutableObservableArray<Element> = Property<CollectionChangeset<[Element]>>
+public typealias ObservableArray<Element> = AnyProperty<OrderedCollectionChangeset<[Element]>>
+public typealias MutableObservableArray<Element> = Property<OrderedCollectionChangeset<[Element]>>
 
-public typealias ObservableSet<Element: Hashable> = AnyProperty<UnorderedChangeset<Set<Element>>>
-public typealias MutableObservableSet<Element: Hashable> = Property<UnorderedChangeset<Set<Element>>>
+public typealias ObservableSet<Element: Hashable> = AnyProperty<UnorderedCollectionChangeset<Set<Element>>>
+public typealias MutableObservableSet<Element: Hashable> = Property<UnorderedCollectionChangeset<Set<Element>>>
 
-public typealias ObservableDictionary<Key: Hashable, Value> = AnyProperty<UnorderedChangeset<Dictionary<Key, Value>>>
-public typealias MutableObservableDictionary<Key: Hashable, Value> = Property<UnorderedChangeset<Dictionary<Key, Value>>>
+public typealias ObservableDictionary<Key: Hashable, Value> = AnyProperty<UnorderedCollectionChangeset<Dictionary<Key, Value>>>
+public typealias MutableObservableDictionary<Key: Hashable, Value> = Property<UnorderedCollectionChangeset<Dictionary<Key, Value>>>
 
 public typealias ObservableTreeNode<Element> = AnyProperty<TreeChangeset<TreeNode<Element>>>
 public typealias MutableObservableTreeNode<Element> = Property<TreeChangeset<TreeNode<Element>>>

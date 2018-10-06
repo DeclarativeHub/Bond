@@ -9,9 +9,9 @@
 import XCTest
 @testable import Bond
 
-extension ArrayBasedOperation where Index == Int, Element == Int {
+extension OrderedCollectionOperation where Index == Int, Element == Int {
 
-    static func randomOperation(collectionSize: Int) -> ArrayBasedOperation<Int, Int> {
+    static func randomOperation(collectionSize: Int) -> OrderedCollectionOperation<Int, Int> {
         let element = Int.random(in: 11..<100)
         guard collectionSize > 1 else {
             return .insert(element, at: 0)
@@ -49,10 +49,10 @@ class CollectionChangesetDiffAndPatchTest: XCTestCase {
     func oneRandomTest() {
         let initialCollection = Array(0..<4)
         var collection = initialCollection
-        var operations: [CollectionChangeset<[Int]>.Operation] = []
+        var operations: [OrderedCollectionChangeset<[Int]>.Operation] = []
 
         for _ in 0..<Int.random(in: 2...12) {
-            let operation = ArrayBasedOperation<Int, Int>.randomOperation(collectionSize: collection.count)
+            let operation = OrderedCollectionOperation<Int, Int>.randomOperation(collectionSize: collection.count)
             collection.apply(operation)
             operations.append(operation)
         }
@@ -60,14 +60,14 @@ class CollectionChangesetDiffAndPatchTest: XCTestCase {
         execTest(operations: operations, initialCollection: initialCollection)
     }
 
-    func execTest(operations: [ArrayBasedOperation<Int, Int>], initialCollection: [Int]) {
+    func execTest(operations: [OrderedCollectionOperation<Int, Int>], initialCollection: [Int]) {
         var collection = initialCollection
 
         for operation in operations {
             collection.apply(operation)
         }
 
-        let diff = ArrayBasedDiff(from: operations)
+        let diff = OrderedCollectionDiff(from: operations)
         let patch = diff.generatePatch(to: collection)
 
         var testCollection = initialCollection

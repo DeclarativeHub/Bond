@@ -24,38 +24,30 @@
 
 import Foundation
 
-public protocol UnorderedChangesetProtocol: ChangesetProtocol where
+public protocol UnorderedCollectionChangesetProtocol: ChangesetProtocol where
     Collection: Swift.Collection,
-    Operation == UnorderedOperation<Collection.Element, Collection.Index>,
-    Diff == UnorderedDiff<Collection.Index> {
+    Operation == UnorderedCollectionOperation<Collection.Element, Collection.Index>,
+    Diff == UnorderedCollectionDiff<Collection.Index> {
 
-    var asUnorderedChangeset: UnorderedChangeset<Collection> { get }
+    var asUnorderedCollectionChangeset: UnorderedCollectionChangeset<Collection> { get }
 }
 
-public struct UnorderedChangeset<Collection: Swift.Collection>: UnorderedChangesetProtocol {
+public final class UnorderedCollectionChangeset<Collection: Swift.Collection>: Changeset<Collection, UnorderedCollectionOperation<Collection.Element, Collection.Index>, UnorderedCollectionDiff<Collection.Index>>, UnorderedCollectionChangesetProtocol {
 
-    public var diff: UnorderedDiff<Collection.Index>
-    public private(set) var patch: [UnorderedOperation<Collection.Element, Collection.Index>]
-    public private(set) var collection: Collection
-
-    public init(collection: Collection, patch: [UnorderedOperation<Collection.Element, Collection.Index>]) {
-        self.collection = collection
-        self.patch = patch
-        self.diff = UnorderedDiff<Collection.Index>(from: patch)
+    public override func calculateDiff(from patch: [UnorderedCollectionOperation<Collection.Element, Collection.Index>]) -> UnorderedCollectionDiff<Collection.Index> {
+        return Diff(from: patch)
     }
 
-    public init(collection: Collection, diff: UnorderedDiff<Collection.Index>) {
-        self.collection = collection
-        self.patch = diff.generatePatch(to: collection)
-        self.diff = diff
+    public override func calculatePatch(from diff: UnorderedCollectionDiff<Collection.Index>) -> [UnorderedCollectionOperation<Collection.Element, Collection.Index>] {
+        return diff.generatePatch(to: collection)
     }
 
-    public var asUnorderedChangeset: UnorderedChangeset<Collection> {
+    public var asUnorderedCollectionChangeset: UnorderedCollectionChangeset<Collection> {
         return self
     }
 }
 
-extension ChangesetContainerProtocol where Changeset: UnorderedChangesetProtocol, Changeset.Collection: MutableCollection {
+extension ChangesetContainerProtocol where Changeset: UnorderedCollectionChangesetProtocol, Changeset.Collection: MutableCollection {
 
     /// Access or update the element at `index`.
     public subscript(index: Collection.Index) -> Collection.Element {
@@ -71,7 +63,7 @@ extension ChangesetContainerProtocol where Changeset: UnorderedChangesetProtocol
     }
 }
 
-extension ChangesetContainerProtocol where Changeset: UnorderedChangesetProtocol, Changeset.Collection: RangeReplaceableCollection {
+extension ChangesetContainerProtocol where Changeset: UnorderedCollectionChangesetProtocol, Changeset.Collection: RangeReplaceableCollection {
 
     /// Append `newElement` to the collection.
     public func append(_ newElement: Collection.Element) {
