@@ -113,6 +113,10 @@ extension TreeNode {
             if subtree.isEmpty { subtree = "-" }
             return "(\(value): \(subtree))"
         }
+
+        public var asTreeNode: TreeNode<Value> {
+            return TreeNode(value, children.map { $0.asTreeNode })
+        }
     }
 
     public var asObject: Object {

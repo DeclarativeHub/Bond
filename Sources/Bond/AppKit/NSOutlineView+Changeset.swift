@@ -37,9 +37,9 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
     //
     // What NSOutlineView calls "object value of an item" is the value associated with a tree node: `node.value`.
 
-    public typealias CellCreation = (Changeset.Collection.Value, NSTableColumn?, NSOutlineView) -> NSView?
-    public typealias CellHeightMeasurement = (Changeset.Collection.Value, NSOutlineView) -> CGFloat?
-    public typealias IsItemExpandable = (Changeset.Collection.Value, NSOutlineView) -> Bool
+    public typealias CellCreation = (Changeset.Collection.ChildNode, NSTableColumn?, NSOutlineView) -> NSView?
+    public typealias CellHeightMeasurement = (Changeset.Collection.ChildNode, NSOutlineView) -> CGFloat?
+    public typealias IsItemExpandable = (Changeset.Collection.ChildNode, NSOutlineView) -> Bool
 
     public var createCell: CellCreation? = nil
     public var heightOfRowByItem: CellHeightMeasurement? = nil
@@ -73,7 +73,7 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
 
     // MARK: - NSOutlineViewDataSource
     public func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
-        guard let item = item as? Changeset.Collection.Value else { return false }
+        guard let item = item as? Changeset.Collection.ChildNode else { return false }
 
         if let isItemExpandable = isItemExpandable {
             return isItemExpandable(item, outlineView)
@@ -105,7 +105,7 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
 
     // MARK: - NSOutlineViewDelegate
     public func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat {
-        guard let item = item as? Changeset.Collection.Value else { return outlineView.rowHeight }
+        guard let item = item as? Changeset.Collection.ChildNode else { return outlineView.rowHeight }
 
         if let heightOfRowByItem = heightOfRowByItem {
             return heightOfRowByItem(item, outlineView) ?? outlineView.rowHeight
@@ -115,7 +115,7 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
     }
 
     public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
-        guard let item = item as? Changeset.Collection.Value else { return nil }
+        guard let item = item as? Changeset.Collection.ChildNode else { return nil }
 
         if let createCell = createCell {
             return createCell(item, tableColumn, outlineView)
@@ -208,7 +208,7 @@ extension SignalProtocol where Element: TreeArrayChangesetConvertible, Error == 
     ///     - createCell: A closure that creates (dequeues) cell for the given table view and configures it with the given data source at the given index path.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
     @discardableResult
-    public func bind(to outlineView: NSOutlineView, animated: Bool = true, rowAnimation: NSOutlineView.AnimationOptions = [.effectFade, .slideUp], createCell: @escaping ((Element.Changeset.Collection.Value, NSTableColumn?, NSOutlineView) -> NSView?)) -> Disposable {
+    public func bind(to outlineView: NSOutlineView, animated: Bool = true, rowAnimation: NSOutlineView.AnimationOptions = [.effectFade, .slideUp], createCell: @escaping ((Element.Changeset.Collection.ChildNode, NSTableColumn?, NSOutlineView) -> NSView?)) -> Disposable {
         if animated {
             let binder = OutlineViewBinder<Element.Changeset>(createCell: createCell)
             binder.itemInsertionAnimation = rowAnimation
@@ -248,7 +248,7 @@ extension SignalProtocol where Element: TreeArrayChangesetConvertible, Error == 
     ///     - configureCell: A closure that configures the cell with the data source item at the respective index path.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the outline view is deallocated.
     @discardableResult
-    public func bind<Cell: NSView>(to outlineView: NSOutlineView, cellType: Cell.Type, animated: Bool = true, rowAnimation: NSOutlineView.AnimationOptions = [.effectFade, .slideUp], configureCell: @escaping (Cell, Element.Changeset.Collection.Value) -> Void) -> Disposable {
+    public func bind<Cell: NSView>(to outlineView: NSOutlineView, cellType: Cell.Type, animated: Bool = true, rowAnimation: NSOutlineView.AnimationOptions = [.effectFade, .slideUp], configureCell: @escaping (Cell, Element.Changeset.Collection.ChildNode) -> Void) -> Disposable {
         let name = String(describing: Cell.self)
         let identifier = NSUserInterfaceItemIdentifier(rawValue: name)
         let nib = NSNib(nibNamed: name, bundle: nil)
@@ -273,7 +273,7 @@ extension SignalProtocol where Element: TreeArrayChangesetConvertible, Error == 
     ///     - configureCell: A closure that configures the cell with the data source item at the respective index path.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the outline view is deallocated.
     @discardableResult
-    public func bind<Cell: NSView>(to outlineView: NSOutlineView, cellType: Cell.Type, using binder: OutlineViewBinder<Element.Changeset>, configureCell: @escaping (Cell, Element.Changeset.Collection.Value) -> Void) -> Disposable {
+    public func bind<Cell: NSView>(to outlineView: NSOutlineView, cellType: Cell.Type, using binder: OutlineViewBinder<Element.Changeset>, configureCell: @escaping (Cell, Element.Changeset.Collection.ChildNode) -> Void) -> Disposable {
         let name = String(describing: Cell.self)
         let identifier = NSUserInterfaceItemIdentifier(rawValue: name)
         let nib = NSNib(nibNamed: name, bundle: nil)

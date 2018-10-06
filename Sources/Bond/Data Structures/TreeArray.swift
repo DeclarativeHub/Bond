@@ -24,7 +24,7 @@
 
 import Foundation
 
-public protocol TreeArrayProtocol: ArrayBasedTreeNode where ChildNode == TreeNode<ChildValue> {
+public protocol TreeArrayProtocol: ArrayBasedTreeNode {
     associatedtype ChildValue
     init()
     var asTreeArray: TreeArray<ChildValue> { get set }
@@ -72,12 +72,12 @@ public struct TreeArray<ChildValue>: TreeArrayProtocol, CustomDebugStringConvert
 extension TreeArray {
 
     /// Class-based variant of TreeArray.
-    public class Object: ArrayBasedTreeNode, CustomDebugStringConvertible {
+    public class Object: ArrayBasedTreeNode, TreeArrayProtocol, CustomDebugStringConvertible {
 
         public var value: Void = ()
         public var children: [TreeNode<ChildValue>.Object]
 
-        public init() {
+        public required init() {
             self.children = []
         }
 
@@ -102,6 +102,16 @@ extension TreeArray {
 
         public var debugDescription: String {
             return "[" + children.map { $0.debugDescription }.joined(separator: ", ") + "]"
+        }
+
+        public var asTreeArray: TreeArray<ChildValue> {
+            get {
+                return TreeArray(children.map { $0.asTreeNode })
+            }
+            set {
+                self.value = newValue.value
+                self.children = newValue.children.map { $0.asObject }
+            }
         }
     }
 }

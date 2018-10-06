@@ -24,7 +24,7 @@
 
 import Foundation
 
-extension ChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Changeset.Collection: TreeArrayProtocol, Changeset.Collection.ChildValue: Array2DElementProtocol {
+extension ChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Changeset.Collection: TreeArrayProtocol, Changeset.Collection.ChildNode == TreeNode<Changeset.Collection.ChildValue>, Changeset.Collection.ChildValue: Array2DElementProtocol {
 
     public typealias Section = Collection.ChildValue.Section
     public typealias Item = Collection.ChildValue.Item

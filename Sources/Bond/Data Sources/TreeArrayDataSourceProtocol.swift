@@ -9,7 +9,7 @@
 import Foundation
 
 public protocol TreeArrayChangesetConvertible {
-    associatedtype Changeset: TreeChangesetProtocol where Changeset.Collection: TreeArrayProtocol, Changeset.Collection: AnyObject
+    associatedtype Changeset: TreeChangesetProtocol where Changeset.Collection: TreeArrayProtocol
     var asTreeArrayChangeset: Changeset { get }
 }
 
@@ -20,11 +20,9 @@ extension TreeChangeset: TreeArrayChangesetConvertible where Collection: TreeArr
     }
 }
 
-//extension TreeArray.Object: TreeArrayChangesetConvertible {
-//
-//    public typealias Changeset = TreeChangeset<TreeArray<ChildValue>.Object>
-//
-//    public var asTreeArrayChangeset: Changeset {
-//        return TreeChangeset(collection: self, patch: [])
-//    }
-//}
+extension TreeArray.Object: TreeArrayChangesetConvertible {
+
+    public var asTreeArrayChangeset: TreeChangeset<TreeArray<ChildValue>.Object> {
+        return TreeChangeset(collection: self, patch: [])
+    }
+}
