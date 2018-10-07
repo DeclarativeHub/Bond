@@ -27,7 +27,7 @@ import Foundation
 public protocol TreeArrayProtocol: ArrayBasedTreeNode {
     associatedtype ChildValue
     init()
-    var asTreeArray: TreeArray<ChildValue> { get set }
+    subscript(indexPath: IndexPath) -> ChildNode { get set }
 }
 
 /// A tree array represents a valueless root node of a tree structure where children are of TreeNode<ChileValue> type.
@@ -52,15 +52,6 @@ public struct TreeArray<ChildValue>: TreeArrayProtocol, CustomDebugStringConvert
         set {
             guard let index = indexPath.first else { fatalError() }
             return children[index][indexPath.dropFirst()] = newValue
-        }
-    }
-
-    public var asTreeArray: TreeArray<ChildValue> {
-        get {
-            return self
-        }
-        set {
-            self = newValue
         }
     }
 

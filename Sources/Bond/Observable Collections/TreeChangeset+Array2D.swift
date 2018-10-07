@@ -32,11 +32,11 @@ extension ChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Cha
 
     public subscript(itemAt indexPath: IndexPath) -> Item {
         get {
-            return collection.asTreeArray[indexPath].value.asSectionedData.item!
+            return collection[indexPath].value.asSectionedData.item!
         }
         set {
             descriptiveUpdate { (collection) -> [Operation] in
-                collection.asTreeArray[indexPath].value = SectionedData(item: newValue)
+                collection[indexPath].value = SectionedData(item: newValue)
                 return [.update(at: indexPath, newElement: collection[indexPath])]
             }
         }
@@ -44,11 +44,11 @@ extension ChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Cha
 
     public subscript(sectionAt index: Int) -> Section {
         get {
-            return collection.asTreeArray[[index]].value.asSectionedData.section!
+            return collection[[index]].value.asSectionedData.section!
         }
         set {
             descriptiveUpdate { (collection) -> [Operation] in
-                collection.asTreeArray[[index]].value = SectionedData(section: newValue)
+                collection[[index]].value = SectionedData(section: newValue)
                 return [.update(at: [index], newElement: collection[[index]])]
             }
         }
@@ -104,9 +104,9 @@ extension ChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Cha
     /// Remove all items from the array. Keep empty sections.
     public func removeAllItems() {
         descriptiveUpdate { (collection) -> [Operation] in
-            let indices = collection.asTreeArray.indices.map { $0 }.filter { $0.count == 2 }
+            let indices = collection.indices.map { $0 }.filter { $0.count == 2 }
             for index in indices {
-                collection.asTreeArray[index].removeAll()
+                collection[index].removeAll()
             }
             return indices.reversed().map { .delete(at: $0) }
         }
