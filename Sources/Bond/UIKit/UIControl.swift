@@ -27,15 +27,9 @@
 import UIKit
 import ReactiveKit
 
-#if swift(>=4.2)
-public typealias BNDControlEvents = UIControl.Event
-#else
-public typealias BNDControlEvents = UIControlEvents
-#endif
-
 public extension ReactiveExtensions where Base: UIControl {
 
-    public func controlEvents(_ events: BNDControlEvents) -> SafeSignal<Void> {
+    public func controlEvents(_ events: UIControl.Event) -> SafeSignal<Void> {
         let base = self.base
         return Signal { [weak base] observer in
             guard let base = base else {
@@ -60,9 +54,9 @@ public extension ReactiveExtensions where Base: UIControl {
 {
     private weak var control: UIControl?
     private let observer: () -> Void
-    private let events: BNDControlEvents
+    private let events: UIControl.Event
 
-    fileprivate init(control: UIControl, events: BNDControlEvents, observer: @escaping () -> Void) {
+    fileprivate init(control: UIControl, events: UIControl.Event, observer: @escaping () -> Void) {
         self.control = control
         self.events = events
         self.observer = observer
