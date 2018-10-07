@@ -198,7 +198,7 @@ extension OutlineViewBinder {
     }
 }
 
-extension SignalProtocol where Element: TreeArrayChangesetConvertible, Error == NoError {
+extension SignalProtocol where Element: OutlineChangesetConvertible, Error == NoError {
     /// Binds the signal of data source elements to the given outline view.
     ///
     /// - parameters:
@@ -236,7 +236,7 @@ extension SignalProtocol where Element: TreeArrayChangesetConvertible, Error == 
 
 }
 
-extension SignalProtocol where Element: TreeArrayChangesetConvertible, Error == NoError {
+extension SignalProtocol where Element: OutlineChangesetConvertible, Error == NoError {
 
     /// Binds the signal of data source elements to the given outline view.
     ///
@@ -251,7 +251,7 @@ extension SignalProtocol where Element: TreeArrayChangesetConvertible, Error == 
     public func bind<Cell: NSView>(to outlineView: NSOutlineView, cellType: Cell.Type, animated: Bool = true, rowAnimation: NSOutlineView.AnimationOptions = [.effectFade, .slideUp], configureCell: @escaping (Cell, Element.Changeset.Collection.ChildNode) -> Void) -> Disposable {
         let name = String(describing: Cell.self)
         let identifier = NSUserInterfaceItemIdentifier(rawValue: name)
-        let nib = NSNib(nibNamed: name, bundle: nil)
+        let nib = NSNib(nibNamed: NSNib.Name(name), bundle: nil)
         outlineView.register(nib, forIdentifier: identifier)
         return bind(to: outlineView, animated: animated, rowAnimation: rowAnimation, createCell: { (item, tableColumn, outlineView) -> NSView? in
             guard let cell = outlineView.makeView(withIdentifier: identifier, owner: self) as? Cell else {
@@ -276,7 +276,7 @@ extension SignalProtocol where Element: TreeArrayChangesetConvertible, Error == 
     public func bind<Cell: NSView>(to outlineView: NSOutlineView, cellType: Cell.Type, using binder: OutlineViewBinder<Element.Changeset>, configureCell: @escaping (Cell, Element.Changeset.Collection.ChildNode) -> Void) -> Disposable {
         let name = String(describing: Cell.self)
         let identifier = NSUserInterfaceItemIdentifier(rawValue: name)
-        let nib = NSNib(nibNamed: name, bundle: nil)
+        let nib = NSNib(nibNamed: NSNib.Name(name), bundle: nil)
 
         outlineView.register(nib, forIdentifier: identifier)
         binder.createCell = { (item, indexPath, tableView) -> NSView? in

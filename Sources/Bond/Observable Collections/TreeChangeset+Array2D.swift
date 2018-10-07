@@ -32,7 +32,7 @@ extension ChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Cha
 
     public subscript(itemAt indexPath: IndexPath) -> Item {
         get {
-            return collection[indexPath].value.asSectionedData.item!
+            return collection[indexPath].value.item!
         }
         set {
             descriptiveUpdate { (collection) -> [Operation] in
@@ -44,7 +44,7 @@ extension ChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Cha
 
     public subscript(sectionAt index: Int) -> Section {
         get {
-            return collection[[index]].value.asSectionedData.section!
+            return collection[[index]].value.section!
         }
         set {
             descriptiveUpdate { (collection) -> [Operation] in
@@ -92,13 +92,13 @@ extension ChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Cha
     /// Remove and return the section at `index`.
     @discardableResult
     public func removeSection(at index: Int) -> Section {
-        return remove(at: [index]).value.asSectionedData.section!
+        return remove(at: [index]).value.section!
     }
 
     /// Remove and return the item at `indexPath`.
     @discardableResult
     public func removeItem(at indexPath: IndexPath) -> Item {
-        return remove(at: indexPath).value.asSectionedData.item!
+        return remove(at: indexPath).value.item!
     }
 
     /// Remove all items from the array. Keep empty sections.

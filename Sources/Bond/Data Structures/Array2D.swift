@@ -32,7 +32,22 @@ import Foundation
 /// Signals that emit this kind of a tree can be bound to a table or collection view.
 public typealias Array2D<Section, Item> = TreeArray<Array2DElement<Section, Item>>
 
-/// A section or and item in a 2D array.
+extension TreeArray where ChildValue: Array2DElementProtocol {
+
+    public init(sectionsWithItems: [(ChildValue.Section, [ChildValue.Item])]) {
+        self.init(sectionsWithItems.map { TreeNode(ChildValue(section: $0.0), $0.1.map { TreeNode(ChildValue(item: $0)) }) })
+    }
+
+    public subscript(itemAt index: IndexPath) -> ChildValue.Item {
+        return self[index].value.item!
+    }
+
+    public subscript(sectionAt index: Int) -> ChildValue.Section {
+        return self[[index]].value.section!
+    }
+}
+
+/// A section or an item in a 2D array.
 public enum Array2DElement<Section, Item>: Array2DElementProtocol {
 
     /// Section with the associated value of type `Section`.
@@ -65,7 +80,7 @@ public enum Array2DElement<Section, Item>: Array2DElementProtocol {
         }
     }
 
-    public var asSectionedData: Array2DElement<Section, Item> {
+    public var asArray2DElement: Array2DElement<Section, Item> {
         return self
     }
 }
@@ -75,5 +90,7 @@ public protocol Array2DElementProtocol {
     associatedtype Item
     init(section: Section)
     init(item: Item)
-    var asSectionedData: Array2DElement<Section, Item> { get }
+    var section: Section? { get }
+    var item: Item?  { get }
+    var asArray2DElement: Array2DElement<Section, Item> { get }
 }

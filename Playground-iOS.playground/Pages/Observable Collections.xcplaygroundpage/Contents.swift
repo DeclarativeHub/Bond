@@ -20,7 +20,7 @@ var t = TreeArray<String>([
     TreeNode("Child 01")
 ])
 
-let ot = MutableObservableTreeArray(t)
+let ot = MutableObservableTree(t)
 
 ot.observeNext { (cs) in
     print(cs.collection, cs.diff, cs.patch)

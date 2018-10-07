@@ -5,24 +5,24 @@ import Bond
 import ReactiveKit
 import PlaygroundSupport
 
-class Test: NSObject {
-    dynamic var test: String! = "0"
+class Contact: NSObject {
+    @objc dynamic var name: String? = "n/a"
 }
 
-var test: Test! = Test()
-weak var weakTest: Test? = test
+var contact: Contact! = Contact()
+weak var weakTest: Contact? = contact
 
-test.keyPath("test", ofType: Optional<String>.self).observe { event in
+contact.reactive.keyPath(\.name).observeNext { event in
     print(event)
 }
 
-test.test = "a"
-test.test = nil
-test.test = "g"
+contact.name = "jim"
+contact.name = nil
+contact.name = "james"
 
-Signal1.just("c").bind(to: test.keyPath("test", ofType: Optional<String>.self))
+SafeSignal.just("j").bind(to: contact, keyPath: \.name, context: .immediate)
 
-test = nil
-weakTest
+contact = nil
+assert(weakTest == nil)
 
 //: [Next](@next)

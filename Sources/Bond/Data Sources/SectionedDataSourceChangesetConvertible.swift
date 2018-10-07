@@ -96,7 +96,7 @@ extension TreeArray: QueryableSectionedDataSourceProtocol where ChildValue: Arra
     public typealias Item = ChildValue.Item
 
     public func item(at indexPath: IndexPath) -> ChildValue.Item {
-        return self[indexPath].value.asSectionedData.item!
+        return self[indexPath].value.asArray2DElement.item!
     }
 }
 

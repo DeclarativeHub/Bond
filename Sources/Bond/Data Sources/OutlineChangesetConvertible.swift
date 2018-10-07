@@ -8,21 +8,21 @@
 
 import Foundation
 
-public protocol TreeArrayChangesetConvertible {
+public protocol OutlineChangesetConvertible {
     associatedtype Changeset: TreeChangesetProtocol where Changeset.Collection: TreeArrayProtocol
     var asTreeArrayChangeset: Changeset { get }
 }
 
-extension TreeChangeset: TreeArrayChangesetConvertible where Collection: TreeArrayProtocol, Collection: AnyObject {
+extension TreeChangeset: OutlineChangesetConvertible where Collection: TreeArrayProtocol, Collection: AnyObject {
 
     public var asTreeArrayChangeset: TreeChangeset<Collection> {
         return self
     }
 }
 
-extension TreeArray.Object: TreeArrayChangesetConvertible {
+extension ObjectTreeArray: OutlineChangesetConvertible {
 
-    public var asTreeArrayChangeset: TreeChangeset<TreeArray<ChildValue>.Object> {
+    public var asTreeArrayChangeset: TreeChangeset<ObjectTreeArray<ChildValue>> {
         return TreeChangeset(collection: self, patch: [])
     }
 }

@@ -86,7 +86,7 @@
 		90C04D091E8F0AD5000077C8 /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = 90C04D031E8F0A97000077C8 /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		90C04D0A1E8F0AD5000077C8 /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = 90C04D031E8F0A97000077C8 /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		90C04D5A1E8F0B88000077C8 /* Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D201E8F0B1D000077C8 /* Bond.swift */; };
-		90C04D5B1E8F0B88000077C8 /* SectionedDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D221E8F0B1D000077C8 /* SectionedDataSourceProtocol.swift */; };
+		90C04D5B1E8F0B88000077C8 /* SectionedDataSourceChangesetConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D221E8F0B1D000077C8 /* SectionedDataSourceChangesetConvertible.swift */; };
 		90C04D5C1E8F0B88000077C8 /* DynamicSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D231E8F0B1D000077C8 /* DynamicSubject.swift */; };
 		90C04D5D1E8F0B88000077C8 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D371E8F0B1D000077C8 /* Observable.swift */; };
 		90C04D5E1E8F0B88000077C8 /* ProtocolProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D3C1E8F0B1D000077C8 /* ProtocolProxy.swift */; };
@@ -96,7 +96,7 @@
 		90C04D631E8F0B88000077C8 /* NSObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D2D1E8F0B1D000077C8 /* NSObject.swift */; };
 		90C04D641E8F0B88000077C8 /* SignalProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D3E1E8F0B1D000077C8 /* SignalProtocol.swift */; };
 		90C04D651E8F0B89000077C8 /* Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D201E8F0B1D000077C8 /* Bond.swift */; };
-		90C04D661E8F0B89000077C8 /* SectionedDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D221E8F0B1D000077C8 /* SectionedDataSourceProtocol.swift */; };
+		90C04D661E8F0B89000077C8 /* SectionedDataSourceChangesetConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D221E8F0B1D000077C8 /* SectionedDataSourceChangesetConvertible.swift */; };
 		90C04D671E8F0B89000077C8 /* DynamicSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D231E8F0B1D000077C8 /* DynamicSubject.swift */; };
 		90C04D681E8F0B89000077C8 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D371E8F0B1D000077C8 /* Observable.swift */; };
 		90C04D691E8F0B89000077C8 /* ProtocolProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D3C1E8F0B1D000077C8 /* ProtocolProxy.swift */; };
@@ -268,7 +268,7 @@
 		ECBCE0DE2161713A0078E03B /* Property+ChangesetContainerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB155215D721600338531 /* Property+ChangesetContainerProtocol.swift */; };
 		ECBCE0E0216172E10078E03B /* Signal+ChangesetProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC4357621610C040002A869 /* Signal+ChangesetProtocol.swift */; };
 		ECBCE0E3216173160078E03B /* OrderedCollectionDiff+Strideable+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC43578216114B80002A869 /* OrderedCollectionDiff+Strideable+Differ.swift */; };
-		ECBCE0E62161766C0078E03B /* SectionedDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D221E8F0B1D000077C8 /* SectionedDataSourceProtocol.swift */; };
+		ECBCE0E62161766C0078E03B /* SectionedDataSourceChangesetConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D221E8F0B1D000077C8 /* SectionedDataSourceChangesetConvertible.swift */; };
 		ECBCE0E8216179BC0078E03B /* UITableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04DD11E8F0BA7000077C8 /* UITableViewTests.swift */; };
 		ECC1A6D0207A18DC00AE762C /* NSTableView+ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC1A6CF207A18DC00AE762C /* NSTableView+ObservableCollection.swift */; };
 		ECC1A6D1207A18DC00AE762C /* NSTableView+ObservableCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC1A6CF207A18DC00AE762C /* NSTableView+ObservableCollection.swift */; };
@@ -292,9 +292,9 @@
 		ECFF44B72168F5C000B5EDB0 /* Instantiatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFF44B62168F5C000B5EDB0 /* Instantiatable.swift */; };
 		ECFF44B82168F5C000B5EDB0 /* Instantiatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFF44B62168F5C000B5EDB0 /* Instantiatable.swift */; };
 		ECFF44B92168F5C000B5EDB0 /* Instantiatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFF44B62168F5C000B5EDB0 /* Instantiatable.swift */; };
-		ECFF44BC21692B5800B5EDB0 /* TreeArrayDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFF44BB21692B5800B5EDB0 /* TreeArrayDataSourceProtocol.swift */; };
-		ECFF44BD21692B5800B5EDB0 /* TreeArrayDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFF44BB21692B5800B5EDB0 /* TreeArrayDataSourceProtocol.swift */; };
-		ECFF44BE21692B5800B5EDB0 /* TreeArrayDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFF44BB21692B5800B5EDB0 /* TreeArrayDataSourceProtocol.swift */; };
+		ECFF44BC21692B5800B5EDB0 /* OutlineChangesetConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFF44BB21692B5800B5EDB0 /* OutlineChangesetConvertible.swift */; };
+		ECFF44BD21692B5800B5EDB0 /* OutlineChangesetConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFF44BB21692B5800B5EDB0 /* OutlineChangesetConvertible.swift */; };
+		ECFF44BE21692B5800B5EDB0 /* OutlineChangesetConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFF44BB21692B5800B5EDB0 /* OutlineChangesetConvertible.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -401,7 +401,7 @@
 		90C04D181E8F0B12000077C8 /* BNDProtocolProxyBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNDProtocolProxyBase.h; sourceTree = "<group>"; };
 		90C04D201E8F0B1D000077C8 /* Bond.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bond.swift; sourceTree = "<group>"; };
 		90C04D211E8F0B1D000077C8 /* CALayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CALayer.swift; sourceTree = "<group>"; };
-		90C04D221E8F0B1D000077C8 /* SectionedDataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionedDataSourceProtocol.swift; sourceTree = "<group>"; };
+		90C04D221E8F0B1D000077C8 /* SectionedDataSourceChangesetConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionedDataSourceChangesetConvertible.swift; sourceTree = "<group>"; };
 		90C04D231E8F0B1D000077C8 /* DynamicSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicSubject.swift; sourceTree = "<group>"; };
 		90C04D241E8F0B1D000077C8 /* NotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenter.swift; sourceTree = "<group>"; };
 		90C04D251E8F0B1D000077C8 /* NSAppearanceCustomization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSAppearanceCustomization.swift; sourceTree = "<group>"; };
@@ -493,7 +493,7 @@
 		ECFF44AC2168C12300B5EDB0 /* IndexPath+Bond.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IndexPath+Bond.swift"; sourceTree = "<group>"; };
 		ECFF44B02168C21F00B5EDB0 /* Array2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array2D.swift; sourceTree = "<group>"; };
 		ECFF44B62168F5C000B5EDB0 /* Instantiatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instantiatable.swift; sourceTree = "<group>"; };
-		ECFF44BB21692B5800B5EDB0 /* TreeArrayDataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeArrayDataSourceProtocol.swift; sourceTree = "<group>"; };
+		ECFF44BB21692B5800B5EDB0 /* OutlineChangesetConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineChangesetConvertible.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -813,8 +813,8 @@
 		ECFF44BA21691F9E00B5EDB0 /* Data Sources */ = {
 			isa = PBXGroup;
 			children = (
-				90C04D221E8F0B1D000077C8 /* SectionedDataSourceProtocol.swift */,
-				ECFF44BB21692B5800B5EDB0 /* TreeArrayDataSourceProtocol.swift */,
+				90C04D221E8F0B1D000077C8 /* SectionedDataSourceChangesetConvertible.swift */,
+				ECFF44BB21692B5800B5EDB0 /* OutlineChangesetConvertible.swift */,
 			);
 			path = "Data Sources";
 			sourceTree = "<group>";
@@ -1102,7 +1102,7 @@
 				90C04DC01E8F0B97000077C8 /* UISwitch.swift in Sources */,
 				EC1F12712167BFB4002F0D1B /* UnorderedCollectionDiff.swift in Sources */,
 				90C04D731E8F0B89000077C8 /* Observable.swift in Sources */,
-				ECFF44BC21692B5800B5EDB0 /* TreeArrayDataSourceProtocol.swift in Sources */,
+				ECFF44BC21692B5800B5EDB0 /* OutlineChangesetConvertible.swift in Sources */,
 				ECBCE0C2216168250078E03B /* OrderedCollectionDiff.swift in Sources */,
 				90A443101E9055D100D611FE /* NSStatusBarButton.swift in Sources */,
 				90C04D741E8F0B89000077C8 /* ProtocolProxy.swift in Sources */,
@@ -1137,7 +1137,7 @@
 				070FE2741F0138180031B7BD /* NSLayoutConstraint.swift in Sources */,
 				EC1F127D2167C9EE002F0D1B /* UnorderedCollectionChangeset+Set.swift in Sources */,
 				90C04DB61E8F0B97000077C8 /* UIGestureRecognizer.swift in Sources */,
-				ECBCE0E62161766C0078E03B /* SectionedDataSourceProtocol.swift in Sources */,
+				ECBCE0E62161766C0078E03B /* SectionedDataSourceChangesetConvertible.swift in Sources */,
 				90A4430B1E9055D100D611FE /* NSMenuItem.swift in Sources */,
 				90C04DB01E8F0B97000077C8 /* UIBarButtonItem.swift in Sources */,
 				90A443091E9055D100D611FE /* NSControl.swift in Sources */,
@@ -1251,9 +1251,9 @@
 				90A443381E9055D800D611FE /* UITextField.swift in Sources */,
 				90C04D881E8F0B8D000077C8 /* NSTextField.swift in Sources */,
 				90A4432A1E9055D800D611FE /* UIControl.swift in Sources */,
-				ECFF44BD21692B5800B5EDB0 /* TreeArrayDataSourceProtocol.swift in Sources */,
+				ECFF44BD21692B5800B5EDB0 /* OutlineChangesetConvertible.swift in Sources */,
 				EC1F127A2167C0B7002F0D1B /* UnorderedCollectionOperation.swift in Sources */,
-				90C04D661E8F0B89000077C8 /* SectionedDataSourceProtocol.swift in Sources */,
+				90C04D661E8F0B89000077C8 /* SectionedDataSourceChangesetConvertible.swift in Sources */,
 				90C04D651E8F0B89000077C8 /* Bond.swift in Sources */,
 				90C04D6F1E8F0B89000077C8 /* SignalProtocol.swift in Sources */,
 				EC381184209EFFA600613B29 /* NSOutlineView.swift in Sources */,
@@ -1342,9 +1342,9 @@
 				9025DCB01F981694007B7689 /* Property.swift in Sources */,
 				90C04DA71E8F0B96000077C8 /* UISlider.swift in Sources */,
 				90C04DA51E8F0B96000077C8 /* UIRefreshControl.swift in Sources */,
-				90C04D5B1E8F0B88000077C8 /* SectionedDataSourceProtocol.swift in Sources */,
+				90C04D5B1E8F0B88000077C8 /* SectionedDataSourceChangesetConvertible.swift in Sources */,
 				90C04DA61E8F0B96000077C8 /* UISegmentedControl.swift in Sources */,
-				ECFF44BE21692B5800B5EDB0 /* TreeArrayDataSourceProtocol.swift in Sources */,
+				ECFF44BE21692B5800B5EDB0 /* OutlineChangesetConvertible.swift in Sources */,
 				EC1F127B2167C0B7002F0D1B /* UnorderedCollectionOperation.swift in Sources */,
 				90A443161E9055D200D611FE /* NSButton.swift in Sources */,
 				90C04D5A1E8F0B88000077C8 /* Bond.swift in Sources */,

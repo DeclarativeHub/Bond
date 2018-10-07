@@ -13,9 +13,9 @@ outlineView.frame.size = CGSize(width: 300, height: 300)
 PlaygroundPage.current.liveView = outlineView
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-let tree = TreeArray.Object([TreeNode("A"), TreeNode("B")])
+let tree = ObjectTreeArray([TreeNode("A"), TreeNode("B")])
 
-let data = MutableObservableObjectTreeArray(tree)
+let data = MutableObservableTree(tree)
 
 data.bind(to: outlineView, cellType: NSTextView.self) { (cell, node) in
     cell.string = node.value

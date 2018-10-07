@@ -58,51 +58,52 @@ public struct TreeArray<ChildValue>: TreeArrayProtocol, CustomDebugStringConvert
     public var debugDescription: String {
         return "[" + children.map { $0.debugDescription }.joined(separator: ", ") + "]"
     }
+
+    public var asObject: ObjectTreeArray<ChildValue> {
+        return ObjectTreeArray(children)
+    }
 }
 
-extension TreeArray {
+/// Class-based variant of TreeArray.
+public class ObjectTreeArray<ChildValue>: TreeArrayProtocol, CustomDebugStringConvertible {
 
-    /// Class-based variant of TreeArray.
-    public class Object: ArrayBasedTreeNode, TreeArrayProtocol, CustomDebugStringConvertible {
+    public var value: Void = ()
+    public var children: [ObjectTreeNode<ChildValue>]
 
-        public var value: Void = ()
-        public var children: [TreeNode<ChildValue>.Object]
+    public required init() {
+        self.children = []
+    }
 
-        public required init() {
-            self.children = []
+    public init(_ children: [ObjectTreeNode<ChildValue>]) {
+        self.children = children
+    }
+
+    public init(_ children: [TreeNode<ChildValue>]) {
+        self.children = children.map { $0.asObject }
+    }
+
+    public subscript(indexPath: IndexPath) -> ObjectTreeNode<ChildValue> {
+        get {
+            guard let index = indexPath.first else { fatalError() }
+            return children[index][indexPath.dropFirst()]
         }
-
-        public init(_ children: [TreeNode<ChildValue>.Object]) {
-            self.children = children
+        set {
+            guard let index = indexPath.first else { fatalError() }
+            return children[index][indexPath.dropFirst()] = newValue
         }
+    }
 
-        public init(_ children: [TreeNode<ChildValue>]) {
-            self.children = children.map { $0.asObject }
+    public var debugDescription: String {
+        return "[" + children.map { $0.debugDescription }.joined(separator: ", ") + "]"
+    }
+
+    public var asTreeArray: TreeArray<ChildValue> {
+        get {
+            return TreeArray(children.map { $0.asTreeNode })
         }
-
-        public subscript(indexPath: IndexPath) -> TreeNode<ChildValue>.Object {
-            get {
-                guard let index = indexPath.first else { fatalError() }
-                return children[index][indexPath.dropFirst()]
-            }
-            set {
-                guard let index = indexPath.first else { fatalError() }
-                return children[index][indexPath.dropFirst()] = newValue
-            }
-        }
-
-        public var debugDescription: String {
-            return "[" + children.map { $0.debugDescription }.joined(separator: ", ") + "]"
-        }
-
-        public var asTreeArray: TreeArray<ChildValue> {
-            get {
-                return TreeArray(children.map { $0.asTreeNode })
-            }
-            set {
-                self.value = newValue.value
-                self.children = newValue.children.map { $0.asObject }
-            }
+        set {
+            self.value = newValue.value
+            self.children = newValue.children.map { $0.asObject }
         }
     }
 }
