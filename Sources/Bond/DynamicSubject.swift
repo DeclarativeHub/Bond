@@ -25,9 +25,14 @@
 import ReactiveKit
 import Foundation
 
-public typealias DynamicSubject<Element> = DynamicSubject2<Element, NoError>
+public typealias DynamicSubject<Element> = FailableDynamicSubject<Element, NoError>
 
-public struct DynamicSubject2<Element, Error: Swift.Error>: SubjectProtocol, BindableProtocol {
+/// Dynamic subject is both a signal and an observer (and a binding target).
+/// It emits events when the underlying signal emits an event. Elements emitted
+/// are read from the target using the `getter` closure.
+/// Observing a signal will a dynamic subject will update the underlying target
+/// using the `setter` closure on each next event.
+public struct FailableDynamicSubject<Element, Error: Swift.Error>: SubjectProtocol, BindableProtocol {
 
     private weak var target: AnyObject?
     private var signal: Signal<Void, Error>
@@ -146,10 +151,10 @@ public struct DynamicSubject2<Element, Error: Swift.Error>: SubjectProtocol, Bin
 
     /// Transform the `getter` and `setter` by applying a `transform` on them.
     public func bidirectionalMap<U>(to getTransform: @escaping (Element) -> U,
-                                    from setTransform: @escaping (U) -> Element) -> DynamicSubject2<U, Error>! {
+                                    from setTransform: @escaping (U) -> Element) -> FailableDynamicSubject<U, Error>! {
         guard let target = target else { return nil }
 
-        return DynamicSubject2<U, Error>(
+        return FailableDynamicSubject<U, Error>(
             _target: target,
             signal: signal,
             context: context,
@@ -188,3 +193,6 @@ extension ReactiveExtensions where Base: Deallocatable, Base: BindingExecutionCo
         return dynamicSubject(signal: signal, context: base.bindingExecutionContext, triggerEventOnSetting: triggerEventOnSetting, get: get, set: set)
     }
 }
+
+@available(*, deprecated, renamed: "FailableDynamicSubject")
+public typealias DynamicSubject2<Element, Error: Swift.Error> = FailableDynamicSubject<Element, Error>

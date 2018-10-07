@@ -69,7 +69,7 @@ extension Property: ChangesetContainerProtocol where Value: ChangesetProtocol {
 
     public typealias Changeset = Value
 
-    public var collectionChangeset: Value {
+    public var changeset: Value {
         get {
             return value
         }

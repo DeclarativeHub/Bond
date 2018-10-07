@@ -24,6 +24,9 @@
 
 import ReactiveKit
 
+/// An abstraction of a binding target. Given a target object and a setter closure,
+/// one can create a Bond instance onto which signals can be bound. When a next event
+/// is sent on the bound signal, Bond will call the setter closure to update the target.
 public struct Bond<Element>: BindableProtocol {
 
     private weak var target: Deallocatable?

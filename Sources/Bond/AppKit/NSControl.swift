@@ -145,11 +145,6 @@ public extension ReactiveExtensions where Base: NSControl {
             set: { $0.doubleValue = $1 }
         )
     }
-
-    @available(*, deprecated, message: "Use attributedStringValue instead.")
-    public var attributedStringleValue: DynamicSubject<NSAttributedString> {
-        return attributedStringValue
-    }
 }
 
 extension NSControl: BindableProtocol {

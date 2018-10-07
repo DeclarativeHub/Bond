@@ -31,10 +31,18 @@ public protocol OrderedCollectionDiffProtocol: Instantiatable {
 /// Contains a diff of an ordered collection, i.e. a collection where
 /// insertions or deletions affect indices of subsequent elements.
 public struct OrderedCollectionDiff<Index>: OrderedCollectionDiffProtocol {
-    
+
+    /// Indices of inserted elements in the final collection index space.
     public var inserts: [Index]
+
+    /// Indices of deleted elements in the source collection index space.
     public var deletes: [Index]
+
+    /// Indices of updated elements in the source collection index space.
     public var updates: [Index]
+
+    /// Indices of moved elements where `from` is an index in the source collection
+    /// index space, while `to` is an index in the final collection index space.
     public var moves: [(from: Index, to: Index)]
 
     public init() {
@@ -51,10 +59,12 @@ public struct OrderedCollectionDiff<Index>: OrderedCollectionDiffProtocol {
         self.moves = moves
     }
 
+    /// Returns `true` if the diff is empty (`count == 0`).
     public var isEmpty: Bool {
         return count == 0
     }
 
+    /// Total number of changes contained in the diff.
     public var count: Int {
         return inserts.count + deletes.count + updates.count + moves.count
     }

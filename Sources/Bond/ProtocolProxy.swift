@@ -27,7 +27,7 @@ import ObjectiveC
 import ReactiveKit
 
 #if !BUILDING_WITH_XCODE
-    import BNDProtocolProxyBase
+import BNDProtocolProxyBase
 #endif
 
 public class ProtocolProxy: BNDProtocolProxyBase {

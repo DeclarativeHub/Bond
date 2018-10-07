@@ -25,23 +25,29 @@
 import Foundation
 import ReactiveKit
 
+/// A data source (a collection) that whose data (items) are grouped into sections.
 public protocol SectionedDataSourceProtocol {
     var numberOfSections: Int { get }
     func numberOfItems(inSection section: Int) -> Int
 }
 
+/// A data source (a collection) whose items can be queried with `IndexPath`.
 public protocol QueryableSectionedDataSourceProtocol: SectionedDataSourceProtocol {
     associatedtype Item
     func item(at indexPath: IndexPath) -> Item
 }
 
+/// An index that can be expressed as `IndexPath`.
 public protocol SectionedDataIndexPathConvertable {
     var asSectionDataIndexPath: IndexPath { get }
 }
 
+/// A changeset of an ordered collection that conforms to `SectionedDataSourceProtocol` and whose indices can be expressed as `IndexPath`.
+/// Signals of this type of changeset can be bound to table or collection views.
 public protocol SectionedDataSourceChangeset: ChangesetProtocol where Diff: OrderedCollectionDiffProtocol, Diff.Index: SectionedDataIndexPathConvertable, Collection: SectionedDataSourceProtocol {
 }
 
+/// A type that can be expressed as `SectionedDataSourceChangeset`.
 public protocol SectionedDataSourceChangesetConvertible {
     associatedtype Changeset: SectionedDataSourceChangeset
     var asSectionedDataSourceChangeset: Changeset { get }

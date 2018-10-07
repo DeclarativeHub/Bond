@@ -11,10 +11,17 @@ public protocol UnorderedCollectionDiffProtocol: Instantiatable {
     var asUnorderedCollectionDiff: UnorderedCollectionDiff<Index> { get }
 }
 
+/// Contains a diff of an unordered collection, i.e. a collection where
+/// insertions or deletions do not affect indices of other elements.
 public struct UnorderedCollectionDiff<Index>: UnorderedCollectionDiffProtocol {
 
+    /// Indices of inserted elements in the final collection index space.
     public var inserts: [Index]
+
+    /// Indices of deleted elements in the source collection index space.
     public var deletes: [Index]
+
+    /// Indices of updated elements in the source collection index space.
     public var updates: [Index]
 
     public init() {

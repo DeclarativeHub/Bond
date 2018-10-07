@@ -24,20 +24,43 @@
 
 import Foundation
 
+/// A type that represents a collection change description, i.e. a modification of a collection.
+/// Changeset provides the collection itself as well as the change diff and patch.
 public protocol ChangesetProtocol {
 
     associatedtype Diff: Instantiatable
     associatedtype Operation
     associatedtype Collection
 
+    /// A description of the change represented by this changeset as a diff.
+    ///
+    /// - note: If the changeset was instantiated with the patch only, diff will
+    /// be calculated when this property is accessed for the first time. In that
+    /// case this will be an expensive call.
     var diff: Diff { get }
+
+    /// A description of the change represented by this changeset as a patch.
+    /// Patch is a sequence of operations applied to the collection in order.
+    ///
+    /// - note: If the changeset was instantiated with the diff only, patch will
+    /// be calculated when this property is accessed for the first time. In that
+    /// case this will be an expensive call.
     var patch: [Operation] { get }
+
+    /// Collection in its final state.
     var collection: Collection { get }
 
+    /// Create a changeset for the given collection with the given precalculated patch.
+    /// Diff will be calculated automatically if `diff` property is accessed.
     init(collection: Collection, patch: [Operation])
+
+    /// Create a changeset for the given collection with the given precalculated diff.
+    /// Patch will be calculated automatically if `patch` property is accessed.
     init(collection: Collection, diff: Diff)
 }
 
+/// A type that represents a collection change description, i.e. a modification of a collection.
+/// Changeset provides the collection itself as well as the change diff and patch.
 open class Changeset<Collection, Operation, Diff: Instantiatable>: ChangesetProtocol {
 
     open var precalculatedDiff: Diff?

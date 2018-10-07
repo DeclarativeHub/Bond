@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// A unit operation that can be applied to an unordered collection.
 public enum UnorderedCollectionOperation<Element, Index> {
 
     case insert(Element, at: Index)
@@ -15,6 +16,7 @@ public enum UnorderedCollectionOperation<Element, Index> {
     case update(at: Index, newElement: Element)
 }
 
+/// Element type erased unordered collection operation.
 public enum AnyUnorderedCollectionOperation<Index> {
 
     case insert(at: Index)

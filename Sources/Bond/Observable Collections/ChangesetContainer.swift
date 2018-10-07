@@ -24,11 +24,13 @@
 
 import Foundation
 
+/// A type that contains or wraps a changeset.
 public protocol ChangesetContainerProtocol: class {
 
     associatedtype Changeset: ChangesetProtocol
 
-    var collectionChangeset: Changeset { get set }
+    /// Contained changeset.
+    var changeset: Changeset { get set }
 }
 
 extension ChangesetContainerProtocol {
@@ -37,36 +39,34 @@ extension ChangesetContainerProtocol {
     public typealias Operation = Changeset.Operation
     public typealias Diff = Changeset.Diff
 
+    /// Collection contained in the chageset (`changeset.collection`).
     public var collection: Collection {
-        return collectionChangeset.collection
+        return changeset.collection
     }
 
-    /// Update the collection and provide a description of changes (diff).
-    /// Emits an event with the updated collection and the given diff.
+    /// Update the collection and provide a description of changes as patch.
     public func descriptiveUpdate(_ update: (inout Collection) -> [Operation]) {
-        var collection = collectionChangeset.collection
+        var collection = changeset.collection
         let patch = update(&collection)
-        collectionChangeset = Changeset(collection: collection, patch: patch)
+        changeset = Changeset(collection: collection, patch: patch)
     }
 
-    /// Update the collection and provide a description of changes (diff).
-    /// Emits an event with the updated collection and the given diff.
+    /// Update the collection and provide a description of changes as diff.
     public func descriptiveUpdate(_ update: (inout Collection) -> Diff) {
-        var collection = collectionChangeset.collection
+        var collection = changeset.collection
         let diff = update(&collection)
-        collectionChangeset = Changeset(collection: collection, diff: diff)
+        changeset = Changeset(collection: collection, diff: diff)
     }
 
-    /// Update the collection and provide a description of changes (diff).
-    /// Emits an event with the updated collection and the given diff.
+    /// Update the collection and provide a description of changes as patch.
     public func descriptiveUpdate<T>(_ update: (inout Collection) -> ([Operation], T)) -> T {
-        var collection = collectionChangeset.collection
+        var collection = changeset.collection
         let (patch, returnValue) = update(&collection)
-        collectionChangeset = Changeset(collection: collection, patch: patch)
+        changeset = Changeset(collection: collection, patch: patch)
         return returnValue
     }
 
-    /// Replace the underlying collection with the given collection. Emits an event with the empty diff.
+    /// Replace the underlying collection with the given collection.
     public func replace(with newCollection: Collection) {
         descriptiveUpdate { (collection) -> [Changeset.Operation] in
             collection = newCollection
@@ -101,7 +101,7 @@ extension ChangesetContainerProtocol where Changeset.Collection: Collection {
         return collection.count
     }
 
-    /// Access the element at `index`.
+    /// Access the collection element at `index`.
     public subscript(index: Collection.Index) -> Collection.Element {
         get {
             return collection[index]

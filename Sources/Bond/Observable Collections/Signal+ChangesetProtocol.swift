@@ -25,8 +25,32 @@
 import Foundation
 import ReactiveKit
 
+public extension SignalProtocol where Element: ChangesetProtocol {
+
+    /// When working with a changeset that calculates patch lazily,
+    /// you can use this method to calculate the patch in advance.
+    /// Observer will then have patch available in O(1).
+    public func precalculatePatch() -> Signal<Element, Error> {
+        return map { changeset in
+            _ = changeset.patch
+            return changeset
+        }
+    }
+
+    /// When working with a changeset that calculates diff lazily,
+    /// you can use this method to calculate the diff in advance.
+    /// Observer will then have diff available in O(1).
+    public func precalculateDiff() -> Signal<Element, Error> {
+        return map { changeset in
+            _ = changeset.diff
+            return changeset
+        }
+    }
+}
+
 extension SignalProtocol where Element: Collection, Element.Index: Strideable {
 
+    /// Generate the diff between previous and current collection using the provided diff generator function.
     public func diff(generateDiff: @escaping (Element, Element) -> OrderedCollectionChangeset<Element>.Diff) -> Signal<OrderedCollectionChangeset<Element>, Error> {
         return Signal { observer in
             var collection: Element?
@@ -53,6 +77,7 @@ extension SignalProtocol where Element: Collection, Element.Index: Strideable {
 
 extension SignalProtocol where Element: ArrayBasedTreeNode {
 
+    /// Generate the diff between previous and current tree using the provided diff generator function.
     public func diff(generateDiff: @escaping (Element, Element) -> TreeChangeset<Element>.Diff) -> Signal<TreeChangeset<Element>, Error> {
         return Signal { observer in
             var collection: Element?

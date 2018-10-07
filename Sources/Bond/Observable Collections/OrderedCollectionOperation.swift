@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// A unit operation that can be applied to an ordered collection.
 public enum OrderedCollectionOperation<Element, Index> {
 
     case insert(Element, at: Index)
@@ -16,6 +17,7 @@ public enum OrderedCollectionOperation<Element, Index> {
     case move(from: Index, to: Index)
 }
 
+/// Element type erased ordered collection operation.
 public enum AnyOrderedCollectionOperation<Index> {
 
     case insert(at: Index)
