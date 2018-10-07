@@ -108,7 +108,7 @@ class BondTests: XCTestCase {
         SafeSignal.just(false).bind(to: view.reactive.isEnabled)
         XCTAssertEqual(view.isEnabled, false)
 
-        view.reactive.controlEvents(BNDControlEvents.touchUpInside).expectNext([(), ()])
+        view.reactive.controlEvents(UIControl.Event.touchUpInside).expectNext([(), ()])
         view.sendActions(for: .touchUpInside)
         view.sendActions(for: .touchUpOutside)
         view.sendActions(for: .touchUpInside)

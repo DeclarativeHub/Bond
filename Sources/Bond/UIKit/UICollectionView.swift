@@ -69,6 +69,7 @@ open class CollectionViewBinderDataSource<Changeset: SectionedDataSourceChangese
                 applyChageset(changeset)
             } else {
                 collectionView?.reloadData()
+                ensureCollectionViewSyncsWithTheDataSource()
             }
         }
     }
@@ -118,6 +119,7 @@ open class CollectionViewBinderDataSource<Changeset: SectionedDataSourceChangese
                 applyChagesetDiff(diff)
             }, completion: nil)
         }
+        ensureCollectionViewSyncsWithTheDataSource()
     }
 
     open func applyChagesetDiff(_ diff: OrderedCollectionDiff<IndexPath>) {
@@ -153,6 +155,11 @@ open class CollectionViewBinderDataSource<Changeset: SectionedDataSourceChangese
                 collectionView.moveSection(move.from[0], toSection: move.to[0])
             }
         }
+    }
+
+    private func ensureCollectionViewSyncsWithTheDataSource() {
+        // Hack to immediately apply changes. Solves the crashing issue when performing updates before collection view is on screen.
+        _ = collectionView?.numberOfSections
     }
 
     private func associateWithCollectionView(_ collectionView: UICollectionView) {

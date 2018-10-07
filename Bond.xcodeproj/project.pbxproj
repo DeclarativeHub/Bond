@@ -174,6 +174,7 @@
 		90C04DC31E8F0B97000077C8 /* UITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D541E8F0B1D000077C8 /* UITextView.swift */; };
 		90C04DC41E8F0B97000077C8 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D551E8F0B1D000077C8 /* UIView.swift */; };
 		EC02200A1F8BE898002F8380 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0220091F8BE898002F8380 /* Property.swift */; };
+		EC1746C7216A2BD500955C49 /* UICollectionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04DCF1E8F0BA7000077C8 /* UICollectionViewTests.swift */; };
 		EC1F12712167BFB4002F0D1B /* UnorderedCollectionDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1F12702167BFB4002F0D1B /* UnorderedCollectionDiff.swift */; };
 		EC1F12722167BFB4002F0D1B /* UnorderedCollectionDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1F12702167BFB4002F0D1B /* UnorderedCollectionDiff.swift */; };
 		EC1F12732167BFB4002F0D1B /* UnorderedCollectionDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1F12702167BFB4002F0D1B /* UnorderedCollectionDiff.swift */; };
@@ -755,16 +756,16 @@
 		90C04DC61E8F0BA7000077C8 /* BondTests */ = {
 			isa = PBXGroup;
 			children = (
+				90C04DC91E8F0BA7000077C8 /* Helpers.swift */,
 				90C04DC71E8F0BA7000077C8 /* BondTests.swift */,
 				90C04DC81E8F0BA7000077C8 /* DynamicSubjectTests.swift */,
-				90C04DC91E8F0BA7000077C8 /* Helpers.swift */,
-				90C04DCA1E8F0BA7000077C8 /* NSObjectTests.swift */,
-				90C04DCE1E8F0BA7000077C8 /* ProtocolProxyTests.swift */,
-				90C04DCF1E8F0BA7000077C8 /* UICollectionViewTests.swift */,
 				90C04DD01E8F0BA7000077C8 /* UIKitTests.swift */,
 				90C04DD11E8F0BA7000077C8 /* UITableViewTests.swift */,
+				90C04DCF1E8F0BA7000077C8 /* UICollectionViewTests.swift */,
 				EC6A35E52075FCB600E8F805 /* CollectionChangesetDiffAndPatchTest.swift */,
 				EC14E6482132948D00A5AC8D /* TreeChangesetDiffAndPatchTest.swift */,
+				90C04DCE1E8F0BA7000077C8 /* ProtocolProxyTests.swift */,
+				90C04DCA1E8F0BA7000077C8 /* NSObjectTests.swift */,
 			);
 			path = BondTests;
 			sourceTree = "<group>";
@@ -1189,6 +1190,7 @@
 				ECC4358621612B460002A869 /* Helpers.swift in Sources */,
 				ECC4358421612B410002A869 /* BondTests.swift in Sources */,
 				ECC4357E216127490002A869 /* TreeChangesetDiffAndPatchTest.swift in Sources */,
+				EC1746C7216A2BD500955C49 /* UICollectionViewTests.swift in Sources */,
 				ECC4357D216126B40002A869 /* CollectionChangesetDiffAndPatchTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
