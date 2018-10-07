@@ -376,6 +376,13 @@
 			remoteGlobalIDString = C9838FF11D29571000691BE8;
 			remoteInfo = DifferTests;
 		};
+		EC1746C8216A3D4200955C49 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 16210A331D3EC474004AEDF3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 16887E361D744ABB00EDA099;
+			remoteInfo = "Bond-App";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -883,6 +890,7 @@
 			);
 			dependencies = (
 				16210A481D3EC474004AEDF3 /* PBXTargetDependency */,
+				EC1746C9216A3D4200955C49 /* PBXTargetDependency */,
 			);
 			name = BondTests;
 			productName = BondTests;
@@ -1411,6 +1419,11 @@
 			isa = PBXTargetDependency;
 			name = "ReactiveKit-tvOS";
 			targetProxy = 1652179A1D70595300C9FAEE /* PBXContainerItemProxy */;
+		};
+		EC1746C9216A3D4200955C49 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 16887E361D744ABB00EDA099 /* Bond-App */;
+			targetProxy = EC1746C8216A3D4200955C49 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
