@@ -5,7 +5,7 @@
       location = "group:Playground-macOS.playground">
    </FileRef>
    <FileRef
-      location = "group:/Users/srdan/develop/Bond/Playground-iOS.playground">
+      location = "group:Playground-iOS.playground">
    </FileRef>
    <FileRef
       location = "group:Bond.xcodeproj">
