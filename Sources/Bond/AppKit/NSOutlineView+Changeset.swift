@@ -45,11 +45,20 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
     public var heightOfRowByItem: CellHeightMeasurement? = nil
     public var isItemExpandable: IsItemExpandable? = nil
 
+    // Local copy of the tree - maybe revise this ...
+    public var rootNode = ObjectTreeArray<Changeset.Collection.ChildNode>()
+
     public var changeset: Changeset? = nil {
         didSet {
-            if let changeset = changeset, oldValue != nil {
-                applyChangeset(changeset)
+            if let changeset = changeset {
+                if oldValue != nil {
+                    applyChangeset(changeset)
+                }  else {
+                    rootNode = clone(changeset.collection)
+                    outlineView?.reloadData()
+                }
             } else {
+                rootNode.children = []
                 outlineView?.reloadData()
             }
         }
@@ -73,84 +82,83 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
 
     // MARK: - NSOutlineViewDataSource
     public func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
-        guard let item = item as? Changeset.Collection.ChildNode else { return false }
-        return isItemExpandable?(item, outlineView) ?? item.isEmpty == false
+        guard let item = item as? ObjectTreeNode<Changeset.Collection.ChildNode> else { return false }
+        return isItemExpandable?(item.value, outlineView) ?? item.isEmpty == false
     }
 
     public func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
-        if let item = item as? Changeset.Collection.ChildNode {
+        if let item = item as? ObjectTreeNode<Changeset.Collection.ChildNode> {
             return item.count
         } else {
-            return changeset?.collection.count ?? 0
+            return rootNode.count
         }
     }
 
     public func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
-        guard let tree = changeset?.collection else { fatalError() }
-        if let item = item as? Changeset.Collection.ChildNode {
+        if let item = item as? ObjectTreeNode<Changeset.Collection.ChildNode> {
             return item[[index]]
         } else {
-            return tree[[index]]
+            return rootNode[[index]]
         }
     }
 
     public func outlineView(_ outlineView: NSOutlineView, objectValueFor tableColumn: NSTableColumn?, byItem item: Any?) -> Any? {
-        return (item as? Changeset.Collection.ChildNode)?.value ?? nil
+        return (item as? ObjectTreeNode<Changeset.Collection.ChildNode>)?.value.value ?? nil
     }
 
     // MARK: - NSOutlineViewDelegate
     public func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat {
-        guard let item = item as? Changeset.Collection.ChildNode else { return outlineView.rowHeight }
-        return heightOfRowByItem?(item, outlineView) ?? outlineView.rowHeight
+        guard let item = item as? ObjectTreeNode<Changeset.Collection.ChildNode> else { return outlineView.rowHeight }
+        return heightOfRowByItem?(item.value, outlineView) ?? outlineView.rowHeight
     }
 
     public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
-        guard let item = item as? Changeset.Collection.ChildNode else { return nil }
-        return createCell?(item, tableColumn, outlineView)
+        guard let item = item as? ObjectTreeNode<Changeset.Collection.ChildNode> else { return nil }
+        return createCell?(item.value, tableColumn, outlineView)
     }
 
     open func applyChangeset(_ changeset: Changeset) {
         guard let outlineView = outlineView else { return }
-        let rootNode = changeset.collection
         let patch = changeset.patch
         if patch.isEmpty {
+            rootNode = clone(changeset.collection)
             outlineView.reloadData()
         } else if patch.count == 1 {
-            applyChangesetPatch(patch, rootNode: rootNode)
+            applyOperation(patch.first!.asOrderedCollectionOperation)
         } else {
             outlineView.beginUpdates()
-            applyChangesetPatch(patch, rootNode: rootNode)
+            patch.forEach { applyOperation($0.asOrderedCollectionOperation) }
             outlineView.endUpdates()
         }
     }
 
-    open func applyChangesetPatch(_ patch: [OrderedCollectionOperation<Changeset.Collection.ChildNode, IndexPath>], rootNode: Changeset.Collection) {
-        patch.map { ($0, rootNode) }.forEach(self.applyOperation(_:rootNode:))
-    }
-
-    open func applyOperation(_ operation: OrderedCollectionOperation<Changeset.Collection.ChildNode, IndexPath>, rootNode: Changeset.Collection) {
+    open func applyOperation(_ operation: OrderedCollectionOperation<Changeset.Collection.ChildNode, IndexPath>) {
         guard let outlineView = outlineView else { return }
 
         switch operation {
         case .insert(_, let at):
-            let parent = outlineViewParentNode(rootedIn: rootNode, atPath: at)
+            rootNode.apply(operation.asOrderedCollectionOperation.mapElement { clone($0) })
+            let parent = outlineViewParentNode(atPath: at)
             outlineView.insertItems(at: IndexSet(integer: at.last!), inParent: parent, withAnimation: itemInsertionAnimation)
         case .delete(let at):
-            let parent = outlineViewParentNode(rootedIn: rootNode, atPath: at)
+            let parent = outlineViewParentNode(atPath: at) // parent before the tree is patched!
+            rootNode.apply(operation.asOrderedCollectionOperation.mapElement { clone($0) })
             outlineView.removeItems(at: IndexSet(integer: at.last!), inParent: parent, withAnimation: itemDeletionAnimation)
         case .update(let at, _):
-            let parent = outlineViewParentNode(rootedIn: rootNode, atPath: at)
-            let item = outlineView.child(at.last!, ofItem: parent)
+            let parent = outlineViewParentNode(atPath: at)  // parent before the tree is patched!
+            rootNode.apply(operation.asOrderedCollectionOperation.mapElement { clone($0) })
+            let item = outlineView.child(at.last!, ofItem: parent) // OK?
             outlineView.reloadItem(item)
         case .move(let from, let to):
-            let fromParent = outlineViewParentNode(rootedIn: rootNode, atPath: from)
-            let toParent = outlineViewParentNode(rootedIn: rootNode, atPath: to)
+            let fromParent = outlineViewParentNode(atPath: from)  // parent before the tree is patched!
+            rootNode.apply(operation.asOrderedCollectionOperation.mapElement { clone($0) })
+            let toParent = outlineViewParentNode(atPath: to)
             outlineView.moveItem(at: from.last!, inParent: fromParent, to: to.last!, inParent: toParent)
         }
     }
 
-    private func outlineViewParentNode(rootedIn rootNode: Changeset.Collection, atPath path: IndexPath) -> Changeset.Collection.ChildNode? {
-        guard path.count > 0 else { // I think 0 is correct here
+    private func outlineViewParentNode(atPath path: IndexPath) -> ObjectTreeNode<Changeset.Collection.ChildNode>? {
+        guard path.count > 1 else {
             return nil
         }
         return rootNode[path.dropLast()]
@@ -171,6 +179,18 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
             outlineView.delegate = self
         }
     }
+
+    private func clone(_ array: Changeset.Collection) -> ObjectTreeArray<Changeset.Collection.ChildNode> {
+        return ObjectTreeArray(array.children.map { clone($0) })
+    }
+
+    private func clone(_ node: Changeset.Collection.ChildNode) -> ObjectTreeNode<Changeset.Collection.ChildNode> {
+        var newNode = ObjectTreeNode(node)
+        for index in node.indices {
+            newNode.insert(ObjectTreeNode(node[index]), at: index)
+        }
+        return newNode
+    }
 }
 
 private var OutlineViewBinderDataSourceAssociationKey = "OutlineViewBinderDataSource"
@@ -178,6 +198,7 @@ private var OutlineViewBinderDataSourceAssociationKey = "OutlineViewBinderDataSo
 extension OutlineViewBinder {
     public class ReloadingBinder: OutlineViewBinder {
         public override func applyChangeset(_ changeset: Changeset) {
+            rootNode = clone(changeset.collection)
             outlineView?.reloadData()
         }
     }
