@@ -36,6 +36,14 @@ let binder = OutlineViewBinder<TreeChangeset<TreeArray<String>>>() { treeNode, c
 
 data.bind(to: outlineView, using: binder)
 
+// Instead of using binder instance, we could also do:
+//
+//data.bind(to: outlineView) { treeNode, column, outlineView in
+//    let view = NSTextField(string: treeNode.value)
+//    view.isEditable = false
+//    return view
+//}
+
 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
     data.insert(TreeNode("E"), at: [2])
 }
@@ -45,7 +53,10 @@ DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
 }
 
 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-    outlineView.expandItem(binder.item(at: [2]), expandChildren: true)
+    // Outline view binder maintaines a clone of the bound data tree.
+    // We can use the binder instance to resolve index paths into the underlying nodes (items).
+    let item = binder.item(at: [2])
+    outlineView.expandItem(item, expandChildren: true)
 }
 
 DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
