@@ -74,10 +74,17 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
     open var itemInsertionAnimation: NSOutlineView.AnimationOptions = [.effectFade, .slideUp]
     open var itemDeletionAnimation: NSOutlineView.AnimationOptions = [.effectFade, .slideUp]
 
-    public init(isItemExpandable: IsItemExpandable? = nil, heightOfRowByItem: CellHeightMeasurement? = nil, createCell: CellCreation? = nil) {
-        self.isItemExpandable = isItemExpandable
-        self.heightOfRowByItem = heightOfRowByItem
+    public override init() {
+        super.init()
+    }
+
+    public init(createCell: @escaping CellCreation) {
+        super.init()
         self.createCell = createCell
+    }
+
+    public func item(at indexPath: IndexPath) -> ObjectTreeNode<Changeset.Collection.ChildNode> {
+        return rootNode[indexPath]
     }
 
     // MARK: - NSOutlineViewDataSource
@@ -147,8 +154,8 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
         case .update(let at, _):
             let parent = outlineViewParentNode(atPath: at)  // parent before the tree is patched!
             rootNode.apply(operation.asOrderedCollectionOperation.mapElement { clone($0) })
-            let item = outlineView.child(at.last!, ofItem: parent) // OK?
-            outlineView.reloadItem(item)
+            outlineView.removeItems(at: IndexSet(integer: at.last!), inParent: parent, withAnimation: itemDeletionAnimation)
+            outlineView.insertItems(at: IndexSet(integer: at.last!), inParent: parent, withAnimation: itemInsertionAnimation)
         case .move(let from, let to):
             let fromParent = outlineViewParentNode(atPath: from)  // parent before the tree is patched!
             rootNode.apply(operation.asOrderedCollectionOperation.mapElement { clone($0) })

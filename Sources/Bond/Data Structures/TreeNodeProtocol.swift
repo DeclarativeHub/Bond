@@ -76,6 +76,7 @@ extension TreeNodeProtocol {
 public protocol MutableTreeNodeProtocol: TreeNodeProtocol {
     
     var value: Value { get set }
+    subscript(_ index: Index) -> ChildNode { get set }
 }
 
 public protocol RangeReplaceableTreeNode: MutableTreeNodeProtocol where Index: Comparable, ChildNode.Index == Index, ChildNode.ChildNode == ChildNode, ChildNode: RangeReplaceableTreeNode {

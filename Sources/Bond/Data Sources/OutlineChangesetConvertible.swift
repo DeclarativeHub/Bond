@@ -13,10 +13,17 @@ public protocol OutlineChangesetConvertible {
     var asTreeArrayChangeset: Changeset { get }
 }
 
-extension TreeChangeset: OutlineChangesetConvertible where Collection: TreeArrayProtocol, Collection: AnyObject {
+extension TreeChangeset: OutlineChangesetConvertible where Collection: TreeArrayProtocol {
 
     public var asTreeArrayChangeset: TreeChangeset<Collection> {
         return self
+    }
+}
+
+extension TreeArray: OutlineChangesetConvertible {
+
+    public var asTreeArrayChangeset: TreeChangeset<TreeArray<ChildValue>> {
+        return TreeChangeset(collection: self, patch: [])
     }
 }
 

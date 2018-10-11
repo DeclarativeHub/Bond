@@ -52,6 +52,19 @@ extension ChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Cha
 
     public typealias ChildNode = Collection.ChildNode
 
+    /// Access or update the element at `index`.
+    public subscript(_ index: Collection.Index) -> ChildNode {
+        get {
+            return collection[index]
+        }
+        set {
+            descriptiveUpdate { (collection) -> [Operation] in
+                collection[index] = newValue
+                return [.update(at: index, newElement: newValue)]
+            }
+        }
+    }
+
     /// Append `newNode` at the end of the root node's children collection.
     public func append(_ newNode: ChildNode) {
         descriptiveUpdate { (collection) -> [Operation] in
