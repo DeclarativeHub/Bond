@@ -29,7 +29,7 @@ import ReactiveKit
 
 private var TableViewBinderDataSourceAssociationKey = "TableViewBinderDataSource"
 
-open class TableViewBinderDataSource<Changeset: FlatDataSourceChangeset>: NSObject, NSTableViewDataSource, NSTableViewDelegate where Changeset.Diff.Index == Int {
+open class TableViewBinderDataSource<Changeset: FlatDataSourceChangeset>: NSObject, NSTableViewDataSource, NSTableViewDelegate {
 
     public typealias CellCreation = (Changeset.Collection, Int, NSTableColumn?, NSTableView) -> NSView?
     public typealias CellHeightMeasurement = (Changeset.Collection, Int, NSTableView) -> CGFloat?
@@ -82,36 +82,31 @@ open class TableViewBinderDataSource<Changeset: FlatDataSourceChangeset>: NSObje
 
     open func apply(changeset: Changeset) {
         guard let tableView = tableView else { return }
-        let diff = changeset.diff.asOrderedCollectionDiff
-        if diff.isEmpty {
+        let patch = changeset.patch
+        if patch.isEmpty {
             tableView.reloadData()
-        } else if diff.count == 1 {
-            apply(diff: diff)
+        } else if patch.count == 1 {
+            apply(operation: patch.first!)
         } else {
             tableView.beginUpdates()
-            apply(diff: diff)
+            patch.forEach(apply)
             tableView.endUpdates()
         }
     }
 
-    open func apply(diff: OrderedCollectionDiff<Int>) {
+    open func apply(operation: Changeset.Operation) {
         guard let tableView = tableView else { return }
 
-        if diff.inserts.isEmpty == false {
-            tableView.insertRows(at: IndexSet(diff.inserts), withAnimation: rowInsertionAnimation)
-        }
-
-        if diff.deletes.isEmpty == false {
-            tableView.removeRows(at: IndexSet(diff.deletes), withAnimation: rowRemovalAnimation)
-        }
-
-        if diff.updates.isEmpty == false {
+        switch operation.asOrderedCollectionOperation {
+        case .insert(_, let index):
+            tableView.insertRows(at: IndexSet([index.asFlatDataIndex]), withAnimation: rowInsertionAnimation)
+        case .delete(let index):
+            tableView.removeRows(at: IndexSet([index.asFlatDataIndex]), withAnimation: rowRemovalAnimation)
+        case .update(let index, _):
             let allColumnIndexes = IndexSet(tableView.tableColumns.enumerated().map { $0.0 })
-            tableView.reloadData(forRowIndexes: IndexSet(diff.updates), columnIndexes: allColumnIndexes)
-        }
-
-        for move in diff.moves {
-            tableView.moveRow(at: move.from, to: move.to)
+            tableView.reloadData(forRowIndexes: IndexSet([index.asFlatDataIndex]), columnIndexes: allColumnIndexes)
+        case .move(let from, let to):
+            tableView.moveRow(at: from.asFlatDataIndex, to: to.asFlatDataIndex)
         }
     }
 
@@ -138,7 +133,7 @@ extension TableViewBinderDataSource {
     }
 }
 
-extension SignalProtocol where Element: FlatDataSourceChangesetConvertible, Element.Changeset.Diff.Index == Int, Error == NoError {
+extension SignalProtocol where Element: FlatDataSourceChangesetConvertible, Error == NoError {
 
     /// Binds the signal of data source elements to the given table view.
     ///
@@ -176,7 +171,7 @@ extension SignalProtocol where Element: FlatDataSourceChangesetConvertible, Elem
     }
 }
 
-extension SignalProtocol where Element: FlatDataSourceChangesetConvertible, Element.Changeset.Collection: QueryableFlatDataSourceProtocol, Element.Changeset.Diff.Index == Int, Error == NoError {
+extension SignalProtocol where Element: FlatDataSourceChangesetConvertible, Element.Changeset.Collection: QueryableFlatDataSourceProtocol, Error == NoError {
 
     /// Binds the signal of data source elements to the given table view.
     ///

@@ -8,13 +8,23 @@
 
 import Foundation
 
+public protocol OrderedCollectionOperationProtocol {
+    associatedtype Element
+    associatedtype Index
+    var asOrderedCollectionOperation: OrderedCollectionOperation<Element, Index> { get }
+}
+
 /// A unit operation that can be applied to an ordered collection.
-public enum OrderedCollectionOperation<Element, Index> {
+public enum OrderedCollectionOperation<Element, Index>: OrderedCollectionOperationProtocol {
 
     case insert(Element, at: Index)
     case delete(at: Index)
     case update(at: Index, newElement: Element)
     case move(from: Index, to: Index)
+
+    public var asOrderedCollectionOperation: OrderedCollectionOperation<Element, Index> {
+        return self
+    }
 }
 
 /// Element type erased ordered collection operation.
@@ -27,6 +37,19 @@ public enum AnyOrderedCollectionOperation<Index> {
 }
 
 extension OrderedCollectionOperation {
+
+    public func mapElement<U>(_ transform: (Element) -> U) -> OrderedCollectionOperation<U, Index> {
+        switch self {
+        case .insert(let element, let at):
+            return .insert(transform(element), at: at)
+        case .delete(let at):
+            return .delete(at: at)
+        case .update(let at, let element):
+            return .update(at: at, newElement: transform(element))
+        case .move(let from, let to):
+            return .move(from: from, to: to)
+        }
+    }
 
     public var asAnyOrderedCollectionOperation: AnyOrderedCollectionOperation<Index> {
         switch self {
