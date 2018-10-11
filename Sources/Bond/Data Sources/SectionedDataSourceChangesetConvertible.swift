@@ -79,8 +79,6 @@ extension OrderedCollectionChangeset: SectionedDataSourceChangeset where Diff.In
 
 extension OrderedCollectionChangeset: SectionedDataSourceChangesetConvertible where Diff.Index: SectionedDataIndexPathConvertable, Collection: SectionedDataSourceProtocol {
 
-    public typealias Changeset = OrderedCollectionChangeset<Collection>
-
     public var asSectionedDataSourceChangeset: OrderedCollectionChangeset<Collection> {
         return self
     }

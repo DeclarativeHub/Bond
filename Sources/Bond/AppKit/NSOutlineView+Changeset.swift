@@ -74,12 +74,7 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
     // MARK: - NSOutlineViewDataSource
     public func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
         guard let item = item as? Changeset.Collection.ChildNode else { return false }
-
-        if let isItemExpandable = isItemExpandable {
-            return isItemExpandable(item, outlineView)
-        } else {
-            fatalError("Subclasses of OutlineViewBinder should override and implement outlineView(_:isItemExpandable:) method if they do not initialize the `isItemExpandable` closure.")
-        }
+        return isItemExpandable?(item, outlineView) ?? item.isEmpty == false
     }
 
     public func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
@@ -106,22 +101,12 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
     // MARK: - NSOutlineViewDelegate
     public func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat {
         guard let item = item as? Changeset.Collection.ChildNode else { return outlineView.rowHeight }
-
-        if let heightOfRowByItem = heightOfRowByItem {
-            return heightOfRowByItem(item, outlineView) ?? outlineView.rowHeight
-        } else {
-            fatalError("Subclasses of OutlineViewBinder should override and implement outlineView(_:heightOfRowByItem:) method if they do not initialize the `heightOfRowByItem` closure.")
-        }
+        return heightOfRowByItem?(item, outlineView) ?? outlineView.rowHeight
     }
 
     public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
         guard let item = item as? Changeset.Collection.ChildNode else { return nil }
-
-        if let createCell = createCell {
-            return createCell(item, tableColumn, outlineView)
-        } else {
-            fatalError("Subclasses of OutlineViewBinder should override and implement outlineView(_:viewFor:item:) method if they do not initialize the `createCell` closure.")
-        }
+        return createCell?(item, tableColumn, outlineView)
     }
 
     open func applyChangeset(_ changeset: Changeset) {
