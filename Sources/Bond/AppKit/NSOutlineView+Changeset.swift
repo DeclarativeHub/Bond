@@ -87,6 +87,10 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
         return rootNode[indexPath]
     }
 
+    public func treeNode(forItem item: Any) -> Changeset.Collection.ChildNode? {
+        return (item as? ObjectTreeNode<Changeset.Collection.ChildNode>)?.value
+    }
+
     // MARK: - NSOutlineViewDataSource
     public func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
         guard let item = item as? ObjectTreeNode<Changeset.Collection.ChildNode> else { return false }
