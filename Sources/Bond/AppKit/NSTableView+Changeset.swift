@@ -32,9 +32,11 @@ private var TableViewBinderDataSourceAssociationKey = "TableViewBinderDataSource
 open class TableViewBinderDataSource<Changeset: FlatDataSourceChangeset>: NSObject, NSTableViewDataSource, NSTableViewDelegate {
 
     public typealias CellCreation = (Changeset.Collection, Int, NSTableColumn?, NSTableView) -> NSView?
+    public typealias RowCreation = (Changeset.Collection, Int, NSTableView) -> NSTableRowView?
     public typealias CellHeightMeasurement = (Changeset.Collection, Int, NSTableView) -> CGFloat?
 
     public var createCell: CellCreation? = nil
+    public var createRow: RowCreation? = nil
     public var heightOfRow: CellHeightMeasurement? = nil
 
     public var changeset: Changeset? = nil {
@@ -69,6 +71,11 @@ open class TableViewBinderDataSource<Changeset: FlatDataSourceChangeset>: NSObje
     }
 
     // MARK: - NSTableViewDelegate
+
+    public func tableView(_ tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
+        guard let changeset = changeset else { fatalError() }
+        return createRow?(changeset.collection, row, tableView)
+    }
 
     open func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         guard let changeset = changeset else { fatalError() }

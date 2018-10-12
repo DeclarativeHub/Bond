@@ -38,10 +38,12 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
     // What NSOutlineView calls "object value of an item" is the value associated with a tree node: `node.value`.
 
     public typealias CellCreation = (Changeset.Collection.ChildNode, NSTableColumn?, NSOutlineView) -> NSView?
+    public typealias RowCreation = (Changeset.Collection.ChildNode, NSOutlineView) -> NSTableRowView?
     public typealias CellHeightMeasurement = (Changeset.Collection.ChildNode, NSOutlineView) -> CGFloat?
     public typealias IsItemExpandable = (Changeset.Collection.ChildNode, NSOutlineView) -> Bool
 
     public var createCell: CellCreation? = nil
+    public var createRow: RowCreation? = nil
     public var heightOfRowByItem: CellHeightMeasurement? = nil
     public var isItemExpandable: IsItemExpandable? = nil
 
@@ -126,6 +128,13 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
     public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
         guard let item = item as? ObjectTreeNode<Changeset.Collection.ChildNode> else { return nil }
         return createCell?(item.value, tableColumn, outlineView)
+    }
+
+    // MARK: - NSTableViewDelegate
+
+    public func outlineView(_ outlineView: NSOutlineView, rowViewForItem item: Any) -> NSTableRowView? {
+        guard let item = item as? ObjectTreeNode<Changeset.Collection.ChildNode> else { return nil }
+        return createRow?(item.value, outlineView)
     }
 
     open func applyChangeset(_ changeset: Changeset) {
