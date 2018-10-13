@@ -111,8 +111,6 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
         if patch.isEmpty {
             rootNode = clone(changeset.collection)
             outlineView.reloadData()
-        } else if patch.count == 1 {
-            applyOperation(patch.first!.asOrderedCollectionOperation)
         } else {
             outlineView.beginUpdates()
             patch.forEach { applyOperation($0.asOrderedCollectionOperation) }
@@ -196,7 +194,7 @@ extension SignalProtocol where Element: OutlineChangesetConvertible, Error == No
     ///     - createCell: A closure that creates (dequeues) cell for the given table view and configures it with the given data source at the given index path.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
     @discardableResult
-    public func bind(to outlineView: NSOutlineView, animated: Bool = true, rowAnimation: NSOutlineView.AnimationOptions = [.effectFade, .slideUp], createCell: @escaping ((Element.Changeset.Collection.ChildNode, NSTableColumn?, NSOutlineView) -> NSView?)) -> Disposable {
+    public func bind(to outlineView: NSOutlineView, animated: Bool = true, rowAnimation: NSOutlineView.AnimationOptions = [.effectFade, .slideUp]) -> Disposable {
         if animated {
             let binder = OutlineViewBinder<Element.Changeset>()
             binder.itemInsertionAnimation = rowAnimation

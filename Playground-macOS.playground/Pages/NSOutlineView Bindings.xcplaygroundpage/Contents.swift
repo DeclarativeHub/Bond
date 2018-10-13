@@ -28,21 +28,10 @@ let tree = TreeArray([TreeNode("A", [TreeNode("B"), TreeNode("C")]), TreeNode("D
 
 let data = MutableObservableTree(tree)
 
-let binder = OutlineViewBinder<TreeChangeset<TreeArray<String>>>() { treeNode, column, outlineView in
-    let view = NSTextField(string: treeNode.value)
-    view.isEditable = false
-    return view
-}
+let binder = OutlineViewBinder<TreeChangeset<TreeArray<String>>>()
 
 data.bind(to: outlineView, using: binder)
-
-// Instead of using binder instance, we could also do:
-//
-//data.bind(to: outlineView) { treeNode, column, outlineView in
-//    let view = NSTextField(string: treeNode.value)
-//    view.isEditable = false
-//    return view
-//}
+// Instead of using binder instance we can also do: data.bind(to: outlineView)
 
 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
     data.insert(TreeNode("E"), at: [2])

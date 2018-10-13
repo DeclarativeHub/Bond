@@ -66,8 +66,6 @@ open class TableViewBinderDataSource<Changeset: FlatDataSourceChangeset>: NSObje
         let patch = changeset.patch
         if patch.isEmpty {
             tableView.reloadData()
-        } else if patch.count == 1 {
-            apply(operation: patch.first!)
         } else {
             tableView.beginUpdates()
             patch.forEach(apply)
@@ -120,7 +118,7 @@ extension SignalProtocol where Element: FlatDataSourceChangesetConvertible, Erro
     ///     - createCell: A closure that creates (dequeues) cell for the given table view and configures it with the given data source at the given index path.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
     @discardableResult
-    public func bind(to tableView: NSTableView, animated: Bool = true, rowAnimation: NSTableView.AnimationOptions = [.effectFade, .slideLeft], createCell: @escaping (Element.Changeset.Collection, Int, NSTableColumn?, NSTableView) -> NSView?) -> Disposable {
+    public func bind(to tableView: NSTableView, animated: Bool = true, rowAnimation: NSTableView.AnimationOptions = [.effectFade, .slideLeft]) -> Disposable {
         if animated {
             let binder = TableViewBinderDataSource<Element.Changeset>()
             binder.rowInsertionAnimation = rowAnimation
