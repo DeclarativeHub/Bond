@@ -29,13 +29,10 @@ import ReactiveKit
 
 private var TableViewBinderDataSourceAssociationKey = "TableViewBinderDataSource"
 
-open class TableViewBinderDataSource<Changeset: FlatDataSourceChangeset>: NSObject, NSTableViewDataSource, NSTableViewDelegate {
+open class TableViewBinderDataSource<Changeset: FlatDataSourceChangeset>: NSObject, NSTableViewDataSource {
 
-    public typealias CellCreation = (Changeset.Collection, Int, NSTableColumn?, NSTableView) -> NSView?
-    public typealias CellHeightMeasurement = (Changeset.Collection, Int, NSTableView) -> CGFloat?
-
-    public var createCell: CellCreation? = nil
-    public var heightOfRow: CellHeightMeasurement? = nil
+    open var rowInsertionAnimation: NSTableView.AnimationOptions = [.effectFade, .slideLeft]
+    open var rowRemovalAnimation: NSTableView.AnimationOptions = [.effectFade, .slideLeft]
 
     public var changeset: Changeset? = nil {
         didSet {
@@ -54,30 +51,14 @@ open class TableViewBinderDataSource<Changeset: FlatDataSourceChangeset>: NSObje
         }
     }
 
-    open var rowInsertionAnimation: NSTableView.AnimationOptions = [.effectFade, .slideLeft]
-    open var rowRemovalAnimation: NSTableView.AnimationOptions = [.effectFade, .slideLeft]
-
-    /// - parameter createCell: A closure that creates cell for a given table view and configures it with the given data source at the given index path.
-    public init(_ createCell: @escaping (CellCreation)) {
-        self.createCell = createCell
-    }
-
     // MARK: - NSTableViewDataSource
 
     open func numberOfRows(in tableView: NSTableView) -> Int {
         return changeset?.collection.numberOfItems ?? 0
     }
 
-    // MARK: - NSTableViewDelegate
-
-    open func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        guard let changeset = changeset else { fatalError() }
-        return createCell?(changeset.collection, row, tableColumn, tableView)
-    }
-
-    open func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        guard let changeset = changeset else { fatalError() }
-        return heightOfRow?(changeset.collection, row, tableView) ?? tableView.rowHeight
+    public func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
+        return changeset?.collection.item(at: row)
     }
 
     open func apply(changeset: Changeset) {
@@ -117,11 +98,6 @@ open class TableViewBinderDataSource<Changeset: FlatDataSourceChangeset>: NSObje
         } else {
             tableView.dataSource = self
         }
-        if tableView.reactive.hasProtocolProxy(for: NSTableViewDelegate.self) {
-            tableView.reactive.delegate.forwardTo = self
-        } else {
-            tableView.delegate = self
-        }
     }
 }
 
@@ -146,12 +122,12 @@ extension SignalProtocol where Element: FlatDataSourceChangesetConvertible, Erro
     @discardableResult
     public func bind(to tableView: NSTableView, animated: Bool = true, rowAnimation: NSTableView.AnimationOptions = [.effectFade, .slideLeft], createCell: @escaping (Element.Changeset.Collection, Int, NSTableColumn?, NSTableView) -> NSView?) -> Disposable {
         if animated {
-            let binder = TableViewBinderDataSource<Element.Changeset>(createCell)
+            let binder = TableViewBinderDataSource<Element.Changeset>()
             binder.rowInsertionAnimation = rowAnimation
             binder.rowRemovalAnimation = rowAnimation
             return bind(to: tableView, using: binder)
         } else {
-            let binder = TableViewBinderDataSource<Element.Changeset>.ReloadingBinder(createCell)
+            let binder = TableViewBinderDataSource<Element.Changeset>.ReloadingBinder()
             return bind(to: tableView, using: binder)
         }
     }
@@ -168,56 +144,6 @@ extension SignalProtocol where Element: FlatDataSourceChangesetConvertible, Erro
         return bind(to: tableView) { (_, changeset) in
             binder.changeset = changeset.asFlatDataSourceChangeset
         }
-    }
-}
-
-extension SignalProtocol where Element: FlatDataSourceChangesetConvertible, Element.Changeset.Collection: QueryableFlatDataSourceProtocol, Error == NoError {
-
-    /// Binds the signal of data source elements to the given table view.
-    ///
-    /// - parameters:
-    ///     - tableView: A table view that should display the data from the data source.
-    ///     - cellType: A type of the cells that should display the data. Cell type name will be used as reusable identifier and the binding will automatically dequeue cell.
-    ///     - animated: Animate partial or batched updates. Default is `true`.
-    ///     - rowAnimation: Row animation for partial or batched updates. Relevant only when `animated` is `true`. Default is `.automatic`.
-    ///     - configureCell: A closure that configures the cell with the data source item at the respective index path.
-    /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
-    @discardableResult
-    public func bind<Cell: NSView>(to tableView: NSTableView, cellType: Cell.Type, animated: Bool = true, rowAnimation: NSTableView.AnimationOptions = [.effectFade, .slideLeft], configureCell: @escaping (Cell, Element.Changeset.Collection.Item) -> Void) -> Disposable {
-        let name = String(describing: Cell.self)
-        let identifier = NSUserInterfaceItemIdentifier(rawValue: name)
-        let nib = NSNib(nibNamed: NSNib.Name(name), bundle: nil)
-        tableView.register(nib, forIdentifier: identifier)
-        return bind(to: tableView, animated: animated, rowAnimation: rowAnimation, createCell: { (dataSource, row, tableColumn, tableView) -> NSView? in
-            let cell = tableView.makeView(withIdentifier: identifier, owner: self) as! Cell
-            let item = dataSource.item(at: row)
-            configureCell(cell, item)
-            return cell
-        })
-    }
-
-    /// Binds the signal of data source elements to the given table view.
-    ///
-    /// - parameters:
-    ///     - tableView: A table view that should display the data from the data source.
-    ///     - cellType: A type of the cells that should display the data. Cell type name will be used as reusable identifier and the binding will automatically dequeue cell.
-    ///     - animated: Animate partial or batched updates. Default is `true`.
-    ///     - rowAnimation: Row animation for partial or batched updates. Relevant only when `animated` is `true`. Default is `.automatic`.
-    ///     - configureCell: A closure that configures the cell with the data source item at the respective index path.
-    /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
-    @discardableResult
-    public func bind<Cell: NSView>(to tableView: NSTableView, cellType: Cell.Type, using binder: TableViewBinderDataSource<Element.Changeset>, configureCell: @escaping (Cell, Element.Changeset.Collection.Item) -> Void) -> Disposable {
-        let name = String(describing: Cell.self)
-        let identifier = NSUserInterfaceItemIdentifier(rawValue: name)
-        let nib = NSNib(nibNamed: NSNib.Name(name), bundle: nil)
-        tableView.register(nib, forIdentifier: identifier)
-        binder.createCell = { (dataSource, row, tableColumn, tableView) -> NSView? in
-            let cell = tableView.makeView(withIdentifier: identifier, owner: self) as! Cell
-            let item = dataSource.item(at: row)
-            configureCell(cell, item)
-            return cell
-        }
-        return bind(to: tableView, using: binder)
     }
 }
 
