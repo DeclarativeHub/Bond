@@ -53,11 +53,13 @@ open class TableViewBinderDataSource<Changeset: FlatDataSourceChangeset>: NSObje
 
     // MARK: - NSTableViewDataSource
 
+    @objc(numberOfRowsInTableView:)
     open func numberOfRows(in tableView: NSTableView) -> Int {
         return changeset?.collection.numberOfItems ?? 0
     }
 
-    public func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
+    @objc(tableView:objectValueForTableColumn:row:)
+    open func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
         return changeset?.collection.item(at: row)
     }
 
