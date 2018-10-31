@@ -80,12 +80,14 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
 
     // MARK: - NSOutlineViewDataSource
 
-    public func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
+    @objc(outlineView:isItemExpandable:)
+    open func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
         guard let item = item as? ObjectTreeNode<Changeset.Collection.ChildNode> else { return false }
         return isItemExpandable?(item.value, outlineView) ?? item.isEmpty == false
     }
 
-    public func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
+    @objc(outlineView:numberOfChildrenOfItem:)
+    open func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         if let item = item as? ObjectTreeNode<Changeset.Collection.ChildNode> {
             return item.count
         } else {
@@ -93,7 +95,8 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
         }
     }
 
-    public func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
+    @objc(outlineView:child:ofItem:)
+    open func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
         if let item = item as? ObjectTreeNode<Changeset.Collection.ChildNode> {
             return item[[index]]
         } else {
@@ -101,7 +104,8 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
         }
     }
 
-    public func outlineView(_ outlineView: NSOutlineView, objectValueFor tableColumn: NSTableColumn?, byItem item: Any?) -> Any? {
+    @objc(outlineView:objectValueForTableColumn:byItem:)
+    open func outlineView(_ outlineView: NSOutlineView, objectValueFor tableColumn: NSTableColumn?, byItem item: Any?) -> Any? {
         return (item as? ObjectTreeNode<Changeset.Collection.ChildNode>)?.value.value ?? nil
     }
 
