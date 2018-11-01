@@ -248,3 +248,63 @@ extension ArrayBasedTreeNode {
         }
     }
 }
+
+extension ArrayBasedTreeNode where ChildNode: ArrayBasedTreeNode, ChildNode.Value: Equatable {
+    public func first(matching filter: (ChildNode) -> Bool) -> ChildNode? {
+        for child in children {
+            guard let matchingItem = child.first(matching: filter) else {
+                continue
+            }
+
+            return matchingItem
+        }
+
+        return nil
+    }
+
+    public func index(of node: ChildNode, startingPath: IndexPath = IndexPath()) -> IndexPath? {
+        for (index, child) in children.enumerated() {
+            guard let childPath = child.index(of: node, startingPath: startingPath.appending(index)) else {
+                continue
+            }
+
+            return childPath
+        }
+
+        return nil
+    }
+}
+
+extension ArrayBasedTreeNode where Value: Equatable, ChildNode == Self {
+    public func first(matching filter: (ChildNode) -> Bool) -> ChildNode? {
+        guard filter(self) == false else {
+            return self
+        }
+
+        for child in children {
+            guard let matchingChild = child.first(matching: filter) else {
+                continue
+            }
+
+            return matchingChild
+        }
+
+        return nil
+    }
+
+    public func index(of node: ChildNode, startingPath: IndexPath = IndexPath()) -> IndexPath? {
+        guard node.value != value else {
+            return startingPath
+        }
+
+        for (index, child) in children.enumerated() {
+            guard let childPath = child.index(of: node, startingPath: startingPath.appending(index)) else {
+                continue
+            }
+
+            return childPath
+        }
+
+        return nil
+    }
+}
