@@ -128,26 +128,26 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
         switch operation {
         case .insert(_, let at):
             rootNode.apply(operation.asOrderedCollectionOperation.mapElement { clone($0) })
-            let parent = outlineViewParentNode(atPath: at) // parent after the tree is patched
+            let parent = parentNode(forPath: at) // parent after the tree is patched
             outlineView.insertItems(at: IndexSet(integer: at.last!), inParent: parent, withAnimation: itemInsertionAnimation)
         case .delete(let at):
-            let parent = outlineViewParentNode(atPath: at) // parent before the tree is patched
+            let parent = parentNode(forPath: at) // parent before the tree is patched
             rootNode.apply(operation.asOrderedCollectionOperation.mapElement { clone($0) })
             outlineView.removeItems(at: IndexSet(integer: at.last!), inParent: parent, withAnimation: itemDeletionAnimation)
         case .update(let at, _):
-            let parent = outlineViewParentNode(atPath: at)  // parent before the tree is patched
+            let parent = parentNode(forPath: at)  // parent before the tree is patched
             rootNode.apply(operation.asOrderedCollectionOperation.mapElement { clone($0) })
             outlineView.removeItems(at: IndexSet(integer: at.last!), inParent: parent, withAnimation: itemDeletionAnimation)
             outlineView.insertItems(at: IndexSet(integer: at.last!), inParent: parent, withAnimation: itemInsertionAnimation)
         case .move(let from, let to):
-            let fromParent = outlineViewParentNode(atPath: from) // parent before the tree is patched
+            let fromParent = parentNode(forPath: from) // parent before the tree is patched
             rootNode.apply(operation.asOrderedCollectionOperation.mapElement { clone($0) })
-            let toParent = outlineViewParentNode(atPath: to) // parent after the tree is patched
+            let toParent = parentNode(forPath: to) // parent after the tree is patched
             outlineView.moveItem(at: from.last!, inParent: fromParent, to: to.last!, inParent: toParent)
         }
     }
 
-    private func outlineViewParentNode(atPath path: IndexPath) -> ObjectTreeNode<Changeset.Collection.ChildNode>? {
+    public func parentNode(forPath path: IndexPath) -> ObjectTreeNode<Changeset.Collection.ChildNode>? {
         guard path.count > 1 else {
             return nil
         }
