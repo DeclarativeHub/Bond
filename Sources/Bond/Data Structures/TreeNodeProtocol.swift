@@ -130,6 +130,12 @@ extension RangeReplaceableTreeNode {
         return subtree
     }
 
+    /// Remove the nodes (including their subtrees) at the given indexes.
+    @discardableResult
+    public mutating func remove(at indexes: [Index]) -> [ChildNode] {
+        return indexes.sorted().reversed().map { self.remove(at:$0) }.reversed()
+    }
+
     /// Remove all child node. Only the tree root node (self) will remain.
     public mutating func removeAll() {
         replaceChildrenSubrange(startIndex..<endIndex, with: [])
@@ -143,10 +149,7 @@ extension RangeReplaceableTreeNode {
 
     /// Gather the nodes with the given indices and move them to the given index.
     public mutating func move(from fromIndices: [Index], to toIndex: Index) {
-        let items = fromIndices.map { self[$0] }
-        for index in fromIndices.sorted().reversed() {
-            remove(at: index)
-        }
+        let items = remove(at: fromIndices)
         insert(contentsOf: items, at: toIndex)
     }
 }
