@@ -43,7 +43,13 @@ public protocol FlatDataIndexConvertable {
 
 /// A changeset of an ordered collection that conforms to `FlatDataSourceProtocol` and whose indices can be expressed as `Int`.
 /// Signals of this type of changeset can be bound to, for example, NSTableView.
-public protocol FlatDataSourceChangeset: ChangesetProtocol where Operation: OrderedCollectionOperationProtocol, Operation.Index: FlatDataIndexConvertable, Collection: QueryableFlatDataSourceProtocol {}
+public protocol FlatDataSourceChangeset: ChangesetProtocol where
+    Collection: QueryableFlatDataSourceProtocol,
+    Operation: OrderedCollectionOperationProtocol,
+    Operation.Index: FlatDataIndexConvertable,
+	Operation.Element == Collection.Item
+{
+}
 
 /// A type that can be expressed as `FlatDataSourceChangeset`.
 public protocol FlatDataSourceChangesetConvertible {
@@ -67,9 +73,9 @@ extension Array: FlatDataSourceChangesetConvertible {
     }
 }
 
-extension OrderedCollectionChangeset: FlatDataSourceChangeset where Operation.Index: FlatDataIndexConvertable, Collection: QueryableFlatDataSourceProtocol {}
+extension OrderedCollectionChangeset: FlatDataSourceChangeset where Operation.Index: FlatDataIndexConvertable, Collection: QueryableFlatDataSourceProtocol, Operation.Element == Collection.Item {}
 
-extension OrderedCollectionChangeset: FlatDataSourceChangesetConvertible where Operation.Index: FlatDataIndexConvertable, Collection: QueryableFlatDataSourceProtocol {
+extension OrderedCollectionChangeset: FlatDataSourceChangesetConvertible where Operation.Index: FlatDataIndexConvertable, Collection: QueryableFlatDataSourceProtocol, Operation.Element == Collection.Item {
     public typealias Changeset = OrderedCollectionChangeset<Collection>
 
     public var asFlatDataSourceChangeset: OrderedCollectionChangeset<Collection> {

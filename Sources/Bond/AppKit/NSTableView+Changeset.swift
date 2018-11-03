@@ -34,11 +34,20 @@ open class TableViewBinderDataSource<Changeset: FlatDataSourceChangeset>: NSObje
     open var rowInsertionAnimation: NSTableView.AnimationOptions = [.effectFade, .slideLeft]
     open var rowRemovalAnimation: NSTableView.AnimationOptions = [.effectFade, .slideLeft]
 
+    /// Local clone of the bound collection
+    public var collection: [Changeset.Collection.Item] = []
+
     public var changeset: Changeset? = nil {
         didSet {
-            if let changeset = changeset, oldValue != nil {
-                apply(changeset: changeset)
+            if let changeset = changeset {
+                if oldValue != nil {
+                    apply(changeset: changeset)
+                } else {
+                    collection = clone(changeset.collection)
+                    tableView?.reloadData()
+                }
             } else {
+                collection = []
                 tableView?.reloadData()
             }
         }
@@ -55,18 +64,19 @@ open class TableViewBinderDataSource<Changeset: FlatDataSourceChangeset>: NSObje
 
     @objc(numberOfRowsInTableView:)
     open func numberOfRows(in tableView: NSTableView) -> Int {
-        return changeset?.collection.numberOfItems ?? 0
+        return collection.count
     }
 
     @objc(tableView:objectValueForTableColumn:row:)
     open func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
-        return changeset?.collection.item(at: row)
+        return collection[row]
     }
 
     open func apply(changeset: Changeset) {
         guard let tableView = tableView else { return }
         let patch = changeset.patch
         if patch.isEmpty {
+            collection = clone(changeset.collection)
             tableView.reloadData()
         } else {
             tableView.beginUpdates()
@@ -79,14 +89,18 @@ open class TableViewBinderDataSource<Changeset: FlatDataSourceChangeset>: NSObje
         guard let tableView = tableView else { return }
 
         switch operation.asOrderedCollectionOperation {
-        case .insert(_, let index):
+        case .insert(let element, let index):
+            collection.apply(.insert(element, at: index.asFlatDataIndex))
             tableView.insertRows(at: IndexSet([index.asFlatDataIndex]), withAnimation: rowInsertionAnimation)
         case .delete(let index):
+            collection.apply(.delete(at: index.asFlatDataIndex))
             tableView.removeRows(at: IndexSet([index.asFlatDataIndex]), withAnimation: rowRemovalAnimation)
-        case .update(let index, _):
+        case .update(let index, let element):
+            collection.apply(.update(at: index.asFlatDataIndex, newElement: element))
             let allColumnIndexes = IndexSet(tableView.tableColumns.enumerated().map { $0.0 })
             tableView.reloadData(forRowIndexes: IndexSet([index.asFlatDataIndex]), columnIndexes: allColumnIndexes)
         case .move(let from, let to):
+            collection.apply(.move(from: from.asFlatDataIndex, to: to.asFlatDataIndex))
             tableView.moveRow(at: from.asFlatDataIndex, to: to.asFlatDataIndex)
         }
     }
@@ -98,6 +112,10 @@ open class TableViewBinderDataSource<Changeset: FlatDataSourceChangeset>: NSObje
         } else {
             tableView.dataSource = self
         }
+    }
+
+    private func clone(_ collection: Changeset.Collection) -> [Changeset.Collection.Item] {
+        return (0..<collection.numberOfItems).map { collection.item(at: $0) }
     }
 }
 

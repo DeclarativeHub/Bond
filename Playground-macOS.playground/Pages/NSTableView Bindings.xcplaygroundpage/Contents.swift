@@ -27,7 +27,7 @@ tableView.addTableColumn(column)
 
 let data = MutableObservableArray(["Jim", "Kate"])
 
-data.bind(to: tableView, using: TableViewBinderDataSource.ReloadingBinder())
+data.bind(to: tableView)
 
 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
     data.append("Peter")
