@@ -195,10 +195,10 @@ extension SignalProtocol where Element: SectionedDataSourceChangesetConvertible,
     ///     - binder: A `TableViewBinder` or its subclass that will manage the binding.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
     @discardableResult
-    public func bind(to collectionView: UICollectionView, using binder: CollectionViewBinderDataSource<Element.Changeset>) -> Disposable {
-        binder.collectionView = collectionView
+    public func bind(to collectionView: UICollectionView, using binderDataSource: CollectionViewBinderDataSource<Element.Changeset>) -> Disposable {
+        binderDataSource.collectionView = collectionView
         return bind(to: collectionView) { (_, changeset) in
-            binder.changeset = changeset.asSectionedDataSourceChangeset
+            binderDataSource.changeset = changeset.asSectionedDataSourceChangeset
         }
     }
 }
@@ -236,16 +236,16 @@ extension SignalProtocol where Element: SectionedDataSourceChangesetConvertible,
     ///     - configureCell: A closure that configures the cell with the data source item at the respective index path.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
     @discardableResult
-    public func bind<Cell: UICollectionViewCell>(to collectionView: UICollectionView, cellType: Cell.Type, using binder: CollectionViewBinderDataSource<Element.Changeset>, configureCell: @escaping (Cell, Element.Changeset.Collection.Item) -> Void) -> Disposable {
+    public func bind<Cell: UICollectionViewCell>(to collectionView: UICollectionView, cellType: Cell.Type, using binderDataSource: CollectionViewBinderDataSource<Element.Changeset>, configureCell: @escaping (Cell, Element.Changeset.Collection.Item) -> Void) -> Disposable {
         let identifier = String(describing: Cell.self)
         collectionView.register(cellType as AnyClass, forCellWithReuseIdentifier: identifier)
-        binder.createCell = { (dataSource, indexPath, collectionView) -> UICollectionViewCell in
+        binderDataSource.createCell = { (dataSource, indexPath, collectionView) -> UICollectionViewCell in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! Cell
             let item = dataSource.item(at: indexPath)
             configureCell(cell, item)
             return cell
         }
-        return bind(to: collectionView, using: binder)
+        return bind(to: collectionView, using: binderDataSource)
     }
 }
 

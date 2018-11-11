@@ -11,6 +11,10 @@ Bond is built on top of ReactiveKit and bridges the gap between the reactive and
 
 Bond is a backbone of the [Binder Architecture](https://github.com/DeclarativeHub/TheBinderArchitecture) - a preferred architecture to be used with the framework.
 
+**Update: We've just released Bond 7!** It brings refactored observable collections that are much more powerful and make it easy to customize binders and create your own variants of observable collections. Anything that conforms to `Swift.Collection` can now be made observable. Bond also supports observable trees now! Check out [observable collections documentation](Documentation/ObservableCollections.md) and new playgrounds in the project workspace.
+
+Bond 7 updates only observable collections APIs. All other APIs remain unchanged. APIs for use cases like creating, mutating and binding collections remain mostly unchanged, however there are breaking changes in the collection binders and the observable collection event type. Make sure to check out playgrounds in the project workspace to learn about new stuff.
+
 
 ## Why use Bond?
 
@@ -145,23 +149,23 @@ let names = MutableObservableArray(["Steve", "Tim"])
 ...
 
 names.observeNext { e in
-  print("array: \(e.source), change: \(e.change)")
+  print("array: \(e.collection), diff: \(e.diff), patch: \(e.patch)")
 }
 ```
 
 You work with the observable array like you would work with the array it encapsulates.
 
 ```swift
-names.append("John") // prints: array ["Steve", "Tim", "John"], change: .inserts([2])
-names.removeLast()   // prints: array ["Steve", "Tim"], change: .deletes([2])
-names[1] = "Mark"    // prints: array ["Steve", "Mark"], change: .updates([1])
+names.append("John") // prints: array: ["Steve", "Tim", "John"], diff: Inserts: [2], patch: [I(John, at: 2)]
+names.removeLast()   // prints: array: ["Steve", "Tim"], diff: Deletes: [2], patch: [D(at: 2)]
+names[1] = "Mark"    // prints: array: ["Steve", "Mark"], diff: Updates: [1], patch: [U(at: 1, newElement: Mark)]
 ```
 
 Peek into [observable collections documentation](Documentation/ObservableCollections.md) to learn more about observable collections.
 
 ## Data Source Signals
 
-Observable collections and other data source signals enable us to build powerful UI bindings. For example, an observable array could be bound to a collection view just like this:
+Observable collections and other data source signals enable us to build powerful UI bindings. For example, an observable array can be bound to a collection view just like this:
 
 ```swift
 names.bind(to: collectionView, cellType: UserCell.self) { (cell, name) in

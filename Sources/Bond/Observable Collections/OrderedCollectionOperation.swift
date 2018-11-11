@@ -51,6 +51,19 @@ extension OrderedCollectionOperation {
         }
     }
 
+    public func mapIndex<U>(_ transform: (Index) -> U) -> OrderedCollectionOperation<Element, U> {
+        switch self {
+        case .insert(let element, let at):
+            return .insert(element, at: transform(at))
+        case .delete(let at):
+            return .delete(at: transform(at))
+        case .update(let at, let element):
+            return .update(at: transform(at), newElement: element)
+        case .move(let from, let to):
+            return .move(from: transform(from), to: transform(to))
+        }
+    }
+
     public var asAnyOrderedCollectionOperation: AnyOrderedCollectionOperation<Index> {
         switch self {
         case .insert(_, let at):
@@ -74,7 +87,7 @@ extension OrderedCollectionOperation: CustomDebugStringConvertible {
         case .delete(let at):
             return "D(at: \(at))"
         case .update(let at, let newElement):
-            return "U(at: \(at), with: \(newElement))"
+            return "U(at: \(at), newElement: \(newElement))"
         case .move(let from, let to):
             return "M(from: \(from), to: \(to))"
         }

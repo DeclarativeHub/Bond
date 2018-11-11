@@ -117,6 +117,6 @@ extension OrderedCollectionDiff: Equatable where Index: Equatable {
 extension OrderedCollectionDiff: CustomDebugStringConvertible {
 
     public var debugDescription: String {
-        return "Inserts: \(inserts), Deletes: \(deletes), Updates: \(updates), Moves: \(moves)]"
+        return "Inserts: \(inserts), Deletes: \(deletes), Updates: \(updates), Moves: \(moves)"
     }
 }

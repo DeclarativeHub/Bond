@@ -16,6 +16,7 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 // Using custom binder to provide table view header titles
 class CustomBinder<Changeset: SectionedDataSourceChangeset>: TableViewBinderDataSource<Changeset> where Changeset.Collection == Array2D<String, Int> {
 
+    // Important: Annotate UITableViewDataSource methods with `@objc` in the subclass, otherwise UIKit will not see your method!
     @objc func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return changeset?.collection[sectionAt: section]
     }

@@ -47,7 +47,7 @@ extension UnorderedCollectionOperation: CustomDebugStringConvertible {
         case .delete(let at):
             return "D(at: \(at))"
         case .update(let at, let newElement):
-            return "U(at: \(at), with: \(newElement))"
+            return "U(at: \(at), newElement: \(newElement))"
         }
     }
 }

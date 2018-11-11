@@ -210,10 +210,10 @@ extension SignalProtocol where Element: SectionedDataSourceChangesetConvertible,
     ///     - binder: A `TableViewBinder` or its subclass that will manage the binding.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
     @discardableResult
-    public func bind(to tableView: UITableView, using binder: TableViewBinderDataSource<Element.Changeset>) -> Disposable {
-        binder.tableView = tableView
+    public func bind(to tableView: UITableView, using binderDataSource: TableViewBinderDataSource<Element.Changeset>) -> Disposable {
+        binderDataSource.tableView = tableView
         return bind(to: tableView) { (_, changeset) in
-            binder.changeset = changeset.asSectionedDataSourceChangeset
+            binderDataSource.changeset = changeset.asSectionedDataSourceChangeset
         }
     }
 }
@@ -251,16 +251,16 @@ extension SignalProtocol where Element: SectionedDataSourceChangesetConvertible,
     ///     - configureCell: A closure that configures the cell with the data source item at the respective index path.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
     @discardableResult
-    public func bind<Cell: UITableViewCell>(to tableView: UITableView, cellType: Cell.Type, using binder: TableViewBinderDataSource<Element.Changeset>, configureCell: @escaping (Cell, Element.Changeset.Collection.Item) -> Void) -> Disposable {
+    public func bind<Cell: UITableViewCell>(to tableView: UITableView, cellType: Cell.Type, using binderDataSource: TableViewBinderDataSource<Element.Changeset>, configureCell: @escaping (Cell, Element.Changeset.Collection.Item) -> Void) -> Disposable {
         let identifier = String(describing: Cell.self)
         tableView.register(cellType as AnyClass, forCellReuseIdentifier: identifier)
-        binder.createCell = { (dataSource, indexPath, tableView) -> UITableViewCell in
+        binderDataSource.createCell = { (dataSource, indexPath, tableView) -> UITableViewCell in
             let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! Cell
             let item = dataSource.item(at: indexPath)
             configureCell(cell, item)
             return cell
         }
-        return bind(to: tableView, using: binder)
+        return bind(to: tableView, using: binderDataSource)
     }
 }
 
