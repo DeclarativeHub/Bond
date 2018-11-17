@@ -73,7 +73,7 @@ open class TableViewBinderDataSource<Changeset: SectionedDataSourceChangeset>: N
         }
     }
 
-    public weak var tableView: UITableView? = nil {
+    open weak var tableView: UITableView? = nil {
         didSet {
             guard let tableView = tableView else { return }
             associateWithTableView(tableView)

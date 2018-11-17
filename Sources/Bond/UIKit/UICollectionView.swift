@@ -74,7 +74,7 @@ open class CollectionViewBinderDataSource<Changeset: SectionedDataSourceChangese
         }
     }
 
-    public weak var collectionView: UICollectionView? = nil {
+    open weak var collectionView: UICollectionView? = nil {
         didSet {
             guard let collectionView = collectionView else { return }
             associateWithCollectionView(collectionView)
