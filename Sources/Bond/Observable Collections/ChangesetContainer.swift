@@ -30,6 +30,11 @@ public protocol ChangesetContainerProtocol: class {
     associatedtype Changeset: ChangesetProtocol
 
     /// Contained changeset.
+    var changeset: Changeset { get }
+}
+
+public protocol MutableChangesetContainerProtocol: ChangesetContainerProtocol {
+
     var changeset: Changeset { get set }
 }
 
@@ -43,6 +48,9 @@ extension ChangesetContainerProtocol {
     public var collection: Collection {
         return changeset.collection
     }
+}
+
+extension MutableChangesetContainerProtocol {
 
     /// Update the collection and provide a description of changes as patch.
     public func descriptiveUpdate(_ update: (inout Collection) -> [Operation]) {

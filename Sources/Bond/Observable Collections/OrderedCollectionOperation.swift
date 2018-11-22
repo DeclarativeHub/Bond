@@ -129,7 +129,7 @@ extension RangeReplaceableTreeNode where Index == IndexPath {
     }
 }
 
-extension ChangesetContainerProtocol where Changeset.Collection: RangeReplaceableCollection, Changeset.Collection: MutableCollection, Changeset.Collection.Index: Strideable, Changeset.Operation == OrderedCollectionChangeset<Changeset.Collection>.Operation {
+extension MutableChangesetContainerProtocol where Changeset.Collection: RangeReplaceableCollection, Changeset.Collection: MutableCollection, Changeset.Collection.Index: Strideable, Changeset.Operation == OrderedCollectionChangeset<Changeset.Collection>.Operation {
 
     public func apply(_ operation: Changeset.Operation) {
         descriptiveUpdate { (collection) -> [Changeset.Operation] in
@@ -139,7 +139,7 @@ extension ChangesetContainerProtocol where Changeset.Collection: RangeReplaceabl
     }
 }
 
-extension ChangesetContainerProtocol where Changeset.Collection: RangeReplaceableTreeNode, Changeset.Collection.Index == IndexPath, Changeset.Operation == TreeChangeset<Changeset.Collection>.Operation {
+extension MutableChangesetContainerProtocol where Changeset.Collection: RangeReplaceableTreeNode, Changeset.Collection.Index == IndexPath, Changeset.Operation == TreeChangeset<Changeset.Collection>.Operation {
 
     public func apply(_ operation: Changeset.Operation) {
         descriptiveUpdate { (collection) -> [Changeset.Operation] in

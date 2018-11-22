@@ -26,7 +26,7 @@ extension Dictionary: _DictionaryProtocol {
     }
 }
 
-extension ChangesetContainerProtocol where
+extension MutableChangesetContainerProtocol where
     Changeset: UnorderedCollectionChangesetProtocol,
     Changeset.Collection: _DictionaryProtocol,
     Changeset.Operation == UnorderedCollectionOperation<Dictionary<Changeset.Collection.Key, Changeset.Collection.Value>.Element, Dictionary<Changeset.Collection.Key, Changeset.Collection.Value>.Index> {

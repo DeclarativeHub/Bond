@@ -25,7 +25,7 @@ extension Set: _SetProtocol {
     }
 }
 
-extension ChangesetContainerProtocol where
+extension MutableChangesetContainerProtocol where
     Changeset: UnorderedCollectionChangesetProtocol,
     Changeset.Collection: _SetProtocol,
     Changeset.Operation == UnorderedCollectionOperation<Set<Changeset.Collection.Element>.Element, Set<Changeset.Collection.Element>.Index> {

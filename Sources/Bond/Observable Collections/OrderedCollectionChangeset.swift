@@ -48,7 +48,7 @@ public final class OrderedCollectionChangeset<Collection: Swift.Collection>: Cha
     }
 }
 
-extension ChangesetContainerProtocol where Changeset: OrderedCollectionChangesetProtocol, Changeset.Collection: MutableCollection {
+extension MutableChangesetContainerProtocol where Changeset: OrderedCollectionChangesetProtocol, Changeset.Collection: MutableCollection {
 
     /// Access or update the element at `index`.
     public subscript(index: Collection.Index) -> Collection.Element {
@@ -64,7 +64,7 @@ extension ChangesetContainerProtocol where Changeset: OrderedCollectionChangeset
     }
 }
 
-extension ChangesetContainerProtocol where Changeset: OrderedCollectionChangesetProtocol, Changeset.Collection: RangeReplaceableCollection {
+extension MutableChangesetContainerProtocol where Changeset: OrderedCollectionChangesetProtocol, Changeset.Collection: RangeReplaceableCollection {
 
     /// Append `newElement` at the end of the collection.
     public func append(_ newElement: Collection.Element) {
@@ -128,7 +128,7 @@ extension ChangesetContainerProtocol where Changeset: OrderedCollectionChangeset
     }
 }
 
-extension ChangesetContainerProtocol where
+extension MutableChangesetContainerProtocol where
 Changeset: OrderedCollectionChangesetProtocol,
 Changeset.Collection: RangeReplaceableCollection,
 Changeset.Collection.Index.Stride == Int {

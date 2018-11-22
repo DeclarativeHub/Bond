@@ -59,7 +59,7 @@ extension SignalProtocol where Element: Collection, Element.Element: Equatable, 
     }
 }
 
-extension ChangesetContainerProtocol where Changeset: OrderedCollectionChangesetProtocol, Changeset.Collection.Index == Int {
+extension MutableChangesetContainerProtocol where Changeset: OrderedCollectionChangesetProtocol, Changeset.Collection.Index == Int {
 
     /// Replace the underlying collection with the given collection. Setting `performDiff: true` will make the framework
     /// calculate the diff between the existing and new collection and emit an event with the calculated diff.
@@ -70,7 +70,7 @@ extension ChangesetContainerProtocol where Changeset: OrderedCollectionChangeset
         }
     }
 }
-extension ChangesetContainerProtocol where Changeset: OrderedCollectionChangesetProtocol, Changeset.Collection.Index == Int, Changeset.Collection.Element: Equatable {
+extension MutableChangesetContainerProtocol where Changeset: OrderedCollectionChangesetProtocol, Changeset.Collection.Index == Int, Changeset.Collection.Element: Equatable {
 
     /// Replace the underlying collection with the given collection. Setting `performDiff: true` will make the framework
     /// calculate the diff between the existing and new collection and emit an event with the calculated diff.

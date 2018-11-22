@@ -47,7 +47,7 @@ public final class UnorderedCollectionChangeset<Collection: Swift.Collection>: C
     }
 }
 
-extension ChangesetContainerProtocol where Changeset: UnorderedCollectionChangesetProtocol, Changeset.Collection: MutableCollection {
+extension MutableChangesetContainerProtocol where Changeset: UnorderedCollectionChangesetProtocol, Changeset.Collection: MutableCollection {
 
     /// Access or update the element at `index`.
     public subscript(index: Collection.Index) -> Collection.Element {
@@ -63,7 +63,7 @@ extension ChangesetContainerProtocol where Changeset: UnorderedCollectionChanges
     }
 }
 
-extension ChangesetContainerProtocol where Changeset: UnorderedCollectionChangesetProtocol, Changeset.Collection: RangeReplaceableCollection {
+extension MutableChangesetContainerProtocol where Changeset: UnorderedCollectionChangesetProtocol, Changeset.Collection: RangeReplaceableCollection {
 
     /// Append `newElement` to the collection.
     public func append(_ newElement: Collection.Element) {

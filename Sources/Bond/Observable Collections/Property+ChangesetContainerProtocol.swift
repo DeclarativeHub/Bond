@@ -46,26 +46,18 @@ public typealias MutableObservableTree<Tree: TreeNodeProtocol> = Property<TreeCh
 public typealias ObservableArray2D<SectionValue, Item> = AnyProperty<TreeChangeset<Array2D<SectionValue, Item>>>
 public typealias MutableObservableArray2D<SectionValue, Item> = Property<TreeChangeset<Array2D<SectionValue, Item>>>
 
-extension AnyProperty where Value: ChangesetProtocol {
+extension AnyProperty: ChangesetContainerProtocol where Value: ChangesetProtocol {
 
-    public typealias Collection = Value.Collection
+    public typealias Changeset = Value
 
-    public var collection: Collection {
-        return value.collection
-    }
-}
-
-extension AnyProperty where Value: ChangesetProtocol, Value.Collection: Collection {
-
-    /// Access the element at `index`.
-    public subscript(index: Collection.Index) -> Collection.Element {
+    public var changeset: Value {
         get {
-            return collection[index]
+            return value
         }
     }
 }
 
-extension Property: ChangesetContainerProtocol where Value: ChangesetProtocol {
+extension Property: ChangesetContainerProtocol, MutableChangesetContainerProtocol where Value: ChangesetProtocol {
 
     public typealias Changeset = Value
 

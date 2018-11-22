@@ -48,7 +48,7 @@ public final class TreeChangeset<Collection: TreeNodeProtocol>: Changeset<Collec
     }
 }
 
-extension ChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Changeset.Collection: RangeReplaceableTreeNode {
+extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Changeset.Collection: RangeReplaceableTreeNode {
 
     public typealias ChildNode = Collection.ChildNode
 
