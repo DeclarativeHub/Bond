@@ -133,6 +133,16 @@ Changeset: OrderedCollectionChangesetProtocol,
 Changeset.Collection: RangeReplaceableCollection,
 Changeset.Collection.Index.Stride == Int {
 
+    /// Remove all elements from the collection.
+    public func removeSubrange(_ subrange: Range<Changeset.Collection.Index>) {
+        guard !subrange.isEmpty else { return }
+        descriptiveUpdate { (collection) -> [Operation] in
+            let deletes = subrange.reversed().map { Operation.delete(at: $0) }
+            collection.removeSubrange(subrange)
+            return deletes
+        }
+    }
+
     public func move(from fromIndices: [Collection.Index], to toIndex: Collection.Index) {
         descriptiveUpdate { (collection) -> [Operation] in
             collection.move(from: fromIndices, to: toIndex)
