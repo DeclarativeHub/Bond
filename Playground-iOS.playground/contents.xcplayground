@@ -5,6 +5,7 @@
         <page name='UITableView+Signal+Diff'/>
         <page name='UITableView+ObservableArray'/>
         <page name='UITableView+ObservableArray2D'/>
+        <page name='UICollectionView+ObservableArray2D'/>
         <page name='Key Value Observing'/>
     </pages>
 </playground>
