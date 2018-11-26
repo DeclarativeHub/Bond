@@ -44,7 +44,7 @@ extension ChangesetContainerProtocol {
     public typealias Operation = Changeset.Operation
     public typealias Diff = Changeset.Diff
 
-    /// Collection contained in the chageset (`changeset.collection`).
+    /// Collection contained in the changeset (`changeset.collection`).
     public var collection: Collection {
         return changeset.collection
     }
