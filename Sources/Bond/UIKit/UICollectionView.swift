@@ -66,7 +66,7 @@ open class CollectionViewBinderDataSource<Changeset: SectionedDataSourceChangese
     public var changeset: Changeset? = nil {
         didSet {
             if let changeset = changeset, oldValue != nil {
-                applyChageset(changeset)
+                applyChangeset(changeset)
             } else {
                 collectionView?.reloadData()
                 ensureCollectionViewSyncsWithTheDataSource()
@@ -107,22 +107,22 @@ open class CollectionViewBinderDataSource<Changeset: SectionedDataSourceChangese
         }
     }
 
-    open func applyChageset(_ changeset: Changeset) {
+    open func applyChangeset(_ changeset: Changeset) {
         guard let collectionView = collectionView else { return }
         let diff = changeset.diff.asOrderedCollectionDiff.map { $0.asSectionDataIndexPath }
         if diff.isEmpty {
             collectionView.reloadData()
         } else if diff.count == 1 {
-            applyChagesetDiff(diff)
+            applyChangesetDiff(diff)
         } else {
             collectionView.performBatchUpdates({
-                applyChagesetDiff(diff)
+                applyChangesetDiff(diff)
             }, completion: nil)
         }
         ensureCollectionViewSyncsWithTheDataSource()
     }
 
-    open func applyChagesetDiff(_ diff: OrderedCollectionDiff<IndexPath>) {
+    open func applyChangesetDiff(_ diff: OrderedCollectionDiff<IndexPath>) {
         guard let collectionView = collectionView else { return }
         let insertedSections = diff.inserts.filter { $0.count == 1 }.map { $0[0] }
         if !insertedSections.isEmpty {

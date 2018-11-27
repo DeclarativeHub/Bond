@@ -66,7 +66,7 @@ open class TableViewBinderDataSource<Changeset: SectionedDataSourceChangeset>: N
     public var changeset: Changeset? = nil {
         didSet {
             if let changeset = changeset, oldValue != nil {
-                applyChageset(changeset)
+                applyChangeset(changeset)
             } else {
                 tableView?.reloadData()
             }
@@ -110,21 +110,21 @@ open class TableViewBinderDataSource<Changeset: SectionedDataSourceChangeset>: N
         }
     }
     
-    open func applyChageset(_ changeset: Changeset) {
+    open func applyChangeset(_ changeset: Changeset) {
         guard let tableView = tableView else { return }
         let diff = changeset.diff.asOrderedCollectionDiff.map { $0.asSectionDataIndexPath }
         if diff.isEmpty {
             tableView.reloadData()
         } else if diff.count == 1 {
-            applyChagesetDiff(diff)
+            applyChangesetDiff(diff)
         } else {
             tableView.beginUpdates()
-            applyChagesetDiff(diff)
+            applyChangesetDiff(diff)
             tableView.endUpdates()
         }
     }
 
-    open func applyChagesetDiff(_ diff: OrderedCollectionDiff<IndexPath>) {
+    open func applyChangesetDiff(_ diff: OrderedCollectionDiff<IndexPath>) {
         guard let tableView = tableView else { return }
         let insertedSections = diff.inserts.filter { $0.count == 1 }.map { $0[0] }
         if !insertedSections.isEmpty {
@@ -173,7 +173,7 @@ extension TableViewBinderDataSource {
 
     public class ReloadingBinder: TableViewBinderDataSource {
 
-        public override func applyChageset(_ changeset: Changeset) {
+        public override func applyChangeset(_ changeset: Changeset) {
             tableView?.reloadData()
         }
     }
