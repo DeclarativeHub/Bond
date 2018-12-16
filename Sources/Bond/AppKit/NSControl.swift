@@ -27,7 +27,7 @@
 import AppKit
 import ReactiveKit
 
-fileprivate extension NSControl {
+private extension NSControl {
 
     struct AssociatedKeys {
         static var ControlHelperKey = "bnd_ControlHelperKey"

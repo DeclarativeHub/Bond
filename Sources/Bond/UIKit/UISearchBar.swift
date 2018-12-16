@@ -23,32 +23,32 @@
 //
 
 #if os(iOS) || os(tvOS)
-    
-    import UIKit
-    import ReactiveKit
-    
-    public extension ReactiveExtensions where Base: UISearchBar {
-        
-        public var delegate: ProtocolProxy {
-            return protocolProxy(for: UISearchBarDelegate.self, keyPath: \.delegate)
-        }
-        
-        public var text: DynamicSubject<String?> {
-            let selector = #selector(UISearchBarDelegate.searchBar(_:textDidChange:))
-            let signal = delegate.signal(for: selector) { (subject: SafePublishSubject<Void>, _: UISearchBar, _: NSString) in
-                subject.next()
-            }
-            
-            return dynamicSubject(signal: signal, get: { $0.text }, set: { $0.text = $1 })
-        }
+
+import UIKit
+import ReactiveKit
+
+public extension ReactiveExtensions where Base: UISearchBar {
+
+    public var delegate: ProtocolProxy {
+        return protocolProxy(for: UISearchBarDelegate.self, keyPath: \.delegate)
     }
-    
-    extension UISearchBar: BindableProtocol {
-        
-        public func bind(signal: Signal<String?, NoError>) -> Disposable {
-            return reactive.text.bind(signal: signal)
+
+    public var text: DynamicSubject<String?> {
+        let selector = #selector(UISearchBarDelegate.searchBar(_:textDidChange:))
+        let signal = delegate.signal(for: selector) { (subject: SafePublishSubject<Void>, _: UISearchBar, _: NSString) in
+            subject.next()
         }
+
+        return dynamicSubject(signal: signal, get: { $0.text }, set: { $0.text = $1 })
     }
-    
+}
+
+extension UISearchBar: BindableProtocol {
+
+    public func bind(signal: Signal<String?, NoError>) -> Disposable {
+        return reactive.text.bind(signal: signal)
+    }
+}
+
 #endif
 
