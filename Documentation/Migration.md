@@ -2,7 +2,7 @@
 
 Bond 7 is all about observable collections! They are now much more powerful, it is easy to customize binders and create your own variants of observable collections. Anything that conforms to `Swift.Collection` can now be made observable. Bond now also supports observable trees! Check out [observable collections documentation](ObservableCollections.md) and new playgrounds in the project workspace.
 
-Bond 7 updates only observable collections APIs. All other APIs remain unchanged. APIs for use cases like creating, mutating and binding collections remain mostly unchanged, however there are breaking changes in the collection views binders and the observable collection event type. Make sure to check out playgrounds in the project workspace to learn about new stuff.
+Bond 7 updates only observable collections APIs. All other APIs remain unchanged. APIs for use cases like creating, mutating and binding collections remain mostly unchanged, however there are breaking changes in the collection/table view binders and the observable collection event type. Make sure to check out playgrounds in the project workspace to learn about the new stuff.
 
 ### Observable Collections
 
@@ -41,10 +41,10 @@ You can use changeset type to get both kinds of change descriptions.
 Bond 7 provides few implementations of the changeset protocol:
 
   * `OrderedCollectionChangeset<Collection: Swift.Collection>` for ordered collections like arrays, 2D arrays, lists and other collection where order of elements matters. 
-  * `UnorderedCollectionChangeset<Collection: Swift.Collection>` for unordered collections like dictionary, set, and other collection where order of elements does not matter. 
+  * `UnorderedCollectionChangeset<Collection: Swift.Collection>` for unordered collections like dictionary, set and other collection where order of elements does not matter. 
   * `TreeChangeset<Collection: TreeNodeProtocol>` for trees.
 
-The implementations mostly differ in how they specialize the Diff and (patch) Operation associated types. In ordered collections, position of elements matter, so moving elements within the collection makes sense. Thus the ordered collection diff is defined as:
+The implementations mostly differ in how they specialize the associated `Diff` and (patch) `Operation` types. In ordered collections, position of elements matter, so moving elements within the collection makes sense. Thus the ordered collection diff is defined as:
 
 ```swift
 public struct OrderedCollectionDiff<Index>: OrderedCollectionDiffProtocol {
@@ -88,7 +88,7 @@ public typealias MutableObservableArray<Element> = Property<OrderedCollectionCha
 
 Methods like append, insert or remove are then implemented as extensions on the `Property` type.
 
-Other collections follow the same principle. This also makes it super easy to define you own observable collections. For example, if you have you own collection type `MySuperArray` that conforms to `Swift.Collection` protocol, you can make the observable variant just by doing:
+Other collections follow the same principle. This also makes it super easy to define you own observable collections. For example, if you have your own collection type `MySuperArray` that conforms to `Swift.Collection` protocol, you can make the observable variant just by doing:
 
 ```swift
 public typealias MySuperObservableArray<Element> = Property<OrderedCollectionChangeset<MySuperArray<Element>>>
