@@ -102,6 +102,8 @@ In previous versions of Bond, observable collections implemented `DataSourceProt
 
 `OrderedCollectionChangeset` as well as `Swift.Array` now conform to `SectionedDataSourceChangesetConvertible` which works in combination with `SectionedDataSourceProtocol` to make signals or properties of those types bindable to collection or table views.
 
+You can now also bind observable dictionaries or sets to table or collection views by applying `sortedCollection()` operator on them to convert them into an ordered collection.
+
 ### Custom Binder Data Sources
 
 Bond 7 makes it easier to provide custom binder data sources. Check out [custom data sources documentation](DataSourceSignals.md#advanced-bindings-custom-binder-data-sources).
