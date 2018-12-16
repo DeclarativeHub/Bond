@@ -177,6 +177,7 @@
 		90C04DC31E8F0B97000077C8 /* UITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D541E8F0B1D000077C8 /* UITextView.swift */; };
 		90C04DC41E8F0B97000077C8 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D551E8F0B1D000077C8 /* UIView.swift */; };
 		EC02200A1F8BE898002F8380 /* Property+BidirectionalMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0220091F8BE898002F8380 /* Property+BidirectionalMap.swift */; };
+		EC0D8D2321C697D1003F8EF2 /* Deprecations.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D8D2221C697D1003F8EF2 /* Deprecations.swift */; };
 		EC1746C7216A2BD500955C49 /* UICollectionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04DCF1E8F0BA7000077C8 /* UICollectionViewTests.swift */; };
 		EC1F12712167BFB4002F0D1B /* UnorderedCollectionDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1F12702167BFB4002F0D1B /* UnorderedCollectionDiff.swift */; };
 		EC1F12722167BFB4002F0D1B /* UnorderedCollectionDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1F12702167BFB4002F0D1B /* UnorderedCollectionDiff.swift */; };
@@ -469,6 +470,7 @@
 		90C04DD01E8F0BA7000077C8 /* UIKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitTests.swift; sourceTree = "<group>"; };
 		90C04DD11E8F0BA7000077C8 /* UITableViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewTests.swift; sourceTree = "<group>"; };
 		EC0220091F8BE898002F8380 /* Property+BidirectionalMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Property+BidirectionalMap.swift"; sourceTree = "<group>"; };
+		EC0D8D2221C697D1003F8EF2 /* Deprecations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deprecations.swift; sourceTree = "<group>"; };
 		EC14E6482132948D00A5AC8D /* TreeChangesetDiffAndPatchTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeChangesetDiffAndPatchTest.swift; sourceTree = "<group>"; };
 		EC1F12702167BFB4002F0D1B /* UnorderedCollectionDiff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnorderedCollectionDiff.swift; sourceTree = "<group>"; };
 		EC1F12782167C0B7002F0D1B /* UnorderedCollectionOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnorderedCollectionOperation.swift; sourceTree = "<group>"; };
@@ -682,6 +684,7 @@
 				ECDC8CAD215EBE0F0079E521 /* Data Structures */,
 				ECF15FD9207A036D00DEB77D /* Observable Collections */,
 				ECFF44BA21691F9E00B5EDB0 /* Data Sources */,
+				EC0D8D1D21C697BE003F8EF2 /* Deprecations */,
 			);
 			path = Bond;
 			sourceTree = "<group>";
@@ -779,6 +782,14 @@
 				90C04DCA1E8F0BA7000077C8 /* NSObjectTests.swift */,
 			);
 			path = BondTests;
+			sourceTree = "<group>";
+		};
+		EC0D8D1D21C697BE003F8EF2 /* Deprecations */ = {
+			isa = PBXGroup;
+			children = (
+				EC0D8D2221C697D1003F8EF2 /* Deprecations.swift */,
+			);
+			path = Deprecations;
 			sourceTree = "<group>";
 		};
 		ECDC8CAD215EBE0F0079E521 /* Data Structures */ = {
@@ -1172,6 +1183,7 @@
 				90A4430C1E9055D100D611FE /* NSPopUpButton.swift in Sources */,
 				ECAFB8D4200A7E3900EE0669 /* BNDInvocation.swift in Sources */,
 				ECBCE0CC21616B8B0078E03B /* OrderedCollectionOperation+Strideable+Undo.swift in Sources */,
+				EC0D8D2321C697D1003F8EF2 /* Deprecations.swift in Sources */,
 				90A443121E9055D100D611FE /* NSTextField.swift in Sources */,
 				90C04DC21E8F0B97000077C8 /* UITextField.swift in Sources */,
 				ECBCE0D621616FAA0078E03B /* TreeChangeset.swift in Sources */,

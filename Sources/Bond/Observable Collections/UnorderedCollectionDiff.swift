@@ -69,7 +69,7 @@ extension UnorderedCollectionDiff {
 
 extension UnorderedCollectionDiffProtocol {
 
-    func map<T>(_ transform: (Index) -> T) -> UnorderedCollectionDiff<T> {
+    public func map<T>(_ transform: (Index) -> T) -> UnorderedCollectionDiff<T> {
         let diff = asUnorderedCollectionDiff
         return UnorderedCollectionDiff<T>(
             inserts: diff.inserts.map(transform),

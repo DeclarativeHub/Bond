@@ -95,7 +95,7 @@ extension OrderedCollectionDiff {
 
 extension OrderedCollectionDiffProtocol {
 
-    func map<T>(_ transform: (Index) -> T) -> OrderedCollectionDiff<T> {
+    public func map<T>(_ transform: (Index) -> T) -> OrderedCollectionDiff<T> {
         let diff = asOrderedCollectionDiff
         return OrderedCollectionDiff<T>(
             inserts: diff.inserts.map(transform),

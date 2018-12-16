@@ -193,6 +193,3 @@ extension ReactiveExtensions where Base: Deallocatable, Base: BindingExecutionCo
         return dynamicSubject(signal: signal, context: base.bindingExecutionContext, triggerEventOnSetting: triggerEventOnSetting, get: get, set: set)
     }
 }
-
-@available(*, deprecated, renamed: "FailableDynamicSubject")
-public typealias DynamicSubject2<Element, Error: Swift.Error> = FailableDynamicSubject<Element, Error>
