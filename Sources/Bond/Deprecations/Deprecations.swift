@@ -23,6 +23,7 @@ public enum DataSourceEvent {}
 @available(*, deprecated, message: "DataSourceEventKind has been deprecated in favour of OrderedCollectionDiff. Please consult the documentation on how to migrate this type.")
 public enum DataSourceEventKind {}
 
+@available(*, deprecated)
 extension DataSourceEventProtocol {
 
     @available(*, deprecated, renamed: "Collection")
