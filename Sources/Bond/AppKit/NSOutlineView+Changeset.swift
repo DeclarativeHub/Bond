@@ -195,7 +195,6 @@ extension SignalProtocol where Element: OutlineChangesetConvertible, Error == No
     ///     - outlineView: An outline view that should display the data from the data source.
     ///     - animated: Animate partial or batched updates. Default is `true`.
     ///     - rowAnimation: Row animation for partial or batched updates. Relevant only when `animated` is `true`. Default is `[.effectFade, .slideUp]`.
-    ///     - createCell: A closure that creates (dequeues) cell for the given table view and configures it with the given data source at the given index path.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
     @discardableResult
     public func bind(to outlineView: NSOutlineView, animated: Bool = true, rowAnimation: NSOutlineView.AnimationOptions = [.effectFade, .slideUp]) -> Disposable {

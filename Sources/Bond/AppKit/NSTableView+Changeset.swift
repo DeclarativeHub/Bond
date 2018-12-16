@@ -135,7 +135,6 @@ extension SignalProtocol where Element: FlatDataSourceChangesetConvertible, Erro
     ///     - tableView: A table view that should display the data from the data source.
     ///     - animated: Animate partial or batched updates. Default is `true`.
     ///     - rowAnimation: Row animation for partial or batched updates. Relevant only when `animated` is `true`. Default is `[.effectFade, .slideLeft]`.
-    ///     - createCell: A closure that creates (dequeues) cell for the given table view and configures it with the given data source at the given index path.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
     @discardableResult
     public func bind(to tableView: NSTableView, animated: Bool = true, rowAnimation: NSTableView.AnimationOptions = [.effectFade, .slideLeft]) -> Disposable {
