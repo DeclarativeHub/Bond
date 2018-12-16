@@ -5,6 +5,7 @@
 [![Twitter](https://img.shields.io/badge/twitter-@srdanrasic-red.svg?style=flat)](https://twitter.com/srdanrasic)
 
 <br>
+
 **Update: Bond 7 has been released!** Check out [the migration guide](Documentation/Migration.md) to learn more about the update.
 
 Bond is a Swift binding framework that takes binding concepts to a whole new level. It's simple, powerful, type-safe and multi-paradigm - just like Swift.
