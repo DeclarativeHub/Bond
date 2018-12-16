@@ -3,7 +3,7 @@
 
 Bindings automatically populate the table or collection view with the data, perform partial of batched updates when needed, ensure proper thread and dispose themself when the view is deallocated.
 
-Note that bindings will replace the existing collection or table view data source if such exists. Check out [custom data source in addition to bindings](#Custom-data-source-in-addition-to-bindings) for more info on that. 
+Note that bindings will replace the existing collection or table view data source if such exists. Check out [custom data source in addition to bindings](#advanced-bindings-custom-binder-data-sources) for more info on that. 
 
 ### Collection view of single cell type
 
@@ -152,3 +152,12 @@ array2D.bind(to: tableView, cellType: UITableViewCell.self, using: CustomBinder(
 ```
 
 In the same way you can subclass `CollectionViewBinderDataSource`.
+
+**Note that due to the [limitations](https://stackoverflow.com/questions/48215689/dispatch-issue-with-generic-subclass-of-custom-table-view-controller) in Swift generic system, you have to provide ObjC names of the delegate methods if they differ from Swift names. For example**
+
+```swift
+@objc (collectionView:viewForSupplementaryElementOfKind:atIndexPath:)
+func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    ...
+}
+```

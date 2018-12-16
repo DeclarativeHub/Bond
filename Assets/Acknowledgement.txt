@@ -1,2 +1,0 @@
-Bond logo is inspired by the artwork from the Ray Wenderlich's article:
-https://www.raywenderlich.com/149753/bond-tutorial-bindings-swift

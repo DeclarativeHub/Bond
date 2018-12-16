@@ -5,16 +5,13 @@
 [![Twitter](https://img.shields.io/badge/twitter-@srdanrasic-red.svg?style=flat)](https://twitter.com/srdanrasic)
 
 <br>
+**Update: Bond 7 has been released!** Check out [the migration guide](Documentation/Migration.md) to learn more about the update.
+
 Bond is a Swift binding framework that takes binding concepts to a whole new level. It's simple, powerful, type-safe and multi-paradigm - just like Swift.
 
 Bond is built on top of ReactiveKit and bridges the gap between the reactive and imperative paradigms. You can use it as a standalone framework to simplify your state changes with bindings and reactive data sources, but you can also use it with ReactiveKit to complement your reactive data flows with bindings, reactive delegates and reactive data sources.
 
 Bond is a backbone of the [Binder Architecture](https://github.com/DeclarativeHub/TheBinderArchitecture) - a preferred architecture to be used with the framework.
-
-**Update: We've just released Bond 7 beta!** It brings refactored observable collections that are much more powerful and make it easy to customize binders and create your own variants of observable collections. Anything that conforms to `Swift.Collection` can now be made observable. Bond also supports observable trees now! Check out [observable collections documentation](Documentation/ObservableCollections.md) and new playgrounds in the project workspace.
-
-Bond 7 updates only observable collections APIs. All other APIs remain unchanged. APIs for use cases like creating, mutating and binding collections remain mostly unchanged, however there are breaking changes in the collection binders and the observable collection event type. Make sure to check out playgrounds in the project workspace to learn about new stuff.
-
 
 ## Why use Bond?
 
@@ -185,7 +182,7 @@ Bond uses protocol proxies to implement table and collection view bindings and t
 ## Requirements
 
 * iOS 8.0+ / macOS 10.11+ / tvOS 9.0+
-* Xcode 9.3+
+* Swift 4.2
 
 ## Communication
 
