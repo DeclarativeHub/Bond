@@ -66,10 +66,20 @@ public extension ReactiveExtensions where Base: NSObject {
             }
 
             let disposable = base._willDeallocate.observeCompleted {
+                if #available(iOS 11, *) {} else {
+                    let keyPathString = NSExpression(forKeyPath: keyPath).keyPath
+                    base.removeObserver(base, forKeyPath: keyPathString)
+                }
+                
                 subscription.invalidate()
             }
 
             return DeinitDisposable(disposable: BlockDisposable {
+                if #available(iOS 11, *) {} else {
+                    let keyPathString = NSExpression(forKeyPath: keyPath).keyPath
+                    base.removeObserver(base, forKeyPath: keyPathString)
+                }
+                
                 subscription.invalidate()
                 disposable.dispose()
             })
