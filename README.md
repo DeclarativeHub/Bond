@@ -38,7 +38,7 @@ textField.reactive.text.bind(to: label)
 
 That one line establishes a binding between the text field's text property and label's text property. In effect, whenever user makes a change to the text field, that change will automatically be propagated to the label.
 
-More often than not, direct binding is not enough. Usually you need to transform input is some way, like prepending a greeting to a name. As Bond is backed by ReactiveKit it has full confidence in functional paradigm.
+More often than not, direct binding is not enough. Usually you need to transform input is some way, like prepending a greeting to a name. As Bond is backed by [ReactiveKit](https://github.com/DeclarativeHub/ReactiveKit) it has full confidence in functional paradigm.
 
 ```swift
 textField.reactive.text
