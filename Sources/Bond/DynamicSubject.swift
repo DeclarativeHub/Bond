@@ -166,8 +166,13 @@ public struct FailableDynamicSubject<Element, Error: Swift.Error>: SubjectProtoc
                     return .failure(error)
                 }
             },
-            set: { [setter] (target, element) in
+            set: { [setter, triggerEventOnSetting, subject] (target, element) in
+                
                 setter(target, setTransform(element))
+                
+                if triggerEventOnSetting {
+                    subject.next(())
+                }
             }
         )
     }
