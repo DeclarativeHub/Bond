@@ -1,2 +1,2 @@
-github "DeclarativeHub/ReactiveKit" "v3.9.7"
-github "tonyarnold/Differ" "1.3.0"
+github "tonyarnold/Differ" "db60f3f7349e86d6d905bc00930a6e96f5e75095"
+github "tonyarnold/ReactiveKit" "8d15f422067f4a1a7cf8473a980493f87611100c"

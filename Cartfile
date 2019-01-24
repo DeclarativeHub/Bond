@@ -1,2 +1,2 @@
-github "DeclarativeHub/ReactiveKit" ~> 3.9
-github "tonyarnold/Differ" ~> 1.3
+github "tonyarnold/ReactiveKit" "swift-5.0"
+github "tonyarnold/Differ" "swift-5.0"
