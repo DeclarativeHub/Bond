@@ -29,7 +29,7 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: UIImageView {
 
-    public var image: Bond<UIImage?> {
+    var image: Bond<UIImage?> {
         return bond { $0.image = $1 }
     }
 }

@@ -60,7 +60,7 @@ private extension NSControl {
 
 public extension ReactiveExtensions where Base: NSControl {
 
-    public var controlEvent: SafeSignal<Base> {
+    var controlEvent: SafeSignal<Base> {
         if let controlHelper = objc_getAssociatedObject(base, &NSControl.AssociatedKeys.ControlHelperKey) as AnyObject? {
             return (controlHelper as! NSControl.BondHelper).subject.map { $0 as! Base }.toSignal()
         } else {
@@ -70,11 +70,11 @@ public extension ReactiveExtensions where Base: NSControl {
         }
     }
 
-    public func controlEvent<T>(_ read: @escaping (Base) -> T) -> SafeSignal<T> {
+    func controlEvent<T>(_ read: @escaping (Base) -> T) -> SafeSignal<T> {
         return controlEvent.map(read)
     }
 
-    public var isEnabled: DynamicSubject<Bool> {
+    var isEnabled: DynamicSubject<Bool> {
         return dynamicSubject(
             signal: keyPath(#keyPath(NSControl.isEnabled), ofType: Bool.self).eraseType(),
             triggerEventOnSetting: false,
@@ -83,7 +83,7 @@ public extension ReactiveExtensions where Base: NSControl {
         )
     }
 
-    public var isHighlighted: DynamicSubject<Bool> {
+    var isHighlighted: DynamicSubject<Bool> {
         return dynamicSubject(
             signal: keyPath(#keyPath(NSControl.isHighlighted), ofType: Bool.self).eraseType(),
             triggerEventOnSetting: false,
@@ -92,7 +92,7 @@ public extension ReactiveExtensions where Base: NSControl {
         )
     }
 
-    public var objectValue: DynamicSubject<Any?> {
+    var objectValue: DynamicSubject<Any?> {
         return dynamicSubject(
             signal: controlEvent.eraseType(),
             triggerEventOnSetting: false,
@@ -101,7 +101,7 @@ public extension ReactiveExtensions where Base: NSControl {
         )
     }
 
-    public var stringValue: DynamicSubject<String> {
+    var stringValue: DynamicSubject<String> {
         return dynamicSubject(
             signal: objectValue.eraseType(),
             triggerEventOnSetting: false,
@@ -110,7 +110,7 @@ public extension ReactiveExtensions where Base: NSControl {
         )
     }
 
-    public var attributedStringValue: DynamicSubject<NSAttributedString> {
+    var attributedStringValue: DynamicSubject<NSAttributedString> {
         return dynamicSubject(
             signal: objectValue.eraseType(),
             triggerEventOnSetting: false,
@@ -119,7 +119,7 @@ public extension ReactiveExtensions where Base: NSControl {
         )
     }
 
-    public var integerValue: DynamicSubject<Int> {
+    var integerValue: DynamicSubject<Int> {
         return dynamicSubject(
             signal: objectValue.eraseType(),
             triggerEventOnSetting: false,
@@ -128,7 +128,7 @@ public extension ReactiveExtensions where Base: NSControl {
         )
     }
 
-    public var floatValue: DynamicSubject<Float> {
+    var floatValue: DynamicSubject<Float> {
         return dynamicSubject(
             signal: objectValue.eraseType(),
             triggerEventOnSetting: false,
@@ -137,7 +137,7 @@ public extension ReactiveExtensions where Base: NSControl {
         )
     }
 
-    public var doubleValue: DynamicSubject<Double> {
+    var doubleValue: DynamicSubject<Double> {
         return dynamicSubject(
             signal: objectValue.eraseType(),
             triggerEventOnSetting: false,

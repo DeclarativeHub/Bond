@@ -29,27 +29,27 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: NSTextField {
 
-    public var font: Bond<NSFont?> {
+    var font: Bond<NSFont?> {
         return bond { $0.font = $1 }
     }
 
-    public var textColor: Bond<NSColor?> {
+    var textColor: Bond<NSColor?> {
         return bond { $0.textColor = $1 }
     }
 
-    public var backgroundColor: Bond<NSColor?> {
+    var backgroundColor: Bond<NSColor?> {
         return bond { $0.backgroundColor = $1 }
     }
 
-    public var placeholderString: Bond<String?> {
+    var placeholderString: Bond<String?> {
         return bond { $0.placeholderString = $1 }
     }
 
-    public var placeholderAttributedString: Bond<NSAttributedString?> {
+    var placeholderAttributedString: Bond<NSAttributedString?> {
         return bond { $0.placeholderAttributedString = $1 }
     }
 
-    public var editingString: DynamicSubject<String> {
+    var editingString: DynamicSubject<String> {
         return dynamicSubject(
             signal: self.textDidChange.eraseType(),
             get: { (textField: NSTextField) -> String in
@@ -61,21 +61,21 @@ public extension ReactiveExtensions where Base: NSTextField {
         )
     }
 
-    public var textDidChange: SafeSignal<NSTextField> {
+    var textDidChange: SafeSignal<NSTextField> {
         return NotificationCenter.default
             .reactive.notification(name: NSControl.textDidChangeNotification, object: base)
             .map { $0.object as? NSTextField }
             .ignoreNil()
     }
 
-    public var textDidBeginEditing: SafeSignal<NSTextField> {
+    var textDidBeginEditing: SafeSignal<NSTextField> {
         return NotificationCenter.default
             .reactive.notification(name: NSControl.textDidBeginEditingNotification, object: base)
             .map { $0.object as? NSTextField }
             .ignoreNil()
     }
 
-    public var textDidEndEditing: SafeSignal<(NSTextField, Bool)> {
+    var textDidEndEditing: SafeSignal<(NSTextField, Bool)> {
         return NotificationCenter.default
             .reactive.notification(name: NSControl.textDidEndEditingNotification, object: base)
             .map { notification -> (NSTextField, Bool)? in

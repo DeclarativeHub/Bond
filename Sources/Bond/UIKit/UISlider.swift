@@ -29,7 +29,7 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: UISlider {
 
-    public var value: DynamicSubject<Float> {
+    var value: DynamicSubject<Float> {
         return dynamicSubject(
             signal: controlEvents(.valueChanged).eraseType(),
             get: { $0.value },

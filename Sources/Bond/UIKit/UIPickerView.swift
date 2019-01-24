@@ -34,7 +34,7 @@ public extension ReactiveExtensions where Base: UIPickerView {
     /// - Note: Accessing this property for the first time will replace picker view's current data source
     /// with a protocol proxy object (an object that is stored in this property).
     /// Current data source will be used as `forwardTo` data source of protocol proxy.
-    public var dataSource: ProtocolProxy {
+    var dataSource: ProtocolProxy {
         return protocolProxy(for: UIPickerViewDataSource.self, keyPath: \.dataSource)
     }
 
@@ -43,14 +43,14 @@ public extension ReactiveExtensions where Base: UIPickerView {
     /// - Note: Accessing this property for the first time will replace table view's current delegate
     /// with a protocol proxy object (an object that is stored in this property).
     /// Current delegate will be used as `forwardTo` delegate of protocol proxy.
-    public var delegate: ProtocolProxy {
+    var delegate: ProtocolProxy {
         return protocolProxy(for: UIPickerViewDelegate.self, keyPath: \.delegate)
     }
 
     /// A signal that emits the row and component index of the selected picker view row.
     ///
     /// - Note: Uses picker view's `delegate` protocol proxy to observe calls made to `UIPickerViewDelegate.pickerView(_:didSelectRow:inComponent:)` method.
-    public var selectedRow: SafeSignal<(Int, Int)> {
+    var selectedRow: SafeSignal<(Int, Int)> {
         return delegate.signal(
             for: #selector(UIPickerViewDelegate.pickerView(_:didSelectRow:inComponent:)),
             dispatch: { (

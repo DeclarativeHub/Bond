@@ -34,7 +34,7 @@ extension UIGestureRecognizer: BindingExecutionContextProvider {
 
 public extension ReactiveExtensions where Base: UIGestureRecognizer {
 
-    public var isEnabled: Bond<Bool> {
+    var isEnabled: Bond<Bool> {
         return bond { $0.isEnabled = $1 }
     }
 }
@@ -45,7 +45,7 @@ public extension ReactiveExtensions where Base: UIGestureRecognizer {
 
 public extension ReactiveExtensions where Base: UIView {
     
-    public func addGestureRecognizer<T: UIGestureRecognizer>(_ gestureRecognizer: T) -> SafeSignal<T> {
+    func addGestureRecognizer<T: UIGestureRecognizer>(_ gestureRecognizer: T) -> SafeSignal<T> {
         let base = self.base
         return Signal { [weak base] observer in
             guard let base = base else {
@@ -61,7 +61,7 @@ public extension ReactiveExtensions where Base: UIView {
             }.take(until: base.deallocated)
     }
 
-    public func tapGesture(numberOfTaps: Int = 1, numberOfTouches: Int = 1) -> SafeSignal<UITapGestureRecognizer> {
+    func tapGesture(numberOfTaps: Int = 1, numberOfTouches: Int = 1) -> SafeSignal<UITapGestureRecognizer> {
         let gesture = UITapGestureRecognizer()
         gesture.numberOfTapsRequired = numberOfTaps
         gesture.numberOfTouchesRequired = numberOfTouches
@@ -69,14 +69,14 @@ public extension ReactiveExtensions where Base: UIView {
         return addGestureRecognizer(gesture)
     }
 
-    public func panGesture(numberOfTouches: Int = 1) -> SafeSignal<UIPanGestureRecognizer> {
+    func panGesture(numberOfTouches: Int = 1) -> SafeSignal<UIPanGestureRecognizer> {
         let gesture = UIPanGestureRecognizer()
         gesture.minimumNumberOfTouches = numberOfTouches
 
         return addGestureRecognizer(gesture)
     }
 
-    public func swipeGesture(numberOfTouches: Int, direction: UISwipeGestureRecognizer.Direction) -> SafeSignal<UISwipeGestureRecognizer> {
+    func swipeGesture(numberOfTouches: Int, direction: UISwipeGestureRecognizer.Direction) -> SafeSignal<UISwipeGestureRecognizer> {
         let gesture = UISwipeGestureRecognizer()
         gesture.numberOfTouchesRequired = numberOfTouches
         gesture.direction = direction
@@ -84,11 +84,11 @@ public extension ReactiveExtensions where Base: UIView {
         return addGestureRecognizer(gesture)
     }
 
-    public func pinchGesture() -> SafeSignal<UIPinchGestureRecognizer> {
+    func pinchGesture() -> SafeSignal<UIPinchGestureRecognizer> {
         return addGestureRecognizer(UIPinchGestureRecognizer())
     }
 
-    public func longPressGesture(numberOfTaps: Int = 0, numberOfTouches: Int = 1,  minimumPressDuration: CFTimeInterval = 0.3, allowableMovement: CGFloat = 10) -> SafeSignal<UILongPressGestureRecognizer> {
+    func longPressGesture(numberOfTaps: Int = 0, numberOfTouches: Int = 1,  minimumPressDuration: CFTimeInterval = 0.3, allowableMovement: CGFloat = 10) -> SafeSignal<UILongPressGestureRecognizer> {
         let gesture = UILongPressGestureRecognizer()
         gesture.numberOfTapsRequired = numberOfTaps
         gesture.numberOfTouchesRequired = numberOfTouches
@@ -98,7 +98,7 @@ public extension ReactiveExtensions where Base: UIView {
         return addGestureRecognizer(gesture)
     }
 
-    public func rotationGesture() -> SafeSignal<UIRotationGestureRecognizer> {
+    func rotationGesture() -> SafeSignal<UIRotationGestureRecognizer> {
         return addGestureRecognizer(UIRotationGestureRecognizer())
     }
 }

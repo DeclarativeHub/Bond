@@ -29,7 +29,7 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: UITextField {
 
-    public var text: DynamicSubject<String?> {
+    var text: DynamicSubject<String?> {
         return dynamicSubject(
             signal: controlEvents(.allEditingEvents).eraseType(),
             get: { $0.text },
@@ -37,7 +37,7 @@ public extension ReactiveExtensions where Base: UITextField {
         )
     }
 
-    public var attributedText: DynamicSubject<NSAttributedString?> {
+    var attributedText: DynamicSubject<NSAttributedString?> {
         return dynamicSubject(
             signal: controlEvents(.allEditingEvents).eraseType(),
             get: { $0.attributedText },
@@ -45,7 +45,7 @@ public extension ReactiveExtensions where Base: UITextField {
         )
     }
 
-    public var textColor: Bond<UIColor?> {
+    var textColor: Bond<UIColor?> {
         return bond { $0.textColor = $1 }
     }
 }

@@ -33,15 +33,15 @@ extension NSResponder: BindingExecutionContextProvider {
 
 public extension ReactiveExtensions where Base: NSView {
 
-    public var alphaValue: Bond<CGFloat> {
+    var alphaValue: Bond<CGFloat> {
         return bond { $0.alphaValue = $1 }
     }
 
-    public var isHidden: Bond<Bool> {
+    var isHidden: Bond<Bool> {
         return bond { $0.isHidden = $1 }
     }
 
-    public var toolTip: Bond<String?> {
+    var toolTip: Bond<String?> {
         return bond { $0.toolTip = $1 }
     }
 }

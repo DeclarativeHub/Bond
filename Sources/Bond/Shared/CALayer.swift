@@ -31,15 +31,15 @@ extension CALayer: BindingExecutionContextProvider {
 
 public extension ReactiveExtensions where Base: CALayer {
 
-    public var opacity: Bond<Float> {
+    var opacity: Bond<Float> {
         return bond { $0.opacity = $1 }
     }
 
-    public var backgroundColor: Bond<CGColor?> {
+    var backgroundColor: Bond<CGColor?> {
         return bond { $0.backgroundColor = $1 }
     }
 
-    public var contents: Bond<AnyObject?> {
+    var contents: Bond<AnyObject?> {
         return bond { $0.contents = $1 }
     }
 }

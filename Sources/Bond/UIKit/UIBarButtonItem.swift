@@ -60,7 +60,7 @@ extension UIBarButtonItem {
 
 public extension ReactiveExtensions where Base: UIBarButtonItem {
 
-    public var tap: SafeSignal<Void> {
+    var tap: SafeSignal<Void> {
         if let target = objc_getAssociatedObject(base, &UIBarButtonItem.AssociatedKeys.BarButtonItemHelperKey) as AnyObject? {
             return (target as! UIBarButtonItem.BondTarget).subject.toSignal()
         } else {

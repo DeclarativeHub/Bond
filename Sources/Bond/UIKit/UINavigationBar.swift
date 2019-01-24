@@ -29,7 +29,7 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: UINavigationBar {
 
-    public var barTintColor: Bond<UIColor?> {
+    var barTintColor: Bond<UIColor?> {
         return bond { $0.barTintColor = $1 }
     }
 }

@@ -29,7 +29,7 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: NSColorWell {
 
-    public var color: DynamicSubject<NSColor> {
+    var color: DynamicSubject<NSColor> {
         return dynamicSubject(
             signal: controlEvent.eraseType(),
             triggerEventOnSetting: false,
@@ -38,7 +38,7 @@ public extension ReactiveExtensions where Base: NSColorWell {
         )
     }
 
-    public var isBordered: Bond<Bool> {
+    var isBordered: Bond<Bool> {
         return bond { $0.isBordered = $1 }
     }
 }

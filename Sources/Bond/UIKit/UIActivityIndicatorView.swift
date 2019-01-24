@@ -29,7 +29,7 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: UIActivityIndicatorView  {
 
-    public var isAnimating: Bond<Bool> {
+    var isAnimating: Bond<Bool> {
         return bond {
             if $1 {
                 $0.startAnimating()

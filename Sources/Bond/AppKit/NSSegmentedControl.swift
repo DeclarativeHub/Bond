@@ -29,30 +29,30 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: NSSegmentedControl {
 
-    public var segmentCount: Bond<Int> {
+    var segmentCount: Bond<Int> {
         return bond { $0.segmentCount = $1 }
     }
 
-    public var selectedSegment: Bond<Int> {
+    var selectedSegment: Bond<Int> {
         return bond { $0.selectedSegment = $1 }
     }
 
-    public var segmentStyle: Bond<NSSegmentedControl.Style> {
+    var segmentStyle: Bond<NSSegmentedControl.Style> {
         return bond { $0.segmentStyle = $1 }
     }
 
     @available(macOS 10.10.3, *)
-    public var isSpringLoaded: Bond<Bool> {
+    var isSpringLoaded: Bond<Bool> {
         return bond { $0.isSpringLoaded = $1 }
     }
 
     @available(macOS 10.10.3, *)
-    public var trackingMode: Bond<NSSegmentedControl.SwitchTracking> {
+    var trackingMode: Bond<NSSegmentedControl.SwitchTracking> {
         return bond { $0.trackingMode = $1 }
     }
 
     @available(macOS 10.12.2, *)
-    public var selectedSegmentBezelColor: Bond<NSColor?> {
+    var selectedSegmentBezelColor: Bond<NSColor?> {
         return bond { $0.selectedSegmentBezelColor = $1 }
     }
 }

@@ -29,7 +29,7 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: UISwitch {
 
-    public var isOn: DynamicSubject<Bool> {
+    var isOn: DynamicSubject<Bool> {
         return dynamicSubject(
             signal: controlEvents(.valueChanged).eraseType(),
             get: { $0.isOn },

@@ -33,7 +33,7 @@ extension UINavigationItem: BindingExecutionContextProvider {
 
 public extension ReactiveExtensions where Base: UINavigationItem {
 
-    public var title: Bond<String?> {
+    var title: Bond<String?> {
         return bond { $0.title = $1 }
     }
 }

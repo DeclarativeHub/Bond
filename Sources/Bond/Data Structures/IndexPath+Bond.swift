@@ -26,7 +26,7 @@ import Foundation
 
 public extension IndexPath {
 
-    public func isAffectedByDeletionOrInsertion(at index: IndexPath) -> Bool {
+    func isAffectedByDeletionOrInsertion(at index: IndexPath) -> Bool {
         assert(index.count > 0)
         assert(self.count > 0)
         guard index.count <= self.count else { return false }
@@ -38,7 +38,7 @@ public extension IndexPath {
         }
     }
 
-    public func shifted(by: Int, atLevelOf other: IndexPath) -> IndexPath {
+    func shifted(by: Int, atLevelOf other: IndexPath) -> IndexPath {
         assert(self.count > 0)
         assert(other.count > 0)
         let level = other.count - 1
@@ -52,18 +52,18 @@ public extension IndexPath {
         }
     }
 
-    public func advanced(by offset: Int, atLevel level: Int) -> IndexPath {
+    func advanced(by offset: Int, atLevel level: Int) -> IndexPath {
         var copy = self
         copy[level] += offset
         return copy
     }
 
-    public func isAncestor(of other: IndexPath) -> Bool {
+    func isAncestor(of other: IndexPath) -> Bool {
         guard self.count < other.count else { return false }
         return self == other.prefix(self.count)
     }
 
-    public func replacingAncestor(_ ancestor: IndexPath, with newAncestor: IndexPath) -> IndexPath {
+    func replacingAncestor(_ ancestor: IndexPath, with newAncestor: IndexPath) -> IndexPath {
         return newAncestor + dropFirst(ancestor.count)
     }
 }

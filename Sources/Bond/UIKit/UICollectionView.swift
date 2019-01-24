@@ -34,7 +34,7 @@ public extension ReactiveExtensions where Base: UICollectionView {
     /// - Note: Accessing this property for the first time will replace collection view's current delegate
     /// with a protocol proxy object (an object that is stored in this property).
     /// Current delegate will be used as `forwardTo` delegate of protocol proxy.
-    public var delegate: ProtocolProxy {
+    var delegate: ProtocolProxy {
         return protocolProxy(for: UICollectionViewDelegate.self, keyPath: \.delegate)
     }
 
@@ -43,7 +43,7 @@ public extension ReactiveExtensions where Base: UICollectionView {
     /// - Note: Accessing this property for the first time will replace collection view's current data source
     /// with a protocol proxy object (an object that is stored in this property).
     /// Current data source will be used as `forwardTo` data source of protocol proxy.
-    public var dataSource: ProtocolProxy {
+    var dataSource: ProtocolProxy {
         return protocolProxy(for: UICollectionViewDataSource.self, keyPath: \.dataSource)
     }
 

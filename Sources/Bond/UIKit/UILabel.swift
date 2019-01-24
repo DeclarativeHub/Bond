@@ -29,15 +29,15 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: UILabel {
 
-    public var text: Bond<String?> {
+    var text: Bond<String?> {
         return bond { $0.text = $1 }
     }
 
-    public var attributedText: Bond<NSAttributedString?> {
+    var attributedText: Bond<NSAttributedString?> {
         return bond { $0.attributedText = $1 }
     }
 
-    public var textColor: Bond<UIColor?> {
+    var textColor: Bond<UIColor?> {
         return bond { $0.textColor = $1 }
     }
 }

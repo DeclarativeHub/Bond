@@ -29,37 +29,37 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: NSSlider {
 
-    public var minValue: Bond<Double> {
+    var minValue: Bond<Double> {
         return bond { $0.minValue = $1 }
     }
 
-    public var maxValue: Bond<Double> {
+    var maxValue: Bond<Double> {
         return bond { $0.maxValue = $1 }
     }
 
-    public var altIncrementValue: Bond<Double> {
+    var altIncrementValue: Bond<Double> {
         return bond { $0.altIncrementValue = $1 }
     }
 
     @available(macOS 10.12, *)
-    public var isVertical: Bond<Bool> {
+    var isVertical: Bond<Bool> {
         return bond { $0.isVertical = $1 }
     }
 
     @available(macOS 10.12.2, *)
-    public var trackFillColor: Bond<NSColor?> {
+    var trackFillColor: Bond<NSColor?> {
         return bond { $0.trackFillColor = $1 }
     }
 
-    public var numberOfTickMarks: Bond<Int> {
+    var numberOfTickMarks: Bond<Int> {
         return bond { $0.numberOfTickMarks = $1 }
     }
 
-    public var tickMarkPosition: Bond<NSSlider.TickMarkPosition> {
+    var tickMarkPosition: Bond<NSSlider.TickMarkPosition> {
         return bond { $0.tickMarkPosition = $1 }
     }
 
-    public var allowsTickMarkValuesOnly: Bond<Bool> {
+    var allowsTickMarkValuesOnly: Bond<Bool> {
         return bond { $0.allowsTickMarkValuesOnly = $1 }
     }
 }

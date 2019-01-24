@@ -29,7 +29,7 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: UIControl {
 
-    public func controlEvents(_ events: UIControl.Event) -> SafeSignal<Void> {
+    func controlEvents(_ events: UIControl.Event) -> SafeSignal<Void> {
         let base = self.base
         return Signal { [weak base] observer in
             guard let base = base else {
@@ -45,7 +45,7 @@ public extension ReactiveExtensions where Base: UIControl {
         }.take(until: base.deallocated)
     }
 
-    public var isEnabled: Bond<Bool> {
+    var isEnabled: Bond<Bool> {
         return bond { $0.isEnabled = $1 }
     }
 }

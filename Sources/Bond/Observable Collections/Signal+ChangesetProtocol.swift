@@ -30,7 +30,7 @@ public extension SignalProtocol where Element: ChangesetProtocol {
     /// When working with a changeset that calculates patch lazily,
     /// you can use this method to calculate the patch in advance.
     /// Observer will then have patch available in O(1).
-    public func precalculatePatch() -> Signal<Element, Error> {
+    func precalculatePatch() -> Signal<Element, Error> {
         return map { changeset in
             _ = changeset.patch
             return changeset
@@ -40,7 +40,7 @@ public extension SignalProtocol where Element: ChangesetProtocol {
     /// When working with a changeset that calculates diff lazily,
     /// you can use this method to calculate the diff in advance.
     /// Observer will then have diff available in O(1).
-    public func precalculateDiff() -> Signal<Element, Error> {
+    func precalculateDiff() -> Signal<Element, Error> {
         return map { changeset in
             _ = changeset.diff
             return changeset
@@ -105,7 +105,7 @@ extension SignalProtocol where Element: ArrayBasedTreeNode {
 public extension SignalProtocol where Element: OrderedCollectionChangesetProtocol, Element.Collection.Index: Hashable {
 
     /// - complexity: Each event sorts the collection O(nlogn).
-    public func sortedCollection(by areInIncreasingOrder: @escaping (Element.Collection.Element, Element.Collection.Element) -> Bool) -> Signal<OrderedCollectionChangeset<[Element.Collection.Element]>, Error> {
+    func sortedCollection(by areInIncreasingOrder: @escaping (Element.Collection.Element, Element.Collection.Element) -> Bool) -> Signal<OrderedCollectionChangeset<[Element.Collection.Element]>, Error> {
         var previousIndexMap: [Element.Collection.Index: Int] = [:]
         return map { (event: Element) -> OrderedCollectionChangeset<[Element.Collection.Element]> in
 
@@ -136,7 +136,7 @@ public extension SignalProtocol where Element: OrderedCollectionChangesetProtoco
 public extension SignalProtocol where Element: OrderedCollectionChangesetProtocol, Element.Collection.Index: Hashable, Element.Collection.Element: Comparable {
 
     /// - complexity: Each event sorts collection O(nlogn).
-    public func sortedCollection() -> Signal<OrderedCollectionChangeset<[Element.Collection.Element]>, Error> {
+    func sortedCollection() -> Signal<OrderedCollectionChangeset<[Element.Collection.Element]>, Error> {
         return sortedCollection(by: <)
     }
 }
@@ -144,7 +144,7 @@ public extension SignalProtocol where Element: OrderedCollectionChangesetProtoco
 public extension SignalProtocol where Element: UnorderedCollectionChangesetProtocol, Element.Collection.Index: Hashable {
 
     /// - complexity: Each event sorts the collection O(nlogn).
-    public func sortedCollection(by areInIncreasingOrder: @escaping (Element.Collection.Element, Element.Collection.Element) -> Bool) -> Signal<OrderedCollectionChangeset<[Element.Collection.Element]>, Error> {
+    func sortedCollection(by areInIncreasingOrder: @escaping (Element.Collection.Element, Element.Collection.Element) -> Bool) -> Signal<OrderedCollectionChangeset<[Element.Collection.Element]>, Error> {
         var previousIndexMap: [Element.Collection.Index: Int] = [:]
         return map { (event: Element) -> OrderedCollectionChangeset<[Element.Collection.Element]> in
 
@@ -175,7 +175,7 @@ public extension SignalProtocol where Element: UnorderedCollectionChangesetProto
 public extension SignalProtocol where Element: UnorderedCollectionChangesetProtocol, Element.Collection.Index: Hashable, Element.Collection.Element: Comparable {
 
     /// - complexity: Each event sorts collection O(nlogn).
-    public func sortedCollection() -> Signal<OrderedCollectionChangeset<[Element.Collection.Element]>, Error> {
+    func sortedCollection() -> Signal<OrderedCollectionChangeset<[Element.Collection.Element]>, Error> {
         return sortedCollection(by: <)
     }
 }
@@ -183,7 +183,7 @@ public extension SignalProtocol where Element: UnorderedCollectionChangesetProto
 public extension SignalProtocol where Element: OrderedCollectionChangesetProtocol, Element.Collection.Index == Int {
 
     /// - complexity: Each event transforms collection O(n). Use `lazyMapCollection` if you need on-demand mapping.
-    public func mapCollection<U>(_ transform: @escaping (Element.Collection.Element) -> U) -> Signal<OrderedCollectionChangeset<[U]>, Error> {
+    func mapCollection<U>(_ transform: @escaping (Element.Collection.Element) -> U) -> Signal<OrderedCollectionChangeset<[U]>, Error> {
         return map { (event: Element) -> OrderedCollectionChangeset<[U]> in
             return OrderedCollectionChangeset(
                 collection: event.collection.map(transform),
@@ -193,7 +193,7 @@ public extension SignalProtocol where Element: OrderedCollectionChangesetProtoco
     }
 
     /// - complexity: O(1).
-    public func lazyMapCollection<U>(_ transform: @escaping (Element.Collection.Element) -> U) -> Signal<OrderedCollectionChangeset<LazyMapCollection<Element.Collection, U>>, Error> {
+    func lazyMapCollection<U>(_ transform: @escaping (Element.Collection.Element) -> U) -> Signal<OrderedCollectionChangeset<LazyMapCollection<Element.Collection, U>>, Error> {
         return map { (event: Element) -> OrderedCollectionChangeset<LazyMapCollection<Element.Collection, U>> in
             return OrderedCollectionChangeset(
                 collection: event.collection.lazy.map(transform),
@@ -203,7 +203,7 @@ public extension SignalProtocol where Element: OrderedCollectionChangesetProtoco
     }
 
     /// - complexity: Each event transforms collection O(n).
-    public func filterCollection(_ isIncluded: @escaping (Element.Collection.Element) -> Bool) -> Signal<OrderedCollectionChangeset<[Element.Collection.Element]>, Error> {
+    func filterCollection(_ isIncluded: @escaping (Element.Collection.Element) -> Bool) -> Signal<OrderedCollectionChangeset<[Element.Collection.Element]>, Error> {
         var previousIndexMap: [Int: Int] = [:]
         return map { (event: Element) -> OrderedCollectionChangeset<[Element.Collection.Element]> in
             let collection = event.collection

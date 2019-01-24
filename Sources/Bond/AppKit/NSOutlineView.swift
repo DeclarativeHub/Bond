@@ -27,31 +27,31 @@ import AppKit
 import ReactiveKit
 
 public extension ReactiveExtensions where Base: NSOutlineView {
-    public var delegate: ProtocolProxy {
+    var delegate: ProtocolProxy {
         return protocolProxy(for: NSOutlineViewDelegate.self, keyPath: \.delegate)
     }
 
-    public var dataSource: ProtocolProxy {
+    var dataSource: ProtocolProxy {
         return protocolProxy(for: NSOutlineViewDataSource.self, keyPath: \.dataSource)
     }
 
-    public var selectionIsChanging: SafeSignal<Void> {
+    var selectionIsChanging: SafeSignal<Void> {
         return NotificationCenter.default.reactive.notification(name: NSOutlineView.selectionIsChangingNotification, object: base).eraseType()
     }
 
-    public var selectionDidChange: SafeSignal<Void> {
+    var selectionDidChange: SafeSignal<Void> {
         return NotificationCenter.default.reactive.notification(name: NSOutlineView.selectionDidChangeNotification, object: base).eraseType()
     }
 
-    public var selectedRowIndexes: Bond<IndexSet> {
+    var selectedRowIndexes: Bond<IndexSet> {
         return bond { $0.selectRowIndexes($1, byExtendingSelection: false) }
     }
 
-    public var selectedColumnIndexes: Bond<IndexSet> {
+    var selectedColumnIndexes: Bond<IndexSet> {
         return bond { $0.selectColumnIndexes($1, byExtendingSelection: false) }
     }
 
-    public var selectedItems: DynamicSubject<[Any]> {
+    var selectedItems: DynamicSubject<[Any]> {
         return dynamicSubject(
             signal: self.selectionDidChange,
             triggerEventOnSetting: false,

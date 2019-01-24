@@ -29,7 +29,7 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: UISegmentedControl {
 
-    public var selectedSegmentIndex: DynamicSubject<Int> {
+    var selectedSegmentIndex: DynamicSubject<Int> {
         return dynamicSubject(
             signal: controlEvents(.valueChanged).eraseType(),
             get: { $0.selectedSegmentIndex },

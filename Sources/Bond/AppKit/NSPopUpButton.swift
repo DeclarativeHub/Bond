@@ -29,7 +29,7 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: NSPopUpButton {
 
-    public var selectedItem: DynamicSubject<NSMenuItem?> {
+    var selectedItem: DynamicSubject<NSMenuItem?> {
         return dynamicSubject(
             signal: controlEvent.eraseType(),
             get: { $0.selectedItem },
@@ -37,7 +37,7 @@ public extension ReactiveExtensions where Base: NSPopUpButton {
         )
     }
 
-    public var indexOfSelectedItem: DynamicSubject<Int?> {
+    var indexOfSelectedItem: DynamicSubject<Int?> {
         return dynamicSubject(
             signal: controlEvent.eraseType(),
             get: { $0.indexOfSelectedItem },
@@ -45,7 +45,7 @@ public extension ReactiveExtensions where Base: NSPopUpButton {
         )
     }
 
-    public var titleOfSelectedItem: DynamicSubject<String?> {
+    var titleOfSelectedItem: DynamicSubject<String?> {
         return dynamicSubject(
             signal: controlEvent.eraseType(),
             get: { $0.titleOfSelectedItem },
@@ -53,7 +53,7 @@ public extension ReactiveExtensions where Base: NSPopUpButton {
         )
     }
 
-    public var tagOfSelectedItem: DynamicSubject<Int?> {
+    var tagOfSelectedItem: DynamicSubject<Int?> {
         return dynamicSubject(
             signal: controlEvent.eraseType(),
             get: { $0.selectedItem?.tag },

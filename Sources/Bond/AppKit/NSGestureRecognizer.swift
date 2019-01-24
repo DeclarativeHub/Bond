@@ -32,13 +32,13 @@ extension NSGestureRecognizer: BindingExecutionContextProvider {
 }
 
 public extension ReactiveExtensions where Base: NSGestureRecognizer {
-    public var isEnabled: Bond<Bool> {
+    var isEnabled: Bond<Bool> {
         return bond { $0.isEnabled = $1 }
     }
 }
 
 public extension ReactiveExtensions where Base: NSView {
-    public func addGestureRecognizer<T: NSGestureRecognizer>(_ gestureRecognizer: T) -> SafeSignal<T> {
+    func addGestureRecognizer<T: NSGestureRecognizer>(_ gestureRecognizer: T) -> SafeSignal<T> {
         let base = self.base
         return Signal { [weak base] observer in
             guard let base = base else {
@@ -56,7 +56,7 @@ public extension ReactiveExtensions where Base: NSView {
         .take(until: base.deallocated)
     }
 
-    public func clickGesture(numberOfClicks: Int = 1, numberOfTouches: Int = 1) -> SafeSignal<NSClickGestureRecognizer> {
+    func clickGesture(numberOfClicks: Int = 1, numberOfTouches: Int = 1) -> SafeSignal<NSClickGestureRecognizer> {
         let gesture = NSClickGestureRecognizer()
         gesture.numberOfClicksRequired = numberOfClicks
 
@@ -67,13 +67,13 @@ public extension ReactiveExtensions where Base: NSView {
         return addGestureRecognizer(gesture)
     }
 
-    public func magnificationGesture(magnification: CGFloat = 1.0, numberOfTouches: Int = 1) -> SafeSignal<NSMagnificationGestureRecognizer> {
+    func magnificationGesture(magnification: CGFloat = 1.0, numberOfTouches: Int = 1) -> SafeSignal<NSMagnificationGestureRecognizer> {
         let gesture = NSMagnificationGestureRecognizer()
         gesture.magnification = magnification
         return addGestureRecognizer(gesture)
     }
 
-    public func panGesture(buttonMask: Int = 0x01, numberOfTouches: Int = 1) -> SafeSignal<NSPanGestureRecognizer> {
+    func panGesture(buttonMask: Int = 0x01, numberOfTouches: Int = 1) -> SafeSignal<NSPanGestureRecognizer> {
         let gesture = NSPanGestureRecognizer()
         gesture.buttonMask = buttonMask
 
@@ -84,7 +84,7 @@ public extension ReactiveExtensions where Base: NSView {
         return addGestureRecognizer(gesture)
     }
 
-    public func pressGesture(buttonMask: Int = 0x01, minimumPressDuration: TimeInterval = NSEvent.doubleClickInterval, allowableMovement: CGFloat = 10.0, numberOfTouches: Int = 1) -> SafeSignal<NSPressGestureRecognizer> {
+    func pressGesture(buttonMask: Int = 0x01, minimumPressDuration: TimeInterval = NSEvent.doubleClickInterval, allowableMovement: CGFloat = 10.0, numberOfTouches: Int = 1) -> SafeSignal<NSPressGestureRecognizer> {
         let gesture = NSPressGestureRecognizer()
         gesture.buttonMask = buttonMask
         gesture.minimumPressDuration = minimumPressDuration
@@ -97,7 +97,7 @@ public extension ReactiveExtensions where Base: NSView {
         return addGestureRecognizer(gesture)
     }
 
-    public func rotationGesture() -> SafeSignal<NSRotationGestureRecognizer> {
+    func rotationGesture() -> SafeSignal<NSRotationGestureRecognizer> {
         return addGestureRecognizer(NSRotationGestureRecognizer())
     }
 }

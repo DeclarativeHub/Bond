@@ -33,15 +33,15 @@ extension UIBarItem: BindingExecutionContextProvider {
 
 public extension ReactiveExtensions where Base: UIBarItem {
 
-    public var title: Bond<String?> {
+    var title: Bond<String?> {
         return bond { $0.title = $1 }
     }
 
-    public var image: Bond<UIImage?> {
+    var image: Bond<UIImage?> {
         return bond { $0.image = $1 }
     }
 
-    public var isEnabled: Bond<Bool> {
+    var isEnabled: Bond<Bool> {
         return bond { $0.isEnabled = $1 }
     }
 }

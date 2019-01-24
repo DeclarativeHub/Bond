@@ -29,7 +29,7 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: NSTextView {
 
-    public var string: DynamicSubject<String> {
+    var string: DynamicSubject<String> {
         let notificationName = NSText.didChangeNotification
         return dynamicSubject(
             signal: NotificationCenter.default.reactive.notification(name: notificationName, object: base).eraseType(),

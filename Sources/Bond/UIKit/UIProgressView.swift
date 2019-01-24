@@ -29,7 +29,7 @@ import UIKit
 
 public extension ReactiveExtensions where Base: UIProgressView {
 
-    public var progress: Bond<Float> {
+    var progress: Bond<Float> {
         return bond { $0.progress = $1 }
     }
 }

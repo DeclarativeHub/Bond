@@ -33,11 +33,11 @@ extension NSMenuItem: BindingExecutionContextProvider {
 
 public extension ReactiveExtensions where Base: NSMenuItem {
 
-    public var state: Bond<NSControl.StateValue> {
+    var state: Bond<NSControl.StateValue> {
         return bond { $0.state = $1 }
     }
 
-    public var isEnabled: Bond<Bool> {
+    var isEnabled: Bond<Bool> {
         return bond { $0.isEnabled = $1 }
     }
 }

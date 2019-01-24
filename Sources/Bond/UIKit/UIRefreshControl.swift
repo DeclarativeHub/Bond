@@ -29,7 +29,7 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: UIRefreshControl {
 
-    public var refreshing: DynamicSubject<Bool> {
+    var refreshing: DynamicSubject<Bool> {
         return dynamicSubject(
             signal: controlEvents(.valueChanged).eraseType(),
             get: { $0.isRefreshing },

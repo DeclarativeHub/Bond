@@ -27,7 +27,7 @@ import Differ
 
 public extension RangeReplaceableTreeNode {
 
-    public func diff(_ other: Self, sourceRoot: IndexPath = [], destinationRoot: IndexPath = [], areValuesEqual: @escaping (ChildNode.Value, ChildNode.Value) -> Bool) -> OrderedCollectionDiff<IndexPath> {
+    func diff(_ other: Self, sourceRoot: IndexPath = [], destinationRoot: IndexPath = [], areValuesEqual: @escaping (ChildNode.Value, ChildNode.Value) -> Bool) -> OrderedCollectionDiff<IndexPath> {
         let isEqual: (ChildNode, ChildNode) -> Bool = { lhs, rhs in areValuesEqual(lhs.value, rhs.value) }
         let traces = children.outputDiffPathTraces(to: other.children, isEqual: isEqual)
         let diff = Diff(traces: traces)

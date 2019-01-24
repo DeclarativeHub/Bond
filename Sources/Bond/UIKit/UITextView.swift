@@ -29,7 +29,7 @@ import ReactiveKit
 
 public extension ReactiveExtensions where Base: UITextView {
 
-    public var text: DynamicSubject<String?> {
+    var text: DynamicSubject<String?> {
         let notificationName = UITextView.textDidChangeNotification
         return dynamicSubject(
             signal: NotificationCenter.default.reactive.notification(name: notificationName, object: base).eraseType(),
@@ -38,7 +38,7 @@ public extension ReactiveExtensions where Base: UITextView {
         )
     }
 
-    public var attributedText: DynamicSubject<NSAttributedString?> {
+    var attributedText: DynamicSubject<NSAttributedString?> {
         let notificationName = UITextView.textDidChangeNotification
         return dynamicSubject(
             signal: NotificationCenter.default.reactive.notification(name: notificationName, object: base).eraseType(),
@@ -47,7 +47,7 @@ public extension ReactiveExtensions where Base: UITextView {
         )
     }
 
-    public var textColor: Bond<UIColor?> {
+    var textColor: Bond<UIColor?> {
         return bond { $0.textColor = $1 }
     }
 }
