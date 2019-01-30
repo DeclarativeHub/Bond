@@ -1,3 +1,29 @@
+# fix : DynamicSubject does not notify it’s subject when changed via bidirectionalMap()
+
+Hi, 
+
+Here an example that binds a slider to dynamic pubject (colorDynamicSubject) to change it's alpha.
+colorDynamicSubject when bound to a label would not be notified of any changes made by slider's value (ui change), only by changes to the original dynamic subject, even though it would still call the setter.
+I think anything else linked to the same colorDynamicSubject should also be notified of the 'setting'
+
+// e.g. track silder's value to change a colour's alph:
+var colorDynamicSubject : DynamicSubject
+...
+colorDynamicSubject
+.bidirectionalMap(
+to: { $0?.rgb.alpha ?? 0 },
+from: { UIColor(hue: somecolor, saturation: 1, brightness: 1, alpha: $0) } // <-- map alpha
+)
+.bidirectionalBind(to: slider.reactive.value()) / <-- here's the slider's value change.
+
+colorDynamicSubject.bidirectionalBind(to: label) // <-- (another bind to the original subject) display the colour somewhere.
+
+without the change the slider will change the dynamic subject, but the setting of the subject will not notify anything else also linked to the subject. (e.i, the directionalMap)
+
+Let me know if I need to clarify more.
+
+Leslie Godwin
+
 # Bond, Swift Bond
 
 [![Platform](https://img.shields.io/cocoapods/p/Bond.svg?style=flat)](http://cocoadocs.org/docsets/Bond/)
