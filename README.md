@@ -179,6 +179,11 @@ Bond provides `NSObject` extensions that make it easy to convert delegate method
 
 Bond uses protocol proxies to implement table and collection view bindings and to provide signals like `tableView.reactive.selectedRowIndexPath`. Check out [the protocol proxies documentation](Documentation/ProtocolProxies.md) to learn more.
 
+## Community Extensions
+
+Make sure to check out [Extensions directory](Extensions). It contains extensions that make Bond easy to use with other frameworks and libraries, like Realm. 
+
+If you have an extensions that makes your favourite framework work with Bond and you'd like to share it with everyone, we'd be more than happy to accept your PR. 
 
 ## Requirements
 
