@@ -216,7 +216,7 @@ If you have an extensions that makes your favourite framework work with Bond and
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2018 Srdan Rasic (@srdanrasic)
+Copyright (c) 2015-2019 Srdan Rasic (@srdanrasic)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
