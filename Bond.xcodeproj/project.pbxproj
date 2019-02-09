@@ -215,6 +215,12 @@
 		ECAFB8D9200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAFB8D8200B60AA00EE0669 /* ProtocolProxyController.swift */; };
 		ECAFB8DA200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAFB8D8200B60AA00EE0669 /* ProtocolProxyController.swift */; };
 		ECAFB8DB200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAFB8D8200B60AA00EE0669 /* ProtocolProxyController.swift */; };
+		ECBB81FA220EDFDA00C7B7B0 /* OrderedCollectionDiff+IndexPath+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBB81F9220EDFDA00C7B7B0 /* OrderedCollectionDiff+IndexPath+Differ.swift */; };
+		ECBB81FF220EDFDC00C7B7B0 /* OrderedCollectionDiff+IndexPath+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBB81F9220EDFDA00C7B7B0 /* OrderedCollectionDiff+IndexPath+Differ.swift */; };
+		ECBB8200220EDFDD00C7B7B0 /* OrderedCollectionDiff+IndexPath+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBB81F9220EDFDA00C7B7B0 /* OrderedCollectionDiff+IndexPath+Differ.swift */; };
+		ECBB8202220EE0A100C7B7B0 /* TreeNode+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBB8201220EE0A100C7B7B0 /* TreeNode+Differ.swift */; };
+		ECBB8203220EE0A100C7B7B0 /* TreeNode+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBB8201220EE0A100C7B7B0 /* TreeNode+Differ.swift */; };
+		ECBB8204220EE0A100C7B7B0 /* TreeNode+Differ.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECBB8201220EE0A100C7B7B0 /* TreeNode+Differ.swift */; };
 		ECBC51B82161637A00BE80EC /* Changeset.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC5EB13B215D1CAF00338531 /* Changeset.swift */; };
 		ECBC51B92161637A00BE80EC /* Signal+ChangesetProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC4357621610C040002A869 /* Signal+ChangesetProtocol.swift */; };
 		ECBC51BA2161637A00BE80EC /* ChangesetContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDC8CA7215EB0C30079E521 /* ChangesetContainer.swift */; };
@@ -499,6 +505,8 @@
 		EC86E9AE1E9145CC008563B2 /* UIAccessibilityIdentification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAccessibilityIdentification.swift; sourceTree = "<group>"; };
 		ECAFB8D3200A7E3900EE0669 /* BNDInvocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BNDInvocation.swift; sourceTree = "<group>"; };
 		ECAFB8D8200B60AA00EE0669 /* ProtocolProxyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolProxyController.swift; sourceTree = "<group>"; };
+		ECBB81F9220EDFDA00C7B7B0 /* OrderedCollectionDiff+IndexPath+Differ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OrderedCollectionDiff+IndexPath+Differ.swift"; sourceTree = "<group>"; };
+		ECBB8201220EE0A100C7B7B0 /* TreeNode+Differ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TreeNode+Differ.swift"; sourceTree = "<group>"; };
 		ECBCE0C1216168250078E03B /* OrderedCollectionDiff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedCollectionDiff.swift; sourceTree = "<group>"; };
 		ECBCE0C52161696B0078E03B /* OrderedCollectionOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedCollectionOperation.swift; sourceTree = "<group>"; };
 		ECC1A6CF207A18DC00AE762C /* NSTableView+DataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+DataSource.swift"; sourceTree = "<group>"; };
@@ -808,6 +816,7 @@
 				90677C10207EE44B00BC4505 /* TreeNodeProtocol.swift */,
 				EC706432208FCD36009BEB1C /* TreeNode.swift */,
 				EC860B24209E17B40010C09A /* TreeArray.swift */,
+				ECBB8201220EE0A100C7B7B0 /* TreeNode+Differ.swift */,
 				ECFF44B02168C21F00B5EDB0 /* Array2D.swift */,
 				ECFF44AC2168C12300B5EDB0 /* IndexPath+Bond.swift */,
 				ECDC8CB2215EC5120079E521 /* Collection+Bond.swift */,
@@ -826,6 +835,7 @@
 				ECC43578216114B80002A869 /* OrderedCollectionDiff+Strideable+Differ.swift */,
 				EC5EB173215D7B3100338531 /* OrderedCollectionDiff+IndexPath.swift */,
 				ECDC8CB0215EC3D10079E521 /* OrderedCollectionDiff+IndexPath+Patch.swift */,
+				ECBB81F9220EDFDA00C7B7B0 /* OrderedCollectionDiff+IndexPath+Differ.swift */,
 				ECBCE0C52161696B0078E03B /* OrderedCollectionOperation.swift */,
 				ECDC8CAB215EBDA90079E521 /* OrderedCollectionOperation+Strideable+Undo.swift */,
 				ECDC8CAE215EBFCF0079E521 /* OrderedCollectionOperation+IndexPath+Undo.swift */,
@@ -1150,6 +1160,7 @@
 				90C04DC41E8F0B97000077C8 /* UIView.swift in Sources */,
 				ECBCE0CA21616B2D0078E03B /* ChangesetContainer.swift in Sources */,
 				EC86E9AF1E9145CC008563B2 /* UIAccessibilityIdentification.swift in Sources */,
+				ECBB81FA220EDFDA00C7B7B0 /* OrderedCollectionDiff+IndexPath+Differ.swift in Sources */,
 				ECFF44B42168EC4C00B5EDB0 /* UICollectionView.swift in Sources */,
 				90A4430D1E9055D100D611FE /* NSProgressIndicator.swift in Sources */,
 				90C04DB91E8F0B97000077C8 /* UINavigationBar.swift in Sources */,
@@ -1205,6 +1216,7 @@
 				90C04DB51E8F0B97000077C8 /* UIDatePicker.swift in Sources */,
 				90A443111E9055D100D611FE /* NSTableView.swift in Sources */,
 				ECBC51F42161639500BE80EC /* TreeNodeProtocol.swift in Sources */,
+				ECBB8202220EE0A100C7B7B0 /* TreeNode+Differ.swift in Sources */,
 				ECBCE0D8216170750078E03B /* OrderedCollectionDiff+IndexPath.swift in Sources */,
 				ECFF44B52168EC4C00B5EDB0 /* UITableView.swift in Sources */,
 				90C04D771E8F0B89000077C8 /* NotificationCenter.swift in Sources */,
@@ -1284,6 +1296,7 @@
 				ECFF44B22168C21F00B5EDB0 /* Array2D.swift in Sources */,
 				ECBC51BF2161637A00BE80EC /* OrderedCollectionOperation+Strideable+Undo.swift in Sources */,
 				ECBC51BA2161637A00BE80EC /* ChangesetContainer.swift in Sources */,
+				ECBB8203220EE0A100C7B7B0 /* TreeNode+Differ.swift in Sources */,
 				ECBCE0C72161696B0078E03B /* OrderedCollectionOperation.swift in Sources */,
 				90C04D871E8F0B8D000077C8 /* NSTableView.swift in Sources */,
 				90C04D691E8F0B89000077C8 /* ProtocolProxy.swift in Sources */,
@@ -1313,6 +1326,7 @@
 				90A443301E9055D800D611FE /* UINavigationItem.swift in Sources */,
 				90C04D821E8F0B8D000077C8 /* NSPopUpButton.swift in Sources */,
 				90A4432F1E9055D800D611FE /* UINavigationBar.swift in Sources */,
+				ECBB8200220EDFDD00C7B7B0 /* OrderedCollectionDiff+IndexPath+Differ.swift in Sources */,
 				90C04D7E1E8F0B8D000077C8 /* NSControl.swift in Sources */,
 				ECAFB8D5200A7E3900EE0669 /* BNDInvocation.swift in Sources */,
 				ECBC51C22161637A00BE80EC /* OrderedCollectionDiff+IndexPath.swift in Sources */,
@@ -1380,6 +1394,7 @@
 				ECFF44B32168C21F00B5EDB0 /* Array2D.swift in Sources */,
 				ECBC51D32161637B00BE80EC /* OrderedCollectionDiff+Strideable+Patch.swift in Sources */,
 				ECBC51D42161637B00BE80EC /* OrderedCollectionOperation+Strideable+Undo.swift in Sources */,
+				ECBB8204220EE0A100C7B7B0 /* TreeNode+Differ.swift in Sources */,
 				ECBCE0C82161696B0078E03B /* OrderedCollectionOperation.swift in Sources */,
 				ECBC51CF2161637B00BE80EC /* ChangesetContainer.swift in Sources */,
 				90C04DA21E8F0B96000077C8 /* UINavigationBar.swift in Sources */,
@@ -1409,6 +1424,7 @@
 				90C04DA31E8F0B96000077C8 /* UINavigationItem.swift in Sources */,
 				ECAFB8DB200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */,
 				90C04DA01E8F0B96000077C8 /* UIImageView.swift in Sources */,
+				ECBB81FF220EDFDC00C7B7B0 /* OrderedCollectionDiff+IndexPath+Differ.swift in Sources */,
 				90C04DA81E8F0B96000077C8 /* UIStepper.swift in Sources */,
 				90A4431D1E9055D200D611FE /* NSSegmentedControl.swift in Sources */,
 				ECBC51D72161637B00BE80EC /* OrderedCollectionDiff+IndexPath.swift in Sources */,

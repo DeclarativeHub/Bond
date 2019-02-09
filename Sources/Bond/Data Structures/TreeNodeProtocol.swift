@@ -37,6 +37,9 @@ public protocol TreeNodeProtocol {
     /// Type of the child node.
     associatedtype ChildNode: TreeNodeProtocol
 
+    /// All child nodes of the node.
+    var children: [ChildNode] { get }
+
     /// Value of the node, i.e. data that the node contains.
     var value: Value { get }
 

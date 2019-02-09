@@ -21,6 +21,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 //
+
 import Foundation
 
 public protocol OrderedCollectionDiffProtocol: Instantiatable {
@@ -90,6 +91,13 @@ extension OrderedCollectionDiff {
 
     public init(moves: [(from: Index, to: Index)]) {
         self.init(inserts: [], deletes: [], updates: [], moves: moves)
+    }
+
+    public mutating func merge(_ other: OrderedCollectionDiff<Index>) {
+        inserts.append(contentsOf: other.inserts)
+        deletes.append(contentsOf: other.deletes)
+        updates.append(contentsOf: other.updates)
+        moves.append(contentsOf: other.moves)
     }
 }
 
