@@ -7,5 +7,6 @@
         <page name='UITableView+ObservableArray2D'/>
         <page name='UICollectionView+ObservableArray2D'/>
         <page name='Key Value Observing'/>
+        <page name='UIPickerView+ObservableArray2D'/>
     </pages>
 </playground>
