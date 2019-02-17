@@ -32,7 +32,7 @@ public protocol TreeNodeProtocol {
     associatedtype Value
 
     /// Index type used to iterate over child nodes.
-    associatedtype Index
+    associatedtype Index: Equatable
 
     /// Type of the child node.
     associatedtype ChildNode: TreeNodeProtocol
@@ -73,6 +73,20 @@ extension TreeNodeProtocol {
     /// Access value of a tree node at the given index.
     public subscript(valueAt index: Index) -> ChildNode.Value {
         return self[index].value
+    }
+
+    /// Returns index of the first child that passes the given test.
+    /// - complexity: O(n)
+    public func firstIndex(where test: (ChildNode) -> Bool) -> Index? {
+        var index = startIndex
+        while index != endIndex {
+            if test(self[index]) {
+                return index
+            } else {
+                index = self.index(after: index)
+            }
+        }
+        return nil
     }
 }
 
@@ -256,6 +270,7 @@ extension ArrayBasedTreeNode {
 }
 
 extension ArrayBasedTreeNode where ChildNode: ArrayBasedTreeNode, ChildNode.Value: Equatable {
+
     public func first(matching filter: (ChildNode) -> Bool) -> ChildNode? {
         for child in children {
             guard let matchingItem = child.first(matching: filter) else {
@@ -282,6 +297,7 @@ extension ArrayBasedTreeNode where ChildNode: ArrayBasedTreeNode, ChildNode.Valu
 }
 
 extension ArrayBasedTreeNode where Value: Equatable, ChildNode == Self {
+
     public func first(matching filter: (ChildNode) -> Bool) -> ChildNode? {
         guard filter(self) == false else {
             return self
