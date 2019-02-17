@@ -41,7 +41,7 @@ let selectedPair = selectedRow.scan([0, 0]) { (pair, rowAndComponent) -> [Int] i
 selectedPair.observeNext { (pair) in
     print("selected indices", pair)
     let items = pair.enumerated().map {
-        data[[$0.offset, $0.element]].value.item!
+        data[itemAt: [$0.offset, $0.element]]
     }
     print("selected items", items)
 }
