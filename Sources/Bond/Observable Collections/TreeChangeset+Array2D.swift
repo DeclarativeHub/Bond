@@ -104,11 +104,11 @@ extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtoc
     /// Remove all items from the array. Keep empty sections.
     public func removeAllItems() {
         descriptiveUpdate { (collection) -> [Operation] in
-            let indices = collection.indices.map { $0 }.filter { $0.count == 2 }
+            let indices = collection.indices.map { $0 }.filter { $0.count == 2 }.reversed()
             for index in indices {
-                collection[index].removeAll()
+                collection.remove(at: index)
             }
-            return indices.reversed().map { .delete(at: $0) }
+            return indices.map { .delete(at: $0) }
         }
     }
 
