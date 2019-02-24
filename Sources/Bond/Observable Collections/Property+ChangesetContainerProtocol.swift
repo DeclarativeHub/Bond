@@ -107,6 +107,14 @@ extension Property where Value: ChangesetProtocol, Value.Collection: TreeArrayPr
     }
 }
 
+extension Property where Value: ChangesetProtocol, Value.Collection: TreeArrayProtocol {
+
+    /// Total number of items across all sections.
+    public var numberOfItemsInAllSections: Int {
+        return changeset.collection.children.map { $0.count }.reduce(0, +)
+    }
+}
+
 extension AnyProperty {
 
     // TODO: move to ReactiveKit

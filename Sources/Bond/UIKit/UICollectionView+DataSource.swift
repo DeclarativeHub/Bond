@@ -64,15 +64,24 @@ extension SignalProtocol where Element: SectionedDataSourceChangesetConvertible,
     ///
     /// - parameters:
     ///     - tableView: A table view that should display the data from the data source.
-    ///     - cellType: A type of the cells that should display the data. Cell type name will be used as reusable identifier and the binding will automatically dequeue cell.
+    ///     - cellType: A type of the cells that should display the data.
     ///     - animated: Animate partial or batched updates. Default is `true`.
     ///     - rowAnimation: Row animation for partial or batched updates. Relevant only when `animated` is `true`. Default is `.automatic`.
     ///     - configureCell: A closure that configures the cell with the data source item at the respective index path.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
+    ///
+    /// Note that the cell type name will be used as a reusable identifier and the binding will automatically register and dequeue the cell.
+    /// If there exists a nib file in the bundle with the same name as the cell type name, the framework will load the cell from the nib file.
     @discardableResult
     public func bind<Cell: UICollectionViewCell>(to collectionView: UICollectionView, cellType: Cell.Type, configureCell: @escaping (Cell, Element.Changeset.Collection.Item) -> Void) -> Disposable {
         let identifier = String(describing: Cell.self)
-        collectionView.register(cellType as AnyClass, forCellWithReuseIdentifier: identifier)
+        let bundle = Bundle(for: Cell.self)
+        if let _ = bundle.path(forResource: identifier, ofType: "nib") {
+            let nib = UINib(nibName: identifier, bundle: bundle)
+            collectionView.register(nib, forCellWithReuseIdentifier: identifier)
+        } else {
+            collectionView.register(cellType as AnyClass, forCellWithReuseIdentifier: identifier)
+        }
         return bind(to: collectionView, createCell: { (dataSource, indexPath, collectionView) -> UICollectionViewCell in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! Cell
             let item = dataSource.item(at: indexPath)
@@ -90,10 +99,19 @@ extension SignalProtocol where Element: SectionedDataSourceChangesetConvertible,
     ///     - rowAnimation: Row animation for partial or batched updates. Relevant only when `animated` is `true`. Default is `.automatic`.
     ///     - configureCell: A closure that configures the cell with the data source item at the respective index path.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
+    ///
+    /// Note that the cell type name will be used as a reusable identifier and the binding will automatically register and dequeue the cell.
+    /// If there exists a nib file in the bundle with the same name as the cell type name, the framework will load the cell from the nib file.
     @discardableResult
     public func bind<Cell: UICollectionViewCell>(to collectionView: UICollectionView, cellType: Cell.Type, using binderDataSource: CollectionViewBinderDataSource<Element.Changeset>, configureCell: @escaping (Cell, Element.Changeset.Collection.Item) -> Void) -> Disposable {
         let identifier = String(describing: Cell.self)
-        collectionView.register(cellType as AnyClass, forCellWithReuseIdentifier: identifier)
+        let bundle = Bundle(for: Cell.self)
+        if let _ = bundle.path(forResource: identifier, ofType: "nib") {
+            let nib = UINib(nibName: identifier, bundle: bundle)
+            collectionView.register(nib, forCellWithReuseIdentifier: identifier)
+        } else {
+            collectionView.register(cellType as AnyClass, forCellWithReuseIdentifier: identifier)
+        }
         binderDataSource.createCell = { (dataSource, indexPath, collectionView) -> UICollectionViewCell in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! Cell
             let item = dataSource.item(at: indexPath)
