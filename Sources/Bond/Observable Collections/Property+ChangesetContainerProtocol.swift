@@ -105,9 +105,13 @@ extension Property where Value: ChangesetProtocol, Value.Collection: TreeArrayPr
     public convenience init() {
         self.init(Value(collection: .init(), patch: []))
     }
-    
-    public var numberOfAllElements: Int {
-        return changeset.collection.children.map{$0.children.count}.reduce(0){$0 + $1}
+}
+
+extension Property where Value: ChangesetProtocol, Value.Collection: TreeArrayProtocol {
+
+    /// Total number of items across all sections.
+    public var numberOfItemsInAllSections: Int {
+        return changeset.collection.children.map { $0.count }.reduce(0, +)
     }
 }
 
