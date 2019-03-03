@@ -134,7 +134,7 @@ extension ChangesetContainerProtocol where Changeset.Collection: TreeProtocol {
     }
 
     /// Access the element at `index`.
-    public subscript(indexPath: IndexPath) -> Collection.Children.Element {
+    public subscript(childAt indexPath: IndexPath) -> Collection.Children.Element {
         get {
             return collection[childAt: indexPath]
         }

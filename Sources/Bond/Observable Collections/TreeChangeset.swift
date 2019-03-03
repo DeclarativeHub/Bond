@@ -52,7 +52,7 @@ extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtoc
     public typealias ChildNode = Collection.Children.Element
 
     /// Access or update the element at `index`.
-    public subscript(indexPath: IndexPath) -> ChildNode {
+    public subscript(childAt indexPath: IndexPath) -> ChildNode {
         get {
             return collection[childAt: indexPath]
         }
