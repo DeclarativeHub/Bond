@@ -80,53 +80,53 @@ public protocol Array2DElementProtocol {
     var asArray2DElement: Array2DElement<Section, Item> { get }
 }
 
-extension TreeArray where ChildValue: Array2DElementProtocol {
+extension TreeArray where Value: Array2DElementProtocol {
 
-    public init(sectionsWithItems: [(ChildValue.Section, [ChildValue.Item])]) {
-        self.init(sectionsWithItems.map { TreeNode(ChildValue(section: $0.0), $0.1.map { TreeNode(ChildValue(item: $0)) }) })
+    public init(sectionsWithItems: [(Value.Section, [Value.Item])]) {
+        self.init(sectionsWithItems.map { TreeNode(Value(section: $0.0), $0.1.map { TreeNode(Value(item: $0)) }) })
     }
 
-    public subscript(itemAt indexPath: IndexPath) -> ChildValue.Item {
+    public subscript(itemAt indexPath: IndexPath) -> Value.Item {
         get {
             return self[indexPath].value.item!
         }
         set {
-            self[indexPath].value = ChildValue(item: newValue)
+            self[indexPath].value = Value(item: newValue)
         }
     }
 
-    public subscript(sectionAt index: Int) -> ChildValue.Section {
+    public subscript(sectionAt index: Int) -> Value.Section {
         get {
             return self[[index]].value.section!
         }
         set {
-            self[[index]].value = ChildValue(section: newValue)
+            self[[index]].value = Value(section: newValue)
         }
     }
 
     /// Append new section at the end of the 2D array.
-    public mutating func appendSection(_ section: ChildValue.Section) {
-        append(TreeNode(ChildValue(section: section)))
+    public mutating func appendSection(_ section: Value.Section) {
+        append(TreeNode(Value(section: section)))
     }
 
     /// Append `item` to the section `section` of the array.
-    public mutating func appendItem(_ item: ChildValue.Item, toSectionAt sectionIndex: Int) {
+    public mutating func appendItem(_ item: Value.Item, toSectionAt sectionIndex: Int) {
         insert(item: item, at: [sectionIndex, self[[sectionIndex]].children.count])
     }
 
     /// Insert section at `index` with `items`.
-    public mutating func insert(section: ChildValue.Section, at index: Int)  {
-        insert(TreeNode(ChildValue(section: section)), at: [index])
+    public mutating func insert(section: Value.Section, at index: Int)  {
+        insert(TreeNode(Value(section: section)), at: [index])
     }
 
     /// Insert `item` at `indexPath`.
-    public mutating func insert(item: ChildValue.Item, at indexPath: IndexPath)  {
-        insert(TreeNode(ChildValue(item: item)), at: indexPath)
+    public mutating func insert(item: Value.Item, at indexPath: IndexPath)  {
+        insert(TreeNode(Value(item: item)), at: indexPath)
     }
 
     /// Insert `items` at index path `indexPath`.
-    public mutating func insert(contentsOf items: [ChildValue.Item], at indexPath: IndexPath) {
-        insert(contentsOf: items.map { TreeNode(ChildValue(item: $0)) }, at: indexPath)
+    public mutating func insert(contentsOf items: [Value.Item], at indexPath: IndexPath) {
+        insert(contentsOf: items.map { TreeNode(Value(item: $0)) }, at: indexPath)
     }
 
     /// Move the section at index `fromIndex` to index `toIndex`.
@@ -141,20 +141,20 @@ extension TreeArray where ChildValue: Array2DElementProtocol {
 
     /// Remove and return the section at `index`.
     @discardableResult
-    public mutating func removeSection(at index: Int) -> ChildValue.Section {
+    public mutating func removeSection(at index: Int) -> Value.Section {
         return remove(at: [index]).value.section!
     }
 
     /// Remove and return the item at `indexPath`.
     @discardableResult
-    public mutating func removeItem(at indexPath: IndexPath) -> ChildValue.Item {
+    public mutating func removeItem(at indexPath: IndexPath) -> Value.Item {
         return remove(at: indexPath).value.item!
     }
 
     /// Remove all items from the array. Keep empty sections.
     public mutating func removeAllItems() {
-        for index in indices {
-            self[index].removeAll()
+        for index in 0..<children.count {
+            children[index].removeAll()
         }
     }
 

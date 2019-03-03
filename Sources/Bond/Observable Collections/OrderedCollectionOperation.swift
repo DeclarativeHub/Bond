@@ -112,7 +112,7 @@ extension RangeReplaceableCollection where Index: Strideable {
     }
 }
 
-extension RangeReplaceableTreeNode where Index == IndexPath {
+extension RangeReplaceableTreeProtocol {
 
     public mutating func apply(_ operation: TreeChangeset<Self>.Operation) {
         switch operation {
@@ -139,7 +139,7 @@ extension MutableChangesetContainerProtocol where Changeset.Collection: RangeRep
     }
 }
 
-extension MutableChangesetContainerProtocol where Changeset.Collection: RangeReplaceableTreeNode, Changeset.Collection.Index == IndexPath, Changeset.Operation == TreeChangeset<Changeset.Collection>.Operation {
+extension MutableChangesetContainerProtocol where Changeset.Collection: RangeReplaceableTreeProtocol, Changeset.Operation == TreeChangeset<Changeset.Collection>.Operation {
 
     public func apply(_ operation: Changeset.Operation) {
         descriptiveUpdate { (collection) -> [Changeset.Operation] in

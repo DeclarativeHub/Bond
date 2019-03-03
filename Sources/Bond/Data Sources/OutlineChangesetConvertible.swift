@@ -22,14 +22,14 @@ extension TreeChangeset: OutlineChangesetConvertible where Collection: TreeArray
 
 extension TreeArray: OutlineChangesetConvertible {
 
-    public var asTreeArrayChangeset: TreeChangeset<TreeArray<ChildValue>> {
+    public var asTreeArrayChangeset: TreeChangeset<TreeArray<Value>> {
         return TreeChangeset(collection: self, patch: [])
     }
 }
 
 extension ObjectTreeArray: OutlineChangesetConvertible {
 
-    public var asTreeArrayChangeset: TreeChangeset<ObjectTreeArray<ChildValue>> {
+    public var asTreeArrayChangeset: TreeChangeset<ObjectTreeArray<Value>> {
         return TreeChangeset(collection: self, patch: [])
     }
 }

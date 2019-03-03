@@ -25,11 +25,10 @@
 import Foundation
 import Differ
 
-public extension RangeReplaceableTreeNode {
+public extension TreeProtocol {
 
-    public func diff(_ other: Self, sourceRoot: IndexPath = [], destinationRoot: IndexPath = [], areValuesEqual: @escaping (ChildNode.Value, ChildNode.Value) -> Bool) -> OrderedCollectionDiff<IndexPath> {
-        let isEqual: (ChildNode, ChildNode) -> Bool = { lhs, rhs in areValuesEqual(lhs.value, rhs.value) }
-        let traces = children.outputDiffPathTraces(to: other.children, isEqual: isEqual)
+    public func diff(_ other: Self, sourceRoot: IndexPath = [], destinationRoot: IndexPath = [], areEqual: @escaping (Children.Element, Children.Element) -> Bool) -> OrderedCollectionDiff<IndexPath> {
+        let traces = children.outputDiffPathTraces(to: other.children, isEqual: areEqual)
         let diff = Diff(traces: traces)
         var collectionDiff = OrderedCollectionDiff(from: diff, sourceRoot: sourceRoot, destinationRoot: destinationRoot)
 
@@ -42,7 +41,7 @@ public extension RangeReplaceableTreeNode {
                     childB,
                     sourceRoot: sourceRoot.appending(trace.from.x),
                     destinationRoot: destinationRoot.appending(trace.from.y),
-                    areValuesEqual: areValuesEqual
+                    areEqual: areEqual
                 )
                 collectionDiff.merge(childDiff)
             } else if trace.from.y < trace.to.y {

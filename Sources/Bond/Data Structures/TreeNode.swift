@@ -24,9 +24,16 @@
 
 import Foundation
 
+public protocol TreeNodeWithValueProtocol: RangeReplaceableTreeProtocol {
+    associatedtype Value
+    var value: Value { get set }
+    init(_ value: Value)
+    subscript(indexPath: IndexPath) -> Children.Element { get set }
+}
+
 /// A tree node represents a node in a tree structure.
 /// A tree node has a value associated with itself and zero or more child tree nodes of the same TreeNode type.
-public struct TreeNode<Value>: ArrayBasedTreeNode, MutableTreeNodeProtocol, CustomDebugStringConvertible {
+public struct TreeNode<Value>: TreeNodeWithValueProtocol, CustomDebugStringConvertible {
 
     public var value: Value
     public var children: [TreeNode<Value>]
@@ -71,7 +78,7 @@ public struct TreeNode<Value>: ArrayBasedTreeNode, MutableTreeNodeProtocol, Cust
 }
 
 /// Class-based variant of TreeNode.
-public class ObjectTreeNode<Value>: ArrayBasedTreeNode, CustomDebugStringConvertible {
+public final class ObjectTreeNode<Value>: TreeNodeWithValueProtocol, CustomDebugStringConvertible {
 
     public var value: Value
     public var children: [ObjectTreeNode<Value>]

@@ -24,11 +24,11 @@
 
 import Foundation
 
-extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Changeset.Collection: TreeArrayProtocol, Changeset.Collection.ChildNode == TreeNode<Changeset.Collection.ChildValue>, Changeset.Collection.ChildValue: Array2DElementProtocol {
+extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Changeset.Collection: TreeArrayProtocol, Changeset.Collection.Children.Element.Value: Array2DElementProtocol {
 
-    public typealias Section = Collection.ChildValue.Section
-    public typealias Item = Collection.ChildValue.Item
-    public typealias SectionedData = Changeset.Collection.ChildValue
+    public typealias Section = Collection.Children.Element.Value.Section
+    public typealias Item = Collection.Children.Element.Value.Item
+    public typealias SectionedData = Changeset.Collection.Children.Element.Value
 
     public subscript(itemAt indexPath: IndexPath) -> Item {
         get {
@@ -56,7 +56,7 @@ extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtoc
 
     /// Append new section at the end of the 2D array.
     public func appendSection(_ section: Section) {
-        append(TreeNode(SectionedData(section: section)))
+        append(.init(SectionedData(section: section)))
     }
 
     /// Append `item` to the section `section` of the array.
@@ -66,17 +66,17 @@ extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtoc
 
     /// Insert section at `index` with `items`.
     public func insert(section: Section, at index: Int)  {
-        insert(TreeNode(SectionedData(section: section)), at: [index])
+        insert(.init(SectionedData(section: section)), at: [index])
     }
 
     /// Insert `item` at `indexPath`.
     public func insert(item: Item, at indexPath: IndexPath)  {
-        insert(TreeNode(SectionedData(item: item)), at: indexPath)
+        insert(.init(SectionedData(item: item)), at: indexPath)
     }
 
     /// Insert `items` at index path `indexPath`.
     public func insert(contentsOf items: [Item], at indexPath: IndexPath) {
-        insert(contentsOf: items.map { TreeNode(SectionedData(item: $0)) }, at: indexPath)
+        insert(contentsOf: items.map { .init(SectionedData(item: $0)) }, at: indexPath)
     }
 
     /// Move the section at index `fromIndex` to index `toIndex`.
@@ -104,7 +104,7 @@ extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtoc
     /// Remove all items from the array. Keep empty sections.
     public func removeAllItems() {
         descriptiveUpdate { (collection) -> [Operation] in
-            let indices = collection.indices.map { $0 }.filter { $0.count == 2 }.reversed()
+            let indices = collection.dfsView.indices.map { $0 }.filter { $0.count == 2 }.reversed()
             for index in indices {
                 collection.remove(at: index)
             }
