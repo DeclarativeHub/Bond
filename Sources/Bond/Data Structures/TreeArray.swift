@@ -27,7 +27,7 @@ import Foundation
 public protocol TreeArrayProtocol: ArrayBasedTreeNode {
     associatedtype ChildValue
     init()
-    subscript(indexPath: IndexPath) -> ChildNode { get set }
+    subscript(indexPath: Index) -> ChildNode { get set }
 }
 
 /// A tree array represents a valueless root node of a tree structure where children are of TreeNode<ChileValue> type.

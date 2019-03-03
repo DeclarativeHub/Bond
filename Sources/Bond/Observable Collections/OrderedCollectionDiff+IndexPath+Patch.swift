@@ -145,8 +145,9 @@ extension OrderedCollectionDiff where Index == IndexPath {
             return AnyOrderedCollectionOperation.simulate(patch: patch.map { $0.asAnyOrderedCollectionOperation }, on: $0)
         }
 
-        let updates = zip(self.updates, updatesInFinalCollection).map { (pair) -> OrderedCollectionOperation<C.ChildNode, C.Index> in
-            return .update(at: pair.0, newElement: collection[pair.1!])
+        let zipped = zip(self.updates, updatesInFinalCollection)
+        let updates = zipped.map { (pair) -> OrderedCollectionOperation<C.ChildNode, C.Index> in
+            return .update(at: pair.0, newElement: collection[pair.1])
         }
 
         return updates + patch

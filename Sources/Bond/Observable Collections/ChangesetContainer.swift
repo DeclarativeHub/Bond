@@ -98,7 +98,7 @@ extension MutableChangesetContainerProtocol {
     }
 }
 
-extension ChangesetContainerProtocol where Changeset.Collection: Collection {
+extension ChangesetContainerProtocol where Changeset.Collection: Swift.Collection {
 
     /// Returns `true` if underlying collection is empty, `false` otherwise.
     public var isEmpty: Bool {
@@ -118,7 +118,7 @@ extension ChangesetContainerProtocol where Changeset.Collection: Collection {
     }
 }
 
-extension ChangesetContainerProtocol where Changeset.Collection: Collection, Changeset.Collection.Index == Int {
+extension ChangesetContainerProtocol where Changeset.Collection: Swift.Collection, Changeset.Collection.Index == Int {
 
     /// Underlying array.
     public var array: Collection {
