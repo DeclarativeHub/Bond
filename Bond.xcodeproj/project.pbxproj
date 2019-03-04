@@ -318,15 +318,12 @@
 		FCDA454F2229C25A001E0C3D /* CBCentralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDA454E2229C25A001E0C3D /* CBCentralManager.swift */; };
 		FCDA45502229C25A001E0C3D /* CBCentralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDA454E2229C25A001E0C3D /* CBCentralManager.swift */; };
 		FCDA45512229C25A001E0C3D /* CBCentralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDA454E2229C25A001E0C3D /* CBCentralManager.swift */; };
-		FCDA45522229C25A001E0C3D /* CBCentralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDA454E2229C25A001E0C3D /* CBCentralManager.swift */; };
 		FCDA45542229C2DE001E0C3D /* CBPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDA45532229C2DE001E0C3D /* CBPeripheral.swift */; };
 		FCDA45552229C2DE001E0C3D /* CBPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDA45532229C2DE001E0C3D /* CBPeripheral.swift */; };
 		FCDA45562229C2DE001E0C3D /* CBPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDA45532229C2DE001E0C3D /* CBPeripheral.swift */; };
-		FCDA45572229C2DE001E0C3D /* CBPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDA45532229C2DE001E0C3D /* CBPeripheral.swift */; };
 		FCDA45592229C322001E0C3D /* CBPeripheralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDA45582229C322001E0C3D /* CBPeripheralManager.swift */; };
 		FCDA455A2229C322001E0C3D /* CBPeripheralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDA45582229C322001E0C3D /* CBPeripheralManager.swift */; };
 		FCDA455B2229C322001E0C3D /* CBPeripheralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDA45582229C322001E0C3D /* CBPeripheralManager.swift */; };
-		FCDA455C2229C322001E0C3D /* CBPeripheralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDA45582229C322001E0C3D /* CBPeripheralManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1274,13 +1271,10 @@
 			files = (
 				ECBCE0E8216179BC0078E03B /* UITableViewTests.swift in Sources */,
 				ECC4358521612B430002A869 /* DynamicSubjectTests.swift in Sources */,
-				FCDA45572229C2DE001E0C3D /* CBPeripheral.swift in Sources */,
 				ECC4358221612B310002A869 /* UIKitTests.swift in Sources */,
 				ECC4358321612B350002A869 /* ProtocolProxyTests.swift in Sources */,
 				ECC4358721612B480002A869 /* NSObjectTests.swift in Sources */,
 				ECC4358621612B460002A869 /* Helpers.swift in Sources */,
-				FCDA45522229C25A001E0C3D /* CBCentralManager.swift in Sources */,
-				FCDA455C2229C322001E0C3D /* CBPeripheralManager.swift in Sources */,
 				E5C968A9221926D70026D7D8 /* UIPickerViewTests.swift in Sources */,
 				ECC4358421612B410002A869 /* BondTests.swift in Sources */,
 				ECC4357E216127490002A869 /* TreeChangesetDiffAndPatchTest.swift in Sources */,

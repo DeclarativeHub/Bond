@@ -8,7 +8,6 @@
 
 import CoreBluetooth
 import ReactiveKit
-import Bond
 
 #if os(iOS) || os(tvOS)
 
