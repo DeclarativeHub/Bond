@@ -71,7 +71,7 @@ public extension ReactiveExtensions where Base: CBCentralManager {
     /// - Note: Uses central manager's `delegate` protocol proxy to observe calls made to `CBCentralManagerDelegate.centralManager(_:didFailToConnect:error:)` method.
     @available(iOS 5.0, *)
     public var didFailToConnectPeripheral: SafeSignal<(CBPeripheral, Error?)> {
-        return delegate.signal(for: #selector(CBCentralManagerDelegate.centralManager(_:didFailToConnect:error:))) { (subject: SafePublishSubject<(CBPeripheral, Error?)>, peripheral: CBPeripheral, error: Error?) in
+        return delegate.signal(for: #selector(CBCentralManagerDelegate.centralManager(_:didFailToConnect:error:))) { (subject: SafePublishSubject<(CBPeripheral, Error?)>, central: CBCentralManager, peripheral: CBPeripheral, error: Error?) in
             subject.next((peripheral, error))
         }
     }
@@ -80,8 +80,8 @@ public extension ReactiveExtensions where Base: CBCentralManager {
     ///
     /// - Note: Uses central manager's `delegate` protocol proxy to observe calls made to `CBCentralManagerDelegate.centralManager(_:didDisconnectPeripheral:error:)` method.
     @available(iOS 5.0, *)
-    public var didDisconnectPeripheralPeripheral: SafeSignal<(CBPeripheral, Error?)> {
-        return delegate.signal(for: #selector(CBCentralManagerDelegate.centralManager(_:didDisconnectPeripheral:error:))) { (subject: SafePublishSubject<(CBPeripheral, Error?)>, peripheral: CBPeripheral, error: Error?) in
+    public var didDisconnectPeripheral: SafeSignal<(CBPeripheral, Error?)> {
+        return delegate.signal(for: #selector(CBCentralManagerDelegate.centralManager(_:didDisconnectPeripheral:error:))) { (subject: SafePublishSubject<(CBPeripheral, Error?)>, central: CBCentralManager, peripheral: CBPeripheral, error: Error?) in
             subject.next((peripheral, error))
         }
     }
