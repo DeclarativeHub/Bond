@@ -24,7 +24,7 @@
 
 import Foundation
 
-public protocol Array2DProtocol: RangeReplaceableTreeProtocol where Children == [Array2D<SectionMetadata, Item>.Element] {
+public protocol Array2DProtocol: RangeReplaceableTreeProtocol where Children == [Array2D<SectionMetadata, Item>.Node] {
     associatedtype SectionMetadata
     associatedtype Item
 }
@@ -159,16 +159,16 @@ extension Array2D {
 extension Array2D {
 
     /// A type that represents a node of Array2D tree - either a section or an item.
-    public enum Element: RangeReplaceableTreeProtocol {
+    public enum Node: RangeReplaceableTreeProtocol {
         case section(Section)
         case item(Item)
 
         /// Child nodes of the element. In case of a section, children are its items. In case of an item, empty array.
-        public var children: [Element] {
+        public var children: [Node] {
             get {
                 switch self {
                 case .section(let section):
-                    return section.items.map { Element.item($0) }
+                    return section.items.map { Node.item($0) }
                 case .item:
                     return []
                 }
@@ -205,9 +205,9 @@ extension Array2D {
     }
 
     /// Child nodes of the Array2D tree. First level of the tree are sections, while the second level are items.
-    public var children: [Element] {
+    public var children: [Node] {
         get {
-            return sections.map { Element.section($0) }
+            return sections.map { Node.section($0) }
         }
         set {
             sections = newValue.compactMap { $0.section }
