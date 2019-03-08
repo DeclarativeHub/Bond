@@ -27,8 +27,6 @@ import Foundation
 public protocol TreeNodeWithValueProtocol: RangeReplaceableTreeProtocol {
     associatedtype Value
     var value: Value { get set }
-    init(_ value: Value)
-    subscript(indexPath: IndexPath) -> Children.Element { get set }
 }
 
 /// A tree node represents a node in a tree structure.
@@ -48,6 +46,7 @@ public struct TreeNode<Value>: TreeNodeWithValueProtocol, CustomDebugStringConve
         self.children = children
     }
 
+    /// Access or mutate self or a child node.
     public subscript(indexPath: IndexPath) -> TreeNode<Value> {
         get {
             if let first = indexPath.first {
@@ -98,6 +97,7 @@ public final class ObjectTreeNode<Value>: TreeNodeWithValueProtocol, CustomDebug
         self.children = children.map { $0.asObject }
     }
 
+    /// Access or mutate self or a child node.
     public subscript(indexPath: IndexPath) -> ObjectTreeNode<Value> {
         get {
             if let first = indexPath.first {
