@@ -43,8 +43,8 @@ public typealias MutableObservableDictionary<Key: Hashable, Value> = Property<Un
 public typealias ObservableTree<Tree: TreeProtocol> = AnyProperty<TreeChangeset<Tree>>
 public typealias MutableObservableTree<Tree: TreeProtocol> = Property<TreeChangeset<Tree>>
 
-public typealias ObservableArray2D<SectionValue, Item> = AnyProperty<TreeChangeset<Array2D<SectionValue, Item>>>
-public typealias MutableObservableArray2D<SectionValue, Item> = Property<TreeChangeset<Array2D<SectionValue, Item>>>
+public typealias ObservableArray2D<SectionMetadata, Item> = AnyProperty<TreeChangeset<Array2D<SectionMetadata, Item>>>
+public typealias MutableObservableArray2D<SectionMetadata, Item> = Property<TreeChangeset<Array2D<SectionMetadata, Item>>>
 
 extension AnyProperty: ChangesetContainerProtocol where Value: ChangesetProtocol {
 
@@ -107,7 +107,7 @@ extension Property where Value: ChangesetProtocol, Value.Collection: Instantiata
     }
 }
 
-extension Property where Value: ChangesetProtocol, Value.Collection: RangeReplaceableTreeProtocol, Value.Collection.Children.Element: TreeNodeWithValueProtocol, Value.Collection.Children.Element.Value: Array2DElementProtocol {
+extension Property where Value: ChangesetProtocol, Value.Collection: Array2DProtocol {
 
     /// Total number of items across all sections.
     public var numberOfItemsInAllSections: Int {

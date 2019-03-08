@@ -18,7 +18,7 @@ class CustomBinder<Changeset: SectionedDataSourceChangeset>: TableViewBinderData
 
     // Important: Annotate UITableViewDataSource methods with `@objc` in the subclass, otherwise UIKit will not see your method!
     @objc func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return changeset?.collection[sectionAt: section]
+        return changeset?.collection[sectionAt: section].metadata
     }
 }
 

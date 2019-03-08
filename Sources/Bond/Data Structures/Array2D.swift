@@ -24,142 +24,193 @@
 
 import Foundation
 
-/// Array2D is a 3-level tree of nodes with `Array2DElement<Section, Item>` values.
-/// First level represents the root node and contains no value. Second level represents
-/// sections and contains `Array2DElement.section` values, while the third level represents
-/// items and contains `Array2DElement.item` values.
-///
-/// Signals that emit this kind of a tree can be bound to a table or collection view.
-public typealias Array2D<Section, Item> = TreeArray<Array2DElement<Section, Item>>
-
-/// A section or an item in a 2D array.
-public enum Array2DElement<Section, Item>: Array2DElementProtocol {
-
-    /// Section with the associated value of type `Section`.
-    case section(Section)
-
-    /// Item with the associated value of type `Item`.
-    case item(Item)
-
-    public init(item: Item) {
-        self = .item(item)
-    }
-
-    public init(section: Section) {
-        self = .section(section)
-    }
-
-    public var section: Section? {
-        if case .section(let section) = self {
-            return section
-        } else {
-            return nil
-        }
-    }
-
-    public var item: Item? {
-        if case .item(let item) = self {
-            return item
-        } else {
-            return nil
-        }
-    }
-
-    public var asArray2DElement: Array2DElement<Section, Item> {
-        return self
-    }
-}
-
-public protocol Array2DElementProtocol {
-    associatedtype Section
+public protocol Array2DProtocol: RangeReplaceableTreeProtocol where Children == [Array2D<SectionMetadata, Item>.Element] {
+    associatedtype SectionMetadata
     associatedtype Item
-    init(section: Section)
-    init(item: Item)
-    var section: Section? { get }
-    var item: Item?  { get }
-    var asArray2DElement: Array2DElement<Section, Item> { get }
 }
 
-extension TreeArray where Value: Array2DElementProtocol {
+/// A data structure whose items are grouped into section.
+/// Array2D can be used as an underlying data structure for UITableView or UICollectionView data source.
+public struct Array2D<SectionMetadata, Item>: Array2DProtocol {
 
-    public init(sectionsWithItems: [(Value.Section, [Value.Item])]) {
-        self.init(sectionsWithItems.map { TreeNode(Value(section: $0.0), $0.1.map { TreeNode(Value(item: $0)) }) })
+    /// Represents a single section of Array2D.
+    public struct Section {
+
+        /// Section metadata, e.g. section title.
+        public var metadata: SectionMetadata
+
+        /// Items contained in the section.
+        public var items: [Item]
     }
 
-    public subscript(itemAt indexPath: IndexPath) -> Value.Item {
+    /// All sections of Array2D.
+    public var sections: [Section]
+
+    /// Create a new Array2D with the given sections.
+    public init(sections: [Section] = []) {
+        self.sections = sections
+    }
+}
+
+// MARK: Convenience methods
+
+extension Array2D {
+
+    /// Create a new Array2D from the given list of section metadata and respective items.
+    /// Each SectionMetadata corresponds to one section populated with the given items.
+    public init(sectionsWithItems: [(SectionMetadata, [Item])]) {
+        self.init(sections: sectionsWithItems.map { Section(metadata: $0.0, items: $0.1) })
+    }
+
+    /// Access or mutate an item at the given index path.
+    public subscript(itemAt indexPath: IndexPath) -> Item {
         get {
-            return self[childAt: indexPath].value.item!
+            return sections[indexPath.section].items[indexPath.item]
         }
         set {
-            self[childAt: indexPath].value = Value(item: newValue)
+            sections[indexPath.section].items[indexPath.item] = newValue
         }
     }
 
-    public subscript(sectionAt index: Int) -> Value.Section {
+    /// Access or mutate a section at the given index.
+    public subscript(sectionAt index: Int) -> Section {
         get {
-            return self[childAt: [index]].value.section!
+            return sections[index]
         }
         set {
-            self[childAt: [index]].value = Value(section: newValue)
+            sections[index] = newValue
         }
     }
 
     /// Append new section at the end of the 2D array.
-    public mutating func appendSection(_ section: Value.Section) {
-        append(TreeNode(Value(section: section)))
+    public mutating func appendSection(_ section: Section) {
+        sections.append(section)
     }
 
+    /// Append new section at the end of the 2D array.
+    public mutating func appendSection(_ metadata: SectionMetadata) {
+        sections.append(Section(metadata: metadata, items: []))
+    }
+
+
     /// Append `item` to the section `section` of the array.
-    public mutating func appendItem(_ item: Value.Item, toSectionAt sectionIndex: Int) {
-        insert(item: item, at: [sectionIndex, self[childAt: [sectionIndex]].children.count])
+    public mutating func appendItem(_ item: Item, toSectionAt sectionIndex: Int) {
+        sections[sectionIndex].items.append(item)
     }
 
     /// Insert section at `index` with `items`.
-    public mutating func insert(section: Value.Section, at index: Int)  {
-        insert(TreeNode(Value(section: section)), at: [index])
+    public mutating func insert(section: Section, at index: Int)  {
+        sections.insert(section, at: index)
+    }
+
+    /// Insert section at `index` with `items`.
+    public mutating func insert(section metadata: SectionMetadata, at index: Int)  {
+        sections.insert(Section(metadata: metadata, items: []), at: index)
     }
 
     /// Insert `item` at `indexPath`.
-    public mutating func insert(item: Value.Item, at indexPath: IndexPath)  {
-        insert(TreeNode(Value(item: item)), at: indexPath)
+    public mutating func insert(item: Item, at indexPath: IndexPath)  {
+        sections[indexPath.section].items.insert(item, at: indexPath.item)
     }
 
     /// Insert `items` at index path `indexPath`.
-    public mutating func insert(contentsOf items: [Value.Item], at indexPath: IndexPath) {
-        insert(contentsOf: items.map { TreeNode(Value(item: $0)) }, at: indexPath)
+    public mutating func insert(contentsOf items: [Item], at indexPath: IndexPath) {
+        sections[indexPath.section].items.insert(contentsOf: items, at: indexPath.item)
     }
 
     /// Move the section at index `fromIndex` to index `toIndex`.
     public mutating func moveSection(from fromIndex: Int, to toIndex: Int) {
-        move(from: [fromIndex], to: [toIndex])
+        sections.move(from: fromIndex, to: toIndex)
     }
 
     /// Move the item at `fromIndexPath` to `toIndexPath`.
     public mutating func moveItem(from fromIndexPath: IndexPath, to toIndexPath: IndexPath) {
-        move(from: fromIndexPath, to: toIndexPath)
+        let item = sections[fromIndexPath.section].items.remove(at: fromIndexPath.item)
+        sections[toIndexPath.section].items.insert(item, at: toIndexPath.item)
     }
 
     /// Remove and return the section at `index`.
     @discardableResult
-    public mutating func removeSection(at index: Int) -> Value.Section {
-        return remove(at: [index]).value.section!
+    public mutating func removeSection(at index: Int) -> Section {
+        return sections.remove(at: index)
     }
 
     /// Remove and return the item at `indexPath`.
     @discardableResult
-    public mutating func removeItem(at indexPath: IndexPath) -> Value.Item {
-        return remove(at: indexPath).value.item!
+    public mutating func removeItem(at indexPath: IndexPath) -> Item {
+        return sections[indexPath.section].items.remove(at: indexPath.item)
     }
 
     /// Remove all items from the array. Keep empty sections.
     public mutating func removeAllItems() {
-        for index in 0..<children.count {
-            children[index].removeAll()
+        for index in 0..<sections.count {
+            sections[index].items.removeAll()
         }
     }
 
     /// Remove all items and sections from the array (aka `removeAll`).
     public mutating func removeAllItemsAndSections() {
-        removeAll()
+        sections.removeAll()
+    }
+}
+
+// MARK: TreeProtocol conformance
+
+extension Array2D {
+
+    /// A type that represents a node of Array2D tree - either a section or an item.
+    public enum Element: RangeReplaceableTreeProtocol {
+        case section(Section)
+        case item(Item)
+
+        /// Child nodes of the element. In case of a section, children are its items. In case of an item, empty array.
+        public var children: [Element] {
+            get {
+                switch self {
+                case .section(let section):
+                    return section.items.map { Element.item($0) }
+                case .item:
+                    return []
+                }
+            }
+            set {
+                switch self {
+                case .section(let section):
+                    self = .section(Section(metadata: section.metadata, items: newValue.compactMap { $0.item }))
+                case .item:
+                    break
+                }
+            }
+        }
+
+        /// A section if the node represents a section node, nil otherwise.
+        public var section: Section? {
+            switch self {
+            case .section(let section):
+                return section
+            default:
+                return nil
+            }
+        }
+
+        /// An item if the node represents an item node, nil otherwise.
+        public var item: Item? {
+            switch self {
+            case .item(let item):
+                return item
+            default:
+                return nil
+            }
+        }
+    }
+
+    /// Child nodes of the Array2D tree. First level of the tree are sections, while the second level are items.
+    public var children: [Element] {
+        get {
+            return sections.map { Element.section($0) }
+        }
+        set {
+            sections = newValue.compactMap { $0.section }
+        }
     }
 }

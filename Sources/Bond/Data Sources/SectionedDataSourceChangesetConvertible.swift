@@ -95,12 +95,18 @@ extension TreeArray: SectionedDataSourceProtocol {
     }
 }
 
-extension TreeArray: QueryableSectionedDataSourceProtocol where Value: Array2DElementProtocol {
+extension Array2D: QueryableSectionedDataSourceProtocol {
 
-    public typealias Item = Value.Item
+    public var numberOfSections: Int {
+        return sections.count
+    }
 
-    public func item(at indexPath: IndexPath) -> Value.Item {
-        return self[childAt: indexPath].value.asArray2DElement.item!
+    public func numberOfItems(inSection section: Int) -> Int {
+        return sections[section].items.count
+    }
+
+    public func item(at indexPath: IndexPath) -> Item {
+        return self[itemAt: indexPath]
     }
 }
 

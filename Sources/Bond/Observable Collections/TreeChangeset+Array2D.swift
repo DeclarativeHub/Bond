@@ -24,39 +24,44 @@
 
 import Foundation
 
-extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Changeset.Collection: RangeReplaceableTreeProtocol, Changeset.Collection.Children.Element: TreeNodeWithValueProtocol, Changeset.Collection.Children.Element.Value: Array2DElementProtocol {
+extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Changeset.Collection: Array2DProtocol {
 
-    public typealias Section = Collection.Children.Element.Value.Section
-    public typealias Item = Collection.Children.Element.Value.Item
-    public typealias SectionedData = Changeset.Collection.Children.Element.Value
+    public typealias SectionMetadata = Collection.SectionMetadata
+    public typealias Item = Collection.Item
+    public typealias Section = Array2D<SectionMetadata, Item>.Section
 
     public subscript(itemAt indexPath: IndexPath) -> Item {
         get {
-            return collection[childAt: indexPath].value.item!
+            return collection[childAt: indexPath].item!
         }
         set {
             descriptiveUpdate { (collection) -> [Operation] in
-                collection[childAt: indexPath].value = SectionedData(item: newValue)
-                return [.update(at: indexPath, newElement: collection[childAt: indexPath])]
+                collection[childAt: indexPath] = .item(newValue)
+                return [.update(at: indexPath, newElement: .item(newValue))]
             }
         }
     }
 
     public subscript(sectionAt index: Int) -> Section {
         get {
-            return collection[childAt: [index]].value.section!
+            return collection[childAt: [index]].section!
         }
         set {
             descriptiveUpdate { (collection) -> [Operation] in
-                collection[childAt: [index]].value = SectionedData(section: newValue)
-                return [.update(at: [index], newElement: collection[childAt: [index]])]
+                collection[childAt: [index]] = .section(newValue)
+                return [.update(at: [index], newElement: .section(newValue))]
             }
         }
     }
 
     /// Append new section at the end of the 2D array.
     public func appendSection(_ section: Section) {
-        append(.init(SectionedData(section: section)))
+        append(.section(section))
+    }
+
+    /// Append new section at the end of the 2D array.
+    public func appendSection(_ metadata: SectionMetadata) {
+        append(.section(Section(metadata: metadata, items: [])))
     }
 
     /// Append `item` to the section `section` of the array.
@@ -66,17 +71,22 @@ extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtoc
 
     /// Insert section at `index` with `items`.
     public func insert(section: Section, at index: Int)  {
-        insert(.init(SectionedData(section: section)), at: [index])
+        insert(.section(section), at: [index])
+    }
+
+    /// Insert section at `index` with `items`.
+    public func insert(section metadata: SectionMetadata, at index: Int)  {
+        insert(.section(Section(metadata: metadata, items: [])), at: [index])
     }
 
     /// Insert `item` at `indexPath`.
     public func insert(item: Item, at indexPath: IndexPath)  {
-        insert(.init(SectionedData(item: item)), at: indexPath)
+        insert(.item(item), at: indexPath)
     }
 
     /// Insert `items` at index path `indexPath`.
     public func insert(contentsOf items: [Item], at indexPath: IndexPath) {
-        insert(contentsOf: items.map { .init(SectionedData(item: $0)) }, at: indexPath)
+        insert(contentsOf: items.map { .item($0) }, at: indexPath)
     }
 
     /// Move the section at index `fromIndex` to index `toIndex`.
@@ -92,13 +102,13 @@ extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtoc
     /// Remove and return the section at `index`.
     @discardableResult
     public func removeSection(at index: Int) -> Section {
-        return remove(at: [index]).value.section!
+        return remove(at: [index]).section!
     }
 
     /// Remove and return the item at `indexPath`.
     @discardableResult
     public func removeItem(at indexPath: IndexPath) -> Item {
-        return remove(at: indexPath).value.item!
+        return remove(at: indexPath).item!
     }
 
     /// Remove all items from the array. Keep empty sections.
