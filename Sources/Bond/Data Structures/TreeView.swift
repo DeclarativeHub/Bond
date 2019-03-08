@@ -56,7 +56,7 @@ extension TreeProtocol where Children.Element == Self {
     /// Provides a view of the tree that is a flat collection of tree nodes in depth-first search order.
     /// Indices of the provided collection are of type `IndexPath`.
     /// - complexity: O(n)
-    public var dfsView: TreeView<Self> {
+    public var depthFirst: TreeView<Self> {
         return TreeView(
             tree: self,
             startIndex: [],
@@ -68,7 +68,7 @@ extension TreeProtocol where Children.Element == Self {
     /// Provides a view of the tree that is a flat collection of tree nodes in breadth-first search order.
     /// Indices of the provided collection are of type `IndexPath`.
     /// - complexity: O(n)
-    public var bfsView: TreeView<Self> {
+    public var breadthFirst: TreeView<Self> {
         return TreeView(
             tree: self,
             startIndex: [],

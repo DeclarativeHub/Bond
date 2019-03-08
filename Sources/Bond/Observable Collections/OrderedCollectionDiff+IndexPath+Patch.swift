@@ -103,7 +103,7 @@ extension OrderedCollectionDiff where Index == IndexPath {
 
         let deletesAndMoves = deletes + moves
         let deletionTree = makeDeletionTree(deletesAndMoves)
-        var deletionScript = Array(deletionTree.dfsView.indices.dropFirst().map { deletesAndMoves[deletionTree[$0].value] }.reversed())
+        var deletionScript = Array(deletionTree.depthFirst.indices.dropFirst().map { deletesAndMoves[deletionTree[$0].value] }.reversed())
         var insertionSeedScript = deletionScript
         var moveCounter = 0
         for index in 0..<deletionScript.count {
@@ -119,7 +119,7 @@ extension OrderedCollectionDiff where Index == IndexPath {
 
         let movesAndInserts = insertionSeedScript.filter { $0.insertionIndex != nil } + inserts
         let insertionTree = makeInsertionTree(movesAndInserts)
-        var insertionScript = insertionTree.dfsView.indices.dropFirst().map { movesAndInserts[insertionTree[$0].value] }
+        var insertionScript = insertionTree.depthFirst.indices.dropFirst().map { movesAndInserts[insertionTree[$0].value] }
 
         for index in 0..<insertionScript.count {
 

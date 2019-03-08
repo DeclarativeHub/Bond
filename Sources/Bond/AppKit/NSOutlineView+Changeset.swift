@@ -170,7 +170,7 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
 
     private func clone(_ node: Changeset.Collection.Children.Element) -> ObjectTreeNode<Changeset.Collection.Children.Element> {
         var newNode = ObjectTreeNode(node)
-        for index in node.bfsView.indices.dropFirst() {
+        for index in node.breadthFirst.indices.dropFirst() {
             newNode.insert(ObjectTreeNode(node[index]), at: index)
         }
         return newNode
