@@ -104,7 +104,7 @@ extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtoc
     /// Remove all items from the array. Keep empty sections.
     public func removeAllItems() {
         descriptiveUpdate { (collection) -> [Operation] in
-            let indices = collection.dfsView.indices.map { $0 }.filter { $0.count == 2 }.reversed()
+            let indices = collection.depthFirst.indices.map { $0 }.filter { $0.count == 2 }.reversed()
             for index in indices {
                 collection.remove(at: index)
             }

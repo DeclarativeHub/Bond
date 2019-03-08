@@ -69,12 +69,12 @@ extension TreeProtocol {
 
     @available(*, deprecated, renamed: "dfsView.firstIndex(where:)")
     public func firstIndex(where test: (Children.Element) -> Bool) -> IndexPath? {
-        return dfsView.firstIndex(where: test)
+        return depthFirst.firstIndex(where: test)
     }
 
     @available(*, deprecated, renamed: "dfsView.first(where:)")
     public func first(matching filter: (Children.Element) -> Bool) -> Children.Element? {
-        return dfsView.first(where: filter)
+        return depthFirst.first(where: filter)
     }
 }
 
@@ -82,6 +82,6 @@ extension TreeProtocol where Children.Element: Equatable {
 
     @available(*, deprecated, renamed: "dfsView.firstIndex(of:)")
     public func index(of node: Children.Element) -> IndexPath? {
-        return dfsView.firstIndex(of: node)
+        return depthFirst.firstIndex(of: node)
     }
 }
