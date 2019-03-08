@@ -9,11 +9,11 @@
 import Foundation
 
 public protocol OutlineChangesetConvertible {
-    associatedtype Changeset: TreeChangesetProtocol where Changeset.Collection: TreeArrayProtocol
+    associatedtype Changeset: TreeChangesetProtocol
     var asTreeArrayChangeset: Changeset { get }
 }
 
-extension TreeChangeset: OutlineChangesetConvertible where Collection: TreeArrayProtocol {
+extension TreeChangeset: OutlineChangesetConvertible {
 
     public var asTreeArrayChangeset: TreeChangeset<Collection> {
         return self
