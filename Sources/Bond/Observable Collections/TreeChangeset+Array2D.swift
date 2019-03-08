@@ -24,7 +24,7 @@
 
 import Foundation
 
-extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Changeset.Collection: TreeArrayProtocol, Changeset.Collection.Children.Element.Value: Array2DElementProtocol {
+extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Changeset.Collection: RangeReplaceableTreeProtocol, Changeset.Collection.Children.Element: TreeNodeWithValueProtocol, Changeset.Collection.Children.Element.Value: Array2DElementProtocol {
 
     public typealias Section = Collection.Children.Element.Value.Section
     public typealias Item = Collection.Children.Element.Value.Item
@@ -32,24 +32,24 @@ extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtoc
 
     public subscript(itemAt indexPath: IndexPath) -> Item {
         get {
-            return collection[indexPath].value.item!
+            return collection[childAt: indexPath].value.item!
         }
         set {
             descriptiveUpdate { (collection) -> [Operation] in
-                collection[indexPath].value = SectionedData(item: newValue)
-                return [.update(at: indexPath, newElement: collection[indexPath])]
+                collection[childAt: indexPath].value = SectionedData(item: newValue)
+                return [.update(at: indexPath, newElement: collection[childAt: indexPath])]
             }
         }
     }
 
     public subscript(sectionAt index: Int) -> Section {
         get {
-            return collection[[index]].value.section!
+            return collection[childAt: [index]].value.section!
         }
         set {
             descriptiveUpdate { (collection) -> [Operation] in
-                collection[[index]].value = SectionedData(section: newValue)
-                return [.update(at: [index], newElement: collection[[index]])]
+                collection[childAt: [index]].value = SectionedData(section: newValue)
+                return [.update(at: [index], newElement: collection[childAt: [index]])]
             }
         }
     }
@@ -61,7 +61,7 @@ extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtoc
 
     /// Append `item` to the section `section` of the array.
     public func appendItem(_ item: Item, toSectionAt sectionIndex: Int) {
-        insert(item: item, at: [sectionIndex, collection[[sectionIndex]].children.count])
+        insert(item: item, at: [sectionIndex, collection[childAt: [sectionIndex]].children.count])
     }
 
     /// Insert section at `index` with `items`.

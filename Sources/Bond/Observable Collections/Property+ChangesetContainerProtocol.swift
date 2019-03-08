@@ -100,14 +100,14 @@ extension Property where Value: ChangesetProtocol, Value.Collection: RangeReplac
     }
 }
 
-extension Property where Value: ChangesetProtocol, Value.Collection: TreeArrayProtocol {
+extension Property where Value: ChangesetProtocol, Value.Collection: Instantiatable {
 
     public convenience init() {
         self.init(Value(collection: .init(), patch: []))
     }
 }
 
-extension Property where Value: ChangesetProtocol, Value.Collection: TreeArrayProtocol, Value.Collection.Children.Element.Value: Array2DElementProtocol {
+extension Property where Value: ChangesetProtocol, Value.Collection: RangeReplaceableTreeProtocol, Value.Collection.Children.Element: TreeNodeWithValueProtocol, Value.Collection.Children.Element.Value: Array2DElementProtocol {
 
     /// Total number of items across all sections.
     public var numberOfItemsInAllSections: Int {
@@ -137,7 +137,7 @@ extension AnyProperty where Value: ChangesetProtocol, Value.Collection: RangeRep
     }
 }
 
-extension AnyProperty where Value: ChangesetProtocol, Value.Collection: TreeArrayProtocol {
+extension AnyProperty where Value: ChangesetProtocol, Value.Collection: Instantiatable {
 
     public convenience init() {
         self.init(Value(collection: .init(), patch: []))

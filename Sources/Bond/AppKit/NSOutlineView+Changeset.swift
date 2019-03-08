@@ -79,7 +79,7 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
     }
 
     public func item(at indexPath: IndexPath) -> ObjectTreeNode<Changeset.Collection.Children.Element> {
-        return rootNode[indexPath]
+        return rootNode[childAt: indexPath]
     }
 
     public func treeNode(forItem item: Any) -> Changeset.Collection.Children.Element? {
@@ -108,7 +108,7 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
         if let item = item as? ObjectTreeNode<Changeset.Collection.Children.Element> {
             return item[[index]]
         } else {
-            return rootNode[[index]]
+            return rootNode[childAt: [index]]
         }
     }
 
@@ -163,7 +163,7 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
         guard path.count > 1 else {
             return nil
         }
-        return rootNode[path.dropLast()]
+        return rootNode[childAt: path.dropLast()]
     }
 
     private func associate(with outlineView: NSOutlineView) {
@@ -239,7 +239,7 @@ extension SignalProtocol where Element: OutlineChangesetConvertible, Error == No
     }
 }
 
-extension SignalProtocol where Element: OutlineChangesetConvertible, Element.Changeset.Collection: TreeArrayProtocol, Element.Changeset.Collection.Children.Element.Value: AnyObject, Error == NoError {
+extension SignalProtocol where Element: OutlineChangesetConvertible, Element.Changeset.Collection.Children.Element: TreeNodeWithValueProtocol, Element.Changeset.Collection.Children.Element.Value: AnyObject, Error == NoError {
 
     /// Binds the signal of data source elements to the given outline view.
     ///

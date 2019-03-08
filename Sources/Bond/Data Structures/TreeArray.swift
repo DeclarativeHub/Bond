@@ -24,13 +24,8 @@
 
 import Foundation
 
-public protocol TreeArrayProtocol: RangeReplaceableTreeProtocol where Children.Element: TreeNodeWithValueProtocol {
-    init()
-    subscript(indexPath: IndexPath) -> Children.Element { get set }
-}
-
 /// A tree array represents a valueless root node of a tree structure where children are of TreeNode<ChileValue> type.
-public struct TreeArray<Value>: TreeArrayProtocol, CustomDebugStringConvertible {
+public struct TreeArray<Value>: RangeReplaceableTreeProtocol, Instantiatable, CustomDebugStringConvertible {
 
     public var children: [TreeNode<Value>]
 
@@ -46,17 +41,6 @@ public struct TreeArray<Value>: TreeArrayProtocol, CustomDebugStringConvertible 
         self.children = childrenValues.map { TreeNode($0) }
     }
 
-    public subscript(indexPath: IndexPath) -> TreeNode<Value> {
-        get {
-            guard let index = indexPath.first else { fatalError() }
-            return children[index][indexPath.dropFirst()]
-        }
-        set {
-            guard let index = indexPath.first else { fatalError() }
-            return children[index][indexPath.dropFirst()] = newValue
-        }
-    }
-
     public var debugDescription: String {
         return "[" + children.map { $0.debugDescription }.joined(separator: ", ") + "]"
     }
@@ -67,7 +51,7 @@ public struct TreeArray<Value>: TreeArrayProtocol, CustomDebugStringConvertible 
 }
 
 /// Class-based variant of TreeArray.
-public final class ObjectTreeArray<Value>: TreeArrayProtocol, CustomDebugStringConvertible {
+public final class ObjectTreeArray<Value>: RangeReplaceableTreeProtocol, Instantiatable, CustomDebugStringConvertible {
 
     public var value: Void = ()
     public var children: [ObjectTreeNode<Value>]
@@ -82,17 +66,6 @@ public final class ObjectTreeArray<Value>: TreeArrayProtocol, CustomDebugStringC
 
     public init(_ children: [TreeNode<Value>]) {
         self.children = children.map { $0.asObject }
-    }
-
-    public subscript(indexPath: IndexPath) -> ObjectTreeNode<Value> {
-        get {
-            guard let index = indexPath.first else { fatalError() }
-            return children[index][indexPath.dropFirst()]
-        }
-        set {
-            guard let index = indexPath.first else { fatalError() }
-            return children[index][indexPath.dropFirst()] = newValue
-        }
     }
 
     public var debugDescription: String {

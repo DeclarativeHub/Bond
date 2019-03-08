@@ -88,19 +88,19 @@ extension TreeArray where Value: Array2DElementProtocol {
 
     public subscript(itemAt indexPath: IndexPath) -> Value.Item {
         get {
-            return self[indexPath].value.item!
+            return self[childAt: indexPath].value.item!
         }
         set {
-            self[indexPath].value = Value(item: newValue)
+            self[childAt: indexPath].value = Value(item: newValue)
         }
     }
 
     public subscript(sectionAt index: Int) -> Value.Section {
         get {
-            return self[[index]].value.section!
+            return self[childAt: [index]].value.section!
         }
         set {
-            self[[index]].value = Value(section: newValue)
+            self[childAt: [index]].value = Value(section: newValue)
         }
     }
 
@@ -111,7 +111,7 @@ extension TreeArray where Value: Array2DElementProtocol {
 
     /// Append `item` to the section `section` of the array.
     public mutating func appendItem(_ item: Value.Item, toSectionAt sectionIndex: Int) {
-        insert(item: item, at: [sectionIndex, self[[sectionIndex]].children.count])
+        insert(item: item, at: [sectionIndex, self[childAt: [sectionIndex]].children.count])
     }
 
     /// Insert section at `index` with `items`.

@@ -62,6 +62,9 @@ public typealias RangeReplaceableTreeNode = RangeReplaceableTreeProtocol
 @available(*, deprecated, renamed: "TreeProtocol")
 public typealias TreeNodeProtocol = TreeProtocol
 
+@available(*, deprecated, renamed: "RangeReplaceableTreeProtocol")
+public typealias TreeArrayProtocol = RangeReplaceableTreeProtocol
+
 extension TreeProtocol {
 
     @available(*, deprecated, renamed: "Children.Element")
@@ -83,5 +86,18 @@ extension TreeProtocol where Children.Element: Equatable {
     @available(*, deprecated, renamed: "depthFirst.firstIndex(of:)")
     public func index(of node: Children.Element) -> IndexPath? {
         return depthFirst.firstIndex(of: node)
+    }
+}
+
+extension RangeReplaceableTreeProtocol {
+
+    @available(*, deprecated, message: "Use subscript [childAt: IndexPath] instead")
+    public subscript(indexPath: IndexPath) -> Children.Element {
+        get {
+            return self[childAt: indexPath]
+        }
+        set {
+            self[childAt: indexPath] = newValue
+        }
     }
 }
