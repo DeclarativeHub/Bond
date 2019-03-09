@@ -19,12 +19,12 @@ var t = TreeNode("Child 00", [
     ])
 ])
 
-print(t.dfsView.map { $0.value })
-print(t.bfsView.map { $0.value })
+print(t.depthFirst.map { $0.value })
+print(t.breadthFirst.map { $0.value })
 
-print(t.dfsView.firstIndex(where: { $0.value.hasSuffix("200") })!)
-print(t.dfsView.allSatisfy { $0.value.starts(with: "Child") })
-print(t.dfsView.randomElement()!)
+print(t.depthFirst.firstIndex(where: { $0.value.hasSuffix("200") })!)
+print(t.depthFirst.allSatisfy { $0.value.starts(with: "Child") })
+print(t.depthFirst.randomElement()!)
 
 // Tree node is a tree with multiple roots
 
@@ -35,12 +35,12 @@ var ta = TreeArray<String>([
     ])
 ])
 
-print(ta.dfsView.map { $0.value })
-print(ta.bfsView.map { $0.value })
+print(ta.depthFirst.map { $0.value })
+print(ta.breadthFirst.map { $0.value })
 
-print(ta.dfsView.firstIndex(where: { $0.value.hasSuffix("200") })!)
-print(t.dfsView.allSatisfy { $0.value.starts(with: "Child") })
-print(t.dfsView.randomElement()!)
+print(ta.depthFirst.firstIndex(where: { $0.value.hasSuffix("200") })!)
+print(t.depthFirst.allSatisfy { $0.value.starts(with: "Child") })
+print(t.depthFirst.randomElement()!)
 
 // Custom trees
 
@@ -53,8 +53,8 @@ extension UIView: TreeProtocol {
 
 let v = UIPickerView()
 
-print(v.dfsView.map { type(of: $0) })
-print(v.bfsView.map { type(of: $0) })
+print(v.depthFirst.map { type(of: $0) })
+print(v.breadthFirst.map { type(of: $0) })
 
 print(v[childAt: [0, 0]])
 
