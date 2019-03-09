@@ -224,6 +224,7 @@
 		EC930F46222B1EA7000D397C /* TreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC930F45222B1EA7000D397C /* TreeView.swift */; };
 		EC930F47222B1EA7000D397C /* TreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC930F45222B1EA7000D397C /* TreeView.swift */; };
 		EC930F48222B1EA7000D397C /* TreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC930F45222B1EA7000D397C /* TreeView.swift */; };
+		EC9F9F552233C22000645634 /* TreeViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9F9F542233C22000645634 /* TreeViewTests.swift */; };
 		ECAFB8D4200A7E3900EE0669 /* BNDInvocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAFB8D3200A7E3900EE0669 /* BNDInvocation.swift */; };
 		ECAFB8D5200A7E3900EE0669 /* BNDInvocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAFB8D3200A7E3900EE0669 /* BNDInvocation.swift */; };
 		ECAFB8D6200A7E3900EE0669 /* BNDInvocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECAFB8D3200A7E3900EE0669 /* BNDInvocation.swift */; };
@@ -515,6 +516,7 @@
 		EC860B24209E17B40010C09A /* TreeArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeArray.swift; sourceTree = "<group>"; };
 		EC86E9AE1E9145CC008563B2 /* UIAccessibilityIdentification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAccessibilityIdentification.swift; sourceTree = "<group>"; };
 		EC930F45222B1EA7000D397C /* TreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeView.swift; sourceTree = "<group>"; };
+		EC9F9F542233C22000645634 /* TreeViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeViewTests.swift; sourceTree = "<group>"; };
 		ECAFB8D3200A7E3900EE0669 /* BNDInvocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BNDInvocation.swift; sourceTree = "<group>"; };
 		ECAFB8D8200B60AA00EE0669 /* ProtocolProxyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolProxyController.swift; sourceTree = "<group>"; };
 		ECBB81F9220EDFDA00C7B7B0 /* OrderedCollectionDiff+IndexPath+Differ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OrderedCollectionDiff+IndexPath+Differ.swift"; sourceTree = "<group>"; };
@@ -813,6 +815,7 @@
 				EC14E6482132948D00A5AC8D /* TreeChangesetDiffAndPatchTest.swift */,
 				90C04DCE1E8F0BA7000077C8 /* ProtocolProxyTests.swift */,
 				90C04DCA1E8F0BA7000077C8 /* NSObjectTests.swift */,
+				EC9F9F542233C22000645634 /* TreeViewTests.swift */,
 			);
 			path = BondTests;
 			sourceTree = "<group>";
@@ -1255,6 +1258,7 @@
 				ECC4358521612B430002A869 /* DynamicSubjectTests.swift in Sources */,
 				ECC4358221612B310002A869 /* UIKitTests.swift in Sources */,
 				ECC4358321612B350002A869 /* ProtocolProxyTests.swift in Sources */,
+				EC9F9F552233C22000645634 /* TreeViewTests.swift in Sources */,
 				ECC4358721612B480002A869 /* NSObjectTests.swift in Sources */,
 				ECC4358621612B460002A869 /* Helpers.swift in Sources */,
 				E5C968A9221926D70026D7D8 /* UIPickerViewTests.swift in Sources */,
