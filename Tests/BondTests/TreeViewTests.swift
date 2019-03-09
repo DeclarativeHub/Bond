@@ -35,10 +35,12 @@ class TreeViewTests: XCTestCase {
 
     func testDepthFirst() {
         XCTAssertEqual(tree.depthFirst.map { $0.value }, ["0", "00", "01", "010", "02", "020", "0200", "021"])
+        XCTAssertEqual(tree.depthFirst.indices.map { $0 }, [[], [0], [1], [1, 0], [2], [2, 0], [2, 0, 0], [2, 1]])
     }
 
     func testBreadthFirst() {
         XCTAssertEqual(tree.breadthFirst.map { $0.value }, ["0", "00", "01", "02", "010", "020", "021", "0200"])
+        XCTAssertEqual(tree.breadthFirst.indices.map { $0 }, [[], [0], [1], [2], [1, 0], [2, 0], [2, 1], [2, 0, 0]])
     }
 
     func testSearchEfficiency() {
