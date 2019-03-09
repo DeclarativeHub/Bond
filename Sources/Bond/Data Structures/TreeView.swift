@@ -28,7 +28,7 @@ extension TreeProtocol {
 
     /// Provides a view of the tree that is a flat collection of tree nodes in depth-first search order.
     /// Indices of the provided collection are of type `IndexPath`.
-    /// - complexity: O(n)
+    /// - complexity: Accessing: O(1), Iterating the tree view: O(n) in both time and space
     public var depthFirst: TreeView<Self> {
         return TreeView(
             tree: self,
@@ -40,7 +40,7 @@ extension TreeProtocol {
 
     /// Provides a view of the tree that is a flat collection of tree nodes in breadth-first search order.
     /// Indices of the provided collection are of type `IndexPath`.
-    /// - complexity: O(n)
+    /// - complexity: Accessing: O(1), Iterating the tree view: O(n) in both time and space
     public var breadthFirst: TreeView<Self> {
         return TreeView(
             tree: self,
@@ -55,7 +55,7 @@ extension TreeProtocol where Children.Element == Self {
 
     /// Provides a view of the tree that is a flat collection of tree nodes in depth-first search order.
     /// Indices of the provided collection are of type `IndexPath`.
-    /// - complexity: O(n)
+    /// - complexity: Accessing: O(1), Iterating the tree view: O(n) in both time and space
     public var depthFirst: TreeView<Self> {
         return TreeView(
             tree: self,
@@ -67,7 +67,7 @@ extension TreeProtocol where Children.Element == Self {
 
     /// Provides a view of the tree that is a flat collection of tree nodes in breadth-first search order.
     /// Indices of the provided collection are of type `IndexPath`.
-    /// - complexity: O(n)
+    /// - complexity: Accessing: O(1), Iterating the tree view: O(n) in both time and space
     public var breadthFirst: TreeView<Self> {
         return TreeView(
             tree: self,
@@ -82,7 +82,7 @@ public protocol IndexPathTreeIterator: IteratorProtocol where Element == (elemen
     associatedtype Tree: TreeProtocol
 }
 
-public struct TreeView<Tree: TreeProtocol>: BidirectionalCollection {
+public class TreeView<Tree: TreeProtocol>: Collection {
 
     public let startIndex: IndexPath
     public let endIndex: IndexPath
@@ -90,32 +90,43 @@ public struct TreeView<Tree: TreeProtocol>: BidirectionalCollection {
     private typealias TreeMapElement = (element: Tree.Children.Element, before: IndexPath?, after: IndexPath?)
 
     private let tree: Tree
-    private var lookupTreeMap: [IndexPath: TreeMapElement]
+    private var lookupTreeMap: [IndexPath: TreeMapElement] = [:]
+    private var loadNextNode: (() -> (indexPath: IndexPath, treeMapElement: TreeMapElement)?)!
 
     public init<I: IndexPathTreeIterator>(tree: Tree, startIndex: IndexPath, endIndex: IndexPath, iterator: I) where I.Tree == Tree.Children.Element {
         self.tree = tree
         self.startIndex = startIndex
         self.endIndex = endIndex
         var iterator = iterator
-        var keyValuePairs: [(indexPath: IndexPath, treeMapElement: TreeMapElement)] = []
-        while let next = iterator.next() {
-            if !keyValuePairs.isEmpty {
-                keyValuePairs[keyValuePairs.count-1].treeMapElement.after = next.indexPath
+        var previousIndexPath: IndexPath?
+        self.loadNextNode = {
+            if let next = iterator.next() {
+                if let previousIndexPath = previousIndexPath {
+                    self.lookupTreeMap[previousIndexPath]?.after = next.indexPath
+                }
+                let nextNodePair: (indexPath: IndexPath, treeMapElement: TreeMapElement) = (next.indexPath, (next.element, previousIndexPath, nil))
+                self.lookupTreeMap[nextNodePair.indexPath] = nextNodePair.treeMapElement
+                previousIndexPath = next.indexPath
+                return nextNodePair
             }
-            keyValuePairs.append((next.indexPath, (next.element, keyValuePairs.last?.indexPath, nil)))
+            return nil
         }
-        self.lookupTreeMap = Dictionary(uniqueKeysWithValues: keyValuePairs)
-    }
-
-    public func index(before i: IndexPath) -> IndexPath {
-        return lookupTreeMap[i]!.before!
     }
 
     public func index(after i: IndexPath) -> IndexPath {
+        if lookupTreeMap[i] == nil {
+            while let nextNode = loadNextNode(), nextNode.indexPath != i {}
+        }
+        if lookupTreeMap[i]?.after == nil {
+            _ = loadNextNode()
+        }
         return lookupTreeMap[i]?.after ?? endIndex
     }
 
     public subscript(indexPath: IndexPath) -> Tree.Children.Element {
+        if lookupTreeMap[indexPath] == nil {
+            while let nextNode = loadNextNode(), nextNode.indexPath != indexPath {}
+        }
         return lookupTreeMap[indexPath]!.element
     }
 }
