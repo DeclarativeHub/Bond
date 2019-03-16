@@ -126,27 +126,17 @@ extension ChangesetContainerProtocol where Changeset.Collection: Swift.Collectio
     }
 }
 
-extension ChangesetContainerProtocol where Changeset.Collection: TreeNodeProtocol {
+extension ChangesetContainerProtocol where Changeset.Collection: TreeProtocol {
 
     /// Underlying tree.
     public var tree: Collection {
         return collection
     }
 
-    /// Returns `true` if underlying collection is empty, `false` otherwise.
-    public var isEmpty: Bool {
-        return collection.isEmpty
-    }
-
-    /// Number of elements in the underlying collection.
-    public var count: Int {
-        return collection.count
-    }
-
     /// Access the element at `index`.
-    public subscript(index: Collection.Index) -> Collection.ChildNode {
+    public subscript(childAt indexPath: IndexPath) -> Collection.Children.Element {
         get {
-            return collection[index]
+            return collection[childAt: indexPath]
         }
     }
 }

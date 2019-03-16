@@ -75,7 +75,7 @@ extension SignalProtocol where Element: Collection, Element.Index: Strideable {
     }
 }
 
-extension SignalProtocol where Element: ArrayBasedTreeNode {
+extension SignalProtocol where Element: TreeProtocol {
 
     /// Generate the diff between previous and current tree using the provided diff generator function.
     public func diff(generateDiff: @escaping (Element, Element) -> TreeChangeset<Element>.Diff) -> Signal<TreeChangeset<Element>, Error> {

@@ -40,11 +40,11 @@ public typealias MutableObservableSet<Element: Hashable> = Property<UnorderedCol
 public typealias ObservableDictionary<Key: Hashable, Value> = AnyProperty<UnorderedCollectionChangeset<Dictionary<Key, Value>>>
 public typealias MutableObservableDictionary<Key: Hashable, Value> = Property<UnorderedCollectionChangeset<Dictionary<Key, Value>>>
 
-public typealias ObservableTree<Tree: TreeNodeProtocol> = AnyProperty<TreeChangeset<Tree>> where Tree.Index == IndexPath
-public typealias MutableObservableTree<Tree: TreeNodeProtocol> = Property<TreeChangeset<Tree>> where Tree.Index == IndexPath
+public typealias ObservableTree<Tree: TreeProtocol> = AnyProperty<TreeChangeset<Tree>>
+public typealias MutableObservableTree<Tree: TreeProtocol> = Property<TreeChangeset<Tree>>
 
-public typealias ObservableArray2D<SectionValue, Item> = AnyProperty<TreeChangeset<Array2D<SectionValue, Item>>>
-public typealias MutableObservableArray2D<SectionValue, Item> = Property<TreeChangeset<Array2D<SectionValue, Item>>>
+public typealias ObservableArray2D<SectionMetadata, Item> = AnyProperty<TreeChangeset<Array2D<SectionMetadata, Item>>>
+public typealias MutableObservableArray2D<SectionMetadata, Item> = Property<TreeChangeset<Array2D<SectionMetadata, Item>>>
 
 extension AnyProperty: ChangesetContainerProtocol where Value: ChangesetProtocol {
 
@@ -100,18 +100,18 @@ extension Property where Value: ChangesetProtocol, Value.Collection: RangeReplac
     }
 }
 
-extension Property where Value: ChangesetProtocol, Value.Collection: TreeArrayProtocol {
+extension Property where Value: ChangesetProtocol, Value.Collection: Instantiatable {
 
     public convenience init() {
         self.init(Value(collection: .init(), patch: []))
     }
 }
 
-extension Property where Value: ChangesetProtocol, Value.Collection: TreeArrayProtocol {
+extension Property where Value: ChangesetProtocol, Value.Collection: Array2DProtocol {
 
     /// Total number of items across all sections.
     public var numberOfItemsInAllSections: Int {
-        return changeset.collection.children.map { $0.count }.reduce(0, +)
+        return value.collection.children.map { $0.children.count }.reduce(0, +)
     }
 }
 
@@ -137,7 +137,7 @@ extension AnyProperty where Value: ChangesetProtocol, Value.Collection: RangeRep
     }
 }
 
-extension AnyProperty where Value: ChangesetProtocol, Value.Collection: TreeArrayProtocol {
+extension AnyProperty where Value: ChangesetProtocol, Value.Collection: Instantiatable {
 
     public convenience init() {
         self.init(Value(collection: .init(), patch: []))

@@ -14,7 +14,7 @@ extension OrderedCollectionOperation where Element == TreeNode<Int>, Index == In
 
     static func randomOperation(collection: TreeNode<Int>) -> OrderedCollectionOperation<TreeNode<Int>, IndexPath> {
         let element = TreeNode(Int.random(in: 11..<100))
-        let indices = collection.indices
+        let indices = collection.depthFirst.indices.dropFirst()
         guard indices.count > 1 else {
             return .insert(element, at: [0])
         }
@@ -35,7 +35,7 @@ extension OrderedCollectionOperation where Element == TreeNode<Int>, Index == In
             let from = indices.randomElement()!
             var collection = collection
             collection.remove(at: from)
-            let to = collection.indices.randomElement() ?? from
+            let to = collection.depthFirst.indices.dropFirst().randomElement() ?? from
             return .move(from: from, to: to)
         default:
             fatalError()

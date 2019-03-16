@@ -95,18 +95,24 @@ extension TreeArray: SectionedDataSourceProtocol {
     }
 }
 
-extension TreeArray: QueryableSectionedDataSourceProtocol where ChildValue: Array2DElementProtocol {
+extension Array2D: QueryableSectionedDataSourceProtocol {
 
-    public typealias Item = ChildValue.Item
+    public var numberOfSections: Int {
+        return sections.count
+    }
 
-    public func item(at indexPath: IndexPath) -> ChildValue.Item {
-        return self[indexPath].value.asArray2DElement.item!
+    public func numberOfItems(inSection section: Int) -> Int {
+        return sections[section].items.count
+    }
+
+    public func item(at indexPath: IndexPath) -> Item {
+        return self[itemAt: indexPath]
     }
 }
 
 extension TreeArray: SectionedDataSourceChangesetConvertible {
 
-    public var asSectionedDataSourceChangeset: TreeChangeset<TreeArray<ChildValue>> {
+    public var asSectionedDataSourceChangeset: TreeChangeset<TreeArray<Value>> {
         return TreeChangeset(collection: self, patch: [])
     }
 }
