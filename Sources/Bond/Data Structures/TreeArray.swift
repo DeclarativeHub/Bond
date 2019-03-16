@@ -24,85 +24,59 @@
 
 import Foundation
 
-public protocol TreeArrayProtocol: ArrayBasedTreeNode {
-    associatedtype ChildValue
-    init()
-    subscript(indexPath: IndexPath) -> ChildNode { get set }
-}
-
 /// A tree array represents a valueless root node of a tree structure where children are of TreeNode<ChileValue> type.
-public struct TreeArray<ChildValue>: TreeArrayProtocol, CustomDebugStringConvertible {
+public struct TreeArray<Value>: RangeReplaceableTreeProtocol, Instantiatable, CustomDebugStringConvertible {
 
-    public var value: Void = ()
-    public var children: [TreeNode<ChildValue>]
+    public var children: [TreeNode<Value>]
 
     public init() {
         self.children = []
     }
 
-    public init(_ children: [TreeNode<ChildValue>]) {
+    public init(_ children: [TreeNode<Value>]) {
         self.children = children
     }
 
-    public subscript(indexPath: IndexPath) -> TreeNode<ChildValue> {
-        get {
-            guard let index = indexPath.first else { fatalError() }
-            return children[index][indexPath.dropFirst()]
-        }
-        set {
-            guard let index = indexPath.first else { fatalError() }
-            return children[index][indexPath.dropFirst()] = newValue
-        }
+    public init(childrenValues: [Value]) {
+        self.children = childrenValues.map { TreeNode($0) }
     }
 
     public var debugDescription: String {
         return "[" + children.map { $0.debugDescription }.joined(separator: ", ") + "]"
     }
 
-    public var asObject: ObjectTreeArray<ChildValue> {
+    public var asObject: ObjectTreeArray<Value> {
         return ObjectTreeArray(children)
     }
 }
 
 /// Class-based variant of TreeArray.
-public class ObjectTreeArray<ChildValue>: TreeArrayProtocol, CustomDebugStringConvertible {
+public final class ObjectTreeArray<Value>: RangeReplaceableTreeProtocol, Instantiatable, CustomDebugStringConvertible {
 
     public var value: Void = ()
-    public var children: [ObjectTreeNode<ChildValue>]
+    public var children: [ObjectTreeNode<Value>]
 
     public required init() {
         self.children = []
     }
 
-    public init(_ children: [ObjectTreeNode<ChildValue>]) {
+    public init(_ children: [ObjectTreeNode<Value>]) {
         self.children = children
     }
 
-    public init(_ children: [TreeNode<ChildValue>]) {
+    public init(_ children: [TreeNode<Value>]) {
         self.children = children.map { $0.asObject }
-    }
-
-    public subscript(indexPath: IndexPath) -> ObjectTreeNode<ChildValue> {
-        get {
-            guard let index = indexPath.first else { fatalError() }
-            return children[index][indexPath.dropFirst()]
-        }
-        set {
-            guard let index = indexPath.first else { fatalError() }
-            return children[index][indexPath.dropFirst()] = newValue
-        }
     }
 
     public var debugDescription: String {
         return "[" + children.map { $0.debugDescription }.joined(separator: ", ") + "]"
     }
 
-    public var asTreeArray: TreeArray<ChildValue> {
+    public var asTreeArray: TreeArray<Value> {
         get {
             return TreeArray(children.map { $0.asTreeNode })
         }
         set {
-            self.value = newValue.value
             self.children = newValue.children.map { $0.asObject }
         }
     }

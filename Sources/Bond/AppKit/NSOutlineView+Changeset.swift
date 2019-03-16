@@ -27,22 +27,21 @@
 import AppKit
 import ReactiveKit
 
-open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutlineViewDataSource where Changeset.Collection: TreeArrayProtocol {
+open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutlineViewDataSource {
 
-    // NSOutlineView display a tree data structure that does not have a single root,
-    // thus we need to bind TreeArray instead of TreeNode. TreeArray is an array of TreeNodes that implements TreeNodeProtocol.
+    // NSOutlineView display a tree data structure that does not have a single root.
     //
     // "Items" of type `Any` that NSOutlineView asks for in the data source methods are tree nodes themselves, in our case `TreeNode`.
     // Note that we can't use value types here because NSOutlineView is a ObjC type so we need to use TreeArray.Object and TreeNode.Object variants.
-    //
-    // What NSOutlineView calls "object value of an item" is the value associated with a tree node: `node.value`.
-
-    public typealias IsItemExpandable = (Changeset.Collection.ChildNode, NSOutlineView) -> Bool
+    
+    public typealias IsItemExpandable = (Changeset.Collection.Children.Element, NSOutlineView) -> Bool
+    public typealias ObjectValueForItem = (Changeset.Collection.Children.Element) -> Any?
 
     public var isItemExpandable: IsItemExpandable? = nil
+    public var objectValueForItem: ObjectValueForItem
 
     /// Local clone of the bound data tree wrapped into a class based tree type.
-    public var rootNode = ObjectTreeArray<Changeset.Collection.ChildNode>()
+    public var rootNode = ObjectTreeArray<Changeset.Collection.Children.Element>()
 
     public var changeset: Changeset? = nil {
         didSet {
@@ -70,43 +69,56 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
     open var itemInsertionAnimation: NSOutlineView.AnimationOptions = [.effectFade, .slideUp]
     open var itemDeletionAnimation: NSOutlineView.AnimationOptions = [.effectFade, .slideUp]
 
-    public func item(at indexPath: IndexPath) -> ObjectTreeNode<Changeset.Collection.ChildNode> {
-        return rootNode[indexPath]
+    /// Default initializer.
+    ///
+    /// - parameters:
+    ///     - objectValueForItem: A closure that returns object value for the given node to be used in NSOutlineViewDataSource.
+    public init(objectValueForItem: @escaping ObjectValueForItem) {
+        self.objectValueForItem = objectValueForItem
+        super.init()
     }
 
-    public func treeNode(forItem item: Any) -> Changeset.Collection.ChildNode? {
-        return (item as? ObjectTreeNode<Changeset.Collection.ChildNode>)?.value
+    public func item(at indexPath: IndexPath) -> ObjectTreeNode<Changeset.Collection.Children.Element> {
+        return rootNode[childAt: indexPath]
+    }
+
+    public func treeNode(forItem item: Any) -> Changeset.Collection.Children.Element? {
+        return (item as? ObjectTreeNode<Changeset.Collection.Children.Element>)?.value
     }
 
     // MARK: - NSOutlineViewDataSource
 
     @objc(outlineView:isItemExpandable:)
     open func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
-        guard let item = item as? ObjectTreeNode<Changeset.Collection.ChildNode> else { return false }
-        return isItemExpandable?(item.value, outlineView) ?? item.isEmpty == false
+        guard let item = item as? ObjectTreeNode<Changeset.Collection.Children.Element> else { return false }
+        return isItemExpandable?(item.value, outlineView) ?? item.children.isEmpty == false
     }
 
     @objc(outlineView:numberOfChildrenOfItem:)
     open func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
-        if let item = item as? ObjectTreeNode<Changeset.Collection.ChildNode> {
-            return item.count
+        if let item = item as? ObjectTreeNode<Changeset.Collection.Children.Element> {
+            return item.children.count
         } else {
-            return rootNode.count
+            return rootNode.children.count
         }
     }
 
     @objc(outlineView:child:ofItem:)
     open func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
-        if let item = item as? ObjectTreeNode<Changeset.Collection.ChildNode> {
+        if let item = item as? ObjectTreeNode<Changeset.Collection.Children.Element> {
             return item[[index]]
         } else {
-            return rootNode[[index]]
+            return rootNode[childAt: [index]]
         }
     }
 
     @objc(outlineView:objectValueForTableColumn:byItem:)
     open func outlineView(_ outlineView: NSOutlineView, objectValueFor tableColumn: NSTableColumn?, byItem item: Any?) -> Any? {
-        return (item as? ObjectTreeNode<Changeset.Collection.ChildNode>)?.value.value ?? nil
+        if let item = item as? ObjectTreeNode<Changeset.Collection.Children.Element> {
+            return objectValueForItem(item.value)
+        } else {
+            return nil
+        }
     }
 
     open func applyChangeset(_ changeset: Changeset) {
@@ -122,7 +134,7 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
         }
     }
 
-    open func applyOperation(_ operation: OrderedCollectionOperation<Changeset.Collection.ChildNode, IndexPath>) {
+    open func applyOperation(_ operation: OrderedCollectionOperation<Changeset.Collection.Children.Element, IndexPath>) {
         guard let outlineView = outlineView else { return }
 
         switch operation {
@@ -147,11 +159,11 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
         }
     }
 
-    public func parentNode(forPath path: IndexPath) -> ObjectTreeNode<Changeset.Collection.ChildNode>? {
+    public func parentNode(forPath path: IndexPath) -> ObjectTreeNode<Changeset.Collection.Children.Element>? {
         guard path.count > 1 else {
             return nil
         }
-        return rootNode[path.dropLast()]
+        return rootNode[childAt: path.dropLast()]
     }
 
     private func associate(with outlineView: NSOutlineView) {
@@ -164,14 +176,14 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
         }
     }
 
-    private func clone(_ array: Changeset.Collection) -> ObjectTreeArray<Changeset.Collection.ChildNode> {
+    private func clone(_ array: Changeset.Collection) -> ObjectTreeArray<Changeset.Collection.Children.Element> {
         return ObjectTreeArray(array.children.map { clone($0) })
     }
 
-    private func clone(_ node: Changeset.Collection.ChildNode) -> ObjectTreeNode<Changeset.Collection.ChildNode> {
+    private func clone(_ node: Changeset.Collection.Children.Element) -> ObjectTreeNode<Changeset.Collection.Children.Element> {
         var newNode = ObjectTreeNode(node)
-        for index in node.indices {
-            newNode.insert(ObjectTreeNode(node[index]), at: index)
+        for index in node.breadthFirst.indices.dropFirst() {
+            newNode.insert(ObjectTreeNode(node[childAt: index]), at: index)
         }
         return newNode
     }
@@ -180,6 +192,7 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
 private var OutlineViewBinderDataSourceAssociationKey = "OutlineViewBinderDataSource"
 
 extension OutlineViewBinder {
+
     public class ReloadingBinder: OutlineViewBinder {
         public override func applyChangeset(_ changeset: Changeset) {
             rootNode = clone(changeset.collection)
@@ -195,16 +208,18 @@ extension SignalProtocol where Element: OutlineChangesetConvertible, Error == No
     ///     - outlineView: An outline view that should display the data from the data source.
     ///     - animated: Animate partial or batched updates. Default is `true`.
     ///     - rowAnimation: Row animation for partial or batched updates. Relevant only when `animated` is `true`. Default is `[.effectFade, .slideUp]`.
+    ///     - objectValueForItem: A closure that returns object value for the given node to be used in NSOutlineViewDataSource.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
     @discardableResult
-    public func bind(to outlineView: NSOutlineView, animated: Bool = true, rowAnimation: NSOutlineView.AnimationOptions = [.effectFade, .slideUp]) -> Disposable {
+    public func bind(to outlineView: NSOutlineView, animated: Bool = true, rowAnimation: NSOutlineView.AnimationOptions = [.effectFade, .slideUp], objectValueForItem: @escaping (Element.Changeset.Collection.Children.Element) -> Any?) -> Disposable {
         if animated {
-            let binder = OutlineViewBinder<Element.Changeset>()
+            let binder = OutlineViewBinder<Element.Changeset>(objectValueForItem: objectValueForItem)
             binder.itemInsertionAnimation = rowAnimation
             binder.itemDeletionAnimation = rowAnimation
+            binder.objectValueForItem = objectValueForItem
             return bind(to: outlineView, using: binder)
         } else {
-            let binder = OutlineViewBinder<Element.Changeset>.ReloadingBinder()
+            let binder = OutlineViewBinder<Element.Changeset>.ReloadingBinder(objectValueForItem: objectValueForItem)
             return bind(to: outlineView, using: binder)
         }
     }
@@ -222,7 +237,21 @@ extension SignalProtocol where Element: OutlineChangesetConvertible, Error == No
             binder.changeset = changeset.asTreeArrayChangeset
         }
     }
+}
 
+extension SignalProtocol where Element: OutlineChangesetConvertible, Element.Changeset.Collection.Children.Element: TreeNodeWithValueProtocol, Error == NoError {
+
+    /// Binds the signal of data source elements to the given outline view.
+    ///
+    /// - parameters:
+    ///     - outlineView: An outline view that should display the data from the data source.
+    ///     - animated: Animate partial or batched updates. Default is `true`.
+    ///     - rowAnimation: Row animation for partial or batched updates. Relevant only when `animated` is `true`. Default is `[.effectFade, .slideUp]`.
+    /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
+    @discardableResult
+    public func bind(to outlineView: NSOutlineView, animated: Bool = true, rowAnimation: NSOutlineView.AnimationOptions = [.effectFade, .slideUp]) -> Disposable {
+        return bind(to: outlineView, animated: animated, rowAnimation: rowAnimation, objectValueForItem: { $0.value })
+    }
 }
 
 #endif

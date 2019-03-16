@@ -8,5 +8,6 @@
         <page name='UICollectionView+ObservableArray2D'/>
         <page name='Key Value Observing'/>
         <page name='UIPickerView+ObservableArray2D'/>
+        <page name='Trees'/>
     </pages>
 </playground>

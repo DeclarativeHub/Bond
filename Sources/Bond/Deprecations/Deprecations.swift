@@ -34,3 +34,70 @@ extension DataSourceEventProtocol {
         return collection
     }
 }
+
+extension TreeArray {
+
+    @available(*, deprecated, renamed: "Value")
+    public typealias ChildValue = Value
+}
+
+extension ChangesetContainerProtocol where Changeset.Collection: TreeProtocol {
+
+    /// Returns `true` if underlying collection is empty, `false` otherwise.
+    @available(*, deprecated, renamed: "tree.children.isEmpty")
+    public var isEmpty: Bool {
+        return tree.children.isEmpty
+    }
+
+    /// Number of elements in the underlying collection.
+    @available(*, deprecated, renamed: "tree.children.count")
+    public var count: Int {
+        return tree.children.count
+    }
+}
+
+@available(*, deprecated, renamed: "RangeReplaceableTreeProtocol")
+public typealias RangeReplaceableTreeNode = RangeReplaceableTreeProtocol
+
+@available(*, deprecated, renamed: "TreeProtocol")
+public typealias TreeNodeProtocol = TreeProtocol
+
+@available(*, deprecated, renamed: "RangeReplaceableTreeProtocol")
+public typealias TreeArrayProtocol = RangeReplaceableTreeProtocol
+
+extension TreeProtocol {
+
+    @available(*, deprecated, renamed: "Children.Element")
+    public typealias ChildNode = Children.Element
+
+    @available(*, deprecated, renamed: "depthFirst.firstIndex(where:)")
+    public func firstIndex(where test: (Children.Element) -> Bool) -> IndexPath? {
+        return depthFirst.firstIndex(where: test)
+    }
+
+    @available(*, deprecated, renamed: "depthFirst.first(where:)")
+    public func first(matching filter: (Children.Element) -> Bool) -> Children.Element? {
+        return depthFirst.first(where: filter)
+    }
+}
+
+extension TreeProtocol where Children.Element: Equatable {
+
+    @available(*, deprecated, renamed: "depthFirst.firstIndex(of:)")
+    public func index(of node: Children.Element) -> IndexPath? {
+        return depthFirst.firstIndex(of: node)
+    }
+}
+
+extension RangeReplaceableTreeProtocol {
+
+    @available(*, deprecated, message: "Use subscript [childAt: IndexPath] instead")
+    public subscript(indexPath: IndexPath) -> Children.Element {
+        get {
+            return self[childAt: indexPath]
+        }
+        set {
+            self[childAt: indexPath] = newValue
+        }
+    }
+}

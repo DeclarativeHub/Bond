@@ -28,7 +28,9 @@ let tree = TreeArray([TreeNode("A", [TreeNode("B"), TreeNode("C")]), TreeNode("D
 
 let data = MutableObservableTree(tree)
 
-let binder = OutlineViewBinder<TreeChangeset<TreeArray<String>>>()
+let binder = OutlineViewBinder<TreeChangeset<TreeArray<String>>> {
+    return $0.value as NSString
+}
 
 data.bind(to: outlineView, using: binder)
 // Instead of using binder instance we can also do: data.bind(to: outlineView)
@@ -57,7 +59,7 @@ DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
         data.move(from: [2], to: [2, 0, 0])
         data.insert(TreeNode("G"), at: [2])
         data.insert(TreeNode("Dd"), at: [1, 0])
-        data[[0]] = TreeNode("Z")
+        data[childAt: [0]] = TreeNode("Z")
     }
 }
 

@@ -3,5 +3,6 @@
     <pages>
         <page name='NSTableView Bindings'/>
         <page name='NSOutlineView Bindings'/>
+        <page name='NSOutlineView Bindings Simpler'/>
     </pages>
 </playground>

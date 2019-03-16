@@ -45,14 +45,14 @@ extension OrderedCollectionDiff where Index == IndexPath {
         }
     }
 
-    public func generatePatch<C: TreeNodeProtocol>(to collection: C) -> [OrderedCollectionOperation<C.ChildNode, C.Index>] where C.Index == IndexPath {
+    public func generatePatch<C: TreeProtocol>(to collection: C) -> [OrderedCollectionOperation<C.Children.Element, IndexPath>] {
 
-        let inserts = self.inserts.map { Edit<C.ChildNode>(deletionIndex: nil, insertionIndex: $0, element: collection[$0]) }
-        let deletes = self.deletes.map { Edit<C.ChildNode>(deletionIndex: $0, insertionIndex: nil, element: nil) }
-        let moves = self.moves.map { Edit<C.ChildNode>(deletionIndex: $0.from, insertionIndex: $0.to, element: nil) }
+        let inserts = self.inserts.map { Edit<C.Children.Element>(deletionIndex: nil, insertionIndex: $0, element: collection[childAt: $0]) }
+        let deletes = self.deletes.map { Edit<C.Children.Element>(deletionIndex: $0, insertionIndex: nil, element: nil) }
+        let moves = self.moves.map { Edit<C.Children.Element>(deletionIndex: $0.from, insertionIndex: $0.to, element: nil) }
 
-        func makeInsertionTree(_ script: [Edit<C.ChildNode>]) -> TreeNode<Int> {
-            func insert(_ edit: Edit<C.ChildNode>, value: Int, into tree: TreeNode<Int>) -> TreeNode<Int> {
+        func makeInsertionTree(_ script: [Edit<C.Children.Element>]) -> TreeNode<Int> {
+            func insert(_ edit: Edit<C.Children.Element>, value: Int, into tree: TreeNode<Int>) -> TreeNode<Int> {
                 var tree = tree
                 if let insertionIndex = edit.insertionIndex, let index = tree.children.firstIndex(where: { script[$0.value].insertionIndex?.isAncestor(of: insertionIndex) ?? false }) {
                     tree.children[index] = insert(edit, value: value, into: tree.children[index])
@@ -76,8 +76,8 @@ extension OrderedCollectionDiff where Index == IndexPath {
             return tree
         }
 
-        func makeDeletionTree(_ script: [Edit<C.ChildNode>]) -> TreeNode<Int> {
-            func insert(_ edit: Edit<C.ChildNode>, value: Int, into tree: TreeNode<Int>) -> TreeNode<Int> {
+        func makeDeletionTree(_ script: [Edit<C.Children.Element>]) -> TreeNode<Int> {
+            func insert(_ edit: Edit<C.Children.Element>, value: Int, into tree: TreeNode<Int>) -> TreeNode<Int> {
                 var tree = tree
                 if let deletionIndex = edit.deletionIndex, let index = tree.children.firstIndex(where: { script[$0.value].deletionIndex?.isAncestor(of: deletionIndex) ?? false }) {
                     tree.children[index] = insert(edit, value: value, into: tree.children[index])
@@ -103,7 +103,7 @@ extension OrderedCollectionDiff where Index == IndexPath {
 
         let deletesAndMoves = deletes + moves
         let deletionTree = makeDeletionTree(deletesAndMoves)
-        var deletionScript = Array(deletionTree.indices.map { deletesAndMoves[deletionTree[$0].value] }.reversed())
+        var deletionScript = Array(deletionTree.depthFirst.indices.dropFirst().map { deletesAndMoves[deletionTree[$0].value] }.reversed())
         var insertionSeedScript = deletionScript
         var moveCounter = 0
         for index in 0..<deletionScript.count {
@@ -119,7 +119,7 @@ extension OrderedCollectionDiff where Index == IndexPath {
 
         let movesAndInserts = insertionSeedScript.filter { $0.insertionIndex != nil } + inserts
         let insertionTree = makeInsertionTree(movesAndInserts)
-        var insertionScript = insertionTree.indices.map { movesAndInserts[insertionTree[$0].value] }
+        var insertionScript = insertionTree.depthFirst.indices.dropFirst().map { movesAndInserts[insertionTree[$0].value] }
 
         for index in 0..<insertionScript.count {
 
@@ -145,8 +145,9 @@ extension OrderedCollectionDiff where Index == IndexPath {
             return AnyOrderedCollectionOperation.simulate(patch: patch.map { $0.asAnyOrderedCollectionOperation }, on: $0)
         }
 
-        let updates = zip(self.updates, updatesInFinalCollection).map { (pair) -> OrderedCollectionOperation<C.ChildNode, C.Index> in
-            return .update(at: pair.0, newElement: collection[pair.1!])
+        let zipped = zip(self.updates, updatesInFinalCollection)
+        let updates = zipped.map { (pair) -> OrderedCollectionOperation<C.Children.Element, IndexPath> in
+            return .update(at: pair.0, newElement: collection[childAt: pair.1])
         }
 
         return updates + patch

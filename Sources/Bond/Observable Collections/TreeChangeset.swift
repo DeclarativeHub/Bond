@@ -25,21 +25,20 @@
 import Foundation
 
 public protocol TreeChangesetProtocol: ChangesetProtocol where
-    Collection: TreeNodeProtocol,
-    Operation == OrderedCollectionOperation<Collection.ChildNode, IndexPath>,
-    Diff == OrderedCollectionDiff<IndexPath>,
-    Collection.Index == IndexPath {
+    Collection: TreeProtocol,
+    Operation == OrderedCollectionOperation<Collection.Children.Element, IndexPath>,
+    Diff == OrderedCollectionDiff<IndexPath> {
 
     var asTreeChangeset: TreeChangeset<Collection> { get }
 }
 
-public final class TreeChangeset<Collection: TreeNodeProtocol>: Changeset<Collection, OrderedCollectionOperation<Collection.ChildNode, IndexPath>, OrderedCollectionDiff<IndexPath>>, TreeChangesetProtocol where Collection.Index == IndexPath {
+public final class TreeChangeset<Collection: TreeProtocol>: Changeset<Collection, OrderedCollectionOperation<Collection.Children.Element, IndexPath>, OrderedCollectionDiff<IndexPath>>, TreeChangesetProtocol {
 
-    public override func calculateDiff(from patch: [OrderedCollectionOperation<Collection.ChildNode, IndexPath>]) -> Diff {
+    public override func calculateDiff(from patch: [OrderedCollectionOperation<Collection.Children.Element, IndexPath>]) -> Diff {
         return Diff(from: patch)
     }
 
-    public override func calculatePatch(from diff: OrderedCollectionDiff<IndexPath>) -> [OrderedCollectionOperation<Collection.ChildNode, IndexPath>] {
+    public override func calculatePatch(from diff: OrderedCollectionDiff<IndexPath>) -> [OrderedCollectionOperation<Collection.Children.Element, IndexPath>] {
         return diff.generatePatch(to: collection)
     }
 
@@ -48,19 +47,19 @@ public final class TreeChangeset<Collection: TreeNodeProtocol>: Changeset<Collec
     }
 }
 
-extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Changeset.Collection: RangeReplaceableTreeNode {
+extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Changeset.Collection: RangeReplaceableTreeProtocol {
 
-    public typealias ChildNode = Collection.ChildNode
+    public typealias ChildNode = Collection.Children.Element
 
     /// Access or update the element at `index`.
-    public subscript(_ index: Collection.Index) -> ChildNode {
+    public subscript(childAt indexPath: IndexPath) -> ChildNode {
         get {
-            return collection[index]
+            return collection[childAt: indexPath]
         }
         set {
             descriptiveUpdate { (collection) -> [Operation] in
-                collection[index] = newValue
-                return [.update(at: index, newElement: newValue)]
+                collection[childAt: indexPath] = newValue
+                return [.update(at: indexPath, newElement: newValue)]
             }
         }
     }
@@ -68,7 +67,7 @@ extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtoc
     /// Append `newNode` at the end of the root node's children collection.
     public func append(_ newNode: ChildNode) {
         descriptiveUpdate { (collection) -> [Operation] in
-            let index = collection.endIndex
+            let index: IndexPath = [collection.children.count]
             collection.append(newNode)
             return [.insert(newNode, at: index)]
         }
@@ -86,8 +85,8 @@ extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtoc
         guard newNodes.count > 0 else { return }
         descriptiveUpdate { (collection) -> [Operation] in
             collection.insert(contentsOf: newNodes, at: indexPath)
-            let indices = (0..<newNodes.count-1).reduce([indexPath]) { result, _ in result + [collection.index(after: result.last!)] }
-            return indices.map { Operation.insert(collection[$0], at: $0) }
+            let indices = newNodes.indices.map { indexPath.advanced(by: $0, atLevel: indexPath.count-1) }
+            return zip(newNodes, indices).map { Operation.insert($0, at: $1) }
         }
     }
 
@@ -121,10 +120,9 @@ extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtoc
     /// Remove all elements from the collection.
     public func removeAll() {
         descriptiveUpdate { (collection) -> [Operation] in
-            let deletes = collection.indices.reversed().map { Operation.delete(at: $0) }
+            let deletes = collection.children.indices.map { Operation.delete(at: [$0]) }
             collection.removeAll()
             return deletes
         }
     }
 }
-
