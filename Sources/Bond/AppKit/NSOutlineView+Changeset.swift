@@ -35,7 +35,7 @@ open class OutlineViewBinder<Changeset: TreeChangesetProtocol>: NSObject, NSOutl
     // Note that we can't use value types here because NSOutlineView is a ObjC type so we need to use TreeArray.Object and TreeNode.Object variants.
     
     public typealias IsItemExpandable = (Changeset.Collection.Children.Element, NSOutlineView) -> Bool
-    public typealias ObjectValueForItem = (Changeset.Collection.Children.Element) -> AnyObject?
+    public typealias ObjectValueForItem = (Changeset.Collection.Children.Element) -> Any?
 
     public var isItemExpandable: IsItemExpandable? = nil
     public var objectValueForItem: ObjectValueForItem
@@ -211,7 +211,7 @@ extension SignalProtocol where Element: OutlineChangesetConvertible, Error == No
     ///     - objectValueForItem: A closure that returns object value for the given node to be used in NSOutlineViewDataSource.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the table view is deallocated.
     @discardableResult
-    public func bind(to outlineView: NSOutlineView, animated: Bool = true, rowAnimation: NSOutlineView.AnimationOptions = [.effectFade, .slideUp], objectValueForItem: @escaping (Element.Changeset.Collection.Children.Element) -> AnyObject?) -> Disposable {
+    public func bind(to outlineView: NSOutlineView, animated: Bool = true, rowAnimation: NSOutlineView.AnimationOptions = [.effectFade, .slideUp], objectValueForItem: @escaping (Element.Changeset.Collection.Children.Element) -> Any?) -> Disposable {
         if animated {
             let binder = OutlineViewBinder<Element.Changeset>(objectValueForItem: objectValueForItem)
             binder.itemInsertionAnimation = rowAnimation
@@ -239,7 +239,7 @@ extension SignalProtocol where Element: OutlineChangesetConvertible, Error == No
     }
 }
 
-extension SignalProtocol where Element: OutlineChangesetConvertible, Element.Changeset.Collection.Children.Element: TreeNodeWithValueProtocol, Element.Changeset.Collection.Children.Element.Value: AnyObject, Error == NoError {
+extension SignalProtocol where Element: OutlineChangesetConvertible, Element.Changeset.Collection.Children.Element: TreeNodeWithValueProtocol, Error == NoError {
 
     /// Binds the signal of data source elements to the given outline view.
     ///
