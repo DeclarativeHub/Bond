@@ -365,7 +365,7 @@
     }
 
     @available(*, deprecated)
-    private class TableViewBondBinder<Bond: TableViewBond>: AnyTableViewBondBinder<Bond.DataSource> {
+    private class TableViewBondBinder<Bond: TableViewBond>: AnyTableViewBondBinder<Bond.DataSource>, TableViewBond {
 
         let bond: Bond
 
