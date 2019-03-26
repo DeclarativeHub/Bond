@@ -127,3 +127,21 @@ extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtoc
         removeAll()
     }
 }
+
+extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Changeset.Collection: Array2DProtocol, Changeset.Collection.Item: Equatable {
+
+    /// Replace items of a section at the given index with new items. Setting `performDiff: true` will make the framework
+    /// calculate the diff between the existing and new items and emit an event with the calculated diff.
+    public func replaceItems(ofSectionAt sectionIndex: Int, with newItems: [Item], performDiff: Bool) {
+        guard performDiff else {
+            self[sectionAt: sectionIndex].items = newItems
+            return
+        }
+        let currentItems = self[sectionAt: sectionIndex].items
+        let diff = OrderedCollectionDiff<Int>(from: currentItems.extendedDiff(newItems, isEqual: ==))
+        descriptiveUpdate { (collection) -> Diff in
+            collection[childAt: [sectionIndex]].children = newItems.map { Array2D.Node.item($0) }
+            return diff.map { [sectionIndex, $0] }
+        }
+    }
+}

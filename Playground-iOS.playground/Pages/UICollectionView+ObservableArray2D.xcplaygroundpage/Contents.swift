@@ -114,4 +114,7 @@ DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
     data.moveItem(from: IndexPath(item: 0, section: 1), to: IndexPath(item: 0, section: 0))
 }
 
+DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+    data.replaceItems(ofSectionAt: 1, with: [1, 100, 20], performDiff: true)
+}
 //: [Next](@next)
