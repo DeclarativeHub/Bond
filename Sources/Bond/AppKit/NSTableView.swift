@@ -157,12 +157,12 @@ Element.DataSource: QueryableDataSourceProtocol, Element.DataSource.Index == Int
     }
 
     @discardableResult
-    public func bind<B: TableViewBond>(to tableView: NSTableView, using bond: B) -> Disposable where B.DataSource == DataSource {
+    public func bind<B: TableViewBond>(to tableView: NSTableView, using bond: B) -> Disposable where B.DataSource == Element.DataSource {
         return _bind(to: tableView, using: bond)
     }
 
     @discardableResult
-    fileprivate func _bind<B: TableViewBond>(to tableView: NSTableView, using bond: B) -> Disposable where B.DataSource == DataSource {
+    fileprivate func _bind<B: TableViewBond>(to tableView: NSTableView, using bond: B) -> Disposable where B.DataSource == Element.DataSource {
 
         let dataSource = Property<DataSource?>(nil)
         let disposable = CompositeDisposable()
