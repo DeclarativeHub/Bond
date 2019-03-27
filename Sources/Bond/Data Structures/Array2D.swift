@@ -41,6 +41,11 @@ public struct Array2D<SectionMetadata, Item>: Array2DProtocol {
 
         /// Items contained in the section.
         public var items: [Item]
+
+        public init(metadata: SectionMetadata, items: [Item]) {
+            self.metadata = metadata
+            self.items = items
+        }
     }
 
     /// All sections of Array2D.

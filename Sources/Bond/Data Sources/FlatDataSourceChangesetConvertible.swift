@@ -73,9 +73,18 @@ extension Array: FlatDataSourceChangesetConvertible {
     }
 }
 
-extension OrderedCollectionChangeset: FlatDataSourceChangeset where Operation.Index: FlatDataIndexConvertable, Collection: QueryableFlatDataSourceProtocol, Operation.Element == Collection.Item {}
+extension OrderedCollectionChangeset: FlatDataSourceChangeset where
+    Collection: QueryableFlatDataSourceProtocol,
+    Collection.Index: FlatDataIndexConvertable,
+    Collection.Item == Collection.Element
+{
+}
 
-extension OrderedCollectionChangeset: FlatDataSourceChangesetConvertible where Operation.Index: FlatDataIndexConvertable, Collection: QueryableFlatDataSourceProtocol, Operation.Element == Collection.Item {
+extension OrderedCollectionChangeset: FlatDataSourceChangesetConvertible where
+    Collection: QueryableFlatDataSourceProtocol,
+    Collection.Index: FlatDataIndexConvertable,
+    Collection.Item == Collection.Element
+{
     public typealias Changeset = OrderedCollectionChangeset<Collection>
 
     public var asFlatDataSourceChangeset: OrderedCollectionChangeset<Collection> {
