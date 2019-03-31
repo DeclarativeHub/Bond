@@ -14,11 +14,10 @@ PlaygroundPage.current.liveView = tableView
 PlaygroundPage.current.needsIndefiniteExecution = true
 
 // A signal that emits a value every 1 second
-let pulse = SafeSignal<Int>.interval(1)
+let pulse = SafeSignal(sequence: 0..., interval: 1)
 
 // A signal of [String]
-let data = SafeSignal
-    .sequence([
+let data = SafeSignal(sequence: [
         ["A"],
         ["A", "B", "C"],
         ["A", "C"],

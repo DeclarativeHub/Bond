@@ -56,7 +56,7 @@ dictionary["B"] = 2
 
 // Custom collection - Data
 
-let data = MutableObservableCollection(Data(bytes: [0x0A, 0x0B]))
+let data = MutableObservableCollection(Data([0x0A, 0x0B]))
 
 data.observeNext { (changeset) in
     print(changeset.collection, changeset.diff, changeset.patch)
