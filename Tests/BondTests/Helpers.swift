@@ -71,7 +71,7 @@ extension SignalProtocol {
                     _ message: @autoclosure () -> String = "",
                     expectation: XCTestExpectation? = nil,
                     file: StaticString = #file, line: UInt = #line) {
-        expect(expectedElements.map { .next($0) } + [.completed], message, expectation: expectation, file: file, line: line)
+        expect(expectedElements.map { .next($0) } + [.completed], message(), expectation: expectation, file: file, line: line)
     }
 
     func expect(_ expectedEvents: [Event<Element, Error>],
