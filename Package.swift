@@ -1,4 +1,4 @@
-// swift-tools-version:4.0
+// swift-tools-version:4.2
 import PackageDescription
 
 let package = Package(
@@ -7,7 +7,7 @@ let package = Package(
         .library(name: "Bond", targets: ["Bond"])
     ],
     dependencies: [
-        .package(url: "https://github.com/ReactiveKit/ReactiveKit.git", .upToNextMajor(from: "3.9.0")),
+        .package(url: "https://github.com/ReactiveKit/ReactiveKit.git", .upToNextMajor(from: "3.10.0")),
         .package(url: "https://github.com/tonyarnold/Differ.git", .upToNextMajor(from: "1.3.0"))
     ],
     targets: [
