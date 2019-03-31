@@ -27,7 +27,7 @@
 import AppKit
 import ReactiveKit
 
-public extension ReactiveExtensions where Base: NSProgressIndicator {
+extension ReactiveExtensions where Base: NSProgressIndicator {
 
     public var isAnimating: Bond<Bool> {
         return bond {
@@ -74,7 +74,7 @@ public extension ReactiveExtensions where Base: NSProgressIndicator {
 
 extension NSProgressIndicator: BindableProtocol {
 
-    public func bind(signal: Signal<Double, NoError>) -> Disposable {
+    public func bind(signal: Signal<Double, Never>) -> Disposable {
         return reactive.doubleValue.bind(signal: signal)
     }
 }

@@ -27,7 +27,7 @@
 import AppKit
 import ReactiveKit
 
-public extension ReactiveExtensions where Base: NSButton {
+extension ReactiveExtensions where Base: NSButton {
 
     public var state: DynamicSubject<NSControl.StateValue> {
         return dynamicSubject(

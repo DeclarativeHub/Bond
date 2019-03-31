@@ -27,7 +27,7 @@
 import AppKit
 import ReactiveKit
 
-public extension ReactiveExtensions where Base: NSColorWell {
+extension ReactiveExtensions where Base: NSColorWell {
 
     public var color: DynamicSubject<NSColor> {
         return dynamicSubject(

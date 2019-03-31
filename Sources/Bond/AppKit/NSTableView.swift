@@ -11,7 +11,7 @@
 import AppKit
 import ReactiveKit
 
-public extension ReactiveExtensions where Base: NSTableView {
+extension ReactiveExtensions where Base: NSTableView {
 
     /// A `ProtocolProxy` for the table view delegate.
     ///

@@ -32,7 +32,7 @@ extension UIGestureRecognizer: BindingExecutionContextProvider {
     public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
 }
 
-public extension ReactiveExtensions where Base: UIGestureRecognizer {
+extension ReactiveExtensions where Base: UIGestureRecognizer {
 
     public var isEnabled: Bond<Bool> {
         return bond { $0.isEnabled = $1 }
@@ -43,7 +43,7 @@ public extension ReactiveExtensions where Base: UIGestureRecognizer {
 
 #if os(iOS)
 
-public extension ReactiveExtensions where Base: UIView {
+extension ReactiveExtensions where Base: UIView {
     
     public func addGestureRecognizer<T: UIGestureRecognizer>(_ gestureRecognizer: T) -> SafeSignal<T> {
         let base = self.base

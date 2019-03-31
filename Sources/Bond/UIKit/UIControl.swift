@@ -27,7 +27,7 @@
 import UIKit
 import ReactiveKit
 
-public extension ReactiveExtensions where Base: UIControl {
+extension ReactiveExtensions where Base: UIControl {
 
     public func controlEvents(_ events: UIControl.Event) -> SafeSignal<Void> {
         let base = self.base

@@ -31,13 +31,13 @@ extension NSGestureRecognizer: BindingExecutionContextProvider {
     public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
 }
 
-public extension ReactiveExtensions where Base: NSGestureRecognizer {
+extension ReactiveExtensions where Base: NSGestureRecognizer {
     public var isEnabled: Bond<Bool> {
         return bond { $0.isEnabled = $1 }
     }
 }
 
-public extension ReactiveExtensions where Base: NSView {
+extension ReactiveExtensions where Base: NSView {
     public func addGestureRecognizer<T: NSGestureRecognizer>(_ gestureRecognizer: T) -> SafeSignal<T> {
         let base = self.base
         return Signal { [weak base] observer in

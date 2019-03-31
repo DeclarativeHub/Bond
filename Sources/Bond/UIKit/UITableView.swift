@@ -27,7 +27,7 @@
 import UIKit
 import ReactiveKit
 
-public extension ReactiveExtensions where Base: UITableView {
+extension ReactiveExtensions where Base: UITableView {
 
     /// A `ProtocolProxy` for the table view delegate.
     ///

@@ -27,7 +27,7 @@
 import UIKit
 import ReactiveKit
 
-extension SignalProtocol where Element: SectionedDataSourceChangesetConvertible, Error == NoError {
+extension SignalProtocol where Element: SectionedDataSourceChangesetConvertible, Error == Never {
 
     /// Binds the signal of data source elements to the given picker view.
     ///
@@ -57,7 +57,7 @@ extension SignalProtocol where Element: SectionedDataSourceChangesetConvertible,
     }
 }
 
-extension SignalProtocol where Element: SectionedDataSourceChangesetConvertible, Element.Changeset.Collection: QueryableSectionedDataSourceProtocol, Error == NoError {
+extension SignalProtocol where Element: SectionedDataSourceChangesetConvertible, Element.Changeset.Collection: QueryableSectionedDataSourceProtocol, Error == Never {
 
     /// Binds the signal of data source elements to the given picker view.
     ///

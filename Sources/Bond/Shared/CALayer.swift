@@ -29,7 +29,7 @@ extension CALayer: BindingExecutionContextProvider {
     public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
 }
 
-public extension ReactiveExtensions where Base: CALayer {
+extension ReactiveExtensions where Base: CALayer {
 
     public var opacity: Bond<Float> {
         return bond { $0.opacity = $1 }

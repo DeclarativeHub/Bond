@@ -24,7 +24,7 @@
 
 import Foundation
 
-public extension IndexPath {
+extension IndexPath {
 
     public func isAffectedByDeletionOrInsertion(at index: IndexPath) -> Bool {
         assert(index.count > 0)

@@ -31,7 +31,7 @@ extension NSMenuItem: BindingExecutionContextProvider {
     public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
 }
 
-public extension ReactiveExtensions where Base: NSMenuItem {
+extension ReactiveExtensions where Base: NSMenuItem {
 
     public var state: Bond<NSControl.StateValue> {
         return bond { $0.state = $1 }
