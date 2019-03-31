@@ -27,7 +27,7 @@
 import UIKit
 import ReactiveKit
 
-public extension ReactiveExtensions where Base: UIImageView {
+extension ReactiveExtensions where Base: UIImageView {
 
     public var image: Bond<UIImage?> {
         return bond { $0.image = $1 }
@@ -36,7 +36,7 @@ public extension ReactiveExtensions where Base: UIImageView {
 
 extension UIImageView: BindableProtocol {
 
-    public func bind(signal: Signal<UIImage?, NoError>) -> Disposable {
+    public func bind(signal: Signal<UIImage?, Never>) -> Disposable {
         return reactive.image.bind(signal: signal)
     }
 }

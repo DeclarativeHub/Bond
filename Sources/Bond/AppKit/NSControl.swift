@@ -36,7 +36,7 @@ private extension NSControl {
     @objc class BondHelper: NSObject
     {
         weak var control: NSControl?
-        let subject = PublishSubject<AnyObject?, NoError>()
+        let subject = PublishSubject<AnyObject?, Never>()
 
         init(control: NSControl) {
             self.control = control
@@ -58,7 +58,7 @@ private extension NSControl {
     }
 }
 
-public extension ReactiveExtensions where Base: NSControl {
+extension ReactiveExtensions where Base: NSControl {
 
     public var controlEvent: SafeSignal<Base> {
         if let controlHelper = objc_getAssociatedObject(base, &NSControl.AssociatedKeys.ControlHelperKey) as AnyObject? {
@@ -149,7 +149,7 @@ public extension ReactiveExtensions where Base: NSControl {
 
 extension NSControl: BindableProtocol {
 
-    public func bind(signal: Signal<Any?, NoError>) -> Disposable {
+    public func bind(signal: Signal<Any?, Never>) -> Disposable {
         return reactive.objectValue.bind(signal: signal)
     }
 }

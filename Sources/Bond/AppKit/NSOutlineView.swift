@@ -26,7 +26,7 @@
 import AppKit
 import ReactiveKit
 
-public extension ReactiveExtensions where Base: NSOutlineView {
+extension ReactiveExtensions where Base: NSOutlineView {
     public var delegate: ProtocolProxy {
         return protocolProxy(for: NSOutlineViewDelegate.self, keyPath: \.delegate)
     }

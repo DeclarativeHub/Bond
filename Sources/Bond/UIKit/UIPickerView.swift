@@ -27,7 +27,7 @@
 import UIKit
 import ReactiveKit
 
-public extension ReactiveExtensions where Base: UIPickerView {
+extension ReactiveExtensions where Base: UIPickerView {
 
     /// A `ProtocolProxy` for the picker view data source.
     ///

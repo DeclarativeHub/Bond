@@ -31,7 +31,7 @@ extension UINavigationItem: BindingExecutionContextProvider {
     public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
 }
 
-public extension ReactiveExtensions where Base: UINavigationItem {
+extension ReactiveExtensions where Base: UINavigationItem {
 
     public var title: Bond<String?> {
         return bond { $0.title = $1 }

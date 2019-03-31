@@ -27,7 +27,7 @@
 import UIKit
 import ReactiveKit
 
-public extension ReactiveExtensions where Base: UIApplication {
+extension ReactiveExtensions where Base: UIApplication {
 
     #if os(iOS)
     public var isNetworkActivityIndicatorVisible: Bond<Bool> {

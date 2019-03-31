@@ -17,24 +17,24 @@ class BondTests: XCTestCase {
     func testUIView() {
         let view = UIView()
 
-        SafeSignal.just(UIColor.red).bind(to: view.reactive.backgroundColor)
+        SafeSignal(just: UIColor.red).bind(to: view.reactive.backgroundColor)
         XCTAssertEqual(view.backgroundColor!, UIColor.red)
 
-        SafeSignal.just(0.3).bind(to: view.reactive.alpha)
+        SafeSignal(just: 0.3).bind(to: view.reactive.alpha)
         XCTAssertEqual(view.alpha, 0.3)
 
-        SafeSignal.just(true).bind(to: view.reactive.isHidden)
+        SafeSignal(just: true).bind(to: view.reactive.isHidden)
         XCTAssertEqual(view.isHidden, true)
 
-        SafeSignal.just(true).bind(to: view.reactive.isUserInteractionEnabled)
+        SafeSignal(just: true).bind(to: view.reactive.isUserInteractionEnabled)
         XCTAssertEqual(view.isUserInteractionEnabled, true)
 
-        SafeSignal.just(UIColor.red).bind(to: view.reactive.tintColor)
+        SafeSignal(just: UIColor.red).bind(to: view.reactive.tintColor)
         XCTAssertEqual(view.tintColor, UIColor.red)
     }
 
     func testUIActivityIndicatorView() {
-        let subject = PublishSubject1<Bool>()
+        let subject = SafePublishSubject<Bool>()
 
         let view = UIActivityIndicatorView()
         subject.bind(to: view.reactive.isAnimating)
@@ -51,16 +51,16 @@ class BondTests: XCTestCase {
     func testUIBarItem() {
         let view = UIBarButtonItem()
 
-        SafeSignal.just("test").bind(to: view.reactive.title)
+        SafeSignal(just: "test").bind(to: view.reactive.title)
         XCTAssertEqual(view.title!, "test")
 
         let image = UIImage()
-        SafeSignal.just(image).bind(to: view.reactive.image)
+        SafeSignal(just: image).bind(to: view.reactive.image)
         XCTAssertEqual(view.image!, image)
 
-        SafeSignal.just(true).bind(to: view.reactive.isEnabled)
+        SafeSignal(just: true).bind(to: view.reactive.isEnabled)
         XCTAssertEqual(view.isEnabled, true)
-        SafeSignal.just(false).bind(to: view.reactive.isEnabled)
+        SafeSignal(just: false).bind(to: view.reactive.isEnabled)
         XCTAssertEqual(view.isEnabled, false)
 
         view.reactive.tap.expectNext([(), ()])
@@ -72,26 +72,26 @@ class BondTests: XCTestCase {
     func testUIButton() {
         let view = UIButton()
 
-        SafeSignal.just("test").bind(to: view.reactive.title)
+        SafeSignal(just: "test").bind(to: view.reactive.title)
         XCTAssertEqual(view.titleLabel?.text, "test")
 
-        SafeSignal.just(true).bind(to: view.reactive.isSelected)
+        SafeSignal(just: true).bind(to: view.reactive.isSelected)
         XCTAssertEqual(view.isSelected, true)
-        SafeSignal.just(false).bind(to: view.reactive.isSelected)
+        SafeSignal(just: false).bind(to: view.reactive.isSelected)
         XCTAssertEqual(view.isSelected, false)
 
-        SafeSignal.just(true).bind(to: view.reactive.isHighlighted)
+        SafeSignal(just: true).bind(to: view.reactive.isHighlighted)
         XCTAssertEqual(view.isHighlighted, true)
-        SafeSignal.just(false).bind(to: view.reactive.isHighlighted)
+        SafeSignal(just: false).bind(to: view.reactive.isHighlighted)
         XCTAssertEqual(view.isHighlighted, false)
 
         let image = UIImage()
         let image2 = UIImage()
 
-        SafeSignal.just(image).bind(to: view.reactive.backgroundImage)
+        SafeSignal(just: image).bind(to: view.reactive.backgroundImage)
         XCTAssertEqual(view.backgroundImage(for: .normal), image)
 
-        SafeSignal.just(image2).bind(to: view.reactive.image)
+        SafeSignal(just: image2).bind(to: view.reactive.image)
         XCTAssertEqual(view.image(for: .normal), image2)
 
         view.reactive.tap.expectNext([(), ()])
@@ -103,9 +103,9 @@ class BondTests: XCTestCase {
     func testUIControl() {
         let view = UIControl()
 
-        SafeSignal.just(true).bind(to: view.reactive.isEnabled)
+        SafeSignal(just: true).bind(to: view.reactive.isEnabled)
         XCTAssertEqual(view.isEnabled, true)
-        SafeSignal.just(false).bind(to: view.reactive.isEnabled)
+        SafeSignal(just: false).bind(to: view.reactive.isEnabled)
         XCTAssertEqual(view.isEnabled, false)
 
         view.reactive.controlEvents(UIControl.Event.touchUpInside).expectNext([(), ()])
@@ -118,7 +118,7 @@ class BondTests: XCTestCase {
         let date1 = Date(timeIntervalSince1970: 10)
         let date2 = Date(timeIntervalSince1970: 1000)
 
-        let subject = PublishSubject1<Date>()
+        let subject = SafePublishSubject<Date>()
 
         let view = UIDatePicker()
         subject.bind(to: view)
@@ -138,7 +138,7 @@ class BondTests: XCTestCase {
         let image1 = UIImage()
         let image2 = UIImage()
 
-        let subject = PublishSubject1<UIImage?>()
+        let subject = SafePublishSubject<UIImage?>()
 
         let view = UIImageView()
         subject.bind(to: view)
@@ -154,7 +154,7 @@ class BondTests: XCTestCase {
     }
 
     func testUILabel() {
-        let subject = PublishSubject1<String?>()
+        let subject = SafePublishSubject<String?>()
 
         let view = UILabel()
         subject.bind(to: view)
@@ -170,7 +170,7 @@ class BondTests: XCTestCase {
     }
 
     func testUINavigationBar() {
-        let subject = PublishSubject1<UIColor?>()
+        let subject = SafePublishSubject<UIColor?>()
 
         let view = UINavigationBar()
         subject.bind(to: view.reactive.barTintColor)
@@ -187,7 +187,7 @@ class BondTests: XCTestCase {
 
 
     func testUINavigationItem() {
-        let subject = PublishSubject1<String?>()
+        let subject = SafePublishSubject<String?>()
 
         let view = UINavigationItem()
         subject.bind(to: view.reactive.title)
@@ -203,7 +203,7 @@ class BondTests: XCTestCase {
     }
 
     func testUIProgressView() {
-        let subject = PublishSubject1<Float>()
+        let subject = SafePublishSubject<Float>()
 
         let view = UIProgressView()
         subject.bind(to: view)
@@ -216,7 +216,7 @@ class BondTests: XCTestCase {
     }
 
     func testUIRefreshControl() {
-        let subject = PublishSubject1<Bool>()
+        let subject = SafePublishSubject<Bool>()
 
         let view = UIRefreshControl()
         subject.bind(to: view)
@@ -233,7 +233,7 @@ class BondTests: XCTestCase {
     }
 
     func testUISegmentedControl() {
-        let subject = PublishSubject1<Int>()
+        let subject = SafePublishSubject<Int>()
 
         let view = UISegmentedControl(items: ["a", "b"])
         subject.bind(to: view)
@@ -250,7 +250,7 @@ class BondTests: XCTestCase {
     }
 
     func testUISlider() {
-        let subject = PublishSubject1<Float>()
+        let subject = SafePublishSubject<Float>()
 
         let view = UISlider()
         subject.bind(to: view)
@@ -267,7 +267,7 @@ class BondTests: XCTestCase {
     }
 
     func testUISwitch() {
-        let subject = PublishSubject1<Bool>()
+        let subject = SafePublishSubject<Bool>()
 
         let view = UISwitch()
         subject.bind(to: view)
@@ -284,7 +284,7 @@ class BondTests: XCTestCase {
     }
 
     func testUITextField() {
-        let subject = PublishSubject1<String?>()
+        let subject = SafePublishSubject<String?>()
 
         let view = UITextField()
         subject.bind(to: view)
@@ -301,7 +301,7 @@ class BondTests: XCTestCase {
     }
 
     func testUITextView() {
-        let subject = PublishSubject1<String?>()
+        let subject = SafePublishSubject<String?>()
 
         let view = UITextView()
         subject.bind(to: view)
@@ -318,7 +318,7 @@ class BondTests: XCTestCase {
     }
     
     func testUISearchBar() {
-        let subject = PublishSubject1<String?>()
+        let subject = SafePublishSubject<String?>()
         
         let view = UISearchBar()
         subject.bind(to: view)

@@ -27,7 +27,7 @@
 import UIKit
 import ReactiveKit
 
-public extension ReactiveExtensions where Base: UILabel {
+extension ReactiveExtensions where Base: UILabel {
 
     public var text: Bond<String?> {
         return bond { $0.text = $1 }
@@ -44,7 +44,7 @@ public extension ReactiveExtensions where Base: UILabel {
 
 extension UILabel: BindableProtocol {
 
-    public func bind(signal: Signal<String?, NoError>) -> Disposable {
+    public func bind(signal: Signal<String?, Never>) -> Disposable {
         return reactive.text.bind(signal: signal)
     }
 }

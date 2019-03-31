@@ -27,7 +27,7 @@
 import AppKit
 import ReactiveKit
 
-public extension ReactiveExtensions where Base: NSSegmentedControl {
+extension ReactiveExtensions where Base: NSSegmentedControl {
 
     public var segmentCount: Bond<Int> {
         return bond { $0.segmentCount = $1 }
@@ -59,7 +59,7 @@ public extension ReactiveExtensions where Base: NSSegmentedControl {
 
 extension NSSegmentedControl {
 
-    public func bind(signal: Signal<Int, NoError>) -> Disposable {
+    public func bind(signal: Signal<Int, Never>) -> Disposable {
         return reactive.selectedSegment.bind(signal: signal)
     }
 }

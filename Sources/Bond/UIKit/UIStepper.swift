@@ -27,7 +27,7 @@
 import UIKit
 import ReactiveKit
 
-public extension ReactiveExtensions where Base: UIStepper {
+extension ReactiveExtensions where Base: UIStepper {
 
     public var value: DynamicSubject<Double> {
         return dynamicSubject(
@@ -40,7 +40,7 @@ public extension ReactiveExtensions where Base: UIStepper {
 
 extension UIStepper: BindableProtocol {
 
-    public func bind(signal: Signal<Double, NoError>) -> Disposable {
+    public func bind(signal: Signal<Double, Never>) -> Disposable {
         return reactive.value.bind(signal: signal)
     }
 }
