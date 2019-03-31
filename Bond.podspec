@@ -31,6 +31,6 @@ Pod::Spec.new do |s|
   s.swift_version = '5.0'
 
   s.dependency "ReactiveKit", "~> 3.10"
-  s.dependency "Differ", "~> 1.4"
+  s.dependency "Differ", "~> 1.3"
 
 end
