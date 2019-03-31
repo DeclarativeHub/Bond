@@ -68,9 +68,9 @@ class NSObjectKVOTests: XCTestCase {
     func testBinding() {
         let subject = object.reactive.keyPath("property", ofType: String.self)
         subject.expectNext(["a", "b", "c"])
-        SafeSignal.just("b").bind(to: subject)
+        SafeSignal(just: "b").bind(to: subject)
         XCTAssert((object.property as! String) == "b")
-        SafeSignal.just("c").bind(to: subject)
+        SafeSignal(just: "c").bind(to: subject)
         XCTAssert((object.property as! String) == "c")
     }
 
@@ -85,11 +85,11 @@ class NSObjectKVOTests: XCTestCase {
     func testOptionalBinding() {
         let subject = object.reactive.keyPath("property", ofType: Optional<String>.self)
         subject.expectNext(["a", "b", nil, "c"])
-        SafeSignal.just("b").bind(to: subject)
+        SafeSignal(just: "b").bind(to: subject)
         XCTAssert((object.property as! String) == "b")
-        SafeSignal.just(nil).bind(to: subject)
+        SafeSignal(just: nil).bind(to: subject)
         XCTAssert(object.property == nil)
-        SafeSignal.just("c").bind(to: subject)
+        SafeSignal(just: "c").bind(to: subject)
         XCTAssert((object.property as! String) == "c")
     }
 
@@ -103,9 +103,9 @@ class NSObjectKVOTests: XCTestCase {
     func testExpectedTypeBinding() {
         let subject = object.reactive.keyPath("property", ofExpectedType: String.self)
         subject.expectNext(["a", "b", "c"])
-        SafeSignal.just("b").bind(to: subject)
+        SafeSignal(just: "b").bind(to: subject)
         XCTAssert((object.property as! String) == "b")
-        SafeSignal.just("c").bind(to: subject)
+        SafeSignal(just: "c").bind(to: subject)
         XCTAssert((object.property as! String) == "c")
     }
 
@@ -126,11 +126,11 @@ class NSObjectKVOTests: XCTestCase {
     func testExpectedTypeOptionalBinding() {
         let subject = object.reactive.keyPath("property", ofExpectedType: Optional<String>.self)
         subject.expectNext(["a", "b", nil, "c"])
-        SafeSignal.just("b").bind(to: subject)
+        SafeSignal(just: "b").bind(to: subject)
         XCTAssert((object.property as! String) == "b")
-        SafeSignal.just(nil).bind(to: subject)
+        SafeSignal(just: nil).bind(to: subject)
         XCTAssert(object.property == nil)
-        SafeSignal.just("c").bind(to: subject)
+        SafeSignal(just: "c").bind(to: subject)
         XCTAssert((object.property as! String) == "c")
     }
 
@@ -152,7 +152,7 @@ class NSObjectKVOTests: XCTestCase {
     func testSwift4Observation() {
         object.reactive.keyPath(\.propertyString).expectNext(["a", "b", "c"])
         object.propertyString = "b"
-        SafeSignal.just("c").bind(to: object, keyPath: \.propertyString)
+        SafeSignal(just: "c").bind(to: object, keyPath: \.propertyString)
         XCTAssert(object.propertyString == "c")
     }
 }

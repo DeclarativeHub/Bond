@@ -23,7 +23,7 @@ class BondTypeTests: XCTestCase {
             target.recordedElements.append(element)
         }
         
-        SafeSignal.sequence([1, 2, 3]).bind(to: bond)
+        SafeSignal(sequence: [1, 2, 3]).bind(to: bond)
         XCTAssert(target.recordedElements == [1, 2, 3])
     }
     
@@ -37,7 +37,7 @@ class BondTypeTests: XCTestCase {
             target.recordedElements.append(element)
         }
         
-        let subject = PublishSubject1<Int>()
+        let subject = SafePublishSubject<Int>()
         
         let disposable = subject.bind(to: bond)
         
