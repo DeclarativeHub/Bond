@@ -27,7 +27,7 @@
 import UIKit
 import ReactiveKit
 
-public extension ReactiveExtensions where Base: UIActivityIndicatorView  {
+extension ReactiveExtensions where Base: UIActivityIndicatorView  {
 
     public var isAnimating: Bond<Bool> {
         return bond {
@@ -42,7 +42,7 @@ public extension ReactiveExtensions where Base: UIActivityIndicatorView  {
 
 extension UIActivityIndicatorView: BindableProtocol {
 
-    public func bind(signal: Signal<Bool, NoError>) -> Disposable {
+    public func bind(signal: Signal<Bool, Never>) -> Disposable {
         return reactive.isAnimating.bind(signal: signal)
     }
 }

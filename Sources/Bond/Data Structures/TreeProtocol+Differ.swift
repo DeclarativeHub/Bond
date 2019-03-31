@@ -25,7 +25,7 @@
 import Foundation
 import Differ
 
-public extension TreeProtocol {
+extension TreeProtocol {
 
     public func diff(_ other: Self, sourceRoot: IndexPath = [], destinationRoot: IndexPath = [], areEqual: @escaping (Children.Element, Children.Element) -> Bool) -> OrderedCollectionDiff<IndexPath> {
         let traces = children.outputDiffPathTraces(to: other.children, isEqual: areEqual)

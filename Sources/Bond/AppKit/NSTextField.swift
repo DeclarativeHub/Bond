@@ -27,7 +27,7 @@
 import AppKit
 import ReactiveKit
 
-public extension ReactiveExtensions where Base: NSTextField {
+extension ReactiveExtensions where Base: NSTextField {
 
     public var font: Bond<NSFont?> {
         return bond { $0.font = $1 }
@@ -64,28 +64,24 @@ public extension ReactiveExtensions where Base: NSTextField {
     public var textDidChange: SafeSignal<NSTextField> {
         return NotificationCenter.default
             .reactive.notification(name: NSControl.textDidChangeNotification, object: base)
-            .map { $0.object as? NSTextField }
-            .ignoreNil()
+            .compactMap { $0.object as? NSTextField }
     }
 
     public var textDidBeginEditing: SafeSignal<NSTextField> {
         return NotificationCenter.default
             .reactive.notification(name: NSControl.textDidBeginEditingNotification, object: base)
-            .map { $0.object as? NSTextField }
-            .ignoreNil()
+            .compactMap { $0.object as? NSTextField }
     }
 
     public var textDidEndEditing: SafeSignal<(NSTextField, Bool)> {
         return NotificationCenter.default
             .reactive.notification(name: NSControl.textDidEndEditingNotification, object: base)
-            .map { notification -> (NSTextField, Bool)? in
+            .compactMap { notification -> (NSTextField, Bool)? in
                 guard let textField = notification.object as? NSTextField else {
                     return nil
                 }
-
                 return (textField, Self.resignedFirstResponder(in: notification))
             }
-            .ignoreNil()
     }
 
     /// Interrogates the passed notification for details of how the field ended editing, and if it resigned its first responder status as a result.
@@ -112,7 +108,7 @@ public extension ReactiveExtensions where Base: NSTextField {
 
 extension NSTextField {
 
-    public func bind(signal: Signal<String, NoError>) -> Disposable {
+    public func bind(signal: Signal<String, Never>) -> Disposable {
         return reactive.stringValue.bind(signal: signal)
     }
 }

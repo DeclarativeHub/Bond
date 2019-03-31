@@ -27,7 +27,7 @@
 import UIKit
 import ReactiveKit
 
-public extension ReactiveExtensions where Base: UIRefreshControl {
+extension ReactiveExtensions where Base: UIRefreshControl {
 
     public var refreshing: DynamicSubject<Bool> {
         return dynamicSubject(
@@ -40,7 +40,7 @@ public extension ReactiveExtensions where Base: UIRefreshControl {
 
 extension UIRefreshControl: BindableProtocol {
 
-    public func bind(signal: Signal<Bool, NoError>) -> Disposable {
+    public func bind(signal: Signal<Bool, Never>) -> Disposable {
         return reactive.refreshing.bind(signal: signal)
     }
 }

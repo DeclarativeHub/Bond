@@ -27,7 +27,7 @@
 import UIKit
 import ReactiveKit
 
-public extension ReactiveExtensions where Base: UICollectionView {
+extension ReactiveExtensions where Base: UICollectionView {
 
     /// A `ProtocolProxy` for the collection view delegate.
     ///

@@ -141,7 +141,7 @@ extension ChangesetContainerProtocol where Changeset.Collection: TreeProtocol {
     }
 }
 
-extension SignalProtocol where Error == NoError {
+extension SignalProtocol where Error == Never {
 
     /// Bind the collection signal to the given changeset container like MutableObervableArray.
     @discardableResult

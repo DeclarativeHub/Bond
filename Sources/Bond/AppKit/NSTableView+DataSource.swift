@@ -127,7 +127,7 @@ extension TableViewBinderDataSource {
     }
 }
 
-extension SignalProtocol where Element: FlatDataSourceChangesetConvertible, Error == NoError {
+extension SignalProtocol where Element: FlatDataSourceChangesetConvertible, Error == Never {
 
     /// Binds the signal of data source elements to the given table view.
     ///

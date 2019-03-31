@@ -27,7 +27,7 @@
 import AppKit
 import ReactiveKit
 
-public extension ReactiveExtensions where Base: NSTextView {
+extension ReactiveExtensions where Base: NSTextView {
 
     public var string: DynamicSubject<String> {
         let notificationName = NSText.didChangeNotification

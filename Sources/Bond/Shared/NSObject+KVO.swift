@@ -25,7 +25,7 @@
 import Foundation
 import ReactiveKit
 
-public extension NSObject {
+extension NSObject {
 
     /// KVO reactive extensions error.
     public enum KVOError: Error {
@@ -35,7 +35,7 @@ public extension NSObject {
     }
 }
 
-public extension ReactiveExtensions where Base: NSObject {
+extension ReactiveExtensions where Base: NSObject {
 
     /// Creates a signal that represents values of the given KVO-compatible key path.
     ///
@@ -87,7 +87,7 @@ public extension ReactiveExtensions where Base: NSObject {
     }
 }
 
-public extension ReactiveExtensions where Base: NSObject {
+extension ReactiveExtensions where Base: NSObject {
 
     /// Creates a `DynamicSubject` representing the given KVO path of the given type.
     ///
@@ -222,7 +222,7 @@ public extension ReactiveExtensions where Base: NSObject {
     }
 }
 
-public extension ReactiveExtensions where Base: NSObject, Base: BindingExecutionContextProvider {
+extension ReactiveExtensions where Base: NSObject, Base: BindingExecutionContextProvider {
 
     /// Creates a `DynamicSubject` representing the given KVO path of the given type.
     ///
@@ -279,7 +279,7 @@ private class RKKeyValueSignal: NSObject, SignalProtocol {
     private weak var object: NSObject? = nil
     private var context = 0
     private var keyPath: String
-    private let subject: Subject<Void, NoError>
+    private let subject: Subject<Void, Never>
     private var numberOfObservers: Int = 0
     private var observing = false
     private let deallocationDisposable = SerialDisposable(otherDisposable: nil)
@@ -333,7 +333,7 @@ private class RKKeyValueSignal: NSObject, SignalProtocol {
         }
     }
 
-    fileprivate func observe(with observer: @escaping (Event<Void, NoError>) -> Void) -> Disposable {
+    fileprivate func observe(with observer: @escaping (Event<Void, Never>) -> Void) -> Disposable {
         increaseNumberOfObservers()
         let disposable = subject.observe(with: observer)
         let cleanupDisposabe = BlockDisposable {

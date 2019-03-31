@@ -201,7 +201,7 @@ extension OutlineViewBinder {
     }
 }
 
-extension SignalProtocol where Element: OutlineChangesetConvertible, Error == NoError {
+extension SignalProtocol where Element: OutlineChangesetConvertible, Error == Never {
     /// Binds the signal of data source elements to the given outline view.
     ///
     /// - parameters:
@@ -239,7 +239,7 @@ extension SignalProtocol where Element: OutlineChangesetConvertible, Error == No
     }
 }
 
-extension SignalProtocol where Element: OutlineChangesetConvertible, Element.Changeset.Collection.Children.Element: TreeNodeWithValueProtocol, Error == NoError {
+extension SignalProtocol where Element: OutlineChangesetConvertible, Element.Changeset.Collection.Children.Element: TreeNodeWithValueProtocol, Error == Never {
 
     /// Binds the signal of data source elements to the given outline view.
     ///

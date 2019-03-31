@@ -34,7 +34,7 @@ extension NSLayoutConstraint: BindingExecutionContextProvider {
     public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
 }
 
-public extension ReactiveExtensions where Base: NSLayoutConstraint {
+extension ReactiveExtensions where Base: NSLayoutConstraint {
 
     public var isActive: Bond<Bool> {
         return bond { $0.isActive = $1 }

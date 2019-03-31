@@ -27,7 +27,7 @@
 import UIKit
 import ReactiveKit
 
-public extension ReactiveExtensions where Base: UIButton {
+extension ReactiveExtensions where Base: UIButton {
 
     public var title: Bond<String?> {
         return bond { $0.setTitle($1, for: .normal) }

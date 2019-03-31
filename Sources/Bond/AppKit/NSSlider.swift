@@ -27,7 +27,7 @@
 import AppKit
 import ReactiveKit
 
-public extension ReactiveExtensions where Base: NSSlider {
+extension ReactiveExtensions where Base: NSSlider {
 
     public var minValue: Bond<Double> {
         return bond { $0.minValue = $1 }
@@ -66,7 +66,7 @@ public extension ReactiveExtensions where Base: NSSlider {
 
 extension NSSlider {
 
-    public func bind(signal: Signal<Double, NoError>) -> Disposable {
+    public func bind(signal: Signal<Double, Never>) -> Disposable {
         return reactive.doubleValue.bind(signal: signal)
     }
 }

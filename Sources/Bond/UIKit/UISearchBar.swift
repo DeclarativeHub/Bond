@@ -27,7 +27,7 @@
 import UIKit
 import ReactiveKit
 
-public extension ReactiveExtensions where Base: UISearchBar {
+extension ReactiveExtensions where Base: UISearchBar {
 
     public var delegate: ProtocolProxy {
         return protocolProxy(for: UISearchBarDelegate.self, keyPath: \.delegate)
@@ -45,7 +45,7 @@ public extension ReactiveExtensions where Base: UISearchBar {
 
 extension UISearchBar: BindableProtocol {
 
-    public func bind(signal: Signal<String?, NoError>) -> Disposable {
+    public func bind(signal: Signal<String?, Never>) -> Disposable {
         return reactive.text.bind(signal: signal)
     }
 }

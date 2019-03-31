@@ -31,7 +31,7 @@ extension NSResponder: BindingExecutionContextProvider {
     public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
 }
 
-public extension ReactiveExtensions where Base: NSView {
+extension ReactiveExtensions where Base: NSView {
 
     public var alphaValue: Bond<CGFloat> {
         return bond { $0.alphaValue = $1 }
