@@ -321,6 +321,15 @@
 		ECFF44BC21692B5800B5EDB0 /* OutlineChangesetConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFF44BB21692B5800B5EDB0 /* OutlineChangesetConvertible.swift */; };
 		ECFF44BD21692B5800B5EDB0 /* OutlineChangesetConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFF44BB21692B5800B5EDB0 /* OutlineChangesetConvertible.swift */; };
 		ECFF44BE21692B5800B5EDB0 /* OutlineChangesetConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFF44BB21692B5800B5EDB0 /* OutlineChangesetConvertible.swift */; };
+		FCDA454F2229C25A001E0C3D /* CBCentralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDA454E2229C25A001E0C3D /* CBCentralManager.swift */; };
+		FCDA45502229C25A001E0C3D /* CBCentralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDA454E2229C25A001E0C3D /* CBCentralManager.swift */; };
+		FCDA45512229C25A001E0C3D /* CBCentralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDA454E2229C25A001E0C3D /* CBCentralManager.swift */; };
+		FCDA45542229C2DE001E0C3D /* CBPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDA45532229C2DE001E0C3D /* CBPeripheral.swift */; };
+		FCDA45552229C2DE001E0C3D /* CBPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDA45532229C2DE001E0C3D /* CBPeripheral.swift */; };
+		FCDA45562229C2DE001E0C3D /* CBPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDA45532229C2DE001E0C3D /* CBPeripheral.swift */; };
+		FCDA45592229C322001E0C3D /* CBPeripheralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDA45582229C322001E0C3D /* CBPeripheralManager.swift */; };
+		FCDA455A2229C322001E0C3D /* CBPeripheralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDA45582229C322001E0C3D /* CBPeripheralManager.swift */; };
+		FCDA455B2229C322001E0C3D /* CBPeripheralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDA45582229C322001E0C3D /* CBPeripheralManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -538,6 +547,9 @@
 		ECFF44B02168C21F00B5EDB0 /* Array2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array2D.swift; sourceTree = "<group>"; };
 		ECFF44B62168F5C000B5EDB0 /* Instantiatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instantiatable.swift; sourceTree = "<group>"; };
 		ECFF44BB21692B5800B5EDB0 /* OutlineChangesetConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineChangesetConvertible.swift; sourceTree = "<group>"; };
+		FCDA454E2229C25A001E0C3D /* CBCentralManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CBCentralManager.swift; sourceTree = "<group>"; };
+		FCDA45532229C2DE001E0C3D /* CBPeripheral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CBPeripheral.swift; sourceTree = "<group>"; };
+		FCDA45582229C322001E0C3D /* CBPeripheralManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CBPeripheralManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -708,6 +720,7 @@
 				ECFF44B62168F5C000B5EDB0 /* Instantiatable.swift */,
 				90C04D3E1E8F0B1D000077C8 /* Signal+Heartbeat.swift */,
 				EC0220091F8BE898002F8380 /* Property+BidirectionalMap.swift */,
+				FCDA45492229C22B001E0C3D /* CoreBluetooth */,
 				90C04D571E8F0B4A000077C8 /* UIKit */,
 				90C04D581E8F0B5E000077C8 /* AppKit */,
 				90C04D591E8F0B75000077C8 /* Shared */,
@@ -880,6 +893,16 @@
 				ECFF44BB21692B5800B5EDB0 /* OutlineChangesetConvertible.swift */,
 			);
 			path = "Data Sources";
+			sourceTree = "<group>";
+		};
+		FCDA45492229C22B001E0C3D /* CoreBluetooth */ = {
+			isa = PBXGroup;
+			children = (
+				FCDA454E2229C25A001E0C3D /* CBCentralManager.swift */,
+				FCDA45532229C2DE001E0C3D /* CBPeripheral.swift */,
+				FCDA45582229C322001E0C3D /* CBPeripheralManager.swift */,
+			);
+			path = CoreBluetooth;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1153,6 +1176,7 @@
 				90A4437A1E91390000D611FE /* BNDProtocolProxyBase.m in Sources */,
 				90A4430F1E9055D100D611FE /* NSSlider.swift in Sources */,
 				90C04DAF1E8F0B97000077C8 /* UIApplication.swift in Sources */,
+				FCDA454F2229C25A001E0C3D /* CBCentralManager.swift in Sources */,
 				EC930F46222B1EA7000D397C /* TreeView.swift in Sources */,
 				EC0D8D2B21C69BC6003F8EF2 /* UITableView+DataSource.swift in Sources */,
 				90C04D721E8F0B89000077C8 /* DynamicSubject.swift in Sources */,
@@ -1166,6 +1190,7 @@
 				90A443141E9055D200D611FE /* NSView.swift in Sources */,
 				90C04DB41E8F0B97000077C8 /* UIControl.swift in Sources */,
 				90C04DC01E8F0B97000077C8 /* UISwitch.swift in Sources */,
+				FCDA45542229C2DE001E0C3D /* CBPeripheral.swift in Sources */,
 				EC930F41222B105F000D397C /* TreeProtocol+Differ.swift in Sources */,
 				EC1F12712167BFB4002F0D1B /* UnorderedCollectionDiff.swift in Sources */,
 				90C04D731E8F0B89000077C8 /* Observable.swift in Sources */,
@@ -1218,6 +1243,7 @@
 				ECAFB8D9200B60AA00EE0669 /* ProtocolProxyController.swift in Sources */,
 				90C04DB71E8F0B97000077C8 /* UIImageView.swift in Sources */,
 				EC1F12792167C0B7002F0D1B /* UnorderedCollectionOperation.swift in Sources */,
+				FCDA45592229C322001E0C3D /* CBPeripheralManager.swift in Sources */,
 				ECBCE0DC2161712C0078E03B /* UnorderedCollectionChangeset.swift in Sources */,
 				ECBCE0C921616A710078E03B /* OrderedCollectionChangeset.swift in Sources */,
 				90C04DBF1E8F0B97000077C8 /* UIStepper.swift in Sources */,
@@ -1281,6 +1307,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FCDA455A2229C322001E0C3D /* CBPeripheralManager.swift in Sources */,
 				90A4437D1E91391B00D611FE /* BNDProtocolProxyBase.m in Sources */,
 				ECC1A6D1207A18DC00AE762C /* NSTableView+DataSource.swift in Sources */,
 				90A443361E9055D800D611FE /* UISwitch.swift in Sources */,
@@ -1323,6 +1350,7 @@
 				ECBC51BF2161637A00BE80EC /* OrderedCollectionOperation+Strideable+Undo.swift in Sources */,
 				ECBC51BA2161637A00BE80EC /* ChangesetContainer.swift in Sources */,
 				ECBCE0C72161696B0078E03B /* OrderedCollectionOperation.swift in Sources */,
+				FCDA45552229C2DE001E0C3D /* CBPeripheral.swift in Sources */,
 				90C04D871E8F0B8D000077C8 /* NSTableView.swift in Sources */,
 				90C04D691E8F0B89000077C8 /* ProtocolProxy.swift in Sources */,
 				90A4432D1E9055D800D611FE /* UIImageView.swift in Sources */,
@@ -1358,6 +1386,7 @@
 				ECAFB8D5200A7E3900EE0669 /* BNDInvocation.swift in Sources */,
 				ECBC51C22161637A00BE80EC /* OrderedCollectionDiff+IndexPath.swift in Sources */,
 				90C04D831E8F0B8D000077C8 /* NSProgressIndicator.swift in Sources */,
+				FCDA45502229C25A001E0C3D /* CBCentralManager.swift in Sources */,
 				90C04D6C1E8F0B89000077C8 /* NotificationCenter.swift in Sources */,
 				90A443251E9055D800D611FE /* UIApplication.swift in Sources */,
 				EC0D8D3021C69C3C003F8EF2 /* UICollectionView+DataSource.swift in Sources */,
@@ -1381,6 +1410,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FCDA455B2229C322001E0C3D /* CBPeripheralManager.swift in Sources */,
 				90A4437E1E91391D00D611FE /* BNDProtocolProxyBase.m in Sources */,
 				ECC1A6D2207A18DC00AE762C /* NSTableView+DataSource.swift in Sources */,
 				90A4431E1E9055D200D611FE /* NSSlider.swift in Sources */,
@@ -1423,6 +1453,7 @@
 				ECBC51D32161637B00BE80EC /* OrderedCollectionDiff+Strideable+Patch.swift in Sources */,
 				ECBC51D42161637B00BE80EC /* OrderedCollectionOperation+Strideable+Undo.swift in Sources */,
 				ECBCE0C82161696B0078E03B /* OrderedCollectionOperation.swift in Sources */,
+				FCDA45562229C2DE001E0C3D /* CBPeripheral.swift in Sources */,
 				ECBC51CF2161637B00BE80EC /* ChangesetContainer.swift in Sources */,
 				90C04DA21E8F0B96000077C8 /* UINavigationBar.swift in Sources */,
 				9025DCB01F981694007B7689 /* Property+BidirectionalMap.swift in Sources */,
@@ -1458,6 +1489,7 @@
 				90A4431D1E9055D200D611FE /* NSSegmentedControl.swift in Sources */,
 				ECBC51D72161637B00BE80EC /* OrderedCollectionDiff+IndexPath.swift in Sources */,
 				90A443191E9055D200D611FE /* NSImageView.swift in Sources */,
+				FCDA45512229C25A001E0C3D /* CBCentralManager.swift in Sources */,
 				90A4431B1E9055D200D611FE /* NSPopUpButton.swift in Sources */,
 				90A443211E9055D200D611FE /* NSTextField.swift in Sources */,
 				EC0D8D3121C69C3C003F8EF2 /* UICollectionView+DataSource.swift in Sources */,
