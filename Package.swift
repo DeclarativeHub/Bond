@@ -7,7 +7,7 @@ let package = Package(
         .library(name: "Bond", targets: ["Bond"])
     ],
     dependencies: [
-        .package(url: "https://github.com/AccioSupport/ReactiveKit.git", .branch("master")),
+        .package(url: "https://github.com/DeclarativeHub/ReactiveKit.git", .upToNextMajor(from: "3.10.0")),
         .package(url: "https://github.com/tonyarnold/Differ.git", .upToNextMajor(from: "1.4.1"))
     ],
     targets: [
