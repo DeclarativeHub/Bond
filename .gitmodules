@@ -1,6 +1,0 @@
-[submodule "Carthage/Checkouts/ReactiveKit"]
-	path = Carthage/Checkouts/ReactiveKit
-	url = https://github.com/DeclarativeHub/ReactiveKit.git
-[submodule "Carthage/Checkouts/Differ"]
-	path = Carthage/Checkouts/Differ
-	url = https://github.com/tonyarnold/Differ.git
