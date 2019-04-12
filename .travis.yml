@@ -8,7 +8,7 @@ cache:
 before_install:
   - brew update
   - brew outdated carthage || brew upgrade carthage
-  - carthage bootstrap --cache-builds
+  - carthage bootstrap --cache-builds --no-skip-current
 
 jobs:
   include:
