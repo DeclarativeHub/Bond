@@ -1,5 +1,8 @@
 //: [Previous](@previous)
 
+///: Before running the playground, make sure to build "Bond-macOS" and "PlaygroundSupport"
+///: targets with Mac as a destination.
+
 import Foundation
 import PlaygroundSupport
 import Cocoa

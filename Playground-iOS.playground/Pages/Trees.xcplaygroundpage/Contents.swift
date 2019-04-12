@@ -1,5 +1,8 @@
 //: [Previous](@previous)
 
+///: Before running the playground, make sure to build "Bond-iOS" and "PlaygroundSupport"
+///: targets with any iOS Simulator as a destination.
+
 import Foundation
 import UIKit
 import Bond

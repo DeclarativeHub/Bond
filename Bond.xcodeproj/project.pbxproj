@@ -6,6 +6,20 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		ECFF842B226122170095040B /* PlaygroundSupport */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = ECFF842E226122170095040B /* Build configuration list for PBXAggregateTarget "PlaygroundSupport" */;
+			buildPhases = (
+				ECFF8430226122320095040B /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = PlaygroundSupport;
+			productName = PlaygroundSupport;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		070FE2741F0138180031B7BD /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D2A1E8F0B1D000077C8 /* NSLayoutConstraint.swift */; };
 		070FE2781F0138190031B7BD /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D2A1E8F0B1D000077C8 /* NSLayoutConstraint.swift */; };
@@ -981,6 +995,9 @@
 						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
+					ECFF842B226122170095040B = {
+						CreatedOnToolsVersion = 10.2;
+					};
 				};
 			};
 			buildConfigurationList = 16210A361D3EC474004AEDF3 /* Build configuration list for PBXProject "Bond" */;
@@ -1001,6 +1018,7 @@
 				16D30ED51D65D11900C2435D /* Bond-tvOS */,
 				16210A441D3EC474004AEDF3 /* BondTests */,
 				16887E361D744ABB00EDA099 /* Bond-App */,
+				ECFF842B226122170095040B /* PlaygroundSupport */,
 			);
 		};
 /* End PBXProject section */
@@ -1022,6 +1040,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		ECFF8430226122320095040B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nif [[ $SDKROOT == *\"iPhone\"* ]]; then\n    find \"${SRCROOT}/Carthage/Build/iOS/\" -name '*.framework' -exec cp -prv '{}' \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ';'\nelif [[ $SDKROOT == *\"AppleTV\"* ]]; then\n    find \"${SRCROOT}/Carthage/Build/tvOS/\" -name '*.framework' -exec cp -prv '{}' \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ';'\nelif [[ $SDKROOT == *\"Mac\"* ]]; then\n    find \"${SRCROOT}/Carthage/Build/Mac/\" -name '*.framework' -exec cp -prv '{}' \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ';'\nfi\n\n\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		16210A371D3EC474004AEDF3 /* Sources */ = {
@@ -1745,6 +1783,24 @@
 			};
 			name = Release;
 		};
+		ECFF842C226122170095040B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx appletvos appletvsimulator";
+				TARGETED_DEVICE_FAMILY = "1,2,3,4";
+			};
+			name = Debug;
+		};
+		ECFF842D226122170095040B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx appletvos appletvsimulator";
+				TARGETED_DEVICE_FAMILY = "1,2,3,4";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1798,6 +1854,15 @@
 			buildConfigurations = (
 				16D30EDC1D65D11900C2435D /* Debug */,
 				16D30EDD1D65D11900C2435D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ECFF842E226122170095040B /* Build configuration list for PBXAggregateTarget "PlaygroundSupport" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ECFF842C226122170095040B /* Debug */,
+				ECFF842D226122170095040B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
