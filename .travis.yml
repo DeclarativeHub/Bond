@@ -1,6 +1,15 @@
 language: swift
 osx_image: xcode10.2
 
+cache:
+  directories:
+  - Carthage
+
+before_install:
+  - brew update
+  - brew outdated carthage || brew upgrade carthage
+  - carthage bootstrap --platform iOS --cache-builds
+
 jobs:
   include:
       - stage: "Xcode"
