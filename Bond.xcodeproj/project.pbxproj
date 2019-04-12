@@ -332,6 +332,8 @@
 		ECFF44BC21692B5800B5EDB0 /* OutlineChangesetConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFF44BB21692B5800B5EDB0 /* OutlineChangesetConvertible.swift */; };
 		ECFF44BD21692B5800B5EDB0 /* OutlineChangesetConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFF44BB21692B5800B5EDB0 /* OutlineChangesetConvertible.swift */; };
 		ECFF44BE21692B5800B5EDB0 /* OutlineChangesetConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFF44BB21692B5800B5EDB0 /* OutlineChangesetConvertible.swift */; };
+		ECFF843322612E120095040B /* Differ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 824267CC225F7E4B001B1648 /* Differ.framework */; };
+		ECFF843422612E120095040B /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 824267CD225F7E4B001B1648 /* ReactiveKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -500,6 +502,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				16210A461D3EC474004AEDF3 /* Bond.framework in Frameworks */,
+				ECFF843322612E120095040B /* Differ.framework in Frameworks */,
+				ECFF843422612E120095040B /* ReactiveKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1604,6 +1608,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "Supporting Files/$(PRODUCT_NAME)-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Swift-Bond.BondTests";
@@ -1617,6 +1625,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "Supporting Files/$(PRODUCT_NAME)-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Swift-Bond.BondTests";

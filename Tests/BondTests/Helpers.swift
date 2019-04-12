@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import ReactiveKit
+import ReactiveKit
 @testable import Bond
 
 func XCTAssertEqual(_ lhs: CGFloat, _ rhs: CGFloat, precision: CGFloat = 0.01, file: StaticString = #file, line: UInt = #line) {
