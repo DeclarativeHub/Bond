@@ -202,7 +202,11 @@ If you have an extensions that makes your favourite framework work with Bond and
 ### Carthage
 
 1. Add the following to your *Cartfile*:
-  <br> `github "DeclarativeHub/Bond"`
+ 
+    ```
+    github "DeclarativeHub/Bond"
+    ```
+ 
 2. Run `carthage update`
 3. Add the framework as described in [Carthage Readme](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application)
 
@@ -214,7 +218,7 @@ If you have an extensions that makes your favourite framework work with Bond and
     .package(url: "https://github.com/DeclarativeHub/Bond.git", .upToNextMajor(from: "7.4.1")),
     ```
 
-2.  Next, add `Bond` to your App targets dependencies like so:
+2. Next, add `Bond` to your App targets dependencies like so:
 
     ```swift
     .target(
@@ -230,7 +234,11 @@ If you have an extensions that makes your favourite framework work with Bond and
 ### CocoaPods
 
 1. Add the following to your *Podfile*:
-  <br> `pod 'Bond'`
+  
+    ```
+    pod 'Bond'
+    ```
+  
 2. Run `pod install`.
 
 ## License
