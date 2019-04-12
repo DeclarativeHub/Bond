@@ -13,6 +13,6 @@ let package = Package(
     targets: [
         .target(name: "BNDProtocolProxyBase"),
         .target(name: "Bond", dependencies: ["BNDProtocolProxyBase", "ReactiveKit", "Differ"]),
-        .testTarget(name: "BondTests", dependencies: ["Bond"])
+        .testTarget(name: "BondTests", dependencies: ["Bond", "ReactiveKit"])
     ]
 )
