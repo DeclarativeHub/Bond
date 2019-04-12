@@ -6,17 +6,33 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		ECFF842B226122170095040B /* PlaygroundSupport */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = ECFF842E226122170095040B /* Build configuration list for PBXAggregateTarget "PlaygroundSupport" */;
+			buildPhases = (
+				ECFF8430226122320095040B /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = PlaygroundSupport;
+			productName = PlaygroundSupport;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		070FE2741F0138180031B7BD /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D2A1E8F0B1D000077C8 /* NSLayoutConstraint.swift */; };
 		070FE2781F0138190031B7BD /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D2A1E8F0B1D000077C8 /* NSLayoutConstraint.swift */; };
 		16210A461D3EC474004AEDF3 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16210A3C1D3EC474004AEDF3 /* Bond.framework */; };
-		165217961D70593E00C9FAEE /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1652178B1D70591E00C9FAEE /* ReactiveKit.framework */; };
-		165217991D70594D00C9FAEE /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 165217911D70591E00C9FAEE /* ReactiveKit.framework */; };
-		1652179C1D70595600C9FAEE /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1652178D1D70591E00C9FAEE /* ReactiveKit.framework */; };
-		16887E2E1D7444C900EDA099 /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1652178B1D70591E00C9FAEE /* ReactiveKit.framework */; };
 		16887E3A1D744ABB00EDA099 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16887E391D744ABB00EDA099 /* AppDelegate.swift */; };
 		16887E441D744ABB00EDA099 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 16887E421D744ABB00EDA099 /* LaunchScreen.storyboard */; };
 		75CA9E9220678E600011E5BB /* UISearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CA9E9120678E600011E5BB /* UISearchBar.swift */; };
+		824267CE225F7E4B001B1648 /* Differ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 824267CC225F7E4B001B1648 /* Differ.framework */; };
+		824267CF225F7E4B001B1648 /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 824267CD225F7E4B001B1648 /* ReactiveKit.framework */; };
+		824267D2225F7E5F001B1648 /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 824267D0225F7E5F001B1648 /* ReactiveKit.framework */; };
+		824267D3225F7E5F001B1648 /* Differ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 824267D1225F7E5F001B1648 /* Differ.framework */; };
+		824267D6225F7E68001B1648 /* Differ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 824267D4225F7E68001B1648 /* Differ.framework */; };
+		824267D7225F7E68001B1648 /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 824267D5225F7E68001B1648 /* ReactiveKit.framework */; };
 		901E85A1214A125A00F03A80 /* NSGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 901E85A0214A125A00F03A80 /* NSGestureRecognizer.swift */; };
 		9025DCAB1F981693007B7689 /* Property+BidirectionalMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0220091F8BE898002F8380 /* Property+BidirectionalMap.swift */; };
 		9025DCB01F981694007B7689 /* Property+BidirectionalMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0220091F8BE898002F8380 /* Property+BidirectionalMap.swift */; };
@@ -24,12 +40,7 @@
 		90260293216B7F0D0055114E /* FlatDataSourceChangesetConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90260292216B7F0D0055114E /* FlatDataSourceChangesetConvertible.swift */; };
 		90260294216B7F0D0055114E /* FlatDataSourceChangesetConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90260292216B7F0D0055114E /* FlatDataSourceChangesetConvertible.swift */; };
 		90260295216B7F0D0055114E /* FlatDataSourceChangesetConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90260292216B7F0D0055114E /* FlatDataSourceChangesetConvertible.swift */; };
-		904B87B91F6FFCE700FE0A24 /* Differ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 904B87B11F6FFCD300FE0A24 /* Differ.framework */; };
-		904B87BC1F6FFCEB00FE0A24 /* Differ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 904B87B11F6FFCD300FE0A24 /* Differ.framework */; };
-		904B87BD1F6FFCEE00FE0A24 /* Differ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 904B87B11F6FFCD300FE0A24 /* Differ.framework */; };
-		904B87D11F6FFDEE00FE0A24 /* Differ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 904B87B11F6FFCD300FE0A24 /* Differ.framework */; };
 		904B87D51F6FFE0300FE0A24 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16210A3C1D3EC474004AEDF3 /* Bond.framework */; };
-		904B87D61F6FFE0300FE0A24 /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1652178B1D70591E00C9FAEE /* ReactiveKit.framework */; };
 		90A443061E9055D100D611FE /* NSAppearanceCustomization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D251E8F0B1D000077C8 /* NSAppearanceCustomization.swift */; };
 		90A443071E9055D100D611FE /* NSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D261E8F0B1D000077C8 /* NSButton.swift */; };
 		90A443081E9055D100D611FE /* NSColorWell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D271E8F0B1D000077C8 /* NSColorWell.swift */; };
@@ -321,6 +332,8 @@
 		ECFF44BC21692B5800B5EDB0 /* OutlineChangesetConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFF44BB21692B5800B5EDB0 /* OutlineChangesetConvertible.swift */; };
 		ECFF44BD21692B5800B5EDB0 /* OutlineChangesetConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFF44BB21692B5800B5EDB0 /* OutlineChangesetConvertible.swift */; };
 		ECFF44BE21692B5800B5EDB0 /* OutlineChangesetConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECFF44BB21692B5800B5EDB0 /* OutlineChangesetConvertible.swift */; };
+		ECFF843322612E120095040B /* Differ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 824267CC225F7E4B001B1648 /* Differ.framework */; };
+		ECFF843422612E120095040B /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 824267CD225F7E4B001B1648 /* ReactiveKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -330,76 +343,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 16210A3B1D3EC474004AEDF3;
 			remoteInfo = Bond;
-		};
-		1652178A1D70591E00C9FAEE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = ECBCCDD01BEB6B9A00723476;
-			remoteInfo = "ReactiveKit-iOS";
-		};
-		1652178C1D70591E00C9FAEE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 16C33AF91BEFB72500A0DBE0;
-			remoteInfo = "ReactiveKit-tvOS";
-		};
-		1652178E1D70591E00C9FAEE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 16C33B161BEFB9CB00A0DBE0;
-			remoteInfo = "ReactiveKit-watchOS";
-		};
-		165217901D70591E00C9FAEE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 16C33B241BEFBA0100A0DBE0;
-			remoteInfo = "ReactiveKit-macOS";
-		};
-		165217921D70591E00C9FAEE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = ECBCCDDA1BEB6B9B00723476;
-			remoteInfo = "ReactiveKit-Tests";
-		};
-		165217941D70593600C9FAEE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = ECBCCDCF1BEB6B9A00723476;
-			remoteInfo = "ReactiveKit-iOS";
-		};
-		165217971D70594900C9FAEE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 16C33B231BEFBA0100A0DBE0;
-			remoteInfo = "ReactiveKit-macOS";
-		};
-		1652179A1D70595300C9FAEE /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 16C33AF81BEFB72500A0DBE0;
-			remoteInfo = "ReactiveKit-tvOS";
-		};
-		904B87B01F6FFCD300FE0A24 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 90A3FAC21E0C8D8B0086A7F1 /* Differ.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C9EE87161CCFCA83006BD90E;
-			remoteInfo = Differ;
-		};
-		904B87B21F6FFCD300FE0A24 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 90A3FAC21E0C8D8B0086A7F1 /* Differ.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C9838FF11D29571000691BE8;
-			remoteInfo = DifferTests;
 		};
 		EC1746C8216A3D4200955C49 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -414,7 +357,6 @@
 		161D6D2D1D6F0D92004CA17D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		16210A3C1D3EC474004AEDF3 /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		16210A451D3EC474004AEDF3 /* BondTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BondTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactiveKit.xcodeproj; path = Carthage/Checkouts/ReactiveKit/ReactiveKit.xcodeproj; sourceTree = "<group>"; };
 		16887E371D744ABB00EDA099 /* Bond-App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bond-App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		16887E391D744ABB00EDA099 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		16887E431D744ABB00EDA099 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -422,12 +364,17 @@
 		16D30EAE1D6591D300C2435D /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		16D30ED61D65D11900C2435D /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		75CA9E9120678E600011E5BB /* UISearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISearchBar.swift; sourceTree = "<group>"; };
+		824267CC225F7E4B001B1648 /* Differ.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Differ.framework; path = Carthage/Build/iOS/Differ.framework; sourceTree = "<group>"; };
+		824267CD225F7E4B001B1648 /* ReactiveKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveKit.framework; path = Carthage/Build/iOS/ReactiveKit.framework; sourceTree = "<group>"; };
+		824267D0225F7E5F001B1648 /* ReactiveKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveKit.framework; path = Carthage/Build/Mac/ReactiveKit.framework; sourceTree = "<group>"; };
+		824267D1225F7E5F001B1648 /* Differ.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Differ.framework; path = Carthage/Build/Mac/Differ.framework; sourceTree = "<group>"; };
+		824267D4225F7E68001B1648 /* Differ.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Differ.framework; path = Carthage/Build/tvOS/Differ.framework; sourceTree = "<group>"; };
+		824267D5225F7E68001B1648 /* ReactiveKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveKit.framework; path = Carthage/Build/tvOS/ReactiveKit.framework; sourceTree = "<group>"; };
 		901E85A0214A125A00F03A80 /* NSGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSGestureRecognizer.swift; sourceTree = "<group>"; };
 		90260292216B7F0D0055114E /* FlatDataSourceChangesetConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatDataSourceChangesetConvertible.swift; sourceTree = "<group>"; };
 		90677C10207EE44B00BC4505 /* TreeProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeProtocol.swift; sourceTree = "<group>"; };
 		90677C3C207F38AE00BC4505 /* NSOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSOutlineView.swift; sourceTree = "<group>"; };
 		90677C44207F391700BC4505 /* NSOutlineView+Changeset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSOutlineView+Changeset.swift"; sourceTree = "<group>"; };
-		90A3FAC21E0C8D8B0086A7F1 /* Differ.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Differ.xcodeproj; path = Carthage/Checkouts/Differ/Differ.xcodeproj; sourceTree = "<group>"; };
 		90C04D021E8F0A97000077C8 /* Bond-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Bond-Info.plist"; sourceTree = "<group>"; };
 		90C04D031E8F0A97000077C8 /* Bond.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bond.h; sourceTree = "<group>"; };
 		90C04D041E8F0A97000077C8 /* BondTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BondTests-Info.plist"; sourceTree = "<group>"; };
@@ -545,8 +492,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				904B87B91F6FFCE700FE0A24 /* Differ.framework in Frameworks */,
-				165217961D70593E00C9FAEE /* ReactiveKit.framework in Frameworks */,
+				824267CF225F7E4B001B1648 /* ReactiveKit.framework in Frameworks */,
+				824267CE225F7E4B001B1648 /* Differ.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -554,8 +501,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				16887E2E1D7444C900EDA099 /* ReactiveKit.framework in Frameworks */,
 				16210A461D3EC474004AEDF3 /* Bond.framework in Frameworks */,
+				ECFF843322612E120095040B /* Differ.framework in Frameworks */,
+				ECFF843422612E120095040B /* ReactiveKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -564,8 +512,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				904B87D51F6FFE0300FE0A24 /* Bond.framework in Frameworks */,
-				904B87D61F6FFE0300FE0A24 /* ReactiveKit.framework in Frameworks */,
-				904B87D11F6FFDEE00FE0A24 /* Differ.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -573,8 +519,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				904B87BC1F6FFCEB00FE0A24 /* Differ.framework in Frameworks */,
-				165217991D70594D00C9FAEE /* ReactiveKit.framework in Frameworks */,
+				824267D3225F7E5F001B1648 /* Differ.framework in Frameworks */,
+				824267D2225F7E5F001B1648 /* ReactiveKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -582,8 +528,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				904B87BD1F6FFCEE00FE0A24 /* Differ.framework in Frameworks */,
-				1652179C1D70595600C9FAEE /* ReactiveKit.framework in Frameworks */,
+				824267D7225F7E68001B1648 /* ReactiveKit.framework in Frameworks */,
+				824267D6225F7E68001B1648 /* Differ.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -602,8 +548,7 @@
 				90C04DC51E8F0BA7000077C8 /* Tests */,
 				16887E381D744ABB00EDA099 /* Bond-App */,
 				16210A3D1D3EC474004AEDF3 /* Products */,
-				90A3FAC21E0C8D8B0086A7F1 /* Differ.xcodeproj */,
-				165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */,
+				824267C8225F7E1D001B1648 /* Carthage */,
 				904B87B61F6FFCE700FE0A24 /* Frameworks */,
 			);
 			indentWidth = 4;
@@ -631,18 +576,6 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		165217831D70591D00C9FAEE /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				1652178B1D70591E00C9FAEE /* ReactiveKit.framework */,
-				1652178D1D70591E00C9FAEE /* ReactiveKit.framework */,
-				1652178F1D70591E00C9FAEE /* ReactiveKit.framework */,
-				165217911D70591E00C9FAEE /* ReactiveKit.framework */,
-				165217931D70591E00C9FAEE /* ReactiveKit-Tests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		16887E381D744ABB00EDA099 /* Bond-App */ = {
 			isa = PBXGroup;
 			children = (
@@ -653,13 +586,41 @@
 			path = "Bond-App";
 			sourceTree = "<group>";
 		};
-		904B87AC1F6FFCD300FE0A24 /* Products */ = {
+		824267C8225F7E1D001B1648 /* Carthage */ = {
 			isa = PBXGroup;
 			children = (
-				904B87B11F6FFCD300FE0A24 /* Differ.framework */,
-				904B87B31F6FFCD300FE0A24 /* DifferTests.xctest */,
+				824267C9225F7E24001B1648 /* iOS */,
+				824267CA225F7E2B001B1648 /* macOS */,
+				824267CB225F7E34001B1648 /* tvOS */,
 			);
-			name = Products;
+			name = Carthage;
+			sourceTree = "<group>";
+		};
+		824267C9225F7E24001B1648 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				824267CC225F7E4B001B1648 /* Differ.framework */,
+				824267CD225F7E4B001B1648 /* ReactiveKit.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		824267CA225F7E2B001B1648 /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				824267D1225F7E5F001B1648 /* Differ.framework */,
+				824267D0225F7E5F001B1648 /* ReactiveKit.framework */,
+			);
+			name = macOS;
+			sourceTree = "<group>";
+		};
+		824267CB225F7E34001B1648 /* tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				824267D4225F7E68001B1648 /* Differ.framework */,
+				824267D5225F7E68001B1648 /* ReactiveKit.framework */,
+			);
+			name = tvOS;
 			sourceTree = "<group>";
 		};
 		904B87B61F6FFCE700FE0A24 /* Frameworks */ = {
@@ -926,7 +887,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				165217951D70593600C9FAEE /* PBXTargetDependency */,
 			);
 			name = "Bond-iOS";
 			productName = Bond;
@@ -980,7 +940,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				165217981D70594900C9FAEE /* PBXTargetDependency */,
 			);
 			name = "Bond-macOS";
 			productName = "Bond-macOS";
@@ -998,7 +957,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				1652179B1D70595300C9FAEE /* PBXTargetDependency */,
 			);
 			name = "Bond-tvOS";
 			productName = "Bond-tvOS";
@@ -1041,6 +999,9 @@
 						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
+					ECFF842B226122170095040B = {
+						CreatedOnToolsVersion = 10.2;
+					};
 				};
 			};
 			buildConfigurationList = 16210A361D3EC474004AEDF3 /* Build configuration list for PBXProject "Bond" */;
@@ -1054,16 +1015,6 @@
 			mainGroup = 16210A321D3EC474004AEDF3;
 			productRefGroup = 16210A3D1D3EC474004AEDF3 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 904B87AC1F6FFCD300FE0A24 /* Products */;
-					ProjectRef = 90A3FAC21E0C8D8B0086A7F1 /* Differ.xcodeproj */;
-				},
-				{
-					ProductGroup = 165217831D70591D00C9FAEE /* Products */;
-					ProjectRef = 165217821D70591D00C9FAEE /* ReactiveKit.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				16210A3B1D3EC474004AEDF3 /* Bond-iOS */,
@@ -1071,61 +1022,10 @@
 				16D30ED51D65D11900C2435D /* Bond-tvOS */,
 				16210A441D3EC474004AEDF3 /* BondTests */,
 				16887E361D744ABB00EDA099 /* Bond-App */,
+				ECFF842B226122170095040B /* PlaygroundSupport */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		1652178B1D70591E00C9FAEE /* ReactiveKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ReactiveKit.framework;
-			remoteRef = 1652178A1D70591E00C9FAEE /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		1652178D1D70591E00C9FAEE /* ReactiveKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ReactiveKit.framework;
-			remoteRef = 1652178C1D70591E00C9FAEE /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		1652178F1D70591E00C9FAEE /* ReactiveKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ReactiveKit.framework;
-			remoteRef = 1652178E1D70591E00C9FAEE /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		165217911D70591E00C9FAEE /* ReactiveKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ReactiveKit.framework;
-			remoteRef = 165217901D70591E00C9FAEE /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		165217931D70591E00C9FAEE /* ReactiveKit-Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "ReactiveKit-Tests.xctest";
-			remoteRef = 165217921D70591E00C9FAEE /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		904B87B11F6FFCD300FE0A24 /* Differ.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Differ.framework;
-			remoteRef = 904B87B01F6FFCD300FE0A24 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		904B87B31F6FFCD300FE0A24 /* DifferTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = DifferTests.xctest;
-			remoteRef = 904B87B21F6FFCD300FE0A24 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		16210A431D3EC474004AEDF3 /* Resources */ = {
@@ -1144,6 +1044,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		ECFF8430226122320095040B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "mkdir -p \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\nif [[ $SDKROOT == *\"iPhone\"* ]]; then\n    find \"${SRCROOT}/Carthage/Build/iOS/\" -name '*.framework' -exec cp -prv '{}' \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ';'\nelif [[ $SDKROOT == *\"AppleTV\"* ]]; then\n    find \"${SRCROOT}/Carthage/Build/tvOS/\" -name '*.framework' -exec cp -prv '{}' \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ';'\nelif [[ $SDKROOT == *\"Mac\"* ]]; then\n    find \"${SRCROOT}/Carthage/Build/Mac/\" -name '*.framework' -exec cp -prv '{}' \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\" ';'\nfi\n\n\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		16210A371D3EC474004AEDF3 /* Sources */ = {
@@ -1485,21 +1405,6 @@
 			target = 16210A3B1D3EC474004AEDF3 /* Bond-iOS */;
 			targetProxy = 16210A471D3EC474004AEDF3 /* PBXContainerItemProxy */;
 		};
-		165217951D70593600C9FAEE /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "ReactiveKit-iOS";
-			targetProxy = 165217941D70593600C9FAEE /* PBXContainerItemProxy */;
-		};
-		165217981D70594900C9FAEE /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "ReactiveKit-macOS";
-			targetProxy = 165217971D70594900C9FAEE /* PBXContainerItemProxy */;
-		};
-		1652179B1D70595300C9FAEE /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "ReactiveKit-tvOS";
-			targetProxy = 1652179A1D70595300C9FAEE /* PBXContainerItemProxy */;
-		};
 		EC1746C9216A3D4200955C49 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 16887E361D744ABB00EDA099 /* Bond-App */;
@@ -1655,6 +1560,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "Supporting Files/$(PRODUCT_NAME)-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1679,6 +1588,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "Supporting Files/$(PRODUCT_NAME)-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1695,6 +1608,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "Supporting Files/$(PRODUCT_NAME)-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Swift-Bond.BondTests";
@@ -1708,6 +1625,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = "Supporting Files/$(PRODUCT_NAME)-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Swift-Bond.BondTests";
@@ -1763,6 +1684,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "Supporting Files/$(PRODUCT_NAME)-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1791,6 +1716,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "Supporting Files/$(PRODUCT_NAME)-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1817,6 +1746,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/tvOS",
+				);
 				INFOPLIST_FILE = "Supporting Files/$(PRODUCT_NAME)-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1844,6 +1777,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/tvOS",
+				);
 				INFOPLIST_FILE = "Supporting Files/$(PRODUCT_NAME)-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1855,6 +1792,24 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Release;
+		};
+		ECFF842C226122170095040B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx appletvos appletvsimulator";
+				TARGETED_DEVICE_FAMILY = "1,2,3,4";
+			};
+			name = Debug;
+		};
+		ECFF842D226122170095040B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx appletvos appletvsimulator";
+				TARGETED_DEVICE_FAMILY = "1,2,3,4";
 			};
 			name = Release;
 		};
@@ -1911,6 +1866,15 @@
 			buildConfigurations = (
 				16D30EDC1D65D11900C2435D /* Debug */,
 				16D30EDD1D65D11900C2435D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ECFF842E226122170095040B /* Build configuration list for PBXAggregateTarget "PlaygroundSupport" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ECFF842C226122170095040B /* Debug */,
+				ECFF842D226122170095040B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

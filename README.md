@@ -206,6 +206,27 @@ If you have an extensions that makes your favourite framework work with Bond and
 2. Run `carthage update`
 3. Add the framework as described in [Carthage Readme](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application)
 
+### Accio
+
+1. Add the following to your Package.swift:
+
+    ```swift
+    .package(url: "https://github.com/DeclarativeHub/Bond.git", .upToNextMajor(from: "7.4.1")),
+    ```
+
+2.  Next, add `Bond` to your App targets dependencies like so:
+
+    ```swift
+    .target(
+        name: "App",
+        dependencies: [
+            "Bond",
+        ]
+    ),
+    ```
+
+3. Then run `accio update`.
+
 ### CocoaPods
 
 1. Add the following to your *Podfile*:

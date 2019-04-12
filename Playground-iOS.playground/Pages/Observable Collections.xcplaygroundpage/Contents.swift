@@ -1,10 +1,11 @@
 //: Playground - noun: a place where people can play
 
+///: Before running the playground, make sure to build "Bond-iOS" and "PlaygroundSupport"
+///: targets with any iOS Simulator as a destination.
+
 import Bond
 import ReactiveKit
 import PlaygroundSupport
-
-// Play here!
 
 // Array
 
