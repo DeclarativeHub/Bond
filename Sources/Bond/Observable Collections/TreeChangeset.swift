@@ -120,7 +120,7 @@ extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtoc
     /// Remove all elements from the collection.
     public func removeAll() {
         descriptiveUpdate { (collection) -> [Operation] in
-            let deletes = collection.children.indices.map { Operation.delete(at: [$0]) }
+            let deletes = collection.children.indices.reversed().map { Operation.delete(at: [$0]) }
             collection.removeAll()
             return deletes
         }
