@@ -96,6 +96,15 @@
 		90A4437A1E91390000D611FE /* BNDProtocolProxyBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D161E8F0B12000077C8 /* BNDProtocolProxyBase.m */; };
 		90A4437D1E91391B00D611FE /* BNDProtocolProxyBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D161E8F0B12000077C8 /* BNDProtocolProxyBase.m */; };
 		90A4437E1E91391D00D611FE /* BNDProtocolProxyBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D161E8F0B12000077C8 /* BNDProtocolProxyBase.m */; };
+		90B5F6332269D63D001917B4 /* NSCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B5F6322269D63D001917B4 /* NSCollectionView.swift */; };
+		90B5F6342269D63D001917B4 /* NSCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B5F6322269D63D001917B4 /* NSCollectionView.swift */; };
+		90B5F6352269D63D001917B4 /* NSCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B5F6322269D63D001917B4 /* NSCollectionView.swift */; };
+		90B5F6372269D67C001917B4 /* NSCollectionView+FlatDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B5F6362269D67C001917B4 /* NSCollectionView+FlatDataSource.swift */; };
+		90B5F6382269D67C001917B4 /* NSCollectionView+FlatDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B5F6362269D67C001917B4 /* NSCollectionView+FlatDataSource.swift */; };
+		90B5F6392269D67C001917B4 /* NSCollectionView+FlatDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B5F6362269D67C001917B4 /* NSCollectionView+FlatDataSource.swift */; };
+		90B5F63B2269D6DD001917B4 /* NSCollectionView+SectionedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B5F63A2269D6DD001917B4 /* NSCollectionView+SectionedDataSource.swift */; };
+		90B5F63C2269D6DD001917B4 /* NSCollectionView+SectionedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B5F63A2269D6DD001917B4 /* NSCollectionView+SectionedDataSource.swift */; };
+		90B5F63D2269D6DD001917B4 /* NSCollectionView+SectionedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B5F63A2269D6DD001917B4 /* NSCollectionView+SectionedDataSource.swift */; };
 		90C04D081E8F0AD4000077C8 /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = 90C04D031E8F0A97000077C8 /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		90C04D091E8F0AD5000077C8 /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = 90C04D031E8F0A97000077C8 /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		90C04D0A1E8F0AD5000077C8 /* Bond.h in Headers */ = {isa = PBXBuildFile; fileRef = 90C04D031E8F0A97000077C8 /* Bond.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -392,6 +401,9 @@
 		90677C10207EE44B00BC4505 /* TreeProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeProtocol.swift; sourceTree = "<group>"; };
 		90677C3C207F38AE00BC4505 /* NSOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSOutlineView.swift; sourceTree = "<group>"; };
 		90677C44207F391700BC4505 /* NSOutlineView+Changeset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSOutlineView+Changeset.swift"; sourceTree = "<group>"; };
+		90B5F6322269D63D001917B4 /* NSCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSCollectionView.swift; sourceTree = "<group>"; };
+		90B5F6362269D67C001917B4 /* NSCollectionView+FlatDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSCollectionView+FlatDataSource.swift"; sourceTree = "<group>"; };
+		90B5F63A2269D6DD001917B4 /* NSCollectionView+SectionedDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSCollectionView+SectionedDataSource.swift"; sourceTree = "<group>"; };
 		90C04D021E8F0A97000077C8 /* Bond-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Bond-Info.plist"; sourceTree = "<group>"; };
 		90C04D031E8F0A97000077C8 /* Bond.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bond.h; sourceTree = "<group>"; };
 		90C04D041E8F0A97000077C8 /* BondTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BondTests-Info.plist"; sourceTree = "<group>"; };
@@ -738,6 +750,9 @@
 			children = (
 				90C04D251E8F0B1D000077C8 /* NSAppearanceCustomization.swift */,
 				90C04D261E8F0B1D000077C8 /* NSButton.swift */,
+				90B5F6322269D63D001917B4 /* NSCollectionView.swift */,
+				90B5F6362269D67C001917B4 /* NSCollectionView+FlatDataSource.swift */,
+				90B5F63A2269D6DD001917B4 /* NSCollectionView+SectionedDataSource.swift */,
 				90C04D271E8F0B1D000077C8 /* NSColorWell.swift */,
 				90C04D281E8F0B1D000077C8 /* NSControl.swift */,
 				901E85A0214A125A00F03A80 /* NSGestureRecognizer.swift */,
@@ -1129,6 +1144,7 @@
 				E58FBB8D22187FD700339211 /* UIPickerView+DataSource.swift in Sources */,
 				90C04DBC1E8F0B97000077C8 /* UIRefreshControl.swift in Sources */,
 				ECBC51FA216163BA00BE80EC /* TreeNode.swift in Sources */,
+				90B5F63B2269D6DD001917B4 /* NSCollectionView+SectionedDataSource.swift in Sources */,
 				90C04DBD1E8F0B97000077C8 /* UISegmentedControl.swift in Sources */,
 				ECFF44B12168C21F00B5EDB0 /* Array2D.swift in Sources */,
 				90A443071E9055D100D611FE /* NSButton.swift in Sources */,
@@ -1161,6 +1177,7 @@
 				90C04DBF1E8F0B97000077C8 /* UIStepper.swift in Sources */,
 				90A4430E1E9055D100D611FE /* NSSegmentedControl.swift in Sources */,
 				ECC1A6D0207A18DC00AE762C /* NSTableView+DataSource.swift in Sources */,
+				90B5F6332269D63D001917B4 /* NSCollectionView.swift in Sources */,
 				ECBCE0E3216173160078E03B /* OrderedCollectionDiff+Strideable+Differ.swift in Sources */,
 				EC0D8D2F21C69C3C003F8EF2 /* UICollectionView+DataSource.swift in Sources */,
 				90A4430A1E9055D100D611FE /* NSImageView.swift in Sources */,
@@ -1174,6 +1191,7 @@
 				ECBCE0D621616FAA0078E03B /* TreeChangeset.swift in Sources */,
 				ECBCE0CF21616DD00078E03B /* OrderedCollectionOperation+IndexPath+Undo.swift in Sources */,
 				ECFF44B72168F5C000B5EDB0 /* Instantiatable.swift in Sources */,
+				90B5F6372269D67C001917B4 /* NSCollectionView+FlatDataSource.swift in Sources */,
 				ECBCE0C62161696B0078E03B /* OrderedCollectionOperation.swift in Sources */,
 				90C04DB51E8F0B97000077C8 /* UIDatePicker.swift in Sources */,
 				90A443111E9055D100D611FE /* NSTableView.swift in Sources */,
@@ -1226,6 +1244,7 @@
 				90A443271E9055D800D611FE /* UIBarItem.swift in Sources */,
 				ECBC51C02161637A00BE80EC /* OrderedCollectionDiff+Strideable+Differ.swift in Sources */,
 				90C04D861E8F0B8D000077C8 /* NSStatusBarButton.swift in Sources */,
+				90B5F6342269D63D001917B4 /* NSCollectionView.swift in Sources */,
 				ECBCE0C0216167730078E03B /* UICollectionView.swift in Sources */,
 				EC930F47222B1EA7000D397C /* TreeView.swift in Sources */,
 				90C04D811E8F0B8D000077C8 /* NSMenuItem.swift in Sources */,
@@ -1251,6 +1270,7 @@
 				ECBC51C82161637A00BE80EC /* UnorderedCollectionChangeset.swift in Sources */,
 				ECBC51F02161639500BE80EC /* TreeProtocol.swift in Sources */,
 				ECBC51C32161637A00BE80EC /* OrderedCollectionDiff+IndexPath+Patch.swift in Sources */,
+				90B5F63C2269D6DD001917B4 /* NSCollectionView+SectionedDataSource.swift in Sources */,
 				90C04D681E8F0B89000077C8 /* Observable.swift in Sources */,
 				90A443331E9055D800D611FE /* UISegmentedControl.swift in Sources */,
 				ECBC51F9216163BA00BE80EC /* TreeNode.swift in Sources */,
@@ -1310,6 +1330,7 @@
 				ECBC51FD216164B400BE80EC /* OrderedCollectionOperation+IndexPath+Undo.swift in Sources */,
 				ECBC51BD2161637A00BE80EC /* OrderedCollectionDiff+Strideable.swift in Sources */,
 				EC1F12822167CA0D002F0D1B /* UnorderedCollectionChangeset+Dictionary.swift in Sources */,
+				90B5F6382269D67C001917B4 /* NSCollectionView+FlatDataSource.swift in Sources */,
 				9025DCB11F9816A7007B7689 /* UIAccessibilityIdentification.swift in Sources */,
 				90A4432B1E9055D800D611FE /* UIDatePicker.swift in Sources */,
 			);
@@ -1326,6 +1347,7 @@
 				ECAFB8D6200A7E3900EE0669 /* BNDInvocation.swift in Sources */,
 				ECBC51D52161637B00BE80EC /* OrderedCollectionDiff+Strideable+Differ.swift in Sources */,
 				90C04D981E8F0B96000077C8 /* UIApplication.swift in Sources */,
+				90B5F6352269D63D001917B4 /* NSCollectionView.swift in Sources */,
 				ECBCE0BF216167730078E03B /* UICollectionView.swift in Sources */,
 				EC930F48222B1EA7000D397C /* TreeView.swift in Sources */,
 				90C04D5C1E8F0B88000077C8 /* DynamicSubject.swift in Sources */,
@@ -1351,6 +1373,7 @@
 				ECBC51DD2161637B00BE80EC /* UnorderedCollectionChangeset.swift in Sources */,
 				ECBC51EC2161639400BE80EC /* TreeProtocol.swift in Sources */,
 				ECBC51D82161637B00BE80EC /* OrderedCollectionDiff+IndexPath+Patch.swift in Sources */,
+				90B5F63D2269D6DD001917B4 /* NSCollectionView+SectionedDataSource.swift in Sources */,
 				90C04D9A1E8F0B96000077C8 /* UIBarItem.swift in Sources */,
 				90C04DAD1E8F0B96000077C8 /* UIView.swift in Sources */,
 				ECBC51F8216163BA00BE80EC /* TreeNode.swift in Sources */,
@@ -1410,6 +1433,7 @@
 				ECBC51FB216163E700BE80EC /* OrderedCollectionOperation+IndexPath+Undo.swift in Sources */,
 				ECBC51D22161637B00BE80EC /* OrderedCollectionDiff+Strideable.swift in Sources */,
 				EC1F12832167CA0D002F0D1B /* UnorderedCollectionChangeset+Dictionary.swift in Sources */,
+				90B5F6392269D67C001917B4 /* NSCollectionView+FlatDataSource.swift in Sources */,
 				90A443171E9055D200D611FE /* NSColorWell.swift in Sources */,
 				90C04DA41E8F0B96000077C8 /* UIProgressView.swift in Sources */,
 			);
