@@ -1,7 +1,7 @@
 //
 //  The MIT License (MIT)
 //
-//  Copyright (c) 2016 Tony Arnold (@tonyarnold)
+//  Copyright (c) 2019 Tony Arnold (@tonyarnold)
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -27,21 +27,18 @@
 import AppKit
 import ReactiveKit
 
-private var CollectionViewBinderFlatDataSourceeAssociationKey = "CollectionViewBinderFlatDataSource"
+private var CollectionViewBinderDataSourceAssociationKey = "CollectionViewBinderDataSource"
 
-open class CollectionViewBinderFlatDataSource<Changeset: FlatDataSourceChangeset>: NSObject, NSCollectionViewDataSource {
+open class CollectionViewBinderDataSource<Changeset: SectionedDataSourceChangeset>: NSObject, NSCollectionViewDataSource {
 
     public var createCell: ((Changeset.Collection, IndexPath, NSCollectionView) -> NSCollectionViewItem)?
-
-    /// Local clone of the bound collection
-    public var collection: [Changeset.Collection.Item] = []
 
     public var changeset: Changeset? {
         didSet {
             if let changeset = changeset, oldValue != nil {
                 applyChangeset(changeset)
             } else {
-                collectionView?.reloadData()
+                collectionView?.animator().reloadData()
             }
         }
     }
@@ -66,11 +63,11 @@ open class CollectionViewBinderFlatDataSource<Changeset: FlatDataSourceChangeset
     // MARK: - NSCollectionViewDataSource
 
     public func numberOfSections(in collectionView: NSCollectionView) -> Int {
-        return 1
+        return changeset?.collection.numberOfSections ?? 0
     }
 
     public func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        return changeset?.collection.numberOfItems ?? 0
+        return changeset?.collection.numberOfItems(inSection: section) ?? 0
     }
 
     public func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
@@ -84,39 +81,54 @@ open class CollectionViewBinderFlatDataSource<Changeset: FlatDataSourceChangeset
 
     open func applyChangeset(_ changeset: Changeset) {
         guard let collectionView = collectionView else { return }
-        let patch = changeset.patch
-        if patch.isEmpty {
-            collection = clone(changeset.collection)
+        let diff = changeset.diff.asOrderedCollectionDiff.map { $0.asSectionDataIndexPath }
+        if diff.isEmpty {
             collectionView.animator().reloadData()
         } else {
             collectionView.animator()
                 .performBatchUpdates({
-                    patch.forEach(self.apply)
+                    self.applyChangesetDiff(diff)
                 }, completionHandler: nil)
         }
     }
 
-    open func apply(operation: Changeset.Operation) {
+    open func applyChangesetDiff(_ diff: OrderedCollectionDiff<IndexPath>) {
         guard let collectionView = collectionView else { return }
-
-        switch operation.asOrderedCollectionOperation {
-        case let .insert(element, index):
-            collection.apply(.insert(element, at: index.asFlatDataIndex))
-            collectionView.animator().insertItems(at: [IndexPath(item: index.asFlatDataIndex, section: 0)])
-        case let .delete(index):
-            collection.apply(.delete(at: index.asFlatDataIndex))
-            collectionView.animator().deleteItems(at: [IndexPath(item: index.asFlatDataIndex, section: 0)])
-        case let .update(index, element):
-            collection.apply(.update(at: index.asFlatDataIndex, newElement: element))
-            collectionView.animator().reloadItems(at: [IndexPath(item: index.asFlatDataIndex, section: 0)])
-        case let .move(from, to):
-            collection.apply(.move(from: from.asFlatDataIndex, to: to.asFlatDataIndex))
-            collectionView.animator().moveItem(at: IndexPath(item: from.asFlatDataIndex, section: 0), to: IndexPath(item: to.asFlatDataIndex, section: 0))
+        let insertedSections = diff.inserts.filter { $0.count == 1 }.map { $0[0] }
+        if !insertedSections.isEmpty {
+            collectionView.animator().insertSections(IndexSet(insertedSections))
+        }
+        let insertedItems = Set(diff.inserts.filter { $0.count == 2 })
+        if !insertedItems.isEmpty {
+            collectionView.animator().insertItems(at: insertedItems)
+        }
+        let deletedSections = diff.deletes.filter { $0.count == 1 }.map { $0[0] }
+        if !deletedSections.isEmpty {
+            collectionView.animator().deleteSections(IndexSet(deletedSections))
+        }
+        let deletedItems = Set(diff.deletes.filter { $0.count == 2 })
+        if !deletedItems.isEmpty {
+            collectionView.animator().deleteItems(at: deletedItems)
+        }
+        let updatedItems = Set(diff.updates.filter { $0.count == 2 })
+        if !updatedItems.isEmpty {
+            collectionView.animator().reloadItems(at: updatedItems)
+        }
+        let updatedSections = diff.updates.filter { $0.count == 1 }.map { $0[0] }
+        if !updatedSections.isEmpty {
+            collectionView.animator().reloadSections(IndexSet(updatedSections))
+        }
+        for move in diff.moves {
+            if move.from.count == 2, move.to.count == 2 {
+                collectionView.animator().moveItem(at: move.from, to: move.to)
+            } else if move.from.count == 1, move.to.count == 1 {
+                collectionView.animator().moveSection(move.from[0], toSection: move.to[0])
+            }
         }
     }
 
     private func associateWithCollectionView(_ collectionView: NSCollectionView) {
-        objc_setAssociatedObject(collectionView, &CollectionViewBinderFlatDataSourceeAssociationKey, self, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        objc_setAssociatedObject(collectionView, &CollectionViewBinderDataSourceAssociationKey, self, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         if collectionView.reactive.hasProtocolProxy(for: NSCollectionViewDataSource.self) {
             collectionView.reactive.dataSource.forwardTo = self
         } else {
@@ -124,23 +136,19 @@ open class CollectionViewBinderFlatDataSource<Changeset: FlatDataSourceChangeset
         }
     }
 
-    private func clone(_ collection: Changeset.Collection) -> [Changeset.Collection.Item] {
-        return (0 ..< collection.numberOfItems).map { collection.item(at: $0) }
-    }
-
 }
 
-extension CollectionViewBinderFlatDataSource {
+extension CollectionViewBinderDataSource {
 
-    public class ReloadingBinder: CollectionViewBinderFlatDataSource {
+    public class ReloadingBinder: CollectionViewBinderDataSource {
         public override func applyChangeset(_ changeset: Changeset) {
-            collectionView?.reloadData()
+            collectionView?.animator().reloadData()
         }
     }
 
 }
 
-extension SignalProtocol where Element: FlatDataSourceChangesetConvertible, Error == Never {
+extension SignalProtocol where Element: SectionedDataSourceChangesetConvertible, Error == Never {
 
     /// Binds the signal of data source elements to the given collection view.
     ///
@@ -150,7 +158,7 @@ extension SignalProtocol where Element: FlatDataSourceChangesetConvertible, Erro
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the collection view is deallocated.
     @discardableResult
     public func bind(to collectionView: NSCollectionView, createCell: @escaping (Element.Changeset.Collection, IndexPath, NSCollectionView) -> NSCollectionViewItem) -> Disposable {
-        let binder = CollectionViewBinderFlatDataSource<Element.Changeset>(createCell)
+        let binder = CollectionViewBinderDataSource<Element.Changeset>(createCell)
         return bind(to: collectionView, using: binder)
     }
 
@@ -161,17 +169,17 @@ extension SignalProtocol where Element: FlatDataSourceChangesetConvertible, Erro
     ///     - binder: A `CollectionViewBinder` or its subclass that will manage the binding.
     /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the collection view is deallocated.
     @discardableResult
-    public func bind(to collectionView: NSCollectionView, using binder: CollectionViewBinderFlatDataSource<Element.Changeset>) -> Disposable {
+    public func bind(to collectionView: NSCollectionView, using binder: CollectionViewBinderDataSource<Element.Changeset>) -> Disposable {
         binder.collectionView = collectionView
         return bind(to: collectionView) { _, changeset in
-            binder.changeset = changeset.asFlatDataSourceChangeset
+            binder.changeset = changeset.asSectionedDataSourceChangeset
         }
     }
 
 }
 
-extension SignalProtocol where Element: FlatDataSourceChangesetConvertible, Element.Changeset.Collection: QueryableSectionedDataSourceProtocol, Error == Never {
-
+extension SignalProtocol where Element: SectionedDataSourceChangesetConvertible, Element.Changeset.Collection: QueryableSectionedDataSourceProtocol, Error == Never {
+    
     /// Binds the signal of data source elements to the given collection view.
     ///
     /// - parameters:
@@ -216,7 +224,7 @@ extension SignalProtocol where Element: FlatDataSourceChangesetConvertible, Elem
     /// Note that the cell type name will be used as a reusable identifier and the binding will automatically register and dequeue the cell.
     /// If there exists a nib file in the bundle with the same name as the cell type name, the framework will load the cell from the nib file.
     @discardableResult
-    public func bind<Item: NSCollectionViewItem>(to collectionView: NSCollectionView, itemType: Item.Type, using binderDataSource: CollectionViewBinderFlatDataSource<Element.Changeset>, configureItem: @escaping (Item, Element.Changeset.Collection.Item) -> Void) -> Disposable {
+    public func bind<Item: NSCollectionViewItem>(to collectionView: NSCollectionView, itemType: Item.Type, using binderDataSource: CollectionViewBinderDataSource<Element.Changeset>, configureItem: @escaping (Item, Element.Changeset.Collection.Item) -> Void) -> Disposable {
         let identifierString = String(describing: Item.self)
         let identifier = NSUserInterfaceItemIdentifier(rawValue: identifierString)
         let bundle = Bundle(for: Item.self)
