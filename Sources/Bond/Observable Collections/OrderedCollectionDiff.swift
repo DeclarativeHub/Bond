@@ -47,10 +47,15 @@ public struct OrderedCollectionDiff<Index>: OrderedCollectionDiffProtocol {
     public var moves: [(from: Index, to: Index)]
 
     public init() {
+        self.init(reload: true)
+    }
+
+    public init(reload: Bool = false) {
         self.inserts = []
         self.deletes = []
         self.updates = []
         self.moves = []
+        isReload = reload
     }
 
     public init(inserts: [Index], deletes: [Index], updates: [Index], moves: [(from: Index, to: Index)]) {
@@ -58,12 +63,15 @@ public struct OrderedCollectionDiff<Index>: OrderedCollectionDiffProtocol {
         self.deletes = deletes
         self.updates = updates
         self.moves = moves
+        isReload = false
     }
 
     /// Returns `true` if the diff is empty (`count == 0`).
     public var isEmpty: Bool {
         return count == 0
     }
+    /// Identicates wheather diff performs full reload insted of patch.
+    public let isReload: Bool
 
     /// Total number of changes contained in the diff.
     public var count: Int {

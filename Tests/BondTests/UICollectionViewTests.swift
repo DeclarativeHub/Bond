@@ -103,6 +103,15 @@ class UICollectionViewTests: XCTestCase {
         let possibleResultB = [OrderedCollectionDiff(), OrderedCollectionDiff<IndexPath>(inserts: [IndexPath(row: 0, section: 0), IndexPath(row: 1, section: 0)])]
         XCTAssert(collectionView.observedEvents == possibleResultA || collectionView.observedEvents == possibleResultB)
     }
+
+    func testBatchUpdatesEmptyBatch() {
+        array.batchUpdate { (array) in }
+
+         let possibleResultA = [OrderedCollectionDiff<IndexPath>()] // It Should reload data only once
+
+        XCTAssert(collectionView.observedEvents == possibleResultA)
+    }
+
 }
 
 #endif

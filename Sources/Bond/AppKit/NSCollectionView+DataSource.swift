@@ -82,7 +82,12 @@ open class CollectionViewBinderDataSource<Changeset: SectionedDataSourceChangese
     open func applyChangeset(_ changeset: Changeset) {
         guard let collectionView = collectionView else { return }
         let diff = changeset.diff.asOrderedCollectionDiff.map { $0.asSectionDataIndexPath }
-        if diff.isEmpty {
+
+        guard !diff.isEmpty else {
+            return
+        }
+
+        if diff.isReload {
             collectionView.animator().reloadData()
         } else {
             collectionView.animator()

@@ -198,7 +198,12 @@ open class TableViewBinderDataSource<Changeset: SectionedDataSourceChangeset>: N
     open func applyChangeset(_ changeset: Changeset) {
         guard let tableView = tableView else { return }
         let diff = changeset.diff.asOrderedCollectionDiff.map { $0.asSectionDataIndexPath }
-        if diff.isEmpty {
+
+        guard !diff.isEmpty else {
+            return
+        }
+
+        if diff.isReload {
             tableView.reloadData()
         } else if diff.count == 1 {
             applyChangesetDiff(diff)
