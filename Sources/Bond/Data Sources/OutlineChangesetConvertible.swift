@@ -30,6 +30,6 @@ extension TreeArray: OutlineChangesetConvertible {
 extension ObjectTreeArray: OutlineChangesetConvertible {
 
     public var asTreeArrayChangeset: TreeChangeset<ObjectTreeArray<Value>> {
-        return TreeChangeset(collection: self, patch: [])
+        return TreeChangeset(collection: self, diff: OrderedCollectionDiff(reload: true))
     }
 }

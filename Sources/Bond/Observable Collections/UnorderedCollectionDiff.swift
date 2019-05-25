@@ -6,7 +6,7 @@
 //  Copyright © 2018 Swift Bond. All rights reserved.
 //
 
-public protocol UnorderedCollectionDiffProtocol: Instantiatable {
+public protocol UnorderedCollectionDiffProtocol: DiffProtocol {
     associatedtype Index
     var asUnorderedCollectionDiff: UnorderedCollectionDiff<Index> { get }
 }
@@ -24,16 +24,24 @@ public struct UnorderedCollectionDiff<Index>: UnorderedCollectionDiffProtocol {
     /// Indices of updated elements in the source collection index space.
     public var updates: [Index]
 
-    public init() {
+    public let isReload: Bool
+
+    public init(reload: Bool) {
         self.inserts = []
         self.deletes = []
         self.updates = []
+        isReload = reload
+    }
+
+    public init() {
+        self.init(reload: false)
     }
 
     public init(inserts: [Index], deletes: [Index], updates: [Index]) {
         self.inserts = inserts
         self.deletes = deletes
         self.updates = updates
+        self.isReload = false
     }
 
     public var isEmpty: Bool {

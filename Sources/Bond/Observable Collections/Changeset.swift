@@ -24,11 +24,17 @@
 
 import Foundation
 
+public protocol DiffProtocol: Instantiatable {
+    var isEmpty: Bool { get }
+    var isReload: Bool { get }
+    init(reload: Bool)
+}
+
 /// A type that represents a collection change description, i.e. a modification of a collection.
 /// Changeset provides the collection itself as well as the change diff and patch.
 public protocol ChangesetProtocol {
 
-    associatedtype Diff: Instantiatable
+    associatedtype Diff: DiffProtocol
     associatedtype Operation
     associatedtype Collection
 
@@ -61,7 +67,7 @@ public protocol ChangesetProtocol {
 
 /// A type that represents a collection change description, i.e. a modification of a collection.
 /// Changeset provides the collection itself as well as the change diff and patch.
-open class Changeset<Collection, Operation, Diff: Instantiatable>: ChangesetProtocol {
+open class Changeset<Collection, Operation, Diff: DiffProtocol>: ChangesetProtocol {
 
     open var precalculatedDiff: Diff?
     open var precalculatedPatch: [Operation]?

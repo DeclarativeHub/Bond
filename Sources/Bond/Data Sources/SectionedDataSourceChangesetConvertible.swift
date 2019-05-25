@@ -113,7 +113,8 @@ extension Array2D: QueryableSectionedDataSourceProtocol {
 extension TreeArray: SectionedDataSourceChangesetConvertible {
 
     public var asSectionedDataSourceChangeset: TreeChangeset<TreeArray<Value>> {
-        return TreeChangeset(collection: self, patch: [])
+
+        return TreeChangeset(collection: self, diff: OrderedCollectionDiff<IndexPath>(reload: true))
     }
 }
 

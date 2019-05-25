@@ -24,7 +24,7 @@
 
 import Foundation
 
-public protocol OrderedCollectionDiffProtocol: Instantiatable {
+public protocol OrderedCollectionDiffProtocol: DiffProtocol {
     associatedtype Index
     var asOrderedCollectionDiff: OrderedCollectionDiff<Index> { get }
 }
@@ -47,10 +47,10 @@ public struct OrderedCollectionDiff<Index>: OrderedCollectionDiffProtocol {
     public var moves: [(from: Index, to: Index)]
 
     public init() {
-        self.init(reload: true)
+        self.init(reload: false)
     }
 
-    public init(reload: Bool = false) {
+    public init(reload: Bool) {
         self.inserts = []
         self.deletes = []
         self.updates = []
@@ -72,7 +72,7 @@ public struct OrderedCollectionDiff<Index>: OrderedCollectionDiffProtocol {
     }
     /// Identicates wheather diff performs full reload insted of patch.
     public let isReload: Bool
-
+ 
     /// Total number of changes contained in the diff.
     public var count: Int {
         return inserts.count + deletes.count + updates.count + moves.count
@@ -126,7 +126,7 @@ extension OrderedCollectionDiff: Equatable where Index: Equatable {
 
     public static func == (lhs: OrderedCollectionDiff<Index>, rhs: OrderedCollectionDiff<Index>) -> Bool {
         let movesEqual = lhs.moves.map { $0.from } == rhs.moves.map { $0.from } && lhs.moves.map { $0.to } == rhs.moves.map { $0.to }
-        return lhs.inserts == rhs.inserts && lhs.deletes == rhs.deletes && lhs.updates == rhs.updates && movesEqual
+        return lhs.inserts == rhs.inserts && lhs.deletes == rhs.deletes && lhs.updates == rhs.updates && movesEqual && lhs.isReload == rhs.isReload
     }
 }
 
