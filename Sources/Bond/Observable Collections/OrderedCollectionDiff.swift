@@ -46,10 +46,6 @@ public struct OrderedCollectionDiff<Index>: OrderedCollectionDiffProtocol {
     /// index space, while `to` is an index in the final collection index space.
     public var moves: [(from: Index, to: Index)]
 
-    public init() {
-        self.init(reload: false)
-    }
-
     public init(reload: Bool) {
         self.inserts = []
         self.deletes = []
@@ -68,7 +64,7 @@ public struct OrderedCollectionDiff<Index>: OrderedCollectionDiffProtocol {
 
     /// Returns `true` if the diff is empty (`count == 0`).
     public var isEmpty: Bool {
-        return count == 0
+        return !isReload && count == 0
     }
     /// Identicates wheather diff performs full reload insted of patch.
     public let isReload: Bool
@@ -113,6 +109,10 @@ extension OrderedCollectionDiffProtocol {
 
     public func map<T>(_ transform: (Index) -> T) -> OrderedCollectionDiff<T> {
         let diff = asOrderedCollectionDiff
+        if diff.isReload {
+            return OrderedCollectionDiff<T>(reload: true)
+        }
+
         return OrderedCollectionDiff<T>(
             inserts: diff.inserts.map(transform),
             deletes: diff.deletes.map(transform),

@@ -29,7 +29,7 @@ import ReactiveKit
 extension OrderedCollectionDiff where Index == Int {
 
     public init(from diff: ExtendedDiff) {
-        self.init()
+        self.init(reload: false)
         for element in diff.elements {
             switch element {
             case .insert(let at):

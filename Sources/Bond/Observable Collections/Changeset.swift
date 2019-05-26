@@ -24,7 +24,7 @@
 
 import Foundation
 
-public protocol DiffProtocol: Instantiatable {
+public protocol DiffProtocol {
     var isEmpty: Bool { get }
     var isReload: Bool { get }
     init(reload: Bool)
@@ -105,7 +105,7 @@ open class Changeset<Collection, Operation, Diff: DiffProtocol>: ChangesetProtoc
     }
 
     open func calculateDiff(from patch: [Operation]) -> Diff {
-        return Diff()
+        return Diff(reload: false)
     }
 
     open func calculatePatch(from diff: Diff) -> [Operation] {

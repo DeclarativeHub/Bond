@@ -18,7 +18,7 @@ class TestTableView: UITableView {
 
     override func reloadData() {
         super.reloadData()
-        observedEvents.append(OrderedCollectionDiff())
+        observedEvents.append(OrderedCollectionDiff(reload: true))
     }
 
     open override func insertSections(_ sections: IndexSet, with animation: UITableView.RowAnimation) {
@@ -75,22 +75,22 @@ class UITableViewTests: XCTestCase {
 
     func testInsertRows() {
         array.insert(4, at: 1)
-        XCTAssert(tableView.observedEvents == [OrderedCollectionDiff(), OrderedCollectionDiff<IndexPath>(inserts: [IndexPath(row: 1, section: 0)])])
+        XCTAssert(tableView.observedEvents == [OrderedCollectionDiff(reload: true), OrderedCollectionDiff<IndexPath>(inserts: [IndexPath(row: 1, section: 0)])])
     }
 
     func testDeleteRows() {
         let _ = array.remove(at: 2)
-        XCTAssert(tableView.observedEvents == [OrderedCollectionDiff(), OrderedCollectionDiff<IndexPath>(deletes: [IndexPath(row: 2, section: 0)])])
+        XCTAssert(tableView.observedEvents == [OrderedCollectionDiff(reload: true), OrderedCollectionDiff<IndexPath>(deletes: [IndexPath(row: 2, section: 0)])])
     }
 
     func testReloadRows() {
         array[2] = 5
-        XCTAssert(tableView.observedEvents == [OrderedCollectionDiff(), OrderedCollectionDiff<IndexPath>(updates: [IndexPath(row: 2, section: 0)])])
+        XCTAssert(tableView.observedEvents == [OrderedCollectionDiff(reload: true), OrderedCollectionDiff<IndexPath>(updates: [IndexPath(row: 2, section: 0)])])
     }
 
     func testMoveRow() {
         array.move(from: 1, to: 2)
-        XCTAssert(tableView.observedEvents == [OrderedCollectionDiff(), OrderedCollectionDiff<IndexPath>(moves: [(from: IndexPath(row: 1, section: 0), to: IndexPath(row: 2, section: 0))])])
+        XCTAssert(tableView.observedEvents == [OrderedCollectionDiff(reload: true), OrderedCollectionDiff<IndexPath>(moves: [(from: IndexPath(row: 1, section: 0), to: IndexPath(row: 2, section: 0))])])
     }
 
     func testBatchUpdates() {
@@ -99,8 +99,8 @@ class UITableViewTests: XCTestCase {
             array.insert(1, at: 0)
         }
 
-        let possibleResultA = [OrderedCollectionDiff(), OrderedCollectionDiff<IndexPath>(inserts: [IndexPath(row: 1, section: 0), IndexPath(row: 0, section: 0)])]
-        let possibleResultB = [OrderedCollectionDiff(), OrderedCollectionDiff<IndexPath>(inserts: [IndexPath(row: 0, section: 0), IndexPath(row: 1, section: 0)])]
+        let possibleResultA = [OrderedCollectionDiff(reload: true), OrderedCollectionDiff<IndexPath>(inserts: [IndexPath(row: 1, section: 0), IndexPath(row: 0, section: 0)])]
+        let possibleResultB = [OrderedCollectionDiff(reload: true), OrderedCollectionDiff<IndexPath>(inserts: [IndexPath(row: 0, section: 0), IndexPath(row: 1, section: 0)])]
         XCTAssert(tableView.observedEvents == possibleResultA || tableView.observedEvents == possibleResultB)
     }
 }

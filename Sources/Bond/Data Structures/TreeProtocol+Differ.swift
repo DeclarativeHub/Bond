@@ -58,7 +58,7 @@ extension TreeProtocol {
 extension OrderedCollectionDiff where Index == IndexPath {
 
     public init(from diff: Diff, sourceRoot: IndexPath, destinationRoot: IndexPath) {
-        self.init()
+        self.init(reload: false)
         for element in diff.elements {
             switch element {
             case .insert(let at):

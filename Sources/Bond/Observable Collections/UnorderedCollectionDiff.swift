@@ -33,9 +33,9 @@ public struct UnorderedCollectionDiff<Index>: UnorderedCollectionDiffProtocol {
         isReload = reload
     }
 
-    public init() {
-        self.init(reload: false)
-    }
+//    public init() {
+//        self.init(reload: false)
+//    }
 
     public init(inserts: [Index], deletes: [Index], updates: [Index]) {
         self.inserts = inserts
@@ -45,7 +45,7 @@ public struct UnorderedCollectionDiff<Index>: UnorderedCollectionDiffProtocol {
     }
 
     public var isEmpty: Bool {
-        return count == 0
+        return !isReload && count == 0
     }
 
     public var count: Int {
@@ -68,7 +68,7 @@ extension UnorderedCollectionDiff {
     /// Calculates diff from the given patch.
     /// - complexity: O(Nˆ2) where N is the number of patch operations.
     public init(from patch: [AnyUnorderedCollectionOperation<Index>]) {
-        self.init()
+        self.init(reload: false)
         inserts = patch.compactMap { if case .insert(let index) = $0 { return index } else { return nil } }
         deletes = patch.compactMap { if case .delete(let index) = $0 { return index } else { return nil } }
         updates = patch.compactMap { if case .update(let index) = $0 { return index } else { return nil } }
@@ -79,6 +79,9 @@ extension UnorderedCollectionDiffProtocol {
 
     public func map<T>(_ transform: (Index) -> T) -> UnorderedCollectionDiff<T> {
         let diff = asUnorderedCollectionDiff
+        if diff.isReload {
+            return UnorderedCollectionDiff<T>(reload: true)
+        }
         return UnorderedCollectionDiff<T>(
             inserts: diff.inserts.map(transform),
             deletes: diff.deletes.map(transform),
@@ -98,7 +101,7 @@ extension UnorderedCollectionDiffProtocol {
 extension UnorderedCollectionDiff: Equatable where Index: Equatable {
 
     public static func == (lhs: UnorderedCollectionDiff<Index>, rhs: UnorderedCollectionDiff<Index>) -> Bool {
-        return lhs.inserts == rhs.inserts && lhs.deletes == rhs.deletes && lhs.updates == rhs.updates
+        return lhs.inserts == rhs.inserts && lhs.deletes == rhs.deletes && lhs.updates == rhs.updates && lhs.isReload == rhs.isReload
     }
 }
 

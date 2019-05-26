@@ -18,7 +18,7 @@ class TestCollectionView: UICollectionView {
 
     override func reloadData() {
         super.reloadData()
-        observedEvents.append(OrderedCollectionDiff())
+        observedEvents.append(OrderedCollectionDiff(reload: true))
     }
 
     open override func insertSections(_ sections: IndexSet) {
@@ -75,22 +75,22 @@ class UICollectionViewTests: XCTestCase {
 
     func testInsertItems() {
         array.insert(4, at: 1)
-        XCTAssert(collectionView.observedEvents == [OrderedCollectionDiff(), OrderedCollectionDiff<IndexPath>(inserts: [IndexPath(row: 1, section: 0)])])
+        XCTAssert(collectionView.observedEvents == [OrderedCollectionDiff(reload: true), OrderedCollectionDiff<IndexPath>(inserts: [IndexPath(row: 1, section: 0)])])
     }
 
     func testDeleteItems() {
         let _ = array.remove(at: 2)
-        XCTAssert(collectionView.observedEvents == [OrderedCollectionDiff(), OrderedCollectionDiff<IndexPath>(deletes: [IndexPath(row: 2, section: 0)])])
+        XCTAssert(collectionView.observedEvents == [OrderedCollectionDiff(reload: true), OrderedCollectionDiff<IndexPath>(deletes: [IndexPath(row: 2, section: 0)])])
     }
 
     func testReloadItems() {
         array[2] = 5
-        XCTAssert(collectionView.observedEvents == [OrderedCollectionDiff(), OrderedCollectionDiff<IndexPath>(updates: [IndexPath(row: 2, section: 0)])])
+        XCTAssert(collectionView.observedEvents == [OrderedCollectionDiff(reload: true), OrderedCollectionDiff<IndexPath>(updates: [IndexPath(row: 2, section: 0)])])
     }
 
     func testMoveRow() {
         array.move(from: 1, to: 2)
-        XCTAssert(collectionView.observedEvents == [OrderedCollectionDiff(), OrderedCollectionDiff<IndexPath>(moves: [(from: IndexPath(row: 1, section: 0), to: IndexPath(row: 2, section: 0))])])
+        XCTAssert(collectionView.observedEvents == [OrderedCollectionDiff(reload: true), OrderedCollectionDiff<IndexPath>(moves: [(from: IndexPath(row: 1, section: 0), to: IndexPath(row: 2, section: 0))])])
     }
 
     func testBatchUpdates() {
@@ -99,17 +99,25 @@ class UICollectionViewTests: XCTestCase {
             array.insert(1, at: 0)
         }
 
-        let possibleResultA = [OrderedCollectionDiff(), OrderedCollectionDiff<IndexPath>(inserts: [IndexPath(row: 1, section: 0), IndexPath(row: 0, section: 0)])]
-        let possibleResultB = [OrderedCollectionDiff(), OrderedCollectionDiff<IndexPath>(inserts: [IndexPath(row: 0, section: 0), IndexPath(row: 1, section: 0)])]
+        let possibleResultA = [OrderedCollectionDiff(reload: true), OrderedCollectionDiff<IndexPath>(inserts: [IndexPath(row: 1, section: 0), IndexPath(row: 0, section: 0)])]
+        let possibleResultB = [OrderedCollectionDiff(reload: true), OrderedCollectionDiff<IndexPath>(inserts: [IndexPath(row: 0, section: 0), IndexPath(row: 1, section: 0)])]
         XCTAssert(collectionView.observedEvents == possibleResultA || collectionView.observedEvents == possibleResultB)
     }
 
     func testBatchUpdatesEmptyBatch() {
         array.batchUpdate { (array) in }
+        let expectedResult = [OrderedCollectionDiff<IndexPath>(reload: true)] // It Should reload data only once
 
-         let possibleResultA = [OrderedCollectionDiff<IndexPath>()] // It Should reload data only once
+        XCTAssert(collectionView.observedEvents == expectedResult)
+    }
 
-        XCTAssert(collectionView.observedEvents == possibleResultA)
+    func testReplace() {
+        array.replace(with: [1])
+
+        let expectedResult = [OrderedCollectionDiff<IndexPath>(reload: true),
+                               OrderedCollectionDiff<IndexPath>(reload: true)] // It when replace data
+
+        XCTAssert(collectionView.observedEvents == expectedResult)
     }
 
 }

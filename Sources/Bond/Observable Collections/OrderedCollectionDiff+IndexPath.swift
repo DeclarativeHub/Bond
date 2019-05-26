@@ -35,7 +35,7 @@ extension OrderedCollectionDiff where Index == IndexPath {
     /// Calculates diff from the given patch.
     /// - complexity: O(Nˆ2) where N is the number of patch operations.
     public init(from patch: [AnyOrderedCollectionOperation<Index>]) {
-        self.init()
+        self.init(reload: false)
 
         guard !patch.isEmpty else {
             return

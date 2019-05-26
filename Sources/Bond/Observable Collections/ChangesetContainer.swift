@@ -77,9 +77,9 @@ extension MutableChangesetContainerProtocol {
 
     /// Replace the underlying collection with the given collection.
     public func replace(with newCollection: Collection) {
-        descriptiveUpdate { (collection) -> [Changeset.Operation] in
+        descriptiveUpdate { (collection) -> Diff in
             collection = newCollection
-            return []
+            return Diff(reload: true)
         }
     }
 
@@ -146,6 +146,6 @@ extension SignalProtocol where Error == Never {
     /// Bind the collection signal to the given changeset container like MutableObervableArray.
     @discardableResult
     public func bind<C: ChangesetContainerProtocol>(to changesetContainer: C) -> Disposable where C: BindableProtocol, C.Element == C.Changeset, C.Changeset.Collection == Element {
-        return map { C.Changeset(collection: $0, diff: .init()) }.bind(to: changesetContainer)
+        return map { C.Changeset(collection: $0, diff: .init(reload: true)) }.bind(to: changesetContainer)
     }
 }
