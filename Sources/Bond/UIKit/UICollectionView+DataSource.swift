@@ -173,6 +173,7 @@ open class CollectionViewBinderDataSource<Changeset: SectionedDataSourceChangese
     }
 
     open func applyChangeset(_ changeset: Changeset) {
+        print("Apply Changeset")
         guard let collectionView = collectionView else { return }
         let diff = changeset.diff.asOrderedCollectionDiff.map { $0.asSectionDataIndexPath }
 

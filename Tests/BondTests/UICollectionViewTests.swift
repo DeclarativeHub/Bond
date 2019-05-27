@@ -115,11 +115,32 @@ class UICollectionViewTests: XCTestCase {
         array.replace(with: [1])
 
         let expectedResult = [OrderedCollectionDiff<IndexPath>(reload: true),
-                               OrderedCollectionDiff<IndexPath>(reload: true)] // It when replace data
+                               OrderedCollectionDiff<IndexPath>(reload: true)] // It should reload collaction when replace data
 
         XCTAssert(collectionView.observedEvents == expectedResult)
     }
+}
 
+class UICollectionViewArrayTests: XCTestCase {
+    var array: Property<[Int]>!
+    var collectionView: TestCollectionView!
+
+    override func setUp() {
+        array = Property([1, 2, 3])
+        collectionView = TestCollectionView(frame: CGRect(x: 0, y: 0, width: 100, height: 1000), collectionViewLayout: UICollectionViewFlowLayout())
+        array.bind(to: collectionView, cellType: UICollectionViewCell.self) { _, _ in }
+    }
+
+    func testPropertyArray() {
+        var expectedResult = [OrderedCollectionDiff<IndexPath>(reload: true)]
+
+        XCTAssert(collectionView.observedEvents == expectedResult)
+
+        array.value = [3,2,1]
+        expectedResult.append(OrderedCollectionDiff<IndexPath>(reload: true))
+
+        XCTAssert(collectionView.observedEvents == expectedResult)
+    }
 }
 
 #endif
