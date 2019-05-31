@@ -74,7 +74,7 @@ You can use any ReactiveKit operators to transform or combine signals. Following
 combineLatest(emailField.reactive.text, passField.reactive.text) { email, pass in
     return email.length > 0 && pass.length > 0
   }
-  .bind(to: button.reactive.enabled)
+  .bind(to: button.reactive.isEnabled)
 ```
 
 Whenever user types something into any of these text fields, expression will be evaluated and button state updated.
