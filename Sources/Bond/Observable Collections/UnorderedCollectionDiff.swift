@@ -33,10 +33,6 @@ public struct UnorderedCollectionDiff<Index>: UnorderedCollectionDiffProtocol {
         isReload = reload
     }
 
-//    public init() {
-//        self.init(reload: false)
-//    }
-
     public init(inserts: [Index], deletes: [Index], updates: [Index]) {
         self.inserts = inserts
         self.deletes = deletes
