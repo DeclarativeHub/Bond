@@ -65,25 +65,12 @@ extension ReactiveExtensions where Base: NSObject {
                 observer.receive(base[keyPath: keyPath])
             }
 
-            let disposable = base._willDeallocate.observeCompleted { [weak base] in
-                if #available(iOS 11, *) {} else {
-                    let keyPathString = NSExpression(forKeyPath: keyPath).keyPath
-                    if let base = base {
-                        base.removeObserver(base, forKeyPath: keyPathString)
-                    }
-                }
-                
+            let disposable = base._willDeallocate.observeCompleted {
                 subscription.invalidate()
                 observer.receive(completion: .finished)
             }
 
-            return DeinitDisposable(disposable: MainBlockDisposable { [weak base] in
-                  if #available(iOS 11, *) {} else {
-                      let keyPathString = NSExpression(forKeyPath: keyPath).keyPath
-                    if let base = base {
-                        base.removeObserver(base, forKeyPath: keyPathString)
-                    }
-                  }
+            return DeinitDisposable(disposable: MainBlockDisposable {
                   subscription.invalidate()
                   disposable.dispose()
             })
