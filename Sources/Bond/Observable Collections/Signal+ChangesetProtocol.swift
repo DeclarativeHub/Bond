@@ -60,9 +60,10 @@ extension SignalProtocol where Element: Collection, Element.Index: Strideable {
                     let newCollection = element
                     if let collection = collection {
                         let diff = generateDiff(collection, newCollection)
-                        observer.next(OrderedCollectionChangeset(collection: newCollection, patch: [], diff: diff))
+                        observer.next(OrderedCollectionChangeset(collection: newCollection, diff: diff))
                     } else {
-                        observer.next(OrderedCollectionChangeset(collection: newCollection, patch: []))
+                        observer.next(OrderedCollectionChangeset(collection: newCollection,
+                                                                 diff: OrderedCollectionDiff(reload: true)))
                     }
                     collection = newCollection
                 case .failed(let error):
@@ -87,9 +88,10 @@ extension SignalProtocol where Element: TreeProtocol {
                     let newCollection = element
                     if let collection = collection {
                         let diff = generateDiff(collection, newCollection)
-                        observer.next(TreeChangeset(collection: newCollection, patch: [], diff: diff))
+                        observer.next(TreeChangeset(collection: newCollection, diff: diff))
                     } else {
-                        observer.next(TreeChangeset(collection: newCollection, patch: []))
+                        observer.next(TreeChangeset(collection: newCollection,
+                                                    diff: OrderedCollectionDiff(reload: true)))
                     }
                     collection = newCollection
                 case .failed(let error):
