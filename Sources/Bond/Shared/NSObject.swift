@@ -57,14 +57,14 @@ extension NSObject {
             return subject.toSignal()
         } else {
             let subject = ReplayOneSubject<UnownedUnsafe<NSObject>, Never>()
-            subject.next(UnownedUnsafe(self))
+            subject.send(UnownedUnsafe(self))
             let typeName = String(describing: type(of: self))
             
             if !StaticVariables.swizzledTypes.contains(typeName) {
                 StaticVariables.swizzledTypes.insert(typeName)
                 type(of: self)._swizzleDeinit { me in
                     if let subject = objc_getAssociatedObject(me, &StaticVariables.willDeallocateSubject) as? ReplayOneSubject<UnownedUnsafe<NSObject>, Never> {
-                        subject.completed()
+                        subject.send(completion: .finished)
                     }
                 }
             }

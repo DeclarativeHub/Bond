@@ -60,15 +60,15 @@ extension SignalProtocol where Element: Collection, Element.Index: Strideable {
                     let newCollection = element
                     if let collection = collection {
                         let diff = generateDiff(collection, newCollection)
-                        observer.next(OrderedCollectionChangeset(collection: newCollection, patch: [], diff: diff))
+                        observer.receive(OrderedCollectionChangeset(collection: newCollection, patch: [], diff: diff))
                     } else {
-                        observer.next(OrderedCollectionChangeset(collection: newCollection, patch: []))
+                        observer.receive(OrderedCollectionChangeset(collection: newCollection, patch: []))
                     }
                     collection = newCollection
                 case .failed(let error):
-                    observer.failed(error)
+                    observer.receive(completion: .failure(error))
                 case .completed:
-                    observer.completed()
+                    observer.receive(completion: .finished)
                 }
             }
         }
@@ -87,15 +87,15 @@ extension SignalProtocol where Element: TreeProtocol {
                     let newCollection = element
                     if let collection = collection {
                         let diff = generateDiff(collection, newCollection)
-                        observer.next(TreeChangeset(collection: newCollection, patch: [], diff: diff))
+                        observer.receive(TreeChangeset(collection: newCollection, patch: [], diff: diff))
                     } else {
-                        observer.next(TreeChangeset(collection: newCollection, patch: []))
+                        observer.receive(TreeChangeset(collection: newCollection, patch: []))
                     }
                     collection = newCollection
                 case .failed(let error):
-                    observer.failed(error)
+                    observer.receive(completion: .failure(error))
                 case .completed:
-                    observer.completed()
+                    observer.receive(completion: .finished)
                 }
             }
         }
