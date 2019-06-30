@@ -76,7 +76,7 @@ class ProtocolProxyTests: XCTestCase {
 
     func testDisposing() {
         var callCount = 0
-        let signal = protocolProxy.signal(for: #selector(TestDelegate.methodA)) { (signal: SafePublishSubject<Int>) in
+        let signal = protocolProxy.signal(for: #selector(TestDelegate.methodA)) { (signal: PassthroughSubject<Int, Never>) in
             callCount += 1
         }
 
@@ -109,8 +109,8 @@ class ProtocolProxyTests: XCTestCase {
     }
 
     func testCallbackA() {
-        let signal = protocolProxy.signal(for: #selector(TestDelegate.methodA)) { (subject: SafePublishSubject<Int>) in
-            subject.next(0)
+        let signal = protocolProxy.signal(for: #selector(TestDelegate.methodA)) { (subject: PassthroughSubject<Int, Never>) in
+            subject.send(0)
         }
 
         signal.expectNext([0, 0])
@@ -119,8 +119,8 @@ class ProtocolProxyTests: XCTestCase {
     }
 
     func testCallbackB() {
-        let signal = protocolProxy.signal(for: #selector(TestDelegate.methodB(_:))) { (subject: SafePublishSubject<Int>, _: TestObject) in
-            subject.next(0)
+        let signal = protocolProxy.signal(for: #selector(TestDelegate.methodB(_:))) { (subject: PassthroughSubject<Int, Never>, _: TestObject) in
+            subject.send(0)
         }
 
         signal.expectNext([0, 0])
@@ -129,8 +129,8 @@ class ProtocolProxyTests: XCTestCase {
     }
 
     func testCallbackC() {
-        let signal = protocolProxy.signal(for: #selector(TestDelegate.methodC(_:value:))) { (subject: SafePublishSubject<Int>, _: TestObject, value: Int) in
-            subject.next(value)
+        let signal = protocolProxy.signal(for: #selector(TestDelegate.methodC(_:value:))) { (subject: PassthroughSubject<Int, Never>, _: TestObject, value: Int) in
+            subject.send(value)
         }
 
         signal.expectNext([10, 20])
@@ -139,8 +139,8 @@ class ProtocolProxyTests: XCTestCase {
     }
 
     func testCallbackD() {
-        let signal = protocolProxy.signal(for: #selector(TestDelegate.methodD(_:value:))) { (subject: SafePublishSubject<Int>, _: TestObject, value: Int) -> String in
-            subject.next(value)
+        let signal = protocolProxy.signal(for: #selector(TestDelegate.methodD(_:value:))) { (subject: PassthroughSubject<Int, Never>, _: TestObject, value: Int) -> String in
+            subject.send(value)
             return "\(value)"
         }
 
@@ -150,8 +150,8 @@ class ProtocolProxyTests: XCTestCase {
     }
 
     func testCallbackE() {
-        let signal = protocolProxy.signal(for: #selector(TestDelegate.methodE(_:value:))) { (subject: SafePublishSubject<IndexPath>, _: TestObject, value: IndexPath) in
-            subject.next(value)
+        let signal = protocolProxy.signal(for: #selector(TestDelegate.methodE(_:value:))) { (subject: PassthroughSubject<IndexPath, Never>, _: TestObject, value: IndexPath) in
+            subject.send(value)
         }
 
         signal.expectNext([IndexPath(indexes: [2, 2]), IndexPath(indexes: [3, 3])])
@@ -160,8 +160,8 @@ class ProtocolProxyTests: XCTestCase {
     }
 
     func testCallbackF() {
-        let signal = protocolProxy.signal(for: #selector(TestDelegate.methodF(_:value:))) { (subject: SafePublishSubject<IndexPath>, _: TestObject, value: IndexPath) -> Int in
-            subject.next(value)
+        let signal = protocolProxy.signal(for: #selector(TestDelegate.methodF(_:value:))) { (subject: PassthroughSubject<IndexPath, Never>, _: TestObject, value: IndexPath) -> Int in
+            subject.send(value)
             return 5
         }
 
@@ -171,8 +171,8 @@ class ProtocolProxyTests: XCTestCase {
     }
 
     func testCallbackG() {
-        let signal = protocolProxy.signal(for: #selector(TestDelegate.methodG(_:value:))) { (subject: SafePublishSubject<Int?>, _: TestObject, value: Any?) in
-            subject.next(value as? Int)
+        let signal = protocolProxy.signal(for: #selector(TestDelegate.methodG(_:value:))) { (subject: PassthroughSubject<Int?, Never>, _: TestObject, value: Any?) in
+            subject.send(value as? Int)
         }
 
         signal.expectNext([10, nil, 20])
