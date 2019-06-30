@@ -35,8 +35,8 @@ extension ReactiveExtensions where Base: UISearchBar {
 
     public var text: DynamicSubject<String?> {
         let selector = #selector(UISearchBarDelegate.searchBar(_:textDidChange:))
-        let signal = delegate.signal(for: selector) { (subject: SafePublishSubject<Void>, _: UISearchBar, _: NSString) in
-            subject.next()
+        let signal = delegate.signal(for: selector) { (subject: PassthroughSubject<Void, Never>, _: UISearchBar, _: NSString) in
+            subject.send()
         }
 
         return dynamicSubject(signal: signal, get: { $0.text }, set: { $0.text = $1 })

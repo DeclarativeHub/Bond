@@ -51,8 +51,8 @@ extension ReactiveExtensions where Base: UICollectionView {
     ///
     /// - Note: Uses collection view's `delegate` protocol proxy to observe calls made to `UICollectionViewDelegate.collectionView(_:didSelectItemAt:)` method.
     public var selectedItemIndexPath: SafeSignal<IndexPath> {
-        return delegate.signal(for: #selector(UICollectionViewDelegate.collectionView(_:didSelectItemAt:))) { (subject: SafePublishSubject<IndexPath>, _: UICollectionView, indexPath: IndexPath) in
-            subject.next(indexPath)
+        return delegate.signal(for: #selector(UICollectionViewDelegate.collectionView(_:didSelectItemAt:))) { (subject: PassthroughSubject<IndexPath, Never>, _: UICollectionView, indexPath: IndexPath) in
+            subject.send(indexPath)
         }
     }
 }
