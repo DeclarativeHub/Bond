@@ -13,7 +13,7 @@ import ReactiveKit
 private class DummyTarget: NSObject {
     var value: Int = 5
     var recordedElements: [Int] = []
-    let changes = SafePublishSubject<Void>()
+    let changes = PassthroughSubject<Void, Never>()
 }
 
 class DynamicSubjectTests: XCTestCase {
@@ -34,7 +34,7 @@ class DynamicSubjectTests: XCTestCase {
 
         subject.expectNext([5, 6, 7, 1, 2, 3])
         target.value = 6
-        target.changes.next(())
+        target.changes.send(())
         XCTAssert(target.value == 6)
 
         subject.on(.next(7))
@@ -60,18 +60,18 @@ class DynamicSubjectTests: XCTestCase {
             set: { (target, new) in target.value = new; target.recordedElements.append(new) }
         )
 
-        let signal = SafePublishSubject<Int>()
+        let signal = PassthroughSubject<Int, Never>()
         let disposable = signal.bind(to: subject)
 
         subject.expect([.next(5), .next(1), .completed], expectation: expectation(description: "completed"))
 
-        signal.next(1)
+        signal.send(1)
         XCTAssert(weakTarget != nil)
         XCTAssert(disposable.isDisposed == false)
         XCTAssert(target.recordedElements == [1])
 
         target = nil
-        signal.next(2)
+        signal.send(2)
         XCTAssert(weakTarget == nil)
         XCTAssert(disposable.isDisposed == true)
 

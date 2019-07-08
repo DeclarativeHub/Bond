@@ -36,7 +36,7 @@ extension UIBarButtonItem {
     @objc fileprivate class BondTarget: NSObject
     {
         weak var barButtonItem: UIBarButtonItem?
-        let subject = PublishSubject<Void, Never>()
+        let subject = PassthroughSubject<Void, Never>()
 
         init(barButtonItem: UIBarButtonItem) {
             self.barButtonItem = barButtonItem
@@ -47,13 +47,13 @@ extension UIBarButtonItem {
         }
 
         @objc func eventHandler() {
-            subject.next(())
+            subject.send(())
         }
 
         deinit {
             barButtonItem?.target = nil
             barButtonItem?.action = nil
-            subject.completed()
+            subject.send(completion: .finished)
         }
     }
 }

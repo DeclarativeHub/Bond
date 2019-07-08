@@ -54,11 +54,11 @@ extension ReactiveExtensions where Base: UIPickerView {
         return delegate.signal(
             for: #selector(UIPickerViewDelegate.pickerView(_:didSelectRow:inComponent:)),
             dispatch: { (
-                subject: SafePublishSubject<(Int, Int)>,
+                subject: PassthroughSubject<(Int, Int), Never>,
                 pickerView: UIPickerView,
                 row: Int,
                 component: Int) -> Void in
-                subject.next((row, component))
+                subject.send((row, component))
             }
         )
     }

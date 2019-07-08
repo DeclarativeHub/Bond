@@ -36,7 +36,7 @@ private extension NSControl {
     @objc class BondHelper: NSObject
     {
         weak var control: NSControl?
-        let subject = PublishSubject<AnyObject?, Never>()
+        let subject = PassthroughSubject<AnyObject?, Never>()
 
         init(control: NSControl) {
             self.control = control
@@ -47,13 +47,13 @@ private extension NSControl {
         }
 
         @objc func eventHandler(_ sender: NSControl?) {
-            subject.next(sender)
+            subject.send(sender)
         }
 
         deinit {
             control?.target = nil
             control?.action = nil
-            subject.completed()
+            subject.send(completion: .finished)
         }
     }
 }

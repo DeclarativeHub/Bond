@@ -37,17 +37,17 @@ class BondTypeTests: XCTestCase {
             target.recordedElements.append(element)
         }
         
-        let subject = SafePublishSubject<Int>()
+        let subject = PassthroughSubject<Int, Never>()
         
         let disposable = subject.bind(to: bond)
         
-        subject.next(1)
+        subject.send(1)
         XCTAssert(weakTarget != nil)
         XCTAssert(disposable.isDisposed == false)
         XCTAssert(target.recordedElements == [1])
         
         target = nil
-        subject.next(2)
+        subject.send(2)
         XCTAssert(weakTarget == nil)
         XCTAssert(disposable.isDisposed == true)
     }

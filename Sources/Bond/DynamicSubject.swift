@@ -39,7 +39,7 @@ public struct FailableDynamicSubject<Element, Error: Swift.Error>: SubjectProtoc
     private let context: ExecutionContext
     private let getter: (AnyObject) -> Result<Element, Error>
     private let setter: (AnyObject, Element) -> Void
-    private let subject = PublishSubject<Void, Error>()
+    private let subject = PassthroughSubject<Void, Error>()
     private let triggerEventOnSetting: Bool
 
     public init<Target: Deallocatable>(target: Target,
@@ -88,7 +88,7 @@ public struct FailableDynamicSubject<Element, Error: Swift.Error>: SubjectProtoc
         if case .next(let element) = event, let target = target {
             setter(target, element)
             if triggerEventOnSetting {
-                subject.next(())
+                subject.send(())
             }
         }
     }
@@ -123,7 +123,7 @@ public struct FailableDynamicSubject<Element, Error: Swift.Error>: SubjectProtoc
                         guard let target = target else { return }
                         setter(target, element)
                         if triggerEventOnSetting {
-                            subject.next(())
+                            subject.send(())
                         }
                     default:
                         break

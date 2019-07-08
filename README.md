@@ -48,7 +48,7 @@ textField.reactive.text
 
 Whenever a change occurs in the text field, new value will be transformed by the closure and propagated to the label.
 
-Notice how we have used `reactive.text` property of the fext field. It is an observable representation of the `text` property provided by Bond framework. There are many other extensions like that one for various UIKit components. They are all placed within the `.reactive` proxy.
+Notice how we have used `reactive.text` property of the text field. It is an observable representation of the `text` property provided by Bond framework. There are many other extensions like that one for various UIKit components. They are all placed within the `.reactive` proxy.
 
 For example, to observe button events do:
 
@@ -74,7 +74,7 @@ You can use any ReactiveKit operators to transform or combine signals. Following
 combineLatest(emailField.reactive.text, passField.reactive.text) { email, pass in
     return email.length > 0 && pass.length > 0
   }
-  .bind(to: button.reactive.enabled)
+  .bind(to: button.reactive.isEnabled)
 ```
 
 Whenever user types something into any of these text fields, expression will be evaluated and button state updated.

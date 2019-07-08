@@ -34,17 +34,17 @@ class BondTests: XCTestCase {
     }
 
     func testUIActivityIndicatorView() {
-        let subject = SafePublishSubject<Bool>()
+        let subject = PassthroughSubject<Bool, Never>()
 
         let view = UIActivityIndicatorView()
         subject.bind(to: view.reactive.isAnimating)
 
         XCTAssertEqual(view.isAnimating, false)
 
-        subject.next(true)
+        subject.send(true)
         XCTAssertEqual(view.isAnimating, true)
 
-        subject.next(false)
+        subject.send(false)
         XCTAssertEqual(view.isAnimating, false)
     }
 
@@ -118,15 +118,15 @@ class BondTests: XCTestCase {
         let date1 = Date(timeIntervalSince1970: 10)
         let date2 = Date(timeIntervalSince1970: 1000)
 
-        let subject = SafePublishSubject<Date>()
+        let subject = PassthroughSubject<Date, Never>()
 
         let view = UIDatePicker()
         subject.bind(to: view)
 
-        subject.next(date1)
+        subject.send(date1)
         XCTAssertEqual(view.date, date1)
 
-        subject.next(date2)
+        subject.send(date2)
         XCTAssertEqual(view.date, date2)
 
         view.reactive.date.expectNext([date2, date1])
@@ -138,93 +138,93 @@ class BondTests: XCTestCase {
         let image1 = UIImage()
         let image2 = UIImage()
 
-        let subject = SafePublishSubject<UIImage?>()
+        let subject = PassthroughSubject<UIImage?, Never>()
 
         let view = UIImageView()
         subject.bind(to: view)
 
-        subject.next(image1)
+        subject.send(image1)
         XCTAssertEqual(view.image!, image1)
 
-        subject.next(image2)
+        subject.send(image2)
         XCTAssertEqual(view.image!, image2)
 
-        subject.next(nil)
+        subject.send(nil)
         XCTAssertEqual(view.image, nil)
     }
 
     func testUILabel() {
-        let subject = SafePublishSubject<String?>()
+        let subject = PassthroughSubject<String?, Never>()
 
         let view = UILabel()
         subject.bind(to: view)
 
-        subject.next("a")
+        subject.send("a")
         XCTAssertEqual(view.text!, "a")
 
-        subject.next("b")
+        subject.send("b")
         XCTAssertEqual(view.text!, "b")
 
-        subject.next(nil)
+        subject.send(nil)
         XCTAssertEqual(view.text, nil)
     }
 
     func testUINavigationBar() {
-        let subject = SafePublishSubject<UIColor?>()
+        let subject = PassthroughSubject<UIColor?, Never>()
 
         let view = UINavigationBar()
         subject.bind(to: view.reactive.barTintColor)
 
-        subject.next(.red)
+        subject.send(.red)
         XCTAssertEqual(view.barTintColor!, .red)
 
-        subject.next(.blue)
+        subject.send(.blue)
         XCTAssertEqual(view.barTintColor!, .blue)
 
-        subject.next(nil)
+        subject.send(nil)
         XCTAssertEqual(view.barTintColor, nil)
     }
 
 
     func testUINavigationItem() {
-        let subject = SafePublishSubject<String?>()
+        let subject = PassthroughSubject<String?, Never>()
 
         let view = UINavigationItem()
         subject.bind(to: view.reactive.title)
 
-        subject.next("a")
+        subject.send("a")
         XCTAssertEqual(view.title!, "a")
 
-        subject.next("b")
+        subject.send("b")
         XCTAssertEqual(view.title!, "b")
 
-        subject.next(nil)
+        subject.send(nil)
         XCTAssertEqual(view.title, nil)
     }
 
     func testUIProgressView() {
-        let subject = SafePublishSubject<Float>()
+        let subject = PassthroughSubject<Float, Never>()
 
         let view = UIProgressView()
         subject.bind(to: view)
 
-        subject.next(0.2)
+        subject.send(0.2)
         XCTAssertEqual(view.progress, 0.2)
 
-        subject.next(0.4)
+        subject.send(0.4)
         XCTAssertEqual(view.progress, 0.4)
     }
 
     func testUIRefreshControl() {
-        let subject = SafePublishSubject<Bool>()
+        let subject = PassthroughSubject<Bool, Never>()
 
         let view = UIRefreshControl()
         subject.bind(to: view)
 
-        subject.next(true)
+        subject.send(true)
         XCTAssertEqual(view.isRefreshing, true)
 
-        subject.next(false)
+        subject.send(false)
         XCTAssertEqual(view.isRefreshing, false)
 
         view.reactive.refreshing.expectNext([false, true])
@@ -233,15 +233,15 @@ class BondTests: XCTestCase {
     }
 
     func testUISegmentedControl() {
-        let subject = SafePublishSubject<Int>()
+        let subject = PassthroughSubject<Int, Never>()
 
         let view = UISegmentedControl(items: ["a", "b"])
         subject.bind(to: view)
 
-        subject.next(1)
+        subject.send(1)
         XCTAssertEqual(view.selectedSegmentIndex, 1)
 
-        subject.next(0)
+        subject.send(0)
         XCTAssertEqual(view.selectedSegmentIndex, 0)
 
         view.reactive.selectedSegmentIndex.expectNext([0, 1])
@@ -250,15 +250,15 @@ class BondTests: XCTestCase {
     }
 
     func testUISlider() {
-        let subject = SafePublishSubject<Float>()
+        let subject = PassthroughSubject<Float, Never>()
 
         let view = UISlider()
         subject.bind(to: view)
 
-        subject.next(0.2)
+        subject.send(0.2)
         XCTAssertEqual(view.value, 0.2)
 
-        subject.next(0.4)
+        subject.send(0.4)
         XCTAssertEqual(view.value, 0.4)
 
         view.reactive.value.expectNext([0.4, 0.6])
@@ -267,15 +267,15 @@ class BondTests: XCTestCase {
     }
 
     func testUISwitch() {
-        let subject = SafePublishSubject<Bool>()
+        let subject = PassthroughSubject<Bool, Never>()
 
         let view = UISwitch()
         subject.bind(to: view)
 
-        subject.next(false)
+        subject.send(false)
         XCTAssertEqual(view.isOn, false)
 
-        subject.next(true)
+        subject.send(true)
         XCTAssertEqual(view.isOn, true)
 
         view.reactive.isOn.expectNext([true, false])
@@ -284,15 +284,15 @@ class BondTests: XCTestCase {
     }
 
     func testUITextField() {
-        let subject = SafePublishSubject<String?>()
+        let subject = PassthroughSubject<String?, Never>()
 
         let view = UITextField()
         subject.bind(to: view)
 
-        subject.next("a")
+        subject.send("a")
         XCTAssertEqual(view.text!, "a")
 
-        subject.next("b")
+        subject.send("b")
         XCTAssertEqual(view.text!, "b")
 
         view.reactive.text.expectNext(["b", "c"])
@@ -301,15 +301,15 @@ class BondTests: XCTestCase {
     }
 
     func testUITextView() {
-        let subject = SafePublishSubject<String?>()
+        let subject = PassthroughSubject<String?, Never>()
 
         let view = UITextView()
         subject.bind(to: view)
 
-        subject.next("a")
+        subject.send("a")
         XCTAssertEqual(view.text!, "a")
 
-        subject.next("b")
+        subject.send("b")
         XCTAssertEqual(view.text!, "b")
 
         view.reactive.text.expectNext(["b", "c"])
@@ -318,15 +318,15 @@ class BondTests: XCTestCase {
     }
     
     func testUISearchBar() {
-        let subject = SafePublishSubject<String?>()
+        let subject = PassthroughSubject<String?, Never>()
         
         let view = UISearchBar()
         subject.bind(to: view)
         
-        subject.next("a")
+        subject.send("a")
         XCTAssertEqual(view.text!, "a")
         
-        subject.next("b")
+        subject.send("b")
         XCTAssertEqual(view.text!, "b")
         
         view.text = "c"
