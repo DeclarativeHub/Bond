@@ -127,13 +127,18 @@ extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtoc
         removeAll()
     }
 
-    /// Sorts the section at the given index.
-    public func sortItems(ofSectionAt sectionIndex: Int, by areInIncreasingOrder: (Item, Item) throws -> Bool) rethrows {
-        let sortedItems = try self[sectionAt: sectionIndex].items.sorted(by: areInIncreasingOrder)
-        self[sectionAt: sectionIndex].items = sortedItems
+    /// Replace items of a section at the given index with new items.
+    public func replaceItems(ofSectionAt sectionIndex: Int, with newItems: [Item]) {
+        self[sectionAt: sectionIndex].items = newItems
         descriptiveUpdate { collection -> [Operation] in
             return [] // Force a reload
         }
+    }
+
+    /// Sorts the section at the given index.
+    public func sortItems(ofSectionAt sectionIndex: Int, by areInIncreasingOrder: (Item, Item) throws -> Bool) rethrows {
+        let sortedItems = try self[sectionAt: sectionIndex].items.sorted(by: areInIncreasingOrder)
+        replaceItems(ofSectionAt: sectionIndex, with: sortedItems)
     }
 }
 
