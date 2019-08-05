@@ -196,6 +196,8 @@
 		E58FBB8D22187FD700339211 /* UIPickerView+DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58FBB8C22187FD700339211 /* UIPickerView+DataSource.swift */; };
 		E5BAF71221C68394008C78E2 /* UIPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BAF71121C68394008C78E2 /* UIPickerView.swift */; };
 		E5C968A9221926D70026D7D8 /* UIPickerViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C968A8221926D70026D7D8 /* UIPickerViewTests.swift */; };
+		EA8BCCD122C8D604006EB85C /* NSGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 901E85A0214A125A00F03A80 /* NSGestureRecognizer.swift */; };
+		EA8BCCD222C8D60C006EB85C /* NSGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 901E85A0214A125A00F03A80 /* NSGestureRecognizer.swift */; };
 		EC02200A1F8BE898002F8380 /* Property+BidirectionalMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0220091F8BE898002F8380 /* Property+BidirectionalMap.swift */; };
 		EC0D8D2321C697D1003F8EF2 /* Deprecations.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D8D2221C697D1003F8EF2 /* Deprecations.swift */; };
 		EC0D8D2B21C69BC6003F8EF2 /* UITableView+DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0D8D2A21C69BC6003F8EF2 /* UITableView+DataSource.swift */; };
@@ -1275,6 +1277,7 @@
 				ECBC51BF2161637A00BE80EC /* OrderedCollectionOperation+Strideable+Undo.swift in Sources */,
 				ECBC51BA2161637A00BE80EC /* ChangesetContainer.swift in Sources */,
 				ECBCE0C72161696B0078E03B /* OrderedCollectionOperation.swift in Sources */,
+				EA8BCCD122C8D604006EB85C /* NSGestureRecognizer.swift in Sources */,
 				90C04D871E8F0B8D000077C8 /* NSTableView.swift in Sources */,
 				90C04D691E8F0B89000077C8 /* ProtocolProxy.swift in Sources */,
 				90A4432D1E9055D800D611FE /* UIImageView.swift in Sources */,
@@ -1377,6 +1380,7 @@
 				ECBC51D32161637B00BE80EC /* OrderedCollectionDiff+Strideable+Patch.swift in Sources */,
 				ECBC51D42161637B00BE80EC /* OrderedCollectionOperation+Strideable+Undo.swift in Sources */,
 				ECBCE0C82161696B0078E03B /* OrderedCollectionOperation.swift in Sources */,
+				EA8BCCD222C8D60C006EB85C /* NSGestureRecognizer.swift in Sources */,
 				ECBC51CF2161637B00BE80EC /* ChangesetContainer.swift in Sources */,
 				90C04DA21E8F0B96000077C8 /* UINavigationBar.swift in Sources */,
 				9025DCB01F981694007B7689 /* Property+BidirectionalMap.swift in Sources */,
