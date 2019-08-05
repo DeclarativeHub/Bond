@@ -130,9 +130,6 @@ extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtoc
     /// Replace items of a section at the given index with new items.
     public func replaceItems(ofSectionAt sectionIndex: Int, with newItems: [Item]) {
         self[sectionAt: sectionIndex].items = newItems
-        descriptiveUpdate { collection -> [Operation] in
-            return [] // Force a reload
-        }
     }
 
     /// Sorts the section at the given index.
