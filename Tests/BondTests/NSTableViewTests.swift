@@ -55,9 +55,7 @@ class Bond_MacAppTests: XCTestCase {
         array.diff().bind(to: tableView)
         array.value = ["One", "Two", "Three"]
 
-        let _ = tableView.observedEvents
-
-         XCTAssert(tableView.observedEvents == [OrderedCollectionDiff(),
-                                                OrderedCollectionDiff<Int>(inserts: [2])])
+        XCTAssert(tableView.observedEvents == [OrderedCollectionDiff(),
+                                               OrderedCollectionDiff<Int>(inserts: [2])])
     }
 }
