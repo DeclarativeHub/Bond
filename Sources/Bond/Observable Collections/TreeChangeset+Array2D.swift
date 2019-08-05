@@ -126,6 +126,17 @@ extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtoc
     public func removeAllItemsAndSections() {
         removeAll()
     }
+
+    /// Replace items of a section at the given index with new items.
+    public func replaceItems(ofSectionAt sectionIndex: Int, with newItems: [Item]) {
+        self[sectionAt: sectionIndex].items = newItems
+    }
+
+    /// Sorts the section at the given index.
+    public func sortItems(ofSectionAt sectionIndex: Int, by areInIncreasingOrder: (Item, Item) throws -> Bool) rethrows {
+        let sortedItems = try self[sectionAt: sectionIndex].items.sorted(by: areInIncreasingOrder)
+        replaceItems(ofSectionAt: sectionIndex, with: sortedItems)
+    }
 }
 
 extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Changeset.Collection: Array2DProtocol, Changeset.Collection.Item: Equatable {
@@ -143,5 +154,16 @@ extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtoc
             collection[childAt: [sectionIndex]].children = newItems.map { Array2D.Node.item($0) }
             return diff.map { [sectionIndex, $0] }
         }
+    }
+
+    /// Sorts the section at the given index, producing a diff if requested.
+    public func sortItems(ofSectionAt sectionIndex: Int, performDiff: Bool = true, by areInIncreasingOrder: (Item, Item) throws -> Bool) rethrows {
+        let sortedItems = try self[sectionAt: sectionIndex].items.sorted(by: areInIncreasingOrder)
+        replaceItems(ofSectionAt: sectionIndex, with: sortedItems, performDiff: performDiff)
+    }
+
+    /// Sorts the section at the given index using a key path, producing a diff if requested.
+    public func sortItems<T: Comparable>(ofSectionAt sectionIndex: Int, performDiff: Bool = true, byKeyPath keyPath: KeyPath<Item, T>) {
+        sortItems(ofSectionAt: sectionIndex, performDiff: performDiff, by: { $0[keyPath: keyPath] < $1[keyPath: keyPath] })
     }
 }
