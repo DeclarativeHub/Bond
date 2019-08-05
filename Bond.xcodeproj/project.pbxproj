@@ -193,6 +193,19 @@
 		90C04DC21E8F0B97000077C8 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D531E8F0B1D000077C8 /* UITextField.swift */; };
 		90C04DC31E8F0B97000077C8 /* UITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D541E8F0B1D000077C8 /* UITextView.swift */; };
 		90C04DC41E8F0B97000077C8 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D551E8F0B1D000077C8 /* UIView.swift */; };
+		92D030A122F7547C001A20FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D030A022F7547C001A20FB /* AppDelegate.swift */; };
+		92D030A322F7547C001A20FB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D030A222F7547C001A20FB /* ViewController.swift */; };
+		92D030A522F7547E001A20FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 92D030A422F7547E001A20FB /* Assets.xcassets */; };
+		92D030A822F7547E001A20FB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 92D030A622F7547E001A20FB /* Main.storyboard */; };
+		92D030BE22F758F9001A20FB /* NSTableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D030BC22F758E8001A20FB /* NSTableViewTests.swift */; };
+		92D030BF22F759EE001A20FB /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16D30EAE1D6591D300C2435D /* Bond.framework */; };
+		92D030C022F759F9001A20FB /* Differ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 824267D1225F7E5F001B1648 /* Differ.framework */; };
+		92D030C122F759F9001A20FB /* Differ.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 824267D1225F7E5F001B1648 /* Differ.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		92D030C222F759F9001A20FB /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 824267D0225F7E5F001B1648 /* ReactiveKit.framework */; };
+		92D030C322F759F9001A20FB /* ReactiveKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 824267D0225F7E5F001B1648 /* ReactiveKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		92D030C522F75A18001A20FB /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16D30EAE1D6591D300C2435D /* Bond.framework */; };
+		92D030C622F75A2F001A20FB /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 824267D0225F7E5F001B1648 /* ReactiveKit.framework */; };
+		92D030C722F75A2F001A20FB /* Differ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 824267D1225F7E5F001B1648 /* Differ.framework */; };
 		E58FBB8D22187FD700339211 /* UIPickerView+DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58FBB8C22187FD700339211 /* UIPickerView+DataSource.swift */; };
 		E5BAF71221C68394008C78E2 /* UIPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BAF71121C68394008C78E2 /* UIPickerView.swift */; };
 		E5C968A9221926D70026D7D8 /* UIPickerViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C968A8221926D70026D7D8 /* UIPickerViewTests.swift */; };
@@ -352,6 +365,13 @@
 			remoteGlobalIDString = 16210A3B1D3EC474004AEDF3;
 			remoteInfo = Bond;
 		};
+		92D030B022F7547E001A20FB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 16210A331D3EC474004AEDF3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 92D0309D22F7547C001A20FB;
+			remoteInfo = "Bond-MacApp";
+		};
 		EC1746C8216A3D4200955C49 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 16210A331D3EC474004AEDF3 /* Project object */;
@@ -362,6 +382,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		92D030C422F759FA001A20FB /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				92D030C322F759F9001A20FB /* ReactiveKit.framework in Embed Frameworks */,
+				92D030C122F759F9001A20FB /* Differ.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		ECA1943F2261352C00C500AC /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -462,6 +494,16 @@
 		90C04DCF1E8F0BA7000077C8 /* UICollectionViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewTests.swift; sourceTree = "<group>"; };
 		90C04DD01E8F0BA7000077C8 /* UIKitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitTests.swift; sourceTree = "<group>"; };
 		90C04DD11E8F0BA7000077C8 /* UITableViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewTests.swift; sourceTree = "<group>"; };
+		92D0309E22F7547C001A20FB /* Bond-MacApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bond-MacApp.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		92D030A022F7547C001A20FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		92D030A222F7547C001A20FB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		92D030A422F7547E001A20FB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		92D030A722F7547E001A20FB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		92D030A922F7547E001A20FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		92D030AA22F7547E001A20FB /* Bond_MacApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Bond_MacApp.entitlements; sourceTree = "<group>"; };
+		92D030AF22F7547E001A20FB /* Bond-MacAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Bond-MacAppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		92D030B522F7547E001A20FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		92D030BC22F758E8001A20FB /* NSTableViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSTableViewTests.swift; sourceTree = "<group>"; };
 		E58FBB8C22187FD700339211 /* UIPickerView+DataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIPickerView+DataSource.swift"; sourceTree = "<group>"; };
 		E5BAF71121C68394008C78E2 /* UIPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIPickerView.swift; sourceTree = "<group>"; };
 		E5C968A8221926D70026D7D8 /* UIPickerViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIPickerViewTests.swift; sourceTree = "<group>"; };
@@ -558,6 +600,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		92D0309B22F7547C001A20FB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92D030C022F759F9001A20FB /* Differ.framework in Frameworks */,
+				92D030C222F759F9001A20FB /* ReactiveKit.framework in Frameworks */,
+				92D030BF22F759EE001A20FB /* Bond.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		92D030AC22F7547E001A20FB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92D030C622F75A2F001A20FB /* ReactiveKit.framework in Frameworks */,
+				92D030C722F75A2F001A20FB /* Differ.framework in Frameworks */,
+				92D030C522F75A18001A20FB /* Bond.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -572,6 +634,8 @@
 				16210A3E1D3EC474004AEDF3 /* Sources */,
 				90C04DC51E8F0BA7000077C8 /* Tests */,
 				16887E381D744ABB00EDA099 /* Bond-App */,
+				92D0309F22F7547C001A20FB /* Bond-MacApp */,
+				92D030B222F7547E001A20FB /* Bond-MacAppTests */,
 				16210A3D1D3EC474004AEDF3 /* Products */,
 				824267C8225F7E1D001B1648 /* Carthage */,
 				904B87B61F6FFCE700FE0A24 /* Frameworks */,
@@ -588,6 +652,8 @@
 				16D30EAE1D6591D300C2435D /* Bond.framework */,
 				16D30ED61D65D11900C2435D /* Bond.framework */,
 				16887E371D744ABB00EDA099 /* Bond-App.app */,
+				92D0309E22F7547C001A20FB /* Bond-MacApp.app */,
+				92D030AF22F7547E001A20FB /* Bond-MacAppTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -804,8 +870,30 @@
 				90C04DCE1E8F0BA7000077C8 /* ProtocolProxyTests.swift */,
 				90C04DCA1E8F0BA7000077C8 /* NSObjectTests.swift */,
 				EC9F9F542233C22000645634 /* TreeViewTests.swift */,
+				92D030BC22F758E8001A20FB /* NSTableViewTests.swift */,
 			);
 			path = BondTests;
+			sourceTree = "<group>";
+		};
+		92D0309F22F7547C001A20FB /* Bond-MacApp */ = {
+			isa = PBXGroup;
+			children = (
+				92D030A022F7547C001A20FB /* AppDelegate.swift */,
+				92D030A222F7547C001A20FB /* ViewController.swift */,
+				92D030A422F7547E001A20FB /* Assets.xcassets */,
+				92D030A622F7547E001A20FB /* Main.storyboard */,
+				92D030A922F7547E001A20FB /* Info.plist */,
+				92D030AA22F7547E001A20FB /* Bond_MacApp.entitlements */,
+			);
+			path = "Bond-MacApp";
+			sourceTree = "<group>";
+		};
+		92D030B222F7547E001A20FB /* Bond-MacAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				92D030B522F7547E001A20FB /* Info.plist */,
+			);
+			path = "Bond-MacAppTests";
 			sourceTree = "<group>";
 		};
 		EC0D8D1D21C697BE003F8EF2 /* Deprecations */ = {
@@ -991,13 +1079,49 @@
 			productReference = 16D30ED61D65D11900C2435D /* Bond.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		92D0309D22F7547C001A20FB /* Bond-MacApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 92D030B622F7547E001A20FB /* Build configuration list for PBXNativeTarget "Bond-MacApp" */;
+			buildPhases = (
+				92D0309A22F7547C001A20FB /* Sources */,
+				92D0309B22F7547C001A20FB /* Frameworks */,
+				92D0309C22F7547C001A20FB /* Resources */,
+				92D030C422F759FA001A20FB /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Bond-MacApp";
+			productName = "Bond-MacApp";
+			productReference = 92D0309E22F7547C001A20FB /* Bond-MacApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		92D030AE22F7547E001A20FB /* Bond-MacAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 92D030B922F7547E001A20FB /* Build configuration list for PBXNativeTarget "Bond-MacAppTests" */;
+			buildPhases = (
+				92D030AB22F7547E001A20FB /* Sources */,
+				92D030AC22F7547E001A20FB /* Frameworks */,
+				92D030AD22F7547E001A20FB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				92D030B122F7547E001A20FB /* PBXTargetDependency */,
+			);
+			name = "Bond-MacAppTests";
+			productName = "Bond-MacAppTests";
+			productReference = 92D030AF22F7547E001A20FB /* Bond-MacAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		16210A331D3EC474004AEDF3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0800;
+				LastSwiftUpdateCheck = 1030;
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "Swift Bond";
 				TargetAttributes = {
@@ -1027,6 +1151,15 @@
 						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
+					92D0309D22F7547C001A20FB = {
+						CreatedOnToolsVersion = 10.3;
+						ProvisioningStyle = Automatic;
+					};
+					92D030AE22F7547E001A20FB = {
+						CreatedOnToolsVersion = 10.3;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 92D0309D22F7547C001A20FB;
+					};
 					ECFF842B226122170095040B = {
 						CreatedOnToolsVersion = 10.2;
 					};
@@ -1051,6 +1184,8 @@
 				16210A441D3EC474004AEDF3 /* BondTests */,
 				16887E361D744ABB00EDA099 /* Bond-App */,
 				ECFF842B226122170095040B /* PlaygroundSupport */,
+				92D0309D22F7547C001A20FB /* Bond-MacApp */,
+				92D030AE22F7547E001A20FB /* Bond-MacAppTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1068,6 +1203,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				16887E441D744ABB00EDA099 /* LaunchScreen.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		92D0309C22F7547C001A20FB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92D030A522F7547E001A20FB /* Assets.xcassets in Resources */,
+				92D030A822F7547E001A20FB /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		92D030AD22F7547E001A20FB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1431,6 +1582,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		92D0309A22F7547C001A20FB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92D030A322F7547C001A20FB /* ViewController.swift in Sources */,
+				92D030A122F7547C001A20FB /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		92D030AB22F7547E001A20FB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92D030BE22F758F9001A20FB /* NSTableViewTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1438,6 +1606,11 @@
 			isa = PBXTargetDependency;
 			target = 16210A3B1D3EC474004AEDF3 /* Bond-iOS */;
 			targetProxy = 16210A471D3EC474004AEDF3 /* PBXContainerItemProxy */;
+		};
+		92D030B122F7547E001A20FB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 92D0309D22F7547C001A20FB /* Bond-MacApp */;
+			targetProxy = 92D030B022F7547E001A20FB /* PBXContainerItemProxy */;
 		};
 		EC1746C9216A3D4200955C49 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1453,6 +1626,14 @@
 				16887E431D744ABB00EDA099 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		92D030A622F7547E001A20FB /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				92D030A722F7547E001A20FB /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1837,6 +2018,124 @@
 			};
 			name = Release;
 		};
+		92D030B722F7547E001A20FB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "Bond-MacApp/Bond_MacApp.entitlements";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "Bond-MacApp/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "co.stepladder.Bond-MacApp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		92D030B822F7547E001A20FB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "Bond-MacApp/Bond_MacApp.entitlements";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "Bond-MacApp/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "co.stepladder.Bond-MacApp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		92D030BA22F7547E001A20FB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "Bond-MacAppTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "co.stepladder.Bond-MacAppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Bond-MacApp.app/Contents/MacOS/Bond-MacApp";
+			};
+			name = Debug;
+		};
+		92D030BB22F7547E001A20FB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "Bond-MacAppTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "co.stepladder.Bond-MacAppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Bond-MacApp.app/Contents/MacOS/Bond-MacApp";
+			};
+			name = Release;
+		};
 		ECFF842C226122170095040B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1908,6 +2207,24 @@
 			buildConfigurations = (
 				16D30EDC1D65D11900C2435D /* Debug */,
 				16D30EDD1D65D11900C2435D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		92D030B622F7547E001A20FB /* Build configuration list for PBXNativeTarget "Bond-MacApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92D030B722F7547E001A20FB /* Debug */,
+				92D030B822F7547E001A20FB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		92D030B922F7547E001A20FB /* Build configuration list for PBXNativeTarget "Bond-MacAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92D030BA22F7547E001A20FB /* Debug */,
+				92D030BB22F7547E001A20FB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
