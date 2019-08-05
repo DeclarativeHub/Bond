@@ -7,7 +7,6 @@
 //
 
 import XCTest
-@testable import Bond_MacApp
 import Bond
 import ReactiveKit
 
