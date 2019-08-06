@@ -170,8 +170,8 @@ public struct FailableDynamicSubject<Element, Error: Swift.Error>: SubjectProtoc
                 
                 setter(target, setTransform(element))
                 
-                if triggerEventOnSetting {
-                    subject.next(())
+                if triggerEventOnSetting { // <-- fix
+                    subject.send(())
                 }
             }
         )
