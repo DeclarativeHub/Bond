@@ -10,8 +10,8 @@ let package = Package(
         .library(name: "Bond", targets: ["Bond"])
     ],
     dependencies: [
-        .package(url: "https://github.com/DeclarativeHub/ReactiveKit.git", .upToNextMajor(from: "3.11.0")),
-        .package(url: "https://github.com/tonyarnold/Differ.git", .upToNextMajor(from: "1.4.1"))
+        .package(url: "https://github.com/DeclarativeHub/ReactiveKit.git", .upToNextMajor(from: "3.14")),
+        .package(url: "https://github.com/tonyarnold/Differ.git", .upToNextMajor(from: "1.4"))
     ],
     targets: [
         .target(name: "BNDProtocolProxyBase"),
