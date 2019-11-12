@@ -58,7 +58,7 @@ extension ReactiveExtensions where Base: UIView {
             return BlockDisposable {
                 target.unregister()
             }
-            }.take(until: base.deallocated)
+        }.prefix(untilOutputFrom: base.deallocated)
     }
 
     public func tapGesture(numberOfTaps: Int = 1, numberOfTouches: Int = 1) -> SafeSignal<UITapGestureRecognizer> {

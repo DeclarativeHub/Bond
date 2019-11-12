@@ -34,8 +34,8 @@ extension SignalProtocol {
     public static func heartbeat(interval seconds: Double) -> Signal<Void, Never> {
         let willEnterForeground = NotificationCenter.default.reactive.notification(name: UIApplication.willEnterForegroundNotification)
         let didEnterBackgorund = NotificationCenter.default.reactive.notification(name: UIApplication.didEnterBackgroundNotification)
-        return willEnterForeground.replaceElements(with: ()).start(with: ()).flatMapLatest { () -> Signal<Void, Never> in
-            return SafeSignal<Int>(sequence: 0..., interval: seconds, queue: .global()).replaceElements(with: ()).start(with: ()).take(until: didEnterBackgorund)
+        return willEnterForeground.replaceElements(with: ()).prepend(()).flatMapLatest { () -> Signal<Void, Never> in
+            return SafeSignal<Int>(sequence: 0..., interval: seconds, queue: .global()).replaceElements(with: ()).prepend(()).prefix(untilOutputFrom: didEnterBackgorund)
         }
     }
 }

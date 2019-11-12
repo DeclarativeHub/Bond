@@ -53,7 +53,7 @@ extension ReactiveExtensions where Base: NSView {
                 target.unregister()
             }
         }
-        .take(until: base.deallocated)
+        .prefix(untilOutputFrom: base.deallocated)
     }
 
     public func clickGesture(numberOfClicks: Int = 1, numberOfTouches: Int = 1) -> SafeSignal<NSClickGestureRecognizer> {

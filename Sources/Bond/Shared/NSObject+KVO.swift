@@ -333,7 +333,7 @@ private class RKKeyValueSignal: NSObject, SignalProtocol {
         }
     }
 
-    fileprivate func observe(with observer: @escaping (Event<Void, Never>) -> Void) -> Disposable {
+    fileprivate func observe(with observer: @escaping (Signal<Void, Never>.Event) -> Void) -> Disposable {
         increaseNumberOfObservers()
         let disposable = subject.observe(with: observer)
         let cleanupDisposabe = BlockDisposable {
