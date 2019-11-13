@@ -42,7 +42,7 @@ extension ReactiveExtensions where Base: UIControl {
             return BlockDisposable {
                 target.unregister()
             }
-        }.take(until: base.deallocated)
+        }.prefix(untilOutputFrom: base.deallocated)
     }
 
     public var isEnabled: Bond<Bool> {

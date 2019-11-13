@@ -76,7 +76,7 @@ extension Property: ChangesetContainerProtocol, MutableChangesetContainerProtoco
         lock.lock()
         let proxy = Property(value) // use proxy to collect changes
         var patche: [Changeset.Operation] = []
-        let disposable = proxy.skip(first: 1).observeNext { event in
+        let disposable = proxy.dropFirst(1).observeNext { event in
             patche.append(contentsOf: event.patch)
         }
         update(proxy)

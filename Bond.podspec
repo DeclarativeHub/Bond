@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "Bond"
-  s.version      = "7.6.0"
+  s.version      = "7.6.1"
   s.summary      = "A Swift binding framework"
 
   s.description  = <<-DESC
@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = "8.0"
   s.osx.deployment_target = "10.11"
   s.tvos.deployment_target = "9.0"
-  s.source       = { :git => "https://github.com/SwiftBond/Bond.git", :tag => "7.6.0" }
+  s.source       = { :git => "https://github.com/SwiftBond/Bond.git", :tag => "7.6.1" }
   s.source_files  = "Sources/**/*.{h,m,swift}", "Supporting Files/Bond.h"
   s.ios.exclude_files = "Sources/Bond/AppKit"
   s.tvos.exclude_files = "Sources/Bond/AppKit"
@@ -30,7 +30,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.swift_version = '5.0'
 
-  s.dependency "ReactiveKit", "~> 3.10"
-  s.dependency "Differ", "~> 1.3"
+  s.dependency "ReactiveKit", "~> 3.14"
+  s.dependency "Differ", "~> 1.4"
 
 end
