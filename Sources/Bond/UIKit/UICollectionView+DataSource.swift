@@ -159,7 +159,7 @@ open class CollectionViewBinderDataSource<Changeset: SectionedDataSourceChangese
         return changeset?.collection.numberOfSections ?? 0
     }
 
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return changeset?.collection.numberOfItems(inSection: section) ?? 0
     }
 
