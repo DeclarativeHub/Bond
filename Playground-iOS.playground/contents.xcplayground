@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<playground version='6.0' target-platform='ios' display-mode='raw'>
+    <pages>
+        <page name='Observable Collections'/>
+        <page name='UITableView+Signal+Diff'/>
+        <page name='UITableView+ObservableArray'/>
+        <page name='UITableView+ObservableArray2D'/>
+        <page name='UICollectionView+ObservableArray2D'/>
+        <page name='Key Value Observing'/>
+        <page name='UIPickerView+ObservableArray2D'/>
+        <page name='Trees'/>
+    </pages>
+</playground>

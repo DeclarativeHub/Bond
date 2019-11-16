@@ -1,12 +1,29 @@
-language: objective-c
-osx_image: xcode8
+language: swift
+osx_image: xcode10.2
 
-install:
-  - gem install xcpretty
+cache:
+  directories:
+  - Carthage
 
-script:
-  - set -o pipefail && xcodebuild -project Bond.xcodeproj -scheme Bond-iOS -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6s,OS=10.0' test | xcpretty
-#  - set -o pipefail && xcodebuild -project Bond.xcodeproj -scheme BondOSX -sdk macosx test | xcpretty
+before_install:
+  - brew update
+  - brew outdated carthage || brew upgrade carthage
+  - carthage bootstrap --cache-builds
 
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+jobs:
+  include:
+      - stage: "Xcode"
+        name: "Run tests on iOS"
+        script: xcrun xcodebuild test -destination "platform=iOS Simulator,OS=12.2,name=iPhone X" -workspace "Bond.xcworkspace" -scheme "Bond-iOS"
+        after_success: 'bash <(curl -s https://codecov.io/bash)'
+      -
+        name: "Build for macOS"
+        script: xcrun xcodebuild build -destination "platform=macOS" -workspace "Bond.xcworkspace" -scheme "Bond-macOS"
+      -
+        name: "Build for tvOS"
+        script: xcrun xcodebuild build -destination "platform=tvOS Simulator,OS=12.2,name=Apple TV 4K" -workspace "Bond.xcworkspace" -scheme "Bond-tvOS"
+
+      - stage: "Swift Package Manager"
+        name: "Run Tests"
+        script: swift test
+        

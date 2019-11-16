@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "Bond"
-  s.version      = "5.0.0-beta10"
+  s.version      = "7.6.1"
   s.summary      = "A Swift binding framework"
 
   s.description  = <<-DESC
@@ -19,14 +19,18 @@ Pod::Spec.new do |s|
   s.author             = { "Srdan Rasic" => "srdan.rasic@gmail.com" }
   s.social_media_url   = "http://twitter.com/srdanrasic"
   s.ios.deployment_target = "8.0"
-  s.osx.deployment_target = "10.10"
-  s.tvos.deployment_target = '9.0'
-  s.source       = { :git => "https://github.com/SwiftBond/Bond.git", :tag => "v5.0.0-beta10" }
-  s.source_files  = 'Sources/**/*.swift', 'Bond/*.{h,m,swift}'
-  s.ios.exclude_files = "Sources/AppKit"
-  s.tvos.exclude_files = "Sources/AppKit"
-  s.osx.exclude_files = "Sources/UIKit"
+  s.osx.deployment_target = "10.11"
+  s.tvos.deployment_target = "9.0"
+  s.source       = { :git => "https://github.com/SwiftBond/Bond.git", :tag => "7.6.1" }
+  s.source_files  = "Sources/**/*.{h,m,swift}", "Supporting Files/Bond.h"
+  s.ios.exclude_files = "Sources/Bond/AppKit"
+  s.tvos.exclude_files = "Sources/Bond/AppKit"
+  s.osx.exclude_files = "Sources/Bond/UIKit"
+  s.pod_target_xcconfig = { "OTHER_SWIFT_FLAGS" => "-DBUILDING_WITH_XCODE $(inherited)" }
   s.requires_arc = true
+  s.swift_version = '5.0'
 
-  s.dependency 'ReactiveKit', '~> 3.0.0-beta6'
+  s.dependency "ReactiveKit", "~> 3.14"
+  s.dependency "Differ", "~> 1.4"
+
 end

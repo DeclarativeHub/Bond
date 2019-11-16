@@ -5,17 +5,24 @@
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
     "D78924967B5ECB0A1D20E197FAB93ACBFA47F0D1" : 9223372036854775807,
+    "4D480E1090C637EADFD2BAAA2E36A896EFE1BB6B" : 9223372036854775807,
     "C1F6A63EF115019142AF6E3E8A173E32E3445DB3" : 9223372036854775807
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "21159287-6093-4779-82E4-D371AD045A20",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "D78924967B5ECB0A1D20E197FAB93ACBFA47F0D1" : "Bond\/",
+    "4D480E1090C637EADFD2BAAA2E36A896EFE1BB6B" : "Bond\/Carthage\/Checkouts\/Diff.swift\/",
     "C1F6A63EF115019142AF6E3E8A173E32E3445DB3" : "Bond\/Carthage\/Checkouts\/ReactiveKit\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "Bond",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
   "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Bond.xcworkspace",
   "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/wokalski\/Diff.swift.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "4D480E1090C637EADFD2BAAA2E36A896EFE1BB6B"
+    },
     {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/ReactiveKit\/ReactiveKit.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",

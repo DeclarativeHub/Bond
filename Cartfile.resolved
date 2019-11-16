@@ -1,1 +1,2 @@
-github "ReactiveKit/ReactiveKit" "v3.0.0-beta6"
+github "DeclarativeHub/ReactiveKit" "v3.14.2"
+github "tonyarnold/Differ" "1.4.3"
