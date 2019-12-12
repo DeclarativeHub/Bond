@@ -74,15 +74,13 @@ extension ReactiveExtensions where Base: NSObject {
                 subscription.invalidate()
             }
 
-            return DeinitDisposable(disposable: BlockDisposable {
-                ExecutionContext.immediateOnMain.execute {
-                    if #available(iOS 11, *) {} else {
-                        let keyPathString = NSExpression(forKeyPath: keyPath).keyPath
-                        base.removeObserver(base, forKeyPath: keyPathString)
-                    }
-                    subscription.invalidate()
-                    disposable.dispose()
-                }
+            return DeinitDisposable(disposable: MainBlockDisposable {
+                  if #available(iOS 11, *) {} else {
+                      let keyPathString = NSExpression(forKeyPath: keyPath).keyPath
+                      base.removeObserver(base, forKeyPath: keyPathString)
+                  }
+                  subscription.invalidate()
+                  disposable.dispose()
             })
         }
     }

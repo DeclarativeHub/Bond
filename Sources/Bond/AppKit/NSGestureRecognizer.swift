@@ -49,10 +49,8 @@ extension ReactiveExtensions where Base: NSView {
                 // swiftlint:disable:next force_cast
                 observer.receive(recog as! T)
             }
-            return BlockDisposable {
-                ExecutionContext.immediateOnMain.execute {
-                    target.unregister()
-                }
+            return MainBlockDisposable {
+                target.unregister()
             }
         }
         .prefix(untilOutputFrom: base.deallocated)
