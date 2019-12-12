@@ -56,7 +56,9 @@ extension ReactiveExtensions where Base: UIView {
                 observer.receive(recog as! T)
             }
             return BlockDisposable {
-                target.unregister()
+                ExecutionContext.immediateOnMain.execute {
+                    target.unregister()
+                }
             }
         }.prefix(untilOutputFrom: base.deallocated)
     }

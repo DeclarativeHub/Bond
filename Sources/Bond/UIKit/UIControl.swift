@@ -40,7 +40,9 @@ extension ReactiveExtensions where Base: UIControl {
                 observer.receive(())
             }
             return BlockDisposable {
-                target.unregister()
+                ExecutionContext.immediateOnMain.execute {
+                    target.unregister()
+                }
             }
         }.prefix(untilOutputFrom: base.deallocated)
     }

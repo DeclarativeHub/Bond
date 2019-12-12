@@ -34,7 +34,9 @@ extension ReactiveExtensions where Base: NotificationCenter {
                 observer.receive(notification)
             })
             return BlockDisposable {
-                self.base.removeObserver(subscription)
+                ExecutionContext.immediateOnMain.execute {
+                    self.base.removeObserver(subscription)
+                }
             }
         }
     }
