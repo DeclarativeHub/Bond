@@ -30,7 +30,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.swift_version = '5.0'
 
-  s.dependency "ReactiveKit", "~> 3.14"
+  s.dependency "ReactiveKit", "~> 3.15"
   s.dependency "Differ", "~> 1.4"
 
 end
