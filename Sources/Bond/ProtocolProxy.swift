@@ -72,11 +72,9 @@ public class ProtocolProxy: BNDProtocolProxyBase {
             invocation.writeReturnValue(result)
         }
         registerDelegate()
-        return BlockDisposable { [weak self] in
-            ExecutionContext.immediateOnMain.execute {
-                self?.invokers[selector] = nil
-                self?.registerDelegate()
-            }
+        return MainBlockDisposable { [weak self] in
+            self?.invokers[selector] = nil
+            self?.registerDelegate()
         }
     }
 
@@ -86,11 +84,9 @@ public class ProtocolProxy: BNDProtocolProxyBase {
             invocation.writeReturnValue(result)
         }
         registerDelegate()
-        return BlockDisposable { [weak self] in
-            ExecutionContext.immediateOnMain.execute {
-                self?.invokers[selector] = nil
-                self?.registerDelegate()
-            }
+        return MainBlockDisposable { [weak self] in
+            self?.invokers[selector] = nil
+            self?.registerDelegate()
         }
     }
 
@@ -100,11 +96,9 @@ public class ProtocolProxy: BNDProtocolProxyBase {
             invocation.writeReturnValue(result)
         }
         registerDelegate()
-        return BlockDisposable { [weak self] in
-            ExecutionContext.immediateOnMain.execute {
-                self?.invokers[selector] = nil
-                self?.registerDelegate()
-            }
+        return MainBlockDisposable { [weak self] in
+            self?.invokers[selector] = nil
+            self?.registerDelegate()
         }
     }
 
@@ -114,11 +108,9 @@ public class ProtocolProxy: BNDProtocolProxyBase {
             invocation.writeReturnValue(result)
         }
         registerDelegate()
-        return BlockDisposable { [weak self] in
-            ExecutionContext.immediateOnMain.execute {
-                self?.invokers[selector] = nil
-                self?.registerDelegate()
-            }
+        return MainBlockDisposable { [weak self] in
+            self?.invokers[selector] = nil
+            self?.registerDelegate()
         }
     }
 
@@ -128,11 +120,9 @@ public class ProtocolProxy: BNDProtocolProxyBase {
             invocation.writeReturnValue(result)
         }
         registerDelegate()
-        return BlockDisposable { [weak self] in
-            ExecutionContext.immediateOnMain.execute {
-                self?.invokers[selector] = nil
-                self?.registerDelegate()
-            }
+        return MainBlockDisposable { [weak self] in
+            self?.invokers[selector] = nil
+            self?.registerDelegate()
         }
     }
 
@@ -142,11 +132,9 @@ public class ProtocolProxy: BNDProtocolProxyBase {
             invocation.writeReturnValue(result)
         }
         registerDelegate()
-        return BlockDisposable { [weak self] in
-            ExecutionContext.immediateOnMain.execute {
-                self?.invokers[selector] = nil
-                self?.registerDelegate()
-            }
+        return MainBlockDisposable { [weak self] in
+            self?.invokers[selector] = nil
+            self?.registerDelegate()
         }
     }
 
@@ -159,10 +147,8 @@ public class ProtocolProxy: BNDProtocolProxyBase {
                 let disposable = CompositeDisposable()
                 disposable += registerInvoker(subject)
                 disposable += subject.observe(with: observer)
-                disposable += BlockDisposable { [weak self] in
-                    ExecutionContext.immediateOnMain.execute {
-                        self?.handlers[selector] = nil
-                    }
+                disposable += MainBlockDisposable { [weak self] in
+                    self?.handlers[selector] = nil
                 }
                 return disposable
             }.share(limit: 0)
