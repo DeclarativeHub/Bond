@@ -55,7 +55,7 @@ extension ReactiveExtensions where Base: UIView {
             let target = BNDGestureTarget(view: base, gestureRecognizer: gestureRecognizer) { recog in
                 observer.receive(recog as! T)
             }
-            return BlockDisposable {
+            return MainBlockDisposable {
                 target.unregister()
             }
         }.prefix(untilOutputFrom: base.deallocated)

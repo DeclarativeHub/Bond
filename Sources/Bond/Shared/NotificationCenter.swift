@@ -33,7 +33,7 @@ extension ReactiveExtensions where Base: NotificationCenter {
             let subscription = self.base.addObserver(forName: name, object: object, queue: nil, using: { notification in
                 observer.receive(notification)
             })
-            return BlockDisposable {
+            return MainBlockDisposable {
                 self.base.removeObserver(subscription)
             }
         }

@@ -26,6 +26,9 @@
 		16210A461D3EC474004AEDF3 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16210A3C1D3EC474004AEDF3 /* Bond.framework */; };
 		16887E3A1D744ABB00EDA099 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16887E391D744ABB00EDA099 /* AppDelegate.swift */; };
 		16887E441D744ABB00EDA099 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 16887E421D744ABB00EDA099 /* LaunchScreen.storyboard */; };
+		3895CCB323A25C61008FD491 /* MainBlockDisposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3895CCB223A25C61008FD491 /* MainBlockDisposable.swift */; };
+		6E8ECECD23A2F7D500856D90 /* MainBlockDisposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3895CCB223A25C61008FD491 /* MainBlockDisposable.swift */; };
+		6E8ECECE23A2F7D600856D90 /* MainBlockDisposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3895CCB223A25C61008FD491 /* MainBlockDisposable.swift */; };
 		75CA9E9220678E600011E5BB /* UISearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CA9E9120678E600011E5BB /* UISearchBar.swift */; };
 		824267CE225F7E4B001B1648 /* Differ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 824267CC225F7E4B001B1648 /* Differ.framework */; };
 		824267CF225F7E4B001B1648 /* ReactiveKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 824267CD225F7E4B001B1648 /* ReactiveKit.framework */; };
@@ -388,6 +391,7 @@
 		16887E451D744ABB00EDA099 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		16D30EAE1D6591D300C2435D /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		16D30ED61D65D11900C2435D /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3895CCB223A25C61008FD491 /* MainBlockDisposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainBlockDisposable.swift; sourceTree = "<group>"; };
 		75CA9E9120678E600011E5BB /* UISearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISearchBar.swift; sourceTree = "<group>"; };
 		824267CC225F7E4B001B1648 /* Differ.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Differ.framework; path = Carthage/Build/iOS/Differ.framework; sourceTree = "<group>"; };
 		824267CD225F7E4B001B1648 /* ReactiveKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveKit.framework; path = Carthage/Build/iOS/ReactiveKit.framework; sourceTree = "<group>"; };
@@ -687,6 +691,7 @@
 		90C04D1F1E8F0B1D000077C8 /* Bond */ = {
 			isa = PBXGroup;
 			children = (
+				3895CCB223A25C61008FD491 /* MainBlockDisposable.swift */,
 				90C04D201E8F0B1D000077C8 /* Bond.swift */,
 				90C04D231E8F0B1D000077C8 /* DynamicSubject.swift */,
 				90C04D371E8F0B1D000077C8 /* Observable.swift */,
@@ -1158,6 +1163,7 @@
 				070FE2741F0138180031B7BD /* NSLayoutConstraint.swift in Sources */,
 				EC1F127D2167C9EE002F0D1B /* UnorderedCollectionChangeset+Set.swift in Sources */,
 				90C04DB61E8F0B97000077C8 /* UIGestureRecognizer.swift in Sources */,
+				3895CCB323A25C61008FD491 /* MainBlockDisposable.swift in Sources */,
 				EC930F42222B1137000D397C /* TreeChangeset+Array2D.swift in Sources */,
 				ECBCE0E62161766C0078E03B /* SectionedDataSourceChangesetConvertible.swift in Sources */,
 				90A4430B1E9055D100D611FE /* NSMenuItem.swift in Sources */,
@@ -1237,6 +1243,7 @@
 				ECC1A6D1207A18DC00AE762C /* NSTableView+DataSource.swift in Sources */,
 				90A443361E9055D800D611FE /* UISwitch.swift in Sources */,
 				ECFF44B82168F5C000B5EDB0 /* Instantiatable.swift in Sources */,
+				6E8ECECE23A2F7D600856D90 /* MainBlockDisposable.swift in Sources */,
 				90A443271E9055D800D611FE /* UIBarItem.swift in Sources */,
 				ECBC51C02161637A00BE80EC /* OrderedCollectionDiff+Strideable+Differ.swift in Sources */,
 				90C04D861E8F0B8D000077C8 /* NSStatusBarButton.swift in Sources */,
@@ -1340,6 +1347,7 @@
 				ECC1A6D2207A18DC00AE762C /* NSTableView+DataSource.swift in Sources */,
 				90A4431E1E9055D200D611FE /* NSSlider.swift in Sources */,
 				ECFF44B92168F5C000B5EDB0 /* Instantiatable.swift in Sources */,
+				6E8ECECD23A2F7D500856D90 /* MainBlockDisposable.swift in Sources */,
 				ECAFB8D6200A7E3900EE0669 /* BNDInvocation.swift in Sources */,
 				ECBC51D52161637B00BE80EC /* OrderedCollectionDiff+Strideable+Differ.swift in Sources */,
 				90C04D981E8F0B96000077C8 /* UIApplication.swift in Sources */,

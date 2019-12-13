@@ -49,7 +49,7 @@ extension ReactiveExtensions where Base: NSView {
                 // swiftlint:disable:next force_cast
                 observer.receive(recog as! T)
             }
-            return BlockDisposable {
+            return MainBlockDisposable {
                 target.unregister()
             }
         }
