@@ -72,7 +72,7 @@ public class ProtocolProxy: BNDProtocolProxyBase {
             invocation.writeReturnValue(result)
         }
         registerDelegate()
-        return BlockDisposable { [weak self] in
+        return MainBlockDisposable { [weak self] in
             self?.invokers[selector] = nil
             self?.registerDelegate()
         }
@@ -84,7 +84,7 @@ public class ProtocolProxy: BNDProtocolProxyBase {
             invocation.writeReturnValue(result)
         }
         registerDelegate()
-        return BlockDisposable { [weak self] in
+        return MainBlockDisposable { [weak self] in
             self?.invokers[selector] = nil
             self?.registerDelegate()
         }
@@ -96,7 +96,7 @@ public class ProtocolProxy: BNDProtocolProxyBase {
             invocation.writeReturnValue(result)
         }
         registerDelegate()
-        return BlockDisposable { [weak self] in
+        return MainBlockDisposable { [weak self] in
             self?.invokers[selector] = nil
             self?.registerDelegate()
         }
@@ -108,7 +108,7 @@ public class ProtocolProxy: BNDProtocolProxyBase {
             invocation.writeReturnValue(result)
         }
         registerDelegate()
-        return BlockDisposable { [weak self] in
+        return MainBlockDisposable { [weak self] in
             self?.invokers[selector] = nil
             self?.registerDelegate()
         }
@@ -120,7 +120,7 @@ public class ProtocolProxy: BNDProtocolProxyBase {
             invocation.writeReturnValue(result)
         }
         registerDelegate()
-        return BlockDisposable { [weak self] in
+        return MainBlockDisposable { [weak self] in
             self?.invokers[selector] = nil
             self?.registerDelegate()
         }
@@ -132,7 +132,7 @@ public class ProtocolProxy: BNDProtocolProxyBase {
             invocation.writeReturnValue(result)
         }
         registerDelegate()
-        return BlockDisposable { [weak self] in
+        return MainBlockDisposable { [weak self] in
             self?.invokers[selector] = nil
             self?.registerDelegate()
         }
@@ -147,7 +147,9 @@ public class ProtocolProxy: BNDProtocolProxyBase {
                 let disposable = CompositeDisposable()
                 disposable += registerInvoker(subject)
                 disposable += subject.observe(with: observer)
-                disposable += BlockDisposable { [weak self] in self?.handlers[selector] = nil }
+                disposable += MainBlockDisposable { [weak self] in
+                    self?.handlers[selector] = nil
+                }
                 return disposable
             }.share(limit: 0)
             handlers[selector] = signal

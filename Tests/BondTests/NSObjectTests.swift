@@ -149,6 +149,15 @@ class NSObjectKVOTests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
 
+    func testDeallocationWithSwiftKeyPath() {
+        let subject = object.reactive.keyPath(\.property)
+        subject.expect([.next("a"), .completed], expectation: expectation(description: #function))
+        weak var weakObject = object
+        object = nil
+        XCTAssert(weakObject == nil)
+        waitForExpectations(timeout: 1)
+    }
+
     func testSwift4Observation() {
         object.reactive.keyPath(\.propertyString).expectNext(["a", "b", "c"])
         object.propertyString = "b"
