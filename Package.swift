@@ -1,4 +1,4 @@
-// swift-tools-version:5.0
+// swift-tools-version:5.1
 import PackageDescription
 
 let package = Package(
@@ -10,8 +10,8 @@ let package = Package(
         .library(name: "Bond", targets: ["Bond"])
     ],
     dependencies: [
-        .package(url: "https://github.com/DeclarativeHub/ReactiveKit.git", .upToNextMajor(from: "3.14.2")),
-        .package(url: "https://github.com/tonyarnold/Differ.git", .upToNextMajor(from: "1.4.3"))
+        .package(url: "https://github.com/DeclarativeHub/ReactiveKit.git", .upToNextMajor(from: "3.15.6")),
+        .package(url: "https://github.com/tonyarnold/Differ.git", .upToNextMajor(from: "1.4.4"))
     ],
     targets: [
         .target(name: "BNDProtocolProxyBase"),

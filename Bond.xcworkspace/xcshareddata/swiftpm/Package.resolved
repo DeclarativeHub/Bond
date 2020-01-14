@@ -3,7 +3,7 @@
     "pins": [
       {
         "package": "Differ",
-        "repositoryURL": "https://github.com/tonyarnold/Differ.git",
+        "repositoryURL": "git@github.com:tonyarnold/Differ.git",
         "state": {
           "branch": null,
           "revision": "dd5d4bfb1c27012d4790e877b29847d2ab9d989b",
@@ -12,7 +12,7 @@
       },
       {
         "package": "ReactiveKit",
-        "repositoryURL": "https://github.com/DeclarativeHub/ReactiveKit.git",
+        "repositoryURL": "git@github.com:DeclarativeHub/ReactiveKit.git",
         "state": {
           "branch": null,
           "revision": "a45f218217175e7c933acc82681ec8ce62ec55a4",
