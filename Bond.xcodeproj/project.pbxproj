@@ -1937,7 +1937,7 @@
 /* Begin XCRemoteSwiftPackageReference section */
 		90AD163523CE6FC500925831 /* XCRemoteSwiftPackageReference "ReactiveKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:DeclarativeHub/ReactiveKit.git";
+			repositoryURL = "https://github.com/DeclarativeHub/ReactiveKit.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 3.15.6;
@@ -1945,7 +1945,7 @@
 		};
 		90AD163623CE700500925831 /* XCRemoteSwiftPackageReference "Differ" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:tonyarnold/Differ.git";
+			repositoryURL = "https://github.com/tonyarnold/Differ.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.4.4;
