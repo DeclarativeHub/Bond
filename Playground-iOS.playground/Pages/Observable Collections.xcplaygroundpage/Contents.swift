@@ -23,7 +23,7 @@ a.batchUpdate { a in
 // Array2D
 
 let array2D = MutableObservableArray2D(Array2D<String, String>(sectionsWithItems: [
-    ("Cities", ["Paris", "Berlin"]),
+    ("Cities", ["Paris", "Berlin"])
 ]))
 
 array2D.observeNext { cs in
@@ -74,10 +74,10 @@ var t = TreeArray<String>([
         TreeNode("Child 001"),
         TreeNode("Child 002", [
             TreeNode("Child 0020"),
-            TreeNode("Child 0021"),
-        ]),
+            TreeNode("Child 0021")
+        ])
     ]),
-    TreeNode("Child 01"),
+    TreeNode("Child 01")
 ])
 
 let ot = MutableObservableTree(t)

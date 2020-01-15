@@ -17,14 +17,14 @@ class TreeViewTests: XCTestCase {
         tree = TreeNode("0", [
             TreeNode("00"),
             TreeNode("01", [
-                TreeNode("010"),
+                TreeNode("010")
             ]),
             TreeNode("02", [
                 TreeNode("020", [
-                    TreeNode("0200"),
+                    TreeNode("0200")
                 ]),
-                TreeNode("021"),
-            ]),
+                TreeNode("021")
+            ])
         ])
         largeTree = tree
         for _ in 0 ..< 5 {

@@ -12,14 +12,14 @@ import UIKit
 var t = TreeNode("Child 00", [
     TreeNode("Child 000"),
     TreeNode("Child 001", [
-        TreeNode("Child 0010"),
+        TreeNode("Child 0010")
     ]),
     TreeNode("Child 002", [
         TreeNode("Child 0020", [
-            TreeNode("Child 00200"),
+            TreeNode("Child 00200")
         ]),
-        TreeNode("Child 0021"),
-    ]),
+        TreeNode("Child 0021")
+    ])
 ])
 
 print(t.depthFirst.map { $0.value })
@@ -34,8 +34,8 @@ print(t.depthFirst.randomElement()!)
 var ta = TreeArray<String>([
     t,
     TreeNode("Child 01", [
-        TreeNode("Child 010"),
-    ]),
+        TreeNode("Child 010")
+    ])
 ])
 
 print(ta.depthFirst.map { $0.value })

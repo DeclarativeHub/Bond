@@ -31,7 +31,7 @@ class CustomBinder<Changeset: SectionedDataSourceChangeset>: TableViewBinderData
 // Item values are values displayed by the table view cells.
 let initialData = Array2D<String, Int>(sectionsWithItems: [
     ("A", [1, 2]),
-    ("B", [10, 20]),
+    ("B", [10, 20])
 ])
 
 let data = MutableObservableArray2D(initialData)

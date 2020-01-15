@@ -21,7 +21,7 @@ let data = MutableObservableArray2D(
     Array2D<String, String>(
         sectionsWithItems: [
             ("Feet", ["0 ft", "1 ft", "2 ft", "3 ft", "4 ft", "5 ft", "6 ft", "7 ft", "8 ft", "9 ft"]),
-            ("Inches", ["0 in", "1 in", "2 in", "3 in", "4 in", "5 in", "6 in", "7 in", "8 in", "9 in", "10 in", "11 in", "12 in"]),
+            ("Inches", ["0 in", "1 in", "2 in", "3 in", "4 in", "5 in", "6 in", "7 in", "8 in", "9 in", "10 in", "11 in", "12 in"])
         ]
     )
 )

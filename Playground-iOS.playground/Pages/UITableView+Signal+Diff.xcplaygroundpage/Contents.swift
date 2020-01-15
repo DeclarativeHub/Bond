@@ -24,7 +24,7 @@ let data = SafeSignal(sequence: [
     ["A"],
     ["A", "B", "C"],
     ["A", "C"],
-    ["C", "A"],
+    ["C", "A"]
 ])
     .zip(with: pulse) { data, _ in data } // add 1 second delay between events
     .diff() // diff each new array against the previous one
