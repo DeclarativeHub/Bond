@@ -25,7 +25,6 @@ public enum DataSourceEventKind {}
 
 @available(*, deprecated)
 extension DataSourceEventProtocol {
-
     @available(*, deprecated, renamed: "Collection")
     public typealias DataSource = Collection
 
@@ -36,13 +35,11 @@ extension DataSourceEventProtocol {
 }
 
 extension TreeArray {
-
     @available(*, deprecated, renamed: "Value")
     public typealias ChildValue = Value
 }
 
 extension ChangesetContainerProtocol where Changeset.Collection: TreeProtocol {
-
     /// Returns `true` if underlying collection is empty, `false` otherwise.
     @available(*, deprecated, renamed: "tree.children.isEmpty")
     public var isEmpty: Bool {
@@ -66,7 +63,6 @@ public typealias TreeNodeProtocol = TreeProtocol
 public typealias TreeArrayProtocol = RangeReplaceableTreeProtocol
 
 extension TreeProtocol {
-
     @available(*, deprecated, renamed: "Children.Element")
     public typealias ChildNode = Children.Element
 
@@ -82,7 +78,6 @@ extension TreeProtocol {
 }
 
 extension TreeProtocol where Children.Element: Equatable {
-
     @available(*, deprecated, renamed: "depthFirst.firstIndex(of:)")
     public func index(of node: Children.Element) -> IndexPath? {
         return depthFirst.firstIndex(of: node)
@@ -90,7 +85,6 @@ extension TreeProtocol where Children.Element: Equatable {
 }
 
 extension RangeReplaceableTreeProtocol {
-
     @available(*, deprecated, message: "Use subscript [childAt: IndexPath] instead")
     public subscript(indexPath: IndexPath) -> Children.Element {
         get {

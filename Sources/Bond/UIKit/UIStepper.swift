@@ -24,25 +24,23 @@
 
 #if os(iOS)
 
-import UIKit
-import ReactiveKit
+    import ReactiveKit
+    import UIKit
 
-extension ReactiveExtensions where Base: UIStepper {
-
-    public var value: DynamicSubject<Double> {
-        return dynamicSubject(
-            signal: controlEvents(.valueChanged).eraseType(),
-            get: { $0.value },
-            set: { $0.value = $1 }
-        )
+    extension ReactiveExtensions where Base: UIStepper {
+        public var value: DynamicSubject<Double> {
+            return dynamicSubject(
+                signal: controlEvents(.valueChanged).eraseType(),
+                get: { $0.value },
+                set: { $0.value = $1 }
+            )
+        }
     }
-}
 
-extension UIStepper: BindableProtocol {
-
-    public func bind(signal: Signal<Double, Never>) -> Disposable {
-        return reactive.value.bind(signal: signal)
+    extension UIStepper: BindableProtocol {
+        public func bind(signal: Signal<Double, Never>) -> Disposable {
+            return reactive.value.bind(signal: signal)
+        }
     }
-}
 
 #endif

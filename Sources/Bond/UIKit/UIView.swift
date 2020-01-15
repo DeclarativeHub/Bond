@@ -24,34 +24,33 @@
 
 #if os(iOS) || os(tvOS)
 
-import UIKit
-import ReactiveKit
+    import ReactiveKit
+    import UIKit
 
-extension UIResponder: BindingExecutionContextProvider {
-    public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
-}
-
-extension ReactiveExtensions where Base: UIView {
-
-    public var alpha: Bond<CGFloat> {
-        return bond { $0.alpha = $1 }
+    extension UIResponder: BindingExecutionContextProvider {
+        public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
     }
 
-    public var backgroundColor: Bond<UIColor?> {
-        return bond { $0.backgroundColor = $1 }
-    }
+    extension ReactiveExtensions where Base: UIView {
+        public var alpha: Bond<CGFloat> {
+            return bond { $0.alpha = $1 }
+        }
 
-    public var isHidden: Bond<Bool> {
-        return bond { $0.isHidden = $1 }
-    }
+        public var backgroundColor: Bond<UIColor?> {
+            return bond { $0.backgroundColor = $1 }
+        }
 
-    public var isUserInteractionEnabled: Bond<Bool> {
-        return bond { $0.isUserInteractionEnabled = $1 }
-    }
+        public var isHidden: Bond<Bool> {
+            return bond { $0.isHidden = $1 }
+        }
 
-    public var tintColor: Bond<UIColor?> {
-        return bond { $0.tintColor = $1 }
+        public var isUserInteractionEnabled: Bond<Bool> {
+            return bond { $0.isUserInteractionEnabled = $1 }
+        }
+
+        public var tintColor: Bond<UIColor?> {
+            return bond { $0.tintColor = $1 }
+        }
     }
-}
 
 #endif

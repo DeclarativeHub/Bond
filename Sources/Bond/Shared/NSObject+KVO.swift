@@ -26,17 +26,14 @@ import Foundation
 import ReactiveKit
 
 extension NSObject {
-
     /// KVO reactive extensions error.
     public enum KVOError: Error {
-
         /// Sent when the type is not convertible to the expected type.
         case notConvertible(String)
     }
 }
 
 extension ReactiveExtensions where Base: NSObject {
-
     /// Creates a signal that represents values of the given KVO-compatible key path.
     ///
     ///     class User: NSObject {
@@ -61,7 +58,7 @@ extension ReactiveExtensions where Base: NSObject {
 
             let options: NSKeyValueObservingOptions = startWithCurrentValue ? [.initial] : []
 
-            let subscription = base.observe(keyPath, options: options) { base, change in
+            let subscription = base.observe(keyPath, options: options) { base, _ in
                 observer.receive(base[keyPath: keyPath])
             }
 
@@ -71,15 +68,14 @@ extension ReactiveExtensions where Base: NSObject {
             }
 
             return DeinitDisposable(disposable: MainBlockDisposable {
-                  subscription.invalidate()
-                  disposable.dispose()
+                subscription.invalidate()
+                disposable.dispose()
             })
         }
     }
 }
 
 extension ReactiveExtensions where Base: NSObject {
-
     /// Creates a `DynamicSubject` representing the given KVO path of the given type.
     ///
     /// If the key path emits a value of type other than `ofType`, program execution will stop with `fatalError`.
@@ -90,7 +86,7 @@ extension ReactiveExtensions where Base: NSObject {
     ///   - keyPath: Key path of the property to wrap.
     ///   - ofType: Type of the property to wrap, e.g. `Int.self`.
     ///   - context: Execution context in which to update the property. Use `.immediateOnMain` to update the object from main queue.
-    public func keyPath<T>(_ keyPath: String, ofType: T.Type, context: ExecutionContext) -> DynamicSubject<T> {
+    public func keyPath<T>(_ keyPath: String, ofType _: T.Type, context: ExecutionContext) -> DynamicSubject<T> {
         return DynamicSubject(
             target: base,
             signal: RKKeyValueSignal(keyPath: keyPath, for: base).toSignal(),
@@ -120,7 +116,7 @@ extension ReactiveExtensions where Base: NSObject {
     ///   - keyPath: Key path of the property to wrap.
     ///   - ofType: Type of the property to wrap, e.g. `Optional<Int>.self`.
     ///   - context: Execution context in which to update the property. Use `.immediateOnMain` to update the object from main queue.
-    public func keyPath<T>(_ keyPath: String, ofType: T.Type, context: ExecutionContext) -> DynamicSubject<T> where T: OptionalProtocol {
+    public func keyPath<T>(_ keyPath: String, ofType _: T.Type, context: ExecutionContext) -> DynamicSubject<T> where T: OptionalProtocol {
         return DynamicSubject(
             target: base,
             signal: RKKeyValueSignal(keyPath: keyPath, for: base).toSignal(),
@@ -156,7 +152,7 @@ extension ReactiveExtensions where Base: NSObject {
     ///   - keyPath: Key path of the property to wrap.
     ///   - ofExpectedType: Type of the property to wrap, e.g. `Int.self`.
     ///   - context: Execution context in which to update the property. Use `.immediateOnMain` to update the object from main queue.
-    public func keyPath<T>(_ keyPath: String, ofExpectedType: T.Type, context: ExecutionContext) -> FailableDynamicSubject<T, NSObject.KVOError> {
+    public func keyPath<T>(_ keyPath: String, ofExpectedType _: T.Type, context: ExecutionContext) -> FailableDynamicSubject<T, NSObject.KVOError> {
         return FailableDynamicSubject(
             target: base,
             signal: RKKeyValueSignal(keyPath: keyPath, for: base).castError(),
@@ -186,7 +182,7 @@ extension ReactiveExtensions where Base: NSObject {
     ///   - keyPath: Key path of the property to wrap.
     ///   - ofExpectedType: Type of the property to wrap, e.g. `Optional<Int>.self`.
     ///   - context: Execution context in which to update the property. Use `.immediateOnMain` to update the object from main queue.
-    public func keyPath<T>(_ keyPath: String, ofExpectedType: T.Type, context: ExecutionContext) -> FailableDynamicSubject<T, NSObject.KVOError> where T: OptionalProtocol {
+    public func keyPath<T>(_ keyPath: String, ofExpectedType _: T.Type, context: ExecutionContext) -> FailableDynamicSubject<T, NSObject.KVOError> where T: OptionalProtocol {
         return FailableDynamicSubject(
             target: base,
             signal: RKKeyValueSignal(keyPath: keyPath, for: base).castError(),
@@ -214,7 +210,6 @@ extension ReactiveExtensions where Base: NSObject {
 }
 
 extension ReactiveExtensions where Base: NSObject, Base: BindingExecutionContextProvider {
-
     /// Creates a `DynamicSubject` representing the given KVO path of the given type.
     ///
     ///     user.keyPath("name", ofType: String.self)
@@ -267,7 +262,7 @@ extension ReactiveExtensions where Base: NSObject, Base: BindingExecutionContext
 // MARK: - Implementation
 
 private class RKKeyValueSignal: NSObject, SignalProtocol {
-    private weak var object: NSObject? = nil
+    private weak var object: NSObject?
     private var context = 0
     private var keyPath: String
     private let subject: Subject<Void, Never>
@@ -278,12 +273,12 @@ private class RKKeyValueSignal: NSObject, SignalProtocol {
 
     fileprivate init(keyPath: String, for object: NSObject) {
         self.keyPath = keyPath
-        self.subject = PassthroughSubject()
+        subject = PassthroughSubject()
         self.object = object
         super.init()
 
         lock.lock()
-        deallocationDisposable.otherDisposable = object._willDeallocate.reduce(nil, {$1}).observeNext { object in
+        deallocationDisposable.otherDisposable = object._willDeallocate.reduce(nil) { $1 }.observeNext { object in
             if self.observing {
                 object?.unbox.removeObserver(self, forKeyPath: self.keyPath, context: &self.context)
             }
@@ -296,7 +291,7 @@ private class RKKeyValueSignal: NSObject, SignalProtocol {
         subject.send(completion: .finished)
     }
 
-    fileprivate override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    fileprivate override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         if context == &self.context {
             if let _ = change?[NSKeyValueChangeKey.newKey] {
                 subject.send(())
@@ -309,18 +304,18 @@ private class RKKeyValueSignal: NSObject, SignalProtocol {
     private func increaseNumberOfObservers() {
         lock.lock(); defer { lock.unlock() }
         numberOfObservers += 1
-        if let object = object, numberOfObservers == 1 && !observing {
+        if let object = object, numberOfObservers == 1, !observing {
             observing = true
-            object.addObserver(self, forKeyPath: keyPath, options: [.new], context: &self.context)
+            object.addObserver(self, forKeyPath: keyPath, options: [.new], context: &context)
         }
     }
 
     private func decreaseNumberOfObservers() {
         lock.lock(); defer { lock.unlock() }
         numberOfObservers -= 1
-        if let object = object, numberOfObservers == 0 && observing {
+        if let object = object, numberOfObservers == 0, observing {
             observing = false
-            object.removeObserver(self, forKeyPath: self.keyPath, context: &self.context)
+            object.removeObserver(self, forKeyPath: keyPath, context: &context)
         }
     }
 

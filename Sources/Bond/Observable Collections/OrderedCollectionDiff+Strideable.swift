@@ -25,7 +25,6 @@
 import Foundation
 
 extension OrderedCollectionDiff where Index: Strideable {
-
     /// Calculates diff from the given patch.
     /// - complexity: O(Nˆ2) where N is the number of patch operations.
     public init<T>(from patch: [OrderedCollectionOperation<T, Index>]) {
@@ -41,26 +40,26 @@ extension OrderedCollectionDiff where Index: Strideable {
             return
         }
 
-        for patchSoFar in (1...patch.count).map({ patch.prefix(upTo: $0) }) {
+        for patchSoFar in (1 ... patch.count).map({ patch.prefix(upTo: $0) }) {
             let patchToUndo = patchSoFar.dropLast()
             switch patchSoFar.last! {
-            case .insert(let atIndex):
+            case let .insert(atIndex):
                 recordInsertion(at: atIndex)
-            case .delete(let atIndex):
+            case let .delete(atIndex):
                 let sourceIndex = AnyOrderedCollectionOperation<Index>.undo(patch: patchToUndo, on: atIndex)
                 recordDeletion(at: atIndex, sourceIndex: sourceIndex)
-            case .update(let atIndex):
+            case let .update(atIndex):
                 let sourceIndex = AnyOrderedCollectionOperation<Index>.undo(patch: patchToUndo, on: atIndex)
                 recordUpdate(at: atIndex, sourceIndex: sourceIndex)
-            case .move(let fromIndex, let toIndex):
+            case let .move(fromIndex, toIndex):
                 let sourceIndex = AnyOrderedCollectionOperation<Index>.undo(patch: patchToUndo, on: fromIndex)
                 recordMove(from: fromIndex, to: toIndex, sourceIndex: sourceIndex)
             }
         }
     }
-    
+
     private mutating func recordInsertion(at insertionIndex: Index) {
-        forEachDestinationIndex { (index) in
+        forEachDestinationIndex { index in
             if insertionIndex <= index {
                 index = index.advanced(by: 1)
             }
@@ -69,9 +68,8 @@ extension OrderedCollectionDiff where Index: Strideable {
     }
 
     private mutating func recordDeletion(at deletionIndex: Index, sourceIndex: Index?) {
-
         defer {
-            forEachDestinationIndex { (index) in
+            forEachDestinationIndex { index in
                 if deletionIndex <= index {
                     index = index.advanced(by: -1)
                 }
@@ -99,7 +97,6 @@ extension OrderedCollectionDiff where Index: Strideable {
     }
 
     private mutating func recordUpdate(at updateIndex: Index, sourceIndex: Index?) {
-
         // If updating previously inserted index
         if inserts.contains(where: { $0 == updateIndex }) {
             return
@@ -126,7 +123,7 @@ extension OrderedCollectionDiff where Index: Strideable {
         guard fromIndex != toIndex else { return }
 
         func adjustDestinationIndices() {
-            forEachDestinationIndex { (index) in
+            forEachDestinationIndex { index in
                 if fromIndex <= index {
                     index = index.advanced(by: -1)
                 }
@@ -163,10 +160,10 @@ extension OrderedCollectionDiff where Index: Strideable {
     }
 
     private mutating func forEachDestinationIndex(apply: (inout Index) -> Void) {
-        for i in 0..<inserts.count {
+        for i in 0 ..< inserts.count {
             apply(&inserts[i])
         }
-        for i in 0..<moves.count {
+        for i in 0 ..< moves.count {
             apply(&moves[i].to)
         }
     }

@@ -25,7 +25,6 @@
 import Foundation
 
 extension OrderedCollectionDiff where Index == IndexPath {
-
     /// Calculates diff from the given patch.
     /// - complexity: O(Nˆ2) where N is the number of patch operations.
     public init<T>(from patch: [OrderedCollectionOperation<T, IndexPath>]) {
@@ -41,18 +40,18 @@ extension OrderedCollectionDiff where Index == IndexPath {
             return
         }
 
-        for patchSoFar in (1...patch.count).map({ patch.prefix(upTo: $0) }) {
+        for patchSoFar in (1 ... patch.count).map({ patch.prefix(upTo: $0) }) {
             let patchToUndo = Array(patchSoFar.dropLast())
             switch patchSoFar.last! {
-            case .insert(let atIndex):
+            case let .insert(atIndex):
                 recordInsertion(at: atIndex, patch: patchToUndo)
-            case .delete(let atIndex):
+            case let .delete(atIndex):
                 let sourceIndex = AnyOrderedCollectionOperation<Index>.undo(patch: patchToUndo, on: atIndex)
                 recordDeletion(at: atIndex, sourceIndex: sourceIndex, patch: patchToUndo)
-            case .update(let atIndex):
+            case let .update(atIndex):
                 let sourceIndex = AnyOrderedCollectionOperation<Index>.undo(patch: patchToUndo, on: atIndex)
                 recordUpdate(at: atIndex, sourceIndex: sourceIndex, patch: patchToUndo)
-            case .move(let fromIndex, let toIndex):
+            case let .move(fromIndex, toIndex):
                 let sourceIndex = AnyOrderedCollectionOperation<Index>.undo(patch: patchToUndo, on: fromIndex)
                 recordMove(from: fromIndex, to: toIndex, sourceIndex: sourceIndex, patch: patchToUndo)
             }
@@ -74,19 +73,18 @@ extension OrderedCollectionDiff where Index == IndexPath {
             return
         }
 
-        forEachDestinationIndex { (index) in
+        forEachDestinationIndex { index in
             if index.isAffectedByDeletionOrInsertion(at: insertionIndex) {
                 index = index.shifted(by: 1, atLevelOf: insertionIndex)
             }
         }
-        
+
         inserts.append(insertionIndex)
     }
 
     private mutating func recordDeletion(at deletionIndex: Index, sourceIndex: Index?, patch: [AnyOrderedCollectionOperation<Index>]) {
-
         func adjustDestinationIndices() {
-            forEachDestinationIndex { (index) in
+            forEachDestinationIndex { index in
                 if index.isAffectedByDeletionOrInsertion(at: deletionIndex) {
                     index = index.shifted(by: -1, atLevelOf: deletionIndex)
                 }
@@ -145,7 +143,6 @@ extension OrderedCollectionDiff where Index == IndexPath {
     }
 
     private mutating func recordUpdate(at updateIndex: Index, sourceIndex: Index?, patch: [AnyOrderedCollectionOperation<Index>]) {
-
         // If updating an inserted index or in a such subtree
         if inserts.contains(where: { $0 == updateIndex || $0.isAncestor(of: updateIndex) }) {
             return
@@ -268,12 +265,12 @@ extension OrderedCollectionDiff where Index == IndexPath {
         var movesIntoSubtree: [Int] = []
 
         func adjustDestinationIndices() {
-            forEachDestinationIndex(insertsToSkip: Set(insertsIntoSubtree), movesToSkip: Set(movesIntoSubtree)) { (index) in
+            forEachDestinationIndex(insertsToSkip: Set(insertsIntoSubtree), movesToSkip: Set(movesIntoSubtree)) { index in
                 if index.isAffectedByDeletionOrInsertion(at: fromIndex) {
                     index = index.shifted(by: -1, atLevelOf: fromIndex)
                 }
             }
-            forEachDestinationIndex(insertsToSkip: Set(insertsIntoSubtree), movesToSkip: Set(movesIntoSubtree)) { (index) in
+            forEachDestinationIndex(insertsToSkip: Set(insertsIntoSubtree), movesToSkip: Set(movesIntoSubtree)) { index in
                 if index.isAffectedByDeletionOrInsertion(at: toIndex) {
                     index = index.shifted(by: 1, atLevelOf: toIndex)
                 }
@@ -313,7 +310,7 @@ extension OrderedCollectionDiff where Index == IndexPath {
 
         updates.removeAll(where: { move.from.isAncestor(of: $0) })
         deletes.removeAll(where: { move.from.isAncestor(of: $0) })
-        inserts.removeAll(where: { move.to.isAncestor(of: $0 )})
+        inserts.removeAll(where: { move.to.isAncestor(of: $0) })
 
         deletes.append(move.from)
         if !inserts.contains(where: { $0.isAncestor(of: move.to) }) {
@@ -322,10 +319,10 @@ extension OrderedCollectionDiff where Index == IndexPath {
     }
 
     private mutating func forEachDestinationIndex(insertsToSkip: Set<Int> = [], movesToSkip: Set<Int> = [], apply: (inout Index) -> Void) {
-        for i in 0..<inserts.count where !insertsToSkip.contains(i) {
+        for i in 0 ..< inserts.count where !insertsToSkip.contains(i) {
             apply(&inserts[i])
         }
-        for i in 0..<moves.count where !movesToSkip.contains(i) {
+        for i in 0 ..< moves.count where !movesToSkip.contains(i) {
             apply(&moves[i].to)
         }
     }

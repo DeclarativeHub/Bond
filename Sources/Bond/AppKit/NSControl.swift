@@ -24,134 +24,130 @@
 
 #if os(macOS)
 
-import AppKit
-import ReactiveKit
+    import AppKit
+    import ReactiveKit
 
-private extension NSControl {
-
-    struct AssociatedKeys {
-        static var ControlHelperKey = "bnd_ControlHelperKey"
-    }
-
-    @objc class BondHelper: NSObject
-    {
-        weak var control: NSControl?
-        let subject = PassthroughSubject<AnyObject?, Never>()
-
-        init(control: NSControl) {
-            self.control = control
-            super.init()
-
-            control.target = self
-            control.action = #selector(eventHandler)
+    private extension NSControl {
+        struct AssociatedKeys {
+            static var ControlHelperKey = "bnd_ControlHelperKey"
         }
 
-        @objc func eventHandler(_ sender: NSControl?) {
-            subject.send(sender)
-        }
+        @objc class BondHelper: NSObject {
+            weak var control: NSControl?
+            let subject = PassthroughSubject<AnyObject?, Never>()
 
-        deinit {
-            control?.target = nil
-            control?.action = nil
-            subject.send(completion: .finished)
-        }
-    }
-}
+            init(control: NSControl) {
+                self.control = control
+                super.init()
 
-extension ReactiveExtensions where Base: NSControl {
+                control.target = self
+                control.action = #selector(eventHandler)
+            }
 
-    public var controlEvent: SafeSignal<Base> {
-        if let controlHelper = objc_getAssociatedObject(base, &NSControl.AssociatedKeys.ControlHelperKey) as AnyObject? {
-            return (controlHelper as! NSControl.BondHelper).subject.map { $0 as! Base }.toSignal()
-        } else {
-            let controlHelper = NSControl.BondHelper(control: base)
-            objc_setAssociatedObject(base, &NSControl.AssociatedKeys.ControlHelperKey, controlHelper, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            return controlHelper.subject.map { $0 as! Base }.toSignal()
+            @objc func eventHandler(_ sender: NSControl?) {
+                subject.send(sender)
+            }
+
+            deinit {
+                control?.target = nil
+                control?.action = nil
+                subject.send(completion: .finished)
+            }
         }
     }
 
-    public func controlEvent<T>(_ read: @escaping (Base) -> T) -> SafeSignal<T> {
-        return controlEvent.map(read)
+    extension ReactiveExtensions where Base: NSControl {
+        public var controlEvent: SafeSignal<Base> {
+            if let controlHelper = objc_getAssociatedObject(base, &NSControl.AssociatedKeys.ControlHelperKey) as AnyObject? {
+                return (controlHelper as! NSControl.BondHelper).subject.map { $0 as! Base }.toSignal()
+            } else {
+                let controlHelper = NSControl.BondHelper(control: base)
+                objc_setAssociatedObject(base, &NSControl.AssociatedKeys.ControlHelperKey, controlHelper, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                return controlHelper.subject.map { $0 as! Base }.toSignal()
+            }
+        }
+
+        public func controlEvent<T>(_ read: @escaping (Base) -> T) -> SafeSignal<T> {
+            return controlEvent.map(read)
+        }
+
+        public var isEnabled: DynamicSubject<Bool> {
+            return dynamicSubject(
+                signal: keyPath(#keyPath(NSControl.isEnabled), ofType: Bool.self).eraseType(),
+                triggerEventOnSetting: false,
+                get: { $0.isEnabled },
+                set: { $0.isEnabled = $1 }
+            )
+        }
+
+        public var isHighlighted: DynamicSubject<Bool> {
+            return dynamicSubject(
+                signal: keyPath(#keyPath(NSControl.isHighlighted), ofType: Bool.self).eraseType(),
+                triggerEventOnSetting: false,
+                get: { $0.isHighlighted },
+                set: { $0.isHighlighted = $1 }
+            )
+        }
+
+        public var objectValue: DynamicSubject<Any?> {
+            return dynamicSubject(
+                signal: controlEvent.eraseType(),
+                triggerEventOnSetting: false,
+                get: { $0.objectValue },
+                set: { $0.objectValue = $1 }
+            )
+        }
+
+        public var stringValue: DynamicSubject<String> {
+            return dynamicSubject(
+                signal: objectValue.eraseType(),
+                triggerEventOnSetting: false,
+                get: { $0.stringValue },
+                set: { $0.stringValue = $1 }
+            )
+        }
+
+        public var attributedStringValue: DynamicSubject<NSAttributedString> {
+            return dynamicSubject(
+                signal: objectValue.eraseType(),
+                triggerEventOnSetting: false,
+                get: { $0.attributedStringValue },
+                set: { $0.attributedStringValue = $1 }
+            )
+        }
+
+        public var integerValue: DynamicSubject<Int> {
+            return dynamicSubject(
+                signal: objectValue.eraseType(),
+                triggerEventOnSetting: false,
+                get: { $0.integerValue },
+                set: { $0.integerValue = $1 }
+            )
+        }
+
+        public var floatValue: DynamicSubject<Float> {
+            return dynamicSubject(
+                signal: objectValue.eraseType(),
+                triggerEventOnSetting: false,
+                get: { $0.floatValue },
+                set: { $0.floatValue = $1 }
+            )
+        }
+
+        public var doubleValue: DynamicSubject<Double> {
+            return dynamicSubject(
+                signal: objectValue.eraseType(),
+                triggerEventOnSetting: false,
+                get: { $0.doubleValue },
+                set: { $0.doubleValue = $1 }
+            )
+        }
     }
 
-    public var isEnabled: DynamicSubject<Bool> {
-        return dynamicSubject(
-            signal: keyPath(#keyPath(NSControl.isEnabled), ofType: Bool.self).eraseType(),
-            triggerEventOnSetting: false,
-            get: { $0.isEnabled },
-            set: { $0.isEnabled = $1 }
-        )
+    extension NSControl: BindableProtocol {
+        public func bind(signal: Signal<Any?, Never>) -> Disposable {
+            return reactive.objectValue.bind(signal: signal)
+        }
     }
-
-    public var isHighlighted: DynamicSubject<Bool> {
-        return dynamicSubject(
-            signal: keyPath(#keyPath(NSControl.isHighlighted), ofType: Bool.self).eraseType(),
-            triggerEventOnSetting: false,
-            get: { $0.isHighlighted },
-            set: { $0.isHighlighted = $1 }
-        )
-    }
-
-    public var objectValue: DynamicSubject<Any?> {
-        return dynamicSubject(
-            signal: controlEvent.eraseType(),
-            triggerEventOnSetting: false,
-            get: { $0.objectValue },
-            set: { $0.objectValue = $1 }
-        )
-    }
-
-    public var stringValue: DynamicSubject<String> {
-        return dynamicSubject(
-            signal: objectValue.eraseType(),
-            triggerEventOnSetting: false,
-            get: { $0.stringValue },
-            set: { $0.stringValue = $1 }
-        )
-    }
-
-    public var attributedStringValue: DynamicSubject<NSAttributedString> {
-        return dynamicSubject(
-            signal: objectValue.eraseType(),
-            triggerEventOnSetting: false,
-            get: { $0.attributedStringValue },
-            set: { $0.attributedStringValue = $1 }
-        )
-    }
-
-    public var integerValue: DynamicSubject<Int> {
-        return dynamicSubject(
-            signal: objectValue.eraseType(),
-            triggerEventOnSetting: false,
-            get: { $0.integerValue },
-            set: { $0.integerValue = $1 }
-        )
-    }
-
-    public var floatValue: DynamicSubject<Float> {
-        return dynamicSubject(
-            signal: objectValue.eraseType(),
-            triggerEventOnSetting: false,
-            get: { $0.floatValue },
-            set: { $0.floatValue = $1 }
-        )
-    }
-
-    public var doubleValue: DynamicSubject<Double> {
-        return dynamicSubject(
-            signal: objectValue.eraseType(),
-            triggerEventOnSetting: false,
-            get: { $0.doubleValue },
-            set: { $0.doubleValue = $1 }
-        )
-    }
-}
-
-extension NSControl: BindableProtocol {
-
-    public func bind(signal: Signal<Any?, Never>) -> Disposable {
-        return reactive.objectValue.bind(signal: signal)
-    }
-}
 
 #endif

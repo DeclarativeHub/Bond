@@ -24,49 +24,47 @@
 
 #if os(macOS)
 
-import AppKit
-import ReactiveKit
+    import AppKit
+    import ReactiveKit
 
-extension ReactiveExtensions where Base: NSPopUpButton {
+    extension ReactiveExtensions where Base: NSPopUpButton {
+        public var selectedItem: DynamicSubject<NSMenuItem?> {
+            return dynamicSubject(
+                signal: controlEvent.eraseType(),
+                get: { $0.selectedItem },
+                set: { $0.select($1) }
+            )
+        }
 
-    public var selectedItem: DynamicSubject<NSMenuItem?> {
-        return dynamicSubject(
-            signal: controlEvent.eraseType(),
-            get: { $0.selectedItem },
-            set: { $0.select($1) }
-        )
+        public var indexOfSelectedItem: DynamicSubject<Int?> {
+            return dynamicSubject(
+                signal: controlEvent.eraseType(),
+                get: { $0.indexOfSelectedItem },
+                set: { $0.selectItem(at: $1 ?? -1) }
+            )
+        }
+
+        public var titleOfSelectedItem: DynamicSubject<String?> {
+            return dynamicSubject(
+                signal: controlEvent.eraseType(),
+                get: { $0.titleOfSelectedItem },
+                set: { $0.selectItem(withTitle: $1 ?? "") }
+            )
+        }
+
+        public var tagOfSelectedItem: DynamicSubject<Int?> {
+            return dynamicSubject(
+                signal: controlEvent.eraseType(),
+                get: { $0.selectedItem?.tag },
+                set: { $0.selectItem(withTag: $1 ?? -1) }
+            )
+        }
     }
 
-    public var indexOfSelectedItem: DynamicSubject<Int?> {
-        return dynamicSubject(
-            signal: controlEvent.eraseType(),
-            get: { $0.indexOfSelectedItem },
-            set: { $0.selectItem(at: $1 ?? -1) }
-        )
+    extension NSPopUpButton {
+        public func bind(signal: Signal<NSMenuItem?, Never>) -> Disposable {
+            return reactive.selectedItem.bind(signal: signal)
+        }
     }
-
-    public var titleOfSelectedItem: DynamicSubject<String?> {
-        return dynamicSubject(
-            signal: controlEvent.eraseType(),
-            get: { $0.titleOfSelectedItem },
-            set: { $0.selectItem(withTitle: $1 ?? "") }
-        )
-    }
-
-    public var tagOfSelectedItem: DynamicSubject<Int?> {
-        return dynamicSubject(
-            signal: controlEvent.eraseType(),
-            get: { $0.selectedItem?.tag },
-            set: { $0.selectItem(withTag: $1 ?? -1) }
-        )
-    }
-}
-
-extension NSPopUpButton {
-
-    public func bind(signal: Signal<NSMenuItem?, Never>) -> Disposable {
-        return reactive.selectedItem.bind(signal: signal)
-    }
-}
 
 #endif

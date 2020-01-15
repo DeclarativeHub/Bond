@@ -25,7 +25,6 @@
 import Foundation
 
 extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Changeset.Collection: Array2DProtocol {
-
     public typealias SectionMetadata = Collection.SectionMetadata
     public typealias Item = Collection.Item
     public typealias Section = Array2D<SectionMetadata, Item>.Section
@@ -70,17 +69,17 @@ extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtoc
     }
 
     /// Insert section at `index` with `items`.
-    public func insert(section: Section, at index: Int)  {
+    public func insert(section: Section, at index: Int) {
         insert(.section(section), at: [index])
     }
 
     /// Insert section at `index` with `items`.
-    public func insert(section metadata: SectionMetadata, at index: Int)  {
+    public func insert(section metadata: SectionMetadata, at index: Int) {
         insert(.section(Section(metadata: metadata, items: [])), at: [index])
     }
 
     /// Insert `item` at `indexPath`.
-    public func insert(item: Item, at indexPath: IndexPath)  {
+    public func insert(item: Item, at indexPath: IndexPath) {
         insert(.item(item), at: indexPath)
     }
 
@@ -140,7 +139,6 @@ extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtoc
 }
 
 extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Changeset.Collection: Array2DProtocol, Changeset.Collection.Item: Equatable {
-
     /// Replace items of a section at the given index with new items. Setting `performDiff: true` will make the framework
     /// calculate the diff between the existing and new items and emit an event with the calculated diff.
     public func replaceItems(ofSectionAt sectionIndex: Int, with newItems: [Item], performDiff: Bool) {

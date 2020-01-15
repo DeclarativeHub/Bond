@@ -24,119 +24,116 @@
 
 #if os(iOS)
 
-import UIKit
-import ReactiveKit
+    import ReactiveKit
+    import UIKit
 
-extension SignalProtocol where Element: SectionedDataSourceChangesetConvertible, Error == Never {
+    extension SignalProtocol where Element: SectionedDataSourceChangesetConvertible, Error == Never {
+        /// Binds the signal of data source elements to the given picker view.
+        ///
+        /// - parameters:
+        ///     - pickerView: A picker view that should display the data from the data source.
+        ///     - createTitle: A closure that configures the title for a given picker view row with the given data source at the given index path.
+        /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the picker view is deallocated.
+        @discardableResult
+        public func bind(to pickerView: UIPickerView, createTitle: @escaping (Element.Changeset.Collection, Int, Int, UIPickerView) -> String?) -> Disposable {
+            let binder = PickerViewBinderDataSource<Element.Changeset>(createTitle)
 
-    /// Binds the signal of data source elements to the given picker view.
-    ///
-    /// - parameters:
-    ///     - pickerView: A picker view that should display the data from the data source.
-    ///     - createTitle: A closure that configures the title for a given picker view row with the given data source at the given index path.
-    /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the picker view is deallocated.
-    @discardableResult
-    public func bind(to pickerView: UIPickerView, createTitle: @escaping (Element.Changeset.Collection, Int, Int, UIPickerView) -> String?) -> Disposable {
-        let binder = PickerViewBinderDataSource<Element.Changeset>(createTitle)
-
-        return bind(to: pickerView, using: binder)
-    }
-
-    /// Binds the signal of data source elements to the given table view.
-    ///
-    /// - parameters:
-    ///     - pickerView: A picker view that should display the data from the data source.
-    ///     - binder: A `PickerViewBinderDataSource` or its subclass that will manage the binding.
-    /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the picker view is deallocated.
-    @discardableResult
-    public func bind(to pickerView: UIPickerView, using binderDataSource: PickerViewBinderDataSource<Element.Changeset>) -> Disposable {
-        binderDataSource.pickerView = pickerView
-        return bind(to: pickerView) { (_, changeset) in
-            binderDataSource.changeset = changeset.asSectionedDataSourceChangeset
-        }
-    }
-}
-
-extension SignalProtocol where Element: SectionedDataSourceChangesetConvertible, Element.Changeset.Collection: QueryableSectionedDataSourceProtocol, Error == Never {
-
-    /// Binds the signal of data source elements to the given picker view.
-    ///
-    /// - parameters:
-    ///     - pickerView: A picker view that should display the data from the data source.
-    /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the picker view is deallocated.
-    @discardableResult
-    public func bind(to pickerView: UIPickerView) -> Disposable {
-        let createTitle: (Element.Changeset.Collection, Int, Int, UIPickerView) -> String? = { (dataSource, row, component, pickerView) in
-            let indexPath = IndexPath(row: row, section: component)
-            let item = dataSource.item(at: indexPath)
-
-            return String(describing: item)
+            return bind(to: pickerView, using: binder)
         }
 
-        return bind(to: pickerView, using: PickerViewBinderDataSource<Element.Changeset>(createTitle))
-    }
-}
-
-private var PickerViewBinderDataSourceAssociationKey = "PickerViewBinderDataSource"
-
-public class PickerViewBinderDataSource<Changeset: SectionedDataSourceChangeset>: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
-
-    public var createTitle: ((Changeset.Collection, Int, Int, UIPickerView) -> String?)?
-
-    public var changeset: Changeset? = nil {
-        didSet {
-            pickerView?.reloadAllComponents()
+        /// Binds the signal of data source elements to the given table view.
+        ///
+        /// - parameters:
+        ///     - pickerView: A picker view that should display the data from the data source.
+        ///     - binder: A `PickerViewBinderDataSource` or its subclass that will manage the binding.
+        /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the picker view is deallocated.
+        @discardableResult
+        public func bind(to pickerView: UIPickerView, using binderDataSource: PickerViewBinderDataSource<Element.Changeset>) -> Disposable {
+            binderDataSource.pickerView = pickerView
+            return bind(to: pickerView) { _, changeset in
+                binderDataSource.changeset = changeset.asSectionedDataSourceChangeset
+            }
         }
     }
 
-    open weak var pickerView: UIPickerView? = nil {
-        didSet {
-            guard let pickerView = pickerView else { return }
-            associateWithPickerView(pickerView)
+    extension SignalProtocol where Element: SectionedDataSourceChangesetConvertible, Element.Changeset.Collection: QueryableSectionedDataSourceProtocol, Error == Never {
+        /// Binds the signal of data source elements to the given picker view.
+        ///
+        /// - parameters:
+        ///     - pickerView: A picker view that should display the data from the data source.
+        /// - returns: A disposable object that can terminate the binding. Safe to ignore - the binding will be automatically terminated when the picker view is deallocated.
+        @discardableResult
+        public func bind(to pickerView: UIPickerView) -> Disposable {
+            let createTitle: (Element.Changeset.Collection, Int, Int, UIPickerView) -> String? = { dataSource, row, component, _ in
+                let indexPath = IndexPath(row: row, section: component)
+                let item = dataSource.item(at: indexPath)
+
+                return String(describing: item)
+            }
+
+            return bind(to: pickerView, using: PickerViewBinderDataSource<Element.Changeset>(createTitle))
         }
     }
 
-    public override init() {
-        self.createTitle = nil
-    }
+    private var PickerViewBinderDataSourceAssociationKey = "PickerViewBinderDataSource"
 
-    /// - parameter createTitle: A closure that configures the title for a given picker view row with the given data source at the given index path.
-    public init(_ createTitle: @escaping (Changeset.Collection, Int, Int, UIPickerView) -> String?) {
-        self.createTitle = createTitle
-    }
+    public class PickerViewBinderDataSource<Changeset: SectionedDataSourceChangeset>: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
+        public var createTitle: ((Changeset.Collection, Int, Int, UIPickerView) -> String?)?
 
-    public func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return changeset?.collection.numberOfSections ?? 0
-    }
-
-    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return changeset?.collection.numberOfItems(inSection: component) ?? 0
-    }
-
-    open func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        guard let changeset = changeset else { fatalError() }
-        if let createTitle = createTitle {
-            return createTitle(changeset.collection, row, component, pickerView)
-        } else {
-            fatalError("Subclass of PickerViewBinderDataSource should override and implement pickerView(_:titleForRow:forComponent) method if they do not initialize `createTitle` closure.")
-        }
-    }
-
-    private func associateWithPickerView(_ pickerView: UIPickerView) {
-        objc_setAssociatedObject(pickerView, &PickerViewBinderDataSourceAssociationKey, self, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-
-        if pickerView.reactive.hasProtocolProxy(for: UIPickerViewDataSource.self) {
-            pickerView.reactive.dataSource.forwardTo = self
-        } else {
-            pickerView.dataSource = self
+        public var changeset: Changeset? {
+            didSet {
+                pickerView?.reloadAllComponents()
+            }
         }
 
-        if pickerView.reactive.hasProtocolProxy(for: UIPickerViewDelegate.self) {
-            pickerView.reactive.delegate.forwardTo = self
-        } else {
-            pickerView.delegate = self
+        open weak var pickerView: UIPickerView? {
+            didSet {
+                guard let pickerView = pickerView else { return }
+                associateWithPickerView(pickerView)
+            }
+        }
+
+        public override init() {
+            createTitle = nil
+        }
+
+        /// - parameter createTitle: A closure that configures the title for a given picker view row with the given data source at the given index path.
+        public init(_ createTitle: @escaping (Changeset.Collection, Int, Int, UIPickerView) -> String?) {
+            self.createTitle = createTitle
+        }
+
+        public func numberOfComponents(in _: UIPickerView) -> Int {
+            return changeset?.collection.numberOfSections ?? 0
+        }
+
+        public func pickerView(_: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+            return changeset?.collection.numberOfItems(inSection: component) ?? 0
+        }
+
+        open func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+            guard let changeset = changeset else { fatalError() }
+            if let createTitle = createTitle {
+                return createTitle(changeset.collection, row, component, pickerView)
+            } else {
+                fatalError("Subclass of PickerViewBinderDataSource should override and implement pickerView(_:titleForRow:forComponent) method if they do not initialize `createTitle` closure.")
+            }
+        }
+
+        private func associateWithPickerView(_ pickerView: UIPickerView) {
+            objc_setAssociatedObject(pickerView, &PickerViewBinderDataSourceAssociationKey, self, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+
+            if pickerView.reactive.hasProtocolProxy(for: UIPickerViewDataSource.self) {
+                pickerView.reactive.dataSource.forwardTo = self
+            } else {
+                pickerView.dataSource = self
+            }
+
+            if pickerView.reactive.hasProtocolProxy(for: UIPickerViewDelegate.self) {
+                pickerView.reactive.delegate.forwardTo = self
+            } else {
+                pickerView.delegate = self
+            }
         }
     }
-}
 
 #endif

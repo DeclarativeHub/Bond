@@ -18,12 +18,11 @@ public class ProtocolProxyPropertyController: NSObject {
 }
 
 public final class KeyPathProtocolProxyPropertyController<Root: NSObject, P>: ProtocolProxyPropertyController {
-
     private weak var _object: Root?
     private let keyPath: ReferenceWritableKeyPath<Root, P>
 
     public init(object: Root, keyPath: ReferenceWritableKeyPath<Root, P>) {
-        self._object = object
+        _object = object
         self.keyPath = keyPath
         super.init(object: object)
     }
@@ -52,12 +51,11 @@ public final class KeyPathProtocolProxyPropertyController<Root: NSObject, P>: Pr
 }
 
 public final class OptionalKeyPathProtocolProxyPropertyController<Root: NSObject, P>: ProtocolProxyPropertyController {
-
     private weak var _object: Root?
     private let keyPath: ReferenceWritableKeyPath<Root, P?>
 
     public init(object: Root, keyPath: ReferenceWritableKeyPath<Root, P?>) {
-        self._object = object
+        _object = object
         self.keyPath = keyPath
         super.init(object: object)
     }
@@ -84,7 +82,6 @@ public final class OptionalKeyPathProtocolProxyPropertyController<Root: NSObject
 }
 
 public final class SelectorProtocolProxyPropertyController: ProtocolProxyPropertyController {
-
     private let selector: Selector
 
     public init(object: NSObject, selector: Selector) {

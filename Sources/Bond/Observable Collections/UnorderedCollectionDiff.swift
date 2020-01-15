@@ -14,7 +14,6 @@ public protocol UnorderedCollectionDiffProtocol: Instantiatable {
 /// Contains a diff of an unordered collection, i.e. a collection where
 /// insertions or deletions do not affect indices of other elements.
 public struct UnorderedCollectionDiff<Index>: UnorderedCollectionDiffProtocol {
-
     /// Indices of inserted elements in the final collection index space.
     public var inserts: [Index]
 
@@ -25,9 +24,9 @@ public struct UnorderedCollectionDiff<Index>: UnorderedCollectionDiffProtocol {
     public var updates: [Index]
 
     public init() {
-        self.inserts = []
-        self.deletes = []
-        self.updates = []
+        inserts = []
+        deletes = []
+        updates = []
     }
 
     public init(inserts: [Index], deletes: [Index], updates: [Index]) {
@@ -50,7 +49,6 @@ public struct UnorderedCollectionDiff<Index>: UnorderedCollectionDiffProtocol {
 }
 
 extension UnorderedCollectionDiff {
-
     /// Calculates diff from the given patch.
     /// - complexity: O(Nˆ2) where N is the number of patch operations.
     public init<T>(from patch: [UnorderedCollectionOperation<T, Index>]) {
@@ -61,14 +59,13 @@ extension UnorderedCollectionDiff {
     /// - complexity: O(Nˆ2) where N is the number of patch operations.
     public init(from patch: [AnyUnorderedCollectionOperation<Index>]) {
         self.init()
-        inserts = patch.compactMap { if case .insert(let index) = $0 { return index } else { return nil } }
-        deletes = patch.compactMap { if case .delete(let index) = $0 { return index } else { return nil } }
-        updates = patch.compactMap { if case .update(let index) = $0 { return index } else { return nil } }
+        inserts = patch.compactMap { if case let .insert(index) = $0 { return index } else { return nil } }
+        deletes = patch.compactMap { if case let .delete(index) = $0 { return index } else { return nil } }
+        updates = patch.compactMap { if case let .update(index) = $0 { return index } else { return nil } }
     }
 }
 
 extension UnorderedCollectionDiffProtocol {
-
     public func map<T>(_ transform: (Index) -> T) -> UnorderedCollectionDiff<T> {
         let diff = asUnorderedCollectionDiff
         return UnorderedCollectionDiff<T>(
@@ -88,14 +85,12 @@ extension UnorderedCollectionDiffProtocol {
 }
 
 extension UnorderedCollectionDiff: Equatable where Index: Equatable {
-
     public static func == (lhs: UnorderedCollectionDiff<Index>, rhs: UnorderedCollectionDiff<Index>) -> Bool {
         return lhs.inserts == rhs.inserts && lhs.deletes == rhs.deletes && lhs.updates == rhs.updates
     }
 }
 
 extension UnorderedCollectionDiff: CustomDebugStringConvertible {
-
     public var debugDescription: String {
         return "Inserts: \(inserts), Deletes: \(deletes), Updates: \(updates)"
     }

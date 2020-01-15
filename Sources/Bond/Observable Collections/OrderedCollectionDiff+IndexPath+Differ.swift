@@ -22,12 +22,11 @@
 //  THE SOFTWARE.
 //
 
-import Foundation
 import Differ
+import Foundation
 import ReactiveKit
 
 extension SignalProtocol where Element: TreeProtocol {
-
     /// Diff each next element (tree node) against the previous one and emit a diff event.
     public func diff(_ areEqual: @escaping (Element.Children.Element, Element.Children.Element) -> Bool) -> Signal<TreeChangeset<Element>, Error> {
         return diff(generateDiff: { c1, c2 in c1.diff(c2, areEqual: areEqual) })
@@ -35,7 +34,6 @@ extension SignalProtocol where Element: TreeProtocol {
 }
 
 extension SignalProtocol where Element: TreeProtocol, Element.Children.Element: Equatable {
-
     /// Diff each next element (tree node) against the previous one and emit a diff event.
     public func diff() -> Signal<TreeChangeset<Element>, Error> {
         return diff(generateDiff: { c1, c2 in c1.diff(c2, areEqual: ==) })
@@ -43,25 +41,23 @@ extension SignalProtocol where Element: TreeProtocol, Element.Children.Element: 
 }
 
 extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtocol {
-
     /// Replace the underlying tree node with the given tree node. Setting `performDiff: true` will make the framework
     /// calculate the diff between the existing and new tree node and emit an event with the calculated diff.
     /// - Complexity: O((N+M)*D) if `performDiff: true`, O(1) otherwise.
     public func replace(with newCollection: Changeset.Collection, performDiff: Bool, areEqual: @escaping (Changeset.Collection.Children.Element, Changeset.Collection.Children.Element) -> Bool) {
         replace(with: newCollection, performDiff: performDiff) { (old, new) -> OrderedCollectionDiff<IndexPath> in
-            return old.diff(new, areEqual: areEqual)
+            old.diff(new, areEqual: areEqual)
         }
     }
 }
 
 extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Changeset.Collection.Children.Element: Equatable {
-
     /// Replace the underlying tree node with the given tree node. Setting `performDiff: true` will make the framework
     /// calculate the diff between the existing and new tree node and emit an event with the calculated diff.
     /// - Complexity: O((N+M)*D) if `performDiff: true`, O(1) otherwise.
     public func replace(with newCollection: Changeset.Collection, performDiff: Bool) {
         replace(with: newCollection, performDiff: performDiff) { (old, new) -> OrderedCollectionDiff<IndexPath> in
-            return old.diff(new, areEqual: ==)
+            old.diff(new, areEqual: ==)
         }
     }
 }

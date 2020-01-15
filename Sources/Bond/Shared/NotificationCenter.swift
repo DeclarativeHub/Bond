@@ -26,7 +26,6 @@ import Foundation
 import ReactiveKit
 
 extension ReactiveExtensions where Base: NotificationCenter {
-
     /// Observe notifications using a signal.
     public func notification(name: NSNotification.Name, object: AnyObject? = nil) -> Signal<Notification, Never> {
         return Signal { observer in

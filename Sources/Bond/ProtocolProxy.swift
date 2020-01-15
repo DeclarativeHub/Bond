@@ -27,17 +27,16 @@ import ObjectiveC
 import ReactiveKit
 
 #if !BUILDING_WITH_XCODE
-import BNDProtocolProxyBase
+    import BNDProtocolProxyBase
 #endif
 
 public class ProtocolProxy: BNDProtocolProxyBase {
-
     private var invokers: [Selector: (BNDInvocation) -> Void] = [:]
     private var handlers: [Selector: Any] = [:]
     private let propertyController: ProtocolProxyPropertyController
 
-    public init(object: NSObject, `protocol`: Protocol, setter: Selector) {
-        self.propertyController = SelectorProtocolProxyPropertyController(object: object, selector: setter)
+    public init(object: NSObject, protocol: Protocol, setter: Selector) {
+        propertyController = SelectorProtocolProxyPropertyController(object: object, selector: setter)
         super.init(with: `protocol`)
     }
 
@@ -138,7 +137,7 @@ public class ProtocolProxy: BNDProtocolProxyBase {
         }
     }
 
-    private func _signal<S>(for selector: Selector, registerInvoker: @escaping (PassthroughSubject<S, Never>) -> Disposable) -> SafeSignal<S>{
+    private func _signal<S>(for selector: Selector, registerInvoker: @escaping (PassthroughSubject<S, Never>) -> Disposable) -> SafeSignal<S> {
         if let signal = handlers[selector] {
             return signal as! SafeSignal<S>
         } else {
@@ -166,7 +165,7 @@ public class ProtocolProxy: BNDProtocolProxyBase {
         return _signal(for: selector) { [weak self] subject in
             guard let me = self else { return NonDisposable.instance }
             return me.registerInvoker0(for: selector) { () -> R in
-                return dispatch(subject)
+                dispatch(subject)
             }
         }
     }
@@ -183,7 +182,7 @@ public class ProtocolProxy: BNDProtocolProxyBase {
         return _signal(for: selector) { [weak self] subject in
             guard let me = self else { return NonDisposable.instance }
             return me.registerInvoker1(for: selector) { (a: A) -> R in
-                return dispatch(subject, a)
+                dispatch(subject, a)
             }
         }
     }
@@ -200,7 +199,7 @@ public class ProtocolProxy: BNDProtocolProxyBase {
         return _signal(for: selector) { [weak self] subject in
             guard let me = self else { return NonDisposable.instance }
             return me.registerInvoker2(for: selector) { (a: A, b: B) -> R in
-                return dispatch(subject, a, b)
+                dispatch(subject, a, b)
             }
         }
     }
@@ -217,7 +216,7 @@ public class ProtocolProxy: BNDProtocolProxyBase {
         return _signal(for: selector) { [weak self] subject in
             guard let me = self else { return NonDisposable.instance }
             return me.registerInvoker3(for: selector) { (a: A, b: B, c: C) -> R in
-                return dispatch(subject, a, b, c)
+                dispatch(subject, a, b, c)
             }
         }
     }
@@ -234,7 +233,7 @@ public class ProtocolProxy: BNDProtocolProxyBase {
         return _signal(for: selector) { [weak self] subject in
             guard let me = self else { return NonDisposable.instance }
             return me.registerInvoker4(for: selector) { (a: A, b: B, c: C, d: D) -> R in
-                return dispatch(subject, a, b, c, d)
+                dispatch(subject, a, b, c, d)
             }
         }
     }
@@ -251,13 +250,13 @@ public class ProtocolProxy: BNDProtocolProxyBase {
         return _signal(for: selector) { [weak self] subject in
             guard let me = self else { return NonDisposable.instance }
             return me.registerInvoker5(for: selector) { (a: A, b: B, c: C, d: D, e: E) -> R in
-                return dispatch(subject, a, b, c, d, e)
+                dispatch(subject, a, b, c, d, e)
             }
         }
     }
 
-    public override func conforms(to aProtocol: Protocol) -> Bool {
-        if protocol_isEqual(`protocol`, self.`protocol`) {
+    public override func conforms(to _: Protocol) -> Bool {
+        if protocol_isEqual(`protocol`, `protocol`) {
             return true
         } else {
             return super.conforms(to: `protocol`)
@@ -288,13 +287,12 @@ public class ProtocolProxy: BNDProtocolProxyBase {
 }
 
 extension ProtocolProxy {
-
     /// Provides a feed for specified protocol method.
     ///
     /// - important: This is ObjC API so you have to use ObjC types like NSString instead of String!
     public func feed<S, A, R>(property: Property<S>, to selector: Selector, map: @escaping (S, A) -> R) -> Disposable {
         return signal(for: selector) { (_: PassthroughSubject<Void, Never>, a1: A) -> R in
-            return map(property.value, a1)
+            map(property.value, a1)
         }.observe { _ in }
     }
 
@@ -303,7 +301,7 @@ extension ProtocolProxy {
     /// - important: This is ObjC API so you have to use ObjC types like NSString instead of String!
     public func feed<S, A, B, R>(property: Property<S>, to selector: Selector, map: @escaping (S, A, B) -> R) -> Disposable {
         return signal(for: selector) { (_: PassthroughSubject<Void, Never>, a1: A, a2: B) -> R in
-            return map(property.value, a1, a2)
+            map(property.value, a1, a2)
         }.observe { _ in }
     }
 
@@ -312,7 +310,7 @@ extension ProtocolProxy {
     /// - important: This is ObjC API so you have to use ObjC types like NSString instead of String!
     public func feed<S, A, B, C, R>(property: Property<S>, to selector: Selector, map: @escaping (S, A, B, C) -> R) -> Disposable {
         return signal(for: selector) { (_: PassthroughSubject<Void, Never>, a1: A, a2: B, a3: C) -> R in
-            return map(property.value, a1, a2, a3)
+            map(property.value, a1, a2, a3)
         }.observe { _ in }
     }
 
@@ -321,7 +319,7 @@ extension ProtocolProxy {
     /// - important: This is ObjC API so you have to use ObjC types like NSString instead of String!
     public func feed<S, A, B, C, D, R>(property: Property<S>, to selector: Selector, map: @escaping (S, A, B, C, D) -> R) -> Disposable {
         return signal(for: selector) { (_: PassthroughSubject<Void, Never>, a1: A, a2: B, a3: C, a4: D) -> R in
-            return map(property.value, a1, a2, a3, a4)
+            map(property.value, a1, a2, a3, a4)
         }.observe { _ in }
     }
 
@@ -330,13 +328,12 @@ extension ProtocolProxy {
     /// - important: This is ObjC API so you have to use ObjC types like NSString instead of String!
     public func feed<S, A, B, C, D, E, R>(property: Property<S>, to selector: Selector, map: @escaping (S, A, B, C, D, E) -> R) -> Disposable {
         return signal(for: selector) { (_: PassthroughSubject<Void, Never>, a1: A, a2: B, a3: C, a4: D, a5: E) -> R in
-            return map(property.value, a1, a2, a3, a4, a5)
+            map(property.value, a1, a2, a3, a4, a5)
         }.observe { _ in }
     }
 }
 
 extension NSObject {
-
     private struct AssociatedKeys {
         static var ProtocolProxies = "ProtocolProxies"
     }
@@ -358,13 +355,12 @@ extension NSObject {
 }
 
 extension ReactiveExtensions where Base: NSObject {
-
     /// Creates a proxy object that conforms to a given protocol and injects itself as a delegate for a given selector.
     /// The object can then be used to intercept various delegate callbacks as signals.
     ///
     /// - warning: If the protocol has any required methods, you have to handle them by providing a signal, a feed or implement
     /// them in a class whose instance you set to `forwardTo` property of the returned proxy object.
-    public func protocolProxy(for `protocol`: Protocol, selector: Selector) -> ProtocolProxy {
+    public func protocolProxy(for protocol: Protocol, selector: Selector) -> ProtocolProxy {
         let controller = SelectorProtocolProxyPropertyController(object: base, selector: selector)
         return protocolProxy(protocol: `protocol`, controller: controller)
     }
@@ -377,11 +373,11 @@ extension ReactiveExtensions where Base: NSObject {
     ///
     /// - warning: If the protocol has any required methods, you have to handle them by providing a signal, a feed,
     /// implement them in the original delegate or implement them in a class whose instance you set to `forwardTo` property of the returned proxy object.
-    public func protocolProxy<P>(for `protocol`: Protocol, keyPath: ReferenceWritableKeyPath<Base, P>) -> ProtocolProxy {
+    public func protocolProxy<P>(for protocol: Protocol, keyPath: ReferenceWritableKeyPath<Base, P>) -> ProtocolProxy {
         let controller = KeyPathProtocolProxyPropertyController(object: base, keyPath: keyPath)
         return protocolProxy(protocol: `protocol`, controller: controller)
     }
-    
+
     /// Creates a proxy object that conforms to a given protocol and injects itself as a delegate for a given key path.
     /// The object can then be used to intercept various delegate callbacks as signals.
     ///
@@ -390,7 +386,7 @@ extension ReactiveExtensions where Base: NSObject {
     ///
     /// - warning: If the protocol has any required methods, you have to handle them by providing a signal, a feed,
     /// implement them in the original delegate or implement them in a class whose instance you set to `forwardTo` property of the returned proxy object.
-    public func protocolProxy<P>(for `protocol`: Protocol, keyPath: ReferenceWritableKeyPath<Base, P?>) -> ProtocolProxy {
+    public func protocolProxy<P>(for protocol: Protocol, keyPath: ReferenceWritableKeyPath<Base, P?>) -> ProtocolProxy {
         let controller = OptionalKeyPathProtocolProxyPropertyController(object: base, keyPath: keyPath)
         return protocolProxy(protocol: `protocol`, controller: controller)
     }

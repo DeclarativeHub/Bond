@@ -24,25 +24,23 @@
 
 #if os(iOS) || os(tvOS)
 
-import UIKit
-import ReactiveKit
+    import ReactiveKit
+    import UIKit
 
-extension ReactiveExtensions where Base: UISegmentedControl {
-
-    public var selectedSegmentIndex: DynamicSubject<Int> {
-        return dynamicSubject(
-            signal: controlEvents(.valueChanged).eraseType(),
-            get: { $0.selectedSegmentIndex },
-            set: { $0.selectedSegmentIndex = $1 }
-        )
+    extension ReactiveExtensions where Base: UISegmentedControl {
+        public var selectedSegmentIndex: DynamicSubject<Int> {
+            return dynamicSubject(
+                signal: controlEvents(.valueChanged).eraseType(),
+                get: { $0.selectedSegmentIndex },
+                set: { $0.selectedSegmentIndex = $1 }
+            )
+        }
     }
-}
 
-extension UISegmentedControl: BindableProtocol {
-
-    public func bind(signal: Signal<Int, Never>) -> Disposable {
-        return reactive.selectedSegmentIndex.bind(signal: signal)
+    extension UISegmentedControl: BindableProtocol {
+        public func bind(signal: Signal<Int, Never>) -> Disposable {
+            return reactive.selectedSegmentIndex.bind(signal: signal)
+        }
     }
-}
 
 #endif

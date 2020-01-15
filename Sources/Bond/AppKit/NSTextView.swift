@@ -24,19 +24,18 @@
 
 #if os(macOS)
 
-import AppKit
-import ReactiveKit
+    import AppKit
+    import ReactiveKit
 
-extension ReactiveExtensions where Base: NSTextView {
-
-    public var string: DynamicSubject<String> {
-        let notificationName = NSText.didChangeNotification
-        return dynamicSubject(
-            signal: NotificationCenter.default.reactive.notification(name: notificationName, object: base).eraseType(),
-            get: { $0.string },
-            set: { $0.string = $1 }
-        )
+    extension ReactiveExtensions where Base: NSTextView {
+        public var string: DynamicSubject<String> {
+            let notificationName = NSText.didChangeNotification
+            return dynamicSubject(
+                signal: NotificationCenter.default.reactive.notification(name: notificationName, object: base).eraseType(),
+                get: { $0.string },
+                set: { $0.string = $1 }
+            )
+        }
     }
-}
 
 #endif

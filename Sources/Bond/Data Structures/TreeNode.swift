@@ -32,13 +32,12 @@ public protocol TreeNodeWithValueProtocol: RangeReplaceableTreeProtocol {
 /// A tree node represents a node in a tree structure.
 /// A tree node has a value associated with itself and zero or more child tree nodes of the same TreeNode type.
 public struct TreeNode<Value>: TreeNodeWithValueProtocol, CustomDebugStringConvertible {
-
     public var value: Value
     public var children: [TreeNode<Value>]
 
     public init(_ value: Value) {
         self.value = value
-        self.children = []
+        children = []
     }
 
     public init(_ value: Value, _ children: [TreeNode<Value>]) {
@@ -78,13 +77,12 @@ public struct TreeNode<Value>: TreeNodeWithValueProtocol, CustomDebugStringConve
 
 /// Class-based variant of TreeNode.
 public final class ObjectTreeNode<Value>: TreeNodeWithValueProtocol, CustomDebugStringConvertible {
-
     public var value: Value
     public var children: [ObjectTreeNode<Value>]
 
     public init(_ value: Value) {
         self.value = value
-        self.children = []
+        children = []
     }
 
     public init(_ value: Value, _ children: [ObjectTreeNode<Value>]) {
@@ -109,8 +107,8 @@ public final class ObjectTreeNode<Value>: TreeNodeWithValueProtocol, CustomDebug
         }
         set {
             if indexPath.isEmpty {
-                self.value = newValue.value
-                self.children = newValue.children
+                value = newValue.value
+                children = newValue.children
             } else {
                 children[indexPath[0]][indexPath.dropFirst()] = newValue
             }

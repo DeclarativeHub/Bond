@@ -24,21 +24,19 @@
 
 #if os(iOS) || os(tvOS)
 
-import ReactiveKit
-import UIKit
+    import ReactiveKit
+    import UIKit
 
-extension ReactiveExtensions where Base: UIProgressView {
-
-    public var progress: Bond<Float> {
-        return bond { $0.progress = $1 }
+    extension ReactiveExtensions where Base: UIProgressView {
+        public var progress: Bond<Float> {
+            return bond { $0.progress = $1 }
+        }
     }
-}
 
-extension UIProgressView: BindableProtocol {
-
-    public func bind(signal: Signal<Float, Never>) -> Disposable {
-        return reactive.progress.bind(signal: signal)
+    extension UIProgressView: BindableProtocol {
+        public func bind(signal: Signal<Float, Never>) -> Disposable {
+            return reactive.progress.bind(signal: signal)
+        }
     }
-}
 
 #endif

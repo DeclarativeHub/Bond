@@ -29,12 +29,10 @@ public protocol OrderedCollectionChangesetProtocol: ChangesetProtocol where
     Operation == OrderedCollectionOperation<Collection.Element, Collection.Index>,
     Diff == OrderedCollectionDiff<Collection.Index>,
     Collection.Index: Strideable {
-    
     var asOrderedCollectionChangeset: OrderedCollectionChangeset<Collection> { get }
 }
 
 public final class OrderedCollectionChangeset<Collection: Swift.Collection>: Changeset<Collection, OrderedCollectionOperation<Collection.Element, Collection.Index>, OrderedCollectionDiff<Collection.Index>>, OrderedCollectionChangesetProtocol where Collection.Index: Strideable {
-
     public override func calculateDiff(from patch: [OrderedCollectionOperation<Collection.Element, Collection.Index>]) -> OrderedCollectionDiff<Collection.Index> {
         return Diff(from: patch)
     }
@@ -49,7 +47,6 @@ public final class OrderedCollectionChangeset<Collection: Swift.Collection>: Cha
 }
 
 extension MutableChangesetContainerProtocol where Changeset: OrderedCollectionChangesetProtocol, Changeset.Collection: MutableCollection {
-
     /// Access or update the element at `index`.
     public subscript(index: Collection.Index) -> Collection.Element {
         get {
@@ -65,7 +62,6 @@ extension MutableChangesetContainerProtocol where Changeset: OrderedCollectionCh
 }
 
 extension MutableChangesetContainerProtocol where Changeset: OrderedCollectionChangesetProtocol, Changeset.Collection: RangeReplaceableCollection {
-
     /// Append `newElement` at the end of the collection.
     public func append(_ newElement: Collection.Element) {
         descriptiveUpdate { (collection) -> [Operation] in
@@ -86,7 +82,7 @@ extension MutableChangesetContainerProtocol where Changeset: OrderedCollectionCh
     public func insert(contentsOf newElements: [Collection.Element], at index: Collection.Index) {
         descriptiveUpdate { (collection) -> [Operation] in
             collection.insert(contentsOf: newElements, at: index)
-            let indices = (0..<newElements.count).map { collection.index(index, offsetBy: $0) }
+            let indices = (0 ..< newElements.count).map { collection.index(index, offsetBy: $0) }
             return indices.map { Operation.insert(collection[$0], at: $0) }
         }
     }
@@ -129,10 +125,9 @@ extension MutableChangesetContainerProtocol where Changeset: OrderedCollectionCh
 }
 
 extension MutableChangesetContainerProtocol where
-Changeset: OrderedCollectionChangesetProtocol,
-Changeset.Collection: RangeReplaceableCollection,
-Changeset.Collection.Index.Stride == Int {
-
+    Changeset: OrderedCollectionChangesetProtocol,
+    Changeset.Collection: RangeReplaceableCollection,
+    Changeset.Collection.Index.Stride == Int {
     /// Remove all elements from the collection.
     public func removeSubrange(_ subrange: Range<Changeset.Collection.Index>) {
         guard !subrange.isEmpty else { return }
@@ -153,4 +148,3 @@ Changeset.Collection.Index.Stride == Int {
         }
     }
 }
-

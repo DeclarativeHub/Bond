@@ -14,7 +14,6 @@ public protocol _SetProtocol {
 }
 
 extension Set: _SetProtocol {
-
     public var _asSet: Set<Element> {
         get {
             return self
@@ -29,7 +28,6 @@ extension MutableChangesetContainerProtocol where
     Changeset: UnorderedCollectionChangesetProtocol,
     Changeset.Collection: _SetProtocol,
     Changeset.Operation == UnorderedCollectionOperation<Set<Changeset.Collection.Element>.Element, Set<Changeset.Collection.Element>.Index> {
-
     /// Insert item in the set.
     public func insert(_ member: Changeset.Collection.Element) {
         descriptiveUpdate { (collection) -> [Operation] in

@@ -24,27 +24,25 @@
 
 #if os(iOS) || os(tvOS)
 
-import UIKit
-import ReactiveKit
+    import ReactiveKit
+    import UIKit
 
-extension ReactiveExtensions where Base: UIActivityIndicatorView  {
-
-    public var isAnimating: Bond<Bool> {
-        return bond {
-            if $1 {
-                $0.startAnimating()
-            } else {
-                $0.stopAnimating()
+    extension ReactiveExtensions where Base: UIActivityIndicatorView {
+        public var isAnimating: Bond<Bool> {
+            return bond {
+                if $1 {
+                    $0.startAnimating()
+                } else {
+                    $0.stopAnimating()
+                }
             }
         }
     }
-}
 
-extension UIActivityIndicatorView: BindableProtocol {
-
-    public func bind(signal: Signal<Bool, Never>) -> Disposable {
-        return reactive.isAnimating.bind(signal: signal)
+    extension UIActivityIndicatorView: BindableProtocol {
+        public func bind(signal: Signal<Bool, Never>) -> Disposable {
+            return reactive.isAnimating.bind(signal: signal)
+        }
     }
-}
 
 #endif

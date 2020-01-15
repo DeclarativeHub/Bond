@@ -27,7 +27,6 @@ import Foundation
 /// A protocol that provides abstraction over a tree type.
 /// A tree can be any containter type that encapsulates objects or values that are also trees.
 public protocol TreeProtocol {
-
     /// A collection of child nodes that are trees and whose children are also trees
     associatedtype Children: Collection where
         Children.Element: TreeProtocol,
@@ -39,36 +38,30 @@ public protocol TreeProtocol {
 }
 
 public protocol MutableTreeProtocol: TreeProtocol where Children: MutableCollection, Children.Element: MutableTreeProtocol {
-
     /// Child nodes of the current tree node.
     var children: Children { get set }
 }
 
 public protocol RangeReplaceableTreeProtocol: MutableTreeProtocol {
-
     /// Replace child nodes at the given range with the given child nodes.
     /// Analogous of `RangeReplaceableCollection.replaceSubrange`.
     mutating func replaceSubrange<C: Collection>(_ subrange: Range<IndexPath>, with newChildren: C) where C.Element == Children.Element
 }
 
 extension TreeProtocol {
-
     public subscript(childAt indexPath: IndexPath) -> Children.Element {
-        get {
-            guard !indexPath.isEmpty else {
-                fatalError("Index path cannot be empty!")
-            }
-            if indexPath.count == 1 {
-                return children[indexPath[0]]
-            } else {
-                return children[indexPath[0]][childAt: indexPath.dropFirst()]
-            }
+        guard !indexPath.isEmpty else {
+            fatalError("Index path cannot be empty!")
+        }
+        if indexPath.count == 1 {
+            return children[indexPath[0]]
+        } else {
+            return children[indexPath[0]][childAt: indexPath.dropFirst()]
         }
     }
 }
 
 extension MutableTreeProtocol {
-
     public subscript(childAt indexPath: IndexPath) -> Children.Element {
         get {
             guard !indexPath.isEmpty else {
@@ -94,7 +87,6 @@ extension MutableTreeProtocol {
 }
 
 extension RangeReplaceableTreeProtocol where Children: RangeReplaceableCollection, Children.Element: RangeReplaceableTreeProtocol {
-
     public mutating func replaceSubrange<C: Collection>(_ subrange: Range<IndexPath>, with newChildren: C) where C.Element == Children.Element {
         guard subrange.lowerBound.count == subrange.upperBound.count else {
             fatalError("Range lowerBound and upperBound must point to the same subtree!")
@@ -103,13 +95,13 @@ extension RangeReplaceableTreeProtocol where Children: RangeReplaceableCollectio
             fatalError("Index paths in the given range must not be empty!")
         }
         if subrange.lowerBound.count == 1 {
-            children.replaceSubrange(subrange.lowerBound[0]..<subrange.upperBound[0], with: newChildren)
+            children.replaceSubrange(subrange.lowerBound[0] ..< subrange.upperBound[0], with: newChildren)
         } else {
             guard subrange.lowerBound[0] == subrange.upperBound[0] else {
                 fatalError("Range lowerBound and upperBound must point to the same subtree!")
             }
             children[subrange.lowerBound[0]].replaceSubrange(
-                subrange.lowerBound.dropFirst()..<subrange.upperBound.dropFirst(),
+                subrange.lowerBound.dropFirst() ..< subrange.upperBound.dropFirst(),
                 with: newChildren
             )
         }
@@ -117,7 +109,6 @@ extension RangeReplaceableTreeProtocol where Children: RangeReplaceableCollectio
 }
 
 extension RangeReplaceableTreeProtocol {
-
     /// Insert the new node into the tree as the last child of self.
     public mutating func append(_ newNode: Children.Element) {
         insert(newNode, at: [children.count])
@@ -125,12 +116,12 @@ extension RangeReplaceableTreeProtocol {
 
     /// Insert the new node into the tree at the given index.
     public mutating func insert(_ newNode: Children.Element, at index: IndexPath) {
-        replaceSubrange(index..<index, with: [newNode])
+        replaceSubrange(index ..< index, with: [newNode])
     }
 
     /// Insert the array of nodes into the tree at the given index.
     public mutating func insert(contentsOf newNodes: [Children.Element], at index: IndexPath) {
-        replaceSubrange(index..<index, with: newNodes)
+        replaceSubrange(index ..< index, with: newNodes)
     }
 
     /// Replace the node at the given index with the new node.
@@ -139,7 +130,7 @@ extension RangeReplaceableTreeProtocol {
         let subtree = self[childAt: index]
         var upperBound = index
         upperBound[upperBound.count - 1] += 1
-        replaceSubrange(index..<upperBound, with: [newNode])
+        replaceSubrange(index ..< upperBound, with: [newNode])
         return subtree
     }
 
@@ -149,19 +140,19 @@ extension RangeReplaceableTreeProtocol {
         let subtree = self[childAt: index]
         var upperBound = index
         upperBound[upperBound.count - 1] += 1
-        replaceSubrange(index..<upperBound, with: [])
+        replaceSubrange(index ..< upperBound, with: [])
         return subtree
     }
 
     /// Remove the nodes (including their subtrees) at the given indexes.
     @discardableResult
     public mutating func remove(at indexes: [IndexPath]) -> [Children.Element] {
-        return indexes.sorted().reversed().map { remove(at:$0) }.reversed()
+        return indexes.sorted().reversed().map { remove(at: $0) }.reversed()
     }
 
     /// Remove all child node. Only the tree root node (self) will remain.
     public mutating func removeAll() {
-        replaceSubrange([0]..<[children.count], with: [])
+        replaceSubrange([0] ..< [children.count], with: [])
     }
 
     /// Move the node from one position to another.

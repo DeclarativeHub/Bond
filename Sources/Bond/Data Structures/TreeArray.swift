@@ -26,11 +26,10 @@ import Foundation
 
 /// A tree array represents a valueless root node of a tree structure where children are of TreeNode<ChileValue> type.
 public struct TreeArray<Value>: RangeReplaceableTreeProtocol, Instantiatable, CustomDebugStringConvertible {
-
     public var children: [TreeNode<Value>]
 
     public init() {
-        self.children = []
+        children = []
     }
 
     public init(_ children: [TreeNode<Value>]) {
@@ -38,7 +37,7 @@ public struct TreeArray<Value>: RangeReplaceableTreeProtocol, Instantiatable, Cu
     }
 
     public init(childrenValues: [Value]) {
-        self.children = childrenValues.map { TreeNode($0) }
+        children = childrenValues.map { TreeNode($0) }
     }
 
     public var debugDescription: String {
@@ -52,12 +51,11 @@ public struct TreeArray<Value>: RangeReplaceableTreeProtocol, Instantiatable, Cu
 
 /// Class-based variant of TreeArray.
 public final class ObjectTreeArray<Value>: RangeReplaceableTreeProtocol, Instantiatable, CustomDebugStringConvertible {
-
     public var value: Void = ()
     public var children: [ObjectTreeNode<Value>]
 
     public required init() {
-        self.children = []
+        children = []
     }
 
     public init(_ children: [ObjectTreeNode<Value>]) {
@@ -77,7 +75,7 @@ public final class ObjectTreeArray<Value>: RangeReplaceableTreeProtocol, Instant
             return TreeArray(children.map { $0.asTreeNode })
         }
         set {
-            self.children = newValue.children.map { $0.asObject }
+            children = newValue.children.map { $0.asObject }
         }
     }
 }

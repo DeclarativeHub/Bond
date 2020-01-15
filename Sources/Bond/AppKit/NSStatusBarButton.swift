@@ -24,14 +24,13 @@
 
 #if os(macOS)
 
-import AppKit
-import ReactiveKit
+    import AppKit
+    import ReactiveKit
 
-extension ReactiveExtensions where Base: NSStatusBarButton {
-
-    public var appearsDisabled: Bond<Bool> {
-        return bond { $0.appearsDisabled = $1 }
+    extension ReactiveExtensions where Base: NSStatusBarButton {
+        public var appearsDisabled: Bond<Bool> {
+            return bond { $0.appearsDisabled = $1 }
+        }
     }
-}
 
 #endif

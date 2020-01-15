@@ -24,14 +24,13 @@
 
 #if os(iOS) || os(tvOS)
 
-import UIKit
-import ReactiveKit
+    import ReactiveKit
+    import UIKit
 
-extension ReactiveExtensions where Base: UINavigationBar {
-
-    public var barTintColor: Bond<UIColor?> {
-        return bond { $0.barTintColor = $1 }
+    extension ReactiveExtensions where Base: UINavigationBar {
+        public var barTintColor: Bond<UIColor?> {
+            return bond { $0.barTintColor = $1 }
+        }
     }
-}
 
 #endif

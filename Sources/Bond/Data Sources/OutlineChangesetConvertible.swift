@@ -14,21 +14,18 @@ public protocol OutlineChangesetConvertible {
 }
 
 extension TreeChangeset: OutlineChangesetConvertible {
-
     public var asTreeArrayChangeset: TreeChangeset<Collection> {
         return self
     }
 }
 
 extension TreeArray: OutlineChangesetConvertible {
-
     public var asTreeArrayChangeset: TreeChangeset<TreeArray<Value>> {
         return TreeChangeset(collection: self, patch: [])
     }
 }
 
 extension ObjectTreeArray: OutlineChangesetConvertible {
-
     public var asTreeArrayChangeset: TreeChangeset<ObjectTreeArray<Value>> {
         return TreeChangeset(collection: self, patch: [])
     }

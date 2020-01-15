@@ -25,9 +25,7 @@
 import Foundation
 
 extension OrderedCollectionDiff where Index == IndexPath {
-
     private struct Edit<Element> {
-
         var deletionIndex: IndexPath?
         var insertionIndex: IndexPath?
         var element: Element?
@@ -46,7 +44,6 @@ extension OrderedCollectionDiff where Index == IndexPath {
     }
 
     public func generatePatch<C: TreeProtocol>(to collection: C) -> [OrderedCollectionOperation<C.Children.Element, IndexPath>] {
-
         let inserts = self.inserts.map { Edit<C.Children.Element>(deletionIndex: nil, insertionIndex: $0, element: collection[childAt: $0]) }
         let deletes = self.deletes.map { Edit<C.Children.Element>(deletionIndex: $0, insertionIndex: nil, element: nil) }
         let moves = self.moves.map { Edit<C.Children.Element>(deletionIndex: $0.from, insertionIndex: $0.to, element: nil) }
@@ -106,7 +103,7 @@ extension OrderedCollectionDiff where Index == IndexPath {
         var deletionScript = Array(deletionTree.depthFirst.indices.dropFirst().map { deletesAndMoves[deletionTree[$0].value] }.reversed())
         var insertionSeedScript = deletionScript
         var moveCounter = 0
-        for index in 0..<deletionScript.count {
+        for index in 0 ..< deletionScript.count {
             if deletionScript[index].deletionIndex != nil {
                 deletionScript[index].deletionIndex![0] += moveCounter
                 insertionSeedScript[index].deletionIndex = [moveCounter]
@@ -121,9 +118,8 @@ extension OrderedCollectionDiff where Index == IndexPath {
         let insertionTree = makeInsertionTree(movesAndInserts)
         var insertionScript = insertionTree.depthFirst.indices.dropFirst().map { movesAndInserts[insertionTree[$0].value] }
 
-        for index in 0..<insertionScript.count {
-
-            for j in index+1..<insertionScript.count {
+        for index in 0 ..< insertionScript.count {
+            for j in index + 1 ..< insertionScript.count {
                 if let deletionIndex = insertionScript[j].deletionIndex, let priorDeletionIndex = insertionScript[index].deletionIndex {
                     if deletionIndex.isAffectedByDeletionOrInsertion(at: priorDeletionIndex) {
                         insertionScript[j].deletionIndex = deletionIndex.shifted(by: -1, atLevelOf: priorDeletionIndex)
@@ -142,12 +138,12 @@ extension OrderedCollectionDiff where Index == IndexPath {
         let patch = (deletionScript + insertionScript).map { $0.asOperation }
 
         let updatesInFinalCollection: [Index] = self.updates.compactMap {
-            return AnyOrderedCollectionOperation.simulate(patch: patch.map { $0.asAnyOrderedCollectionOperation }, on: $0)
+            AnyOrderedCollectionOperation.simulate(patch: patch.map { $0.asAnyOrderedCollectionOperation }, on: $0)
         }
 
         let zipped = zip(self.updates, updatesInFinalCollection)
         let updates = zipped.map { (pair) -> OrderedCollectionOperation<C.Children.Element, IndexPath> in
-            return .update(at: pair.0, newElement: collection[childAt: pair.1])
+            .update(at: pair.0, newElement: collection[childAt: pair.1])
         }
 
         return updates + patch

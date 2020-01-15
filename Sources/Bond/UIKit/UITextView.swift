@@ -24,39 +24,37 @@
 
 #if os(iOS) || os(tvOS)
 
-import UIKit
-import ReactiveKit
+    import ReactiveKit
+    import UIKit
 
-extension ReactiveExtensions where Base: UITextView {
+    extension ReactiveExtensions where Base: UITextView {
+        public var text: DynamicSubject<String?> {
+            let notificationName = UITextView.textDidChangeNotification
+            return dynamicSubject(
+                signal: NotificationCenter.default.reactive.notification(name: notificationName, object: base).eraseType(),
+                get: { $0.text },
+                set: { $0.text = $1 }
+            )
+        }
 
-    public var text: DynamicSubject<String?> {
-        let notificationName = UITextView.textDidChangeNotification
-        return dynamicSubject(
-            signal: NotificationCenter.default.reactive.notification(name: notificationName, object: base).eraseType(),
-            get: { $0.text },
-            set: { $0.text = $1 }
-        )
+        public var attributedText: DynamicSubject<NSAttributedString?> {
+            let notificationName = UITextView.textDidChangeNotification
+            return dynamicSubject(
+                signal: NotificationCenter.default.reactive.notification(name: notificationName, object: base).eraseType(),
+                get: { $0.attributedText },
+                set: { $0.attributedText = $1 }
+            )
+        }
+
+        public var textColor: Bond<UIColor?> {
+            return bond { $0.textColor = $1 }
+        }
     }
 
-    public var attributedText: DynamicSubject<NSAttributedString?> {
-        let notificationName = UITextView.textDidChangeNotification
-        return dynamicSubject(
-            signal: NotificationCenter.default.reactive.notification(name: notificationName, object: base).eraseType(),
-            get: { $0.attributedText },
-            set: { $0.attributedText = $1 }
-        )
+    extension UITextView: BindableProtocol {
+        public func bind(signal: Signal<String?, Never>) -> Disposable {
+            return reactive.text.bind(signal: signal)
+        }
     }
-
-    public var textColor: Bond<UIColor?> {
-        return bond { $0.textColor = $1 }
-    }
-}
-
-extension UITextView: BindableProtocol {
-
-    public func bind(signal: Signal<String?, Never>) -> Disposable {
-        return reactive.text.bind(signal: signal)
-    }
-}
 
 #endif

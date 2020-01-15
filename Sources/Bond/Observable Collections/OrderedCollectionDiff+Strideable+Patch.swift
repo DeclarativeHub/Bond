@@ -25,9 +25,7 @@
 import Foundation
 
 extension OrderedCollectionDiff where Index: Strideable {
-
     private struct Edit<Element> {
-
         var deletionIndex: Index?
         var insertionIndex: Index?
         var element: Element?
@@ -46,33 +44,32 @@ extension OrderedCollectionDiff where Index: Strideable {
     }
 
     public func generatePatch<C: Collection>(to collection: C) -> [OrderedCollectionOperation<C.Element, C.Index>] where C.Index == Index {
-
         let inserts = self.inserts.map { Edit<C.Element>(deletionIndex: nil, insertionIndex: $0, element: collection[$0]) }
         let deletes = self.deletes.map { Edit<C.Element>(deletionIndex: $0, insertionIndex: nil, element: nil) }
         let moves = self.moves.map { Edit<C.Element>(deletionIndex: $0.from, insertionIndex: $0.to, element: nil) }
 
         var script = deletes + moves + inserts
 
-        for i in 0..<script.count {
+        for i in 0 ..< script.count {
             let priorEdit = script[i]
-            for j in i+1..<script.count {
+            for j in i + 1 ..< script.count {
                 if let deletionIndex = script[j].deletionIndex, let priorDeletionIndex = priorEdit.deletionIndex, deletionIndex >= priorDeletionIndex {
                     script[j].deletionIndex = deletionIndex.advanced(by: -1)
                 }
             }
         }
 
-        for i in (0..<script.count).reversed() {
+        for i in (0 ..< script.count).reversed() {
             let laterEdit = script[i]
-            for j in 0..<i {
+            for j in 0 ..< i {
                 if let insertionIndex = script[j].insertionIndex, let laterInsertionIndex = laterEdit.insertionIndex, insertionIndex > laterInsertionIndex {
                     script[j].insertionIndex = insertionIndex.advanced(by: -1)
                 }
             }
         }
 
-        for i in 0..<script.count {
-            for j in (i+1..<script.count).reversed() {
+        for i in 0 ..< script.count {
+            for j in (i + 1 ..< script.count).reversed() {
                 if let insertionIndex = script[i].insertionIndex, let laterDeletionIndex = script[j].deletionIndex, insertionIndex > laterDeletionIndex {
                     script[i].insertionIndex = insertionIndex.advanced(by: 1)
                 }
@@ -85,12 +82,12 @@ extension OrderedCollectionDiff where Index: Strideable {
         let patch = script.map { $0.asOperation }
 
         let updatesInFinalCollection: [Index] = self.updates.compactMap {
-            return AnyOrderedCollectionOperation.simulate(patch: patch.map { $0.asAnyOrderedCollectionOperation }, on: $0)
+            AnyOrderedCollectionOperation.simulate(patch: patch.map { $0.asAnyOrderedCollectionOperation }, on: $0)
         }
 
         let zipped = zip(self.updates, updatesInFinalCollection)
         let updates = zipped.map { (pair) -> OrderedCollectionOperation<C.Element, C.Index> in
-            return .update(at: pair.0, newElement: collection[pair.1])
+            .update(at: pair.0, newElement: collection[pair.1])
         }
 
         return updates + patch

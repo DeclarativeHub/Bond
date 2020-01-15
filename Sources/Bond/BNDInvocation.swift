@@ -14,7 +14,6 @@ import ObjectiveC
 #endif
 
 internal extension BNDInvocation {
-
     func readArgument<T>(_ index: Int) -> T {
         let size = Int(methodSignature.getArgumentSize(at: UInt(index)))
         let alignment = Int(methodSignature.getArgumentAlignment(at: UInt(index)))
@@ -55,9 +54,9 @@ internal extension BNDInvocation {
         case NSObjCBoolType:
             return NSNumber(value: pointer.assumingMemoryBound(to: CBool.self).pointee) as! T
         case NSObjCSelectorType:
-            return pointer.assumingMemoryBound(to: Optional<Selector>.self).pointee as! T
+            return pointer.assumingMemoryBound(to: Selector?.self).pointee as! T
         case NSObjCObjectType:
-            return pointer.downcastPointee(to: T.self, assuming: Optional<AnyObject>.self)
+            return pointer.downcastPointee(to: T.self, assuming: AnyObject?.self)
         default:
             return pointer.assumingMemoryBound(to: T.self).pointee
         }
@@ -70,7 +69,7 @@ internal extension BNDInvocation {
         let alignment = methodSignature.getReturnArgumentAlignment()
         let type = methodSignature.getReturnArgumentType()
 
-        func write<U, V>(_ value: V, as type: U.Type) {
+        func write<U, V>(_ value: V, as _: U.Type) {
             let pointer = UnsafeMutablePointer<U>.allocate(capacity: 1)
             pointer.initialize(repeating: value as! U, count: 1)
             setReturnValue(pointer)
@@ -106,9 +105,9 @@ internal extension BNDInvocation {
         case NSObjCBoolType:
             write(value as! NSNumber, as: CBool.self)
         case NSObjCSelectorType:
-            write(value, as: Optional<Selector>.self)
+            write(value, as: Selector?.self)
         case NSObjCObjectType:
-            write(value, as: Optional<AnyObject>.self)
+            write(value, as: AnyObject?.self)
         default:
             write(value, as: T.self)
         }
@@ -116,10 +115,9 @@ internal extension BNDInvocation {
 }
 
 private extension UnsafeMutableRawPointer {
-
-    func downcastPointee<T, U>(to: T.Type, assuming: U.Type) -> T {
+    func downcastPointee<T, U>(to _: T.Type, assuming _: U.Type) -> T {
         if let OptionalT = T.self as? OptionalFromAny.Type {
-            return OptionalT.init(from: assumingMemoryBound(to: U.self).pointee) as! T
+            return OptionalT(from: assumingMemoryBound(to: U.self).pointee) as! T
         } else {
             return assumingMemoryBound(to: U.self).pointee as! T
         }
@@ -131,7 +129,6 @@ private protocol OptionalFromAny {
 }
 
 extension Optional: OptionalFromAny {
-
     init(from unsafeValue: Any?) {
         if let unsafeValue = unsafeValue {
             self = unsafeValue as? Wrapped

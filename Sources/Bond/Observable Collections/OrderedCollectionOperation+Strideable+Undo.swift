@@ -25,10 +25,9 @@
 import Foundation
 
 extension AnyOrderedCollectionOperation where Index: Strideable {
-
     func undoOperationOn(_ index: Index) -> Index? {
         switch self {
-        case .insert(let insertionIndex):
+        case let .insert(insertionIndex):
             if insertionIndex == index {
                 return nil
             } else if insertionIndex < index {
@@ -36,7 +35,7 @@ extension AnyOrderedCollectionOperation where Index: Strideable {
             } else {
                 return index
             }
-        case .delete(let deletionIndex):
+        case let .delete(deletionIndex):
             if deletionIndex <= index {
                 return index.advanced(by: 1)
             } else {
@@ -44,7 +43,7 @@ extension AnyOrderedCollectionOperation where Index: Strideable {
             }
         case .update:
             return index
-        case .move(let from, let to):
+        case let .move(from, to):
             if to == index {
                 return from
             } else {
@@ -62,13 +61,13 @@ extension AnyOrderedCollectionOperation where Index: Strideable {
 
     func simulateOperationOn(_ index: Index) -> Index? {
         switch self {
-        case .insert(let insertionIndex):
+        case let .insert(insertionIndex):
             if insertionIndex <= index {
                 return index.advanced(by: 1)
             } else {
                 return index
             }
-        case .delete(let deletionIndex):
+        case let .delete(deletionIndex):
             if deletionIndex == index {
                 return nil
             } else if deletionIndex < index {
@@ -78,7 +77,7 @@ extension AnyOrderedCollectionOperation where Index: Strideable {
             }
         case .update:
             return index
-        case .move(let from, let to):
+        case let .move(from, to):
             if from == index {
                 return to
             } else {

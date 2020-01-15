@@ -24,16 +24,15 @@
 
 #if os(iOS) || os(tvOS)
 
-import UIKit
-import ReactiveKit
+    import ReactiveKit
+    import UIKit
 
-extension ReactiveExtensions where Base: UIApplication {
-
-    #if os(iOS)
-    public var isNetworkActivityIndicatorVisible: Bond<Bool> {
-        return bond { $0.isNetworkActivityIndicatorVisible = $1 }
+    extension ReactiveExtensions where Base: UIApplication {
+        #if os(iOS)
+            public var isNetworkActivityIndicatorVisible: Bond<Bool> {
+                return bond { $0.isNetworkActivityIndicatorVisible = $1 }
+            }
+        #endif
     }
-    #endif
-}
 
 #endif

@@ -25,112 +25,109 @@
 
 #if os(iOS) || os(tvOS)
 
-import UIKit
-import ReactiveKit
+    import ReactiveKit
+    import UIKit
 
-extension UIGestureRecognizer: BindingExecutionContextProvider {
-    public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
-}
-
-extension ReactiveExtensions where Base: UIGestureRecognizer {
-
-    public var isEnabled: Bond<Bool> {
-        return bond { $0.isEnabled = $1 }
+    extension UIGestureRecognizer: BindingExecutionContextProvider {
+        public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
     }
-}
+
+    extension ReactiveExtensions where Base: UIGestureRecognizer {
+        public var isEnabled: Bond<Bool> {
+            return bond { $0.isEnabled = $1 }
+        }
+    }
 
 #endif
 
 #if os(iOS)
 
-extension ReactiveExtensions where Base: UIView {
-    
-    public func addGestureRecognizer<T: UIGestureRecognizer>(_ gestureRecognizer: T) -> SafeSignal<T> {
-        let base = self.base
-        return Signal { [weak base] observer in
-            guard let base = base else {
-                observer.receive(completion: .finished)
-                return NonDisposable.instance
-            }
-            let target = BNDGestureTarget(view: base, gestureRecognizer: gestureRecognizer) { recog in
-                observer.receive(recog as! T)
-            }
-            return MainBlockDisposable {
-                target.unregister()
-            }
-        }.prefix(untilOutputFrom: base.deallocated)
+    extension ReactiveExtensions where Base: UIView {
+        public func addGestureRecognizer<T: UIGestureRecognizer>(_ gestureRecognizer: T) -> SafeSignal<T> {
+            let base = self.base
+            return Signal { [weak base] observer in
+                guard let base = base else {
+                    observer.receive(completion: .finished)
+                    return NonDisposable.instance
+                }
+                let target = BNDGestureTarget(view: base, gestureRecognizer: gestureRecognizer) { recog in
+                    observer.receive(recog as! T)
+                }
+                return MainBlockDisposable {
+                    target.unregister()
+                }
+            }.prefix(untilOutputFrom: base.deallocated)
+        }
+
+        public func tapGesture(numberOfTaps: Int = 1, numberOfTouches: Int = 1) -> SafeSignal<UITapGestureRecognizer> {
+            let gesture = UITapGestureRecognizer()
+            gesture.numberOfTapsRequired = numberOfTaps
+            gesture.numberOfTouchesRequired = numberOfTouches
+
+            return addGestureRecognizer(gesture)
+        }
+
+        public func panGesture(numberOfTouches: Int = 1) -> SafeSignal<UIPanGestureRecognizer> {
+            let gesture = UIPanGestureRecognizer()
+            gesture.minimumNumberOfTouches = numberOfTouches
+
+            return addGestureRecognizer(gesture)
+        }
+
+        public func swipeGesture(numberOfTouches: Int, direction: UISwipeGestureRecognizer.Direction) -> SafeSignal<UISwipeGestureRecognizer> {
+            let gesture = UISwipeGestureRecognizer()
+            gesture.numberOfTouchesRequired = numberOfTouches
+            gesture.direction = direction
+
+            return addGestureRecognizer(gesture)
+        }
+
+        public func pinchGesture() -> SafeSignal<UIPinchGestureRecognizer> {
+            return addGestureRecognizer(UIPinchGestureRecognizer())
+        }
+
+        public func longPressGesture(numberOfTaps: Int = 0, numberOfTouches: Int = 1, minimumPressDuration: CFTimeInterval = 0.3, allowableMovement: CGFloat = 10) -> SafeSignal<UILongPressGestureRecognizer> {
+            let gesture = UILongPressGestureRecognizer()
+            gesture.numberOfTapsRequired = numberOfTaps
+            gesture.numberOfTouchesRequired = numberOfTouches
+            gesture.minimumPressDuration = minimumPressDuration
+            gesture.allowableMovement = allowableMovement
+
+            return addGestureRecognizer(gesture)
+        }
+
+        public func rotationGesture() -> SafeSignal<UIRotationGestureRecognizer> {
+            return addGestureRecognizer(UIRotationGestureRecognizer())
+        }
     }
 
-    public func tapGesture(numberOfTaps: Int = 1, numberOfTouches: Int = 1) -> SafeSignal<UITapGestureRecognizer> {
-        let gesture = UITapGestureRecognizer()
-        gesture.numberOfTapsRequired = numberOfTaps
-        gesture.numberOfTouchesRequired = numberOfTouches
+    @objc fileprivate class BNDGestureTarget: NSObject {
+        private weak var view: UIView?
+        private let observer: (UIGestureRecognizer) -> Void
+        private let gestureRecognizer: UIGestureRecognizer
 
-        return addGestureRecognizer(gesture)
+        fileprivate init(view: UIView, gestureRecognizer: UIGestureRecognizer, observer: @escaping (UIGestureRecognizer) -> Void) {
+            self.view = view
+            self.gestureRecognizer = gestureRecognizer
+            self.observer = observer
+
+            super.init()
+
+            gestureRecognizer.addTarget(self, action: #selector(actionHandler(recogniser:)))
+            view.addGestureRecognizer(gestureRecognizer)
+        }
+
+        @objc private func actionHandler(recogniser: UIGestureRecognizer) {
+            observer(recogniser)
+        }
+
+        fileprivate func unregister() {
+            view?.removeGestureRecognizer(gestureRecognizer)
+        }
+
+        deinit {
+            unregister()
+        }
     }
-
-    public func panGesture(numberOfTouches: Int = 1) -> SafeSignal<UIPanGestureRecognizer> {
-        let gesture = UIPanGestureRecognizer()
-        gesture.minimumNumberOfTouches = numberOfTouches
-
-        return addGestureRecognizer(gesture)
-    }
-
-    public func swipeGesture(numberOfTouches: Int, direction: UISwipeGestureRecognizer.Direction) -> SafeSignal<UISwipeGestureRecognizer> {
-        let gesture = UISwipeGestureRecognizer()
-        gesture.numberOfTouchesRequired = numberOfTouches
-        gesture.direction = direction
-
-        return addGestureRecognizer(gesture)
-    }
-
-    public func pinchGesture() -> SafeSignal<UIPinchGestureRecognizer> {
-        return addGestureRecognizer(UIPinchGestureRecognizer())
-    }
-
-    public func longPressGesture(numberOfTaps: Int = 0, numberOfTouches: Int = 1,  minimumPressDuration: CFTimeInterval = 0.3, allowableMovement: CGFloat = 10) -> SafeSignal<UILongPressGestureRecognizer> {
-        let gesture = UILongPressGestureRecognizer()
-        gesture.numberOfTapsRequired = numberOfTaps
-        gesture.numberOfTouchesRequired = numberOfTouches
-        gesture.minimumPressDuration = minimumPressDuration
-        gesture.allowableMovement = allowableMovement
-
-        return addGestureRecognizer(gesture)
-    }
-
-    public func rotationGesture() -> SafeSignal<UIRotationGestureRecognizer> {
-        return addGestureRecognizer(UIRotationGestureRecognizer())
-    }
-}
-
-@objc fileprivate class BNDGestureTarget: NSObject {
-    
-    private weak var view: UIView?
-    private let observer: (UIGestureRecognizer) -> Void
-    private let gestureRecognizer: UIGestureRecognizer
-
-    fileprivate init(view: UIView, gestureRecognizer: UIGestureRecognizer, observer: @escaping (UIGestureRecognizer) -> Void) {
-        self.view = view
-        self.gestureRecognizer = gestureRecognizer
-        self.observer = observer
-
-        super.init()
-
-        gestureRecognizer.addTarget(self, action: #selector(actionHandler(recogniser:)))
-        view.addGestureRecognizer(gestureRecognizer)
-    }
-
-    @objc private func actionHandler(recogniser: UIGestureRecognizer) {
-        observer(recogniser)
-    }
-
-    fileprivate func unregister() {
-        view?.removeGestureRecognizer(gestureRecognizer)
-    }
-
-    deinit {
-        unregister()
-    }
-}
 
 #endif

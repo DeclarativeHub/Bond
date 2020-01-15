@@ -24,22 +24,21 @@
 
 #if os(macOS)
 
-import AppKit
-import ReactiveKit
+    import AppKit
+    import ReactiveKit
 
-extension NSMenuItem: BindingExecutionContextProvider {
-    public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
-}
-
-extension ReactiveExtensions where Base: NSMenuItem {
-
-    public var state: Bond<NSControl.StateValue> {
-        return bond { $0.state = $1 }
+    extension NSMenuItem: BindingExecutionContextProvider {
+        public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
     }
 
-    public var isEnabled: Bond<Bool> {
-        return bond { $0.isEnabled = $1 }
+    extension ReactiveExtensions where Base: NSMenuItem {
+        public var state: Bond<NSControl.StateValue> {
+            return bond { $0.state = $1 }
+        }
+
+        public var isEnabled: Bond<Bool> {
+            return bond { $0.isEnabled = $1 }
+        }
     }
-}
 
 #endif

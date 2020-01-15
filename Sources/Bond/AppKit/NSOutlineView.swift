@@ -23,47 +23,47 @@
 //
 
 #if canImport(AppKit)
-import AppKit
-import ReactiveKit
+    import AppKit
+    import ReactiveKit
 
-extension ReactiveExtensions where Base: NSOutlineView {
-    public var delegate: ProtocolProxy {
-        return protocolProxy(for: NSOutlineViewDelegate.self, keyPath: \.delegate)
-    }
+    extension ReactiveExtensions where Base: NSOutlineView {
+        public var delegate: ProtocolProxy {
+            return protocolProxy(for: NSOutlineViewDelegate.self, keyPath: \.delegate)
+        }
 
-    public var dataSource: ProtocolProxy {
-        return protocolProxy(for: NSOutlineViewDataSource.self, keyPath: \.dataSource)
-    }
+        public var dataSource: ProtocolProxy {
+            return protocolProxy(for: NSOutlineViewDataSource.self, keyPath: \.dataSource)
+        }
 
-    public var selectionIsChanging: SafeSignal<Void> {
-        return NotificationCenter.default.reactive.notification(name: NSOutlineView.selectionIsChangingNotification, object: base).eraseType()
-    }
+        public var selectionIsChanging: SafeSignal<Void> {
+            return NotificationCenter.default.reactive.notification(name: NSOutlineView.selectionIsChangingNotification, object: base).eraseType()
+        }
 
-    public var selectionDidChange: SafeSignal<Void> {
-        return NotificationCenter.default.reactive.notification(name: NSOutlineView.selectionDidChangeNotification, object: base).eraseType()
-    }
+        public var selectionDidChange: SafeSignal<Void> {
+            return NotificationCenter.default.reactive.notification(name: NSOutlineView.selectionDidChangeNotification, object: base).eraseType()
+        }
 
-    public var selectedRowIndexes: Bond<IndexSet> {
-        return bond { $0.selectRowIndexes($1, byExtendingSelection: false) }
-    }
+        public var selectedRowIndexes: Bond<IndexSet> {
+            return bond { $0.selectRowIndexes($1, byExtendingSelection: false) }
+        }
 
-    public var selectedColumnIndexes: Bond<IndexSet> {
-        return bond { $0.selectColumnIndexes($1, byExtendingSelection: false) }
-    }
+        public var selectedColumnIndexes: Bond<IndexSet> {
+            return bond { $0.selectColumnIndexes($1, byExtendingSelection: false) }
+        }
 
-    public var selectedItems: DynamicSubject<[Any]> {
-        return dynamicSubject(
-            signal: self.selectionDidChange,
-            triggerEventOnSetting: false,
-            get: { outlineView in
-                outlineView.selectedRowIndexes.compactMap { outlineView.item(atRow: $0) }
-            },
-            set: { outlineView, items in
-                let indexes = IndexSet(items.map { outlineView.row(forItem: $0) })
-                outlineView.selectRowIndexes(indexes, byExtendingSelection: false)
-            }
-        )
+        public var selectedItems: DynamicSubject<[Any]> {
+            return dynamicSubject(
+                signal: selectionDidChange,
+                triggerEventOnSetting: false,
+                get: { outlineView in
+                    outlineView.selectedRowIndexes.compactMap { outlineView.item(atRow: $0) }
+                },
+                set: { outlineView, items in
+                    let indexes = IndexSet(items.map { outlineView.row(forItem: $0) })
+                    outlineView.selectRowIndexes(indexes, byExtendingSelection: false)
+                }
+            )
+        }
     }
-}
 
 #endif

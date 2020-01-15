@@ -26,7 +26,6 @@ import Foundation
 import ReactiveKit
 
 extension SignalProtocol where Element: ChangesetProtocol {
-
     /// When working with a changeset that calculates patch lazily,
     /// you can use this method to calculate the patch in advance.
     /// Observer will then have patch available in O(1).
@@ -49,14 +48,13 @@ extension SignalProtocol where Element: ChangesetProtocol {
 }
 
 extension SignalProtocol where Element: Collection, Element.Index: Strideable {
-
     /// Generate the diff between previous and current collection using the provided diff generator function.
     public func diff(generateDiff: @escaping (Element, Element) -> OrderedCollectionChangeset<Element>.Diff) -> Signal<OrderedCollectionChangeset<Element>, Error> {
         return Signal { observer in
             var collection: Element?
             return self.observe { event in
                 switch event {
-                case .next(let element):
+                case let .next(element):
                     let newCollection = element
                     if let collection = collection {
                         let diff = generateDiff(collection, newCollection)
@@ -65,7 +63,7 @@ extension SignalProtocol where Element: Collection, Element.Index: Strideable {
                         observer.receive(OrderedCollectionChangeset(collection: newCollection, patch: []))
                     }
                     collection = newCollection
-                case .failed(let error):
+                case let .failed(error):
                     observer.receive(completion: .failure(error))
                 case .completed:
                     observer.receive(completion: .finished)
@@ -76,14 +74,13 @@ extension SignalProtocol where Element: Collection, Element.Index: Strideable {
 }
 
 extension SignalProtocol where Element: TreeProtocol {
-
     /// Generate the diff between previous and current tree using the provided diff generator function.
     public func diff(generateDiff: @escaping (Element, Element) -> TreeChangeset<Element>.Diff) -> Signal<TreeChangeset<Element>, Error> {
         return Signal { observer in
             var collection: Element?
             return self.observe { event in
                 switch event {
-                case .next(let element):
+                case let .next(element):
                     let newCollection = element
                     if let collection = collection {
                         let diff = generateDiff(collection, newCollection)
@@ -92,7 +89,7 @@ extension SignalProtocol where Element: TreeProtocol {
                         observer.receive(TreeChangeset(collection: newCollection, patch: []))
                     }
                     collection = newCollection
-                case .failed(let error):
+                case let .failed(error):
                     observer.receive(completion: .failure(error))
                 case .completed:
                     observer.receive(completion: .finished)
@@ -103,7 +100,6 @@ extension SignalProtocol where Element: TreeProtocol {
 }
 
 extension SignalProtocol where Element: OrderedCollectionChangesetProtocol, Element.Collection.Index: Hashable {
-
     /// - complexity: Each event sorts the collection O(nlogn).
     public func sortedCollection(by areInIncreasingOrder: @escaping (Element.Collection.Element, Element.Collection.Element) -> Bool) -> Signal<OrderedCollectionChangeset<[Element.Collection.Element]>, Error> {
         var previousIndexMap: [Element.Collection.Index: Int] = [:]
@@ -113,14 +109,14 @@ extension SignalProtocol where Element: OrderedCollectionChangesetProtocol, Elem
             let elementsWithIndices = Swift.zip(event.collection, indices)
 
             let sortedElementsWithIndices = elementsWithIndices.sorted(by: { (a, b) -> Bool in
-                return areInIncreasingOrder(a.0, b.0)
+                areInIncreasingOrder(a.0, b.0)
             })
 
             let sortedElements = sortedElementsWithIndices.map { $0.0 }
 
-            let indexMap = sortedElementsWithIndices.map { $0.1 }.enumerated().reduce([Element.Collection.Index: Int](), { (indexMap, new) -> [Element.Collection.Index: Int] in
-                return indexMap.merging([new.element: new.offset], uniquingKeysWith: { $1 })
-            })
+            let indexMap = sortedElementsWithIndices.map { $0.1 }.enumerated().reduce([Element.Collection.Index: Int]()) { (indexMap, new) -> [Element.Collection.Index: Int] in
+                indexMap.merging([new.element: new.offset], uniquingKeysWith: { $1 })
+            }
 
             let diff = event.diff.transformingIndices(fromIndexMap: previousIndexMap, toIndexMap: indexMap)
             previousIndexMap = indexMap
@@ -134,7 +130,6 @@ extension SignalProtocol where Element: OrderedCollectionChangesetProtocol, Elem
 }
 
 extension SignalProtocol where Element: OrderedCollectionChangesetProtocol, Element.Collection.Index: Hashable, Element.Collection.Element: Comparable {
-
     /// - complexity: Each event sorts collection O(nlogn).
     public func sortedCollection() -> Signal<OrderedCollectionChangeset<[Element.Collection.Element]>, Error> {
         return sortedCollection(by: <)
@@ -142,7 +137,6 @@ extension SignalProtocol where Element: OrderedCollectionChangesetProtocol, Elem
 }
 
 extension SignalProtocol where Element: UnorderedCollectionChangesetProtocol, Element.Collection.Index: Hashable {
-
     /// - complexity: Each event sorts the collection O(nlogn).
     public func sortedCollection(by areInIncreasingOrder: @escaping (Element.Collection.Element, Element.Collection.Element) -> Bool) -> Signal<OrderedCollectionChangeset<[Element.Collection.Element]>, Error> {
         var previousIndexMap: [Element.Collection.Index: Int] = [:]
@@ -152,14 +146,14 @@ extension SignalProtocol where Element: UnorderedCollectionChangesetProtocol, El
             let elementsWithIndices = Swift.zip(event.collection, indices)
 
             let sortedElementsWithIndices = elementsWithIndices.sorted(by: { (a, b) -> Bool in
-                return areInIncreasingOrder(a.0, b.0)
+                areInIncreasingOrder(a.0, b.0)
             })
 
             let sortedElements = sortedElementsWithIndices.map { $0.0 }
 
-            let indexMap = sortedElementsWithIndices.map { $0.1 }.enumerated().reduce([Element.Collection.Index: Int](), { (indexMap, new) -> [Element.Collection.Index: Int] in
-                return indexMap.merging([new.element: new.offset], uniquingKeysWith: { $1 })
-            })
+            let indexMap = sortedElementsWithIndices.map { $0.1 }.enumerated().reduce([Element.Collection.Index: Int]()) { (indexMap, new) -> [Element.Collection.Index: Int] in
+                indexMap.merging([new.element: new.offset], uniquingKeysWith: { $1 })
+            }
 
             let diff = event.diff.transformingIndices(fromIndexMap: previousIndexMap, toIndexMap: indexMap)
             previousIndexMap = indexMap
@@ -173,7 +167,6 @@ extension SignalProtocol where Element: UnorderedCollectionChangesetProtocol, El
 }
 
 extension SignalProtocol where Element: UnorderedCollectionChangesetProtocol, Element.Collection.Index: Hashable, Element.Collection.Element: Comparable {
-
     /// - complexity: Each event sorts collection O(nlogn).
     public func sortedCollection() -> Signal<OrderedCollectionChangeset<[Element.Collection.Element]>, Error> {
         return sortedCollection(by: <)
@@ -181,11 +174,10 @@ extension SignalProtocol where Element: UnorderedCollectionChangesetProtocol, El
 }
 
 extension SignalProtocol where Element: OrderedCollectionChangesetProtocol, Element.Collection.Index == Int {
-
     /// - complexity: Each event transforms collection O(n). Use `lazyMapCollection` if you need on-demand mapping.
     public func mapCollection<U>(_ transform: @escaping (Element.Collection.Element) -> U) -> Signal<OrderedCollectionChangeset<[U]>, Error> {
         return map { (event: Element) -> OrderedCollectionChangeset<[U]> in
-            return OrderedCollectionChangeset(
+            OrderedCollectionChangeset(
                 collection: event.collection.map(transform),
                 diff: event.diff
             )
@@ -195,7 +187,7 @@ extension SignalProtocol where Element: OrderedCollectionChangesetProtocol, Elem
     /// - complexity: O(1).
     public func lazyMapCollection<U>(_ transform: @escaping (Element.Collection.Element) -> U) -> Signal<OrderedCollectionChangeset<LazyMapCollection<Element.Collection, U>>, Error> {
         return map { (event: Element) -> OrderedCollectionChangeset<LazyMapCollection<Element.Collection, U>> in
-            return OrderedCollectionChangeset(
+            OrderedCollectionChangeset(
                 collection: event.collection.lazy.map(transform),
                 diff: event.diff
             )
@@ -234,7 +226,6 @@ extension SignalProtocol where Element: OrderedCollectionChangesetProtocol, Elem
 }
 
 extension OrderedCollectionDiff where Index: Hashable {
-
     public func transformingIndices<NewIndex>(fromIndexMap: [Index: NewIndex], toIndexMap: [Index: NewIndex]) -> OrderedCollectionDiff<NewIndex> {
         var inserts = self.inserts.compactMap { toIndexMap[$0] }
         var deletes = self.deletes.compactMap { fromIndexMap[$0] }
@@ -262,7 +253,6 @@ extension OrderedCollectionDiff where Index: Hashable {
 }
 
 extension UnorderedCollectionDiff where Index: Hashable {
-
     public func transformingIndices<NewIndex>(fromIndexMap: [Index: NewIndex], toIndexMap: [Index: NewIndex]) -> UnorderedCollectionDiff<NewIndex> {
         var inserts = self.inserts.compactMap { toIndexMap[$0] }
         var deletes = self.deletes.compactMap { fromIndexMap[$0] }

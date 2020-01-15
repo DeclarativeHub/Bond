@@ -24,44 +24,42 @@
 
 #if os(macOS)
 
-import AppKit
-import ReactiveKit
+    import AppKit
+    import ReactiveKit
 
-extension ReactiveExtensions where Base: NSSegmentedControl {
+    extension ReactiveExtensions where Base: NSSegmentedControl {
+        public var segmentCount: Bond<Int> {
+            return bond { $0.segmentCount = $1 }
+        }
 
-    public var segmentCount: Bond<Int> {
-        return bond { $0.segmentCount = $1 }
+        public var selectedSegment: Bond<Int> {
+            return bond { $0.selectedSegment = $1 }
+        }
+
+        public var segmentStyle: Bond<NSSegmentedControl.Style> {
+            return bond { $0.segmentStyle = $1 }
+        }
+
+        @available(macOS 10.10.3, *)
+        public var isSpringLoaded: Bond<Bool> {
+            return bond { $0.isSpringLoaded = $1 }
+        }
+
+        @available(macOS 10.10.3, *)
+        public var trackingMode: Bond<NSSegmentedControl.SwitchTracking> {
+            return bond { $0.trackingMode = $1 }
+        }
+
+        @available(macOS 10.12.2, *)
+        public var selectedSegmentBezelColor: Bond<NSColor?> {
+            return bond { $0.selectedSegmentBezelColor = $1 }
+        }
     }
 
-    public var selectedSegment: Bond<Int> {
-        return bond { $0.selectedSegment = $1 }
+    extension NSSegmentedControl {
+        public func bind(signal: Signal<Int, Never>) -> Disposable {
+            return reactive.selectedSegment.bind(signal: signal)
+        }
     }
-
-    public var segmentStyle: Bond<NSSegmentedControl.Style> {
-        return bond { $0.segmentStyle = $1 }
-    }
-
-    @available(macOS 10.10.3, *)
-    public var isSpringLoaded: Bond<Bool> {
-        return bond { $0.isSpringLoaded = $1 }
-    }
-
-    @available(macOS 10.10.3, *)
-    public var trackingMode: Bond<NSSegmentedControl.SwitchTracking> {
-        return bond { $0.trackingMode = $1 }
-    }
-
-    @available(macOS 10.12.2, *)
-    public var selectedSegmentBezelColor: Bond<NSColor?> {
-        return bond { $0.selectedSegmentBezelColor = $1 }
-    }
-}
-
-extension NSSegmentedControl {
-
-    public func bind(signal: Signal<Int, Never>) -> Disposable {
-        return reactive.selectedSegment.bind(signal: signal)
-    }
-}
 
 #endif

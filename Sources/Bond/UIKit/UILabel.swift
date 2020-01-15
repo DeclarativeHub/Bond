@@ -24,29 +24,27 @@
 
 #if os(iOS) || os(tvOS)
 
-import UIKit
-import ReactiveKit
+    import ReactiveKit
+    import UIKit
 
-extension ReactiveExtensions where Base: UILabel {
+    extension ReactiveExtensions where Base: UILabel {
+        public var text: Bond<String?> {
+            return bond { $0.text = $1 }
+        }
 
-    public var text: Bond<String?> {
-        return bond { $0.text = $1 }
+        public var attributedText: Bond<NSAttributedString?> {
+            return bond { $0.attributedText = $1 }
+        }
+
+        public var textColor: Bond<UIColor?> {
+            return bond { $0.textColor = $1 }
+        }
     }
 
-    public var attributedText: Bond<NSAttributedString?> {
-        return bond { $0.attributedText = $1 }
+    extension UILabel: BindableProtocol {
+        public func bind(signal: Signal<String?, Never>) -> Disposable {
+            return reactive.text.bind(signal: signal)
+        }
     }
-
-    public var textColor: Bond<UIColor?> {
-        return bond { $0.textColor = $1 }
-    }
-}
-
-extension UILabel: BindableProtocol {
-
-    public func bind(signal: Signal<String?, Never>) -> Disposable {
-        return reactive.text.bind(signal: signal)
-    }
-}
 
 #endif

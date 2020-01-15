@@ -25,12 +25,11 @@
 import Foundation
 
 extension RangeReplaceableCollection where Index == Int {
-
     func insertionIndex(of element: Element, isOrderedBefore: (Element, Element) -> Bool) -> Int {
         var lo = 0
-        var hi = self.count - 1
+        var hi = count - 1
         while lo <= hi {
-            let mid = (lo + hi)/2
+            let mid = (lo + hi) / 2
             if isOrderedBefore(self[mid], element) {
                 lo = mid + 1
             } else if isOrderedBefore(element, self[mid]) {
@@ -48,16 +47,13 @@ extension RangeReplaceableCollection where Index == Int {
     }
 }
 
-
 extension Collection {
-
     func indices(where isIncluded: (Element) -> Bool) -> [Index] {
         return indices.filter { isIncluded(self[$0]) }
     }
 }
 
 extension RangeReplaceableCollection {
-
     public mutating func move(from fromIndex: Index, to toIndex: Index) {
         let item = remove(at: fromIndex)
         insert(item, at: toIndex)
@@ -65,7 +61,6 @@ extension RangeReplaceableCollection {
 }
 
 extension RangeReplaceableCollection where Index: Strideable {
-
     public mutating func move(from fromIndices: [Index], to toIndex: Index) {
         let items = fromIndices.map { self[$0] }
         for index in fromIndices.sorted().reversed() {

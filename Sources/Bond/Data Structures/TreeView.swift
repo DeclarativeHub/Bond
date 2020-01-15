@@ -25,7 +25,6 @@
 import Foundation
 
 extension TreeProtocol {
-
     /// Provides a view of the tree that is a flat collection of tree nodes in depth-first search order.
     /// Indices of the provided collection are of type `IndexPath`.
     /// - complexity: Accessing: O(1), Iterating the tree view: O(n) in both time and space
@@ -52,7 +51,6 @@ extension TreeProtocol {
 }
 
 extension TreeProtocol where Children.Element == Self {
-
     /// Provides a view of the tree that is a flat collection of tree nodes in depth-first search order.
     /// Indices of the provided collection are of type `IndexPath`.
     /// - complexity: Accessing: O(1), Iterating the tree view: O(n) in both time and space
@@ -83,7 +81,6 @@ public protocol IndexPathTreeIterator: IteratorProtocol where Element == (elemen
 }
 
 public class TreeView<Tree: TreeProtocol>: Collection {
-
     public let startIndex: IndexPath
     public let endIndex: IndexPath
 
@@ -99,7 +96,7 @@ public class TreeView<Tree: TreeProtocol>: Collection {
         self.endIndex = endIndex
         var iterator = iterator
         var previousIndexPath: IndexPath?
-        self.loadNextNode = {
+        loadNextNode = {
             if let next = iterator.next() {
                 if let previousIndexPath = previousIndexPath {
                     self.lookupTreeMap[previousIndexPath]?.after = next.indexPath
@@ -132,7 +129,6 @@ public class TreeView<Tree: TreeProtocol>: Collection {
 }
 
 struct DFSTreeIterator<Tree: TreeProtocol>: IndexPathTreeIterator {
-
     typealias Item = (element: Tree.Children.Element, indexPath: IndexPath)
 
     var remainingItems: [Item]
@@ -140,7 +136,7 @@ struct DFSTreeIterator<Tree: TreeProtocol>: IndexPathTreeIterator {
     let indexPathTransformer: (IndexPath) -> IndexPath
 
     init(remainingTreeNodes: [Tree.Children.Element], indexPathTransformer: @escaping (IndexPath) -> IndexPath = { $0 }) {
-        self.remainingItems = remainingTreeNodes.enumerated().map { ($0.element, [$0.offset]) }
+        remainingItems = remainingTreeNodes.enumerated().map { ($0.element, [$0.offset]) }
         self.indexPathTransformer = indexPathTransformer
     }
 
@@ -154,7 +150,6 @@ struct DFSTreeIterator<Tree: TreeProtocol>: IndexPathTreeIterator {
 }
 
 struct BFSTreeIterator<Tree: TreeProtocol>: IndexPathTreeIterator {
-
     typealias Item = (element: Tree.Children.Element, indexPath: IndexPath)
 
     var remainingItems: [Item]
@@ -162,7 +157,7 @@ struct BFSTreeIterator<Tree: TreeProtocol>: IndexPathTreeIterator {
     let indexPathTransformer: (IndexPath) -> IndexPath
 
     init(remainingTreeNodes: [Tree.Children.Element], indexPathTransformer: @escaping (IndexPath) -> IndexPath = { $0 }) {
-        self.remainingItems = remainingTreeNodes.enumerated().map { ($0.element, [$0.offset]) }
+        remainingItems = remainingTreeNodes.enumerated().map { ($0.element, [$0.offset]) }
         self.indexPathTransformer = indexPathTransformer
     }
 
