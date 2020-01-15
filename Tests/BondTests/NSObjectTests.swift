@@ -11,10 +11,8 @@ import ReactiveKit
 import XCTest
 
 class NSObjectTests: XCTestCase {
+    class TestObject: NSObject {}
 
-    class TestObject: NSObject {
-    }
-    
     var object: TestObject!
 
     override func setUp() {
@@ -40,9 +38,7 @@ class NSObjectTests: XCTestCase {
 }
 
 class NSObjectKVOTests: XCTestCase {
-
     class TestObject: NSObject, BindingExecutionContextProvider {
-
         @objc dynamic var property: Any! = "a"
         @objc dynamic var propertyString: String = "a"
 
@@ -75,7 +71,7 @@ class NSObjectKVOTests: XCTestCase {
     }
 
     func testOptionalObservation() {
-        let subject = object.reactive.keyPath("property", ofType: Optional<String>.self)
+        let subject = object.reactive.keyPath("property", ofType: String?.self)
         subject.expectNext(["a", "b", nil, "c"])
         object.property = "b"
         object.property = nil
@@ -83,7 +79,7 @@ class NSObjectKVOTests: XCTestCase {
     }
 
     func testOptionalBinding() {
-        let subject = object.reactive.keyPath("property", ofType: Optional<String>.self)
+        let subject = object.reactive.keyPath("property", ofType: String?.self)
         subject.expectNext(["a", "b", nil, "c"])
         SafeSignal(just: "b").bind(to: subject)
         XCTAssert((object.property as! String) == "b")
@@ -116,7 +112,7 @@ class NSObjectKVOTests: XCTestCase {
     }
 
     func testExpectedTypeOptionalObservation() {
-        let subject = object.reactive.keyPath("property", ofExpectedType: Optional<String>.self)
+        let subject = object.reactive.keyPath("property", ofExpectedType: String?.self)
         subject.expectNext(["a", "b", nil, "c"])
         object.property = "b"
         object.property = nil
@@ -124,7 +120,7 @@ class NSObjectKVOTests: XCTestCase {
     }
 
     func testExpectedTypeOptionalBinding() {
-        let subject = object.reactive.keyPath("property", ofExpectedType: Optional<String>.self)
+        let subject = object.reactive.keyPath("property", ofExpectedType: String?.self)
         subject.expectNext(["a", "b", nil, "c"])
         SafeSignal(just: "b").bind(to: subject)
         XCTAssert((object.property as! String) == "b")
@@ -135,7 +131,7 @@ class NSObjectKVOTests: XCTestCase {
     }
 
     func testExpectedTypeOptionalFailure() {
-        let subject = object.reactive.keyPath("property", ofExpectedType: Optional<String>.self)
+        let subject = object.reactive.keyPath("property", ofExpectedType: String?.self)
         subject.expect([.next("a"), .failed(.notConvertible(""))])
         object.property = 5
     }

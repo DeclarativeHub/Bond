@@ -28,44 +28,42 @@ import RealmSwift
 
 /*
 
-// Get the default Realm
-let realm = try! Realm()
+ // Get the default Realm
+ let realm = try! Realm()
 
-// Convert realm results into a changeset signal
-let puppies = realm.objects(Dog.self).toChangesetSignal()
+ // Convert realm results into a changeset signal
+ let puppies = realm.objects(Dog.self).toChangesetSignal()
 
-// Changeset signals can then be bound to table or collection views
-puppies.suppressError(logging: true).bind(to: tableView, cellType: UITableViewCell.self) { (cell, dog) in
-    cell.textLabel?.text = dog.name
-}
+ // Changeset signals can then be bound to table or collection views
+ puppies.suppressError(logging: true).bind(to: tableView, cellType: UITableViewCell.self) { (cell, dog) in
+ cell.textLabel?.text = dog.name
+ }
 
-// Adding something to the results will cause the table view to insert the respective row
-DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-    try! realm.write {
-        realm.add(myDog)
-    }
-}
+ // Adding something to the results will cause the table view to insert the respective row
+ DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+ try! realm.write {
+     realm.add(myDog)
+ }
+ }
 
-*/
+ */
 
 public extension RealmCollectionChange where CollectionType: Swift.Collection, CollectionType.Index == Int {
-
-    public func toOrderedCollectionChangeset() throws -> OrderedCollectionChangeset<CollectionType> {
+    func toOrderedCollectionChangeset() throws -> OrderedCollectionChangeset<CollectionType> {
         switch self {
-        case .initial(let collection):
+        case let .initial(collection):
             return OrderedCollectionChangeset(collection: collection, diff: OrderedCollectionDiff())
-        case .update(let collection, let deletions, let insertions, let modifications):
+        case let .update(collection, deletions, insertions, modifications):
             let diff = OrderedCollectionDiff(inserts: insertions, deletes: deletions, updates: modifications, moves: [])
             return OrderedCollectionChangeset(collection: collection, diff: diff)
-        case .error(let error):
+        case let .error(error):
             throw error
         }
     }
 }
 
 public extension Results {
-
-    public func toChangesetSignal() -> Signal<OrderedCollectionChangeset<Results<Element>>, NSError> {
+    func toChangesetSignal() -> Signal<OrderedCollectionChangeset<Results<Element>>, NSError> {
         return Signal { observer in
             let token = self.observe { change in
                 do {
@@ -82,16 +80,15 @@ public extension Results {
 }
 
 public extension Results: QueryableSectionedDataSourceProtocol {
-
-    public var numberOfSections: Int {
+    var numberOfSections: Int {
         return 1
     }
 
-    public func numberOfItems(inSection section: Int) -> Int {
+    func numberOfItems(inSection _: Int) -> Int {
         return count
     }
 
-    public func item(at indexPath: IndexPath) -> Element {
+    func item(at indexPath: IndexPath) -> Element {
         return self[indexPath.row]
     }
 }

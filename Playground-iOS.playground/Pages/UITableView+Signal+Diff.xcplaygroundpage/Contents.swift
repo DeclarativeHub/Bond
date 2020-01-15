@@ -1,13 +1,13 @@
 //: [Previous](@previous)
 
-///: Before running the playground, make sure to build "Bond-iOS" and "PlaygroundSupport"
-///: targets with any iOS Simulator as a destination.
+/// : Before running the playground, make sure to build "Bond-iOS" and "PlaygroundSupport"
+/// : targets with any iOS Simulator as a destination.
 
+import Bond
 import Foundation
 import PlaygroundSupport
-import UIKit
-import Bond
 import ReactiveKit
+import UIKit
 
 let tableView = UITableView()
 tableView.frame.size = CGSize(width: 300, height: 300)
@@ -21,15 +21,15 @@ let pulse = SafeSignal(sequence: 0..., interval: 1)
 
 // A signal of [String]
 let data = SafeSignal(sequence: [
-        ["A"],
-        ["A", "B", "C"],
-        ["A", "C"],
-        ["C", "A"]
-    ])
+    ["A"],
+    ["A", "B", "C"],
+    ["A", "C"],
+    ["C", "A"],
+])
     .zip(with: pulse) { data, _ in data } // add 1 second delay between events
     .diff() // diff each new array against the previous one
 
-data.bind(to: tableView, cellType: UITableViewCell.self) { (cell, string) in
+data.bind(to: tableView, cellType: UITableViewCell.self) { cell, string in
     cell.textLabel?.text = string
 }
 

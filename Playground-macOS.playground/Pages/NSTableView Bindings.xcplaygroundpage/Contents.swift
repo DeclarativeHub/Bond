@@ -1,13 +1,13 @@
 //: [Previous](@previous)
 
-///: Before running the playground, make sure to build "Bond-macOS" and "PlaygroundSupport"
-///: targets with Mac as a destination.
+/// : Before running the playground, make sure to build "Bond-macOS" and "PlaygroundSupport"
+/// : targets with Mac as a destination.
 
 import Foundation
 
-import PlaygroundSupport
-import Cocoa
 import Bond
+import Cocoa
+import PlaygroundSupport
 import ReactiveKit
 
 let tableView = NSTableView()
@@ -41,7 +41,7 @@ DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
 }
 
 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-    data.batchUpdate { (data) in
+    data.batchUpdate { data in
         data.remove(at: 0)
         data[0] = "Jerry"
         data.append("Jenne")
@@ -49,7 +49,7 @@ DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
 }
 
 DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-    data.replace(with: ["Ann",  "Jerry"], performDiff: true)
+    data.replace(with: ["Ann", "Jerry"], performDiff: true)
 }
 
 //: [Next](@next)

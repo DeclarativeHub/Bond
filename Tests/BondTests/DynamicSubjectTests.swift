@@ -6,9 +6,9 @@
 //  Copyright © 2016 Swift Bond. All rights reserved.
 //
 
-import XCTest
-import ReactiveKit
 @testable import Bond
+import ReactiveKit
+import XCTest
 
 private class DummyTarget: NSObject {
     var value: Int = 5
@@ -17,7 +17,6 @@ private class DummyTarget: NSObject {
 }
 
 class DynamicSubjectTests: XCTestCase {
-
     // Starts with current value
     // Update signal triggers next event
     // Bound signal events are propagated
@@ -29,7 +28,7 @@ class DynamicSubjectTests: XCTestCase {
             signal: target.changes.toSignal(),
             context: .immediate,
             get: { (target) -> Int in target.value },
-            set: { (target, new) in target.value = new; target.recordedElements.append(new) }
+            set: { target, new in target.value = new; target.recordedElements.append(new) }
         )
 
         subject.expectNext([5, 6, 7, 1, 2, 3])
@@ -51,13 +50,13 @@ class DynamicSubjectTests: XCTestCase {
     func testDisposesOnTargetDeallocation() {
         var target: DummyTarget! = DummyTarget()
         weak var weakTarget = target
-        
+
         let subject = DynamicSubject(
             target: target,
             signal: target.changes.toSignal(),
             context: .immediate,
             get: { (target) -> Int in target.value },
-            set: { (target, new) in target.value = new; target.recordedElements.append(new) }
+            set: { target, new in target.value = new; target.recordedElements.append(new) }
         )
 
         let signal = PassthroughSubject<Int, Never>()
