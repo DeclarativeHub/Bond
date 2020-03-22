@@ -23,6 +23,7 @@
 /* Begin PBXBuildFile section */
 		070FE2741F0138180031B7BD /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D2A1E8F0B1D000077C8 /* NSLayoutConstraint.swift */; };
 		070FE2781F0138190031B7BD /* NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C04D2A1E8F0B1D000077C8 /* NSLayoutConstraint.swift */; };
+		0856892E2426BC1D002ACEE7 /* ViewControllerLifeCycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0856892D2426BC1D002ACEE7 /* ViewControllerLifeCycle.swift */; };
 		16210A461D3EC474004AEDF3 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16210A3C1D3EC474004AEDF3 /* Bond.framework */; };
 		16887E3A1D744ABB00EDA099 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16887E391D744ABB00EDA099 /* AppDelegate.swift */; };
 		16887E441D744ABB00EDA099 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 16887E421D744ABB00EDA099 /* LaunchScreen.storyboard */; };
@@ -382,6 +383,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0856892D2426BC1D002ACEE7 /* ViewControllerLifeCycle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerLifeCycle.swift; sourceTree = "<group>"; };
 		161D6D2D1D6F0D92004CA17D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		16210A3C1D3EC474004AEDF3 /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		16210A451D3EC474004AEDF3 /* BondTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BondTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -784,6 +786,7 @@
 				90C04D2A1E8F0B1D000077C8 /* NSLayoutConstraint.swift */,
 				90C04D2D1E8F0B1D000077C8 /* NSObject.swift */,
 				90C04D2C1E8F0B1D000077C8 /* NSObject+KVO.swift */,
+				0856892D2426BC1D002ACEE7 /* ViewControllerLifeCycle.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -1146,6 +1149,7 @@
 				E58FBB8D22187FD700339211 /* UIPickerView+DataSource.swift in Sources */,
 				90C04DBC1E8F0B97000077C8 /* UIRefreshControl.swift in Sources */,
 				ECBC51FA216163BA00BE80EC /* TreeNode.swift in Sources */,
+				0856892E2426BC1D002ACEE7 /* ViewControllerLifeCycle.swift in Sources */,
 				90B5F63B2269D6DD001917B4 /* NSCollectionView+DataSource.swift in Sources */,
 				90C04DBD1E8F0B97000077C8 /* UISegmentedControl.swift in Sources */,
 				ECFF44B12168C21F00B5EDB0 /* Array2D.swift in Sources */,
