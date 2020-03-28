@@ -75,7 +75,7 @@ public struct ObservableArrayPatchEvent<Item>: ObservableArrayEventProtocol {
 public class ObservableArray<Item>: SignalProtocol {
 
     public fileprivate(set) var array: [Item]
-    fileprivate let subject = PublishSubject<ObservableArrayEvent<Item>, NoError>()
+    fileprivate let subject = PassthroughSubject<ObservableArrayEvent<Item>, Never>()
     fileprivate let lock = NSRecursiveLock(name: "com.reactivekit.bond.observablearray")
 
     public init(_ array: [Item] = []) {
@@ -116,7 +116,7 @@ public class ObservableArray<Item>: SignalProtocol {
         }
     }
 
-    public func observe(with observer: @escaping (Event<ObservableArrayEvent<Item>, NoError>) -> Void) -> Disposable {
+    public func observe(with observer: @escaping (Event<ObservableArrayEvent<Item>, Never>) -> Void) -> Disposable {
         observer(.next(ObservableArrayEvent(change: .reset, source: self)))
         return subject.observe(with: observer)
     }
@@ -131,7 +131,7 @@ extension ObservableArray: CustomDebugStringConvertible {
 
 extension ObservableArray: Deallocatable {
 
-    public var deallocated: Signal<Void, NoError> {
+    public var deallocated: Signal<Void, Never> {
         return subject.disposeBag.deallocated
     }
 }
@@ -251,7 +251,7 @@ public class MutableObservableArray<Item>: ObservableArray<Item> {
 
 extension MutableObservableArray: BindableProtocol {
 
-    public func bind(signal: Signal<ObservableArrayEvent<Item>, NoError>) -> Disposable {
+    public func bind(signal: Signal<ObservableArrayEvent<Item>, Never>) -> Disposable {
         return signal
             .take(until: deallocated)
             .observeNext { [weak self] event in

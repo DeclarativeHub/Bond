@@ -42,7 +42,7 @@ public struct ObservableSetEvent<Element: Hashable> {
 public class ObservableSet<Element: Hashable>: SignalProtocol {
 
     public fileprivate(set) var set: Set<Element>
-    fileprivate let subject = PublishSubject<ObservableSetEvent<Element>, NoError>()
+    fileprivate let subject = PassthroughSubject<ObservableSetEvent<Element>, Never>()
     fileprivate let lock = NSRecursiveLock(name: "com.reactivekit.bond.observableset")
 
     public init(_ set: Set<Element> = []) {
@@ -83,7 +83,7 @@ public class ObservableSet<Element: Hashable>: SignalProtocol {
         }
     }
 
-    public func observe(with observer: @escaping (Event<ObservableSetEvent<Element>, NoError>) -> Void) -> Disposable {
+    public func observe(with observer: @escaping (Event<ObservableSetEvent<Element>, Never>) -> Void) -> Disposable {
         observer(.next(ObservableSetEvent(kind: .reset, source: self)))
         return subject.observe(with: observer)
     }
@@ -91,7 +91,7 @@ public class ObservableSet<Element: Hashable>: SignalProtocol {
 
 extension ObservableSet: Deallocatable {
 
-    public var deallocated: Signal<Void, NoError> {
+    public var deallocated: Signal<Void, Never> {
         return subject.disposeBag.deallocated
     }
 }
@@ -194,7 +194,7 @@ public class MutableObservableSet<Element: Hashable>: ObservableSet<Element> {
 
 extension MutableObservableSet: BindableProtocol {
 
-    public func bind(signal: Signal<ObservableSetEvent<Element>, NoError>) -> Disposable {
+    public func bind(signal: Signal<ObservableSetEvent<Element>, Never>) -> Disposable {
         return signal
             .take(until: deallocated)
             .observeNext { [weak self] event in

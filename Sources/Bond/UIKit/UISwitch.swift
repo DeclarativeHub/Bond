@@ -40,7 +40,7 @@ public extension ReactiveExtensions where Base: UISwitch {
 
 extension UISwitch: BindableProtocol {
 
-    public func bind(signal: Signal<Bool, NoError>) -> Disposable {
+    public func bind(signal: Signal<Bool, Never>) -> Disposable {
         return reactive.isOn.bind(signal: signal)
     }
 }

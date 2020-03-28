@@ -51,7 +51,7 @@
         ///
         /// - Note: Uses table view's `delegate` protocol proxy to observe calls made to `UITableViewDelegate.tableView(_:didSelectRowAt:)` method.
         public var selectedRowIndexPath: SafeSignal<IndexPath> {
-            return delegate.signal(for: #selector(UITableViewDelegate.tableView(_:didSelectRowAt:))) { (subject: SafePublishSubject<IndexPath>, _: UITableView, indexPath: IndexPath) in
+            return delegate.signal(for: #selector(UITableViewDelegate.tableView(_:didSelectRowAt:))) { (subject: PassthroughSubject<IndexPath, Never>, _: UITableView, indexPath: IndexPath) in
                 subject.next(indexPath)
             }
         }
@@ -131,7 +131,7 @@
         }
     }
 
-    public extension SignalProtocol where Element: DataSourceEventProtocol, Element.BatchKind == BatchKindDiff, Error == NoError {
+    public extension SignalProtocol where Element: DataSourceEventProtocol, Element.BatchKind == BatchKindDiff, Error == Never {
 
         public typealias DataSource = Element.DataSource
 
@@ -222,7 +222,7 @@
         }
     }
 
-    public extension SignalProtocol where Element: DataSourceEventProtocol, Element.DataSource: QueryableDataSourceProtocol, Element.DataSource.Index == IndexPath, Element.BatchKind == BatchKindDiff, Error == NoError {
+    public extension SignalProtocol where Element: DataSourceEventProtocol, Element.DataSource: QueryableDataSourceProtocol, Element.DataSource.Index == IndexPath, Element.BatchKind == BatchKindDiff, Error == Never {
 
         /// Binds the signal of data source elements to the given table view.
         ///
@@ -246,7 +246,7 @@
         }
     }
 
-    public extension SignalProtocol where Element: DataSourceEventProtocol, Element.DataSource: QueryableDataSourceProtocol, Element.DataSource.Index == Int, Element.BatchKind == BatchKindDiff, Error == NoError {
+    public extension SignalProtocol where Element: DataSourceEventProtocol, Element.DataSource: QueryableDataSourceProtocol, Element.DataSource.Index == Int, Element.BatchKind == BatchKindDiff, Error == Never {
 
         /// Binds the signal of data source elements to the given table view.
         ///
@@ -390,7 +390,7 @@
         }
     }
 
-    public extension SignalProtocol where Element: DataSourceEventProtocol, Element.BatchKind == BatchKindDiff, Error == NoError {
+    public extension SignalProtocol where Element: DataSourceEventProtocol, Element.BatchKind == BatchKindDiff, Error == Never {
 
         @available(*, deprecated, message: "Use an overload that accepts TableViewBinder object instead of deprecated TableViewBond.")
         @discardableResult

@@ -36,7 +36,7 @@ fileprivate extension NSControl {
     @objc class BondHelper: NSObject
     {
         weak var control: NSControl?
-        let subject = PublishSubject<AnyObject?, NoError>()
+        let subject = PassthroughSubject<AnyObject?, Never>()
 
         init(control: NSControl) {
             self.control = control
@@ -154,7 +154,7 @@ public extension ReactiveExtensions where Base: NSControl {
 
 extension NSControl: BindableProtocol {
 
-    public func bind(signal: Signal<Any?, NoError>) -> Disposable {
+    public func bind(signal: Signal<Any?, Never>) -> Disposable {
         return reactive.objectValue.bind(signal: signal)
     }
 }

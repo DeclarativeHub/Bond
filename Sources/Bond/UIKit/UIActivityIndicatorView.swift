@@ -42,7 +42,7 @@ public extension ReactiveExtensions where Base: UIActivityIndicatorView  {
 
 extension UIActivityIndicatorView: BindableProtocol {
 
-    public func bind(signal: Signal<Bool, NoError>) -> Disposable {
+    public func bind(signal: Signal<Bool, Never>) -> Disposable {
         return reactive.isAnimating.bind(signal: signal)
     }
 }

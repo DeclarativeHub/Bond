@@ -123,7 +123,7 @@ public struct Observable2DArraySection<Metadata, Item>: Collection {
 public class Observable2DArray<SectionMetadata, Item>: SignalProtocol {
 
     public fileprivate(set) var sections: [Observable2DArraySection<SectionMetadata, Item>]
-    fileprivate let subject = PublishSubject<Observable2DArrayEvent<SectionMetadata, Item>, NoError>()
+    fileprivate let subject = PassthroughSubject<Observable2DArrayEvent<SectionMetadata, Item>, Never>()
     fileprivate let lock = NSRecursiveLock(name: "com.reactivekit.bond.observable2darray")
 
     public init(_ sections:  [Observable2DArraySection<SectionMetadata, Item>] = []) {
@@ -193,7 +193,7 @@ public class Observable2DArray<SectionMetadata, Item>: SignalProtocol {
         }
     }
 
-    public func observe(with observer: @escaping (Event<Observable2DArrayEvent<SectionMetadata, Item>, NoError>) -> Void) -> Disposable {
+    public func observe(with observer: @escaping (Event<Observable2DArrayEvent<SectionMetadata, Item>, Never>) -> Void) -> Disposable {
         observer(.next(Observable2DArrayEvent(change: .reset, source: self)))
         return subject.observe(with: observer)
     }
@@ -201,7 +201,7 @@ public class Observable2DArray<SectionMetadata, Item>: SignalProtocol {
 
 extension Observable2DArray: Deallocatable {
 
-    public var deallocated: Signal<Void, NoError> {
+    public var deallocated: Signal<Void, Never> {
         return subject.disposeBag.deallocated
     }
 }
@@ -341,7 +341,7 @@ public class MutableObservable2DArray<SectionMetadata, Item>: Observable2DArray<
 
 extension MutableObservable2DArray: BindableProtocol {
 
-    public func bind(signal: Signal<Observable2DArrayEvent<SectionMetadata, Item>, NoError>) -> Disposable {
+    public func bind(signal: Signal<Observable2DArrayEvent<SectionMetadata, Item>, Never>) -> Disposable {
         return signal
             .take(until: deallocated)
             .observeNext { [weak self] event in

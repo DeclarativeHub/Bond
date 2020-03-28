@@ -44,7 +44,7 @@ public extension ReactiveExtensions where Base: UILabel {
 
 extension UILabel: BindableProtocol {
 
-    public func bind(signal: Signal<String?, NoError>) -> Disposable {
+    public func bind(signal: Signal<String?, Never>) -> Disposable {
         return reactive.text.bind(signal: signal)
     }
 }

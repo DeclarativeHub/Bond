@@ -51,7 +51,7 @@
         ///
         /// - Note: Uses collection view's `delegate` protocol proxy to observe calls made to `UICollectionViewDelegate.collectionView(_:didSelectItemAt:)` method.
         var selectedItemIndexPath: SafeSignal<IndexPath> {
-            return delegate.signal(for: #selector(UICollectionViewDelegate.collectionView(_:didSelectItemAt:))) { (subject: SafePublishSubject<IndexPath>, _: UICollectionView, indexPath: IndexPath) in
+            return delegate.signal(for: #selector(UICollectionViewDelegate.collectionView(_:didSelectItemAt:))) { (subject: PassthroughSubject<IndexPath, Never>, _: UICollectionView, indexPath: IndexPath) in
                 subject.next(indexPath)
             }
         }
@@ -81,7 +81,7 @@
         }
     }
 
-    public extension SignalProtocol where Element: DataSourceEventProtocol, Element.BatchKind == BatchKindDiff, Error == NoError {
+    public extension SignalProtocol where Element: DataSourceEventProtocol, Element.BatchKind == BatchKindDiff, Error == Never {
 
         /// Binds the signal of data source elements to the given collection view.
         ///
@@ -188,7 +188,7 @@
         }
     }
 
-    public extension SignalProtocol where Element: DataSourceEventProtocol, Element.DataSource: QueryableDataSourceProtocol, Element.DataSource.Index == IndexPath, Element.BatchKind == BatchKindDiff, Error == NoError {
+    public extension SignalProtocol where Element: DataSourceEventProtocol, Element.DataSource: QueryableDataSourceProtocol, Element.DataSource.Index == IndexPath, Element.BatchKind == BatchKindDiff, Error == Never {
 
         /// Binds the signal of data source elements to the given collection view.
         ///
@@ -210,7 +210,7 @@
         }
     }
 
-    public extension SignalProtocol where Element: DataSourceEventProtocol, Element.DataSource: QueryableDataSourceProtocol, Element.DataSource.Index == Int, Element.BatchKind == BatchKindDiff, Error == NoError {
+    public extension SignalProtocol where Element: DataSourceEventProtocol, Element.DataSource: QueryableDataSourceProtocol, Element.DataSource.Index == Int, Element.BatchKind == BatchKindDiff, Error == Never {
 
         /// Binds the signal of data source elements to the given collection view.
         ///

@@ -62,7 +62,7 @@ public extension ReactiveExtensions where Base: UITextView {
 
 extension UITextView: BindableProtocol {
 
-    public func bind(signal: Signal<String?, NoError>) -> Disposable {
+    public func bind(signal: Signal<String?, Never>) -> Disposable {
         return reactive.text.bind(signal: signal)
     }
 }

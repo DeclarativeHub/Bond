@@ -143,7 +143,7 @@ private struct ReloadingTableViewBond<DataSource: DataSourceProtocol>: TableView
 
 public extension SignalProtocol where
     Element: DataSourceEventProtocol, Element.BatchKind == BatchKindPatch,
-Element.DataSource: QueryableDataSourceProtocol, Element.DataSource.Index == Int, Error == NoError {
+Element.DataSource: QueryableDataSourceProtocol, Element.DataSource.Index == Int, Error == Never {
 
     public typealias DataSource = Element.DataSource
 
@@ -211,7 +211,7 @@ Element.DataSource: QueryableDataSourceProtocol, Element.DataSource.Index == Int
     }
 }
 
-public extension SignalProtocol where Element: ObservableArrayEventProtocol, Error == NoError {
+public extension SignalProtocol where Element: ObservableArrayEventProtocol, Error == Never {
 
     @discardableResult
     public func bind(to tableView: NSTableView, animated: Bool = true, createCell: @escaping (ObservableArray<Element.Item>, Int, NSTableView) -> NSView?) -> Disposable {
@@ -228,7 +228,7 @@ public extension SignalProtocol where Element: ObservableArrayEventProtocol, Err
     }
 }
 
-public extension SignalProtocol where Element: ObservableArrayEventProtocol, Element.Item: Equatable, Error == NoError {
+public extension SignalProtocol where Element: ObservableArrayEventProtocol, Element.Item: Equatable, Error == Never {
 
     @discardableResult
     public func bind(to tableView: NSTableView, animated: Bool = true, createCell: @escaping (ObservableArray<Element.Item>, Int, NSTableView) -> NSView?) -> Disposable {

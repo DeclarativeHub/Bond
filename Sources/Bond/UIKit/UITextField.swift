@@ -52,7 +52,7 @@ public extension ReactiveExtensions where Base: UITextField {
 
 extension UITextField: BindableProtocol {
 
-    public func bind(signal: Signal<String?, NoError>) -> Disposable {
+    public func bind(signal: Signal<String?, Never>) -> Disposable {
         return reactive.text.bind(signal: signal)
     }
 }

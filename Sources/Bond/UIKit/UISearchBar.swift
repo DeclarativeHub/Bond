@@ -35,7 +35,7 @@
         
         public var text: DynamicSubject<String?> {
             let selector = #selector(UISearchBarDelegate.searchBar(_:textDidChange:))
-            let signal = delegate.signal(for: selector) { (subject: SafePublishSubject<Void>, _: UISearchBar, _: NSString) in
+            let signal = delegate.signal(for: selector) { (subject: PassthroughSubject<Void, Never>, _: UISearchBar, _: NSString) in
                 subject.next()
             }
             
@@ -45,7 +45,7 @@
     
     extension UISearchBar: BindableProtocol {
         
-        public func bind(signal: Signal<String?, NoError>) -> Disposable {
+        public func bind(signal: Signal<String?, Never>) -> Disposable {
             return reactive.text.bind(signal: signal)
         }
     }

@@ -42,7 +42,7 @@ public struct ObservableDictionaryEvent<Key: Hashable, Value> {
 public class ObservableDictionary<Key: Hashable, Value>: SignalProtocol {
 
     public fileprivate(set) var dictionary: Dictionary<Key, Value>
-    fileprivate let subject = PublishSubject<ObservableDictionaryEvent<Key, Value>, NoError>()
+    fileprivate let subject = PassthroughSubject<ObservableDictionaryEvent<Key, Value>, Never>()
     fileprivate let lock = NSRecursiveLock(name: "com.reactivekit.bond.observabledictionary")
 
     public init(_ dictionary: Dictionary<Key, Value> = [:]) {
@@ -89,7 +89,7 @@ public class ObservableDictionary<Key: Hashable, Value>: SignalProtocol {
         }
     }
 
-    public func observe(with observer: @escaping (Event<ObservableDictionaryEvent<Key, Value>, NoError>) -> Void) -> Disposable {
+    public func observe(with observer: @escaping (Event<ObservableDictionaryEvent<Key, Value>, Never>) -> Void) -> Disposable {
         observer(.next(ObservableDictionaryEvent(kind: .reset, source: self)))
         return subject.observe(with: observer)
     }
@@ -97,7 +97,7 @@ public class ObservableDictionary<Key: Hashable, Value>: SignalProtocol {
 
 extension ObservableDictionary: Deallocatable {
 
-    public var deallocated: Signal<Void, NoError> {
+    public var deallocated: Signal<Void, Never> {
         return subject.disposeBag.deallocated
     }
 }
@@ -165,7 +165,7 @@ public class MutableObservableDictionary<Key: Hashable, Value>: ObservableDictio
 
 extension MutableObservableDictionary: BindableProtocol {
 
-    public func bind(signal: Signal<ObservableDictionaryEvent<Key, Value>, NoError>) -> Disposable {
+    public func bind(signal: Signal<ObservableDictionaryEvent<Key, Value>, Never>) -> Disposable {
         return signal
             .take(until: deallocated)
             .observeNext { [weak self] event in

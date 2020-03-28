@@ -36,7 +36,7 @@ public extension ReactiveExtensions where Base: UIProgressView {
 
 extension UIProgressView: BindableProtocol {
 
-    public func bind(signal: Signal<Float, NoError>) -> Disposable {
+    public func bind(signal: Signal<Float, Never>) -> Disposable {
         return reactive.progress.bind(signal: signal)
     }
 }

@@ -64,7 +64,7 @@ public extension ReactiveExtensions where Base: NSPopUpButton {
 
 extension NSPopUpButton {
 
-    public func bind(signal: Signal<NSMenuItem?, NoError>) -> Disposable {
+    public func bind(signal: Signal<NSMenuItem?, Never>) -> Disposable {
         return reactive.selectedItem.bind(signal: signal)
     }
 }

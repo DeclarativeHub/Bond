@@ -28,12 +28,12 @@ import ReactiveKit
 extension NSObject {
     
     /// Bind `signal` to `bindable` and dispose in `bnd_bag` of receiver.
-    public func bind<O: SignalProtocol, B: BindableProtocol>(_ signal: O, to bindable: B) where O.Element == B.Element, O.Error == NoError {
+    public func bind<O: SignalProtocol, B: BindableProtocol>(_ signal: O, to bindable: B) where O.Element == B.Element, O.Error == Never {
         signal.bind(to: bindable).dispose(in: bag)
     }
     
     /// Bind `signal` to `bindable` and dispose in `bnd_bag` of receiver.
-    public func bind<O: SignalProtocol, B: BindableProtocol>(_ signal: O, to bindable: B) where B.Element: OptionalProtocol, O.Element == B.Element.Wrapped, O.Error == NoError {
+    public func bind<O: SignalProtocol, B: BindableProtocol>(_ signal: O, to bindable: B) where B.Element: OptionalProtocol, O.Element == B.Element.Wrapped, O.Error == Never {
         signal.bind(to: bindable).dispose(in: bag)
     }
 }
@@ -51,19 +51,19 @@ extension NSObject {
         static var lock = NSRecursiveLock(name: "com.reactivekit.bond.nsobject")
     }
     
-    internal var _willDeallocate: Signal<UnownedUnsafe<NSObject>, NoError> {
+    internal var _willDeallocate: Signal<UnownedUnsafe<NSObject>, Never> {
         StaticVariables.lock.lock(); defer { StaticVariables.lock.unlock() }
-        if let subject = objc_getAssociatedObject(self, &StaticVariables.willDeallocateSubject) as? ReplayOneSubject<UnownedUnsafe<NSObject>, NoError> {
+        if let subject = objc_getAssociatedObject(self, &StaticVariables.willDeallocateSubject) as? ReplayOneSubject<UnownedUnsafe<NSObject>, Never> {
             return subject.toSignal()
         } else {
-            let subject = ReplayOneSubject<UnownedUnsafe<NSObject>, NoError>()
+            let subject = ReplayOneSubject<UnownedUnsafe<NSObject>, Never>()
             subject.next(UnownedUnsafe(self))
             let typeName = String(describing: type(of: self))
             
             if !StaticVariables.swizzledTypes.contains(typeName) {
                 StaticVariables.swizzledTypes.insert(typeName)
                 type(of: self)._swizzleDeinit { me in
-                    if let subject = objc_getAssociatedObject(me, &StaticVariables.willDeallocateSubject) as? ReplayOneSubject<UnownedUnsafe<NSObject>, NoError> {
+                    if let subject = objc_getAssociatedObject(me, &StaticVariables.willDeallocateSubject) as? ReplayOneSubject<UnownedUnsafe<NSObject>, Never> {
                         subject.completed()
                     }
                 }
