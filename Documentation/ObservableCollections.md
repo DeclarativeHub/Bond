@@ -1,4 +1,4 @@
-# Observable Colections
+# Observable Collections
 
 ## ObservableArray / MutableObservableArray
 
@@ -122,7 +122,7 @@ the new item would automatically be inserted and animated into the table view.
 We can also, for example, add another section
 
 ```swift
-array2D.appendSection("Contries")
+array2D.appendSection("Countries")
 ```
 
 and then an item into that section:
