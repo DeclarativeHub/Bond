@@ -11,7 +11,7 @@ import UIKit
 
 import ReactiveKit
 /// Observe UIViewController life cycle events
-public final class ViewControllerLifeCycle {
+public final class ViewControllerLifecycle {
   private let wrapperViewController: WrapperViewController
   public var viewDidLoad: SafeSignal<Void> {
     return self.wrapperViewController.viewDidLoadSubject.toSignal()
@@ -54,7 +54,7 @@ public final class ViewControllerLifeCycle {
   }
 }
 
-private extension ViewControllerLifeCycle {
+private extension ViewControllerLifecycle {
   final class WrapperViewController: UIViewController {
     fileprivate let viewDidLoadSubject       = SafeReplayOneSubject<Void>()
     fileprivate let viewWillAppearSubject    = SafeReplayOneSubject<Void>()
@@ -86,18 +86,18 @@ private extension ViewControllerLifeCycle {
 }
 
 public protocol ViewControllerLibeCycleObservable: class {
-  var rxLifeCycle: ViewControllerLifeCycle { get }
+  var rxLifeCycle: ViewControllerLifecycle { get }
 }
 
 extension UIViewController: ViewControllerLibeCycleObservable {
   private struct AssociatedKeys {
     static var viewControllerLifeCycleKey = "viewControllerLifeCycleKey"
   }
-  public var rxLifeCycle: ViewControllerLifeCycle {
+  public var rxLifeCycle: ViewControllerLifecycle {
     if let lifeCycle = objc_getAssociatedObject(self, &AssociatedKeys.viewControllerLifeCycleKey) {
-      return lifeCycle as! ViewControllerLifeCycle
+      return lifeCycle as! ViewControllerLifecycle
     } else {
-      let lifeCycle = ViewControllerLifeCycle(viewController: self)
+      let lifeCycle = ViewControllerLifecycle(viewController: self)
       objc_setAssociatedObject(
         self,
         &AssociatedKeys.viewControllerLifeCycleKey,
