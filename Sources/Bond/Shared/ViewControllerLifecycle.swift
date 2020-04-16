@@ -58,10 +58,10 @@ public final class ViewControllerLifecycle {
 private extension ViewControllerLifecycle {
     final class WrapperViewController: UIViewController {
         fileprivate let viewDidLoadSubject       = SafeReplayOneSubject<Void>()
-        fileprivate let viewWillAppearSubject    = SafeReplayOneSubject<Void>()
-        fileprivate let viewDidAppearSubject     = SafeReplayOneSubject<Void>()
-        fileprivate let viewWillDisappearSubject = SafeReplayOneSubject<Void>()
-        fileprivate let viewDidDisAppearSubject  = SafeReplayOneSubject<Void>()
+        fileprivate let viewWillAppearSubject    = PassthroughSubject<Void>()
+        fileprivate let viewDidAppearSubject     = PassthroughSubject<Void>()
+        fileprivate let viewWillDisappearSubject = PassthroughSubject<Void>()
+        fileprivate let viewDidDisAppearSubject  = PassthroughSubject<Void>()
         
         override func viewDidLoad() {
             super.viewDidLoad()
