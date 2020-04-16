@@ -86,11 +86,11 @@ private extension ViewControllerLifecycle {
     }
 }
 
-public protocol ViewControllerLibeCycleObservable: class {
+public protocol ViewControllerLifecycleProvider: class {
     var rxLifeCycle: ViewControllerLifecycle { get }
 }
 
-extension UIViewController: ViewControllerLibeCycleObservable {
+extension UIViewController: ViewControllerLifecycleProvider {
     private struct AssociatedKeys {
         static var viewControllerLifeCycleKey = "viewControllerLifeCycleKey"
     }
@@ -108,7 +108,7 @@ extension UIViewController: ViewControllerLibeCycleObservable {
     }
 }
 
-extension ReactiveExtensions where Base: ViewControllerLibeCycleObservable {
+extension ReactiveExtensions where Base: ViewControllerLifecycleProvider {
     var viewDidLoad: SafeSignal<Void> {
         return self.base.rxLifeCycle.viewDidLoad
     }
