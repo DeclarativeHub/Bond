@@ -14,21 +14,35 @@ import ReactiveKit
 public final class ViewControllerLifecycle {
     
     private let wrapperViewController: WrapperViewController
+    
     public var viewDidLoad: SafeSignal<Void> {
-        return self.wrapperViewController.viewDidLoadSubject.toSignal()
+        return self.wrapperViewController.lifecycleEvent(.viewDidLoad)
     }
+    
     public var viewWillAppear: SafeSignal<Void> {
-        return self.wrapperViewController.viewWillAppearSubject.toSignal()
+        return self.wrapperViewController.lifecycleEvent(.viewWillAppear)
     }
+    
     public var viewDidAppear: SafeSignal<Void> {
-        return self.wrapperViewController.viewDidAppearSubject.toSignal()
+        return self.wrapperViewController.lifecycleEvent(.viewDidAppear)
     }
+    
     public var viewWillDisappear: SafeSignal<Void> {
-        return self.wrapperViewController.viewWillDisappearSubject.toSignal()
+        return self.wrapperViewController.lifecycleEvent(.viewWillDisappear)
     }
+    
     public var viewDidDisappear: SafeSignal<Void> {
-        return self.wrapperViewController.viewDidDisAppearSubject.toSignal()
+        return self.wrapperViewController.lifecycleEvent(.viewDidDisappear)
     }
+    
+    public var viewWillLayoutSubviews: SafeSignal<Void> {
+        return self.wrapperViewController.lifecycleEvent(.viewWillLayoutSubviews)
+    }
+    
+    public var viewDidLayoutSubviews: SafeSignal<Void> {
+        return self.wrapperViewController.lifecycleEvent(.viewDidLayoutSubviews)
+    }
+    
     public init(viewController: UIViewController) {
         self.wrapperViewController = WrapperViewController()
         if viewController.isViewLoaded {
@@ -38,15 +52,14 @@ public final class ViewControllerLifecycle {
                 .reactive
                 .keyPath(\.view, startWithCurrentValue: false)
                 .prefix(maxLength: 1)
-                .observeNext { [weak viewController] _ in
-                    guard let viewController = viewController else { return }
+                .bind(to: viewController) { (viewController, _) in
                     self.addAsChildViewController(viewController) // weak self ?
             }
-            .dispose(in: viewController.bag)
         }
     }
     
     private func addAsChildViewController(_ viewController: UIViewController) {
+        
         viewController.addChild(self.wrapperViewController)
         viewController.view.addSubview(self.wrapperViewController.view)
         self.wrapperViewController.view.frame = .zero
@@ -56,45 +69,86 @@ public final class ViewControllerLifecycle {
 }
 
 private extension ViewControllerLifecycle {
+    
     final class WrapperViewController: UIViewController {
-        fileprivate let viewDidLoadSubject       = SafeReplayOneSubject<Void>()
-        fileprivate let viewWillAppearSubject    = PassthroughSubject<Void>()
-        fileprivate let viewDidAppearSubject     = PassthroughSubject<Void>()
-        fileprivate let viewWillDisappearSubject = PassthroughSubject<Void>()
-        fileprivate let viewDidDisAppearSubject  = PassthroughSubject<Void>()
         
+        public enum LifecycleEvent {
+            case viewDidLoad
+            case viewWillAppear
+            case viewDidAppear
+            case viewWillDisappear
+            case viewDidDisappear
+            case viewDidLayoutSubviews
+            case viewWillLayoutSubviews
+        }
+        
+        deinit {
+            _lifecycleEvent.send(completion: .finished)
+        }
+        
+        private let _lifecycleEvent = PassthroughSubject<LifecycleEvent, Never>()
+        
+        public var lifecycleEvents: Signal<LifecycleEvent, Never> {
+            var signal = _lifecycleEvent.toSignal()
+            if isViewLoaded {
+                signal = signal.prepend(.viewDidLoad)
+            }
+            return signal
+        }
+        
+        public func lifecycleEvent(_ event: LifecycleEvent) -> Signal<Void, Never> {
+            return lifecycleEvents.filter { $0 == event }.eraseType()
+        }
+        
+        //MARK: - Overrides
         override func viewDidLoad() {
             super.viewDidLoad()
-            self.viewDidLoadSubject.send()
+            _lifecycleEvent.send(.viewDidLoad)
         }
+        
         override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
-            self.viewWillAppearSubject.send()
+            _lifecycleEvent.send(.viewWillAppear)
         }
+        
         override func viewDidAppear(_ animated: Bool) {
             super.viewDidAppear(animated)
-            self.viewDidAppearSubject.send()
+            _lifecycleEvent.send(.viewDidAppear)
         }
+        
         override func viewWillDisappear(_ animated: Bool) {
             super.viewWillDisappear(animated)
-            self.viewWillDisappearSubject.send()
+            _lifecycleEvent.send(.viewWillDisappear)
         }
+        
         override func viewDidDisappear(_ animated: Bool) {
             super.viewDidDisappear(animated)
-            self.viewDidDisAppearSubject.send()
+            _lifecycleEvent.send(.viewDidDisappear)
+        }
+        
+        override func viewWillLayoutSubviews() {
+            super.viewWillLayoutSubviews()
+            _lifecycleEvent.send(.viewWillLayoutSubviews)
+        }
+        
+        override func viewDidLayoutSubviews() {
+            super.viewDidLayoutSubviews()
+            _lifecycleEvent.send(.viewDidLayoutSubviews)
         }
     }
 }
 
 public protocol ViewControllerLifecycleProvider: class {
-    var rxLifeCycle: ViewControllerLifecycle { get }
+    var viewControllerLifecycle: ViewControllerLifecycle { get }
 }
 
 extension UIViewController: ViewControllerLifecycleProvider {
+    
     private struct AssociatedKeys {
         static var viewControllerLifeCycleKey = "viewControllerLifeCycleKey"
     }
-    public var rxLifeCycle: ViewControllerLifecycle {
+    
+    public var viewControllerLifecycle: ViewControllerLifecycle {
         if let lifeCycle = objc_getAssociatedObject(self, &AssociatedKeys.viewControllerLifeCycleKey) {
             return lifeCycle as! ViewControllerLifecycle
         } else {
@@ -109,19 +163,32 @@ extension UIViewController: ViewControllerLifecycleProvider {
 }
 
 extension ReactiveExtensions where Base: ViewControllerLifecycleProvider {
+    
     var viewDidLoad: SafeSignal<Void> {
-        return self.base.rxLifeCycle.viewDidLoad
+        return self.base.viewControllerLifecycle.viewDidLoad
     }
+    
     var viewWillAppear: SafeSignal<Void> {
-        return self.base.rxLifeCycle.viewWillAppear
+        return self.base.viewControllerLifecycle.viewWillAppear
     }
+    
     var viewDidAppear: SafeSignal<Void> {
-        return self.base.rxLifeCycle.viewDidAppear
+        return self.base.viewControllerLifecycle.viewDidAppear
     }
+    
     var viewWillDisappear: SafeSignal<Void> {
-        return self.base.rxLifeCycle.viewWillDisappear
+        return self.base.viewControllerLifecycle.viewWillDisappear
     }
+    
     var viewDidDisappear: SafeSignal<Void> {
-        return self.base.rxLifeCycle.viewDidDisappear
+        return self.base.viewControllerLifecycle.viewDidDisappear
+    }
+    
+    var viewWillLayoutSubviews: SafeSignal<Void> {
+        return self.base.viewControllerLifecycle.viewWillLayoutSubviews
+    }
+    
+    var viewDidLayoutSubviews: SafeSignal<Void> {
+        return self.base.viewControllerLifecycle.viewDidLayoutSubviews
     }
 }
