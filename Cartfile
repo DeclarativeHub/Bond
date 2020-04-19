@@ -1,2 +1,2 @@
-github "DeclarativeHub/ReactiveKit" ~> 3.14
+github "DeclarativeHub/ReactiveKit" ~> 3.15
 github "tonyarnold/Differ" ~> 1.4

@@ -28,9 +28,9 @@ Pod::Spec.new do |s|
   s.osx.exclude_files = "Sources/Bond/UIKit"
   s.pod_target_xcconfig = { "OTHER_SWIFT_FLAGS" => "-DBUILDING_WITH_XCODE $(inherited)" }
   s.requires_arc = true
-  s.swift_version = '5.0'
+  s.swift_version = '5.1'
 
-  s.dependency "ReactiveKit", "~> 3.14"
+  s.dependency "ReactiveKit", "~> 3.15"
   s.dependency "Differ", "~> 1.4"
 
 end

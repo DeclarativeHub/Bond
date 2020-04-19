@@ -188,7 +188,7 @@ If you have an extensions that makes your favourite framework work with Bond and
 ## Requirements
 
 * iOS 8.0+ / macOS 10.11+ / tvOS 9.0+
-* Swift 4.2
+* Xcode 11 / Swift 5.1
 
 ## Communication
 
@@ -245,7 +245,7 @@ If you have an extensions that makes your favourite framework work with Bond and
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2019 Srdan Rasic (@srdanrasic)
+Copyright (c) 2015-2020 Srdan Rasic (@srdanrasic)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
