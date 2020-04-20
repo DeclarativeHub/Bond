@@ -66,8 +66,6 @@ internal extension BNDInvocation {
     func writeReturnValue<T>(_ value: T) {
         guard methodSignature.methodReturnLength > 0 else { return }
 
-        let size = methodSignature.getReturnArgumentSize()
-        let alignment = methodSignature.getReturnArgumentAlignment()
         let type = methodSignature.getReturnArgumentType()
 
         func write<U, V>(_ value: V, as type: U.Type) {

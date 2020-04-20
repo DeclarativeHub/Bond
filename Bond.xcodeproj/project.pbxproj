@@ -1620,6 +1620,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 7.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ReactiveKit.Bond;
 				PRODUCT_NAME = Bond;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1652,6 +1653,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 7.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ReactiveKit.Bond;
 				PRODUCT_NAME = Bond;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1761,6 +1763,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MARKETING_VERSION = 7.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ReactiveKit.Bond;
 				PRODUCT_NAME = Bond;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1796,6 +1799,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MARKETING_VERSION = 7.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ReactiveKit.Bond;
 				PRODUCT_NAME = Bond;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1827,6 +1831,7 @@
 				INFOPLIST_FILE = "Supporting Files/$(PRODUCT_NAME)-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 7.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ReactiveKit.Bond;
 				PRODUCT_NAME = Bond;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1861,6 +1866,7 @@
 				INFOPLIST_FILE = "Supporting Files/$(PRODUCT_NAME)-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 7.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ReactiveKit.Bond;
 				PRODUCT_NAME = Bond;
 				PROVISIONING_PROFILE_SPECIFIER = "";
