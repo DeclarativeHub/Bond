@@ -6,6 +6,8 @@
 //  Copyright © 2020 Swift Bond. All rights reserved.
 //
 
+#if os(iOS) || os(tvOS)
+
 import Foundation
 import UIKit
 import ReactiveKit
@@ -152,3 +154,5 @@ extension ReactiveExtensions where Base: ViewControllerLifecycleProvider {
         self.base.viewControllerLifecycle.lifecycleEvent(event)
     }
 }
+
+#endif
