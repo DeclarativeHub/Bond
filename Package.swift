@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
     name: "Bond",
     platforms: [
-        .macOS(.v10_11), .iOS(.v8), .tvOS(.v9)
+        .macOS(.v10_11), .iOS(.v9), .tvOS(.v9)
     ],
     products: [
         .library(name: "Bond", targets: ["Bond"])
