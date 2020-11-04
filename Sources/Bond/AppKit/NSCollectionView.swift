@@ -24,19 +24,17 @@
 
 #if os(macOS)
 
-import AppKit
-import ReactiveKit
+    import AppKit
+    import ReactiveKit
 
-public extension ReactiveExtensions where Base: NSCollectionView {
+    public extension ReactiveExtensions where Base: NSCollectionView {
+        var delegate: ProtocolProxy {
+            return protocolProxy(for: NSCollectionViewDelegate.self, keyPath: \.delegate)
+        }
 
-    var delegate: ProtocolProxy {
-        return protocolProxy(for: NSCollectionViewDelegate.self, keyPath: \.delegate)
+        var dataSource: ProtocolProxy {
+            return protocolProxy(for: NSCollectionViewDataSource.self, keyPath: \.dataSource)
+        }
     }
-
-    var dataSource: ProtocolProxy {
-        return protocolProxy(for: NSCollectionViewDataSource.self, keyPath: \.dataSource)
-    }
-    
-}
 
 #endif

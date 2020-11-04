@@ -22,8 +22,8 @@
 //  THE SOFTWARE.
 //
 
-import ReactiveKit
 import Foundation
+import ReactiveKit
 
 public typealias DynamicSubject<Element> = FailableDynamicSubject<Element, Never>
 
@@ -33,7 +33,6 @@ public typealias DynamicSubject<Element> = FailableDynamicSubject<Element, Never
 /// Observing a signal will a dynamic subject will update the underlying target
 /// using the `setter` closure on each next event.
 public struct FailableDynamicSubject<Element, Error: Swift.Error>: SubjectProtocol, BindableProtocol {
-
     private weak var target: AnyObject?
     private var signal: Signal<Void, Error>
     private let context: ExecutionContext
@@ -51,8 +50,8 @@ public struct FailableDynamicSubject<Element, Error: Swift.Error>: SubjectProtoc
         self.target = target
         self.signal = signal
         self.context = context
-        self.getter = { get($0 as! Target) }
-        self.setter = { set($0 as! Target, $1) }
+        getter = { get($0 as! Target) }
+        setter = { set($0 as! Target, $1) }
         self.triggerEventOnSetting = triggerEventOnSetting
     }
 
@@ -65,8 +64,8 @@ public struct FailableDynamicSubject<Element, Error: Swift.Error>: SubjectProtoc
         self.target = target
         self.signal = signal
         self.context = context
-        self.getter = { .success(get($0 as! Target)) }
-        self.setter = { set($0 as! Target, $1) }
+        getter = { .success(get($0 as! Target)) }
+        setter = { set($0 as! Target, $1) }
         self.triggerEventOnSetting = triggerEventOnSetting
     }
 
@@ -76,16 +75,16 @@ public struct FailableDynamicSubject<Element, Error: Swift.Error>: SubjectProtoc
                  get: @escaping (AnyObject) -> Result<Element, Error>,
                  set: @escaping (AnyObject, Element) -> Void,
                  triggerEventOnSetting: Bool = true) {
-        self.target = _target
+        target = _target
         self.signal = signal
         self.context = context
-        self.getter = { get($0) }
-        self.setter = { set($0, $1) }
+        getter = { get($0) }
+        setter = { set($0, $1) }
         self.triggerEventOnSetting = triggerEventOnSetting
     }
 
     public func on(_ event: Signal<Element, Error>.Event) {
-        if case .next(let element) = event, let target = target {
+        if case let .next(element) = event, let target = target {
             setter(target, element)
             if triggerEventOnSetting {
                 subject.send(())
@@ -99,9 +98,9 @@ public struct FailableDynamicSubject<Element, Error: Swift.Error>: SubjectProtoc
         return signal.prepend(()).merge(with: subject).tryMap { [weak target] () -> Result<Element?, Error> in
             if let target = target {
                 switch getter(target) {
-                case .success(let element):
+                case let .success(element):
                     return .success(element)
-                case .failure(let error):
+                case let .failure(error):
                     return .failure(error)
                 }
             } else {
@@ -119,7 +118,7 @@ public struct FailableDynamicSubject<Element, Error: Swift.Error>: SubjectProtoc
             return signal.prefix(untilOutputFrom: (target as! Deallocatable).deallocated).observe { [weak target] event in
                 context.execute { [weak target] in
                     switch event {
-                    case .next(let element):
+                    case let .next(element):
                         guard let target = target else { return }
                         setter(target, element)
                         if triggerEventOnSetting {
@@ -139,7 +138,7 @@ public struct FailableDynamicSubject<Element, Error: Swift.Error>: SubjectProtoc
     public var value: Element! {
         if let target = target {
             switch getter(target) {
-            case .success(let value):
+            case let .success(value):
                 return value
             case .failure:
                 return nil
@@ -160,13 +159,13 @@ public struct FailableDynamicSubject<Element, Error: Swift.Error>: SubjectProtoc
             context: context,
             get: { [getter] (target) -> Result<U, Error> in
                 switch getter(target) {
-                case .success(let value):
+                case let .success(value):
                     return .success(getTransform(value))
-                case .failure(let error):
+                case let .failure(error):
                     return .failure(error)
                 }
             },
-            set: { [setter] (target, element) in
+            set: { [setter] target, element in
                 setter(target, setTransform(element))
             }
         )
@@ -174,7 +173,6 @@ public struct FailableDynamicSubject<Element, Error: Swift.Error>: SubjectProtoc
 }
 
 extension ReactiveExtensions where Base: Deallocatable {
-
     public func dynamicSubject<Element>(signal: Signal<Void, Never>,
                                         context: ExecutionContext,
                                         triggerEventOnSetting: Bool = true,
@@ -185,7 +183,6 @@ extension ReactiveExtensions where Base: Deallocatable {
 }
 
 extension ReactiveExtensions where Base: Deallocatable, Base: BindingExecutionContextProvider {
-
     public func dynamicSubject<Element>(signal: Signal<Void, Never>,
                                         triggerEventOnSetting: Bool = true,
                                         get: @escaping (Base) -> Element,

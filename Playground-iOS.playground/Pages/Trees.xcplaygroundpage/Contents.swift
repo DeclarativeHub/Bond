@@ -1,11 +1,11 @@
 //: [Previous](@previous)
 
-///: Before running the playground, make sure to build "Bond-iOS" and "PlaygroundSupport"
-///: targets with any iOS Simulator as a destination.
+/// : Before running the playground, make sure to build "Bond-iOS" and "PlaygroundSupport"
+/// : targets with any iOS Simulator as a destination.
 
+import Bond
 import Foundation
 import UIKit
-import Bond
 
 // Tree node is a tree with a single root
 
@@ -48,7 +48,6 @@ print(t.depthFirst.randomElement()!)
 // Custom trees
 
 extension UIView: TreeProtocol {
-
     public var children: [UIView] {
         return subviews
     }
@@ -60,6 +59,5 @@ print(v.depthFirst.map { type(of: $0) })
 print(v.breadthFirst.map { type(of: $0) })
 
 print(v[childAt: [0, 0]])
-
 
 //: [Next](@next)

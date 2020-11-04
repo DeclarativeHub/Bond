@@ -24,21 +24,19 @@
 
 #if os(iOS) || os(tvOS)
 
-import UIKit
-import ReactiveKit
+    import ReactiveKit
+    import UIKit
 
-extension ReactiveExtensions where Base: UIImageView {
-
-    public var image: Bond<UIImage?> {
-        return bond { $0.image = $1 }
+    extension ReactiveExtensions where Base: UIImageView {
+        public var image: Bond<UIImage?> {
+            return bond { $0.image = $1 }
+        }
     }
-}
 
-extension UIImageView: BindableProtocol {
-
-    public func bind(signal: Signal<UIImage?, Never>) -> Disposable {
-        return reactive.image.bind(signal: signal)
+    extension UIImageView: BindableProtocol {
+        public func bind(signal: Signal<UIImage?, Never>) -> Disposable {
+            return reactive.image.bind(signal: signal)
+        }
     }
-}
 
 #endif

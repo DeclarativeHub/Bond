@@ -44,8 +44,7 @@ public protocol SectionedDataIndexPathConvertable {
 
 /// A changeset of an ordered collection that conforms to `SectionedDataSourceProtocol` and whose indices can be expressed as `IndexPath`.
 /// Signals of this type of changeset can be bound to table or collection views.
-public protocol SectionedDataSourceChangeset: ChangesetProtocol where Diff: OrderedCollectionDiffProtocol, Diff.Index: SectionedDataIndexPathConvertable, Collection: SectionedDataSourceProtocol {
-}
+public protocol SectionedDataSourceChangeset: ChangesetProtocol where Diff: OrderedCollectionDiffProtocol, Diff.Index: SectionedDataIndexPathConvertable, Collection: SectionedDataSourceProtocol {}
 
 /// A type that can be expressed as `SectionedDataSourceChangeset`.
 public protocol SectionedDataSourceChangesetConvertible {
@@ -54,12 +53,11 @@ public protocol SectionedDataSourceChangesetConvertible {
 }
 
 extension Array: QueryableSectionedDataSourceProtocol {
-
     public var numberOfSections: Int {
         return 1
     }
 
-    public func numberOfItems(inSection section: Int) -> Int {
+    public func numberOfItems(inSection _: Int) -> Int {
         return count
     }
 
@@ -69,7 +67,6 @@ extension Array: QueryableSectionedDataSourceProtocol {
 }
 
 extension Array: SectionedDataSourceChangesetConvertible {
-
     public var asSectionedDataSourceChangeset: OrderedCollectionChangeset<[Element]> {
         return OrderedCollectionChangeset(collection: self, patch: [])
     }
@@ -78,14 +75,12 @@ extension Array: SectionedDataSourceChangesetConvertible {
 extension OrderedCollectionChangeset: SectionedDataSourceChangeset where Diff.Index: SectionedDataIndexPathConvertable, Collection: SectionedDataSourceProtocol {}
 
 extension OrderedCollectionChangeset: SectionedDataSourceChangesetConvertible where Diff.Index: SectionedDataIndexPathConvertable, Collection: SectionedDataSourceProtocol {
-
     public var asSectionedDataSourceChangeset: OrderedCollectionChangeset<Collection> {
         return self
     }
 }
 
 extension TreeArray: SectionedDataSourceProtocol {
-
     public var numberOfSections: Int {
         return children.count
     }
@@ -96,7 +91,6 @@ extension TreeArray: SectionedDataSourceProtocol {
 }
 
 extension Array2D: QueryableSectionedDataSourceProtocol {
-
     public var numberOfSections: Int {
         return sections.count
     }
@@ -111,7 +105,6 @@ extension Array2D: QueryableSectionedDataSourceProtocol {
 }
 
 extension TreeArray: SectionedDataSourceChangesetConvertible {
-
     public var asSectionedDataSourceChangeset: TreeChangeset<TreeArray<Value>> {
         return TreeChangeset(collection: self, patch: [])
     }
@@ -120,7 +113,6 @@ extension TreeArray: SectionedDataSourceChangesetConvertible {
 extension TreeChangeset: SectionedDataSourceChangeset where Collection: SectionedDataSourceProtocol {}
 
 extension TreeChangeset: SectionedDataSourceChangesetConvertible where Collection: SectionedDataSourceProtocol {
-
     public typealias Changeset = TreeChangeset<Collection>
 
     public var asSectionedDataSourceChangeset: TreeChangeset<Collection> {
@@ -129,14 +121,12 @@ extension TreeChangeset: SectionedDataSourceChangesetConvertible where Collectio
 }
 
 extension IndexPath: SectionedDataIndexPathConvertable {
-
     public var asSectionDataIndexPath: IndexPath {
         return self
     }
 }
 
 extension Int: SectionedDataIndexPathConvertable {
-
     public var asSectionDataIndexPath: IndexPath {
         return [0, self]
     }

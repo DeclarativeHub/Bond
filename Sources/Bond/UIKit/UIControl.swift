@@ -24,59 +24,57 @@
 
 #if os(iOS) || os(tvOS)
 
-import UIKit
-import ReactiveKit
+    import ReactiveKit
+    import UIKit
 
-extension ReactiveExtensions where Base: UIControl {
+    extension ReactiveExtensions where Base: UIControl {
+        public func controlEvents(_ events: UIControl.Event) -> SafeSignal<Void> {
+            let base = self.base
+            return Signal { [weak base] observer in
+                guard let base = base else {
+                    observer.receive(completion: .finished)
+                    return NonDisposable.instance
+                }
+                let target = BNDControlTarget(control: base, events: events) {
+                    observer.receive(())
+                }
+                return MainBlockDisposable {
+                    target.unregister()
+                }
+            }.prefix(untilOutputFrom: base.deallocated)
+        }
 
-    public func controlEvents(_ events: UIControl.Event) -> SafeSignal<Void> {
-        let base = self.base
-        return Signal { [weak base] observer in
-            guard let base = base else {
-                observer.receive(completion: .finished)
-                return NonDisposable.instance
-            }
-            let target = BNDControlTarget(control: base, events: events) {
-                observer.receive(())
-            }
-            return MainBlockDisposable {
-                target.unregister()
-            }
-        }.prefix(untilOutputFrom: base.deallocated)
+        public var isEnabled: Bond<Bool> {
+            return bond { $0.isEnabled = $1 }
+        }
     }
 
-    public var isEnabled: Bond<Bool> {
-        return bond { $0.isEnabled = $1 }
+    @objc fileprivate class BNDControlTarget: NSObject {
+        private weak var control: UIControl?
+        private let observer: () -> Void
+        private let events: UIControl.Event
+
+        fileprivate init(control: UIControl, events: UIControl.Event, observer: @escaping () -> Void) {
+            self.control = control
+            self.events = events
+            self.observer = observer
+
+            super.init()
+
+            control.addTarget(self, action: #selector(actionHandler), for: events)
+        }
+
+        @objc private func actionHandler() {
+            observer()
+        }
+
+        fileprivate func unregister() {
+            control?.removeTarget(self, action: nil, for: events)
+        }
+
+        deinit {
+            unregister()
+        }
     }
-}
-
-@objc fileprivate class BNDControlTarget: NSObject
-{
-    private weak var control: UIControl?
-    private let observer: () -> Void
-    private let events: UIControl.Event
-
-    fileprivate init(control: UIControl, events: UIControl.Event, observer: @escaping () -> Void) {
-        self.control = control
-        self.events = events
-        self.observer = observer
-
-        super.init()
-
-        control.addTarget(self, action: #selector(actionHandler), for: events)
-    }
-
-    @objc private func actionHandler() {
-        observer()
-    }
-
-    fileprivate func unregister() {
-        control?.removeTarget(self, action: nil, for: events)
-    }
-
-    deinit {
-        unregister()
-    }
-}
 
 #endif

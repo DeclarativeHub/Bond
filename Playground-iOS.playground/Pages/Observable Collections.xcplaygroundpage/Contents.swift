@@ -1,21 +1,21 @@
 //: Playground - noun: a place where people can play
 
-///: Before running the playground, make sure to build "Bond-iOS" and "PlaygroundSupport"
-///: targets with any iOS Simulator as a destination.
+/// : Before running the playground, make sure to build "Bond-iOS" and "PlaygroundSupport"
+/// : targets with any iOS Simulator as a destination.
 
 import Bond
-import ReactiveKit
 import PlaygroundSupport
+import ReactiveKit
 
 // Array
 
 let a = MutableObservableArray([1, 2, 3])
 
-a.observeNext { (cs) in
+a.observeNext { cs in
     print(cs.diff, cs.patch)
 }
 
-a.batchUpdate { (a) in
+a.batchUpdate { a in
     a.append(1)
     a.append(2)
 }
@@ -26,7 +26,7 @@ let array2D = MutableObservableArray2D(Array2D<String, String>(sectionsWithItems
     ("Cities", ["Paris", "Berlin"])
 ]))
 
-array2D.observeNext { (cs) in
+array2D.observeNext { cs in
     print(cs.collection, cs.diff, cs.patch)
 }
 
@@ -39,7 +39,7 @@ array2D.appendItem("France", toSectionAt: 1)
 
 let s = MutableObservableSet(Set([1, 4, 3]))
 
-s.sortedCollection().mapCollection { $0 * 2 }.filterCollection { $0 > 2 }.observeNext { (changeset) in
+s.sortedCollection().mapCollection { $0 * 2 }.filterCollection { $0 > 2 }.observeNext { changeset in
     print(changeset.collection, changeset.diff, changeset.patch)
 }
 
@@ -49,7 +49,7 @@ s.insert(5)
 
 let dictionary = MutableObservableDictionary(["A": 1])
 
-dictionary.sortedCollection(by: { $0.key < $1.key }).mapCollection({ "\($0.key): \($0.value)"}).observeNext { (changeset) in
+dictionary.sortedCollection(by: { $0.key < $1.key }).mapCollection { "\($0.key): \($0.value)" }.observeNext { changeset in
     print(changeset.collection, changeset.diff, changeset.patch)
 }
 
@@ -59,7 +59,7 @@ dictionary["B"] = 2
 
 let data = MutableObservableCollection(Data([0x0A, 0x0B]))
 
-data.observeNext { (changeset) in
+data.observeNext { changeset in
     print(changeset.collection, changeset.diff, changeset.patch)
 }
 
@@ -75,20 +75,20 @@ var t = TreeArray<String>([
         TreeNode("Child 002", [
             TreeNode("Child 0020"),
             TreeNode("Child 0021")
-            ])
-        ]),
+        ])
+    ]),
     TreeNode("Child 01")
-    ])
+])
 
 let ot = MutableObservableTree(t)
 
-ot.observeNext { (cs) in
+ot.observeNext { cs in
     print(cs.collection, cs.diff, cs.patch)
 }
 
 ot.insert(TreeNode("New"), at: [0, 0])
 
-ot.batchUpdate { (ot) in
+ot.batchUpdate { ot in
     ot.remove(at: [0, 0])
     ot.remove(at: [0, 2, 1])
 }

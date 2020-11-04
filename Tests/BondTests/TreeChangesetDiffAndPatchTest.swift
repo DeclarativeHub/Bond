@@ -6,14 +6,12 @@
 //  Copyright © 2018 Swift Bond. All rights reserved.
 //
 
-
-import XCTest
 @testable import Bond
+import XCTest
 
 extension OrderedCollectionOperation where Element == TreeNode<Int>, Index == IndexPath {
-
     static func randomOperation(collection: TreeNode<Int>) -> OrderedCollectionOperation<TreeNode<Int>, IndexPath> {
-        let element = TreeNode(Int.random(in: 11..<100))
+        let element = TreeNode(Int.random(in: 11 ..< 100))
         let indices = collection.depthFirst.indices.dropFirst()
         guard indices.count > 1 else {
             return .insert(element, at: [0])
@@ -44,12 +42,11 @@ extension OrderedCollectionOperation where Element == TreeNode<Int>, Index == In
 }
 
 class TreeChangesetDiffAndPatchTest: XCTestCase {
-
     let testTree = TreeNode(0, [TreeNode(1, [TreeNode(2), TreeNode(3, [TreeNode(4)])]), TreeNode(5)])
 
     func testRandom() {
         measure {
-            for _ in 0..<1000 {
+            for _ in 0 ..< 1000 {
                 oneRandomTest()
             }
         }
@@ -60,7 +57,7 @@ class TreeChangesetDiffAndPatchTest: XCTestCase {
         var collection = initialCollection
         var operations: [TreeChangeset<TreeNode<Int>>.Operation] = []
 
-        for _ in 0..<Int.random(in: 2..<12) {
+        for _ in 0 ..< Int.random(in: 2 ..< 12) {
             let operation = TreeChangeset<TreeNode<Int>>.Operation.randomOperation(collection: collection)
             collection.apply(operation)
             operations.append(operation)
@@ -78,7 +75,7 @@ class TreeChangesetDiffAndPatchTest: XCTestCase {
 
         let diff = TreeChangeset<TreeNode<Int>>.Diff(from: operations)
         let patch = diff.generatePatch(to: collection)
-        
+
         var testCollection = initialCollection
         for operation in patch {
             testCollection.apply(operation)

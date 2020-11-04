@@ -8,16 +8,15 @@
 
 #if os(iOS) || os(tvOS)
 
-import UIKit
-import ReactiveKit
+    import ReactiveKit
+    import UIKit
 
-extension ReactiveExtensions where Base: Deallocatable, Base: UIAccessibilityIdentification {
-
-    var accessibilityIdentifier: Bond<String?> {
-        return bond(context: .immediateOnMain) {
-            $0.accessibilityIdentifier = $1
+    extension ReactiveExtensions where Base: Deallocatable, Base: UIAccessibilityIdentification {
+        var accessibilityIdentifier: Bond<String?> {
+            return bond(context: .immediateOnMain) {
+                $0.accessibilityIdentifier = $1
+            }
         }
     }
-}
 
 #endif

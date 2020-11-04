@@ -22,18 +22,17 @@
 //  THE SOFTWARE.
 //
 
-import Foundation
 import Differ
+import Foundation
 
 extension TreeProtocol {
-
     public func diff(_ other: Self, sourceRoot: IndexPath = [], destinationRoot: IndexPath = [], areEqual: @escaping (Children.Element, Children.Element) -> Bool) -> OrderedCollectionDiff<IndexPath> {
         let traces = children.outputDiffPathTraces(to: other.children, isEqual: areEqual)
         let diff = Diff(traces: traces)
         var collectionDiff = OrderedCollectionDiff(from: diff, sourceRoot: sourceRoot, destinationRoot: destinationRoot)
 
         for trace in traces {
-            if trace.from.x + 1 == trace.to.x && trace.from.y + 1 == trace.to.y {
+            if trace.from.x + 1 == trace.to.x, trace.from.y + 1 == trace.to.y {
                 // match point x -> y, diff children
                 let childA = children[trace.from.x]
                 let childB = other.children[trace.from.y]
@@ -56,14 +55,13 @@ extension TreeProtocol {
 }
 
 extension OrderedCollectionDiff where Index == IndexPath {
-
     public init(from diff: Diff, sourceRoot: IndexPath, destinationRoot: IndexPath) {
         self.init()
         for element in diff.elements {
             switch element {
-            case .insert(let at):
+            case let .insert(at):
                 inserts.append(destinationRoot.appending(at))
-            case .delete(let at):
+            case let .delete(at):
                 deletes.append(sourceRoot.appending(at))
             }
         }

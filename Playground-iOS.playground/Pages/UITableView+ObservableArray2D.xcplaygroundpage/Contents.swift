@@ -1,13 +1,13 @@
 //: [Previous](@previous)
 
-///: Before running the playground, make sure to build "Bond-iOS" and "PlaygroundSupport"
-///: targets with any iOS Simulator as a destination.
+/// : Before running the playground, make sure to build "Bond-iOS" and "PlaygroundSupport"
+/// : targets with any iOS Simulator as a destination.
 
+import Bond
 import Foundation
 import PlaygroundSupport
-import UIKit
-import Bond
 import ReactiveKit
+import UIKit
 
 let tableView = UITableView()
 tableView.frame.size = CGSize(width: 300, height: 600)
@@ -19,9 +19,8 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 
 // Using custom binder to provide table view header titles
 class CustomBinder<Changeset: SectionedDataSourceChangeset>: TableViewBinderDataSource<Changeset> where Changeset.Collection == Array2D<String, Int> {
-
     // Important: Annotate UITableViewDataSource methods with `@objc` in the subclass, otherwise UIKit will not see your method!
-    @objc func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    @objc func tableView(_: UITableView, titleForHeaderInSection section: Int) -> String? {
         return changeset?.collection[sectionAt: section].metadata
     }
 }
@@ -37,7 +36,7 @@ let initialData = Array2D<String, Int>(sectionsWithItems: [
 
 let data = MutableObservableArray2D(initialData)
 
-data.bind(to: tableView, cellType: UITableViewCell.self, using: CustomBinder()) { (cell, item) in
+data.bind(to: tableView, cellType: UITableViewCell.self, using: CustomBinder()) { cell, item in
     cell.textLabel?.text = "\(item)"
 }
 
@@ -46,7 +45,7 @@ DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
 }
 
 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-    data.batchUpdate { (data) in
+    data.batchUpdate { data in
         data.appendItem(4, toSectionAt: 0)
         data.insert(section: "Aa", at: 1)
         data.appendItem(100, toSectionAt: 1)

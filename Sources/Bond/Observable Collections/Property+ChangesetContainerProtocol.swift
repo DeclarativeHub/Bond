@@ -37,8 +37,8 @@ public typealias MutableObservableArray<Element> = Property<OrderedCollectionCha
 public typealias ObservableSet<Element: Hashable> = AnyProperty<UnorderedCollectionChangeset<Set<Element>>>
 public typealias MutableObservableSet<Element: Hashable> = Property<UnorderedCollectionChangeset<Set<Element>>>
 
-public typealias ObservableDictionary<Key: Hashable, Value> = AnyProperty<UnorderedCollectionChangeset<Dictionary<Key, Value>>>
-public typealias MutableObservableDictionary<Key: Hashable, Value> = Property<UnorderedCollectionChangeset<Dictionary<Key, Value>>>
+public typealias ObservableDictionary<Key: Hashable, Value> = AnyProperty<UnorderedCollectionChangeset<[Key: Value]>>
+public typealias MutableObservableDictionary<Key: Hashable, Value> = Property<UnorderedCollectionChangeset<[Key: Value]>>
 
 public typealias ObservableTree<Tree: TreeProtocol> = AnyProperty<TreeChangeset<Tree>>
 public typealias MutableObservableTree<Tree: TreeProtocol> = Property<TreeChangeset<Tree>>
@@ -47,18 +47,14 @@ public typealias ObservableArray2D<SectionMetadata, Item> = AnyProperty<TreeChan
 public typealias MutableObservableArray2D<SectionMetadata, Item> = Property<TreeChangeset<Array2D<SectionMetadata, Item>>>
 
 extension AnyProperty: ChangesetContainerProtocol where Value: ChangesetProtocol {
-
     public typealias Changeset = Value
 
     public var changeset: Value {
-        get {
-            return value
-        }
+        return value
     }
 }
 
 extension Property: ChangesetContainerProtocol, MutableChangesetContainerProtocol where Value: ChangesetProtocol {
-
     public typealias Changeset = Value
 
     public var changeset: Value {
@@ -87,28 +83,24 @@ extension Property: ChangesetContainerProtocol, MutableChangesetContainerProtoco
 }
 
 extension Property where Value: ChangesetProtocol {
-
     public convenience init(_ collection: Value.Collection) {
         self.init(Value(collection: collection, patch: []))
     }
 }
 
 extension Property where Value: ChangesetProtocol, Value.Collection: RangeReplaceableCollection {
-
     public convenience init() {
         self.init(Value(collection: .init(), patch: []))
     }
 }
 
 extension Property where Value: ChangesetProtocol, Value.Collection: Instantiatable {
-
     public convenience init() {
         self.init(Value(collection: .init(), patch: []))
     }
 }
 
 extension Property where Value: ChangesetProtocol, Value.Collection: Array2DProtocol {
-
     /// Total number of items across all sections.
     public var numberOfItemsInAllSections: Int {
         return value.collection.children.map { $0.children.count }.reduce(0, +)
@@ -116,7 +108,6 @@ extension Property where Value: ChangesetProtocol, Value.Collection: Array2DProt
 }
 
 extension AnyProperty {
-
     // TODO: move to ReactiveKit
     public convenience init(_ value: Value) {
         self.init(property: Property(value))
@@ -124,21 +115,18 @@ extension AnyProperty {
 }
 
 extension AnyProperty where Value: ChangesetProtocol {
-
     public convenience init(_ collection: Value.Collection) {
         self.init(Value(collection: collection, patch: []))
     }
 }
 
 extension AnyProperty where Value: ChangesetProtocol, Value.Collection: RangeReplaceableCollection {
-
     public convenience init() {
         self.init(Value(collection: .init(), patch: []))
     }
 }
 
 extension AnyProperty where Value: ChangesetProtocol, Value.Collection: Instantiatable {
-
     public convenience init() {
         self.init(Value(collection: .init(), patch: []))
     }

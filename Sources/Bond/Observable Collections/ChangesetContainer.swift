@@ -26,8 +26,7 @@ import Foundation
 import ReactiveKit
 
 /// A type that contains or wraps a changeset.
-public protocol ChangesetContainerProtocol: class {
-
+public protocol ChangesetContainerProtocol: AnyObject {
     associatedtype Changeset: ChangesetProtocol
 
     /// Contained changeset.
@@ -35,12 +34,10 @@ public protocol ChangesetContainerProtocol: class {
 }
 
 public protocol MutableChangesetContainerProtocol: ChangesetContainerProtocol {
-
     var changeset: Changeset { get set }
 }
 
 extension ChangesetContainerProtocol {
-
     public typealias Collection = Changeset.Collection
     public typealias Operation = Changeset.Operation
     public typealias Diff = Changeset.Diff
@@ -52,7 +49,6 @@ extension ChangesetContainerProtocol {
 }
 
 extension MutableChangesetContainerProtocol {
-
     /// Update the collection and provide a description of changes as patch.
     public func descriptiveUpdate(_ update: (inout Collection) -> [Operation]) {
         var collection = changeset.collection
@@ -99,7 +95,6 @@ extension MutableChangesetContainerProtocol {
 }
 
 extension ChangesetContainerProtocol where Changeset.Collection: Swift.Collection {
-
     /// Returns `true` if underlying collection is empty, `false` otherwise.
     public var isEmpty: Bool {
         return collection.isEmpty
@@ -112,14 +107,11 @@ extension ChangesetContainerProtocol where Changeset.Collection: Swift.Collectio
 
     /// Access the collection element at `index`.
     public subscript(index: Collection.Index) -> Collection.Element {
-        get {
-            return collection[index]
-        }
+        return collection[index]
     }
 }
 
 extension ChangesetContainerProtocol where Changeset.Collection: Swift.Collection, Changeset.Collection.Index == Int {
-
     /// Underlying array.
     public var array: Collection {
         return collection
@@ -127,7 +119,6 @@ extension ChangesetContainerProtocol where Changeset.Collection: Swift.Collectio
 }
 
 extension ChangesetContainerProtocol where Changeset.Collection: TreeProtocol {
-
     /// Underlying tree.
     public var tree: Collection {
         return collection
@@ -135,14 +126,11 @@ extension ChangesetContainerProtocol where Changeset.Collection: TreeProtocol {
 
     /// Access the element at `index`.
     public subscript(childAt indexPath: IndexPath) -> Collection.Children.Element {
-        get {
-            return collection[childAt: indexPath]
-        }
+        return collection[childAt: indexPath]
     }
 }
 
 extension SignalProtocol where Error == Never {
-
     /// Bind the collection signal to the given changeset container like MutableObervableArray.
     @discardableResult
     public func bind<C: ChangesetContainerProtocol>(to changesetContainer: C) -> Disposable where C: BindableProtocol, C.Element == C.Changeset, C.Changeset.Collection == Element {

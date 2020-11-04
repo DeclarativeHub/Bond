@@ -24,18 +24,17 @@
 
 #if os(iOS) || os(tvOS)
 
-import UIKit
-import ReactiveKit
+    import ReactiveKit
+    import UIKit
 
-extension UINavigationItem: BindingExecutionContextProvider {
-    public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
-}
-
-extension ReactiveExtensions where Base: UINavigationItem {
-
-    public var title: Bond<String?> {
-        return bond { $0.title = $1 }
+    extension UINavigationItem: BindingExecutionContextProvider {
+        public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
     }
-}
+
+    extension ReactiveExtensions where Base: UINavigationItem {
+        public var title: Bond<String?> {
+            return bond { $0.title = $1 }
+        }
+    }
 
 #endif

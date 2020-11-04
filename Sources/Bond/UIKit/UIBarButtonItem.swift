@@ -24,51 +24,48 @@
 
 #if os(iOS) || os(tvOS)
 
-import UIKit
-import ReactiveKit
+    import ReactiveKit
+    import UIKit
 
-extension UIBarButtonItem {
-
-    fileprivate struct AssociatedKeys {
-        static var BarButtonItemHelperKey = "bnd_BarButtonItemHelperKey"
-    }
-
-    @objc fileprivate class BondTarget: NSObject
-    {
-        weak var barButtonItem: UIBarButtonItem?
-        let subject = PassthroughSubject<Void, Never>()
-
-        init(barButtonItem: UIBarButtonItem) {
-            self.barButtonItem = barButtonItem
-            super.init()
-
-            barButtonItem.target = self
-            barButtonItem.action = #selector(eventHandler)
+    extension UIBarButtonItem {
+        fileprivate struct AssociatedKeys {
+            static var BarButtonItemHelperKey = "bnd_BarButtonItemHelperKey"
         }
 
-        @objc func eventHandler() {
-            subject.send(())
-        }
+        @objc fileprivate class BondTarget: NSObject {
+            weak var barButtonItem: UIBarButtonItem?
+            let subject = PassthroughSubject<Void, Never>()
 
-        deinit {
-            barButtonItem?.target = nil
-            barButtonItem?.action = nil
-            subject.send(completion: .finished)
-        }
-    }
-}
+            init(barButtonItem: UIBarButtonItem) {
+                self.barButtonItem = barButtonItem
+                super.init()
 
-extension ReactiveExtensions where Base: UIBarButtonItem {
+                barButtonItem.target = self
+                barButtonItem.action = #selector(eventHandler)
+            }
 
-    public var tap: SafeSignal<Void> {
-        if let target = objc_getAssociatedObject(base, &UIBarButtonItem.AssociatedKeys.BarButtonItemHelperKey) as AnyObject? {
-            return (target as! UIBarButtonItem.BondTarget).subject.toSignal()
-        } else {
-            let target = UIBarButtonItem.BondTarget(barButtonItem: base)
-            objc_setAssociatedObject(base, &UIBarButtonItem.AssociatedKeys.BarButtonItemHelperKey, target, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            return target.subject.toSignal()
+            @objc func eventHandler() {
+                subject.send(())
+            }
+
+            deinit {
+                barButtonItem?.target = nil
+                barButtonItem?.action = nil
+                subject.send(completion: .finished)
+            }
         }
     }
-}
+
+    extension ReactiveExtensions where Base: UIBarButtonItem {
+        public var tap: SafeSignal<Void> {
+            if let target = objc_getAssociatedObject(base, &UIBarButtonItem.AssociatedKeys.BarButtonItemHelperKey) as AnyObject? {
+                return (target as! UIBarButtonItem.BondTarget).subject.toSignal()
+            } else {
+                let target = UIBarButtonItem.BondTarget(barButtonItem: base)
+                objc_setAssociatedObject(base, &UIBarButtonItem.AssociatedKeys.BarButtonItemHelperKey, target, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                return target.subject.toSignal()
+            }
+        }
+    }
 
 #endif

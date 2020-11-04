@@ -35,7 +35,6 @@ extension NSLayoutConstraint: BindingExecutionContextProvider {
 }
 
 extension ReactiveExtensions where Base: NSLayoutConstraint {
-
     public var isActive: Bond<Bool> {
         return bond { $0.isActive = $1 }
     }

@@ -1,12 +1,12 @@
 //: [Previous](@previous)
 
-///: Before running the playground, make sure to build "Bond-macOS" and "PlaygroundSupport"
-///: targets with Mac as a destination.
+/// : Before running the playground, make sure to build "Bond-macOS" and "PlaygroundSupport"
+/// : targets with Mac as a destination.
 
+import Bond
+import Cocoa
 import Foundation
 import PlaygroundSupport
-import Cocoa
-import Bond
 import ReactiveKit
 
 let outlineView = NSOutlineView()
@@ -30,7 +30,6 @@ outlineView.outlineTableColumn = column
 // Let's make NSView a tree...
 
 extension NSView: TreeProtocol {
-
     public var children: [NSView] {
         return subviews
     }

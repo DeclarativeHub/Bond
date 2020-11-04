@@ -24,37 +24,36 @@
 
 #if os(iOS) || os(tvOS)
 
-import UIKit
-import ReactiveKit
+    import ReactiveKit
+    import UIKit
 
-extension ReactiveExtensions where Base: UITableView {
+    extension ReactiveExtensions where Base: UITableView {
+        /// A `ProtocolProxy` for the table view delegate.
+        ///
+        /// - Note: Accessing this property for the first time will replace table view's current delegate
+        /// with a protocol proxy object (an object that is stored in this property).
+        /// Current delegate will be used as `forwardTo` delegate of protocol proxy.
+        public var delegate: ProtocolProxy {
+            return protocolProxy(for: UITableViewDelegate.self, keyPath: \.delegate)
+        }
 
-    /// A `ProtocolProxy` for the table view delegate.
-    ///
-    /// - Note: Accessing this property for the first time will replace table view's current delegate
-    /// with a protocol proxy object (an object that is stored in this property).
-    /// Current delegate will be used as `forwardTo` delegate of protocol proxy.
-    public var delegate: ProtocolProxy {
-        return protocolProxy(for: UITableViewDelegate.self, keyPath: \.delegate)
-    }
+        /// A `ProtocolProxy` for the table view data source.
+        ///
+        /// - Note: Accessing this property for the first time will replace table view's current data source
+        /// with a protocol proxy object (an object that is stored in this property).
+        /// Current data source will be used as `forwardTo` data source of protocol proxy.
+        public var dataSource: ProtocolProxy {
+            return protocolProxy(for: UITableViewDataSource.self, keyPath: \.dataSource)
+        }
 
-    /// A `ProtocolProxy` for the table view data source.
-    ///
-    /// - Note: Accessing this property for the first time will replace table view's current data source
-    /// with a protocol proxy object (an object that is stored in this property).
-    /// Current data source will be used as `forwardTo` data source of protocol proxy.
-    public var dataSource: ProtocolProxy {
-        return protocolProxy(for: UITableViewDataSource.self, keyPath: \.dataSource)
-    }
-
-    /// A signal that emits index paths of selected table view cells.
-    ///
-    /// - Note: Uses table view's `delegate` protocol proxy to observe calls made to `UITableViewDelegate.tableView(_:didSelectRowAt:)` method.
-    public var selectedRowIndexPath: SafeSignal<IndexPath> {
-        return delegate.signal(for: #selector(UITableViewDelegate.tableView(_:didSelectRowAt:))) { (subject: PassthroughSubject<IndexPath, Never>, _: UITableView, indexPath: IndexPath) in
-            subject.send(indexPath)
+        /// A signal that emits index paths of selected table view cells.
+        ///
+        /// - Note: Uses table view's `delegate` protocol proxy to observe calls made to `UITableViewDelegate.tableView(_:didSelectRowAt:)` method.
+        public var selectedRowIndexPath: SafeSignal<IndexPath> {
+            return delegate.signal(for: #selector(UITableViewDelegate.tableView(_:didSelectRowAt:))) { (subject: PassthroughSubject<IndexPath, Never>, _: UITableView, indexPath: IndexPath) in
+                subject.send(indexPath)
+            }
         }
     }
-}
 
 #endif

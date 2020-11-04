@@ -25,6 +25,5 @@
 import Foundation
 
 public protocol Instantiatable {
-
     init()
 }

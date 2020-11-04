@@ -32,10 +32,8 @@ public protocol Array2DProtocol: RangeReplaceableTreeProtocol where Children == 
 /// A data structure whose items are grouped into section.
 /// Array2D can be used as an underlying data structure for UITableView or UICollectionView data source.
 public struct Array2D<SectionMetadata, Item>: Array2DProtocol {
-
     /// Represents a single section of Array2D.
     public struct Section {
-
         /// Section metadata, e.g. section title.
         public var metadata: SectionMetadata
 
@@ -60,7 +58,6 @@ public struct Array2D<SectionMetadata, Item>: Array2DProtocol {
 // MARK: Convenience methods
 
 extension Array2D {
-
     /// Create a new Array2D from the given list of section metadata and respective items.
     /// Each SectionMetadata corresponds to one section populated with the given items.
     public init(sectionsWithItems: [(SectionMetadata, [Item])]) {
@@ -97,24 +94,23 @@ extension Array2D {
         sections.append(Section(metadata: metadata, items: []))
     }
 
-
     /// Append `item` to the section `section` of the array.
     public mutating func appendItem(_ item: Item, toSectionAt sectionIndex: Int) {
         sections[sectionIndex].items.append(item)
     }
 
     /// Insert section at `index` with `items`.
-    public mutating func insert(section: Section, at index: Int)  {
+    public mutating func insert(section: Section, at index: Int) {
         sections.insert(section, at: index)
     }
 
     /// Insert section at `index` with `items`.
-    public mutating func insert(section metadata: SectionMetadata, at index: Int)  {
+    public mutating func insert(section metadata: SectionMetadata, at index: Int) {
         sections.insert(Section(metadata: metadata, items: []), at: index)
     }
 
     /// Insert `item` at `indexPath`.
-    public mutating func insert(item: Item, at indexPath: IndexPath)  {
+    public mutating func insert(item: Item, at indexPath: IndexPath) {
         sections[indexPath.section].items.insert(item, at: indexPath.item)
     }
 
@@ -148,7 +144,7 @@ extension Array2D {
 
     /// Remove all items from the array. Keep empty sections.
     public mutating func removeAllItems() {
-        for index in 0..<sections.count {
+        for index in 0 ..< sections.count {
             sections[index].items.removeAll()
         }
     }
@@ -162,7 +158,6 @@ extension Array2D {
 // MARK: TreeProtocol conformance
 
 extension Array2D {
-
     /// A type that represents a node of Array2D tree - either a section or an item.
     public enum Node: RangeReplaceableTreeProtocol {
         case section(Section)
@@ -172,7 +167,7 @@ extension Array2D {
         public var children: [Node] {
             get {
                 switch self {
-                case .section(let section):
+                case let .section(section):
                     return section.items.map { Node.item($0) }
                 case .item:
                     return []
@@ -180,7 +175,7 @@ extension Array2D {
             }
             set {
                 switch self {
-                case .section(let section):
+                case let .section(section):
                     self = .section(Section(metadata: section.metadata, items: newValue.compactMap { $0.item }))
                 case .item:
                     break
@@ -191,7 +186,7 @@ extension Array2D {
         /// A section if the node represents a section node, nil otherwise.
         public var section: Section? {
             switch self {
-            case .section(let section):
+            case let .section(section):
                 return section
             default:
                 return nil
@@ -201,7 +196,7 @@ extension Array2D {
         /// An item if the node represents an item node, nil otherwise.
         public var item: Item? {
             switch self {
-            case .item(let item):
+            case let .item(item):
                 return item
             default:
                 return nil

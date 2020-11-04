@@ -1,12 +1,12 @@
 //: [Previous](@previous)
 
-///: Before running the playground, make sure to build "Bond-macOS" and "PlaygroundSupport"
-///: targets with Mac as a destination.
+/// : Before running the playground, make sure to build "Bond-macOS" and "PlaygroundSupport"
+/// : targets with Mac as a destination.
 
+import Bond
+import Cocoa
 import Foundation
 import PlaygroundSupport
-import Cocoa
-import Bond
 import ReactiveKit
 
 let outlineView = NSOutlineView()
@@ -58,7 +58,7 @@ DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
 }
 
 DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-    data.batchUpdate { (data) in
+    data.batchUpdate { data in
         data.move(from: [2], to: [2, 0, 0])
         data.insert(TreeNode("G"), at: [2])
         data.insert(TreeNode("Dd"), at: [1, 0])

@@ -28,12 +28,10 @@ public protocol UnorderedCollectionChangesetProtocol: ChangesetProtocol where
     Collection: Swift.Collection,
     Operation == UnorderedCollectionOperation<Collection.Element, Collection.Index>,
     Diff == UnorderedCollectionDiff<Collection.Index> {
-
     var asUnorderedCollectionChangeset: UnorderedCollectionChangeset<Collection> { get }
 }
 
 public final class UnorderedCollectionChangeset<Collection: Swift.Collection>: Changeset<Collection, UnorderedCollectionOperation<Collection.Element, Collection.Index>, UnorderedCollectionDiff<Collection.Index>>, UnorderedCollectionChangesetProtocol {
-
     public override func calculateDiff(from patch: [UnorderedCollectionOperation<Collection.Element, Collection.Index>]) -> UnorderedCollectionDiff<Collection.Index> {
         return Diff(from: patch)
     }
@@ -48,7 +46,6 @@ public final class UnorderedCollectionChangeset<Collection: Swift.Collection>: C
 }
 
 extension MutableChangesetContainerProtocol where Changeset: UnorderedCollectionChangesetProtocol, Changeset.Collection: MutableCollection {
-
     /// Access or update the element at `index`.
     public subscript(index: Collection.Index) -> Collection.Element {
         get {
@@ -64,7 +61,6 @@ extension MutableChangesetContainerProtocol where Changeset: UnorderedCollection
 }
 
 extension MutableChangesetContainerProtocol where Changeset: UnorderedCollectionChangesetProtocol, Changeset.Collection: RangeReplaceableCollection {
-
     /// Append `newElement` to the collection.
     public func append(_ newElement: Collection.Element) {
         descriptiveUpdate { (collection) -> [Operation] in
@@ -85,7 +81,7 @@ extension MutableChangesetContainerProtocol where Changeset: UnorderedCollection
     public func insert(contentsOf newElements: [Collection.Element], at index: Collection.Index) {
         descriptiveUpdate { (collection) -> [Operation] in
             collection.insert(contentsOf: newElements, at: index)
-            let indices = (0..<newElements.count).map { collection.index(index, offsetBy: $0) }
+            let indices = (0 ..< newElements.count).map { collection.index(index, offsetBy: $0) }
             return indices.map { Operation.insert(collection[$0], at: $0) }
         }
     }

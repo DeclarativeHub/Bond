@@ -24,25 +24,23 @@
 
 #if os(iOS)
 
-import UIKit
-import ReactiveKit
+    import ReactiveKit
+    import UIKit
 
-extension ReactiveExtensions where Base: UISwitch {
-
-    public var isOn: DynamicSubject<Bool> {
-        return dynamicSubject(
-            signal: controlEvents(.valueChanged).eraseType(),
-            get: { $0.isOn },
-            set: { $0.isOn = $1 }
-        )
+    extension ReactiveExtensions where Base: UISwitch {
+        public var isOn: DynamicSubject<Bool> {
+            return dynamicSubject(
+                signal: controlEvents(.valueChanged).eraseType(),
+                get: { $0.isOn },
+                set: { $0.isOn = $1 }
+            )
+        }
     }
-}
 
-extension UISwitch: BindableProtocol {
-
-    public func bind(signal: Signal<Bool, Never>) -> Disposable {
-        return reactive.isOn.bind(signal: signal)
+    extension UISwitch: BindableProtocol {
+        public func bind(signal: Signal<Bool, Never>) -> Disposable {
+            return reactive.isOn.bind(signal: signal)
+        }
     }
-}
 
 #endif

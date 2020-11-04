@@ -6,29 +6,28 @@
 //  Copyright © 2018 Swift Bond. All rights reserved.
 //
 
-import XCTest
 @testable import Bond
+import XCTest
 
 extension OrderedCollectionOperation where Index == Int, Element == Int {
-
     static func randomOperation(collectionSize: Int) -> OrderedCollectionOperation<Int, Int> {
-        let element = Int.random(in: 11..<100)
+        let element = Int.random(in: 11 ..< 100)
         guard collectionSize > 1 else {
             return .insert(element, at: 0)
         }
         switch [0, 1, 2, 3].randomElement() {
         case 0:
-            let at = Int.random(in: 0..<(collectionSize + 1))
+            let at = Int.random(in: 0 ..< (collectionSize + 1))
             return .insert(element, at: at)
         case 1:
-            let at = Int.random(in: 0..<collectionSize)
+            let at = Int.random(in: 0 ..< collectionSize)
             return .delete(at: at)
         case 2:
-            let at = Int.random(in: 0..<collectionSize)
+            let at = Int.random(in: 0 ..< collectionSize)
             return .update(at: at, newElement: element)
         case 3:
-            let from = Int.random(in: 0..<collectionSize)
-            let to = Int.random(in: 0..<collectionSize-1)
+            let from = Int.random(in: 0 ..< collectionSize)
+            let to = Int.random(in: 0 ..< collectionSize - 1)
             return .move(from: from, to: to)
         default:
             fatalError()
@@ -37,21 +36,20 @@ extension OrderedCollectionOperation where Index == Int, Element == Int {
 }
 
 class CollectionChangesetDiffAndPatchTest: XCTestCase {
-
     func testRandom() {
         measure {
-            for _ in 0..<1000 {
+            for _ in 0 ..< 1000 {
                 oneRandomTest()
             }
         }
     }
 
     func oneRandomTest() {
-        let initialCollection = Array(0..<4)
+        let initialCollection = Array(0 ..< 4)
         var collection = initialCollection
         var operations: [OrderedCollectionChangeset<[Int]>.Operation] = []
 
-        for _ in 0..<Int.random(in: 2...12) {
+        for _ in 0 ..< Int.random(in: 2 ... 12) {
             let operation = OrderedCollectionOperation<Int, Int>.randomOperation(collectionSize: collection.count)
             collection.apply(operation)
             operations.append(operation)

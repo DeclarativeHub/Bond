@@ -30,7 +30,6 @@ extension CALayer: BindingExecutionContextProvider {
 }
 
 extension ReactiveExtensions where Base: CALayer {
-
     public var opacity: Bond<Float> {
         return bond { $0.opacity = $1 }
     }

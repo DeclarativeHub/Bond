@@ -24,23 +24,22 @@
 
 #if os(macOS)
 
-import AppKit
-import ReactiveKit
+    import AppKit
+    import ReactiveKit
 
-extension ReactiveExtensions where Base: NSColorWell {
+    extension ReactiveExtensions where Base: NSColorWell {
+        public var color: DynamicSubject<NSColor> {
+            return dynamicSubject(
+                signal: controlEvent.eraseType(),
+                triggerEventOnSetting: false,
+                get: { $0.color },
+                set: { $0.color = $1 }
+            )
+        }
 
-    public var color: DynamicSubject<NSColor> {
-        return dynamicSubject(
-            signal: controlEvent.eraseType(),
-            triggerEventOnSetting: false,
-            get: { $0.color },
-            set: { $0.color = $1 }
-        )
+        public var isBordered: Bond<Bool> {
+            return bond { $0.isBordered = $1 }
+        }
     }
-
-    public var isBordered: Bond<Bool> {
-        return bond { $0.isBordered = $1 }
-    }
-}
 
 #endif

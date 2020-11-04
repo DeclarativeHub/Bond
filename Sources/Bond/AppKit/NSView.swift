@@ -24,26 +24,25 @@
 
 #if os(macOS)
 
-import AppKit
-import ReactiveKit
+    import AppKit
+    import ReactiveKit
 
-extension NSResponder: BindingExecutionContextProvider {
-    public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
-}
-
-extension ReactiveExtensions where Base: NSView {
-
-    public var alphaValue: Bond<CGFloat> {
-        return bond { $0.alphaValue = $1 }
+    extension NSResponder: BindingExecutionContextProvider {
+        public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
     }
 
-    public var isHidden: Bond<Bool> {
-        return bond { $0.isHidden = $1 }
-    }
+    extension ReactiveExtensions where Base: NSView {
+        public var alphaValue: Bond<CGFloat> {
+            return bond { $0.alphaValue = $1 }
+        }
 
-    public var toolTip: Bond<String?> {
-        return bond { $0.toolTip = $1 }
+        public var isHidden: Bond<Bool> {
+            return bond { $0.isHidden = $1 }
+        }
+
+        public var toolTip: Bond<String?> {
+            return bond { $0.toolTip = $1 }
+        }
     }
-}
 
 #endif

@@ -12,9 +12,9 @@
     import UIKit
 #endif
 
-import XCTest
-import ReactiveKit
 @testable import Bond
+import ReactiveKit
+import XCTest
 
 @objc protocol TestDelegate: NSObjectProtocol {
     func methodA()
@@ -27,7 +27,7 @@ import ReactiveKit
 }
 
 class TestObject: NSObject {
-    @objc dynamic weak var delegate: TestDelegate! = nil
+    @objc dynamic weak var delegate: TestDelegate!
 
     override init() {
         super.init()
@@ -63,8 +63,7 @@ class TestObject: NSObject {
 }
 
 class ProtocolProxyTests: XCTestCase {
-
-    var object: TestObject! = nil
+    var object: TestObject!
 
     var protocolProxy: ProtocolProxy {
         return object.reactive.protocolProxy(for: TestDelegate.self, keyPath: \.delegate)

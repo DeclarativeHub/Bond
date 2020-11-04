@@ -25,10 +25,9 @@
 import Foundation
 
 extension AnyOrderedCollectionOperation where Index == IndexPath {
-
     func undoOperationOn(_ index: IndexPath) -> IndexPath? {
         switch self {
-        case .insert(let insertionIndex):
+        case let .insert(insertionIndex):
             if insertionIndex == index || insertionIndex.isAncestor(of: index) {
                 return nil
             } else if index.isAffectedByDeletionOrInsertion(at: insertionIndex) {
@@ -36,19 +35,19 @@ extension AnyOrderedCollectionOperation where Index == IndexPath {
             } else {
                 return index
             }
-        case .delete(let deletionIndex):
+        case let .delete(deletionIndex):
             if index.isAffectedByDeletionOrInsertion(at: deletionIndex) {
                 return index.shifted(by: 1, atLevelOf: deletionIndex)
             } else {
                 return index
             }
-        case .update(let updateIndex):
+        case let .update(updateIndex):
             if updateIndex.isAncestor(of: index) {
                 return nil
             } else {
                 return index
             }
-        case .move(let from, let to):
+        case let .move(from, to):
             if to == index {
                 return from
             } else if to.isAncestor(of: index) {
@@ -68,13 +67,13 @@ extension AnyOrderedCollectionOperation where Index == IndexPath {
 
     func simulateOperationOn(_ index: IndexPath) -> IndexPath? {
         switch self {
-        case .insert(let insertionIndex):
+        case let .insert(insertionIndex):
             if index.isAffectedByDeletionOrInsertion(at: insertionIndex) {
                 return index.shifted(by: 1, atLevelOf: insertionIndex)
             } else {
                 return index
             }
-        case .delete(let deletionIndex):
+        case let .delete(deletionIndex):
             if deletionIndex == index || deletionIndex.isAncestor(of: index) {
                 return nil
             } else if index.isAffectedByDeletionOrInsertion(at: deletionIndex) {
@@ -82,13 +81,13 @@ extension AnyOrderedCollectionOperation where Index == IndexPath {
             } else {
                 return index
             }
-        case .update(let updateIndex):
+        case let .update(updateIndex):
             if updateIndex.isAncestor(of: index) {
                 return nil
             } else {
                 return index
             }
-        case .move(let from, let to):
+        case let .move(from, to):
             if from == index {
                 return to
             } else if from.isAncestor(of: index) {

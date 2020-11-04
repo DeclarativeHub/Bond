@@ -47,9 +47,7 @@ public protocol FlatDataSourceChangeset: ChangesetProtocol where
     Collection: QueryableFlatDataSourceProtocol,
     Operation: OrderedCollectionOperationProtocol,
     Operation.Index: FlatDataIndexConvertable,
-	Operation.Element == Collection.Item
-{
-}
+    Operation.Element == Collection.Item {}
 
 /// A type that can be expressed as `FlatDataSourceChangeset`.
 public protocol FlatDataSourceChangesetConvertible {
@@ -76,15 +74,12 @@ extension Array: FlatDataSourceChangesetConvertible {
 extension OrderedCollectionChangeset: FlatDataSourceChangeset where
     Collection: QueryableFlatDataSourceProtocol,
     Collection.Index: FlatDataIndexConvertable,
-    Collection.Item == Collection.Element
-{
-}
+    Collection.Item == Collection.Element {}
 
 extension OrderedCollectionChangeset: FlatDataSourceChangesetConvertible where
     Collection: QueryableFlatDataSourceProtocol,
     Collection.Index: FlatDataIndexConvertable,
-    Collection.Item == Collection.Element
-{
+    Collection.Item == Collection.Element {
     public typealias Changeset = OrderedCollectionChangeset<Collection>
 
     public var asFlatDataSourceChangeset: OrderedCollectionChangeset<Collection> {

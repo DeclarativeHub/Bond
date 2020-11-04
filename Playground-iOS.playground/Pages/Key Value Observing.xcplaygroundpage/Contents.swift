@@ -1,12 +1,12 @@
 //: [Previous](@previous)
 
-///: Before running the playground, make sure to build "Bond-iOS" and "PlaygroundSupport"
-///: targets with any iOS Simulator as a destination.
+/// : Before running the playground, make sure to build "Bond-iOS" and "PlaygroundSupport"
+/// : targets with any iOS Simulator as a destination.
 
-import UIKit
 import Bond
-import ReactiveKit
 import PlaygroundSupport
+import ReactiveKit
+import UIKit
 
 class Contact: NSObject {
     @objc dynamic var name: String? = "n/a"

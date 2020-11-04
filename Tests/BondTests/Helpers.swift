@@ -6,23 +6,22 @@
 //  Copyright © 2016 Swift Bond. All rights reserved.
 //
 
-import XCTest
-import ReactiveKit
 @testable import Bond
+import ReactiveKit
+import XCTest
 
 func XCTAssertEqual(_ lhs: CGFloat, _ rhs: CGFloat, precision: CGFloat = 0.01, file: StaticString = #file, line: UInt = #line) {
     XCTAssert(abs(lhs - rhs) < precision, file: file, line: line)
 }
+
 extension Signal.Event {
-
     func isEqualTo(_ event: Signal<Element, Error>.Event) -> Bool {
-
         switch (self, event) {
         case (.completed, .completed):
             return true
         case (.failed, .failed):
             return true
-        case (.next(let left), .next(let right)):
+        case let (.next(left), .next(right)):
             if let left = left as? Int, let right = right as? Int {
                 return left == right
             } else if let left = left as? Bool, let right = right as? Bool {
@@ -41,7 +40,7 @@ extension Signal.Event {
                 return left == right
             } else if let left = left as? [String], let right = right as? [String] {
                 return left == right
-            } else if let left = asOptional(left) as? Optional<String>, let right = asOptional(right) as? Optional<String> {
+            } else if let left = asOptional(left) as? String?, let right = asOptional(right) as? String? {
                 return left == right
             } else if left is Void, right is Void {
                 return true
@@ -66,7 +65,6 @@ private func asOptional(_ object: Any) -> Any? {
 }
 
 extension SignalProtocol {
-
     func expectNext(_ expectedElements: [Element],
                     _ message: @autoclosure () -> String = "",
                     expectation: XCTestExpectation? = nil,
@@ -81,7 +79,7 @@ extension SignalProtocol {
         var eventsToProcess = expectedEvents
         var receivedEvents: [Signal<Element, Error>.Event] = []
         let message = message()
-        let _ = observe { event in
+        _ = observe { event in
             receivedEvents.append(event)
             if eventsToProcess.count == 0 {
                 XCTFail("Got more events then expected.")

@@ -28,12 +28,10 @@ public protocol TreeChangesetProtocol: ChangesetProtocol where
     Collection: TreeProtocol,
     Operation == OrderedCollectionOperation<Collection.Children.Element, IndexPath>,
     Diff == OrderedCollectionDiff<IndexPath> {
-
     var asTreeChangeset: TreeChangeset<Collection> { get }
 }
 
 public final class TreeChangeset<Collection: TreeProtocol>: Changeset<Collection, OrderedCollectionOperation<Collection.Children.Element, IndexPath>, OrderedCollectionDiff<IndexPath>>, TreeChangesetProtocol {
-
     public override func calculateDiff(from patch: [OrderedCollectionOperation<Collection.Children.Element, IndexPath>]) -> Diff {
         return Diff(from: patch)
     }
@@ -48,7 +46,6 @@ public final class TreeChangeset<Collection: TreeProtocol>: Changeset<Collection
 }
 
 extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtocol, Changeset.Collection: RangeReplaceableTreeProtocol {
-
     public typealias ChildNode = Collection.Children.Element
 
     /// Access or update the element at `index`.
@@ -85,7 +82,7 @@ extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtoc
         guard newNodes.count > 0 else { return }
         descriptiveUpdate { (collection) -> [Operation] in
             collection.insert(contentsOf: newNodes, at: indexPath)
-            let indices = newNodes.indices.map { indexPath.advanced(by: $0, atLevel: indexPath.count-1) }
+            let indices = newNodes.indices.map { indexPath.advanced(by: $0, atLevel: indexPath.count - 1) }
             return zip(newNodes, indices).map { Operation.insert($0, at: $1) }
         }
     }
@@ -102,7 +99,7 @@ extension MutableChangesetContainerProtocol where Changeset: TreeChangesetProtoc
         descriptiveUpdate { (collection) -> [Operation] in
             collection.move(from: fromIndices, to: toIndex)
             let movesDiff = fromIndices.enumerated().map {
-                (from: $0.element, to: toIndex.advanced(by: $0.offset, atLevel: toIndex.count-1))
+                (from: $0.element, to: toIndex.advanced(by: $0.offset, atLevel: toIndex.count - 1))
             }
             return OrderedCollectionDiff<IndexPath>(inserts: [], deletes: [], updates: [], moves: movesDiff).generatePatch(to: collection)
         }

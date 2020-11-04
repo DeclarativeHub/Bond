@@ -32,7 +32,6 @@ public protocol OrderedCollectionDiffProtocol: Instantiatable {
 /// Contains a diff of an ordered collection, i.e. a collection where
 /// insertions or deletions affect indices of subsequent elements.
 public struct OrderedCollectionDiff<Index>: OrderedCollectionDiffProtocol {
-
     /// Indices of inserted elements in the final collection index space.
     public var inserts: [Index]
 
@@ -47,10 +46,10 @@ public struct OrderedCollectionDiff<Index>: OrderedCollectionDiffProtocol {
     public var moves: [(from: Index, to: Index)]
 
     public init() {
-        self.inserts = []
-        self.deletes = []
-        self.updates = []
-        self.moves = []
+        inserts = []
+        deletes = []
+        updates = []
+        moves = []
     }
 
     public init(inserts: [Index], deletes: [Index], updates: [Index], moves: [(from: Index, to: Index)]) {
@@ -76,7 +75,6 @@ public struct OrderedCollectionDiff<Index>: OrderedCollectionDiffProtocol {
 }
 
 extension OrderedCollectionDiff {
-
     public init(inserts: [Index]) {
         self.init(inserts: inserts, deletes: [], updates: [], moves: [])
     }
@@ -102,7 +100,6 @@ extension OrderedCollectionDiff {
 }
 
 extension OrderedCollectionDiffProtocol {
-
     public func map<T>(_ transform: (Index) -> T) -> OrderedCollectionDiff<T> {
         let diff = asOrderedCollectionDiff
         return OrderedCollectionDiff<T>(
@@ -115,7 +112,6 @@ extension OrderedCollectionDiffProtocol {
 }
 
 extension OrderedCollectionDiff: Equatable where Index: Equatable {
-
     public static func == (lhs: OrderedCollectionDiff<Index>, rhs: OrderedCollectionDiff<Index>) -> Bool {
         let movesEqual = lhs.moves.map { $0.from } == rhs.moves.map { $0.from } && lhs.moves.map { $0.to } == rhs.moves.map { $0.to }
         return lhs.inserts == rhs.inserts && lhs.deletes == rhs.deletes && lhs.updates == rhs.updates && movesEqual
@@ -123,7 +119,6 @@ extension OrderedCollectionDiff: Equatable where Index: Equatable {
 }
 
 extension OrderedCollectionDiff: CustomDebugStringConvertible {
-
     public var debugDescription: String {
         return "Inserts: \(inserts), Deletes: \(deletes), Updates: \(updates), Moves: \(moves)"
     }

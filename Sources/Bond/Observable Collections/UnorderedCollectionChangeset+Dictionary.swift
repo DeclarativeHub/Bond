@@ -11,12 +11,11 @@ import Foundation
 public protocol _DictionaryProtocol {
     associatedtype Key: Hashable
     associatedtype Value
-    var _asDictionary: Dictionary<Key, Value> { get set }
+    var _asDictionary: [Key: Value] { get set }
 }
 
 extension Dictionary: _DictionaryProtocol {
-
-    public var _asDictionary: Dictionary<Key, Value> {
+    public var _asDictionary: [Key: Value] {
         get {
             return self
         }
@@ -30,7 +29,6 @@ extension MutableChangesetContainerProtocol where
     Changeset: UnorderedCollectionChangesetProtocol,
     Changeset.Collection: _DictionaryProtocol,
     Changeset.Operation == UnorderedCollectionOperation<Dictionary<Changeset.Collection.Key, Changeset.Collection.Value>.Element, Dictionary<Changeset.Collection.Key, Changeset.Collection.Value>.Index> {
-
     /// Update, insert or remove value from the dictionary.
     public subscript(_ key: Changeset.Collection.Key) -> Changeset.Collection.Value? {
         get {

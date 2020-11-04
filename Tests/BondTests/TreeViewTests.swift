@@ -6,11 +6,10 @@
 //  Copyright © 2019 Swift Bond. All rights reserved.
 //
 
-import XCTest
 import Bond
+import XCTest
 
 class TreeViewTests: XCTestCase {
-
     var tree: TreeNode<String>!
     var largeTree: TreeNode<String>!
 
@@ -28,7 +27,7 @@ class TreeViewTests: XCTestCase {
             ])
         ])
         largeTree = tree
-        for _ in 0..<5 {
+        for _ in 0 ..< 5 {
             largeTree.append(largeTree)
         }
     }
@@ -44,8 +43,8 @@ class TreeViewTests: XCTestCase {
     }
 
     func testSearchEfficiency() {
-        self.measure {
-            for _ in 0..<1000 {
+        measure {
+            for _ in 0 ..< 1000 {
                 let test = largeTree.depthFirst.firstIndex(where: { $0.value == "010" })
                 XCTAssertEqual(test, [1, 0])
             }

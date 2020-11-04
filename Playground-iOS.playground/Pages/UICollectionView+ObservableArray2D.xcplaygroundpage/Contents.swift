@@ -1,16 +1,15 @@
 //: [Previous](@previous)
 
-///: Before running the playground, make sure to build "Bond-iOS" and "PlaygroundSupport"
-///: targets with any iOS Simulator as a destination.
+/// : Before running the playground, make sure to build "Bond-iOS" and "PlaygroundSupport"
+/// : targets with any iOS Simulator as a destination.
 
+import Bond
 import Foundation
 import PlaygroundSupport
-import UIKit
-import Bond
 import ReactiveKit
+import UIKit
 
 class Cell: UICollectionViewCell {
-
     let titleLabel = UILabel()
 
     override init(frame: CGRect) {
@@ -20,7 +19,7 @@ class Cell: UICollectionViewCell {
         contentView.backgroundColor = .white
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -31,13 +30,12 @@ class Cell: UICollectionViewCell {
 }
 
 class SectionHeader: UICollectionReusableView {
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .red
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
@@ -59,7 +57,6 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 
 // Using custom binder to provide table view header titles
 class CustomBinder<Changeset: SectionedDataSourceChangeset>: CollectionViewBinderDataSource<Changeset>, UICollectionViewDelegateFlowLayout where Changeset.Collection == Array2D<String, Int> {
-
     override var collectionView: UICollectionView? {
         didSet {
             collectionView?.delegate = self
@@ -68,7 +65,7 @@ class CustomBinder<Changeset: SectionedDataSourceChangeset>: CollectionViewBinde
 
     // Due to a bug in Swift related to generic subclases, we have to specify ObjC delegate method name
     // if it's different than Swift name (https://bugs.swift.org/browse/SR-2817).
-    @objc (collectionView:viewForSupplementaryElementOfKind:atIndexPath:)
+    @objc(collectionView:viewForSupplementaryElementOfKind:atIndexPath:)
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
         case UICollectionView.elementKindSectionHeader:
@@ -79,7 +76,7 @@ class CustomBinder<Changeset: SectionedDataSourceChangeset>: CollectionViewBinde
         }
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+    func collectionView(_: UICollectionView, layout _: UICollectionViewLayout, referenceSizeForHeaderInSection _: Int) -> CGSize {
         return CGSize(width: 200, height: 20)
     }
 }
@@ -91,12 +88,11 @@ class CustomBinder<Changeset: SectionedDataSourceChangeset>: CollectionViewBinde
 let initialData = Array2D<String, Int>(sectionsWithItems: [
     ("A", [1, 2]),
     ("B", [10, 20])
-    ])
+])
 
 let data = MutableObservableArray2D(initialData)
 
-
-data.bind(to: collectionView, cellType: Cell.self, using: CustomBinder()) { (cell, item) in
+data.bind(to: collectionView, cellType: Cell.self, using: CustomBinder()) { cell, item in
     cell.titleLabel.text = "\(item)"
 }
 
@@ -105,7 +101,7 @@ DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
 }
 
 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-    data.batchUpdate { (data) in
+    data.batchUpdate { data in
         data.appendItem(4, toSectionAt: 0)
         data.insert(section: "Aa", at: 1)
         data.appendItem(100, toSectionAt: 1)
@@ -120,4 +116,5 @@ DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
 DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
     data.replaceItems(ofSectionAt: 1, with: [1, 100, 20], performDiff: true)
 }
+
 //: [Next](@next)

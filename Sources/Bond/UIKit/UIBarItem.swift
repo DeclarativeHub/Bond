@@ -24,26 +24,25 @@
 
 #if os(iOS) || os(tvOS)
 
-import UIKit
-import ReactiveKit
+    import ReactiveKit
+    import UIKit
 
-extension UIBarItem: BindingExecutionContextProvider {
-    public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
-}
-
-extension ReactiveExtensions where Base: UIBarItem {
-
-    public var title: Bond<String?> {
-        return bond { $0.title = $1 }
+    extension UIBarItem: BindingExecutionContextProvider {
+        public var bindingExecutionContext: ExecutionContext { return .immediateOnMain }
     }
 
-    public var image: Bond<UIImage?> {
-        return bond { $0.image = $1 }
-    }
+    extension ReactiveExtensions where Base: UIBarItem {
+        public var title: Bond<String?> {
+            return bond { $0.title = $1 }
+        }
 
-    public var isEnabled: Bond<Bool> {
-        return bond { $0.isEnabled = $1 }
+        public var image: Bond<UIImage?> {
+            return bond { $0.image = $1 }
+        }
+
+        public var isEnabled: Bond<Bool> {
+            return bond { $0.isEnabled = $1 }
+        }
     }
-}
 
 #endif

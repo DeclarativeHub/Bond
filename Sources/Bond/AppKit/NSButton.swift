@@ -24,102 +24,101 @@
 
 #if os(macOS)
 
-import AppKit
-import ReactiveKit
+    import AppKit
+    import ReactiveKit
 
-extension ReactiveExtensions where Base: NSButton {
+    extension ReactiveExtensions where Base: NSButton {
+        public var state: DynamicSubject<NSControl.StateValue> {
+            return dynamicSubject(
+                signal: controlEvent.eraseType(),
+                get: { $0.state },
+                set: { $0.state = $1 }
+            )
+        }
 
-    public var state: DynamicSubject<NSControl.StateValue> {
-        return dynamicSubject(
-            signal: controlEvent.eraseType(),
-            get: { $0.state },
-            set: { $0.state = $1 }
-        )
+        public var title: Bond<String> {
+            return bond { $0.title = $1 }
+        }
+
+        public var alternateTitle: Bond<String> {
+            return bond { $0.alternateTitle = $1 }
+        }
+
+        public var image: Bond<NSImage?> {
+            return bond { $0.image = $1 }
+        }
+
+        public var alternateImage: Bond<NSImage?> {
+            return bond { $0.alternateImage = $1 }
+        }
+
+        public var imagePosition: Bond<NSControl.ImagePosition> {
+            return bond { $0.imagePosition = $1 }
+        }
+
+        public var imageScaling: Bond<NSImageScaling> {
+            return bond { $0.imageScaling = $1 }
+        }
+
+        @available(macOS 10.12, *)
+        public var imageHugsTitle: Bond<Bool> {
+            return bond { $0.imageHugsTitle = $1 }
+        }
+
+        public var isBordered: Bond<Bool> {
+            return bond { $0.isBordered = $1 }
+        }
+
+        public var isTransparent: Bond<Bool> {
+            return bond { $0.isTransparent = $1 }
+        }
+
+        public var keyEquivalent: Bond<String> {
+            return bond { $0.keyEquivalent = $1 }
+        }
+
+        public var keyEquivalentModifierMask: Bond<NSEvent.ModifierFlags> {
+            return bond { $0.keyEquivalentModifierMask = $1 }
+        }
+
+        @available(macOS 10.10.3, *)
+        public var isSpringLoaded: Bond<Bool> {
+            return bond { $0.isSpringLoaded = $1 }
+        }
+
+        @available(macOS 10.10.3, *)
+        public var maxAcceleratorLevel: Bond<Int> {
+            return bond { $0.maxAcceleratorLevel = $1 }
+        }
+
+        @available(macOS 10.12.2, *)
+        public var bezelColor: Bond<NSColor?> {
+            return bond { $0.bezelColor = $1 }
+        }
+
+        public var attributedTitle: Bond<NSAttributedString> {
+            return bond { $0.attributedTitle = $1 }
+        }
+
+        public var attributedAlternateTitle: Bond<NSAttributedString> {
+            return bond { $0.attributedAlternateTitle = $1 }
+        }
+
+        public var bezelStyle: Bond<NSButton.BezelStyle> {
+            return bond { $0.bezelStyle = $1 }
+        }
+
+        public var allowsMixedState: Bond<Bool> {
+            return bond { $0.allowsMixedState = $1 }
+        }
+
+        public var showsBorderOnlyWhileMouseInside: Bond<Bool> {
+            return bond { $0.showsBorderOnlyWhileMouseInside = $1 }
+        }
+
+        public var sound: Bond<NSSound?> {
+            return bond { $0.sound = $1 }
+        }
     }
-
-    public var title: Bond<String> {
-        return bond { $0.title = $1 }
-    }
-
-    public var alternateTitle: Bond<String> {
-        return bond { $0.alternateTitle = $1 }
-    }
-
-    public var image: Bond<NSImage?> {
-        return bond { $0.image = $1 }
-    }
-
-    public var alternateImage: Bond<NSImage?> {
-        return bond { $0.alternateImage = $1 }
-    }
-
-    public var imagePosition: Bond<NSControl.ImagePosition> {
-        return bond { $0.imagePosition = $1 }
-    }
-
-    public var imageScaling: Bond<NSImageScaling> {
-        return bond { $0.imageScaling = $1 }
-    }
-
-    @available(macOS 10.12, *)
-    public var imageHugsTitle: Bond<Bool> {
-        return bond { $0.imageHugsTitle = $1 }
-    }
-
-    public var isBordered: Bond<Bool> {
-        return bond { $0.isBordered = $1 }
-    }
-
-    public var isTransparent: Bond<Bool> {
-        return bond { $0.isTransparent = $1 }
-    }
-
-    public var keyEquivalent: Bond<String> {
-        return bond { $0.keyEquivalent = $1 }
-    }
-
-    public var keyEquivalentModifierMask: Bond<NSEvent.ModifierFlags> {
-        return bond { $0.keyEquivalentModifierMask = $1 }
-    }
-
-    @available(macOS 10.10.3, *)
-    public var isSpringLoaded: Bond<Bool> {
-        return bond { $0.isSpringLoaded = $1 }
-    }
-
-    @available(macOS 10.10.3, *)
-    public var maxAcceleratorLevel: Bond<Int> {
-        return bond { $0.maxAcceleratorLevel = $1 }
-    }
-
-    @available(macOS 10.12.2, *)
-    public var bezelColor: Bond<NSColor?> {
-        return bond { $0.bezelColor = $1 }
-    }
-
-    public var attributedTitle: Bond<NSAttributedString> {
-        return bond { $0.attributedTitle = $1 }
-    }
-
-    public var attributedAlternateTitle: Bond<NSAttributedString> {
-        return bond { $0.attributedAlternateTitle = $1 }
-    }
-
-    public var bezelStyle: Bond<NSButton.BezelStyle> {
-        return bond { $0.bezelStyle = $1 }
-    }
-
-    public var allowsMixedState: Bond<Bool> {
-        return bond { $0.allowsMixedState = $1 }
-    }
-
-    public var showsBorderOnlyWhileMouseInside: Bond<Bool> {
-        return bond { $0.showsBorderOnlyWhileMouseInside = $1 }
-    }
-
-    public var sound: Bond<NSSound?> {
-        return bond { $0.sound = $1 }
-    }
-}
 
 #endif
