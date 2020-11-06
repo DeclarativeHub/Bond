@@ -75,6 +75,12 @@ extension Array: SectionedDataSourceChangesetConvertible {
     }
 }
 
+extension Array2D: SectionedDataSourceChangesetConvertible {
+    public var asSectionedDataSourceChangeset: OrderedCollectionChangeset<Array2D> {
+        return OrderedCollectionChangeset(collection: self, patch: [])
+    }
+}
+
 extension OrderedCollectionChangeset: SectionedDataSourceChangeset where Diff.Index: SectionedDataIndexPathConvertable, Collection: SectionedDataSourceProtocol {}
 
 extension OrderedCollectionChangeset: SectionedDataSourceChangesetConvertible where Diff.Index: SectionedDataIndexPathConvertable, Collection: SectionedDataSourceProtocol {

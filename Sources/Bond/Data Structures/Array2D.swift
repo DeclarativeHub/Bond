@@ -219,3 +219,37 @@ extension Array2D {
         }
     }
 }
+
+// MARK: - Sequence conformance
+
+extension Array2D: Swift.Sequence {
+    public typealias Iterator = IndexingIterator<[Array2D.Section]>
+    
+    public func makeIterator() -> Iterator {
+        return sections.makeIterator()
+    }
+}
+
+// MARK: - Collection conformance
+
+extension Array2D: Collection {
+    public typealias Index = Int
+    
+    public var startIndex: Index {
+        return sections.startIndex
+    }
+    
+    public var endIndex: Index {
+        return sections.endIndex
+    }
+    
+    public subscript(position: Index) -> Iterator.Element {
+        precondition(indices.contains(position), "out of bounds")
+        let element = sections[position]
+        return element
+    }
+    
+    public func index(after i: Index) -> Index {
+        return sections.index(after: i)
+    }
+}
