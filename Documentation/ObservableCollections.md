@@ -30,7 +30,7 @@ names[1] = "Mark"    // prints: array: ["Steve", "Mark"], diff: Updates: [1], pa
 
 Observable array can be mapped (`mapCollection`), filtered (`filterCollection`) or sorted (`sortedCollection`). For example, if we map our array
 
-```
+```swift
 names.mapCollection { $0.count }.observeNext { e in
     print("array: \(e.collection), diff: \(e.diff), patch: \(e.patch)")
 }
