@@ -12,147 +12,138 @@ import Foundation
 import UIKit
 import ReactiveKit
 
-public enum LifecycleEvent {
+public extension ReactiveExtensions where Base: UIViewController {
+    var lifecycleEvents: Signal<LifecycleEvent, Never> {
+        self.base.lifecycleEvents.prefix(untilOutputFrom: base.deallocated)
+    }
+
+    func lifecycleEvent(_ event: LifecycleEvent) -> Signal<Void, Never> {
+        self.lifecycleEvents.filter { $0 == event }.eraseType()
+    }
+}
+
+public enum LifecycleEvent: CaseIterable, Equatable {
+    public static var allCases: [LifecycleEvent] {
+        return [
+            .viewDidLoad,
+            .viewWillAppear(false),
+            .viewDidAppear(false),
+            .viewWillDisappear(false),
+            .viewDidDisappear(false),
+            .viewWillLayoutSubviews,
+            .viewDidLayoutSubviews
+        ]
+    }
+
     case viewDidLoad
-    case viewWillAppear
-    case viewDidAppear
-    case viewWillDisappear
-    case viewDidDisappear
-    case viewDidLayoutSubviews
+    case viewWillAppear(Bool)
+    case viewDidAppear(Bool)
+    case viewWillDisappear(Bool)
+    case viewDidDisappear(Bool)
     case viewWillLayoutSubviews
-}
+    case viewDidLayoutSubviews
 
-/// Observe UIViewController life cycle events
-public final class ViewControllerLifecycle {
-    
-    private let wrapperViewController: WrapperViewController
-    
-    public var lifecycleEvents: Signal<LifecycleEvent, Never> {
-        self.wrapperViewController.lifecycleEvents
-    }
-    
-    public func lifecycleEvent(_ event: LifecycleEvent) -> Signal<Void, Never> {
-        self.wrapperViewController.lifecycleEvent(event)
-    }
-    
-    public init(viewController: UIViewController) {
-        self.wrapperViewController = WrapperViewController()
-        if viewController.isViewLoaded {
-            self.addAsChildViewController(viewController)
-        } else {
-            viewController
-                .reactive
-                .keyPath(\.view, startWithCurrentValue: false)
-                .prefix(maxLength: 1)
-                .bind(to: viewController) { (viewController, _) in
-                    self.addAsChildViewController(viewController)
-            }
-        }
-    }
-    
-    private func addAsChildViewController(_ viewController: UIViewController) {
-        
-        viewController.addChild(self.wrapperViewController)
-        viewController.view.addSubview(self.wrapperViewController.view)
-        self.wrapperViewController.view.frame = .zero
-        self.wrapperViewController.view.autoresizingMask = []
-        self.wrapperViewController.didMove(toParent: viewController)
-    }
-}
-
-private extension ViewControllerLifecycle {
-    
-    final class WrapperViewController: UIViewController {
-        
-        
-        deinit {
-            _lifecycleEvent.send(completion: .finished)
-        }
-        
-        private let _lifecycleEvent = PassthroughSubject<LifecycleEvent, Never>()
-        
-        public var lifecycleEvents: Signal<LifecycleEvent, Never> {
-            var signal = _lifecycleEvent.toSignal()
-            if isViewLoaded {
-                signal = signal.prepend(.viewDidLoad)
-            }
-            return signal
-        }
-        
-        public func lifecycleEvent(_ event: LifecycleEvent) -> Signal<Void, Never> {
-            return lifecycleEvents.filter { $0 == event }.eraseType()
-        }
-        
-        //MARK: - Overrides
-        override func viewDidLoad() {
-            super.viewDidLoad()
-            _lifecycleEvent.send(.viewDidLoad)
-        }
-        
-        override func viewWillAppear(_ animated: Bool) {
-            super.viewWillAppear(animated)
-            _lifecycleEvent.send(.viewWillAppear)
-        }
-        
-        override func viewDidAppear(_ animated: Bool) {
-            super.viewDidAppear(animated)
-            _lifecycleEvent.send(.viewDidAppear)
-        }
-        
-        override func viewWillDisappear(_ animated: Bool) {
-            super.viewWillDisappear(animated)
-            _lifecycleEvent.send(.viewWillDisappear)
-        }
-        
-        override func viewDidDisappear(_ animated: Bool) {
-            super.viewDidDisappear(animated)
-            _lifecycleEvent.send(.viewDidDisappear)
-        }
-        
-        override func viewWillLayoutSubviews() {
-            super.viewWillLayoutSubviews()
-            _lifecycleEvent.send(.viewWillLayoutSubviews)
-        }
-        
-        override func viewDidLayoutSubviews() {
-            super.viewDidLayoutSubviews()
-            _lifecycleEvent.send(.viewDidLayoutSubviews)
+    var associatedSelector: Selector {
+        switch self {
+        case .viewDidLoad:
+            return #selector(UIViewController.viewDidLoad)
+        case .viewWillAppear:
+            return #selector(UIViewController.viewWillAppear(_:))
+        case .viewDidAppear:
+            return #selector(UIViewController.viewDidAppear(_:))
+        case .viewWillDisappear:
+            return #selector(UIViewController.viewWillDisappear(_:))
+        case .viewDidDisappear:
+            return #selector(UIViewController.viewDidDisappear(_:))
+        case .viewWillLayoutSubviews:
+            return #selector(UIViewController.viewWillLayoutSubviews)
+        case .viewDidLayoutSubviews:
+            return #selector(UIViewController.viewDidLayoutSubviews)
         }
     }
 }
 
-public protocol ViewControllerLifecycleProvider: class {
-    var viewControllerLifecycle: ViewControllerLifecycle { get }
-}
+extension UIViewController {
 
-extension UIViewController: ViewControllerLifecycleProvider {
-    
-    private struct AssociatedKeys {
-        static var viewControllerLifeCycleKey = "viewControllerLifeCycleKey"
+    private enum StaticVariables {
+        static var lifecycleSubjectKey = "lifecycleSubjectKey"
+        static var swizzled = false
     }
-    
-    public var viewControllerLifecycle: ViewControllerLifecycle {
-        if let lifeCycle = objc_getAssociatedObject(self, &AssociatedKeys.viewControllerLifeCycleKey) {
-            return lifeCycle as! ViewControllerLifecycle
-        } else {
-            let lifeCycle = ViewControllerLifecycle(viewController: self)
-            objc_setAssociatedObject(
+
+    private var lifecycleEventsSubject: Subject<LifecycleEvent, Never> {
+        get {
+            if let subject = objc_getAssociatedObject(
                 self,
-                &AssociatedKeys.viewControllerLifeCycleKey,
-                lifeCycle, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            return lifeCycle
+                &StaticVariables.lifecycleSubjectKey
+            ) as? Subject<LifecycleEvent, Never> {
+                return subject
+            } else {
+                let subject = PassthroughSubject<LifecycleEvent, Never>()
+                objc_setAssociatedObject(
+                    self,
+                    &StaticVariables.lifecycleSubjectKey,
+                    subject,
+                    .OBJC_ASSOCIATION_RETAIN_NONATOMIC
+                )
+                return subject
+            }
         }
     }
-}
 
-extension ReactiveExtensions where Base: ViewControllerLifecycleProvider {
-    public var lifecycleEvents: Signal<LifecycleEvent, Never> {
-        self.base.viewControllerLifecycle.lifecycleEvents
+    private typealias _IMP_BOOL = @convention(c) (UnsafeRawPointer, Selector, Bool) -> Void
+    private typealias _IMP = @convention(c) (UnsafeRawPointer, Selector) -> Void
+
+    var lifecycleEvents: SafeSignal<LifecycleEvent> {
+        let signal = isViewLoaded ? self.lifecycleEventsSubject.prepend(.viewDidLoad).toSignal() : self.lifecycleEventsSubject.toSignal()
+        guard !StaticVariables.swizzled else { return signal }
+        StaticVariables.swizzled = true
+        for lifecycle in LifecycleEvent.allCases {
+            let selector = lifecycle.associatedSelector
+            guard let method = class_getInstanceMethod(UIViewController.self, selector) else { return signal }
+            let existingImplementation = method_getImplementation(method)
+
+            switch lifecycle {
+            case .viewDidLoad,
+                .viewDidLayoutSubviews,
+                .viewWillLayoutSubviews:
+
+                let newImplementation: @convention(block) (UnsafeRawPointer) -> Void = { me in
+                    let viewController = unsafeBitCast(me, to: UIViewController.self)
+                    viewController.lifecycleEventsSubject.send(lifecycle)
+                    unsafeBitCast(existingImplementation, to: _IMP.self)(me, selector)
+                }
+                let swizzled = imp_implementationWithBlock(newImplementation)
+                method_setImplementation(method, swizzled)
+
+            case .viewWillAppear,
+                .viewDidAppear,
+                .viewWillDisappear,
+                .viewDidDisappear:
+
+                let newImplementation: @convention(block) (UnsafeRawPointer, Bool) -> Void = { me, animated in
+                    let event: LifecycleEvent
+                    switch lifecycle {
+                    case .viewWillAppear:
+                        event = .viewWillAppear(animated)
+                    case .viewDidAppear:
+                        event = .viewDidAppear(animated)
+                    case .viewWillDisappear:
+                        event = .viewWillDisappear(animated)
+                    case .viewDidDisappear:
+                        event = .viewDidDisappear(animated)
+                    default:
+                        fatalError("Received unexpected lifecycle event")
+                    }
+                    let viewController = unsafeBitCast(me, to: UIViewController.self)
+                    viewController.lifecycleEventsSubject.send(event)
+                    unsafeBitCast(existingImplementation, to: _IMP_BOOL.self)(me, selector, animated)
+                }
+                let swizzled = imp_implementationWithBlock(newImplementation)
+                method_setImplementation(method, swizzled)
+            }
+        }
+        return signal
     }
-
-    public func lifecycleEvent(_ event: LifecycleEvent) -> Signal<Void, Never> {
-        self.base.viewControllerLifecycle.lifecycleEvent(event)
-    }
 }
-
 #endif
+
