@@ -23,8 +23,8 @@ class ViewControllerLifecycleTests: XCTestCase {
         XCTAssertEqual(
             accumulator.values,
             [
-                .viewWillAppear(false),
-                .viewWillAppear(true)
+                .viewWillAppear,
+                .viewWillAppear
             ]
         )
     }
@@ -38,8 +38,8 @@ class ViewControllerLifecycleTests: XCTestCase {
         XCTAssertEqual(
             accumulator.values,
             [
-                .viewDidAppear(false),
-                .viewDidAppear(true)
+                .viewDidAppear,
+                .viewDidAppear
             ]
         )
     }
@@ -53,8 +53,8 @@ class ViewControllerLifecycleTests: XCTestCase {
         XCTAssertEqual(
             accumulator.values,
             [
-                .viewWillDisappear(false),
-                .viewWillDisappear(true)
+                .viewWillDisappear,
+                .viewWillDisappear
             ]
         )
     }
@@ -68,8 +68,8 @@ class ViewControllerLifecycleTests: XCTestCase {
         XCTAssertEqual(
             accumulator.values,
             [
-                .viewDidDisappear(false),
-                .viewDidDisappear(true)
+                .viewDidDisappear,
+                .viewDidDisappear
             ]
         )
     }
@@ -144,10 +144,10 @@ class ViewControllerLifecycleTests: XCTestCase {
             accumulator.values,
             [
                 .viewDidLoad,
-                .viewWillAppear(false),
+                .viewWillAppear,
                 .viewWillLayoutSubviews,
                 .viewDidLayoutSubviews,
-                .viewDidAppear(false)
+                .viewDidAppear
             ]
         )
     }

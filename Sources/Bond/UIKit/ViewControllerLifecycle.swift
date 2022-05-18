@@ -23,23 +23,11 @@ public extension ReactiveExtensions where Base: UIViewController {
 }
 
 public enum LifecycleEvent: CaseIterable, Equatable {
-    public static var allCases: [LifecycleEvent] {
-        return [
-            .viewDidLoad,
-            .viewWillAppear(false),
-            .viewDidAppear(false),
-            .viewWillDisappear(false),
-            .viewDidDisappear(false),
-            .viewWillLayoutSubviews,
-            .viewDidLayoutSubviews
-        ]
-    }
-
     case viewDidLoad
-    case viewWillAppear(Bool)
-    case viewDidAppear(Bool)
-    case viewWillDisappear(Bool)
-    case viewDidDisappear(Bool)
+    case viewWillAppear
+    case viewDidAppear
+    case viewWillDisappear
+    case viewDidDisappear
     case viewWillLayoutSubviews
     case viewDidLayoutSubviews
 
@@ -121,21 +109,8 @@ extension UIViewController {
                 .viewDidDisappear:
 
                 let newImplementation: @convention(block) (UnsafeRawPointer, Bool) -> Void = { me, animated in
-                    let event: LifecycleEvent
-                    switch lifecycle {
-                    case .viewWillAppear:
-                        event = .viewWillAppear(animated)
-                    case .viewDidAppear:
-                        event = .viewDidAppear(animated)
-                    case .viewWillDisappear:
-                        event = .viewWillDisappear(animated)
-                    case .viewDidDisappear:
-                        event = .viewDidDisappear(animated)
-                    default:
-                        fatalError("Received unexpected lifecycle event")
-                    }
                     let viewController = unsafeBitCast(me, to: UIViewController.self)
-                    viewController.lifecycleEventsSubject.send(event)
+                    viewController.lifecycleEventsSubject.send(lifecycle)
                     unsafeBitCast(existingImplementation, to: _IMP_BOOL.self)(me, selector, animated)
                 }
                 let swizzled = imp_implementationWithBlock(newImplementation)
