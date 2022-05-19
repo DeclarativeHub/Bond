@@ -22,7 +22,7 @@ public extension ReactiveExtensions where Base: UIViewController {
     }
 }
 
-public enum LifecycleEvent: CaseIterable, Equatable {
+public enum LifecycleEvent: CaseIterable {
     case viewDidLoad
     case viewWillAppear
     case viewDidAppear
@@ -59,22 +59,20 @@ extension UIViewController {
     }
 
     private var lifecycleEventsSubject: Subject<LifecycleEvent, Never> {
-        get {
-            if let subject = objc_getAssociatedObject(
+        if let subject = objc_getAssociatedObject(
+            self,
+            &StaticVariables.lifecycleSubjectKey
+        ) as? Subject<LifecycleEvent, Never> {
+            return subject
+        } else {
+            let subject = PassthroughSubject<LifecycleEvent, Never>()
+            objc_setAssociatedObject(
                 self,
-                &StaticVariables.lifecycleSubjectKey
-            ) as? Subject<LifecycleEvent, Never> {
-                return subject
-            } else {
-                let subject = PassthroughSubject<LifecycleEvent, Never>()
-                objc_setAssociatedObject(
-                    self,
-                    &StaticVariables.lifecycleSubjectKey,
-                    subject,
-                    .OBJC_ASSOCIATION_RETAIN_NONATOMIC
-                )
-                return subject
-            }
+                &StaticVariables.lifecycleSubjectKey,
+                subject,
+                .OBJC_ASSOCIATION_RETAIN_NONATOMIC
+            )
+            return subject
         }
     }
 
